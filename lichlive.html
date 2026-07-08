@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch Live | Vật Lý Xuân Trường</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:#f9f9f9; --card:#fff; --card2:#f5f5f5; --line:#e5e5e5;
+            --text:#0f0f0f; --sub:#6b7280; --blue:#0b84f3; --blue2:#0066cc;
+            --purple:#7c3aed; --green:#16a34a; --gold:#f59e0b; --red:#dc2626;
+            --radius:12px;
+        }
+        *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+        body { background:var(--bg); color:var(--text); font-family:'Plus Jakarta Sans',ui-sans-serif,sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh; }
+        a { color:var(--blue); text-decoration:none; }
+        .container { max-width:1100px; margin:0 auto; padding:0 18px; }
+
+        /* ── HEADER ── */
+        header {
+            position:sticky; top:0; z-index:500; height:56px;
+            display:flex; align-items:center; justify-content:space-between; gap:14px; padding:0 28px;
+            background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--line);
+        }
+        .logo { display:flex; align-items:center; gap:10px; font-size:15px; font-weight:700; color:var(--text); text-decoration:none; }
+        .logo-icon { width:26px; height:26px; }
+        .nav { display:flex; align-items:center; gap:4px; }
+        .nav a { color:var(--sub); font-size:14px; font-weight:500; padding:7px 13px; border-radius:7px; cursor:pointer; text-decoration:none; transition:all .15s; }
+        .nav a:hover { color:var(--text); background:var(--line); }
+        .nav a.active { color:var(--blue); background:rgba(11,132,243,.08); }
+        .nav-right { display:flex; align-items:center; gap:10px; }
+        .btn-thi { background:var(--text); color:#fff; padding:8px 18px; border-radius:7px; font-size:13px; font-weight:700; text-decoration:none; transition:opacity .15s; }
+        .btn-thi:hover { opacity:.82; color:#fff; }
+
+        /* ── PAGE TITLE ── */
+        .page-head {
+            display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+            margin:28px 0 20px;
+        }
+        .page-head-left h1 { font-size:26px; font-weight:800; letter-spacing:-.03em; margin-bottom:4px; }
+        .page-head-left p { font-size:14px; color:var(--sub); }
+
+        /* ── TABS ── */
+        .tabs { display:flex; gap:8px; margin-bottom:24px; }
+        .tab-btn {
+            border:1.5px solid var(--line); background:var(--card); color:var(--sub);
+            padding:9px 18px; border-radius:50px; font-size:14px; font-weight:700;
+            cursor:pointer; display:inline-flex; gap:8px; align-items:center;
+            font-family:'Plus Jakarta Sans',sans-serif; transition:all .15s;
+        }
+        .tab-btn.active { background:var(--text); color:#fff; border-color:var(--text); }
+        .tab-btn i { font-size:13px; }
+
+        /* ── SECTION TITLE ── */
+        .section-title {
+            font-size:18px; font-weight:800; letter-spacing:-.02em;
+            margin-bottom:16px; display:flex; align-items:center; gap:10px;
+        }
+        .section-title span.badge {
+            font-size:12px; font-weight:700; padding:3px 10px; border-radius:20px;
+            background:rgba(11,132,243,.1); color:var(--blue);
+        }
+
+        /* ── LỊCH LIVE UPCOMING ── */
+        .schedule-list { display:flex; flex-direction:column; gap:14px; margin-bottom:40px; }
+        .schedule-card {
+            background:var(--card); border:1.5px solid var(--line); border-radius:var(--radius);
+            padding:20px 24px; display:flex; gap:20px; align-items:flex-start;
+            transition:border-color .15s, box-shadow .15s;
+        }
+        .schedule-card:hover { border-color:var(--blue); box-shadow:0 6px 24px rgba(11,132,243,.08); }
+        .schedule-card.past { opacity:.65; }
+        .sc-date {
+            min-width:70px; text-align:center; flex-shrink:0;
+            background:var(--card2); border:1.5px solid var(--line); border-radius:10px;
+            padding:10px 8px;
+        }
+        .sc-date .day { font-size:28px; font-weight:900; line-height:1; color:var(--blue); }
+        .sc-date .month { font-size:11px; font-weight:700; color:var(--sub); text-transform:uppercase; margin-top:2px; }
+        .sc-date .weekday { font-size:11px; color:var(--sub); margin-top:1px; }
+        .sc-body { flex:1; min-width:0; }
+        .sc-tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
+        .tag {
+            font-size:11.5px; font-weight:700; padding:2px 10px; border-radius:20px;
+            display:inline-flex; align-items:center; gap:4px;
+        }
+        .tag-live { background:#fee2e2; color:#b91c1c; }
+        .tag-blue { background:rgba(11,132,243,.1); color:var(--blue); }
+        .tag-green { background:rgba(22,163,74,.1); color:var(--green); }
+        .tag-gold { background:rgba(245,158,11,.1); color:#b45309; }
+        .sc-title { font-size:17px; font-weight:800; margin-bottom:5px; letter-spacing:-.01em; }
+        .sc-meta { font-size:13px; color:var(--sub); display:flex; gap:16px; flex-wrap:wrap; margin-bottom:12px; }
+        .sc-meta i { margin-right:4px; }
+        .sc-actions { display:flex; gap:8px; flex-wrap:wrap; }
+        .btn-dl {
+            display:inline-flex; align-items:center; gap:7px;
+            border:1.5px solid var(--line); background:var(--card2); color:var(--text);
+            padding:8px 16px; border-radius:7px; font-size:13px; font-weight:600;
+            text-decoration:none; cursor:pointer; transition:all .15s;
+        }
+        .btn-dl:hover { border-color:var(--blue); color:var(--blue); background:#fff; }
+        .btn-dl i { font-size:12px; }
+        .btn-primary {
+            display:inline-flex; align-items:center; gap:7px;
+            background:var(--blue); color:#fff;
+            padding:9px 18px; border-radius:7px; font-size:13px; font-weight:700;
+            text-decoration:none; transition:opacity .15s;
+        }
+        .btn-primary:hover { opacity:.85; color:#fff; }
+        .btn-primary.disabled { background:var(--line); color:var(--sub); pointer-events:none; }
+        .countdown-badge {
+            font-size:12px; font-weight:700; padding:4px 12px; border-radius:20px;
+            background:rgba(245,158,11,.12); color:#b45309; border:1px solid rgba(245,158,11,.3);
+            display:inline-flex; align-items:center; gap:5px;
+        }
+
+        /* ── VIDEO RECORD GRID ── */
+        .record-grid {
+            display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:18px;
+            margin-bottom:40px;
+        }
+        .record-card {
+            background:var(--card); border:1.5px solid var(--line); border-radius:var(--radius);
+            overflow:hidden; cursor:pointer; transition:transform .18s, border-color .18s, box-shadow .18s;
+            display:flex; flex-direction:column;
+        }
+        .record-card:hover { transform:translateY(-3px); border-color:var(--blue); box-shadow:0 10px 28px rgba(11,132,243,.1); }
+        .rc-thumb {
+            position:relative; height:170px; background:#000;
+            display:flex; align-items:center; justify-content:center; overflow:hidden;
+        }
+        .rc-thumb img { width:100%; height:100%; object-fit:cover; opacity:.9; }
+        .rc-thumb .play-btn {
+            position:absolute; width:52px; height:52px; border-radius:50%;
+            background:rgba(11,132,243,.9); color:#fff;
+            display:flex; align-items:center; justify-content:center; font-size:20px;
+            transition:transform .2s, background .2s;
+        }
+        .record-card:hover .play-btn { transform:scale(1.1); background:var(--blue); }
+        .rc-duration {
+            position:absolute; bottom:8px; right:10px;
+            background:rgba(0,0,0,.75); color:#fff; font-size:11px; font-weight:700;
+            padding:2px 7px; border-radius:5px; font-family:'DM Mono',monospace;
+        }
+        .rc-body { padding:14px 16px 16px; flex:1; display:flex; flex-direction:column; }
+        .rc-date { font-size:11.5px; color:var(--sub); font-weight:600; margin-bottom:6px; }
+        .rc-title { font-size:15px; font-weight:800; line-height:1.4; margin-bottom:6px; letter-spacing:-.01em; }
+        .rc-desc { font-size:13px; color:var(--sub); line-height:1.5; flex:1; margin-bottom:12px; }
+        .rc-footer { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+        .rc-dl { font-size:12.5px; font-weight:700; color:var(--blue); text-decoration:none; display:inline-flex; align-items:center; gap:5px; }
+        .rc-dl:hover { text-decoration:underline; }
+        .rc-views { font-size:12px; color:var(--sub); }
+
+        /* ── MODAL VIDEO ── */
+        .modal-backdrop {
+            display:none; position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:1000;
+            align-items:center; justify-content:center;
+        }
+        .modal-backdrop.open { display:flex; }
+        .modal-box {
+            background:#000; border-radius:14px; overflow:hidden;
+            width:90%; max-width:900px; position:relative;
+            box-shadow:0 30px 80px rgba(0,0,0,.5);
+        }
+        .modal-close {
+            position:absolute; top:10px; right:12px; z-index:10;
+            background:rgba(255,255,255,.15); color:#fff; border:none; border-radius:50%;
+            width:34px; height:34px; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+            transition:background .15s;
+        }
+        .modal-close:hover { background:rgba(255,255,255,.28); }
+        .modal-ratio { position:relative; width:100%; padding-top:56.25%; }
+        .modal-ratio iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+
+        /* ── EMPTY STATE ── */
+        .empty { text-align:center; padding:60px 20px; color:var(--sub); }
+        .empty i { font-size:40px; margin-bottom:14px; opacity:.4; }
+        .empty p { font-size:15px; }
+
+        /* ── ADMIN PANEL (ẩn với học sinh) ── */
+        .admin-bar {
+            background:var(--card); border:1.5px dashed #fbbf24; border-radius:var(--radius);
+            padding:16px 20px; margin-bottom:20px; display:none;
+        }
+        .admin-bar.show { display:block; }
+        .admin-bar h3 { font-size:14px; font-weight:700; color:#b45309; margin-bottom:10px; }
+        .admin-bar-row { display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; }
+        .admin-bar input, .admin-bar select {
+            border:1.5px solid var(--line); border-radius:7px; padding:7px 12px;
+            font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; background:var(--bg); color:var(--text);
+            outline:none;
+        }
+        .admin-bar input:focus, .admin-bar select:focus { border-color:var(--blue); }
+        .admin-bar label { font-size:12px; font-weight:600; color:var(--sub); display:block; margin-bottom:4px; }
+        .btn-admin {
+            background:var(--gold); color:#fff; border:none; border-radius:7px; padding:9px 18px;
+            font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:700; cursor:pointer; transition:opacity .15s;
+        }
+        .btn-admin:hover { opacity:.85; }
+
+        /* responsive */
+        @media(max-width:640px){
+            .schedule-card { flex-direction:column; gap:12px; }
+            .sc-date { display:flex; align-items:center; gap:12px; min-width:unset; padding:8px 12px; }
+            .sc-date .day { font-size:22px; }
+            header { padding:0 14px; }
+            .nav { display:none; }
+        }
+
+        /* ─── DARK MODE ─── */
+        body.dark {
+            --bg:#0d1117; --card:#161b22; --card2:#1c2128;
+            --line:#30363d; --text:#e6edf3; --sub:#8b949e;
+            background:#0d1117; color:#e6edf3;
+        }
+        body.dark header { background:rgba(13,17,23,0.95); border-color:#30363d; }
+        /* Tab buttons */
+        body.dark .tab-btn { background:#161b22; border-color:#30363d; color:#8b949e; }
+        body.dark .tab-btn.active { background:#e6edf3; color:#0d1117; border-color:#e6edf3; }
+        body.dark .tab-btn:hover { color:#e6edf3; }
+        /* Tags */
+        body.dark .tag-live { background:rgba(185,28,28,.2); color:#fca5a5; }
+        body.dark .tag-blue { background:rgba(11,132,243,.15); color:#58a6ff; }
+        /* Schedule cards */
+        body.dark .schedule-card { background:#161b22; border-color:#30363d; }
+        body.dark .sc-date { background:#1c2128; border-color:#30363d; }
+        body.dark .sc-title { color:#e6edf3; }
+        body.dark .sc-meta { color:#8b949e; }
+        /* Countdown badge */
+        body.dark .countdown-badge { background:#1c2128; color:#8b949e; border-color:#30363d; }
+        /* Download button */
+        body.dark .btn-dl { background:#1c2128; border-color:#30363d; color:#e6edf3; }
+        /* Record cards */
+        body.dark .record-card { background:#161b22; border-color:#30363d; }
+        body.dark .rc-title { color:#e6edf3; }
+        body.dark .rc-meta, body.dark .rc-desc { color:#8b949e; }
+        body.dark .rc-dl { background:#1c2128; border-color:#30363d; color:#8b949e; }
+        /* Lịch Live link badges */
+        body.dark .ll-link-doc { background:rgba(30,64,175,.2); color:#93c5fd; }
+        body.dark .ll-link-yt { background:rgba(185,28,28,.2); color:#fca5a5; }
+        .theme-toggle { background:none;border:none;cursor:pointer;padding:7px 10px;border-radius:8px;color:#555;font-size:15px;display:inline-flex;align-items:center;transition:color .15s; }
+        .theme-toggle:hover { color:#0f0f0f; }
+        body.dark .theme-toggle { color:#8b949e; }
+        body.dark .theme-toggle:hover { color:#e6edf3; }
+    </style>
+  <script src="cache.js"></script>
+  <script src="auth.js?v=3"></script>
+  <script src="thongbao.js?v=1"></script>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+    <a href="index.html" class="logo">
+        <svg class="logo-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="4" fill="#0b84f3"/>
+            <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.8" fill="none" opacity="0.7"/>
+            <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#3b82f6" stroke-width="1.5" fill="none" opacity="0.5" transform="rotate(60 14 14)"/>
+            <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#60a5fa" stroke-width="1.4" fill="none" opacity="0.4" transform="rotate(120 14 14)"/>
+        </svg>
+        Vật Lý Xuân Trường
+    </a>
+    <nav class="nav">
+        <a href="baihoc.html">Khóa Học</a>
+        <a href="danhsach-ly12.html">Đề Thi</a>
+        <a href="trochoi.html">Trò Chơi</a>
+        <a href="lichlive.html" class="active">Lịch Live</a>
+        <a href="live.html" style="color:#dc2626;font-weight:700">Live</a>
+        <a href="huongdan.html">Hướng Dẫn</a>
+        <a href="index.html#leaderboard">Bảng Vàng</a>
+    </nav>
+    <div class="nav-right">
+        <div id="vlxt-nav-user-area"></div>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Chuyển giao diện"><i class="fa-solid fa-circle-half-stroke"></i></button>
+    </div>
+</header>
+
+<div class="container">
+
+    <!-- Tiêu đề trang -->
+    <div class="page-head">
+        <div class="page-head-left">
+            <h1>📡 Lịch Live & Video Ghi Lại</h1>
+            <p>Buổi live chữa đề trực tiếp: lịch sắp tới và toàn bộ video đã record</p>
+        </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <button class="tab-btn active" id="tab-lich" onclick="switchTab('lich')">
+            <i class="fa-solid fa-calendar-days"></i> Lịch sắp tới
+        </button>
+        <button class="tab-btn" id="tab-record" onclick="switchTab('record')">
+            <i class="fa-solid fa-circle-play"></i> Video đã record
+        </button>
+    </div>
+
+    <!-- ── TAB: LỊCH SẮP TỚI ── -->
+    <div id="view-lich">
+        <div class="section-title">
+            Lịch Livestream Sắp Tới
+            <span class="badge" id="count-lich">0 buổi</span>
+        </div>
+        <div class="schedule-list" id="list-lich">
+            <div class="empty"><i class="fa-solid fa-satellite-dish"></i><p>Đang tải lịch live...</p></div>
+        </div>
+    </div>
+
+    <!-- ── TAB: VIDEO RECORD ── -->
+    <div id="view-record" style="display:none">
+        <div class="section-title">
+            Video Ghi Lại
+            <span class="badge" id="count-record">0 video</span>
+        </div>
+        <div class="record-grid" id="list-record">
+            <div class="empty" style="grid-column:1/-1"><i class="fa-solid fa-video"></i><p>Đang tải video...</p></div>
+        </div>
+    </div>
+
+</div><!-- /container -->
+
+<!-- MODAL XEM VIDEO -->
+<div class="modal-backdrop" id="modal" onclick="closeModal(event)">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-ratio">
+            <iframe id="modal-frame" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+<script>
+// ── CONFIG ──
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec';
+
+// ── Dữ liệu mẫu (sẽ được thay bằng dữ liệu từ Sheets sau khi thầy cấu hình) ──
+// Mỗi buổi live có: id, title, date (dd/mm/yyyy), time, grade, docUrl, ytUrl, thumb, desc, done (true=đã qua)
+const DEMO_DATA = [
+    {
+        id: 'live001', title: 'Chữa đề Vật Lý 12 - Dao động cơ + Sóng cơ',
+        date: '05/07/2026', time: '20:00', grade: 'Vật Lý 12',
+        desc: 'Thầy chữa chi tiết 2 chương trọng tâm, tập trung dạng bài khó thường gặp trong đề thi THPT.',
+        docUrl: '', ytUrl: '', thumb: '', done: false
+    },
+    {
+        id: 'live002', title: 'Chữa đề Vật Lý 12 - Điện xoay chiều',
+        date: '12/07/2026', time: '20:00', grade: 'Vật Lý 12',
+        desc: 'Chữa toàn bộ dạng bài điện xoay chiều từ cơ bản đến nâng cao.',
+        docUrl: '', ytUrl: '', thumb: '', done: false
+    },
+    {
+        id: 'live003', title: 'Chữa đề Luyện thi 2k8 - Tổng ôn Học kỳ 1',
+        date: '20/06/2026', time: '19:30', grade: 'Vật Lý 12',
+        desc: 'Buổi live tổng ôn học kỳ 1: chữa đề cương và các câu hỏi học sinh gửi về.',
+        docUrl: 'https://drive.google.com/drive/folders/example',
+        ytUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+        thumb: '', done: true
+    },
+];
+
+// ── Helpers ──
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTHS_VI = ['Th1','Th2','Th3','Th4','Th5','Th6','Th7','Th8','Th9','Th10','Th11','Th12'];
+const WEEKDAYS = ['CN','Th2','Th3','Th4','Th5','Th6','Th7'];
+
+function parseDate(str) {
+    const [d,m,y] = str.split('/').map(Number);
+    return new Date(y, m-1, d);
+}
+function formatDate(str) {
+    const dt = parseDate(str);
+    return WEEKDAYS[dt.getDay()] + ', ' + str;
+}
+function driveThumb(url) {
+    if (!url) return '';
+    const m = url.match(/\/d\/([^/]+)/);
+    return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w600` : url;
+}
+function ytEmbed(url) {
+    if (!url) return '';
+    const m = url.match(/(?:v=|\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    return m ? `https://www.youtube.com/embed/${m[1]}?autoplay=1` : url;
+}
+function ytThumb(url) {
+    const m = url.match(/(?:v=|\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    return m ? `https://img.youtube.com/vi/${m[1]}/hqdefault.jpg` : '';
+}
+
+// ── Tabs ──
+function switchTab(tab) {
+    document.getElementById('view-lich').style.display   = tab === 'lich'   ? '' : 'none';
+    document.getElementById('view-record').style.display = tab === 'record' ? '' : 'none';
+    document.getElementById('tab-lich').classList.toggle('active',   tab === 'lich');
+    document.getElementById('tab-record').classList.toggle('active', tab === 'record');
+}
+
+// ── Modal ──
+function openModal(embedUrl) {
+    document.getElementById('modal-frame').src = embedUrl;
+    document.getElementById('modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeModal(e) {
+    if (e && e.target !== document.getElementById('modal')) return;
+    document.getElementById('modal-frame').src = '';
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── Render lịch sắp tới ──
+function renderLich(data) {
+    const upcoming = data.filter(d => !d.done).sort((a,b) => parseDate(a.date) - parseDate(b.date));
+    const el = document.getElementById('list-lich');
+    document.getElementById('count-lich').textContent = upcoming.length + ' buổi';
+    if (!upcoming.length) {
+        el.innerHTML = '<div class="empty"><i class="fa-solid fa-satellite-dish"></i><p>Chưa có lịch live sắp tới. Thầy sẽ thông báo sớm!</p></div>';
+        return;
+    }
+    el.innerHTML = upcoming.map((d,i) => {
+        const dt = parseDate(d.date);
+        const now = new Date();
+        const diffMs = dt - now;
+        const diffDays = Math.ceil(diffMs / 86400000);
+        let cdBadge = '';
+        if (diffDays === 0) cdBadge = `<span class="countdown-badge"><i class="fa-solid fa-bolt"></i> Hôm nay!</span>`;
+        else if (diffDays === 1) cdBadge = `<span class="countdown-badge"><i class="fa-solid fa-clock"></i> Ngày mai</span>`;
+        else if (diffDays > 0) cdBadge = `<span class="countdown-badge"><i class="fa-solid fa-clock"></i> Còn ${diffDays} ngày</span>`;
+
+        const docBtn = d.docUrl
+            ? `<a href="${d.docUrl}" target="_blank" class="btn-dl"><i class="fa-solid fa-file-arrow-down"></i> Tải tài liệu trước</a>`
+            : `<span class="btn-dl" style="opacity:.5;cursor:default"><i class="fa-solid fa-file-arrow-down"></i> Tài liệu (sắp có)</span>`;
+
+        return `
+        <div class="schedule-card${i>0?' ':' '}">
+            <div class="sc-date">
+                <div class="day">${dt.getDate()}</div>
+                <div class="month">${MONTHS_VI[dt.getMonth()]}</div>
+                <div class="weekday">${WEEKDAYS[dt.getDay()]}</div>
+            </div>
+            <div class="sc-body">
+                <div class="sc-tags">
+                    <span class="tag tag-live"><i class="fa-solid fa-circle" style="font-size:7px"></i> LIVE</span>
+                    <span class="tag tag-blue">${d.grade}</span>
+                    ${cdBadge}
+                </div>
+                <div class="sc-title">${d.title}</div>
+                <div class="sc-meta">
+                    <span><i class="fa-regular fa-clock"></i>${d.time}</span>
+                    <span><i class="fa-solid fa-chalkboard-user"></i>Thầy Xuân Trường</span>
+                </div>
+                <div style="font-size:13.5px;color:var(--sub);margin-bottom:12px;line-height:1.6">${d.desc||''}</div>
+                <div class="sc-actions">
+                    ${docBtn}
+                    <a href="#" class="btn-primary disabled" style="pointer-events:none;opacity:.5">
+                        <i class="fa-solid fa-video"></i> Đặt nhắc nhở
+                    </a>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+// ── Render video đã record ──
+function renderRecord(data) {
+    const records = data.filter(d => d.done).sort((a,b) => parseDate(b.date) - parseDate(a.date));
+    const withVideo = records.filter(d => d.ytUrl);
+    const el = document.getElementById('list-record');
+    document.getElementById('count-record').textContent = withVideo.length + ' video';
+    if (!records.length) {
+        el.innerHTML = '<div class="empty" style="grid-column:1/-1"><i class="fa-solid fa-video"></i><p>Chưa có video record. Sau mỗi buổi live sẽ được đăng tại đây.</p></div>';
+        return;
+    }
+    el.innerHTML = records.map(d => {
+        const thumb = d.thumb ? driveThumb(d.thumb) : (d.ytUrl ? ytThumb(d.ytUrl) : '');
+        const embedUrl = d.ytUrl ? ytEmbed(d.ytUrl) : '';
+        const docBtn = d.docUrl
+            ? `<a href="${d.docUrl}" target="_blank" class="rc-dl"><i class="fa-solid fa-file-arrow-down"></i> Tài liệu</a>`
+            : '';
+        const clickAttr = embedUrl ? `onclick="openModal('${embedUrl}')" style="cursor:pointer"` : '';
+        const playBtn = embedUrl
+            ? `<div class="play-btn"><i class="fa-solid fa-play" style="margin-left:3px"></i></div>`
+            : `<div class="play-btn" style="background:rgba(0,0,0,.35)"><i class="fa-solid fa-clock" style="font-size:14px"></i></div>`;
+        const noVideoLabel = embedUrl ? '' : `<span style="font-size:11px;color:var(--sub);margin-left:4px"><i class="fa-regular fa-clock"></i> Video sắp cập nhật</span>`;
+        return `
+        <div class="record-card" ${clickAttr}>
+            <div class="rc-thumb">
+                ${thumb ? `<img src="${thumb}" alt="${d.title}" onerror="this.style.display='none'">` : ''}
+                ${playBtn}
+            </div>
+            <div class="rc-body">
+                <div class="rc-date"><i class="fa-regular fa-calendar"></i> ${formatDate(d.date)} · ${d.time}</div>
+                <div class="rc-title">${d.title}</div>
+                <div class="rc-desc">${d.desc||''}</div>
+                <div class="rc-footer">
+                    <span class="tag tag-blue" style="font-size:11px">${d.grade}</span>
+                    ${docBtn}${noVideoLabel}
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+// ── Load dữ liệu từ GAS ──
+let allSessions = [];
+async function loadData() {
+    try {
+        const r = await cachedFetch(GAS_URL + '?type=lichlive&t=' + Date.now());
+        const data = await r.json();
+        allSessions = Array.isArray(data) ? data : [];
+    } catch(e) {
+        allSessions = [];
+    }
+    renderLich(allSessions);
+    renderRecord(allSessions);
+}
+
+loadData();
+
+// Tu dong ve lai khi cache.js phat hien du lieu Lich Live moi (khong can F5)
+window.addEventListener('vlxt:data-updated', function(e){
+    if (e.detail && e.detail.type === 'lichlive') {
+        allSessions = Array.isArray(e.detail.data) ? e.detail.data : [];
+        renderLich(allSessions);
+        renderRecord(allSessions);
+    }
+});
+
+// Poll ngam moi 15s trong khi hoc sinh dang mo trang (backend da auto-refresh
+// trong ~20-60s sau khi thay sua o admin, nen can goi lai dinh ky de bat kip,
+// khong chi dua vao 1 lan load luc mo trang). cachedFetch tu quyet dinh co
+// goi mang that hay khong dua vao FRESH_MS, nen goi thuong xuyen khong ton kem.
+setInterval(loadData, 15000);
+</script>
+<script>
+function toggleTheme(){document.body.classList.toggle('dark');localStorage.setItem('vlxt_theme',document.body.classList.contains('dark')?'dark':'light');}
+if(localStorage.getItem('vlxt_theme')==='dark')document.body.classList.add('dark');
+</script>
+</body>
+</html>

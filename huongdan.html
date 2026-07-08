@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hướng Dẫn Học | Vật Lý Xuân Trường</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="cache.js"></script>
+    <script src="auth.js?v=6"></script>
+  <script src="thongbao.js?v=1"></script>
+    <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root {
+        --bg:#f9f9f9; --card:#fff; --card2:#f5f5f5; --line:#e5e5e5;
+        --text:#0f0f0f; --sub:#6b7280; --blue:#0b84f3; --green:#16a34a;
+        --red:#dc2626; --gold:#f59e0b; --radius:12px;
+    }
+    body.dark { --bg:#0d1117; --card:#161b22; --card2:#1c2128; --line:#30363d; --text:#e6edf3; --sub:#8b949e; }
+    body { background:var(--bg); color:var(--text); font-family:'Plus Jakarta Sans',ui-sans-serif,sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh; }
+
+    /* NAVBAR */
+    header { position:sticky; top:0; z-index:500; height:56px; display:flex; align-items:center; justify-content:space-between; gap:14px; padding:0 20px; background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--line); transition:background .2s; }
+    body.dark header { background:rgba(13,17,23,0.92); border-color:var(--line); }
+    .logo { display:flex; align-items:center; gap:10px; font-size:15px; font-weight:700; color:var(--text); text-decoration:none; }
+    .logo svg { width:26px; height:26px; }
+    .nav { display:flex; align-items:center; gap:2px; }
+    .nav a { color:var(--sub); font-size:14px; font-weight:500; padding:7px 12px; border-radius:7px; text-decoration:none; transition:all .15s; white-space:nowrap; }
+    .nav a:hover { color:var(--text); background:var(--line); }
+    .nav a.active { color:var(--blue); background:rgba(11,132,243,.08); font-weight:700; }
+    .nav-right { display:flex; align-items:center; gap:8px; }
+    .theme-toggle { background:none; border:none; cursor:pointer; padding:7px 9px; border-radius:8px; color:var(--sub); font-size:15px; transition:color .15s; }
+    .theme-toggle:hover { color:var(--text); }
+
+    /* PAGE */
+    .page-hero { text-align:center; padding:60px 20px 40px; max-width:700px; margin:0 auto; }
+    .page-hero h1 { font-size:36px; font-weight:900; letter-spacing:-.04em; margin-bottom:12px; }
+    .page-hero p { font-size:16px; color:var(--sub); line-height:1.7; }
+    .badge-hd { display:inline-flex; align-items:center; gap:6px; background:rgba(11,132,243,.1); color:var(--blue); border:1px solid rgba(11,132,243,.2); border-radius:20px; font-size:13px; font-weight:700; padding:5px 14px; margin-bottom:18px; }
+
+    /* STEPS */
+    .steps-wrap { max-width:860px; margin:0 auto; padding:0 20px 60px; }
+    .step-section { margin-bottom:40px; }
+    .step-section-title { font-size:18px; font-weight:800; margin-bottom:18px; display:flex; align-items:center; gap:10px; padding-bottom:12px; border-bottom:2px solid var(--line); }
+    .step-section-title .icon { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+
+    .step-list { display:flex; flex-direction:column; gap:14px; }
+    .step-item { display:flex; gap:16px; background:var(--card); border:1.5px solid var(--line); border-radius:12px; padding:18px 20px; transition:border-color .15s; }
+    .step-item:hover { border-color:var(--blue); }
+    .step-num { width:34px; height:34px; border-radius:50%; background:var(--blue); color:#fff; font-size:15px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .step-body { flex:1; min-width:0; }
+    .step-title { font-size:15px; font-weight:700; margin-bottom:5px; }
+    .step-desc { font-size:13px; color:var(--sub); line-height:1.65; }
+    .step-tip { display:inline-flex; align-items:center; gap:5px; margin-top:8px; font-size:12px; font-weight:600; color:var(--green); background:rgba(22,163,74,.08); border-radius:6px; padding:3px 9px; }
+
+    /* FAQ */
+    .faq-list { display:flex; flex-direction:column; gap:10px; }
+    .faq-item { background:var(--card); border:1.5px solid var(--line); border-radius:12px; overflow:hidden; }
+    .faq-q { padding:16px 18px; font-size:14px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:12px; user-select:none; transition:background .12s; }
+    .faq-q:hover { background:var(--card2); }
+    .faq-q i { color:var(--sub); transition:transform .2s; font-size:12px; flex-shrink:0; }
+    .faq-item.open .faq-q i { transform:rotate(180deg); }
+    .faq-a { display:none; padding:0 18px 16px; font-size:13px; color:var(--sub); line-height:1.7; border-top:1px solid var(--line); padding-top:14px; }
+    .faq-item.open .faq-a { display:block; }
+
+    /* QUICK LINKS */
+    .links-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:14px; }
+    .link-card { display:flex; flex-direction:column; align-items:center; gap:10px; background:var(--card); border:1.5px solid var(--line); border-radius:12px; padding:22px 16px; text-decoration:none; color:var(--text); transition:all .15s; text-align:center; }
+    .link-card:hover { border-color:var(--blue); transform:translateY(-2px); box-shadow:0 4px 16px rgba(11,132,243,.12); }
+    .link-card .lc-icon { font-size:28px; }
+    .link-card .lc-name { font-size:14px; font-weight:700; }
+    .link-card .lc-desc { font-size:12px; color:var(--sub); }
+
+    @media(max-width:600px) {
+        .page-hero h1 { font-size:26px; }
+        .step-item { flex-direction:column; gap:12px; }
+        header { padding:0 12px; }
+        .nav a span { display:none; }
+        .nav a { padding:7px 9px; }
+    }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="logo">
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="4" fill="#0b84f3"/>
+            <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.8" fill="none" opacity="0.7"/>
+            <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#3b82f6" stroke-width="1.5" fill="none" opacity="0.5" transform="rotate(60 14 14)"/>
+            <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#60a5fa" stroke-width="1.4" fill="none" opacity="0.4" transform="rotate(120 14 14)"/>
+        </svg>
+        Vật Lý Xuân Trường
+    </a>
+    <nav class="nav">
+        <a href="baihoc.html"><span>Khóa Học</span></a>
+        <a href="danhsach-ly12.html"><span>Đề Thi</span></a>
+        <a href="trochoi.html"><span>Trò Chơi</span></a>
+        <a href="hoso.html"><span>Hồ Sơ</span></a>
+        <a href="lichlive.html"><span>Lịch Live</span></a>
+        <a href="huongdan.html" class="active"><span>Hướng Dẫn</span></a>
+    </nav>
+    <div class="nav-right">
+        <div id="vlxt-nav-user-area"></div>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Đổi giao diện"><i class="fa-solid fa-circle-half-stroke"></i></button>
+    </div>
+</header>
+
+<div class="page-hero">
+    <div class="badge-hd"><i class="fa-solid fa-book-open"></i> Hướng dẫn học</div>
+    <h1>Bắt đầu học như thế nào?</h1>
+    <p>Làm theo 5 bước đơn giản dưới đây để tận dụng tối đa tất cả tính năng của web Vật Lý Xuân Trường.</p>
+</div>
+
+<div class="steps-wrap">
+
+    <!-- BƯỚC 1: Đăng ký -->
+    <div class="step-section">
+        <div class="step-section-title">
+            <div class="icon" style="background:rgba(11,132,243,.1)">👤</div>
+            Bước 1: Tạo tài khoản
+        </div>
+        <div class="step-list">
+            <div class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <div class="step-title">Vào trang Đăng nhập</div>
+                    <div class="step-desc">Nhấn nút <b>Đăng nhập</b> ở góc trên bên phải, hoặc vào thẳng <a href="login.html" style="color:var(--blue)">login.html</a>.</div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <div class="step-title">Đăng ký tài khoản mới</div>
+                    <div class="step-desc">Nhập <b>Họ tên</b>, <b>Số điện thoại</b> (dùng để đăng nhập), <b>Lớp</b>, rồi nhấn <b>Đăng ký</b>. Hệ thống lưu thông tin vào database an toàn.</div>
+                    <div class="step-tip"><i class="fa-solid fa-circle-check"></i> Miễn phí, không cần email hay mật khẩu</div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                    <div class="step-title">Khi đăng ký thành công</div>
+                    <div class="step-desc">Bạn sẽ thấy tên mình hiện ở góc trên phải màn hình. Nhấn vào tên để xem hồ sơ, số bài đã học và điểm LP (Learning Points).</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BƯỚC 2: Xem bài học -->
+    <div class="step-section">
+        <div class="step-section-title">
+            <div class="icon" style="background:rgba(22,163,74,.1)">📚</div>
+            Bước 2: Xem bài học
+        </div>
+        <div class="step-list">
+            <div class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <div class="step-title">Vào mục Khóa Học</div>
+                    <div class="step-desc">Chọn <b>Khóa Học</b> trên thanh menu để xem danh sách tất cả chương và bài học.</div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <div class="step-title">Xem video bài học</div>
+                    <div class="step-desc">Mỗi bài có <b>video YouTube</b> nhúng sẵn. Xem đến <b>90%</b> thời lượng video để mở khóa bài tập cuối bài.</div>
+                    <div class="step-tip"><i class="fa-solid fa-lightbulb"></i> Xem xong video → nút "Làm bài tập" sẽ sáng lên</div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                    <div class="step-title">Làm bài tập cuối bài</div>
+                    <div class="step-desc">Trả lời các câu hỏi trắc nghiệm. Đạt <b>8/10 điểm</b> trở lên để nhận <b>LP</b> và ghi nhận tiến độ học.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BƯỚC 3: Thi thử -->
+    <div class="step-section">
+        <div class="step-section-title">
+            <div class="icon" style="background:rgba(245,158,11,.1)">📝</div>
+            Bước 3: Luyện đề thi thử
+        </div>
+        <div class="step-list">
+            <div class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <div class="step-title">Vào mục Đề Thi</div>
+                    <div class="step-desc">Chọn <b>Đề Thi</b> trên menu để xem danh sách các đề thi thử. Mỗi đề có số câu và thời gian làm bài.</div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <div class="step-title">Làm bài và xem kết quả</div>
+                    <div class="step-desc">Chọn đáp án, nộp bài khi hết thời gian hoặc làm xong. Kết quả hiển thị ngay lập tức kèm đáp án đúng.</div>
+                    <div class="step-tip"><i class="fa-solid fa-trophy"></i> Kết quả được lưu vào bảng xếp hạng</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BƯỚC 4: Live -->
+    <div class="step-section">
+        <div class="step-section-title">
+            <div class="icon" style="background:rgba(220,38,38,.1)">📡</div>
+            Bước 4: Tham gia buổi Live
+        </div>
+        <div class="step-list">
+            <div class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <div class="step-title">Kiểm tra Lịch Live</div>
+                    <div class="step-desc">Vào mục <b>Lịch Live</b> để xem lịch dạy trực tiếp của thầy. Thầy cũng sẽ thông báo qua nhóm Zalo.</div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <div class="step-title">Vào trang Đang Live</div>
+                    <div class="step-desc">Khi thầy bắt đầu live, vào mục <b>Đang Live</b> để xem video trực tiếp và nhắn bình luận trong khung chat bên phải.</div>
+                    <div class="step-tip"><i class="fa-solid fa-heart" style="color:#e53e3e"></i> Nhấn tim để cổ vũ thầy!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BƯỚC 5: Hồ sơ & LP -->
+    <div class="step-section">
+        <div class="step-section-title">
+            <div class="icon" style="background:rgba(124,58,237,.1)">⚡</div>
+            Bước 5: Theo dõi tiến độ & LP
+        </div>
+        <div class="step-list">
+            <div class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <div class="step-title">Learning Points (LP) là gì?</div>
+                    <div class="step-desc">LP là điểm thưởng mỗi khi bạn hoàn thành bài tập hoặc làm tốt đề thi. Dùng LP để theo dõi tiến độ và cạnh tranh trên bảng xếp hạng.</div>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <div class="step-title">Xem bảng xếp hạng</div>
+                    <div class="step-desc">Vào <b>Hồ Sơ</b> để xem thứ hạng của mình so với các bạn cùng lớp và toàn khóa.</div>
+                    <div class="step-tip"><i class="fa-solid fa-fire"></i> Học đều đặn mỗi ngày để leo hạng!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="step-section">
+        <div class="step-section-title">
+            <div class="icon" style="background:rgba(11,132,243,.1)">❓</div>
+            Câu hỏi thường gặp
+        </div>
+        <div class="faq-list">
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-q">Quên không đăng nhập, bài học có bị mất không? <i class="fa-solid fa-chevron-down"></i></div>
+                <div class="faq-a">Tiến độ xem video được lưu tạm trong máy (localStorage). Nếu đăng nhập đúng tài khoản, dữ liệu sẽ đồng bộ lại. Hãy đăng nhập trước khi học để chắc chắn không mất tiến độ.</div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-q">Dùng điện thoại có học được không? <i class="fa-solid fa-chevron-down"></i></div>
+                <div class="faq-a">Hoàn toàn được! Web được thiết kế tương thích điện thoại. Tuy nhiên để xem công thức vật lý rõ hơn, dùng máy tính sẽ tiện lợi hơn.</div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-q">Bài học bị khóa, phải làm gì? <i class="fa-solid fa-chevron-down"></i></div>
+                <div class="faq-a">Một số bài yêu cầu xem hết 90% video mới mở được bài tập. Hãy xem video đến gần cuối. Nếu vẫn bị khóa, thử làm mới trang (F5) sau khi xem xong.</div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-q">Kết quả thi có lưu lại không? <i class="fa-solid fa-chevron-down"></i></div>
+                <div class="faq-a">Có! Kết quả mỗi lần thi được lưu vào hệ thống và hiển thị trong mục Hồ Sơ. Thầy cũng có thể xem kết quả của tất cả học sinh.</div>
+            </div>
+            <div class="faq-item" onclick="this.classList.toggle('open')">
+                <div class="faq-q">Quên số điện thoại đăng ký phải làm sao? <i class="fa-solid fa-chevron-down"></i></div>
+                <div class="faq-a">Nhắn tin cho thầy qua Zalo để thầy tra cứu và hỗ trợ đặt lại tài khoản.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUICK LINKS -->
+    <div class="step-section">
+        <div class="step-section-title">
+            <div class="icon" style="background:rgba(22,163,74,.1)">🔗</div>
+            Truy cập nhanh
+        </div>
+        <div class="links-grid">
+            <a href="login.html" class="link-card">
+                <div class="lc-icon">👤</div>
+                <div class="lc-name">Đăng nhập</div>
+                <div class="lc-desc">Tạo tài khoản học</div>
+            </a>
+            <a href="baihoc.html" class="link-card">
+                <div class="lc-icon">📚</div>
+                <div class="lc-name">Khóa Học</div>
+                <div class="lc-desc">Video bài giảng</div>
+            </a>
+            <a href="danhsach-ly12.html" class="link-card">
+                <div class="lc-icon">📝</div>
+                <div class="lc-name">Đề Thi</div>
+                <div class="lc-desc">Luyện đề trắc nghiệm</div>
+            </a>
+            <a href="lichlive.html" class="link-card">
+                <div class="lc-icon">📡</div>
+                <div class="lc-name">Lịch Live</div>
+                <div class="lc-desc">Lịch dạy trực tiếp</div>
+            </a>
+            <a href="live.html" class="link-card">
+                <div class="lc-icon">🔴</div>
+                <div class="lc-name">Đang Live</div>
+                <div class="lc-desc">Vào xem trực tiếp</div>
+            </a>
+            <a href="hoso.html" class="link-card">
+                <div class="lc-icon">⚡</div>
+                <div class="lc-name">Hồ Sơ & LP</div>
+                <div class="lc-desc">Tiến độ & xếp hạng</div>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+function toggleTheme(){document.body.classList.toggle('dark');localStorage.setItem('vlxt_theme',document.body.classList.contains('dark')?'dark':'light');}
+if(localStorage.getItem('vlxt_theme')==='dark')document.body.classList.add('dark');
+</script>
+</body>
+</html>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đăng nhập · Vật Lý Xuân Trường</title>
+<script src="https://accounts.google.com/gsi/client" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: #0d1117;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    overflow: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(0,114,255,0.12) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(0,240,255,0.08) 0%, transparent 50%),
+      #0d1117;
+  }
+  .card {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 420px; margin: 20px;
+    background: rgba(13,17,23,0.95);
+    border: 1px solid rgba(0,240,255,0.15);
+    border-radius: 20px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 40px rgba(0,240,255,0.05);
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 32px 32px 24px;
+    background: linear-gradient(180deg, rgba(0,114,255,0.08) 0%, transparent 100%);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    text-align: center;
+  }
+  .logo { font-size: 36px; margin-bottom: 8px; display: block; filter: drop-shadow(0 0 12px rgba(0,240,255,0.4)); }
+  .card-title { font-size: 20px; font-weight: 800; color: #e6edf3; margin-bottom: 4px; }
+  .card-sub { font-size: 13px; color: #8b949e; }
+  .tabs { display: flex; padding: 20px 24px 0; gap: 8px; }
+  .tab-btn {
+    flex: 1; padding: 10px; border: none; border-radius: 10px;
+    font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; font-family: inherit;
+  }
+  .tab-btn.active {
+    background: #0b84f3;
+    color: #fff;
+  }
+  .tab-btn:not(.active) { background: rgba(255,255,255,0.05); color: #8b949e; }
+  .tab-btn:not(.active):hover { background: rgba(255,255,255,0.09); color: #c9d1d9; }
+  .form-body { padding: 20px 24px 28px; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .field { margin-bottom: 14px; }
+  label { display: block; font-size: 12px; font-weight: 600; color: #8b949e;
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  input {
+    width: 100%; padding: 11px 14px; border-radius: 10px;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    color: #e6edf3; font-size: 15px; font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s; outline: none;
+  }
+  input:focus { border-color: rgba(0,240,255,0.4); box-shadow: 0 0 0 3px rgba(0,240,255,0.08); }
+  input::placeholder { color: #484f58; }
+  .submit-btn {
+    width: 100%; padding: 13px; margin-top: 6px;
+    border: none; border-radius: 12px; cursor: pointer;
+    background: #0b84f3;
+    color: #fff; font-size: 16px; font-weight: 800; letter-spacing: 0.3px; font-family: inherit;
+    transition: opacity 0.2s;
+  }
+  .submit-btn:hover { opacity: 0.9; }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .msg {
+    margin-top: 12px; padding: 10px 14px; border-radius: 10px;
+    font-size: 13px; font-weight: 600; text-align: center; display: none;
+  }
+  .msg.success { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.2); }
+  .msg.error   { background: rgba(239,68,68,0.12);  color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+  .msg.show { display: block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner { display: inline-block; width: 16px; height: 16px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
+    animation: spin 0.7s linear infinite; vertical-align: -3px; margin-right: 6px; }
+  .google-btn-wrap { margin-bottom: 4px; min-height: 44px; }
+  .google-btn-wrap > div { width: 100% !important; }
+  .or-divider { display: flex; align-items: center; gap: 10px; margin: 14px 0 10px; }
+  .or-divider::before, .or-divider::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.1); }
+  .or-divider span { font-size: 12px; color: #484f58; white-space: nowrap; }
+
+  /* ─── SETUP MODAL ─── */
+  #setup-modal {
+    display: none; position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.7); align-items: center; justify-content: center;
+  }
+  .setup-box {
+    background: #1a1a2e; border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px; padding: 36px 32px; width: 100%; max-width: 400px;
+    color: #fff; font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .setup-box h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .setup-box p  { font-size: 14px; color: #aaa; margin-bottom: 24px; }
+  .setup-box label { font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px; color: #ccc; }
+  .setup-box input {
+    width: 100%; padding: 11px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.08); color: #fff; font-size: 14px; margin-bottom: 16px;
+  }
+  .setup-box input:focus { outline: none; border-color: #4f8ef7; }
+  .setup-btn {
+    width: 100%; padding: 13px; border-radius: 8px; border: none;
+    background: #0b84f3; color: #fff;
+    font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 4px; transition: opacity 0.2s;
+  }
+  .setup-btn:hover { opacity: 0.9; }
+  #setup-msg { color: #f87171; font-size: 13px; margin-top: 8px; min-height: 18px; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <div class="card-header">
+    <span class="logo">⚛️</span>
+    <div class="card-title">Vật Lý Xuân Trường</div>
+    <div class="card-sub">Đăng nhập để học và lưu tiến độ</div>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('login')">Đăng nhập</button>
+    <button class="tab-btn" onclick="switchTab('register')">Đăng ký mới</button>
+  </div>
+  <div class="form-body">
+    <!-- GOOGLE SIGN-IN (dùng chung cả 2 tab) -->
+    <div class="google-btn-wrap" id="google-btn-container"></div>
+    <div style="text-align:center;margin:-4px 0 8px;">
+      <a href="#" onclick="switchGoogleAccount(event)" style="font-size:12px;color:#aaa;text-decoration:underline;text-underline-offset:3px;">
+        🔄 Dùng tài khoản Google khác
+      </a>
+    </div>
+    <div class="or-divider"><span>hoặc dùng SĐT</span></div>
+
+    <!-- LOGIN -->
+    <div class="tab-panel active" id="panel-login">
+      <div class="field">
+        <label>Số điện thoại</label>
+        <input type="tel" id="login-sdt" placeholder="0912345678" autocomplete="username">
+      </div>
+      <div class="field">
+        <label>Mật khẩu</label>
+        <input type="password" id="login-pw" placeholder="••••••••" autocomplete="current-password"
+          onkeydown="if(event.key==='Enter') doLogin()">
+      </div>
+      <button class="submit-btn" id="login-btn" onclick="doLogin()">Đăng nhập</button>
+      <div class="msg" id="login-msg"></div>
+    </div>
+    <!-- REGISTER -->
+    <div class="tab-panel" id="panel-register">
+      <div class="field">
+        <label>Họ và tên</label>
+        <input type="text" id="reg-hoten" placeholder="Nguyễn Văn A" autocomplete="name">
+      </div>
+      <div class="field">
+        <label>Lớp</label>
+        <input type="text" id="reg-lop" placeholder="12A1">
+      </div>
+      <div class="field">
+        <label>Số điện thoại</label>
+        <input type="tel" id="reg-sdt" placeholder="0912345678" autocomplete="username">
+      </div>
+      <div class="field">
+        <label>Mật khẩu</label>
+        <input type="password" id="reg-pw" placeholder="Tối thiểu 6 ký tự" autocomplete="new-password">
+      </div>
+      <div class="field">
+        <label>Xác nhận mật khẩu</label>
+        <input type="password" id="reg-pw2" placeholder="Nhập lại mật khẩu"
+          onkeydown="if(event.key==='Enter') doRegister()">
+      </div>
+      <button class="submit-btn" id="reg-btn" onclick="doRegister()">Tạo tài khoản</button>
+      <div class="msg" id="reg-msg"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const GAS = 'https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec';
+
+function switchTab(t) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', t==='login'?i===0:i===1));
+  document.getElementById('panel-login').classList.toggle('active', t==='login');
+  document.getElementById('panel-register').classList.toggle('active', t==='register');
+}
+
+function showMsg(id, type, text) {
+  const el = document.getElementById(id);
+  el.className = 'msg ' + type + ' show';
+  el.textContent = text;
+}
+
+function getRedirect() {
+  const p = new URLSearchParams(location.search).get('from');
+  return p || 'index.html';
+}
+
+async function doLogin() {
+  const sdt = document.getElementById('login-sdt').value.trim();
+  const pw  = document.getElementById('login-pw').value;
+  if (!sdt || !pw) return showMsg('login-msg','error','Vui lòng điền đầy đủ thông tin.');
+  const btn = document.getElementById('login-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Đang đăng nhập...';
+  try {
+    const r = await fetch(GAS, { method:'POST', mode:'cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({ action:'login', sdt, matkhau: pw }) });
+    const d = await r.json();
+    if (d.ok) {
+      localStorage.setItem('vlxt_user_v2', JSON.stringify(d.user));
+      showMsg('login-msg','success','Đang chuyển trang...');
+      setTimeout(() => { window.location.href = getRedirect(); }, 700);
+    } else {
+      showMsg('login-msg','error', d.msg || 'Sai số điện thoại hoặc mật khẩu.');
+    }
+  } catch(e) {
+    showMsg('login-msg','error','Lỗi kết nối. Thử lại nhé!');
+  }
+  btn.disabled = false;
+  btn.textContent = 'Đăng nhập';
+}
+
+async function doRegister() {
+  const hoten = document.getElementById('reg-hoten').value.trim();
+  const lop   = document.getElementById('reg-lop').value.trim();
+  const sdt   = document.getElementById('reg-sdt').value.trim();
+  const pw    = document.getElementById('reg-pw').value;
+  const pw2   = document.getElementById('reg-pw2').value;
+  if (!hoten || !lop || !sdt || !pw) return showMsg('reg-msg','error','Vui lòng điền đầy đủ thông tin.');
+  if (pw.length < 6) return showMsg('reg-msg','error','Mật khẩu tối thiểu 6 ký tự.');
+  if (pw !== pw2) return showMsg('reg-msg','error','Mật khẩu xác nhận không khớp.');
+  const btn = document.getElementById('reg-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Đang tạo tài khoản...';
+  try {
+    const r = await fetch(GAS, { method:'POST', mode:'cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({ action:'register', hoten, lop, sdt, matkhau: pw }) });
+    const d = await r.json();
+    if (d.ok) {
+      localStorage.setItem('vlxt_user_v2', JSON.stringify(d.user));
+      const daysLeft = d.user.trialExpiry ? Math.ceil((d.user.trialExpiry - Date.now()) / 86400000) : 7;
+      showMsg('reg-msg','success',`Tạo tài khoản thành công! Bạn có ${daysLeft} ngày VIP dùng thử miễn phí 🎉`);
+      setTimeout(() => { window.location.href = 'index.html?welcome=1'; }, 1400);
+    } else {
+      showMsg('reg-msg','error', d.msg || 'Không thể tạo tài khoản. Thử lại nhé!');
+    }
+  } catch(e) {
+    showMsg('reg-msg','error','Lỗi kết nối. Thử lại nhé!');
+  }
+  btn.disabled = false;
+  btn.textContent = 'Tạo tài khoản';
+}
+
+// Đã đăng nhập rồi → redirect thẳng
+const _u = (() => { try { return JSON.parse(localStorage.getItem('vlxt_user_v2')||'null'); } catch { return null; } })();
+if (_u) window.location.href = getRedirect();
+
+// ──────────────────────────────────
+// GOOGLE SIGN-IN
+// ──────────────────────────────────
+const GOOGLE_CLIENT_ID = '1022891995284-miquu1f7rlpie7ug9884sgagf21nputc.apps.googleusercontent.com';
+
+function decodeJWT(token) {
+  try {
+    const base64 = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+    const json = decodeURIComponent(atob(base64).split('').map(c =>
+      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+    ).join(''));
+    return JSON.parse(json);
+  } catch(e) { return null; }
+}
+
+async function handleGoogleCredential(response) {
+  const payload = decodeJWT(response.credential);
+  if (!payload) return showMsg('login-msg','error','Lỗi xác thực Google.');
+  // Gọi Apps Script để đăng ký/đăng nhập bằng Google
+  try {
+    const r = await fetch(GAS, { method:'POST', mode:'cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({ action:'logingoogle', hoten: payload.name,
+        email: payload.email, avatar: payload.picture, googleId: payload.sub }) });
+    const d = await r.json();
+    if (d.ok) {
+      const user = d.user;
+      // Nếu lần đầu đăng nhập Google, yêu cầu xác nhận tên + lớp
+      if (!user.lop || user.lop === 'Google') {
+        showSetupModal(user, payload.name);
+      } else {
+        localStorage.setItem('vlxt_user_v2', JSON.stringify(user));
+        window.location.href = getRedirect();
+      }
+    } else {
+      showMsg('login-msg','error', d.msg || 'Lỗi đăng nhập Google.');
+    }
+  } catch(e) {
+    // Fallback: lưu trực tiếp
+    showSetupModal({ hoten: payload.name, lop: 'Google', sdt: payload.email, email: payload.email, avatar: payload.picture, lpTotal: 0 }, payload.name);
+  }
+}
+
+function showSetupModal(user, suggestedName) {
+  const modal = document.getElementById('setup-modal');
+  document.getElementById('setup-name').value = suggestedName || user.hoten || '';
+  document.getElementById('setup-lop').value = (user.lop && user.lop !== 'Google') ? user.lop : '';
+  modal.style.display = 'flex';
+  window._pendingUser = user;
+}
+
+async function confirmSetup() {
+  const hoten = document.getElementById('setup-name').value.trim();
+  const lop   = document.getElementById('setup-lop').value.trim();
+  if (!hoten) { document.getElementById('setup-msg').textContent = 'Vui lòng nhập tên!'; return; }
+  if (!lop)   { document.getElementById('setup-msg').textContent = 'Vui lòng nhập lớp!'; return; }
+  const user = { ...window._pendingUser, hoten, lop };
+  localStorage.setItem('vlxt_user_v2', JSON.stringify(user));
+  // Cập nhật lên Sheets
+  try {
+    await fetch(GAS, { method:'POST', mode:'cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({ action:'logingoogle', hoten, lop, email: user.email||user.sdt,
+        avatar: user.avatar||'', googleId: '' }) });
+  } catch(e) {}
+  window.location.href = getRedirect();
+}
+
+// Khởi tạo Google Sign-In sau khi thư viện load
+// Google GSI gọi hàm này tự động khi thư viện load xong
+function switchGoogleAccount(e) {
+  e.preventDefault();
+  try {
+    // Xóa trạng thái auto-select hiện tại
+    google.accounts.id.disableAutoSelect();
+    // Xóa container và render lại button không có account hint
+    const container = document.getElementById('google-btn-container');
+    container.innerHTML = '';
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleGoogleCredential,
+      auto_select: false,
+      cancel_on_tap_outside: true,
+      hint: '',
+      use_fedcm_for_prompt: false
+    });
+    google.accounts.id.renderButton(container,
+      { theme:'filled_blue', size:'large', width:372, text:'signin_with', shape:'rectangular', logo_alignment:'left' }
+    );
+  } catch(err) {
+    // Fallback: mở trang chọn tài khoản Google
+    window.open('https://accounts.google.com/accountchooser', '_blank');
+  }
+}
+
+function onGoogleLibraryLoad() {
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleGoogleCredential,
+    auto_select: false,
+    cancel_on_tap_outside: true,
+    use_fedcm_for_prompt: false
+  });
+  google.accounts.id.renderButton(
+    document.getElementById('google-btn-container'),
+    { theme: 'filled_blue', size: 'large', width: 372, text: 'signin_with', shape: 'rectangular', logo_alignment: 'left' }
+  );
+  // Bỏ google.accounts.id.prompt() vì gây lỗi COOP trên GitHub Pages
+}
+
+// Fallback: nếu script đã load trước khi hàm này được định nghĩa
+if (typeof google !== 'undefined' && google.accounts) {
+  onGoogleLibraryLoad();
+}
+</script>
+
+<!-- SETUP MODAL (lần đầu đăng nhập Google) -->
+<div id="setup-modal">
+  <div class="setup-box">
+    <h3>🎉 Chào mừng!</h3>
+    <p>Xác nhận thông tin để hệ thống ghi nhận tiến độ và điểm thi của em.</p>
+    <label>Họ và tên</label>
+    <input id="setup-name" type="text" placeholder="Nguyễn Văn A">
+    <label>Lớp / Trường</label>
+    <input id="setup-lop" type="text" placeholder="12A1 - THPT XYZ">
+    <button class="setup-btn" onclick="confirmSetup()">Xác nhận &amp; Vào học →</button>
+    <div id="setup-msg"></div>
+  </div>
+</div>
+</body>
+</html>

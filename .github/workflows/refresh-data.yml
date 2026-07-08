@@ -1,0 +1,38 @@
+name: Refresh static data JSON
+
+on:
+  schedule:
+    - cron: '*/20 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch fresh data from Apps Script
+        run: |
+          GAS="https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec"
+          mkdir -p data
+          curl -sL "$GAS?type=lichlive" -o data/lichlive.json
+          curl -sL "$GAS?type=baihoc" -o data/baihoc.json
+          curl -sL "$GAS?type=danhsachde" -o data/danhsachde.json
+
+      - name: Validate JSON before commit
+        run: |
+          for f in data/lichlive.json data/baihoc.json data/danhsachde.json; do
+            python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$f" || { echo "INVALID JSON: $f"; exit 1; }
+          done
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/lichlive.json data/baihoc.json data/danhsachde.json
+          git diff --cached --quiet || git commit -m "Auto-refresh static data JSON tu Apps Script"
+          git push

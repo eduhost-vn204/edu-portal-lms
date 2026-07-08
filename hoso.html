@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hồ Sơ Học Sinh | Vật Lý Xuân Trường</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script defer src="auth.js?v=7"></script>
+  <script defer src="thongbao.js?v=1"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #0b84f3;
+      --black: #0f0f0f;
+      --gray: #555;
+      --gray2: #888;
+      --border: #e5e5e5;
+      --bg: #ffffff;
+      --bg2: #f5f7fa;
+      --gold: #f59e0b;
+      --green: #10b981;
+      --red: #ef4444;
+    }
+    body {
+      background: var(--bg2);
+      color: var(--black);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-size: 15px; font-weight: 700; color: var(--black);
+      text-decoration: none; display: flex; align-items: center; gap: 8px;
+    }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a {
+      font-size: 14px; font-weight: 500; color: var(--gray);
+      text-decoration: none; transition: color 0.15s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--blue); }
+    @media (max-width: 640px) { .nav-links { display: none; } }
+
+    /* ── MAIN ── */
+    .page { max-width: 880px; margin: 0 auto; padding: 80px 16px 40px; }
+
+    /* ── PROFILE CARD ── */
+    .profile-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .avatar-big {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: #0b84f3;
+      color: #fff; font-size: 26px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .profile-info h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .profile-info p { font-size: 14px; color: var(--gray); }
+    .rank-badge {
+      margin-left: auto;
+      display: flex; flex-direction: column; align-items: center;
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border: 2px solid #f59e0b;
+      border-radius: 14px;
+      padding: 12px 20px;
+      flex-shrink: 0;
+    }
+    .rank-name { font-size: 18px; font-weight: 900; color: #92400e; }
+    .rank-lp { font-size: 13px; color: #b45309; margin-top: 2px; }
+    @media (max-width: 540px) {
+      .profile-card { flex-wrap: wrap; }
+      .rank-badge { margin-left: 0; width: 100%; align-items: flex-start; flex-direction: row; align-items: center; gap: 12px; }
+    }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      text-align: center;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    }
+    .stat-val { font-size: 26px; font-weight: 900; }
+    .stat-val.lp  { color: var(--blue); }
+    .stat-val.done { color: var(--green); }
+    .stat-val.score { color: var(--gold); }
+    .stat-lbl { font-size: 12px; color: var(--gray2); margin-top: 4px; font-weight: 500; }
+    @media (max-width: 480px) {
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .stat-card:last-child { grid-column: span 2; }
+    }
+    /* ─── MOBILE NAV ─── */
+    @media (max-width: 600px) {
+      .navbar { padding: 0 14px; }
+      .nav-logo { font-size: 0 !important; gap: 0 !important; }
+      .nav-logo svg { width: 24px; height: 24px; flex-shrink: 0; }
+      #vlxt-avatar-name { display: none !important; }
+      .page { padding-top: 70px; }
+    }
+    @media (max-width: 400px) {
+      .stats-row { grid-template-columns: 1fr; }
+      .stat-card:last-child { grid-column: span 1; }
+      .tabs-bar { flex-wrap: wrap; }
+      .tab-btn { font-size: 12px; padding: 7px 8px; }
+    }
+
+    /* ── TABS ── */
+    .tabs-bar {
+      display: flex; gap: 4px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 20px;
+    }
+    .tab-btn {
+      flex: 1; padding: 9px 12px;
+      border: none; background: transparent;
+      border-radius: 8px;
+      font-size: 14px; font-weight: 600; color: var(--gray);
+      cursor: pointer; transition: all 0.15s;
+      font-family: inherit;
+    }
+    .tab-btn.active {
+      background: var(--black); color: #fff;
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── SECTION CARD ── */
+    .section-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    }
+    .section-head {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      font-size: 15px; font-weight: 700;
+    }
+
+    /* ── TIEN DO ── */
+    .progress-list { padding: 0; }
+    .progress-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 20px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    .progress-item:last-child { border-bottom: none; }
+    .progress-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green); flex-shrink: 0;
+    }
+    .progress-name { flex: 1; color: var(--black); font-weight: 500; }
+    .progress-khoa { font-size: 12px; color: var(--gray2); }
+    .empty-msg {
+      padding: 40px 20px; text-align: center;
+      color: var(--gray2); font-size: 14px;
+    }
+
+    /* ── DIEM THI ── */
+    .score-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 20px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    .score-item:last-child { border-bottom: none; }
+    .score-circle {
+      width: 44px; height: 44px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 800; flex-shrink: 0;
+    }
+    .score-circle.high  { background: #d1fae5; color: #065f46; }
+    .score-circle.mid   { background: #fef3c7; color: #92400e; }
+    .score-circle.low   { background: #fee2e2; color: #991b1b; }
+    .score-info { flex: 1; }
+    .score-info .score-date { font-size: 12px; color: var(--gray2); margin-top: 2px; }
+    .score-info .score-name { font-weight: 600; }
+
+    /* ── LEADERBOARD ── */
+    .lb-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 20px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    .lb-row:last-child { border-bottom: none; }
+    .lb-row.me { background: #eff6ff; }
+    .lb-rank {
+      width: 28px; text-align: center;
+      font-size: 15px; font-weight: 800;
+      color: var(--gray2); flex-shrink: 0;
+    }
+    .lb-rank.top1 { color: #f59e0b; }
+    .lb-rank.top2 { color: #9ca3af; }
+    .lb-rank.top3 { color: #b45309; }
+    .lb-name { flex: 1; font-weight: 600; }
+    .lb-class { font-size: 12px; color: var(--gray2); }
+    .lb-lp { font-size: 16px; font-weight: 800; color: var(--blue); }
+    .lb-lp-lbl { font-size: 11px; color: var(--gray2); }
+
+    /* ── RANK TIERS ── */
+    .rank-info-row {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .rank-chip {
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 12px; font-weight: 700;
+    }
+    .rank-iron   { background:#f1f5f9; color:#475569; }
+    .rank-bronze { background:#fef3c7; color:#92400e; }
+    .rank-silver { background:#e2e8f0; color:#334155; }
+    .rank-gold   { background:#fef9c3; color:#b45309; }
+    .rank-plat   { background:#d1fae5; color:#065f46; }
+    .rank-diamond{ background:#ede9fe; color:#5b21b6; }
+
+    /* ── LOADING ── */
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.2s infinite;
+      border-radius: 8px;
+    }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+  
+    /* ─── DARK MODE ───
+       Rất nhiều phần tử (progress-name, lb-class, stat-lbl, profile-info p, ...) dùng
+       trực tiếp var(--black)/var(--gray)/var(--gray2)/var(--border) là các biến CHỈ có
+       giá trị sáng cố định, không hề được định nghĩa lại khi bật dark mode → chữ tối
+       (#0f0f0f) nằm trên nền tối (#0d1117) gần như không đọc được. Định nghĩa lại NGAY
+       CÁC BIẾN này khi body.dark thay vì phải vá từng class lẻ tẻ (dễ sót). */
+    body.dark {
+      --black:#e6edf3; --gray:#9aa4af; --gray2:#8b949e;
+      --border:#30363d; --bg:#0d1117; --bg2:#0d1117;
+      background:#0d1117; color:#e6edf3;
+    }
+    /* .tab-btn.active dùng background:var(--black) làm nút "chọn" màu đen chữ trắng —
+       nếu để --black đổi thành màu sáng ở trên thì nút này sẽ thành nền sáng + chữ trắng
+       (mất chữ). Ghi đè riêng để nút active luôn tương phản tốt ở cả 2 chế độ. */
+    body.dark .tab-btn.active { background:#e6edf3; color:#0d1117; }
+    body.dark .navbar { background:rgba(13,17,23,0.95); border-color:#30363d; }
+    body.dark .nav-logo, body.dark .nav-links a { color:#e6edf3; }
+    body.dark .card, body.dark .profile-card, body.dark .section-card { background:#161b22; border-color:#30363d; }
+    body.dark h1, body.dark h2, body.dark h3 { color:#e6edf3; }
+    body.dark label { color:#8b949e; }
+    body.dark input, body.dark select { background:#0d1117; border-color:#30363d; color:#e6edf3; }
+    body.dark .stat-value { color:#e6edf3; }
+    body.dark .stat-label, body.dark .meta, body.dark .sub { color:#8b949e; }
+    body.dark .btn-secondary { background:#161b22; border-color:#30363d; color:#e6edf3; }
+    body.dark a:not(.nav-logo):not(.btn) { color:#58a6ff; }
+    /* .lb-row.me (dòng highlight vị trí của mình trong bảng xếp hạng) hardcode nền xanh rất nhạt
+       (#eff6ff) chỉ hợp nền sáng — ở dark mode chữ sáng (#e6edf3) rơi trên nền gần trắng này
+       gần như không đọc được. Đổi thành lớp phủ xanh mờ trên nền tối cho tương phản tốt. */
+    body.dark .lb-row.me { background: rgba(88,166,255,.15); }
+    .theme-toggle { background:none;border:none;cursor:pointer;padding:7px 10px;border-radius:8px;color:#555;font-size:15px;display:inline-flex;align-items:center;transition:color .15s; }
+    .theme-toggle:hover { color:#111; }
+    body.dark .theme-toggle { color:#8b949e; }
+    body.dark .theme-toggle:hover { color:#e6edf3; }
+</style>
+  <script src="cache.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+      <circle cx="16" cy="16" r="4" fill="#0b84f3"/>
+      <ellipse cx="16" cy="16" rx="14" ry="6" stroke="#0b84f3" stroke-width="1.5" fill="none" transform="rotate(-30 16 16)"/>
+      <ellipse cx="16" cy="16" rx="14" ry="6" stroke="#0b84f3" stroke-width="1.5" fill="none" transform="rotate(30 16 16)"/>
+    </svg>
+    Vật Lý Xuân Trường
+  </a>
+  <div class="nav-links">
+    <a href="baihoc.html">Khóa Học</a>
+    <a href="danhsach-ly12.html">Đề Thi</a>
+    <a href="trochoi.html">Trò Chơi</a>
+    <a href="hoso.html" class="active">Hồ Sơ</a>
+    <a href="live.html" style="color:#dc2626;font-weight:700">Live</a>
+  </div>
+  <div id="vlxt-nav-user-area"></div>
+</nav>
+
+<div class="page" id="page">
+  <!-- Loading state -->
+  <div id="loading" style="text-align:center;padding:80px 0;color:#888;">Đang tải hồ sơ...</div>
+  <div id="content" style="display:none"></div>
+</div>
+
+<script>
+const GAS = 'https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec';
+
+// Rank tiers theo LP
+const RANKS = [
+  { name: '🔩 Sắt',     min: 0,    cls: 'rank-iron',    color: '#475569' },
+  { name: '🥉 Đồng',    min: 50,   cls: 'rank-bronze',  color: '#92400e' },
+  { name: '🥈 Bạc',     min: 150,  cls: 'rank-silver',  color: '#334155' },
+  { name: '🥇 Vàng',    min: 300,  cls: 'rank-gold',    color: '#b45309' },
+  { name: '💎 Bạch Kim',min: 600,  cls: 'rank-plat',    color: '#065f46' },
+  { name: '👑 Kim Cương',min: 1000, cls: 'rank-diamond', color: '#5b21b6' },
+];
+
+function getRank(lp) {
+  let r = RANKS[0];
+  for (const tier of RANKS) { if (lp >= tier.min) r = tier; }
+  return r;
+}
+
+function nextRank(lp) {
+  // BUG cũ: duyệt từ hạng CAO nhất xuống thấp và trả về ngay match đầu tiên
+  // → vì Kim Cương (min 1000) > lp hầu như luôn đúng nên luôn trả về Kim Cương,
+  // bất kể đang ở hạng nào (Bạc/Vàng đều bị đề xuất thẳng lên Kim Cương).
+  // Sửa: duyệt từ hạng THẤP nhất lên, trả về hạng liền kề tiếp theo đầu tiên vượt qua lp.
+  for (let i = 0; i < RANKS.length; i++) {
+    if (RANKS[i].min > lp) return RANKS[i];
+  }
+  return null; // đã đạt hạng cao nhất (Kim Cương)
+}
+
+function formatDate(d) {
+  if (!d) return '';
+  const dt = new Date(d);
+  if (isNaN(dt)) return d;
+  return dt.toLocaleDateString('vi-VN', { day:'2-digit', month:'2-digit', year:'numeric' });
+}
+
+// Require auth
+const user = (function() {
+  try { return JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null'); } catch { return null; }
+})();
+
+if (!user) {
+  window.location.href = 'login.html?from=hoso.html';
+}
+
+// Render ngay từ localStorage, không chờ GAS
+document.getElementById('loading').style.display = 'none';
+document.getElementById('content').style.display = 'block';
+renderPage({ ok: true, user: user, scores: [], tiendo: [] }, { ok: false, data: [] });
+
+// Sau đó fetch GAS để cập nhật dữ liệu thực (async, không chặn render)
+Promise.all([
+  fetch(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt) + '&_t=' + Date.now()).then(r => r.json()),
+  cachedFetch(GAS + '?type=leaderboard').then(r => r.json())
+]).then(([profile, lb]) => {
+  renderPage(profile, lb);
+}).catch(function() {});
+
+function vipInfo(u) {
+  // Ưu tiên GAS, fallback localStorage
+  const storedUser = (() => { try { return JSON.parse(localStorage.getItem('vlxt_user_v2')||'null'); } catch { return null; } })();
+  const loaiTK      = u.loaiTK      || storedUser?.loaiTK      || 'vip';
+  const trialExpiry = u.trialExpiry  || storedUser?.trialExpiry || 0;
+  const now = Date.now();
+  const msLeft = trialExpiry ? (trialExpiry - now) : 0;
+  const daysLeft = Math.max(0, Math.floor(msLeft / 86400000));
+
+  if (loaiTK === 'premium') return { label:'💎 Premium', color:'#7c3aed', bg:'rgba(124,58,237,.1)', border:'rgba(124,58,237,.3)', note: 'Truy cập toàn bộ nội dung', countdown: '' };
+  if (loaiTK === 'vip' && msLeft > 0) {
+    const h = Math.floor((msLeft % 86400000) / 3600000);
+    const note = daysLeft > 0 ? `Còn ${daysLeft} ngày ${h} giờ dùng thử` : `Còn ${h} giờ dùng thử`;
+    return { label:'⭐ VIP (Dùng thử)', color:'#d97706', bg:'rgba(217,119,6,.1)', border:'rgba(217,119,6,.3)', note, countdown: note };
+  }
+  return { label:'🆓 Miễn phí', color:'#6b7280', bg:'rgba(107,114,128,.08)', border:'rgba(107,114,128,.25)', note:'Nâng lên VIP để truy cập toàn bộ', countdown: '' };
+}
+
+function renderPage(profile, lb) {
+  const u = (profile.ok && profile.user) ? profile.user : user;
+  const scores  = profile.scores  || [];
+  const tiendo  = profile.tiendo  || [];
+  // Đọc số bài từ localStorage để hiện ngay khi GAS chưa đồng bộ
+  const _localWatched = (() => { try { return JSON.parse(localStorage.getItem('vlxt_watched_' + user.sdt) || '[]'); } catch { return []; } })();
+  const _localCount = Array.isArray(_localWatched) ? _localWatched.length : 0;
+  // Nếu server (GAS) chưa kịp đồng bộ tiến độ (tiendo rỗng) nhưng máy đã có lưu local,
+  // dùng tạm danh sách local để card số liệu và danh sách "Bài học đã hoàn thành" luôn khớp nhau
+  // (trước đây 2 nơi lấy nguồn khác nhau → hiện số mâu thuẫn, vd "9" nhưng list lại rỗng).
+  let displayTiendo = tiendo;
+  let tiendoSyncNote = '';
+  if (tiendo.length === 0 && _localCount > 0) {
+    displayTiendo = _localWatched.map(k => {
+      const parts = String(k).split('|||');
+      return { lesson: parts[2] || parts[parts.length - 1] || k, khoa: parts[0] || '' };
+    });
+    tiendoSyncNote = '<div class="empty-msg" style="padding:6px 0 12px;font-size:12px;color:var(--sub,#8b949e)">💡 Đang đồng bộ với máy chủ: số liệu có thể cập nhật lại trong giây lát.</div>';
+  }
+  // Lọc bớt các tài khoản test rõ ràng (vd "Test User", "Test Google") khỏi bảng xếp hạng
+  // công khai — dữ liệu rác còn lại (tên vô nghĩa khác) cần thầy xoá thủ công trong Google Sheets
+  // vì không có cách nhận diện an toàn 100% bằng code mà không lỡ ẩn học sinh thật.
+  const lbData  = ((lb.ok && lb.data) ? lb.data : []).filter(r => !/^test\b/i.test((r.hoten || '').trim()));
+
+  const lp     = Number(u.lpTotal) || 0;
+  const rank   = getRank(lp);
+  const next   = nextRank(lp);
+  const initials = (u.hoten || 'HS').split(' ').map(w=>w[0]).slice(-2).join('').toUpperCase();
+  const bestScore = scores.length ? Math.max(...scores.map(s => Number(s.diem) || 0)) : 0;
+  const vip = vipInfo(u);
+
+  const myRankPos = lbData.findIndex(r =>
+    r.hoten === u.hoten && r.lop === u.lop
+  ) + 1;
+
+  document.getElementById('content').innerHTML = `
+    <!-- VIP Status Banner -->
+    <div style="background:${vip.bg};border:1.5px solid ${vip.border};border-radius:12px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:15px;font-weight:800;color:${vip.color}">${vip.label}</span>
+        <span style="font-size:13px;color:#666">${vip.note}</span>
+      </div>
+      ${vip.label.includes('Miễn phí') ? `<a href="hoso.html#upgrade" style="font-size:13px;font-weight:700;color:${vip.color};text-decoration:none;padding:6px 14px;border:1.5px solid ${vip.border};border-radius:7px">Liên hệ thầy để nâng cấp →</a>` : ''}
+    </div>
+
+    <!-- Profile card -->
+    <div class="profile-card">
+      <div class="avatar-big">${initials}</div>
+      <div class="profile-info">
+        <h2>${u.hoten}</h2>
+        <p>Lớp ${u.lop}${u.sdt && !String(u.sdt).includes('@') ? ' · ' + u.sdt : ''}</p>
+        ${myRankPos > 0 ? `<p style="margin-top:4px;font-size:13px;color:var(--blue);font-weight:600;">🏆 Xếp hạng #${myRankPos} toàn khoá</p>` : ''}
+      </div>
+      <div class="rank-badge">
+        <div class="rank-name">${rank.name}</div>
+        <div class="rank-lp">${lp} LP${next ? ' / ' + next.min + ' lên ' + next.name : ' · Đỉnh!'}</div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-val lp">${lp}</div>
+        <div class="stat-lbl">⚡ Tổng LP</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val done">${displayTiendo.length}</div>
+        <div class="stat-lbl">📚 Bài đã học</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val score">${scores.length > 0 ? bestScore : '—'}</div>
+        <div class="stat-lbl">🏅 Điểm cao nhất</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="switchTab('tiendo')">📚 Tiến Độ</button>
+      <button class="tab-btn" onclick="switchTab('diem')">📝 Điểm Thi</button>
+      <button class="tab-btn" onclick="switchTab('lb')">🏆 Xếp Hạng</button>
+    </div>
+
+    <!-- Tab: Tiến độ -->
+    <div class="tab-panel active" id="tab-tiendo">
+      <div class="section-card">
+        <div class="section-head">📚 Bài học đã hoàn thành (${displayTiendo.length})</div>
+        <div class="progress-list">
+          ${tiendoSyncNote}
+          ${displayTiendo.length === 0
+            ? '<div class="empty-msg">Chưa hoàn thành bài học nào.<br><a href="baihoc.html" style="color:var(--blue);font-weight:600;">Bắt đầu học ngay →</a></div>'
+            : displayTiendo.map(t => `
+              <div class="progress-item">
+                <div class="progress-dot"></div>
+                <div class="progress-name">${t.lesson || '---'}</div>
+                <div class="progress-khoa">${t.khoa || ''}</div>
+              </div>`).join('')
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Điểm thi -->
+    <div class="tab-panel" id="tab-diem">
+      <div class="section-card">
+        <div class="section-head">📝 Lịch sử điểm thi (${scores.length} lần)</div>
+        <div>
+          ${scores.length === 0
+            ? '<div class="empty-msg">Chưa có lịch sử thi.<br><a href="danhsach-ly12.html" style="color:var(--blue);font-weight:600;">Thi thử ngay →</a></div>'
+            : [...scores].reverse().map(s => {
+                const d = Number(s.diem) || 0;
+                const cls = d >= 8 ? 'high' : d >= 5 ? 'mid' : 'low';
+                return `
+                <div class="score-item">
+                  <div class="score-circle ${cls}">${d}</div>
+                  <div class="score-info">
+                    <div class="score-name">Bài thi</div>
+                    <div class="score-date">${formatDate(s.ngay)}</div>
+                  </div>
+                </div>`;
+              }).join('')
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Bảng xếp hạng -->
+    <div class="tab-panel" id="tab-lb">
+      <div class="section-card">
+        <div class="rank-info-row">
+          ${RANKS.map(r => `<span class="rank-chip ${r.cls}">${r.name} ≥${r.min} LP</span>`).join('')}
+        </div>
+        <div class="section-head">🏆 Top ${lbData.length} học sinh (LP cao nhất)</div>
+        <div>
+          ${lbData.length === 0
+            ? '<div class="empty-msg">Chưa có dữ liệu xếp hạng.</div>'
+            : lbData.map((row, i) => {
+                const rankCls = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
+                const medal   = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1;
+                const isMe    = (row.hoten === u.hoten && row.lop === u.lop);
+                return `
+                <div class="lb-row ${isMe ? 'me' : ''}">
+                  <div class="lb-rank ${rankCls}">${medal}</div>
+                  <div style="flex:1">
+                    <div class="lb-name">${row.hoten} ${isMe ? '<span style="color:var(--blue);font-size:12px">(bạn)</span>' : ''}</div>
+                    <div class="lb-class">${row.lop}</div>
+                  </div>
+                  <div style="text-align:right">
+                    <div class="lb-lp">${row.lpTotal}</div>
+                    <div class="lb-lp-lbl">LP</div>
+                  </div>
+                </div>`;
+              }).join('')
+          }
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Render auth widget
+  if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(u);
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    const names = ['tiendo', 'diem', 'lb'];
+    b.classList.toggle('active', names[i] === name);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => {
+    p.classList.toggle('active', p.id === 'tab-' + name);
+  });
+}
+</script>
+<script>
+function toggleTheme(){document.body.classList.toggle('dark');localStorage.setItem('vlxt_theme',document.body.classList.contains('dark')?'dark':'light');}
+if(localStorage.getItem('vlxt_theme')==='dark')document.body.classList.add('dark');
+</script>
+</body>
+</html>

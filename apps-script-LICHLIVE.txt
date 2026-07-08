@@ -1,0 +1,87 @@
+// ════════════════════════════════════════════════════════
+// PHẦN BỔ SUNG VÀO GAS (Google Apps Script)
+// Paste các đoạn này vào đúng vị trí trong file Code.gs
+// ════════════════════════════════════════════════════════
+
+// ── 1. THÊM VÀO HÀM doGet (trong switch type) ──
+// Tìm đoạn: case 'baihoc': ... rồi thêm case mới bên dưới:
+
+    case 'lichlive':
+      return ContentService.createTextOutput(JSON.stringify(getLiveSessions()))
+        .setMimeType(ContentService.MimeType.JSON);
+
+// ── 2. THÊM VÀO HÀM doPost (trong switch action) ──
+// Tìm đoạn: case 'saveBaiHoc': ... rồi thêm sau:
+
+    case 'saveLiveSession':
+      saveLiveSession(data);
+      return ok();
+
+    case 'deleteLiveSession':
+      deleteLiveSession(data.id);
+      return ok();
+
+// ── 3. THÊM CÁC HÀM MỚI (paste vào cuối file Code.gs) ──
+
+const LIVE_SHEET = 'LichLive'; // Tên sheet tab trong Google Sheets
+
+function getLiveSessions() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(LIVE_SHEET);
+  if (!sh) return [];
+  var rows = sh.getDataRange().getValues();
+  if (rows.length < 2) return [];
+  var headers = rows[0];
+  return rows.slice(1).map(function(r) {
+    var obj = {};
+    headers.forEach(function(h, i) { obj[h] = r[i] !== undefined ? String(r[i]) : ''; });
+    obj.done = obj.done === '1' || obj.done === 'TRUE' || obj.done === 'true';
+    return obj;
+  });
+}
+
+function saveLiveSession(data) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(LIVE_SHEET);
+  if (!sh) {
+    sh = ss.insertSheet(LIVE_SHEET);
+    sh.appendRow(['id','title','date','time','grade','desc','docUrl','ytUrl','thumb','done']);
+  }
+  var rows = sh.getDataRange().getValues();
+  var headers = rows[0];
+  // Tìm row có cùng id để update
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(data.id)) {
+      var updateRow = headers.map(function(h) { return data[h] !== undefined ? data[h] : rows[i][headers.indexOf(h)]; });
+      sh.getRange(i + 1, 1, 1, headers.length).setValues([updateRow]);
+      return;
+    }
+  }
+  // Không tìm thấy → thêm mới
+  var newRow = headers.map(function(h) { return data[h] !== undefined ? data[h] : ''; });
+  sh.appendRow(newRow);
+}
+
+function deleteLiveSession(id) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(LIVE_SHEET);
+  if (!sh) return;
+  var rows = sh.getDataRange().getValues();
+  for (var i = rows.length - 1; i >= 1; i--) {
+    if (String(rows[i][0]) === String(id)) {
+      sh.deleteRow(i + 1);
+      return;
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════
+// HƯỚNG DẪN:
+// 1. Mở GAS: script.google.com → chọn project đang dùng
+// 2. Paste case 'lichlive' vào trong hàm doGet(), cạnh các case khác
+// 3. Paste case 'saveLiveSession' và 'deleteLiveSession' vào hàm doPost()
+// 4. Paste 3 hàm getLiveSessions/saveLiveSession/deleteLiveSession vào cuối file
+// 5. Tạo 1 sheet mới tên "LichLive" trong Google Sheets
+//    Hàng đầu (header): id | title | date | time | grade | desc | docUrl | ytUrl | thumb | done
+// 6. Deploy lại GAS (New deployment hoặc Update existing)
+// ════════════════════════════════════════════════════════

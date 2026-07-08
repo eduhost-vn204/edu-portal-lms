@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live | Vật Lý Xuân Trường</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+    (function(){if(localStorage.getItem('vlxt_theme')==='dark'){document.documentElement.classList.add('dark');document.body&&document.body.classList.add('dark');}})();
+    </script>
+    <script src="cache.js"></script>
+    <script src="auth.js?v=7"></script>
+  <script src="thongbao.js?v=1"></script>
+    <style>
+    /* ───────────────── RESET & VARIABLES ───────────────── */
+    :root {
+        --bg:#f9f9f9; --card:#fff; --card2:#f5f5f5; --line:#e5e5e5;
+        --text:#0f0f0f; --sub:#6b7280; --blue:#0b84f3; --blue2:#0066cc;
+        --red:#dc2626; --red2:#ef4444; --green:#16a34a;
+        --radius:12px;
+    }
+    body.dark, html.dark body {
+        --bg:#0d1117; --card:#161b22; --card2:#1c2128; --line:#30363d;
+        --text:#e6edf3; --sub:#8b949e;
+    }
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    body {
+        background:var(--bg); color:var(--text);
+        font-family:'Plus Jakarta Sans',ui-sans-serif,sans-serif;
+        -webkit-font-smoothing:antialiased; min-height:100vh;
+    }
+    a { color:var(--blue); text-decoration:none; }
+
+    /* ───────────────── HEADER ───────────────── */
+    header {
+        position:sticky; top:0; z-index:500; height:56px;
+        display:flex; align-items:center; justify-content:space-between; gap:14px; padding:0 20px;
+        background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--line);
+        transition:background .2s;
+    }
+    body.dark header { background:rgba(13,17,23,0.92); }
+    .logo { display:flex; align-items:center; gap:10px; font-size:15px; font-weight:700; color:var(--text); text-decoration:none; flex-shrink:0; }
+    .logo-icon { width:26px; height:26px; }
+    .nav { display:flex; align-items:center; gap:2px; }
+    .nav a { color:var(--sub); font-size:14px; font-weight:500; padding:7px 12px; border-radius:7px; text-decoration:none; transition:all .15s; white-space:nowrap; }
+    .nav a:hover { color:var(--text); background:var(--line); }
+    .nav a.active { color:var(--blue); background:rgba(11,132,243,.08); font-weight:700; }
+    /* Live dot — màu xanh lam, nhấp nhô (pulse) */
+    .nav-live-dot {
+        display:inline-block; width:8px; height:8px; border-radius:50%;
+        background:var(--blue); margin-right:5px;
+        animation:livePulse 1.6s ease-in-out infinite;
+    }
+    @keyframes livePulse {
+        0%,100% { transform:scale(1); opacity:1; }
+        50%      { transform:scale(1.5); opacity:.6; }
+    }
+    .nav-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+    .btn-thi { background:var(--text); color:#fff!important; padding:7px 14px; border-radius:7px; font-size:13px; font-weight:700; text-decoration:none; transition:opacity .15s; }
+    .btn-thi:hover { opacity:.82; }
+    .theme-toggle { background:none; border:none; cursor:pointer; padding:7px 9px; border-radius:8px; color:var(--sub); font-size:15px; transition:color .15s; }
+    .theme-toggle:hover { color:var(--text); }
+
+    /* ───────────────── LAYOUT ───────────────── */
+    .live-wrap {
+        display:grid;
+        grid-template-columns:1fr 360px;
+        grid-template-rows:auto 1fr;
+        max-width:1280px; margin:0 auto;
+        height:calc(100vh - 56px);
+        gap:0;
+        overflow:hidden;
+    }
+    @media(max-width:900px) {
+        .live-wrap { grid-template-columns:1fr; grid-template-rows:auto 1fr; height:auto; }
+    }
+
+    /* ───────────────── VIDEO PANEL ───────────────── */
+    .video-panel {
+        background:#000;
+        display:flex; flex-direction:column;
+        overflow:hidden;
+        border-right:1px solid var(--line);
+    }
+    .video-box {
+        position:relative;
+        width:100%; padding-bottom:56.25%; /* 16:9 */
+        background:#111;
+        flex-shrink:0;
+    }
+    .video-box iframe {
+        position:absolute; inset:0; width:100%; height:100%;
+        border:none;
+    }
+
+    /* Offline overlay */
+    .offline-overlay {
+        position:absolute; inset:0;
+        display:flex; flex-direction:column; align-items:center; justify-content:center;
+        background:linear-gradient(160deg,#0d1117,#1a1f2e);
+        color:#fff; text-align:center; gap:16px;
+        z-index:10;
+    }
+    .offline-overlay .off-icon { font-size:52px; opacity:.5; }
+    .offline-overlay h2 { font-size:20px; font-weight:800; opacity:.85; }
+    .offline-overlay p { font-size:14px; color:#8b949e; max-width:300px; line-height:1.6; }
+
+    /* Info bar below video */
+    .video-info {
+        padding:14px 20px;
+        background:var(--card);
+        border-top:1px solid var(--line);
+        display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    }
+    body.dark .video-info { background:#0d1117; }
+    .vi-title { font-size:16px; font-weight:800; letter-spacing:-.02em; }
+    .vi-meta { display:flex; align-items:center; gap:14px; font-size:13px; color:var(--sub); }
+    .badge-live {
+        display:inline-flex; align-items:center; gap:5px;
+        background:var(--red); color:#fff; font-size:11px; font-weight:800;
+        padding:3px 9px; border-radius:4px; letter-spacing:.06em; text-transform:uppercase;
+    }
+    .badge-offline {
+        display:inline-flex; align-items:center; gap:5px;
+        background:#555; color:#fff; font-size:11px; font-weight:800;
+        padding:3px 9px; border-radius:4px; letter-spacing:.06em;
+    }
+    .viewer-count { display:flex; align-items:center; gap:5px; }
+    .viewer-count i { color:var(--blue); font-size:12px; }
+
+    /* ───────────────── CHAT PANEL ───────────────── */
+    .chat-panel {
+        display:flex; flex-direction:column;
+        background:var(--card);
+        height:100%;
+        overflow:hidden;
+    }
+    @media(max-width:900px){
+        .chat-panel { height:420px; }
+    }
+    .chat-header {
+        padding:14px 16px 10px;
+        border-bottom:1px solid var(--line);
+        font-size:14px; font-weight:700;
+        display:flex; align-items:center; justify-content:space-between;
+        flex-shrink:0;
+    }
+    .chat-header-left { display:flex; align-items:center; gap:8px; }
+    .chat-header i { color:var(--blue); font-size:13px; }
+
+    .msg-list {
+        flex:1; overflow-y:auto; padding:12px 14px;
+        display:flex; flex-direction:column; gap:8px;
+        scroll-behavior:smooth;
+    }
+    .msg-list::-webkit-scrollbar { width:4px; }
+    .msg-list::-webkit-scrollbar-track { background:transparent; }
+    .msg-list::-webkit-scrollbar-thumb { background:var(--line); border-radius:4px; }
+
+    .msg-item {
+        display:flex; gap:9px; align-items:flex-start;
+        animation:msgIn .2s ease-out;
+    }
+    @keyframes msgIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+    .msg-avatar {
+        width:30px; height:30px; border-radius:50%; flex-shrink:0;
+        display:flex; align-items:center; justify-content:center;
+        font-size:13px; font-weight:700; color:#fff;
+    }
+    .msg-body { flex:1; min-width:0; }
+    .msg-name { font-size:11px; font-weight:700; margin-bottom:2px; }
+    .msg-text { font-size:13px; line-height:1.5; word-break:break-word; }
+    .msg-time { font-size:10px; color:var(--sub); margin-top:2px; }
+
+    .msg-system {
+        text-align:center; font-size:11px; color:var(--sub); padding:4px 0;
+    }
+
+    /* Chat input */
+    .chat-input-wrap {
+        padding:10px 14px 14px;
+        border-top:1px solid var(--line);
+        display:flex; flex-direction:column; gap:8px;
+        flex-shrink:0;
+    }
+    .chat-name-row {
+        display:flex; align-items:center; gap:8px;
+    }
+    .chat-name-row input {
+        flex:1; border:1.5px solid var(--line); background:var(--card2); color:var(--text);
+        padding:7px 11px; border-radius:8px; font-size:13px; font-family:'Plus Jakarta Sans',sans-serif;
+        outline:none; transition:border-color .15s;
+    }
+    .chat-name-row input:focus { border-color:var(--blue); }
+    .chat-name-saved { font-size:11px; color:var(--sub); display:flex; align-items:center; gap:6px; }
+    .name-edit-btn { background:none; border:none; cursor:pointer; color:var(--sub); font-size:12px; padding:3px 6px; border-radius:5px; transition:color .15s; }
+    .name-edit-btn:hover { color:var(--text); }
+    .chat-row { display:flex; gap:8px; }
+    .chat-row input {
+        flex:1; border:1.5px solid var(--line); background:var(--card2); color:var(--text);
+        padding:9px 13px; border-radius:9px; font-size:14px; font-family:'Plus Jakarta Sans',sans-serif;
+        outline:none; transition:border-color .15s;
+    }
+    .chat-row input:focus { border-color:var(--blue); }
+    .chat-row input::placeholder { color:var(--sub); }
+    .send-btn {
+        background:var(--blue); color:#fff; border:none; cursor:pointer;
+        padding:9px 14px; border-radius:9px; font-size:15px; transition:opacity .15s;
+        display:flex; align-items:center; justify-content:center;
+    }
+    .send-btn:hover { opacity:.85; }
+    .send-btn:disabled { opacity:.4; cursor:not-allowed; }
+
+    /* Heart button */
+    .react-row {
+        display:flex; align-items:center; gap:10px;
+    }
+    .heart-btn {
+        background:none; border:1.5px solid var(--line); cursor:pointer;
+        padding:7px 14px; border-radius:20px;
+        font-size:18px; line-height:1; transition:all .15s;
+        color:#e53e3e;
+        position:relative; overflow:visible;
+        display:flex; align-items:center; gap:6px;
+        font-family:'Plus Jakarta Sans',sans-serif;
+    }
+    .heart-btn:hover { border-color:#e53e3e; background:rgba(229,62,62,.06); }
+    .heart-btn.pumping { animation:pump .15s ease; }
+    @keyframes pump { 0%{transform:scale(1)} 50%{transform:scale(1.3)} 100%{transform:scale(1)} }
+    .heart-count { font-size:12px; font-weight:700; color:var(--sub); }
+
+    /* ───────────────── FLOATING HEARTS ───────────────── */
+    #hearts-container {
+        position:fixed;
+        bottom:80px; right:16px;
+        width:60px; height:300px;
+        pointer-events:none;
+        z-index:999;
+        overflow:visible;
+    }
+    @media(min-width:901px) {
+        #hearts-container { right:20px; }
+    }
+    .floating-heart {
+        position:absolute;
+        bottom:0; left:50%;
+        transform:translateX(-50%);
+        font-size:26px;
+        font-family:"Segoe UI Symbol","Apple Symbols","FreeSerif",serif;
+        animation:floatUp 2.2s ease-out forwards;
+        pointer-events:none;
+        user-select:none;
+        line-height:1;
+    }
+    @keyframes floatUp {
+        0%   { transform:translateX(-50%) scale(0.5) rotate(-10deg); opacity:1; bottom:0; }
+        20%  { transform:translateX(calc(-50% + 12px)) scale(1.1) rotate(5deg); opacity:1; }
+        50%  { transform:translateX(calc(-50% - 8px)) scale(0.95) rotate(-3deg); opacity:.9; }
+        80%  { transform:translateX(calc(-50% + 5px)) scale(0.85); opacity:.5; bottom:200px; }
+        100% { transform:translateX(-50%) scale(0.7); opacity:0; bottom:280px; }
+    }
+
+    /* ───────────────── MOBILE ───────────────── */
+    @media(max-width:600px) {
+        .nav a span { display:none; }
+        .nav a { padding:7px 10px; }
+        header { padding:0 12px; }
+        .video-info { padding:10px 14px; }
+        .vi-title { font-size:14px; }
+    }
+
+    /* ───────────────── TRIAL COUNTDOWN ───────────────── */
+    #trial-countdown {
+        position:fixed; bottom:20px; right:20px; z-index:9000;
+        background:rgba(13,17,23,0.92); backdrop-filter:blur(12px);
+        border:1px solid rgba(255,165,0,0.35); border-radius:14px;
+        padding:10px 16px; color:#fff;
+        box-shadow:0 4px 20px rgba(0,0,0,0.4);
+        font-family:'Plus Jakarta Sans',sans-serif;
+        display:none; min-width:180px;
+        animation:fadeInUp .4s ease-out;
+    }
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    #trial-countdown .tc-label { font-size:10px;font-weight:700;color:#f59e0b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px; }
+    #trial-countdown .tc-time  { font-size:18px;font-weight:800;color:#fff;font-variant-numeric:tabular-nums;letter-spacing:.02em;line-height:1; }
+    #trial-countdown .tc-sub   { font-size:10px;color:rgba(255,255,255,.5);margin-top:3px; }
+    #trial-countdown.tc-expiring { border-color:rgba(239,68,68,0.5);animation:tcPulse 2s ease-in-out infinite; }
+    #trial-countdown.tc-expiring .tc-label { color:#ef4444; }
+    #trial-countdown.tc-expiring .tc-time  { color:#fca5a5; }
+    @keyframes tcPulse { 0%,100%{box-shadow:0 4px 20px rgba(239,68,68,0.2)} 50%{box-shadow:0 4px 28px rgba(239,68,68,0.5)} }
+    body:not(.dark) #trial-countdown { background:rgba(30,30,50,0.88); }
+    </style>
+</head>
+<body>
+<script>if(localStorage.getItem('vlxt_theme')==='dark'){document.body.classList.add('dark');}</script>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<header>
+    <a href="index.html" class="logo">
+        <svg class="logo-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="4" fill="#0b84f3"/>
+            <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.8" fill="none" opacity="0.7"/>
+            <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#3b82f6" stroke-width="1.5" fill="none" opacity="0.5" transform="rotate(60 14 14)"/>
+            <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#60a5fa" stroke-width="1.4" fill="none" opacity="0.4" transform="rotate(120 14 14)"/>
+        </svg>
+        Vật Lý Xuân Trường
+    </a>
+    <nav class="nav">
+        <a href="baihoc.html"><span>Khóa Học</span></a>
+        <a href="danhsach-ly12.html"><span>Đề Thi</span></a>
+        <a href="trochoi.html"><span>Trò Chơi</span></a>
+        <a href="hoso.html"><span>Hồ Sơ</span></a>
+        <a href="lichlive.html"><span>Lịch Live</span></a>
+        <a href="live.html" class="active"><span class="nav-live-dot"></span><span>Đang Live</span></a>
+        <a href="huongdan.html"><span>📖 Hướng Dẫn</span></a>
+    </nav>
+    <div class="nav-right">
+        <div id="vlxt-nav-user-area"></div>
+    </div>
+</header>
+
+<!-- ══════════════ MAIN LAYOUT ══════════════ -->
+<div class="live-wrap">
+
+    <!-- ── VIDEO PANEL ── -->
+    <div class="video-panel">
+        <div class="video-box" id="video-box">
+            <div class="offline-overlay" id="offline-overlay">
+                <div class="off-icon">📡</div>
+                <h2>Chưa có buổi live nào đang diễn ra</h2>
+                <p>Thầy sẽ thông báo lịch live qua Zalo &amp; trang <a href="lichlive.html" style="color:#60a5fa">Lịch Live</a>. Bạn quay lại sau nhé!</p>
+            </div>
+            <iframe id="yt-player" src="" allowfullscreen allow="autoplay; encrypted-media" style="display:none"></iframe>
+        </div>
+
+        <div class="video-info">
+            <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                    <span id="live-badge" class="badge-offline">⚫ Offline</span>
+                    <span class="viewer-count"><i class="fa-solid fa-eye"></i> <span id="viewer-count">0</span> đang xem</span>
+                </div>
+                <div class="vi-title" id="live-title">Vật Lý Xuân Trường: Live Dạy Học</div>
+            </div>
+            <div class="vi-meta">
+                <span id="live-date" style="font-size:13px;color:var(--sub)"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── CHAT PANEL ── -->
+    <div class="chat-panel">
+        <div class="chat-header">
+            <div class="chat-header-left">
+                <i class="fa-solid fa-comments"></i>
+                <span>Bình luận trực tiếp</span>
+            </div>
+            <span id="msg-count" style="font-size:12px;color:var(--sub)">0 tin nhắn</span>
+        </div>
+
+        <div class="msg-list" id="msg-list">
+            <div class="msg-system">Chào mừng bạn đến buổi live! 🎉</div>
+        </div>
+
+        <div class="chat-input-wrap">
+            <div id="name-setup" class="chat-name-row" style="display:none">
+                <input type="text" id="input-name" placeholder="Nhập tên hiển thị của bạn…" maxlength="30">
+                <button class="send-btn" onclick="saveName()" title="Lưu tên"><i class="fa-solid fa-check"></i></button>
+            </div>
+            <div id="name-display" class="chat-name-saved" style="display:none">
+                👤 <strong id="display-name-label"></strong>
+                <button class="name-edit-btn" onclick="editName()">✏️ Đổi tên</button>
+            </div>
+
+            <div class="chat-row">
+                <input type="text" id="input-msg" placeholder="Nhắn gì đó…" maxlength="200" onkeydown="if(event.key==='Enter')sendMsg()">
+                <button class="send-btn" id="send-btn" onclick="sendMsg()"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+
+            <div class="react-row">
+                <button class="heart-btn" id="heart-btn" onclick="sendHeart()">
+                    &#9829; <span class="heart-count" id="heart-total">0</span>
+                </button>
+                <span style="font-size:12px;color:var(--sub)">Thả tim để cổ vũ thầy!</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="hearts-container"></div>
+
+<!-- ══════════════ TRIAL COUNTDOWN ══════════════ -->
+<div id="trial-countdown">
+    <div class="tc-label">⏳ Thời gian dùng thử</div>
+    <div class="tc-time" id="tc-time-display">--:--:--</div>
+    <div class="tc-sub" id="tc-sub-display">Đang tải...</div>
+</div>
+
+<!-- ══════════════ FIREBASE SDK ══════════════ -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<script>
+/* ════════════════════════════════════════════
+   FIREBASE CONFIG
+════════════════════════════════════════════ */
+const FIREBASE_CONFIG = {
+    apiKey: "AIzaSyBr6BjY8iik-vRbbnyG0XSf6yNYaDTjbkM",
+    authDomain: "vatly-xuantruong-live.firebaseapp.com",
+    databaseURL: "https://vatly-xuantruong-live-default-rtdb.firebaseio.com",
+    projectId: "vatly-xuantruong-live",
+    storageBucket: "vatly-xuantruong-live.firebasestorage.app",
+    messagingSenderId: "395446338507",
+    appId: "1:395446338507:web:74a1dd47e81350e2a7ec4e"
+};
+
+// Path thay đổi theo sessionId để tránh hiện dữ liệu buổi cũ
+let SESSION_PATH = "live_sessions/main";
+let currentSessionId = null;
+
+let db = null;
+let isFirebaseOK = false;
+let viewerRef = null;
+
+/* ════════════════════════════════════════════
+   THEME
+════════════════════════════════════════════ */
+function toggleTheme() {
+    const isDark = document.body.classList.toggle('dark');
+    document.documentElement.classList.toggle('dark', isDark);
+    localStorage.setItem('vlxt_theme', isDark ? 'dark' : 'light');
+}
+(function(){
+    const t = localStorage.getItem('vlxt_theme');
+    if (t === 'dark') { document.body.classList.add('dark'); document.documentElement.classList.add('dark'); }
+})();
+
+/* ════════════════════════════════════════════
+   TRIAL COUNTDOWN
+════════════════════════════════════════════ */
+function initTrialCountdown() {
+    try {
+        const u = JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null');
+        if (!u) return;
+        const expiry = u.trialExpiry || 0;
+        if (!expiry) return;
+
+        const el      = document.getElementById('trial-countdown');
+        const timeEl  = document.getElementById('tc-time-display');
+        const subEl   = document.getElementById('tc-sub-display');
+        if (!el) return;
+        el.style.display = 'block';
+
+        function update() {
+            const ms = expiry - Date.now();
+            if (ms <= 0) {
+                timeEl.textContent = 'Đã hết hạn';
+                subEl.textContent  = 'Vui lòng nâng cấp tài khoản';
+                el.classList.add('tc-expiring');
+                clearInterval(tid);
+                return;
+            }
+            const s = Math.floor(ms / 1000);
+            const d = Math.floor(s / 86400);
+            const h = Math.floor((s % 86400) / 3600);
+            const m = Math.floor((s % 3600) / 60);
+            const sc = s % 60;
+            timeEl.textContent = (d > 0 ? d + ' ngày ' : '') +
+                String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(sc).padStart(2,'0');
+            subEl.textContent = 'Hết hạn ' + new Date(expiry).toLocaleDateString('vi-VN',{day:'numeric',month:'numeric',year:'numeric'});
+            if (ms < 3 * 86400000) el.classList.add('tc-expiring');
+        }
+        update();
+        const tid = setInterval(update, 1000);
+    } catch(e) {}
+}
+initTrialCountdown();
+
+/* ════════════════════════════════════════════
+   TÊN NGƯỜI DÙNG
+════════════════════════════════════════════ */
+let userName = localStorage.getItem('vlxt_live_name') || '';
+
+function initNameUI() {
+    // Tự điền từ tài khoản học sinh nếu chưa có tên live
+    if (!userName) {
+        try {
+            const au = JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null');
+            if (au && (au.hoten || au.name)) {
+                userName = au.hoten || au.name;
+                localStorage.setItem('vlxt_live_name', userName);
+            }
+        } catch(e) {}
+    }
+    if (userName) {
+        document.getElementById('name-setup').style.display = 'none';
+        document.getElementById('name-display').style.display = 'flex';
+        document.getElementById('display-name-label').textContent = userName;
+    } else {
+        document.getElementById('name-setup').style.display = 'flex';
+        document.getElementById('name-display').style.display = 'none';
+    }
+}
+
+function saveName() {
+    const v = document.getElementById('input-name').value.trim();
+    if (!v) return;
+    userName = v;
+    localStorage.setItem('vlxt_live_name', v);
+    initNameUI();
+    document.getElementById('input-msg').focus();
+}
+
+function editName() {
+    document.getElementById('name-setup').style.display = 'flex';
+    document.getElementById('name-display').style.display = 'none';
+    document.getElementById('input-name').value = userName;
+    document.getElementById('input-name').focus();
+}
+
+document.getElementById('input-name').addEventListener('keydown', e => {
+    if (e.key === 'Enter') saveName();
+});
+
+/* ════════════════════════════════════════════
+   LIVE UI UPDATE (gọi khi Firebase trả config)
+════════════════════════════════════════════ */
+function updateLiveUI(videoId, title, isLive) {
+    document.getElementById('live-title').textContent = title || 'Vật Lý Xuân Trường: Live Dạy Học';
+    document.getElementById('live-date').textContent = new Date().toLocaleDateString('vi-VN', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+
+    const iframe  = document.getElementById('yt-player');
+    const overlay = document.getElementById('offline-overlay');
+    const badge   = document.getElementById('live-badge');
+
+    if (videoId) {
+        overlay.style.display = 'none';
+        // Chỉ cập nhật src nếu video thay đổi (tránh reload liên tục)
+        const newSrc = 'https://www.youtube-nocookie.com/embed/' + videoId + '?autoplay=1&rel=0&modestbranding=1';
+        if (iframe.src !== newSrc) iframe.src = newSrc;
+        iframe.style.display = 'block';
+        badge.className = 'badge-live';
+        badge.innerHTML = '&#128308; LIVE';
+    } else {
+        overlay.style.display = 'flex';
+        iframe.src = '';
+        iframe.style.display = 'none';
+        badge.className = 'badge-offline';
+        badge.textContent = '⚫ Offline';
+    }
+}
+
+/* ════════════════════════════════════════════
+   CHAT
+════════════════════════════════════════════ */
+let msgCount = 0;
+const COLORS = ['#e53e3e','#dd6b20','#d69e2e','#38a169','#3182ce','#6b46c1','#d53f8c'];
+
+function colorForName(name) {
+    let h = 0;
+    for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+    return COLORS[h % COLORS.length];
+}
+
+function initials(name) {
+    return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+}
+
+function formatTime(ts) {
+    const d = new Date(ts);
+    return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+}
+
+function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function appendMsg({ name, text, ts, system }) {
+    const list = document.getElementById('msg-list');
+    const el = document.createElement('div');
+    if (system) {
+        el.className = 'msg-system';
+        el.textContent = text;
+    } else {
+        el.className = 'msg-item';
+        const color = colorForName(name);
+        el.innerHTML =
+            '<div class="msg-avatar" style="background:' + color + '">' + initials(name) + '</div>' +
+            '<div class="msg-body">' +
+            '<div class="msg-name" style="color:' + color + '">' + escHtml(name) + '</div>' +
+            '<div class="msg-text">' + escHtml(text) + '</div>' +
+            '<div class="msg-time">' + formatTime(ts) + '</div>' +
+            '</div>';
+    }
+    list.appendChild(el);
+    list.scrollTop = list.scrollHeight;
+    msgCount++;
+    document.getElementById('msg-count').textContent = msgCount + ' tin nhắn';
+}
+
+function showChatError(msg) {
+    const el = document.createElement('div');
+    el.className = 'msg-system';
+    el.style.color = 'var(--red)';
+    el.textContent = '⚠️ ' + msg;
+    document.getElementById('msg-list').appendChild(el);
+}
+
+function showDemoMessages() {
+    [
+        { name:'Thầy Trường', text:'Chào mừng các em vào buổi live! 🎉', ts:Date.now()-6000 },
+        { name:'Minh Anh',    text:'Thầy ơi cho em hỏi bài điện trường ạ', ts:Date.now()-4000 },
+        { name:'Nguyễn Hà',   text:'Em chưa hiểu phần tụ điện mắc song song 😅', ts:Date.now()-2000 },
+        { name:'Tuấn Kiệt',   text:'Thầy giải thích hay quá!', ts:Date.now()-500 },
+    ].forEach(d => appendMsg(d));
+    appendMsg({ system:true, text:'(Chế độ xem thử: bình luận thật cần Firebase).' });
+}
+
+function initChat() {
+    db.ref(SESSION_PATH + '/messages').limitToLast(100).on('child_added', snap => {
+        appendMsg(snap.val());
+    });
+}
+
+function sendMsg() {
+    if (!isFirebaseOK) return;
+    const input = document.getElementById('input-msg');
+    const text  = input.value.trim();
+    if (!text) return;
+    db.ref(SESSION_PATH + '/messages').push({ name: userName || 'Học sinh', text, ts: Date.now() });
+    input.value = '';
+    input.focus();
+}
+
+/* ════════════════════════════════════════════
+   HEARTS
+════════════════════════════════════════════ */
+const HEART_COLORS = ['#e53e3e','#dd6b20','#d69e2e','#38a169','#3182ce','#6b46c1','#d53f8c','#06b6d4'];
+
+function spawnHeart() {
+    const container = document.getElementById('hearts-container');
+    const el = document.createElement('div');
+    el.className = 'floating-heart';
+    el.textContent = '\u2665';  // ♥ ký tự thật, không phải emoji
+    el.style.color = HEART_COLORS[Math.floor(Math.random() * HEART_COLORS.length)];
+    el.style.left  = (10 + Math.random() * 40) + 'px';
+    container.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+}
+
+function initHearts() {
+    db.ref(SESSION_PATH + '/hearts').on('value', snap => {
+        document.getElementById('heart-total').textContent = snap.val() || 0;
+    });
+}
+
+function sendHeart() {
+    const btn = document.getElementById('heart-btn');
+    btn.classList.add('pumping');
+    btn.addEventListener('animationend', () => btn.classList.remove('pumping'), { once:true });
+    spawnHeart();
+    if (isFirebaseOK) {
+        db.ref(SESSION_PATH + '/hearts').transaction(v => (v || 0) + 1);
+    }
+}
+
+/* ════════════════════════════════════════════
+   VIEWER COUNT
+════════════════════════════════════════════ */
+function initViewers() {
+    viewerRef = db.ref(SESSION_PATH + '/viewers').push(true);
+    viewerRef.onDisconnect().remove();
+    db.ref(SESSION_PATH + '/viewers').on('value', snap => {
+        document.getElementById('viewer-count').textContent = snap.numChildren();
+    });
+}
+
+window.addEventListener('beforeunload', () => {
+    if (viewerRef) viewerRef.remove();
+});
+
+/* ════════════════════════════════════════════
+   FIREBASE INIT
+════════════════════════════════════════════ */
+window.addEventListener('load', function() {
+    try {
+        // Tránh lỗi "app already exists" khi F5
+        if (!firebase.apps.length) {
+            firebase.initializeApp(FIREBASE_CONFIG);
+        }
+        db = firebase.database();
+        isFirebaseOK = true;
+
+        // Lắng nghe config live từ admin — realtime, không cần deploy lại
+        db.ref('live_config/current').on('value', snap => {
+            const cfg = snap.val() || {};
+            const newSessionId = cfg.sessionId || 'main';
+
+            // Nếu session thay đổi → clear chat cũ, re-subscribe
+            if (newSessionId !== currentSessionId) {
+                currentSessionId = newSessionId;
+                SESSION_PATH = 'live_sessions/' + newSessionId;
+
+                // Reset UI chat
+                document.getElementById('msg-list').innerHTML = '<div class="msg-system">Chào mừng bạn đến buổi live! 🎉</div>';
+                msgCount = 0;
+                document.getElementById('msg-count').textContent = '0 tin nhắn';
+
+                // Huỷ viewer cũ
+                if (viewerRef) { viewerRef.remove(); viewerRef = null; }
+
+                // Subscribe lại theo session mới
+                initChat();
+                initHearts();
+                initViewers();
+            }
+            updateLiveUI(cfg.videoId, cfg.title, cfg.isLive);
+        });
+    } catch(e) {
+        console.error('Firebase init error:', e);
+        showDemoMessages();
+    }
+});
+
+initNameUI();
+</script>
+</body>
+</html>

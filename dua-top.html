@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đua Top — Vật Lý Xuân Trường</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* Mặc định (chưa bật dark) = giao diện sáng, khớp quy ước chung của web
+       (body.dark mới là tối) — trước đây trang này hardcode luôn màu tối nên
+       nút "Chuyển sang giao diện sáng" ở menu không có tác dụng gì. */
+    :root {
+      --bg:    #f4f6fb;
+      --bg2:   #ffffff;
+      --cyan:  #0891b2;
+      --blue:  #0072ff;
+      --gold:  #d97706;
+      --green: #059669;
+      --red:   #dc2626;
+      --text:  #16213e;
+      --sub:   #6b7280;
+      --border:rgba(0,0,0,.12);
+    }
+    body.dark {
+      --bg:    #0d1117;
+      --bg2:   #0d1b2a;
+      --cyan:  #00f0ff;
+      --blue:  #0072ff;
+      --gold:  #fbbf24;
+      --green: #34d399;
+      --red:   #f87171;
+      --text:  #e6edf3;
+      --sub:   #8b949e;
+      --border:rgba(0,240,255,.2);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NAV ─── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; height: 56px;
+      background: rgba(13,17,23,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-size: 15px; font-weight: 800; color: var(--cyan);
+      text-decoration: none; display: flex; align-items: center; gap: 8px;
+    }
+    .nav-back {
+      font-size: 13px; color: var(--sub); text-decoration: none;
+      display: flex; align-items: center; gap: 4px;
+      padding: 6px 12px; border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.1);
+      transition: all .15s;
+    }
+    .nav-back:hover { color: var(--text); border-color: rgba(255,255,255,.3); }
+
+    /* ─── HERO ─── */
+    .hero {
+      text-align: center; padding: 48px 24px 32px;
+      background: linear-gradient(180deg, rgba(0,114,255,.06) 0%, transparent 100%);
+    }
+    .hero-icon { font-size: 52px; margin-bottom: 12px; }
+    .hero-title {
+      font-size: 28px; font-weight: 900; color: var(--cyan);
+      text-shadow: 0 0 24px rgba(0,240,255,.3);
+      margin-bottom: 6px;
+    }
+    .hero-sub { font-size: 14px; color: var(--sub); line-height: 1.6; max-width: 480px; margin: 0 auto; }
+
+    /* ─── SCORE BAR ─── */
+    .score-bar {
+      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+      padding: 16px 24px; border-bottom: 1px solid var(--border);
+      background: rgba(0,0,0,.3);
+    }
+    .score-chip {
+      display: flex; flex-direction: column; align-items: center;
+      background: rgba(0,240,255,.07); border: 1px solid var(--border);
+      border-radius: 12px; padding: 8px 18px; min-width: 80px;
+    }
+    .sc-val { font-size: 20px; font-weight: 800; color: var(--cyan); }
+    .sc-lbl { font-size: 10px; color: var(--sub); margin-top: 2px; }
+    .score-chip.gold { border-color: rgba(251,191,36,.3); }
+    .score-chip.gold .sc-val { color: var(--gold); }
+    .score-chip.green { border-color: rgba(52,211,153,.3); }
+    .score-chip.green .sc-val { color: var(--green); }
+    .score-chip.red { border-color: rgba(248,113,113,.3); }
+    .score-chip.red .sc-val { color: var(--red); }
+
+    /* ─── MAIN ARENA ─── */
+    .arena {
+      max-width: 640px; margin: 0 auto; padding: 28px 20px 48px;
+    }
+
+    /* ─── LOADING ─── */
+    .loading-box {
+      text-align: center; padding: 60px 20px;
+    }
+    .spinner {
+      width: 40px; height: 40px; border: 3px solid rgba(0,240,255,.2);
+      border-top-color: var(--cyan); border-radius: 50%;
+      animation: spin .8s linear infinite; margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── QUESTION CARD ─── */
+    .q-card {
+      background: linear-gradient(135deg, var(--bg2), var(--bg));
+      border: 1.5px solid var(--border);
+      border-radius: 18px; padding: 24px;
+      animation: qIn .2s ease-out;
+    }
+    @keyframes qIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+    .q-meta {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 14px; flex-wrap: wrap;
+    }
+    .q-num { font-size: 12px; color: var(--sub); }
+    .q-badge {
+      font-size: 10px; font-weight: 700; padding: 2px 8px;
+      border-radius: 12px; border: 1px solid;
+    }
+    .badge-NB  { color: #60a5fa; border-color: rgba(96,165,250,.3); background: rgba(96,165,250,.08); }
+    .badge-TH  { color: #a78bfa; border-color: rgba(167,139,250,.3); background: rgba(167,139,250,.08); }
+    .badge-VD  { color: var(--gold); border-color: rgba(251,191,36,.3); background: rgba(251,191,36,.08); }
+    .badge-VDC { color: var(--red);  border-color: rgba(248,113,113,.3); background: rgba(248,113,113,.08); }
+
+    .q-timer {
+      margin-left: auto; font-size: 13px; font-weight: 700;
+      color: var(--cyan); font-variant-numeric: tabular-nums;
+    }
+    .q-timer.warn { color: var(--red); }
+
+    .q-text {
+      font-size: 15px; line-height: 1.7; color: var(--text);
+      margin-bottom: 18px; white-space: pre-wrap;
+    }
+
+    .q-options { display: flex; flex-direction: column; gap: 10px; }
+    .q-opt {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: rgba(255,255,255,.04); border: 1.5px solid rgba(255,255,255,.08);
+      border-radius: 12px; padding: 12px 16px;
+      cursor: pointer; transition: all .15s; text-align: left;
+      font-family: inherit; color: var(--text); font-size: 14px; line-height: 1.5;
+    }
+    .q-opt:hover:not(:disabled) { border-color: var(--cyan); background: rgba(0,240,255,.06); }
+    .q-opt .opt-key {
+      width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(0,240,255,.1); border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: var(--cyan);
+    }
+    .q-opt.correct { border-color: var(--green); background: rgba(52,211,153,.1); }
+    .q-opt.correct .opt-key { background: var(--green); border-color: var(--green); color: #0d1117; }
+    .q-opt.wrong   { border-color: var(--red); background: rgba(248,113,113,.08); }
+    .q-opt.wrong .opt-key { background: var(--red); border-color: var(--red); color: #0d1117; }
+    .q-opt:disabled { cursor: not-allowed; }
+
+    .q-feedback {
+      margin-top: 14px; padding: 12px 16px; border-radius: 10px;
+      font-size: 13px; line-height: 1.5; display: none;
+    }
+    .q-feedback.correct { background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.3); color: var(--green); }
+    .q-feedback.wrong   { background: rgba(248,113,113,.08); border: 1px solid rgba(248,113,113,.3); color: var(--red); }
+
+    .q-score-earn {
+      font-size: 12px; font-weight: 700; text-align: center;
+      margin-top: 10px; min-height: 18px; color: var(--gold);
+    }
+
+    .q-next {
+      display: none; width: 100%; margin-top: 16px;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: #fff; border: none; border-radius: 12px;
+      padding: 13px; font-size: 14px; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: opacity .15s;
+    }
+    .q-next:hover { opacity: .88; }
+
+    /* ─── STREAK INDICATOR ─── */
+    .streak-row {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--sub); margin-bottom: 14px;
+    }
+    .streak-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,.1);
+    }
+    .streak-dot.hit { background: var(--green); }
+    .streak-dot.miss { background: var(--red); }
+
+    /* ─── RESULT SCREEN ─── */
+    .result-screen {
+      text-align: center; padding: 40px 20px;
+    }
+    .result-icon { font-size: 56px; margin-bottom: 16px; }
+    .result-title { font-size: 24px; font-weight: 900; color: var(--cyan); margin-bottom: 8px; }
+    .result-sub { font-size: 14px; color: var(--sub); margin-bottom: 28px; line-height: 1.6; }
+    .result-stats {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+      max-width: 360px; margin: 0 auto 28px;
+    }
+    .result-stat {
+      background: rgba(0,240,255,.07); border: 1px solid var(--border);
+      border-radius: 14px; padding: 14px;
+    }
+    .rs-val { font-size: 24px; font-weight: 800; color: var(--cyan); }
+    .rs-lbl { font-size: 11px; color: var(--sub); margin-top: 3px; }
+    .result-actions { display: flex; flex-direction: column; gap: 10px; max-width: 300px; margin: 0 auto; }
+    .btn-primary {
+      padding: 14px; background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: #fff; border: none; border-radius: 12px;
+      font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit;
+      transition: opacity .15s;
+    }
+    .btn-primary:hover { opacity: .88; }
+    .btn-secondary {
+      padding: 13px; background: rgba(255,255,255,.06); color: var(--sub);
+      border: 1px solid rgba(255,255,255,.1); border-radius: 12px;
+      font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit;
+      text-decoration: none; display: block; transition: all .15s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,.1); color: var(--text); }
+
+    /* ─── EMPTY / ERROR ─── */
+    .empty-box {
+      text-align: center; padding: 60px 20px; color: var(--sub);
+    }
+    .empty-box h3 { font-size: 18px; color: var(--text); margin-bottom: 10px; }
+
+    @media (max-width: 480px) {
+      .hero-title { font-size: 22px; }
+      .q-card { padding: 18px; }
+      .result-stats { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* Vài mảng nền/viền trước đây hardcode màu trắng mờ (rgba trắng) — chỉ hợp khi nền tối.
+       Ở giao diện sáng (mặc định) đổi sang tông tối mờ cho vẫn nhìn rõ viền/khối. */
+    .score-bar { background: rgba(0,0,0,.03); }
+    .nav-back { border-color: rgba(0,0,0,.1); }
+    .nav-back:hover { border-color: rgba(0,0,0,.25); }
+    .q-opt { background: rgba(0,0,0,.02); border-color: rgba(0,0,0,.1); }
+    .streak-dot { background: rgba(0,0,0,.12); }
+    .btn-secondary { background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.12); }
+    .btn-secondary:hover { background: rgba(0,0,0,.07); }
+
+    body.dark .score-bar { background: rgba(0,0,0,.3); }
+    body.dark .nav-back { border-color: rgba(255,255,255,.1); }
+    body.dark .nav-back:hover { border-color: rgba(255,255,255,.3); }
+    body.dark .q-opt { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.08); }
+    body.dark .streak-dot { background: rgba(255,255,255,.1); }
+    body.dark .btn-secondary { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.1); }
+    body.dark .btn-secondary:hover { background: rgba(255,255,255,.1); }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <style>
+    /* KaTeX: chữ số/ký tự thường ăn theo màu chữ trang (đã đọc được),
+       nhưng dấu căn/mũi tên kéo dài... của KaTeX vẽ bằng SVG tô đen cứng —
+       trên nền tối thì mất hút. Chỉ đảo màu SVG khi đang ở giao diện tối. */
+    .katex { color: inherit; }
+    body.dark .katex svg { filter: invert(1); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">⚡ Vật Lý Xuân Trường</a>
+  <a href="index.html#leaderboard" class="nav-back">← Bảng Vàng</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-icon">🏆</div>
+  <h1 class="hero-title">Chế độ Đua Top</h1>
+  <p class="hero-sub">Trả lời câu hỏi, ghi điểm theo độ khó, leo thẳng lên Bảng Vàng.<br>Mỗi câu chỉ tính điểm một lần — câu khó cho điểm cao hơn.</p>
+</div>
+
+<!-- SCORE BAR -->
+<div class="score-bar" id="score-bar">
+  <div class="score-chip gold">
+    <span class="sc-val" id="sc-lp">0</span>
+    <span class="sc-lbl">⚡ LP phiên này</span>
+  </div>
+  <div class="score-chip green">
+    <span class="sc-val" id="sc-correct">0</span>
+    <span class="sc-lbl">✅ Câu đúng</span>
+  </div>
+  <div class="score-chip">
+    <span class="sc-val" id="sc-streak">0</span>
+    <span class="sc-lbl">🔥 Chuỗi</span>
+  </div>
+  <div class="score-chip red">
+    <span class="sc-val" id="sc-wrong">0</span>
+    <span class="sc-lbl">❌ Câu sai</span>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="arena" id="arena">
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <div style="color:var(--sub);font-size:14px">Đang tải ngân hàng câu hỏi…</div>
+  </div>
+</div>
+
+<script src="auth.js?v=7"></script>
+  <script src="thongbao.js?v=1"></script>
+<script>
+(function () {
+  'use strict';
+
+  var GAS = 'https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec';
+
+  // ─── Scoring formula ──────────────────────────────────────
+  var BASE_PTS  = { NB: 10, TH: 20, VD: 35, VDC: 50 };
+  var STREAK_MULT = function (streak) {
+    if (streak >= 10) return 1.5;
+    if (streak >= 5)  return 1.2;
+    return 1;
+  };
+  var SPEED_BONUS_THRESH = 30; // giây
+
+  function calcScore(mucDo, streak, seconds) {
+    var base = BASE_PTS[mucDo] || 10;
+    var mult = STREAK_MULT(streak);
+    var pts  = Math.round(base * mult);
+    if (seconds <= SPEED_BONUS_THRESH) pts += Math.round(base * 0.1);
+    return pts;
+  }
+
+  // ─── State ───────────────────────────────────────────────
+  var user      = null;
+  var questions = [];    // all available TN questions
+  var queue     = [];    // shuffled play queue
+  var qIdx      = 0;     // current index in queue
+  var answered  = {};    // { id: true } — already answered this session
+
+  var sessionLP      = 0;
+  var sessionCorrect = 0;
+  var sessionWrong   = 0;
+  var streak         = 0;   // current correct streak
+  var streakHistory  = [];  // array of true/false last 10
+
+  var qStartTime = 0; // timestamp when question shown
+
+  // ─── localStorage: đã trả lời câu nào ───────────────────
+  function getDoneKey() { return 'vlxt_dt_done_' + (user ? user.sdt : ''); }
+  function loadDone() {
+    try { return JSON.parse(localStorage.getItem(getDoneKey()) || '{}'); } catch { return {}; }
+  }
+  function saveDone(obj) {
+    try { localStorage.setItem(getDoneKey(), JSON.stringify(obj)); } catch {}
+  }
+
+  // ─── UI helpers ──────────────────────────────────────────
+  var arena = document.getElementById('arena');
+
+  function updateScoreBar() {
+    document.getElementById('sc-lp').textContent      = sessionLP;
+    document.getElementById('sc-correct').textContent = sessionCorrect;
+    document.getElementById('sc-streak').textContent  = streak;
+    document.getElementById('sc-wrong').textContent   = sessionWrong;
+  }
+
+  function streakDotsHtml() {
+    var last = streakHistory.slice(-10);
+    return '<div class="streak-row">' +
+      (streak > 0 ? '<span style="color:var(--gold);font-weight:700;font-size:12px">🔥 ' + streak + ' liên tiếp</span>' : '') +
+      last.map(function (v) { return '<span class="streak-dot ' + (v ? 'hit' : 'miss') + '"></span>'; }).join('') +
+    '</div>';
+  }
+
+  function badgeHtml(mucDo) {
+    var labels = { NB: 'Nhận biết', TH: 'Thông hiểu', VD: 'Vận dụng', VDC: 'Vận dụng cao' };
+    return '<span class="q-badge badge-' + mucDo + '">' + (labels[mucDo] || mucDo) + ' +' + (BASE_PTS[mucDo]||10) + 'đ</span>';
+  }
+
+  // ─── Timer ────────────────────────────────────────────────
+  var _timerInterval = null;
+  function startTimer(el) {
+    var secs = 0;
+    clearInterval(_timerInterval);
+    el.textContent = '0s';
+    el.classList.remove('warn');
+    _timerInterval = setInterval(function () {
+      secs++;
+      el.textContent = secs + 's';
+      if (secs >= 60) el.classList.add('warn');
+    }, 1000);
+    return secs;
+  }
+  function stopTimer() { clearInterval(_timerInterval); }
+
+  // ─── Render question ─────────────────────────────────────
+  // Chuẩn hoá LaTeX/ký hiệu hay lỗi khi bóc tách đề (đồng bộ với thithu.html)
+  function fixLatexQuirks(html){
+    if (!html) return html;
+    html = html.replace(/\\cdotp/g, '\\cdot');
+    // Ký hiệu vector bị vỡ khi bóc tách từ MathType (chữ + dấu mũi tên tổ hợp Unicode) -> \vec{} chuẩn KaTeX
+    html = html.replace(/([A-Za-zÀ-ỹ])\u20D7/g, '\\vec{$1}');
+    html = html.replace(/([A-Za-zÀ-ỹ])\u20D6/g, '\\overleftarrow{$1}');
+    return html;
+  }
+
+  function renderQuestion() {
+    if (qIdx >= queue.length) {
+      renderResult();
+      return;
+    }
+
+    var q       = queue[qIdx];
+    var optKeys = ['A', 'B', 'C', 'D'];
+    var opts    = optKeys.map(function (k) { return { key: k, text: fixLatexQuirks(q['opt' + k] || q['opt' + k.toLowerCase()] || '') }; })
+                         .filter(function (o) { return o.text; });
+
+    var doneMap = loadDone();
+    var alreadyDone = doneMap[q.id];
+
+    arena.innerHTML =
+      (alreadyDone ? '<div style="font-size:11px;color:var(--sub);text-align:right;margin-bottom:8px">Câu này đã được tính điểm trước đó</div>' : '') +
+      streakDotsHtml() +
+      '<div class="q-card">' +
+        '<div class="q-meta">' +
+          '<span class="q-num">Câu ' + (qIdx + 1) + '/' + queue.length + '</span>' +
+          badgeHtml(q.mucDo || 'NB') +
+          (q.chuong ? '<span style="font-size:10px;color:var(--sub)">Chương ' + q.chuong + '</span>' : '') +
+          '<span class="q-timer" id="q-timer">0s</span>' +
+        '</div>' +
+        (q.deBaiChung ? '<div class="q-context">' + fixLatexQuirks(q.deBaiChung) + '</div>' : '') +
+        (q.hinhAnh ? '<div class="q-img"><img src="' + q.hinhAnh + '" alt="Hình minh hoạ" style="max-width:100%;border-radius:8px;margin:8px 0;"></div>' : '') +
+        '<div class="q-text">' + fixLatexQuirks(q.question || q.cauHoi || '') + '</div>' +
+        '<div class="q-options" id="q-opts">' +
+          opts.map(function (o) {
+            return '<button class="q-opt" data-key="' + o.key + '" onclick="vlxtAnswer(this)">' +
+              '<span class="opt-key">' + o.key + '</span>' +
+              '<span>' + o.text + '</span>' +
+            '</button>';
+          }).join('') +
+        '</div>' +
+        '<div class="q-feedback" id="q-feedback"></div>' +
+        '<div class="q-score-earn" id="q-earn"></div>' +
+        '<button class="q-next" id="q-next" onclick="vlxtNextQ()">Câu tiếp theo →</button>' +
+      '</div>';
+
+    qStartTime = Date.now();
+    startTimer(document.getElementById('q-timer'));
+    // Render KaTeX
+    setTimeout(function() {
+      if (typeof renderMathInElement === 'function') {
+        try {
+          renderMathInElement(document.getElementById('q-opts') && document.getElementById('q-opts').closest('.q-card') || document.body, {
+            delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false}
+            ],
+            throwOnError: false
+          });
+        } catch(e) {}
+      }
+    }, 80);
+  }
+
+  // ─── Answer handler ──────────────────────────────────────
+  window.vlxtAnswer = function (btn) {
+    stopTimer();
+    var seconds  = Math.round((Date.now() - qStartTime) / 1000);
+    var q        = queue[qIdx];
+    var chosen   = btn.dataset.key;
+    var correct  = String(q.correct || '').toUpperCase().trim();
+    var isRight  = chosen === correct;
+
+    // Disable all options
+    var allOpts = document.querySelectorAll('.q-opt');
+    allOpts.forEach(function (o) {
+      o.disabled = true;
+      if (o.dataset.key === correct) o.classList.add('correct');
+    });
+    if (!isRight) btn.classList.add('wrong');
+
+    // Feedback
+    var fb = document.getElementById('q-feedback');
+    fb.style.display = 'block';
+
+    var doneMap = loadDone();
+    var alreadyDone = doneMap[q.id];
+
+    if (isRight) {
+      streak++;
+      sessionCorrect++;
+      streakHistory.push(true);
+
+      // Tính điểm (chỉ cộng lần đầu)
+      var earned = 0;
+      if (!alreadyDone) {
+        earned = calcScore(q.mucDo || 'NB', streak - 1, seconds);
+        sessionLP += earned;
+        doneMap[q.id] = true;
+        saveDone(doneMap);
+      }
+
+      fb.className = 'q-feedback correct';
+      fb.innerHTML = (seconds <= SPEED_BONUS_THRESH ? '⚡ Nhanh! ' : '✅ ') +
+        'Đúng rồi!' +
+        (q.giaiThich ? '<br><span style="color:var(--sub)">' + q.giaiThich + '</span>' : '');
+
+      var earnEl = document.getElementById('q-earn');
+      if (earned > 0) {
+        earnEl.textContent = '+' + earned + ' LP' + (seconds <= SPEED_BONUS_THRESH ? ' (bao gồm thưởng tốc độ)' : '');
+      } else if (alreadyDone) {
+        earnEl.textContent = 'Câu này đã tính điểm rồi — không cộng thêm.';
+        earnEl.style.color = 'var(--sub)';
+      }
+
+    } else {
+      streak = 0;
+      sessionWrong++;
+      streakHistory.push(false);
+
+      fb.className = 'q-feedback wrong';
+      fb.innerHTML = '❌ Sai rồi. Đáp án đúng là <strong>' + correct + '</strong>.' +
+        (q.giaiThich ? '<br><span style="color:var(--sub)">' + q.giaiThich + '</span>' : '');
+    }
+
+    // Giữ tối đa 10 lịch sử streak
+    if (streakHistory.length > 10) streakHistory = streakHistory.slice(-10);
+
+    updateScoreBar();
+    document.getElementById('q-next').style.display = 'block';
+  };
+
+  // ─── Next question ───────────────────────────────────────
+  window.vlxtNextQ = function () {
+    qIdx++;
+    renderQuestion();
+  };
+
+  // ─── Result screen ───────────────────────────────────────
+  function renderResult() {
+    var maxStreak = streakHistory.filter(Boolean).length; // tổng số câu đúng
+    var emoji = sessionLP >= 200 ? '🔥' : sessionLP >= 100 ? '⭐' : '💪';
+
+    arena.innerHTML =
+      '<div class="result-screen">' +
+        '<div class="result-icon">' + emoji + '</div>' +
+        '<div class="result-title">Phiên học xong!</div>' +
+        '<div class="result-sub">LP đã được cộng vào Bảng Vàng của bạn.</div>' +
+        '<div class="result-stats">' +
+          '<div class="result-stat"><div class="rs-val" style="color:var(--gold)">' + sessionLP + '</div><div class="rs-lbl">⚡ LP kiếm được</div></div>' +
+          '<div class="result-stat"><div class="rs-val" style="color:var(--green)">' + sessionCorrect + '</div><div class="rs-lbl">✅ Câu đúng</div></div>' +
+          '<div class="result-stat"><div class="rs-val" style="color:var(--red)">' + sessionWrong + '</div><div class="rs-lbl">❌ Câu sai</div></div>' +
+          '<div class="result-stat"><div class="rs-val">' + (queue.length) + '</div><div class="rs-lbl">📝 Câu đã làm</div></div>' +
+        '</div>' +
+        '<div class="result-actions">' +
+          '<button class="btn-primary" onclick="restartSession()">Chơi lại 🔄</button>' +
+          '<a href="hoso.html" class="btn-secondary">Xem Bảng Vàng →</a>' +
+          '<a href="index.html" class="btn-secondary">Về trang chủ</a>' +
+        '</div>' +
+      '</div>';
+
+    // Gửi điểm lên GAS
+    if (user && sessionLP > 0) {
+      fetch(GAS, {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'saveduatop',
+          sdt: user.sdt,
+          diemCong: sessionLP,
+          chuoiDung: streak
+        })
+      }).catch(function () {});
+    }
+  }
+
+  // ─── Shuffle + filter questions ─────────────────────────
+  function buildQueue(all) {
+    // Chỉ lấy câu TN (trắc nghiệm 4 lựa chọn)
+    var tn = all.filter(function (q) {
+      return (!q.loai || q.loai === 'TN') && q.optA && q.optB && q.correct;
+    });
+
+    // Shuffle Fisher-Yates
+    for (var i = tn.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = tn[i]; tn[i] = tn[j]; tn[j] = tmp;
+    }
+
+    // Ưu tiên câu khó (VD/VDC) ở đầu → xếp theo mucDo desc rồi lấy top 20
+    var order = { VDC: 4, VD: 3, TH: 2, NB: 1 };
+    tn.sort(function (a, b) { return (order[b.mucDo]||1) - (order[a.mucDo]||1); });
+
+    return tn.slice(0, 20); // mỗi phiên 20 câu
+  }
+
+  // ─── Restart session ─────────────────────────────────────
+  window.restartSession = function () {
+    sessionLP = sessionCorrect = sessionWrong = streak = qIdx = 0;
+    streakHistory = [];
+    answered = {};
+    queue = buildQueue(questions);
+    updateScoreBar();
+    renderQuestion();
+  };
+
+  // ─── Boot ─────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', function () {
+    // Kiểm tra auth
+    user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
+    if (!user) { window.location.href = 'login.html?from=dua-top.html'; return; }
+
+    // Render widget
+    if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(user);
+
+    // Tải câu hỏi
+    fetch(GAS + '?type=nganhang')
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var raw = Array.isArray(data) ? data : (data.data || data.rows || []);
+        if (!raw.length) {
+          arena.innerHTML = '<div class="empty-box"><h3>Chưa có câu hỏi</h3><p>Ngân hàng câu hỏi đang được bổ sung. Quay lại sau nhé!</p></div>';
+          return;
+        }
+        questions = raw;
+        queue     = buildQueue(questions);
+        updateScoreBar();
+        renderQuestion();
+      })
+      .catch(function () {
+        arena.innerHTML = '<div class="empty-box"><h3>Không thể tải câu hỏi</h3><p>Kiểm tra kết nối mạng rồi thử lại.</p></div>';
+      });
+  });
+})();
+</script>
+</body>
+</html>
