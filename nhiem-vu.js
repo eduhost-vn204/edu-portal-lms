@@ -7,10 +7,12 @@
 
   var GAS = 'https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec';
   var EXAM_DATE = new Date('2027-06-05'); // Mốc thi THPT QG 2027 (ước tính)
+  var MISSION_RECHECK_MS = 5 * 60 * 1000; // 5 phút — tần suất tự kiểm tra lại nhiệm vụ trong lúc trang vẫn mở (chỉnh số này nếu muốn nhanh/chậm hơn)
 
   // ─── State toàn cục ───────────────────────────────────────
   var _state = null; // { nv, xps, user }
   var _selectedNhip = 0;
+  var _pollStarted = false; // đảm bảo chỉ setInterval 1 lần dù init() có thể gọi lại
 
   // ─── Tiện ích ─────────────────────────────────────────────
   function today() {
@@ -64,21 +66,39 @@
       .catch(function () { return watched; });
   }
 
+  function keyOf(l) {
+    return (l.KhoaHoc || '') + '|||' + (l.Chuong || '') + '|||' + (l.TenBai || '');
+  }
+
+  // Vị trí trong XPS mà thầy đang dạy tới (khớp settings.currentTeachingLesson), -1 nếu chưa đặt
+  function findTeacherIdx(xps, teachingKey) {
+    if (!teachingKey) return -1;
+    for (var i = 0; i < xps.length; i++) {
+      if (keyOf(xps[i]) === teachingKey) return i;
+    }
+    return -1;
+  }
+
   // Vị trí bài ĐẦU TIÊN trong lộ trình XPS mà học sinh CHƯA hoàn thành thật
-  function computeRealConTro(xps, watched) {
-    // Chỉ tính "đang nợ buổi" nếu bài đó ĐÃ CÓ VIDEO mà chưa xem.
-    // Bài chưa có video (thầy chưa kịp cập nhật) không được tính là chặn tiến độ —
-    // nếu không học sinh sẽ mãi mãi "chưa kịp tiến độ" dù đã học hết phần đã sẵn sàng.
+  // teacherIdx = vị trí bài thầy đang dạy tới (từ findTeacherIdx), -1 nếu chưa rõ.
+  function computeRealConTro(xps, watched, teacherIdx) {
+    // "Đang nợ buổi" khi: (a) bài ĐÃ CÓ VIDEO mà chưa xem — chặn như cũ; hoặc
+    // (b) bài CHƯA có video nhưng đã nằm trong phạm vi thầy ĐÃ DẠY TỚI (i <=
+    // teacherIdx) — học sinh thực sự chưa học nội dung này, chỉ là thầy chưa
+    // kịp up video, KHÔNG được coi là "đã xong" (bug cũ: học sinh mới toanh
+    // cũng bị đẩy thẳng Đua Top nếu cả khoá chưa có video nào).
+    // Bài chưa có video mà thầy CHƯA dạy tới (i > teacherIdx, nội dung tương
+    // lai chưa sẵn sàng) thì vẫn bỏ qua, không chặn tiến độ.
     for (var i = 0; i < xps.length; i++) {
       var l = xps[i];
-      var key = (l.KhoaHoc || '') + '|||' + (l.Chuong || '') + '|||' + (l.TenBai || '');
+      var key = keyOf(l);
       var hasVideo = !!(l.Video || l.video || l.link);
       if (!watched.has(key)) {
-        if (hasVideo) return i; // bài có video mà chưa xem → đây mới là buổi đang nợ thật
-        // bài chưa có video → bỏ qua, không chặn tiến độ
+        if (hasVideo) return i;
+        if (teacherIdx >= 0 && i <= teacherIdx) return i;
       }
     }
-    return xps.length; // đã xem hết mọi bài ĐÃ CÓ VIDEO → coi như bắt kịp tiến độ, mở Đua Top
+    return xps.length; // đã xem hết mọi bài đã sẵn sàng (có video hoặc thầy đã dạy tới) → bắt kịp tiến độ
   }
 
   // ─── CSS một lần ─────────────────────────────────────────
@@ -352,6 +372,88 @@
     document.body.appendChild(ban);
   }
 
+  // ─── Tải lại dữ liệu tiến độ + lộ trình (dùng chung cho init() và tự kiểm tra định kỳ) ──
+  async function loadProgressData(user) {
+    var fetches = await Promise.all([
+      fetch(GAS + '?type=baihoc').then(function (r) { return r.json(); }).catch(function () { return []; }),
+      fetch(GAS + '?type=settings').then(function (r) { return r.json(); }).catch(function () { return {}; }),
+      fetch(GAS + '?type=khoaconfig').then(function (r) { return r.json(); }).catch(function () { return []; }),
+      fetchWatchedSet(user.sdt)
+    ]);
+    var allL        = Array.isArray(fetches[0]) ? fetches[0] : [];
+    var settings    = (fetches[1] && fetches[1].ok) ? (fetches[1].data || {}) : {};
+    var khoaRaw     = Array.isArray(fetches[2]) ? fetches[2] : (fetches[2].data || []);
+    var watchedSet  = fetches[3];
+    var teachingKey = settings.currentTeachingLesson || '';
+
+    // Tạo map khoaHoc → config (thuTu, daKhaiGiang)
+    var khoaMap = {};
+    khoaRaw.forEach(function (k) { khoaMap[k.khoaHoc] = k; });
+
+    // XPS = bài từ TẤT CẢ khoá đã khai giảng (daKhaiGiang=true), xếp theo thuTu → chương → thứ tự sheet
+    var xps = allL
+      .filter(function (l) {
+        var cfg = khoaMap[l.KhoaHoc || ''];
+        return cfg && (cfg.daKhaiGiang === true || String(cfg.daKhaiGiang) === 'true');
+      })
+      .sort(function (a, b) {
+        var cfgA = khoaMap[a.KhoaHoc] || {}, cfgB = khoaMap[b.KhoaHoc] || {};
+        var ta = parseInt(cfgA.thuTu) || 999, tb = parseInt(cfgB.thuTu) || 999;
+        if (ta !== tb) return ta - tb;                          // Khoá khác nhau → theo thuTu
+        var ma = (a.Chuong || '').match(/\d+/), mb = (b.Chuong || '').match(/\d+/);
+        var ca = ma ? parseInt(ma[0]) : 0, cb = mb ? parseInt(mb[0]) : 0;
+        return ca - cb;                                         // Cùng khoá → theo chương (TUẦN N)
+        // Cùng chương → giữ nguyên thứ tự sheet
+      });
+
+    return { xps: xps, watchedSet: watchedSet, teachingKey: teachingKey };
+  }
+
+  // ─── Tự kiểm tra lại định kỳ (MISSION_RECHECK_MS) trong lúc trang vẫn mở ────
+  // Mục đích: nếu thầy vừa dạy/cập nhật bài mới, hoặc học sinh vẫn chưa xong
+  // nhiệm vụ, học sinh sẽ được nhắc lại SỚM (vài phút) thay vì phải đợi qua
+  // ngày hôm sau hoặc tải lại trang mới thấy đúng trạng thái.
+  function startPolling() {
+    if (_pollStarted) return;
+    _pollStarted = true;
+    setInterval(refreshMissionState, MISSION_RECHECK_MS);
+  }
+
+  async function refreshMissionState() {
+    if (!_state || !_state.user) return;
+    try {
+      var pd = await loadProgressData(_state.user);
+      var teacherIdxR = findTeacherIdx(pd.xps, pd.teachingKey);
+      var newConTro = computeRealConTro(pd.xps, pd.watchedSet, teacherIdxR);
+      var oldConTro = Number(_state.nv.conTro) || 0;
+
+      _state.xps = pd.xps;
+      _state.teachingKey = pd.teachingKey;
+      if (newConTro !== oldConTro) {
+        gasPost({ action: 'savenhiemvu', sdt: _state.user.sdt, conTro: newConTro });
+      }
+      _state.nv.conTro = newConTro;
+
+      var overlayEl = document.getElementById('vlxt-nv-overlay');
+      if (overlayEl && overlayEl.classList.contains('open')) return; // đang xem popup — không chen ngang
+
+      var caughtUp  = newConTro >= pd.xps.length;
+      var oldBanner = document.getElementById('vlxt-mission-banner');
+
+      if (!caughtUp) {
+        // Vẫn CHƯA xong nhiệm vụ → đẩy lại popup đầy đủ để nhắc học ngay
+        if (oldBanner) oldBanner.remove();
+        showMissionPopup(_state.nv, _state.xps, _state.user, _state.teachingKey, false);
+      } else if (oldBanner) {
+        // Vừa bắt kịp tiến độ → cập nhật lại banner (vd chuyển sang "Chế độ Đua Top")
+        oldBanner.remove();
+        showMissionBanner(_state.nv, _state.xps);
+      }
+    } catch (e) {
+      console.warn('[NhiemVu] refresh lỗi', e);
+    }
+  }
+
   // ─── Main init ────────────────────────────────────────────
   async function init() {
     var user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
@@ -368,42 +470,16 @@
         return;
       }
 
-      // Tải danh sách bài học + settings + tiến độ THẬT song song
-      var fetches = await Promise.all([
-        fetch(GAS + '?type=baihoc').then(function (r) { return r.json(); }).catch(function () { return []; }),
-        fetch(GAS + '?type=settings').then(function (r) { return r.json(); }).catch(function () { return {}; }),
-        fetch(GAS + '?type=khoaconfig').then(function (r) { return r.json(); }).catch(function () { return []; }),
-        fetchWatchedSet(user.sdt)
-      ]);
-      var allL        = Array.isArray(fetches[0]) ? fetches[0] : [];
-      var settings    = (fetches[1] && fetches[1].ok) ? (fetches[1].data || {}) : {};
-      var khoaRaw     = Array.isArray(fetches[2]) ? fetches[2] : (fetches[2].data || []);
-      var watchedSet  = fetches[3];
-      var teachingKey = settings.currentTeachingLesson || '';
-
-      // Tạo map khoaHoc → config (thuTu, daKhaiGiang)
-      var khoaMap = {};
-      khoaRaw.forEach(function (k) { khoaMap[k.khoaHoc] = k; });
-
-      // XPS = bài từ TẤT CẢ khoá đã khai giảng (daKhaiGiang=true), xếp theo thuTu → chương → thứ tự sheet
-      var xps = allL
-        .filter(function (l) {
-          var cfg = khoaMap[l.KhoaHoc || ''];
-          return cfg && (cfg.daKhaiGiang === true || String(cfg.daKhaiGiang) === 'true');
-        })
-        .sort(function (a, b) {
-          var cfgA = khoaMap[a.KhoaHoc] || {}, cfgB = khoaMap[b.KhoaHoc] || {};
-          var ta = parseInt(cfgA.thuTu) || 999, tb = parseInt(cfgB.thuTu) || 999;
-          if (ta !== tb) return ta - tb;                          // Khoá khác nhau → theo thuTu
-          var ma = (a.Chuong || '').match(/\d+/), mb = (b.Chuong || '').match(/\d+/);
-          var ca = ma ? parseInt(ma[0]) : 0, cb = mb ? parseInt(mb[0]) : 0;
-          return ca - cb;                                         // Cùng khoá → theo chương (TUẦN N)
-          // Cùng chương → giữ nguyên thứ tự sheet
-        });
+      // Tải danh sách bài học + settings + tiến độ THẬT song song (dùng chung với refreshMissionState)
+      var pd0         = await loadProgressData(user);
+      var xps         = pd0.xps;
+      var watchedSet  = pd0.watchedSet;
+      var teachingKey = pd0.teachingKey;
 
       // conTro = vị trí bài chưa hoàn thành đầu tiên, tính từ tiến độ THẬT
       // (không dùng số tự bấm nữa) → luôn khớp với % trên thẻ khoá học.
-      var realConTro = computeRealConTro(xps, watchedSet);
+      var teacherIdx0 = findTeacherIdx(xps, teachingKey);
+      var realConTro  = computeRealConTro(xps, watchedSet, teacherIdx0);
       var todayS     = today();
       var prevConTro = Number(nv.conTro) || 0; // tiến độ đã lưu TRƯỚC khi ghi đè — dùng để tính chuỗi ngày
 
@@ -415,18 +491,25 @@
 
       // Lưu state để các callback dùng (kèm teachingKey để banner có thể mở lại popup đầy đủ)
       _state = { nv: nv, xps: xps, user: user, teachingKey: teachingKey };
+      startPolling(); // bắt đầu tự kiểm tra lại mỗi MISSION_RECHECK_MS trong lúc trang còn mở
 
-      // Đã hiện popup hôm nay → chỉ show banner
+      // Đã hiện popup hôm nay rồi (tính streak) — nhưng nếu học sinh VẪN CHƯA xong
+      // nhiệm vụ thì tiếp tục đẩy lại popup đầy đủ mỗi lần vào trang (không chỉ
+      // banner nhỏ nữa), để nhắc học ngay; chỉ khi đã bắt kịp mới dùng banner nhẹ.
       // (kiểm tra cả localStorage vì gasPost là fire-and-forget: nếu học sinh
       //  chuyển trang ngay sau khi tắt popup, request lưu lastMissionDate lên
-      //  Sheet có thể bị huỷ giữa chừng → cờ localStorage đảm bảo popup vẫn
-      //  không hiện lại trong cùng ngày dù server chưa kịp lưu.)
+      //  Sheet có thể bị huỷ giữa chừng → cờ localStorage đảm bảo không tính
+      //  lại streak trong cùng ngày dù server chưa kịp lưu.)
       var localShownKey = 'vlxt_missionShown_' + user.sdt + '_' + todayS;
       var localShown = false;
       try { localShown = localStorage.getItem(localShownKey) === '1'; } catch (e) {}
 
       if (nv.lastMissionDate === todayS || localShown) {
-        showMissionBanner(nv, xps);
+        if (realConTro < xps.length) {
+          showMissionPopup(nv, xps, user, teachingKey, false);
+        } else {
+          showMissionBanner(nv, xps);
+        }
         return;
       }
 

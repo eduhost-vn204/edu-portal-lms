@@ -116,12 +116,30 @@
       }).catch(function () { return watched; });
   }
 
-  function computeRealConTro(xps, watched) {
+  function keyOf(l) {
+    return (l.KhoaHoc || '') + '|||' + (l.Chuong || '') + '|||' + (l.TenBai || '');
+  }
+
+  function findTeacherIdx(xps, teachingKey) {
+    if (!teachingKey) return -1;
+    for (var i = 0; i < xps.length; i++) {
+      if (keyOf(xps[i]) === teachingKey) return i;
+    }
+    return -1;
+  }
+
+  // Đồng bộ với nhiem-vu.js: bài chưa có video vẫn tính là "nợ" nếu nằm
+  // trong phạm vi thầy đã dạy tới (i <= teacherIdx) — tránh báo sai "đã
+  // xong nhiệm vụ" khi cả khoá chưa có video nào (vd học sinh mới tạo TK).
+  function computeRealConTro(xps, watched, teacherIdx) {
     for (var i = 0; i < xps.length; i++) {
       var l = xps[i];
-      var key = (l.KhoaHoc || '') + '|||' + (l.Chuong || '') + '|||' + (l.TenBai || '');
+      var key = keyOf(l);
       var hasVideo = !!(l.Video || l.video || l.link);
-      if (!watched.has(key) && hasVideo) return i;
+      if (!watched.has(key)) {
+        if (hasVideo) return i;
+        if (teacherIdx >= 0 && i <= teacherIdx) return i;
+      }
     }
     return xps.length;
   }
@@ -141,11 +159,14 @@
         return Promise.all([
           fetch(GAS + '?type=baihoc').then(function (r) { return r.json(); }).catch(function () { return []; }),
           fetch(GAS + '?type=khoaconfig').then(function (r) { return r.json(); }).catch(function () { return []; }),
+          fetch(GAS + '?type=settings').then(function (r) { return r.json(); }).catch(function () { return {}; }),
           fetchWatchedSet(user.sdt)
         ]).then(function (res) {
           var allL = Array.isArray(res[0]) ? res[0] : [];
           var khoaRaw = Array.isArray(res[1]) ? res[1] : (res[1].data || []);
-          var watchedSet = res[2];
+          var settings = (res[2] && res[2].ok) ? (res[2].data || {}) : {};
+          var watchedSet = res[3];
+          var teachingKey = settings.currentTeachingLesson || '';
           var khoaMap = {};
           khoaRaw.forEach(function (k) { khoaMap[k.khoaHoc] = k; });
           var xps = allL.filter(function (l) {
@@ -158,15 +179,29 @@
             var ma = (a.Chuong || '').match(/\d+/), mb = (b.Chuong || '').match(/\d+/);
             return (ma ? parseInt(ma[0]) : 0) - (mb ? parseInt(mb[0]) : 0);
           });
-          var realConTro = computeRealConTro(xps, watchedSet);
+          var teacherIdx = findTeacherIdx(xps, teachingKey);
+          var realConTro = computeRealConTro(xps, watchedSet, teacherIdx);
           var todayS = today();
           var doneToday = nv.lastMissionDate === todayS &&
             (function () { try { return localStorage.getItem('vlxt_missionShown_' + user.sdt + '_' + todayS) === '1'; } catch (e) { return false; } })();
+
+          // Dòng "thầy đang dạy đến bài nào + còn bao nhiêu buổi để bắt kịp"
+          var teacherLine = '';
+          if (teacherIdx >= 0) {
+            var tLesson = xps[teacherIdx];
+            var behind = teacherIdx - realConTro; // dương = học sinh đang chậm hơn thầy
+            var behindTxt = behind > 0
+              ? ('📍 Thầy đang dạy: ' + esc(tLesson.TenBai || '') + ' · Còn ' + behind + ' buổi để bắt kịp thầy')
+              : ('📍 Thầy đang dạy: ' + esc(tLesson.TenBai || '') + ' · Bạn đã bắt kịp thầy!');
+            teacherLine = '<div class="s">' + behindTxt + '</div>';
+          }
+
           if (realConTro >= xps.length) {
             return {
               html: '<a class="vlxt-tb-item" href="dua-top.html"><div class="t">🏆 Đua Top</div>' +
                 '<div class="m">Đã hoàn thành mọi bài hiện có — vào Đua Top để rinh điểm!</div>' +
-                (nv.chuoiDung ? '<div class="s">🔥 Chuỗi ' + Number(nv.chuoiDung) + ' ngày</div>' : '') + '</a>',
+                (nv.chuoiDung ? '<div class="s">🔥 Chuỗi ' + Number(nv.chuoiDung) + ' ngày</div>' : '') +
+                teacherLine + '</a>',
               urgent: false
             };
           }
@@ -175,7 +210,8 @@
           return {
             html: '<a class="vlxt-tb-item" href="baihoc.html"><div class="t">📋 Nhiệm vụ hôm nay</div>' +
               '<div class="m">Buổi ' + (realConTro + 1) + '/' + xps.length + (lessonName ? ': ' + esc(lessonName) : '') + '</div>' +
-              '<div class="s">' + (doneToday ? '✅ Đã xem hôm nay' : '⏰ Chưa hoàn thành hôm nay') + '</div></a>',
+              '<div class="s">' + (doneToday ? '✅ Đã xem hôm nay' : '⏰ Chưa hoàn thành hôm nay') + '</div>' +
+              teacherLine + '</a>',
             urgent: !doneToday
           };
         });
