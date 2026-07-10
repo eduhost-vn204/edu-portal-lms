@@ -177,7 +177,7 @@ function registerUser(data) {
       if (String(devRows[i][0]).trim() === deviceId) {
         devSheet.getRange(i + 1, 6).setValue((Number(devRows[i][5]) || 0) + 1);
         return jsonOut({ ok: false, code: 'device_used',
-          msg: 'Thiết bị này đã dùng hết 7 ngày học thử trước đó (tài khoản ' + dispSdt(devRows[i][1]) + '). Vui lòng liên hệ thầy qua Zalo 0964885920 để được hỗ trợ thêm nhé!' });
+          msg: 'Thiết bị này đã dùng hết 7 ngày học thử trước đó (tài khoản ' + dispSdt(devRows[i][1]) + '). Vui lòng liên hệ thầy qua Zalo/TikTok để được gia hạn thêm thời gian học thử. Cảm ơn em đã trải nghiệm!' });
       }
     }
   }
@@ -232,26 +232,63 @@ function loginUser(data) {
 // ── Đăng nhập bằng Google ────────────────────────────────────
 
 function loginGoogle(data) {
-  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame']);
+  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
   const rows  = sheet.getDataRange().getValues();
   const email = String(data.email || '').trim().toLowerCase();
   if (!email) return jsonOut({ ok: false, msg: 'Không có email Google.' });
+
+  // Tài khoản Google đã tồn tại → đăng nhập bình thường, KHÔNG check thiết bị
   for (let i = 1; i < rows.length; i++) {
     if (String(rows[i][0]).trim().toLowerCase() === email) {
       if (data.hoten) sheet.getRange(i+1, 2).setValue(data.hoten);
+      let loaiTK      = rows[i][7] || 'vip';
+      let trialExpiry = rows[i][8] ? Number(rows[i][8]) : 0;
+      if (!trialExpiry && rows[i][4]) {
+        try { trialExpiry = new Date(rows[i][4]).getTime() + 7*24*60*60*1000; } catch(e) {}
+      }
+      if (loaiTK === 'vip' && trialExpiry && Date.now() > trialExpiry) {
+        loaiTK = 'free';
+        sheet.getRange(i + 1, 8).setValue('free');
+      }
       return jsonOut({ ok: true, user: {
         sdt: rows[i][0], hoten: data.hoten || rows[i][1],
         lop: rows[i][2] || 'Google', email: email,
-        avatar: data.avatar || '', lpTotal: rows[i][5] || 0
+        avatar: data.avatar || '', lpTotal: rows[i][5] || 0,
+        loaiTK: loaiTK, trialExpiry: trialExpiry
       }});
     }
   }
-  const now = new Date().toISOString();
-  sheet.appendRow([email, data.hoten || email, 'Google', 'GOOGLE_AUTH', now, 0, 0]);
+
+  // ── Chống học thử nhiều lần: áp dụng CẢ cho luồng đăng nhập Google ──
+  // (trước đây chỉ chặn ở registerUser bằng SĐT — học sinh lách bằng cách
+  //  đổi sang tài khoản Google khác trên cùng máy, không hề bị chặn)
+  const deviceId = String(data.deviceId || '').trim();
+  if (deviceId) {
+    const devSheet = getOrCreate('ThietBiHocThu', ['deviceId','sdt','hoten','trialStart','trialExpiry','soLanChan']);
+    const devRows  = devSheet.getDataRange().getValues();
+    for (let i = 1; i < devRows.length; i++) {
+      if (String(devRows[i][0]).trim() === deviceId) {
+        devSheet.getRange(i + 1, 6).setValue((Number(devRows[i][5]) || 0) + 1);
+        return jsonOut({ ok: false, code: 'device_used',
+          msg: 'Thiết bị này đã dùng hết 7 ngày học thử trước đó (tài khoản ' + dispSdt(devRows[i][1]) + '). Vui lòng liên hệ thầy qua Zalo/TikTok để được gia hạn thêm thời gian học thử. Cảm ơn em đã trải nghiệm!' });
+      }
+    }
+  }
+
+  const now         = new Date();
+  const trialExpiry = now.getTime() + 7 * 24 * 60 * 60 * 1000;
+  const loaiTK      = 'vip';
+  sheet.appendRow([email, data.hoten || email, 'Google', 'GOOGLE_AUTH', now.toISOString(), 0, 0, loaiTK, trialExpiry]);
+  if (deviceId) {
+    const devSheet = getOrCreate('ThietBiHocThu', ['deviceId','sdt','hoten','trialStart','trialExpiry','soLanChan']);
+    devSheet.getRange(devSheet.getLastRow() + 1, 2, 1, 1).setNumberFormat('@');
+    devSheet.appendRow([deviceId, email, data.hoten || email, now.getTime(), trialExpiry, 0]);
+  }
   return jsonOut({ ok: true, user: {
     sdt: email, hoten: data.hoten || email,
     lop: 'Google', email: email,
-    avatar: data.avatar || '', lpTotal: 0
+    avatar: data.avatar || '', lpTotal: 0,
+    loaiTK: loaiTK, trialExpiry: trialExpiry
   }});
 }
 
@@ -882,7 +919,11 @@ function getDanhSachTaiKhoan(e) {
 }
 
 // ── GET Admin: Danh sách thiết bị đã dùng học thử ────────────
-function dispSdt(s) { s = String(s || '').replace(/\D/g,''); return (s.length === 9) ? ('0' + s) : s; }
+function dispSdt(s) {
+  s = String(s || '');
+  if (/^\d+$/.test(s)) { return (s.length === 9) ? ('0' + s) : s; }
+  return s; // không phải số thuần (vd email Google) → giữ nguyên
+}
 
 function getDanhSachThietBi(e) {
   const key = e.parameter.adminKey || '';
