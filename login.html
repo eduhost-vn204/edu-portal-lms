@@ -116,6 +116,34 @@
   }
   .setup-btn:hover { opacity: 0.9; }
   #setup-msg { color: #f87171; font-size: 13px; margin-top: 8px; min-height: 18px; }
+
+  /* ─── DEVICE BLOCKED MODAL (het han hoc thu) ─── */
+  #device-blocked-modal {
+    display: none; position: fixed; inset: 0; z-index: 10000;
+    background: rgba(0,0,0,0.75); align-items: center; justify-content: center; padding: 16px;
+  }
+  .dbm-box {
+    background: #1a1a2e; border: 1px solid rgba(239,68,68,0.35);
+    border-radius: 16px; padding: 32px 28px; width: 100%; max-width: 420px;
+    color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; text-align: center;
+  }
+  .dbm-icon { font-size: 42px; margin-bottom: 10px; }
+  .dbm-box h3 { font-size: 20px; font-weight: 800; margin-bottom: 14px; color: #f87171; }
+  .dbm-box p { font-size: 16px; line-height: 1.65; color: #f1f1f1; margin-bottom: 22px; }
+  .dbm-links { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .dbm-link {
+    flex: 1; min-width: 140px; padding: 13px; border-radius: 10px; text-decoration: none;
+    font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center;
+    gap: 6px; transition: opacity 0.2s;
+  }
+  .dbm-link:hover { opacity: 0.88; }
+  .dbm-link.zalo   { background: #0068ff; color: #fff; }
+  .dbm-link.tiktok { background: #fff; color: #111; }
+  .dbm-close {
+    background: transparent; border: 1px solid rgba(255,255,255,0.25); color: #ccc;
+    padding: 10px 18px; border-radius: 8px; cursor: pointer; font-size: 13px; margin-top: 4px;
+  }
+  .dbm-close:hover { background: rgba(255,255,255,0.06); }
   </style>
 </head>
 <body>
@@ -197,6 +225,15 @@ function showMsg(id, type, text) {
   el.textContent = text;
 }
 
+function showDeviceBlockedModal(msg) {
+  const textEl = document.getElementById('dbm-text');
+  textEl.textContent = msg || 'Thiết bị này đã dùng hết thời gian học thử. Vui lòng liên hệ thầy qua Zalo/TikTok để được gia hạn thêm thời gian học thử. Cảm ơn em đã trải nghiệm!';
+  document.getElementById('device-blocked-modal').style.display = 'flex';
+}
+function closeDeviceBlockedModal() {
+  document.getElementById('device-blocked-modal').style.display = 'none';
+}
+
 function getRedirect() {
   const p = new URLSearchParams(location.search).get('from');
   return p || 'index.html';
@@ -252,7 +289,11 @@ async function doRegister() {
       showMsg('reg-msg','success',`Tạo tài khoản thành công! Bạn có ${daysLeft} ngày VIP dùng thử miễn phí 🎉`);
       setTimeout(() => { window.location.href = 'index.html?welcome=1'; }, 1400);
     } else {
-      showMsg('reg-msg','error', d.msg || 'Không thể tạo tài khoản. Thử lại nhé!');
+      if (d.code === 'device_used') {
+        showDeviceBlockedModal(d.msg);
+      } else {
+        showMsg('reg-msg','error', d.msg || 'Không thể tạo tài khoản. Thử lại nhé!');
+      }
     }
   } catch(e) {
     showMsg('reg-msg','error','Lỗi kết nối. Thử lại nhé!');
@@ -285,10 +326,11 @@ async function handleGoogleCredential(response) {
   if (!payload) return showMsg('login-msg','error','Lỗi xác thực Google.');
   // Gọi Apps Script để đăng ký/đăng nhập bằng Google
   try {
+    const deviceId = (typeof vlxtDeviceFingerprint === 'function') ? await vlxtDeviceFingerprint() : '';
     const r = await fetch(GAS, { method:'POST', mode:'cors',
       headers:{'Content-Type':'text/plain;charset=utf-8'},
       body: JSON.stringify({ action:'logingoogle', hoten: payload.name,
-        email: payload.email, avatar: payload.picture, googleId: payload.sub }) });
+        email: payload.email, avatar: payload.picture, googleId: payload.sub, deviceId }) });
     const d = await r.json();
     if (d.ok) {
       const user = d.user;
@@ -300,7 +342,11 @@ async function handleGoogleCredential(response) {
         window.location.href = getRedirect();
       }
     } else {
-      showMsg('login-msg','error', d.msg || 'Lỗi đăng nhập Google.');
+      if (d.code === 'device_used') {
+        showDeviceBlockedModal(d.msg);
+      } else {
+        showMsg('login-msg','error', d.msg || 'Lỗi đăng nhập Google.');
+      }
     }
   } catch(e) {
     // Fallback: lưu trực tiếp
@@ -392,6 +438,19 @@ if (typeof google !== 'undefined' && google.accounts) {
     <input id="setup-lop" type="text" placeholder="12A1 - THPT XYZ">
     <button class="setup-btn" onclick="confirmSetup()">Xác nhận &amp; Vào học →</button>
     <div id="setup-msg"></div>
+  </div>
+</div>
+<!-- DEVICE BLOCKED MODAL (thiet bi da dung het thoi gian hoc thu) -->
+<div id="device-blocked-modal">
+  <div class="dbm-box">
+    <div class="dbm-icon">🔒</div>
+    <h3>Đã hết thời gian học thử</h3>
+    <p id="dbm-text">Thiết bị này đã dùng hết thời gian học thử.</p>
+    <div class="dbm-links">
+      <a class="dbm-link zalo" href="https://zalo.me/0964885920" target="_blank" rel="noopener">💬 Nhắn Zalo thầy</a>
+      <a class="dbm-link tiktok" href="https://www.tiktok.com/@vatlyxuantruong?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">🎵 TikTok thầy</a>
+    </div>
+    <button class="dbm-close" onclick="closeDeviceBlockedModal()">Đóng</button>
   </div>
 </div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
