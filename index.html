@@ -404,6 +404,10 @@
         }
         .footer-logo .logo-icon { width: 18px; height: 18px; }
         .footer-copy { font-size: 13px; color: var(--gray2); font-weight: 500; }
+        .footer-contact { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+        .footer-contact-link { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; color: var(--gray); text-decoration: none; transition: color .15s; }
+        .footer-contact-link i { font-size: 14px; color: var(--blue); }
+        .footer-contact-link:hover { color: var(--blue); }
 
         /* ─── RESPONSIVE ─── */
         @media (max-width: 900px) {
@@ -412,7 +416,8 @@
             .num-row { grid-template-columns: 1fr 1fr; }
             .num-item { border-bottom: 1px solid var(--border); }
             .panels-grid { grid-template-columns: 1fr; }
-            .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
+            .footer-inner { flex-direction: column; gap: 14px; text-align: center; }
+            .footer-contact { gap: 14px 20px; }
         }
         @media (max-width: 600px) {
             .hero { padding-top: 90px; }
@@ -459,6 +464,9 @@
         body.dark .row-badge { background:#1c2128; border-color:#30363d; }
         body.dark .stats-section { background:#161b22; border-color:#30363d; }
         body.dark footer { background:#0d1117; border-top:1px solid #30363d; }
+        body.dark .footer-contact-link { color:#8b949e; }
+        body.dark .footer-contact-link i { color:#00f0ff; }
+        body.dark .footer-contact-link:hover { color:#00f0ff; }
         body.dark .divider { border-color:#30363d; }
         body.dark .num-big { color:#e6edf3; }
         body.dark .num-label { color:#8b949e; }
@@ -583,6 +591,10 @@
     </style>
   <script src="auth.js?v=7"></script>
   <script src="thongbao.js?v=1"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="device-id.js?v=1"></script>
+  <script src="ho-tro-chat.js?v=1"></script>
   <script src="cache.js"></script>
   <script src="nhiem-vu.js?v=2"></script>
 </head>
@@ -939,6 +951,11 @@
             </svg>
             Vật Lý Xuân Trường
         </a>
+        <div class="footer-contact">
+            <a href="https://zalo.me/0964885920" target="_blank" rel="noopener" class="footer-contact-link"><i class="fa-solid fa-comment-dots"></i> Zalo: 0964885920</a>
+            <a href="mailto:vatlyxuantruong@gmail.com" class="footer-contact-link"><i class="fa-solid fa-envelope"></i> vatlyxuantruong@gmail.com</a>
+            <a href="https://www.tiktok.com/search?q=V%E1%BA%ADt%20L%C3%BD%20Xu%C3%A2n%20Tr%C6%B0%E1%BB%9Dng" target="_blank" rel="noopener" class="footer-contact-link"><i class="fa-brands fa-tiktok"></i> Vật Lý Xuân Trường</a>
+        </div>
         <span class="footer-copy">© 2025 Vật Lý Xuân Trường: Học là phải hiểu bản chất!</span>
     </div>
 </footer>

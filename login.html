@@ -241,9 +241,10 @@ async function doRegister() {
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>Đang tạo tài khoản...';
   try {
+    const deviceId = (typeof vlxtDeviceFingerprint === 'function') ? await vlxtDeviceFingerprint() : '';
     const r = await fetch(GAS, { method:'POST', mode:'cors',
       headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body: JSON.stringify({ action:'register', hoten, lop, sdt, matkhau: pw }) });
+      body: JSON.stringify({ action:'register', hoten, lop, sdt, matkhau: pw, deviceId }) });
     const d = await r.json();
     if (d.ok) {
       localStorage.setItem('vlxt_user_v2', JSON.stringify(d.user));
@@ -393,5 +394,9 @@ if (typeof google !== 'undefined' && google.accounts) {
     <div id="setup-msg"></div>
   </div>
 </div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="device-id.js?v=1"></script>
+<script src="ho-tro-chat.js?v=1"></script>
 </body>
 </html>
