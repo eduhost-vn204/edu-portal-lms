@@ -13,6 +13,7 @@
 //   Tab "KhoaConfig" : khoaHoc | loaiTK   (free,vip,premium hoặc vip,premium hoặc premium)
 //   Tab "NhiemVu"   : sdt | nhipHoc | conTro | lastMissionDate | startDate | chuoiDung | tongDiemDuaTop
 //   Tab "Settings"  : key | value   (cấu hình toàn trang, vd: currentTeachingLesson)
+//   Tab "ThietBiHocThu" : deviceId | sdt | hoten | trialStart | trialExpiry | soLanChan  ← chống học thử nhiều lần
 // ════════════════════════════════════════════════════════════════
 
 function doGet(e) {
@@ -33,6 +34,8 @@ function doGet(e) {
     if (type === 'examquestions')    return getExamQuestions(examId || 'de01');
     if (type === 'nhiemvu')          return getNhiemVu(hs);
     if (type === 'settings')         return getSettings();
+    if (type === 'danhsachthietbi')  return getDanhSachThietBi(e);
+    if (type === 'lichlive')          return getLiveSessions();
     return getExamQuestions('de01'); // backward compat — không có type param
   } catch(err) {
     return jsonOut({ error: err.message });
@@ -64,6 +67,9 @@ function doPost(e) {
     if (action === 'saveduatop')         return saveDuaTop(data);
     if (action === 'savesetting')        return saveSetting(data);
     if (action === 'savekhoaconfig')     return saveKhoaConfig(data);
+    if (action === 'resetdevice')        return resetDevice(data);
+    if (action === 'savelivesession')    return saveLiveSession(data);
+    if (action === 'deletelivesession')  return deleteLiveSession(data.id);
     return saveScore(data);
   } catch(err) {
     return jsonOut({ error: err.message });
@@ -161,6 +167,21 @@ function registerUser(data) {
       return jsonOut({ ok: false, msg: 'Số điện thoại này đã được đăng ký rồi! Nếu quên mật khẩu, hãy nhắn thầy qua Zalo.' });
     }
   }
+
+  // ── Chống học thử nhiều lần: nhận diện thiết bị (best-effort) ──
+  const deviceId = String(data.deviceId || '').trim();
+  if (deviceId) {
+    const devSheet = getOrCreate('ThietBiHocThu', ['deviceId','sdt','hoten','trialStart','trialExpiry','soLanChan']);
+    const devRows  = devSheet.getDataRange().getValues();
+    for (let i = 1; i < devRows.length; i++) {
+      if (String(devRows[i][0]).trim() === deviceId) {
+        devSheet.getRange(i + 1, 6).setValue((Number(devRows[i][5]) || 0) + 1);
+        return jsonOut({ ok: false, code: 'device_used',
+          msg: 'Thiết bị này đã dùng hết 7 ngày học thử trước đó (tài khoản ' + dispSdt(devRows[i][1]) + '). Vui lòng liên hệ thầy qua Zalo 0964885920 để được hỗ trợ thêm nhé!' });
+      }
+    }
+  }
+
   const now          = new Date();
   const trialExpiry  = now.getTime() + 7 * 24 * 60 * 60 * 1000; // 7 ngày
   const loaiTK       = 'vip'; // trial VIP 1 tuần
@@ -168,6 +189,11 @@ function registerUser(data) {
     data.sdt, data.hoten, data.lop, data.matkhau,
     now.toISOString(), 0, 0, loaiTK, trialExpiry
   ]);
+  if (deviceId) {
+    const devSheet = getOrCreate('ThietBiHocThu', ['deviceId','sdt','hoten','trialStart','trialExpiry','soLanChan']);
+    devSheet.getRange(devSheet.getLastRow() + 1, 2, 1, 1).setNumberFormat('@'); // giữ số 0 đầu SĐT
+    devSheet.appendRow([deviceId, String(data.sdt), data.hoten, now.getTime(), trialExpiry, 0]);
+  }
   return jsonOut({ ok: true, msg: 'Đăng ký thành công! Bạn có 7 ngày dùng thử VIP miễn phí.', user: {
     sdt: data.sdt, hoten: data.hoten, lop: data.lop,
     lpTotal: 0, diemGame: 0, loaiTK: loaiTK, trialExpiry: trialExpiry
@@ -427,6 +453,80 @@ function deleteBaiHoc(data) {
   const sheet = getOrCreate('BaiHoc', ['KhoaHoc','Chuong','TenBai','Video','VideoGiai','MoTaBai','NgayDang','BaiTap','PDF']);
   const rowIdx = data.rowIndex || findRowByKey(sheet, data.key || data.originalKey);
   if (rowIdx) sheet.deleteRow(rowIdx);
+  return jsonOut({ ok: true });
+}
+
+// ── Lịch Live (Quản lý Lịch Live trong Admin) ──────────────────
+const LIVE_COLS = ['id','title','date','time','grade','desc','docUrl','ytUrl','thumb','done'];
+
+
+function triggerStaticRefresh() {
+  try {
+    var token = PropertiesService.getScriptProperties().getProperty('GH_TOKEN');
+    if (!token) return;
+    UrlFetchApp.fetch('https://api.github.com/repos/xuantruongmyself-png/vatly-xuantruong/actions/workflows/refresh-data.yml/dispatches', {
+      method: 'post',
+      contentType: 'application/json',
+      headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github+json' },
+      payload: JSON.stringify({ ref: 'main' }),
+      muteHttpExceptions: true
+    });
+  } catch (e) {}
+}
+
+function getLiveSessions() {
+  const sheet = getOrCreate('LichLive', LIVE_COLS);
+  const data = sheet.getDataRange().getValues();
+  if (data.length < 2) return jsonOut([]);
+  const headers = data[0];
+  const tz = Session.getScriptTimeZone() || 'Asia/Ho_Chi_Minh';
+  const rows = data.slice(1).map(function(r) {
+    const obj = {};
+    headers.forEach(function(h, i) {
+      var v2 = r[i];
+      if (v2 instanceof Date) {
+        v2 = (String(h) === 'time') ? Utilities.formatDate(v2, tz, 'HH:mm') : Utilities.formatDate(v2, tz, 'dd/MM/yyyy');
+      }
+      obj[h] = (v2 !== undefined && v2 !== null) ? String(v2) : '';
+    });
+    obj.done = (obj.done === '1' || obj.done === 'TRUE' || obj.done === 'true' || obj.done === true);
+    return obj;
+  });
+  return jsonOut(rows);
+}
+
+function saveLiveSession(data) {
+  const sheet = getOrCreate('LichLive', LIVE_COLS);
+  if (!data.id) data.id = 'live_' + Date.now();
+  const rowsRaw = sheet.getDataRange().getValues();
+  let rowIdx = 0;
+  for (let i = 1; i < rowsRaw.length; i++) {
+    if (String(rowsRaw[i][0]) === String(data.id)) { rowIdx = i + 1; break; }
+  }
+  const rowData = {
+    id: data.id, title: data.title || '', date: data.date || '', time: data.time || '',
+    grade: data.grade || '', desc: data.desc || '', docUrl: data.docUrl || '',
+    ytUrl: data.ytUrl || '', thumb: data.thumb || '', done: (data.done === true || data.done === '1' || data.done === 1) ? '1' : '0'
+  };
+  const targetRow = rowIdx || (sheet.getLastRow() + 1);
+  const lastCol = sheet.getLastColumn();
+  const headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+  headers.forEach(function(h, i) {
+    if (h === 'date' || h === 'time') sheet.getRange(targetRow, i + 1).setNumberFormat('@');
+  });
+  const row = headers.map(function(h) { return (h && rowData.hasOwnProperty(h)) ? rowData[h] : ''; });
+  sheet.getRange(targetRow, 1, 1, row.length).setValues([row]);
+  triggerStaticRefresh();
+  return jsonOut({ ok: true, id: data.id });
+}
+
+function deleteLiveSession(id) {
+  const sheet = getOrCreate('LichLive', LIVE_COLS);
+  const rows = sheet.getDataRange().getValues();
+  for (let i = rows.length - 1; i >= 1; i--) {
+    if (String(rows[i][0]) === String(id)) { sheet.deleteRow(i + 1); break; }
+  }
+  triggerStaticRefresh();
   return jsonOut({ ok: true });
 }
 
@@ -720,19 +820,16 @@ function saveKhoaConfig(data) {
   const rows  = sheet.getDataRange().getValues();
   const target = String(data.khoaHoc || '').trim();
   if (!target) return jsonOut({ ok: false, msg: 'Thiếu khoaHoc' });
-  const FIELD_COL = { hienthi: 3, thutu: 4, dakhaigiiang: 5, loaitk: 2, dakhaigang: 5, dakhaigiảng: 5 };
-  const fieldKey = String(data.field || '').toLowerCase().replace(/\s/g,'');
+  const FIELD_COL = { hienthi: 3, thutu: 4, dakhaigiang: 5, loaitk: 2 };
+  const fieldKey = String(data.field || '').toLowerCase().replace(/\s/g,'').replace(/[àáạảãâầấậẩẫăằắặẳẵ]/g,'a').replace(/[èéẹẻẽêềếệểễ]/g,'e').replace(/[ìíịỉĩ]/g,'i').replace(/[òóọỏõôồốộổỗơờớợởỡ]/g,'o').replace(/[ùúụủũưừứựửữ]/g,'u').replace(/[ỳýỵỷỹ]/g,'y').replace(/đ/g,'d');
   const col = FIELD_COL[fieldKey];
   if (!col) return jsonOut({ ok: false, msg: 'Field không hợp lệ: ' + data.field });
-
-  // Tìm hàng có khoaHoc khớp
   for (let i = 1; i < rows.length; i++) {
     if (String(rows[i][0]).replace(/[\x00-\x1F\x7F]/g,'').trim() === target) {
       sheet.getRange(i + 1, col).setValue(data.value);
       return jsonOut({ ok: true, msg: 'Đã lưu ' + data.field + ' cho ' + target });
     }
   }
-  // Chưa có hàng → tạo mới
   const newRow = [target, data.loaiTK || 'free,vip,premium', 'true', 999, false];
   const colIdx = col - 1;
   newRow[colIdx] = data.value;
@@ -782,6 +879,48 @@ function getDanhSachTaiKhoan(e) {
     });
   }
   return jsonOut({ ok: true, data: result });
+}
+
+// ── GET Admin: Danh sách thiết bị đã dùng học thử ────────────
+function dispSdt(s) { s = String(s || '').replace(/\D/g,''); return (s.length === 9) ? ('0' + s) : s; }
+
+function getDanhSachThietBi(e) {
+  const key = e.parameter.adminKey || '';
+  const ADMIN_KEY = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || 'vlxt_admin_2025';
+  if (key !== ADMIN_KEY) return jsonOut({ error: 'Unauthorized' });
+  const sheet = getOrCreate('ThietBiHocThu', ['deviceId','sdt','hoten','trialStart','trialExpiry','soLanChan']);
+  const rows = sheet.getDataRange().getValues();
+  const result = [];
+  for (let i = 1; i < rows.length; i++) {
+    if (!rows[i][0]) continue;
+    result.push({
+      deviceId:    rows[i][0],
+      sdt:         dispSdt(rows[i][1]),
+      hoten:       rows[i][2],
+      trialStart:  rows[i][3],
+      trialExpiry: rows[i][4],
+      soLanChan:   rows[i][5] || 0
+    });
+  }
+  return jsonOut({ ok: true, data: result });
+}
+
+// ── POST Admin: Mở khoá thiết bị (cho học thử lại) ───────────
+function resetDevice(data) {
+  const key = String(data.adminKey || '').trim();
+  const ADMIN_KEY = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || 'vlxt_admin_2025';
+  if (key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
+  const deviceId = String(data.deviceId || '').trim();
+  if (!deviceId) return jsonOut({ ok: false, msg: 'Thiếu deviceId' });
+  const sheet = getOrCreate('ThietBiHocThu', ['deviceId','sdt','hoten','trialStart','trialExpiry','soLanChan']);
+  const rows = sheet.getDataRange().getValues();
+  for (let i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]).trim() === deviceId) {
+      sheet.deleteRow(i + 1);
+      return jsonOut({ ok: true, msg: 'Đã mở khoá thiết bị — học sinh có thể đăng ký học thử lại.' });
+    }
+  }
+  return jsonOut({ ok: false, msg: 'Không tìm thấy thiết bị.' });
 }
 
 // ── POST: Xóa tài khoản học sinh ─────────────────────────────
@@ -868,4 +1007,51 @@ function saveDuaTop(data) {
   const acc     = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
   const accRows = sheetToJson(acc);
   for (const r of accRows) {
-    if (normSdt
+    if (normSdt(r.sdt) === normSdt(data.sdt)) {
+      writeRowNamed(acc, r._rowIndex, Object.assign({}, r, { lpTotal: (Number(r.lpTotal)||0) + diem }));
+      break;
+    }
+  }
+
+  const nv     = getOrCreate('NhiemVu', ['sdt','nhipHoc','conTro','lastMissionDate','startDate','chuoiDung','tongDiemDuaTop']);
+  const nvRows = sheetToJson(nv);
+  for (const r of nvRows) {
+    if (normSdt(r.sdt) === normSdt(data.sdt)) {
+      writeRowNamed(nv, r._rowIndex, Object.assign({}, r, {
+        chuoiDung:      Number(data.chuoiDung) || 0,
+        tongDiemDuaTop: (Number(r.tongDiemDuaTop)||0) + diem
+      }));
+      break;
+    }
+  }
+
+  return jsonOut({ ok: true, lpCong: diem });
+}
+
+
+// ── GET: Đọc Settings toàn trang ─────────────────────────────
+// Trả về { ok:true, data: { key: value, ... } }
+function getSettings() {
+  const sheet = getOrCreate('Settings', ['key', 'value']);
+  const rows  = sheetToJson(sheet);
+  const result = {};
+  rows.forEach(r => { if (r.key) result[String(r.key)] = r.value !== undefined ? r.value : ''; });
+  return jsonOut({ ok: true, data: result });
+}
+
+// ── POST: Lưu 1 Setting ───────────────────────────────────────
+// data: { adminKey, key, value }
+function saveSetting(data) {
+  // Không cần check adminKey vì action này chỉ gọi từ admin panel
+  if (!data.key) return jsonOut({ ok: false, msg: 'Thiếu key' });
+
+  const sheet = getOrCreate('Settings', ['key', 'value']);
+  const rows  = sheetToJson(sheet);
+  const existing = rows.find(r => String(r.key) === String(data.key));
+  if (existing) {
+    sheet.getRange(existing._rowIndex, 1, 1, 2).setValues([[data.key, data.value !== undefined ? data.value : '']]);
+  } else {
+    sheet.appendRow([data.key, data.value !== undefined ? data.value : '']);
+  }
+  return jsonOut({ ok: true });
+}
