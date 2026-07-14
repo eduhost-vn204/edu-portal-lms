@@ -287,7 +287,20 @@
             .lesson-row { padding:10px 12px; }
             .lesson-name { font-size:13px; }
         }
-    </style>
+    
+        /* ═══ CÂU HỎI TRONG VIDEO (luyện tập nhanh) ═══ */
+        .vq-panel { margin-top:14px; border:2px solid var(--blue); border-radius:16px; background:var(--card); overflow:hidden; animation:vqIn .35s ease; box-shadow:0 6px 24px rgba(11,132,243,.18); }
+        @keyframes vqIn { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:none} }
+        .vq-head { display:flex; align-items:center; gap:10px; padding:12px 16px; background:rgba(11,132,243,.08); border-bottom:1px solid var(--line); flex-wrap:wrap; }
+        .vq-badge { background:var(--blue); color:#fff; font-size:11px; font-weight:800; padding:4px 10px; border-radius:99px; letter-spacing:.05em; }
+        .vq-time-tag { font-size:12px; color:var(--sub); font-weight:700; }
+        .vq-body { padding:16px; }
+        .vq-panel .pq-opt { cursor:pointer; }
+        .vq-panel .pq-opt.vq-wrong { border-color:var(--red); background:rgba(220,38,38,.08); animation:vqShake .3s; }
+        .vq-panel .pq-opt.vq-right { border-color:var(--green); background:rgba(22,163,74,.12); }
+        @keyframes vqShake { 0%,100%{transform:none} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+        .vq-foot { padding:10px 16px; border-top:1px solid var(--line); font-size:12.5px; color:var(--sub); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+</style>
   <script src="auth.js?v=7"></script>
   <script src="thongbao.js?v=1"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -884,6 +897,7 @@ function renderLesson(key){
         <div class="player-layout">
             <div class="lesson-main">
                 <div class="video-box">${videoHtml}</div>
+                <div id="vq-holder"></div>
                 <div class="lesson-detail">
                     <div style="font-size:12px;font-weight:800;color:var(--blue);opacity:.7;margin-bottom:5px;letter-spacing:.04em">BUỔI ${_lsn_session}/${course.total}</div>
                     <h1>${esc(lesson.name)}</h1>
@@ -919,6 +933,7 @@ function renderLesson(key){
     _lessonCurrentKey = key;
     _lessonHasQuiz = !!(lesson.baitap && lesson.baitap.length > 0);
     _videoWatched90 = WATCHED.has(key); // đã hoàn thành trước = tính là đã xem
+    loadVideoQuiz(key, vtype); // câu hỏi trong video (chỉ YouTube)
     // Khởi động player theo loại video
     if(vtype==='youtube') initYTPlayer(vid, key);
     else if(vtype==='drive') initDrivePlayer(did, key);
@@ -1036,8 +1051,10 @@ function initYTPlayer(vid, key){
                 onStateChange: function(e){
                     if(e.data === YT.PlayerState.PLAYING){
                         _startTracking();
+                        _vqOnPlaying();
                     } else {
                         if(_ytTrackInterval){ clearInterval(_ytTrackInterval); _ytTrackInterval = null; }
+                        _vqStopWatch();
                     }
                 }
             }
@@ -1062,6 +1079,152 @@ function _startTracking(){
             }
         }catch(e){}
     }, 4000); // kiểm tra mỗi 4 giây
+}
+
+/* ═══════════════════════════════════════════
+   CÂU HỎI TRONG VIDEO — video dừng tại mốc thầy chữa bài,
+   HS trả lời ĐÚNG mới được xem tiếp (làm lại đến khi đúng)
+═══════════════════════════════════════════ */
+let _vqData = [];          // [{t, thuTu, nhId, q, A, B, C, D, ans}]
+let _vqAnswered = new Set(); // các mốc đã trả lời đúng (lưu localStorage)
+let _vqActive = -1;        // index mốc đang hiện, -1 = không có
+let _vqWrong = 0;          // số lần chọn sai ở mốc hiện tại
+let _vqTimer = null;
+let _vqKey = null;
+let _vqLock = false;
+
+function _vqStoreKey(k){ return 'vlxt_vq_' + k; }
+function _vqIdOf(cp){ return cp.thuTu + '|' + cp.t; }
+function _vqFmt(s){
+    s = Math.max(0, Math.round(Number(s)||0));
+    const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = s%60;
+    const p = n => ('0'+n).slice(-2);
+    return h ? h+':'+p(m)+':'+p(sec) : m+':'+p(sec);
+}
+
+function loadVideoQuiz(key, vtype){
+    _vqData = []; _vqActive = -1; _vqWrong = 0; _vqKey = key; _vqLock = false;
+    _vqStopWatch();
+    const holder = document.getElementById('vq-holder');
+    if(holder) holder.innerHTML = '';
+    try{ _vqAnswered = new Set(JSON.parse(localStorage.getItem(_vqStoreKey(key))||'[]')); }
+    catch(e){ _vqAnswered = new Set(); }
+    if(vtype !== 'youtube') return; // Drive/none: không theo dõi được thời gian
+    const doFetch = (typeof cachedFetch === 'function') ? cachedFetch : fetch;
+    doFetch(APPS_SCRIPT_URL + '?type=videocauhoi&bai=' + encodeURIComponent(key))
+        .then(r => r.json())
+        .then(j => {
+            if(_vqKey !== key) return; // đã chuyển bài khác
+            _vqData = ((j && j.data) || [])
+                .filter(r => r && String(r.baiKey||'') === key && (r.question||'').toString().trim())
+                .map((r,ix) => ({
+                    t: Number(r.thoiGian)||0,
+                    thuTu: Number(r.thuTu)||(ix+1),
+                    nhId: (r.nhId||'').toString(),
+                    q: (r.question||'').toString(),
+                    A: (r.optA||'').toString(), B: (r.optB||'').toString(),
+                    C: (r.optC||'').toString(), D: (r.optD||'').toString(),
+                    ans: String(r.correct||'').toUpperCase().trim()
+                }))
+                .sort((a,b) => a.t - b.t);
+        })
+        .catch(e => {});
+}
+
+function _vqOnPlaying(){
+    // Nếu đang có câu hỏi chưa trả lời mà HS cố bấm play → dừng lại ngay
+    if(_vqActive >= 0){
+        setTimeout(function(){ try{ _ytPlayer.pauseVideo(); }catch(e){} }, 60);
+        toast('<i class="fa-solid fa-circle-question"></i> Trả lời đúng câu hỏi bên dưới để xem tiếp nhé!','err');
+        return;
+    }
+    _vqStartWatch();
+}
+
+function _vqStartWatch(){
+    _vqStopWatch();
+    if(!_vqData.length) return;
+    _vqTimer = setInterval(function(){
+        if(!_ytPlayer || _vqActive >= 0) return;
+        if(!document.getElementById('vq-holder')){ _vqStopWatch(); return; } // đã rời trang bài học
+        let cur = 0;
+        try{ cur = _ytPlayer.getCurrentTime(); }catch(e){ return; }
+        for(let i = 0; i < _vqData.length; i++){
+            const cp = _vqData[i];
+            if(_vqAnswered.has(_vqIdOf(cp))) continue;
+            if(cur >= cp.t - 0.3){ _vqShow(i); break; } // bắt cả trường hợp tua qua mốc
+        }
+    }, 500);
+}
+function _vqStopWatch(){ if(_vqTimer){ clearInterval(_vqTimer); _vqTimer = null; } }
+
+function _vqShow(i){
+    _vqActive = i; _vqWrong = 0; _vqLock = false;
+    try{ _ytPlayer.pauseVideo(); }catch(e){}
+    const cp = _vqData[i];
+    const holder = document.getElementById('vq-holder');
+    if(!holder) return;
+    let opts = '';
+    ['A','B','C','D'].forEach(function(L){
+        if(!(cp[L]||'').toString().trim()) return;
+        opts += `<label class="pq-opt" id="vq-opt-${L}" onclick="vqAnswer('${L}')">
+            <span class="pq-letter">${L}.</span>
+            <span>${pqSafe(cp[L])}</span>
+        </label>`;
+    });
+    holder.innerHTML = `<div class="vq-panel" id="vq-panel">
+        <div class="vq-head">
+            <span class="vq-badge"><i class="fa-solid fa-bolt"></i> LUYỆN TẬP NHANH</span>
+            <span class="vq-time-tag"><i class="fa-regular fa-clock"></i> ${_vqFmt(cp.t)} &nbsp;·&nbsp; Câu ${i+1}/${_vqData.length}</span>
+        </div>
+        <div class="vq-body">
+            <div class="pq-text" style="margin-bottom:12px">${pqSafe(cp.q)}</div>
+            <div class="pq-opts">${opts}</div>
+        </div>
+        <div class="vq-foot" id="vq-foot"><i class="fa-solid fa-lock" style="color:var(--blue)"></i> Video tạm dừng — chọn đáp án đúng để xem thầy chữa câu này nhé!</div>
+    </div>`;
+    renderMath(holder);
+    setTimeout(function(){ holder.scrollIntoView({behavior:'smooth', block:'center'}); }, 150);
+}
+
+function vqAnswer(L){
+    if(_vqActive < 0 || _vqLock) return;
+    const cp = _vqData[_vqActive];
+    const el = document.getElementById('vq-opt-' + L);
+    if(L === cp.ans){
+        _vqLock = true;
+        if(el){ el.classList.remove('vq-wrong'); el.classList.add('vq-right'); }
+        document.querySelectorAll('#vq-panel .pq-opt').forEach(o => o.style.pointerEvents = 'none');
+        const foot = document.getElementById('vq-foot');
+        if(foot) foot.innerHTML = '<i class="fa-solid fa-circle-check" style="color:var(--green)"></i> <b style="color:var(--green)">Chính xác!</b>&nbsp;Video tiếp tục — xem thầy chữa chi tiết nhé.';
+        _vqAnswered.add(_vqIdOf(cp));
+        try{ localStorage.setItem(_vqStoreKey(_vqKey), JSON.stringify(Array.from(_vqAnswered))); }catch(e){}
+        _vqLog(cp);
+        const doneAll = _vqData.every(c => _vqAnswered.has(_vqIdOf(c)));
+        setTimeout(function(){
+            _vqActive = -1;
+            const holder = document.getElementById('vq-holder');
+            if(holder) holder.innerHTML = '';
+            try{ _ytPlayer.playVideo(); }catch(e){}
+            if(doneAll) toast('<i class="fa-solid fa-trophy"></i> Tuyệt vời! Bạn đã làm hết câu hỏi trong video này!','ok');
+        }, 1600);
+    } else {
+        _vqWrong++;
+        if(el){ el.classList.remove('vq-wrong'); void el.offsetWidth; el.classList.add('vq-wrong'); }
+        const foot = document.getElementById('vq-foot');
+        if(foot) foot.innerHTML = '<i class="fa-solid fa-rotate-left" style="color:var(--red)"></i> Chưa đúng rồi — nghĩ kỹ lại và chọn đáp án khác nhé!';
+    }
+}
+
+function _vqLog(cp){
+    if(!HS) return;
+    try{
+        fetch(APPS_SCRIPT_URL, { method:'POST', mode:'no-cors',
+            headers:{'Content-Type':'text/plain;charset=utf-8'},
+            body: JSON.stringify({ action:'logvideoquiz', sdt:HS.sdt||'', ten:HS.ten||'', lop:HS.lop||'',
+                baiKey:_vqKey, thuTu:cp.thuTu, nhId:cp.nhId, soLanSai:_vqWrong })
+        });
+    }catch(e){}
 }
 
 /* ═══════════════════════════════════════════
