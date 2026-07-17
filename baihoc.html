@@ -210,6 +210,9 @@
         .btn-quiz-goto { background:var(--blue); color:#fff; border:none; border-radius:50px; padding:10px 20px; font-weight:700; font-size:14px; cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition:opacity .15s; }
         .btn-quiz-goto:hover { opacity:.88; }
         .quiz-threshold-hint { font-size:12px; color:var(--muted); margin-top:8px; font-style:italic; padding:0 4px; }
+        .quiz-timer { font-size:14px; font-weight:800; padding:6px 14px; border-radius:50px; background:var(--card); border:1.5px solid var(--line); color:var(--blue); white-space:nowrap; flex-shrink:0; }
+        .quiz-timer.quiz-timer-warn { color:#fff; background:var(--red); border-color:var(--red); animation:quizTimerPulse 1s infinite; }
+        @keyframes quizTimerPulse { 0%,100%{opacity:1} 50%{opacity:.6} }
 
         /* ═══ SIDEBAR ═══ */
         .side-list { background:var(--card); border:1.5px solid var(--line); border-radius:var(--radius); overflow:hidden; max-height:calc(100vh - 90px); overflow-y:auto; }
@@ -510,6 +513,8 @@ function buildCourses(rows){
             videogiai:field(row,['videogiai','videochua','videogiangiai','chua','giai']).toString().trim(),
             desc:field(row,['motabai','noidung','ghichu','desc']).toString().trim(),
             pdf:field(row,['pdf','PDF','pdfbaitap','tailieu']).toString().trim(),
+            pdflt:field(row,['pdflythuyet','pdflt','pdf_lythuyet','lythuyet','pdflt2']).toString().trim(),
+            thoigian:parseInt(field(row,['thoigianlambai','thoigian','phutlambai','timelimit']).toString().trim(),10)||0,
             date:field(row,['ngaydang','ngay','date','capnhat']).toString().trim(),
             baitap: baitapArr
         });
@@ -808,6 +813,19 @@ function renderLesson(key){
     });
     side+='</div>';
 
+    // ── PDF lý thuyết ──
+    let pdfLtHtml='';
+    if(lesson.pdflt){
+        pdfLtHtml=`<div class="section-block">
+            <div class="section-block-head">
+                <div class="s-icon" style="background:rgba(11,132,243,.1)"><i class="fa-solid fa-file-pdf" style="color:var(--blue)"></i></div>
+                <div><h3>Tài liệu lý thuyết</h3><p>File PDF tóm tắt kiến thức bài học</p></div>
+            </div>
+            <div class="section-block-body" style="padding:16px">
+                <a href="${lesson.pdflt}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:rgba(11,132,243,.1);color:var(--blue);padding:10px 18px;border-radius:10px;font-weight:700;text-decoration:none;font-size:14px"><i class="fa-solid fa-download"></i> Tải file PDF lý thuyết</a>
+            </div>
+        </div>`;
+    }
     // ── PDF bài tập ──
     let pdfHtml='';
     if(lesson.pdf){
@@ -831,6 +849,7 @@ function renderLesson(key){
                     <h3>Bài tập luyện tập</h3>
                     <p>${lesson.baitap.length} câu trắc nghiệm cho bài này</p>
                 </div>
+                ${(lesson.thoigian>0 && !done)?`<div id="quiz-timer" class="quiz-timer" style="margin-left:auto"><i class="fa-solid fa-stopwatch"></i> ${String(lesson.thoigian).padStart(2,'0')}:00</div>`:''}
             </div>
             <div class="section-block-body">`;
         lesson.baitap.forEach((q,qi)=>{
@@ -850,7 +869,7 @@ function renderLesson(key){
         });
         quizHtml+=`<p class="quiz-threshold-hint" id="quiz-threshold-hint">Chưa xem video → cần đúng 10/10 câu. Đã xem video → chỉ cần 8/10.</p>
             <div class="quiz-actions">
-                <button class="btn-check" onclick="checkPractice('${esc(key)}')">
+                <button class="btn-check" onclick="checkPractice('${esc(key)}',false)">
                     <i class="fa-solid fa-check-circle"></i> Kiểm tra đáp án
                 </button>
                 <button class="btn-reset" onclick="resetPractice()">
@@ -923,7 +942,7 @@ function renderLesson(key){
                         </button>
                     </div>
                 </div>
-                ${pdfHtml}${quizHtml}
+                ${pdfLtHtml}${pdfHtml}${quizHtml}
                 ${solutionHtml}
             </div>
             <div class="lesson-sidebar">${side}</div>
@@ -932,8 +951,12 @@ function renderLesson(key){
     // Lưu context bài hiện tại
     _lessonCurrentKey = key;
     _lessonHasQuiz = !!(lesson.baitap && lesson.baitap.length > 0);
+    _lessonQuizMinutes = lesson.thoigian || 0;
     _videoWatched90 = WATCHED.has(key); // đã hoàn thành trước = tính là đã xem
     loadVideoQuiz(key, vtype); // câu hỏi trong video (chỉ YouTube)
+    // Đếm ngược thời gian làm bài (nếu thầy đặt giới hạn phút cho bài này)
+    if(_lessonHasQuiz && _lessonQuizMinutes > 0 && !done) startQuizTimer(key, _lessonQuizMinutes);
+    else clearQuizTimer();
     // Khởi động player theo loại video
     if(vtype==='youtube') initYTPlayer(vid, key);
     else if(vtype==='drive') initDrivePlayer(did, key);
@@ -943,6 +966,7 @@ function renderLesson(key){
 /* ── Globals theo dõi trạng thái bài ── */
 let _lessonCurrentKey = null;
 let _lessonHasQuiz = false;
+let _lessonQuizMinutes = 0;
 let _videoWatched90 = false; // true khi đã xem ≥90% video
 
 /* ── Helper: mark + update UI ── */
@@ -1230,7 +1254,8 @@ function _vqLog(cp){
 /* ═══════════════════════════════════════════
    QUIZ LOGIC
 ═══════════════════════════════════════════ */
-function checkPractice(key){
+function checkPractice(key,force){
+    clearQuizTimer();
     const info=findLesson(decodeURIComponent(key));
     if(!info) return;
     const qs=info.lesson.baitap;
@@ -1269,7 +1294,7 @@ function checkPractice(key){
             }
         }
     });
-    if(answered<qs.length){ toast('<i class="fa-solid fa-triangle-exclamation"></i> Hãy trả lời đủ các câu nhé!','err'); return; }
+    if(answered<qs.length && !force){ toast('<i class="fa-solid fa-triangle-exclamation"></i> Hãy trả lời đủ các câu nhé!','err'); return; }
     const scoreEl=document.getElementById('quiz-score');
     const pct10 = qs.length > 0 ? (correct / qs.length * 10) : 0;
     // Ngưỡng động: đã xem ≥90% video → 8/10; chưa xem → 10/10 (tất cả đúng)
@@ -1320,6 +1345,44 @@ function resetPractice(){
     const s=document.getElementById('quiz-score'); if(s) s.style.display='none';
     const b=document.getElementById('quiz-unlock-banner'); if(b) b.remove();
     const w=document.getElementById('quiz-warn'); if(w) w.remove();
+    // Làm lại → cấp lại toàn bộ thời gian làm bài (nếu bài có giới hạn phút)
+    if(_lessonCurrentKey && _lessonQuizMinutes > 0 && !WATCHED.has(_lessonCurrentKey)){
+        try{ localStorage.removeItem('vlxt_quiz_deadline_'+_lessonCurrentKey); }catch(e){}
+        startQuizTimer(_lessonCurrentKey, _lessonQuizMinutes);
+    }
+}
+
+/* ── Đếm ngược thời gian làm bài, tự nộp khi hết giờ ── */
+let _quizTimerInterval = null;
+function clearQuizTimer(){
+    if(_quizTimerInterval){ clearInterval(_quizTimerInterval); _quizTimerInterval = null; }
+}
+function startQuizTimer(key, minutes){
+    clearQuizTimer();
+    const dlKey = 'vlxt_quiz_deadline_' + key;
+    const now = Date.now();
+    let deadline = parseInt(localStorage.getItem(dlKey) || '0', 10);
+    if(!deadline || deadline <= now){
+        deadline = now + minutes * 60000;
+        try{ localStorage.setItem(dlKey, String(deadline)); }catch(e){}
+    }
+    function tick(){
+        const el = document.getElementById('quiz-timer');
+        if(!el){ clearQuizTimer(); return; } // đã rời trang bài học
+        const remain = Math.max(0, Math.round((deadline - Date.now())/1000));
+        const m = Math.floor(remain/60), s = remain%60;
+        el.innerHTML = `<i class="fa-solid fa-stopwatch"></i> ${m}:${String(s).padStart(2,'0')}`;
+        el.classList.toggle('quiz-timer-warn', remain>0 && remain<=60);
+        if(remain<=0){
+            clearQuizTimer();
+            el.innerHTML = `<i class="fa-solid fa-hourglass-end"></i> Hết giờ!`;
+            try{ localStorage.removeItem(dlKey); }catch(e){}
+            toast('<i class="fa-solid fa-hourglass-end"></i> Đã hết giờ làm bài — tự động nộp bài!','err');
+            checkPractice(encodeURIComponent(key), true);
+        }
+    }
+    tick();
+    _quizTimerInterval = setInterval(tick, 1000);
 }
 
 /* ═══════════════════════════════════════════
