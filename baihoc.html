@@ -506,6 +506,8 @@ function buildCourses(rows){
         let baitap = field(row,['baitap','quiz','cauhoi','tracnghiem','luyen']).toString().trim();
         let baitapArr = [];
         if(baitap){ try{ baitapArr=JSON.parse(baitap); }catch(e){ baitapArr=[]; } }
+        const ttbRaw = field(row,['thutubai']).toString().trim();
+        const ttb = (ttbRaw !== '' && !isNaN(Number(ttbRaw))) ? Number(ttbRaw) : null;
         ch.lessons.push({
             key:[cname,chname,lname].join(SEP),
             name:lname,
@@ -516,7 +518,15 @@ function buildCourses(rows){
             pdflt:field(row,['pdflythuyet','pdflt','pdf_lythuyet','lythuyet','pdflt2']).toString().trim(),
             thoigian:parseInt(field(row,['thoigianlambai','thoigian','phutlambai','timelimit']).toString().trim(),10)||0,
             date:field(row,['ngaydang','ngay','date','capnhat']).toString().trim(),
-            baitap: baitapArr
+            baitap: baitapArr,
+            ttb: ttb
+        });
+    });
+    // Sắp xếp bài trong từng chương theo ThuTuBai (thầy tự đổi thứ tự trong admin);
+    // bài chưa có ThuTuBai giữ nguyên vị trí cũ nhờ Array.sort ổn định (stable).
+    cmap.forEach(c => {
+        c.chMap.forEach(ch => {
+            ch.lessons.sort((a,b) => (a.ttb===null?999999:a.ttb) - (b.ttb===null?999999:b.ttb));
         });
     });
     return [...cmap.values()].map(c=>{
