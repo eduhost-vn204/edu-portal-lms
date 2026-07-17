@@ -1148,7 +1148,11 @@ let _vqTimer = null;
 let _vqKey = null;
 let _vqLock = false;
 
-function _vqStoreKey(k){ return 'vlxt_vq_' + k; }
+// Bug 18/7: trước đây key KHÔNG có HS.sdt -> "đã trả lời đúng" lưu chung cho MỌI
+// tài khoản trên cùng trình duyệt (khác với WATCHED luôn có HS.sdt) -> tài khoản HS
+// mới tinh vẫn bị coi là "đã trả lời" nếu trình duyệt đó từng test/trả lời đúng mốc
+// này bằng tài khoản khác trước đó, nên câu hỏi im lặng không hiện ra nữa.
+function _vqStoreKey(k){ return 'vlxt_vq_' + ((HS && HS.sdt) ? HS.sdt : 'guest') + '_' + k; }
 function _vqIdOf(cp){ return cp.thuTu + '|' + cp.t; }
 function _vqFmt(s){
     s = Math.max(0, Math.round(Number(s)||0));
