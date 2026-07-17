@@ -533,15 +533,14 @@ function findCourse(name){ return COURSES.find(c=>c.name===name); }
 function flatLessons(c){ const out=[]; c.chapters.forEach(ch=>ch.lessons.forEach(l=>out.push(Object.assign({chapter:ch.name},l)))); return out; }
 function findLesson(key){ for(const c of COURSES) for(const ch of c.chapters) for(const l of ch.lessons) if(l.key===key) return {course:c,chapter:ch,lesson:l}; return null; }
 
-// Chặn "học vượt": khoá bài chưa có video (thầy chưa cập nhật) hoặc bài trước chưa hoàn thành.
+// Chặn "học vượt": chỉ khoá khi bài TRƯỚC chưa hoàn thành — KHÔNG khoá vì bài này chưa có video,
+// để học sinh vẫn vào xem PDF lý thuyết/bài tập của nhiệm vụ hôm nay dù thầy chưa kịp thêm video.
 // Đã xem rồi thì luôn được xem lại, không bao giờ khoá ngược.
 function isLessonBlocked(course, key){
     const flat = flatLessons(course);
     const idx = flat.findIndex(l => l.key === key);
     if(idx < 0) return {blocked:false};
-    const lesson = flat[idx];
     if(WATCHED.has(key)) return {blocked:false};
-    if(!lesson.video) return {blocked:true, reason:'novideo'};
     if(idx > 0 && !WATCHED.has(flat[idx-1].key)) return {blocked:true, reason:'sequence'};
     return {blocked:false};
 }
