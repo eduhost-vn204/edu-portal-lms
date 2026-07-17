@@ -1165,8 +1165,13 @@ function loadVideoQuiz(key, vtype){
     try{ _vqAnswered = new Set(JSON.parse(localStorage.getItem(_vqStoreKey(key))||'[]')); }
     catch(e){ _vqAnswered = new Set(); }
     if(vtype !== 'youtube') return; // Drive/none: không theo dõi được thời gian
-    const doFetch = (typeof cachedFetch === 'function') ? cachedFetch : fetch;
-    doFetch(APPS_SCRIPT_URL + '?type=videocauhoi&bai=' + encodeURIComponent(key))
+    // Luôn gọi thẳng GAS (KHÔNG dùng cachedFetch): dữ liệu mốc câu hỏi rất ít,
+    // và cache stale-while-revalidate (cache.js) trả ngay bản CŨ trong localStorage
+    // (kể cả rỗng, tới 24h) rồi mới âm thầm tải lại — khiến câu hỏi mới thêm ở admin
+    // không hiện ra ngay cho HS, kể cả tài khoản chưa từng học bài (cache theo
+    // URL bài, không theo tài khoản). Đã trả lời đúng thì vẫn lưu riêng ở localStorage
+    // (_vqAnswered ở trên) nên không lo hỏi lại — an toàn khi bỏ cache ở đây.
+    fetch(APPS_SCRIPT_URL + '?type=videocauhoi&bai=' + encodeURIComponent(key))
         .then(r => r.json())
         .then(j => {
             if(_vqKey !== key) return; // đã chuyển bài khác
