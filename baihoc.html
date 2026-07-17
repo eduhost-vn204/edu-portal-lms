@@ -31,6 +31,7 @@
         a { color:var(--blue); text-decoration:none; }
         math { font-size:1.1em; } sub,sup { line-height:0; font-size:.78em; }
         .container { max-width:1180px; margin:0 auto; padding:0 18px; }
+        .container.wide-lesson { max-width:100%; padding:0 32px; }
 
         /* ═══ HEADER ═══ */
         header {
@@ -132,7 +133,7 @@
         .lesson-row.is-locked:hover { background:transparent; }
 
         /* ═══ LESSON PLAYER LAYOUT ═══ */
-        .player-layout { display:grid; grid-template-columns:minmax(0,65fr) minmax(0,25fr); gap:24px; margin-top:8px; align-items:start; }
+        .player-layout { display:grid; grid-template-columns:minmax(0,70fr) minmax(0,30fr); gap:24px; margin-top:8px; align-items:start; }
         .lesson-main { min-width:0; }
         .lesson-sidebar { position:sticky; top:68px; }
 
@@ -163,6 +164,16 @@
         .section-block-head h3 { font-size:16px; font-weight:800; letter-spacing:-.01em; margin-bottom:2px; }
         .section-block-head p { font-size:13px; color:var(--sub); }
         .section-block-body { padding:20px 22px; }
+
+        /* ═══ LESSON TABS (lý thuyết PDF / bài tập PDF / trắc nghiệm) ═══ */
+        .lt-tabs-bar { display:flex; gap:8px; padding:14px 22px 0; flex-wrap:wrap; }
+        .lt-tab-btn { border:1.5px solid var(--line); background:var(--card2); color:var(--sub); padding:9px 16px; border-radius:50px; font-size:13.5px; font-weight:700; cursor:pointer; display:inline-flex; gap:8px; align-items:center; font-family:'Plus Jakarta Sans',sans-serif; transition:all .15s; }
+        .lt-tab-btn.active { background:var(--blue); color:#fff; border-color:var(--blue); }
+        .lt-tab-pane { display:none; padding:20px 22px; }
+        .lt-tab-pane.active { display:block; }
+        .pdf-embed-box { position:relative; width:100%; height:min(78vh,900px); border-radius:12px; overflow:hidden; border:1.5px solid var(--line); background:var(--card2); }
+        .pdf-embed-box iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+        .pdf-embed-dl { display:inline-flex; align-items:center; gap:8px; margin-top:14px; padding:10px 18px; border-radius:10px; font-weight:700; text-decoration:none; font-size:14px; }
 
         .pq-block { margin-bottom:22px; padding-bottom:22px; border-bottom:1px solid var(--line); }
         .pq-block:last-child { margin-bottom:0; padding-bottom:0; border-bottom:none; }
@@ -277,6 +288,7 @@
             .logo svg { width:26px; height:26px; flex-shrink:0; }
             #vlxt-avatar-name { display:none !important; }
             .container { padding:0 12px; }
+            .container.wide-lesson { padding:0 12px; }
             .page-head h1 { font-size:20px; }
             .toolbar { gap:6px; }
             .search-box { min-width:0; flex:1; }
@@ -352,7 +364,6 @@
         <div class="nav">
             <a id="nav-home" href="index.html"><i class="fa-solid fa-house" style="font-size:12px"></i> <span>Trang chủ</span></a>
             <a href="danhsach-ly12.html"><i class="fa-solid fa-file-lines" style="font-size:12px"></i> <span>Thi thử</span></a>
-            <a href="trochoi.html"><i class="fa-solid fa-gamepad" style="font-size:12px"></i> <span>Trò Chơi</span></a>
             <a href="hoso.html"><i class="fa-solid fa-user" style="font-size:12px"></i> <span>Hồ Sơ</span></a>
             <div id="vlxt-nav-user-area"></div>
         </div>
@@ -583,6 +594,8 @@ function markWatched(key){
 function go(hash){ if(location.hash===hash) route(); else location.hash=hash; }
 window.addEventListener('hashchange',route);
 function route(){
+    // Reset khung trang về mặc định — renderLesson() sẽ tự nới rộng (wide-lesson) nếu cần
+    app().className = 'container';
     // Nếu có ?openLesson=... (từ nút "Học ngay" trong popup Nhiệm Vụ), mở thẳng bài đó
     const params = new URLSearchParams(location.search);
     const openLesson = params.get('openLesson');
@@ -822,62 +835,40 @@ function renderLesson(key){
     });
     side+='</div>';
 
-    // ── PDF lý thuyết ──
-    let pdfLtHtml='';
+    // ── Tabs: Tài liệu lý thuyết / Tài liệu bài tập / Luyện tập trắc nghiệm ──
+    // (gộp 3 khối trước đây xếp chồng thành 1 khối kiểu tab, đỡ chiếm chỗ + học sinh chọn đúng thứ cần xem)
+    const _lessonTabs = [];
     if(lesson.pdflt){
-        pdfLtHtml=`<div class="section-block">
-            <div class="section-block-head">
-                <div class="s-icon" style="background:rgba(11,132,243,.1)"><i class="fa-solid fa-file-pdf" style="color:var(--blue)"></i></div>
-                <div><h3>Tài liệu lý thuyết</h3><p>File PDF tóm tắt kiến thức bài học</p></div>
-            </div>
-            <div class="section-block-body" style="padding:16px">
-                <a href="${lesson.pdflt}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:rgba(11,132,243,.1);color:var(--blue);padding:10px 18px;border-radius:10px;font-weight:700;text-decoration:none;font-size:14px"><i class="fa-solid fa-download"></i> Tải file PDF lý thuyết</a>
-            </div>
-        </div>`;
+        const _idLt = driveId(lesson.pdflt);
+        _lessonTabs.push({ key:'lythuyet', label:'Tài liệu lý thuyết', icon:'fa-file-pdf', html:
+            `${_idLt?`<div class="pdf-embed-box"><iframe src="https://drive.google.com/file/d/${_idLt}/preview" allow="autoplay"></iframe></div>`:''}
+            <a class="pdf-embed-dl" href="${lesson.pdflt}" target="_blank" rel="noopener" style="background:rgba(11,132,243,.1);color:var(--blue)"><i class="fa-solid fa-arrow-up-right-from-square"></i> Mở/tải file PDF lý thuyết</a>` });
     }
-    // ── PDF bài tập ──
-    let pdfHtml='';
     if(lesson.pdf){
-        pdfHtml=`<div class="section-block">
-            <div class="section-block-head">
-                <div class="s-icon" style="background:rgba(239,68,68,.1)"><i class="fa-solid fa-file-pdf" style="color:#ef4444"></i></div>
-                <div><h3>Tài liệu bài tập</h3><p>File PDF kèm theo bài học</p></div>
-            </div>
-            <div class="section-block-body" style="padding:16px">
-                <a href="${lesson.pdf}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:rgba(239,68,68,.1);color:#ef4444;padding:10px 18px;border-radius:10px;font-weight:700;text-decoration:none;font-size:14px"><i class="fa-solid fa-download"></i> Tải file PDF bài tập</a>
-            </div>
-        </div>`;
+        const _idBt = driveId(lesson.pdf);
+        _lessonTabs.push({ key:'baitap-pdf', label:'Tài liệu bài tập', icon:'fa-file-pdf', html:
+            `${_idBt?`<div class="pdf-embed-box"><iframe src="https://drive.google.com/file/d/${_idBt}/preview" allow="autoplay"></iframe></div>`:''}
+            <a class="pdf-embed-dl" href="${lesson.pdf}" target="_blank" rel="noopener" style="background:rgba(239,68,68,.1);color:#ef4444"><i class="fa-solid fa-arrow-up-right-from-square"></i> Mở/tải file PDF bài tập</a>` });
     }
-    // ── Quiz luyện tập ──
-    let quizHtml='';
     if(lesson.baitap && lesson.baitap.length>0){
-        quizHtml=`<div class="section-block" id="quiz-block">
-            <div class="section-block-head">
-                <div class="s-icon s-icon-blue"><i class="fa-solid fa-pen-to-square"></i></div>
-                <div>
-                    <h3>Bài tập luyện tập</h3>
-                    <p>${lesson.baitap.length} câu trắc nghiệm cho bài này</p>
-                </div>
-                ${(lesson.thoigian>0 && !done)?`<div id="quiz-timer" class="quiz-timer" style="margin-left:auto"><i class="fa-solid fa-stopwatch"></i> ${String(lesson.thoigian).padStart(2,'0')}:00</div>`:''}
-            </div>
-            <div class="section-block-body">`;
+        const _needCnt = Math.ceil(lesson.baitap.length*0.9);
+        let _qz = `<p class="quiz-threshold-hint" id="quiz-threshold-hint">Cần làm đúng ≥90% số câu (từ ${_needCnt}/${lesson.baitap.length} câu trở lên) để đạt phần này.</p>`;
         lesson.baitap.forEach((q,qi)=>{
-            quizHtml+=`<div class="pq-block" id="pq-${qi}">
+            _qz += `<div class="pq-block" id="pq-${qi}">
                 <div class="pq-text">Câu ${qi+1}: ${q.q}</div>
                 <div class="pq-opts">`;
             ['A','B','C','D'].forEach(L=>{
                 if(!q[L]&&!q[L.toLowerCase()]) return;
                 const txt=q[L]||q[L.toLowerCase()]||'';
-                quizHtml+=`<label class="pq-opt" id="pq-${qi}-${L}">
+                _qz += `<label class="pq-opt" id="pq-${qi}-${L}">
                     <input type="radio" name="pq${qi}" value="${L}">
                     <span class="pq-letter">${L}.</span>
                     <span>${pqSafe(txt)}</span>
                 </label>`;
             });
-            quizHtml+=`</div></div>`;
+            _qz += `</div></div>`;
         });
-        quizHtml+=`<p class="quiz-threshold-hint" id="quiz-threshold-hint">Chưa xem video → cần đúng 10/10 câu. Đã xem video → chỉ cần 8/10.</p>
-            <div class="quiz-actions">
+        _qz += `<div class="quiz-actions">
                 <button class="btn-check" onclick="checkPractice('${esc(key)}',false)">
                     <i class="fa-solid fa-check-circle"></i> Kiểm tra đáp án
                 </button>
@@ -885,8 +876,17 @@ function renderLesson(key){
                     <i class="fa-solid fa-rotate-left"></i> Làm lại
                 </button>
                 <span class="quiz-score" id="quiz-score" style="display:none"></span>
+            </div>`;
+        const _timerHtml=(lesson.thoigian>0 && !done)?`<div id="quiz-timer" class="quiz-timer" style="margin-bottom:14px"><i class="fa-solid fa-stopwatch"></i> ${String(lesson.thoigian).padStart(2,'0')}:00</div>`:'';
+        _lessonTabs.push({ key:'quiz', label:'Luyện tập trắc nghiệm ('+lesson.baitap.length+')', icon:'fa-pen-to-square', html: _timerHtml + _qz, isQuiz:true });
+    }
+    let tabsBlockHtml = '';
+    if(_lessonTabs.length){
+        tabsBlockHtml = `<div class="section-block" id="lesson-tabs-block">
+            <div class="lt-tabs-bar">
+                ${_lessonTabs.map((t,ti)=>`<button class="lt-tab-btn${ti===0?' active':''}" data-tab="${t.key}" onclick="switchLessonTab('${t.key}')"><i class="fa-solid ${t.icon}"></i> ${t.label}</button>`).join('')}
             </div>
-            </div>
+            ${_lessonTabs.map((t,ti)=>`<div class="lt-tab-pane${ti===0?' active':''}" data-pane="${t.key}"${t.isQuiz?' id="quiz-block"':''}>${t.html}</div>`).join('')}
         </div>`;
     }
 
@@ -916,6 +916,16 @@ function renderLesson(key){
     }
 
     // ── Render trang bài học ──
+    const _hasQuiz = !!(lesson.baitap && lesson.baitap.length>0);
+    const _hasRealVideo = (vtype==='youtube'||vtype==='drive');
+    let _doneLabel;
+    if(done) _doneLabel='Đã hoàn thành';
+    else if(_hasRealVideo && _hasQuiz) _doneLabel='Xem ≥90% video VÀ làm đúng ≥90% bài tập để hoàn thành';
+    else if(_hasRealVideo) _doneLabel='Xem ≥90% video để hoàn thành';
+    else if(_hasQuiz) _doneLabel='Làm đúng ≥90% bài tập luyện tập để hoàn thành';
+    else _doneLabel='Tự động lưu sau 30 giây';
+
+    app().classList.add('wide-lesson'); // bài học hiển thị gần hết chiều ngang màn hình
     app().innerHTML=`
         <div class="crumb">
             <a onclick="go('#home')">Khóa học</a><span class="sep">›</span>
@@ -937,9 +947,9 @@ function renderLesson(key){
                     <div class="ld-actions">
                         <span class="btn btn-done ${done?'is-done':''}" id="done-btn" style="cursor:default;user-select:none">
                             <i class="fa-solid ${done?'fa-circle-check':'fa-hourglass-half'}"></i>
-                            ${done?'Đã hoàn thành':(lesson.baitap&&lesson.baitap.length?(vtype==='youtube'||vtype==='drive'?'Xem video (8/10) hoặc làm bài đúng 10/10 để hoàn thành':'Làm đúng 10/10 câu để hoàn thành'):(vtype==='youtube'||vtype==='drive'?'Xem đủ video để hoàn thành':'Tự động lưu sau 30 giây'))}
+                            ${_doneLabel}
                         </span>
-                        ${(!done && lesson.baitap && lesson.baitap.length > 0) ? '<button class="btn-quiz-goto" onclick="scrollToQuiz()"><i class="fa-solid fa-pen-to-square"></i> Làm bài tập</button>' : ''}
+                        ${(!done && _hasQuiz) ? '<button class="btn-quiz-goto" onclick="scrollToQuiz()"><i class="fa-solid fa-pen-to-square"></i> Làm bài tập</button>' : ''}
                         <button class="btn btn-nav" onclick="${prev?`go('#lesson/${encodeURIComponent(prev.key)}')`:''}" ${prev?'':'disabled'}>
                             <i class="fa-solid fa-arrow-left"></i> Bài trước
                         </button>
@@ -951,7 +961,7 @@ function renderLesson(key){
                         </button>
                     </div>
                 </div>
-                ${pdfLtHtml}${pdfHtml}${quizHtml}
+                ${tabsBlockHtml}
                 ${solutionHtml}
             </div>
             <div class="lesson-sidebar">${side}</div>
@@ -962,6 +972,7 @@ function renderLesson(key){
     _lessonHasQuiz = !!(lesson.baitap && lesson.baitap.length > 0);
     _lessonQuizMinutes = lesson.thoigian || 0;
     _videoWatched90 = WATCHED.has(key); // đã hoàn thành trước = tính là đã xem
+    _quizPassed90 = WATCHED.has(key) || !_lessonHasQuiz; // không có quiz thì coi như đạt sẵn
     loadVideoQuiz(key, vtype); // câu hỏi trong video (chỉ YouTube)
     // Đếm ngược thời gian làm bài (nếu thầy đặt giới hạn phút cho bài này)
     if(_lessonHasQuiz && _lessonQuizMinutes > 0 && !done) startQuizTimer(key, _lessonQuizMinutes);
@@ -976,7 +987,14 @@ function renderLesson(key){
 let _lessonCurrentKey = null;
 let _lessonHasQuiz = false;
 let _lessonQuizMinutes = 0;
-let _videoWatched90 = false; // true khi đã xem ≥90% video
+let _videoWatched90 = false; // true khi đã xem ≥90% video (hoặc bài không có video)
+let _quizPassed90 = false;   // true khi làm đúng ≥90% bài tập luyện tập (hoặc bài không có quiz)
+
+// Hoàn thành bài CHỈ khi cả 2 điều kiện đều đạt: xem ≥90% video VÀ làm đúng ≥90% quiz
+// (mỗi điều kiện tự coi là "đạt sẵn" nếu bài không có video/không có quiz tương ứng)
+function checkLessonComplete(key){
+    if(_videoWatched90 && _quizPassed90 && !WATCHED.has(key)) markWatchedUI(key);
+}
 
 /* ── Helper: mark + update UI ── */
 function markWatchedUI(key){
@@ -1003,17 +1021,21 @@ function unlockNextBtn(){
     btn.innerHTML = 'Bài tiếp <i class="fa-solid fa-arrow-right"></i>';
 }
 
-/* ── Gọi khi video hoàn thành ── */
+/* ── Gọi khi video hoàn thành (YouTube ≥90%, Drive sau 3 phút, hoặc bài không video sau 30s) ── */
 function onVideoComplete(key){
     _videoWatched90 = true;
-    const _hintEl = document.getElementById('quiz-threshold-hint');
-    if(_hintEl) _hintEl.textContent = 'Bạn đã xem video → chỉ cần đúng 8/10 câu để mở khoá bài tiếp.';
-    if(_lessonHasQuiz){
-        toast('<i class="fa-solid fa-check-circle"></i> Xem video xong! Làm bài luyện tập để hoàn thành bài nhé.','ok');
-        setTimeout(()=>{ document.getElementById('quiz-block')?.scrollIntoView({behavior:'smooth',block:'start'}); },400);
+    if(_lessonHasQuiz && !_quizPassed90){
+        toast('<i class="fa-solid fa-check-circle"></i> Xem video xong! Làm đúng ≥90% bài luyện tập để hoàn thành bài nhé.','ok');
+        setTimeout(()=>{ switchLessonTab('quiz'); document.getElementById('quiz-block')?.scrollIntoView({behavior:'smooth',block:'start'}); },400);
     } else {
-        markWatchedUI(key);
+        checkLessonComplete(key);
     }
+}
+
+/* ── Chuyển tab trong khối "Tài liệu lý thuyết / Tài liệu bài tập / Luyện tập trắc nghiệm" ── */
+function switchLessonTab(tabKey){
+    document.querySelectorAll('.lt-tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tabKey));
+    document.querySelectorAll('.lt-tab-pane').forEach(p=>p.classList.toggle('active', p.dataset.pane===tabKey));
 }
 
 /* ── Non-video (slide/PDF/text): auto-mark sau 30 giây ── */
@@ -1306,29 +1328,35 @@ function checkPractice(key,force){
     if(answered<qs.length && !force){ toast('<i class="fa-solid fa-triangle-exclamation"></i> Hãy trả lời đủ các câu nhé!','err'); return; }
     const scoreEl=document.getElementById('quiz-score');
     const pct10 = qs.length > 0 ? (correct / qs.length * 10) : 0;
-    // Ngưỡng động: đã xem ≥90% video → 8/10; chưa xem → 10/10 (tất cả đúng)
-    const neededCount = _videoWatched90 ? Math.ceil(qs.length * 0.8) : qs.length;
+    // Ngưỡng cố định: luôn cần đúng ≥90% số câu (không còn phụ thuộc đã xem video hay chưa)
+    const neededCount = Math.ceil(qs.length * 0.9);
     const passed = correct >= neededCount;
-    const neededLabel = _videoWatched90 ? '8/10' : '10/10';
     if(scoreEl){
         scoreEl.style.display='inline-flex';
         scoreEl.className='quiz-score'+(passed?' pass':(correct===qs.length?' great':''));
         scoreEl.innerHTML=`<i class="fa-solid fa-star"></i> ${correct}/${qs.length} câu đúng (${pct10.toFixed(1)}/10)`;
     }
-    // Đạt ngưỡng → mở khoá; chưa đạt → nhắc lại
+    // Đạt ≥90% quiz → còn tuỳ đã xem đủ ≥90% video chưa mới thực sự mở khoá; chưa đạt → nhắc lại
     let warnEl = document.getElementById('quiz-warn');
     let bannerEl = document.getElementById('quiz-unlock-banner');
+    const vtypeNow = videoType(info.lesson.video);
     if(passed){
+        _quizPassed90 = true;
         if(warnEl) warnEl.remove();
-        markWatchedUI(decodeURIComponent(key)); // markWatchedUI gọi unlockNextBtn
         if(!bannerEl){
             bannerEl = document.createElement('div');
             bannerEl.id = 'quiz-unlock-banner';
             bannerEl.className = 'quiz-unlock-banner';
             document.querySelector('.quiz-actions')?.after(bannerEl);
         }
-        bannerEl.innerHTML = `<i class="fa-solid fa-trophy"></i><span>Xuất sắc! ${correct}/${qs.length} câu: Bài tiếp đã mở khoá!</span>`;
-        toast(`<i class="fa-solid fa-trophy"></i> Đạt ≥${neededLabel}: hoàn thành bài!`,'ok');
+        if(_videoWatched90){
+            markWatchedUI(decodeURIComponent(key)); // markWatchedUI gọi unlockNextBtn
+            bannerEl.innerHTML = `<i class="fa-solid fa-trophy"></i><span>Xuất sắc! ${correct}/${qs.length} câu: Bài tiếp đã mở khoá!</span>`;
+            toast('<i class="fa-solid fa-trophy"></i> Đạt ≥90%: hoàn thành bài!','ok');
+        } else {
+            bannerEl.innerHTML = `<i class="fa-solid fa-circle-check"></i><span>Bài tập đã đạt ≥90%! ${(vtypeNow==='youtube'||vtypeNow==='drive')?'Xem đủ ≥90% thời lượng video':'Chờ hệ thống ghi nhận'} để hoàn thành bài.</span>`;
+            toast('<i class="fa-solid fa-circle-check"></i> Bài tập đạt yêu cầu! Xem đủ video để hoàn thành bài.','ok');
+        }
     } else {
         if(bannerEl) bannerEl.remove();
         if(!warnEl){
@@ -1337,14 +1365,14 @@ function checkPractice(key,force){
             warnEl.className = 'quiz-warn';
             document.querySelector('.quiz-actions')?.after(warnEl);
         }
-        warnEl.innerHTML = `<i class="fa-solid fa-rotate-left"></i><span>Chưa đủ điểm (cần ≥${neededLabel}). ${_videoWatched90 ? 'Thử lại nhé!' : 'Xem video để giảm xuống 8/10, hoặc cố đạt 10/10!'}</span>`;
-        toast('<i class="fa-solid fa-triangle-exclamation"></i> Cần ≥8/10 để qua bài. Cố lên!','err');
+        warnEl.innerHTML = `<i class="fa-solid fa-rotate-left"></i><span>Chưa đủ điểm (cần ≥90%, tức từ ${neededCount}/${qs.length} câu trở lên). Thử lại nhé!</span>`;
+        toast('<i class="fa-solid fa-triangle-exclamation"></i> Cần đúng ≥90% để đạt phần này. Cố lên!','err');
     }
 }
 
 function scrollToQuiz(){
     const block = document.getElementById('quiz-block');
-    if(block) block.scrollIntoView({behavior:'smooth', block:'start'});
+    if(block){ switchLessonTab('quiz'); block.scrollIntoView({behavior:'smooth', block:'start'}); }
     else toast('Bài này chưa có câu hỏi trắc nghiệm.','err');
 }
 
