@@ -165,7 +165,10 @@
         /* Ghim khối video (+ panel câu hỏi trong video) tại đầu cột khi cuộn xuống xem PDF/quiz bên dưới —
            tránh phải cuộn lên thủ công để xem lại video sau khi trả lời câu hỏi. Không thu nhỏ video,
            chỉ tận dụng việc video luôn "dính" ở khoảng trống đầu màn hình khi cuộn. */
-        .video-sticky-wrap { position:sticky; top:68px; z-index:7; background:var(--bg); padding-bottom:6px; }
+        /* Bỏ ghim video (18/7 khuya): từ khi câu hỏi trong video đã chuyển sang hiện ở cột
+           list bài bên phải (không còn nằm dưới video nữa), ghim video ở đây gây khoá cuộn,
+           cản học sinh cuộn xuống xem/tải PDF tài liệu bên dưới — trả lại cuộn bình thường. */
+        .video-sticky-wrap { position:static; }
 
         .video-box { background:#000; border:1.5px solid var(--line); border-radius:var(--radius); overflow:hidden; }
         .ratio { position:relative; width:100%; padding-top:56.25%; }
@@ -310,7 +313,7 @@
         .subject-label h2 { font-size:19px; font-weight:800; letter-spacing:-.02em; }
         .subject-label .subj-pill { font-size:12px; font-weight:700; background:rgba(11,132,243,.1); color:var(--blue); border-radius:20px; padding:3px 12px; }
 
-        @media(max-width:900px) { .player-layout { grid-template-columns:1fr; } .lesson-sidebar { position:static; } .side-list { max-height:400px; } .video-sticky-wrap { position:static; } }
+        @media(max-width:900px) { .player-layout { grid-template-columns:1fr; } .lesson-sidebar { position:static; } .side-list { max-height:400px; } }
         @media(max-width:560px) {
             header { padding:12px 16px; }
             .nav a span,.nav button span { display:none; }
