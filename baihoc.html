@@ -977,6 +977,7 @@ function renderLesson(key){
         <div class="player-layout">
             <div class="lesson-main">
                 <div class="video-sticky-wrap">${videoTabsHtml}</div>
+                <div id="vq-holder-anchor"></div>
                 <div class="lesson-detail">
                     <div style="font-size:12px;font-weight:800;color:var(--blue);opacity:.7;margin-bottom:5px;letter-spacing:.04em">BUỔI ${_lsn_session}/${course.total}</div>
                     <h1>${esc(lesson.name)}</h1>
@@ -1007,6 +1008,7 @@ function renderLesson(key){
             <div class="lesson-sidebar"><div id="vq-holder"></div><div id="side-list-wrap">${side}</div></div>
         </div>`;
     renderMath(app());
+    _vqPositionHolder();
     // Lưu context bài hiện tại
     _lessonCurrentKey = key;
     _lessonHasQuiz = !!(lesson.baitap && lesson.baitap.length > 0);
@@ -1323,6 +1325,27 @@ function _vqToggleSideList(showList){
     const sl = document.getElementById('side-list-wrap');
     if(sl) sl.style.display = showList ? '' : 'none';
 }
+
+// Trên mobile (≤900px), cột list bài xếp CUỐI trang (theo layout responsive có sẵn) nên nếu
+// #vq-holder nằm trong đó thì câu hỏi sẽ nhảy tít xuống cuối, rất khó theo dõi. Trên mobile,
+// dời #vq-holder về ngay dưới video (điểm neo #vq-holder-anchor) thay vì để trong sidebar.
+// Trên desktop thì giữ nguyên trong sidebar như _vqToggleSideList mong đợi.
+function _vqPositionHolder(){
+    const holder = document.getElementById('vq-holder');
+    const anchor = document.getElementById('vq-holder-anchor');
+    const sideWrap = document.getElementById('side-list-wrap');
+    if(!holder || !anchor) return;
+    if(window.innerWidth <= 900){
+        if(holder.previousElementSibling !== anchor) anchor.insertAdjacentElement('afterend', holder);
+    } else if(sideWrap && holder.nextElementSibling !== sideWrap){
+        sideWrap.insertAdjacentElement('beforebegin', holder);
+    }
+}
+window.addEventListener('resize', (function(){
+    let t = null;
+    return function(){ clearTimeout(t); t = setTimeout(_vqPositionHolder, 200); };
+})());
+
 
 // Panel "nhắc nhẹ" cho mốc ĐÃ từng trả lời đúng: dừng video, hiện lại câu hỏi ở
 // dạng chỉ-xem (đã tô đáp án đúng, không cho chọn). Video GIỮ NGUYÊN trạng thái dừng —
