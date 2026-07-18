@@ -26,6 +26,32 @@
         body.dark .search-box { background:var(--card); border-color:var(--line); }
         body.dark select.sort { background:var(--card); border-color:var(--line); color:var(--text); }
         body.dark .cc-btn { background:#0b84f3; color:#fff; }
+        /* Fix trùng màu: .pq-opt.result-correct/-wrong có nền pastel sáng cố định (#f0fdf4/#fff5f5),
+           chữ đáp án kế thừa var(--text) (sáng ở dark mode) → gần như vô hình trên nền nhạt. */
+        body.dark .pq-opt.result-correct { background:rgba(52,211,153,.14); }
+        body.dark .pq-opt.result-wrong { background:rgba(248,113,113,.14); }
+        body.dark .pq-opt.result-wrong .pq-letter { color:#f87171; }
+
+        /* ═══ Popup "Ôn lại câu đã sai" trước khi sang bài tiếp ═══ */
+        #wr-overlay{display:none;position:fixed;inset:0;z-index:99995;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;}
+        #wr-overlay.open{display:flex;}
+        #wr-card{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:32px 36px;max-width:720px;width:100%;max-height:86vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.35);}
+        .wr-title{font-size:21px;font-weight:800;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:9px;}
+        .wr-title i{color:var(--red);}
+        .wr-sub{font-size:14px;color:var(--sub);margin-bottom:18px;line-height:1.5;}
+        .wr-block{margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--line);}
+        .wr-block:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+        .wr-qtext{font-size:15px;font-weight:600;line-height:1.65;margin-bottom:10px;color:var(--text);}
+        .wr-opts{display:flex;flex-direction:column;gap:7px;}
+        .wr-opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1.5px solid var(--line);border-radius:9px;font-size:14px;font-weight:500;line-height:1.55;color:var(--text);}
+        .wr-opt .pq-letter{color:var(--sub);}
+        .wr-opt.wr-correct{border-color:var(--green);background:#f0fdf4;}
+        body.dark .wr-opt.wr-correct{background:rgba(52,211,153,.14);}
+        .wr-badge{margin-left:auto;font-size:11px;font-weight:700;color:var(--green);flex-shrink:0;display:inline-flex;align-items:center;gap:4px;}
+        .wr-actions{margin-top:22px;display:flex;justify-content:center;}
+        .wr-continue-btn{background:var(--blue);color:#fff;border:none;border-radius:50px;padding:14px 30px;font-size:15px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:opacity .15s;font-family:inherit;}
+        .wr-continue-btn:disabled{opacity:.5;cursor:not-allowed;}
+        .wr-continue-btn:not(:disabled):hover{opacity:.88;}
         *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
         body { background:var(--bg); color:var(--text); font-family:'Plus Jakarta Sans',ui-sans-serif,sans-serif; -webkit-font-smoothing:antialiased; min-height:100vh; }
         a { color:var(--blue); text-decoration:none; }
@@ -955,7 +981,7 @@ function renderLesson(key){
                         </button>
                         <button class="btn btn-nav ${(!done&&next)?'locked':''} ${done&&next?'unlocked':''}" id="btn-next-lesson"
                             data-href="${next?`#lesson/${encodeURIComponent(next.key)}`:''}"
-                            onclick="${next&&done?`go('#lesson/${encodeURIComponent(next.key)}')`:''}"
+                            onclick="${next&&done?`goNextLessonWithReview('#lesson/${encodeURIComponent(next.key)}')`:''}"
                             ${(next&&done)?'':'disabled'}>
                             ${done&&next?'':'<i class="fa-solid fa-lock" style="font-size:11px"></i> '}Bài tiếp <i class="fa-solid fa-arrow-right"></i>
                         </button>
@@ -1017,7 +1043,7 @@ function unlockNextBtn(){
     btn.classList.add('unlocked');
     // Khôi phục onclick từ data-href
     const href = btn.dataset.href;
-    if(href) btn.onclick = function(){ go(href); };
+    if(href) btn.onclick = function(){ goNextLessonWithReview(href); };
     btn.innerHTML = 'Bài tiếp <i class="fa-solid fa-arrow-right"></i>';
 }
 
@@ -1292,6 +1318,108 @@ function _vqLog(cp){
 }
 
 /* ═══════════════════════════════════════════
+   CÂU ĐÃ TRẢ LỜI SAI — lưu lại để bắt ôn trước khi sang bài tiếp
+═══════════════════════════════════════════ */
+function _wrongQKey(lessonKey){
+    // Luôn kèm HS.sdt: nếu không, dữ liệu "đã sai" của tài khoản này sẽ dính
+    // chung với tài khoản khác từng test trên cùng máy/trình duyệt.
+    return 'vlxt_wrongq_' + ((HS && HS.sdt) || '') + '_' + (lessonKey || '');
+}
+function getWrongQIndices(lessonKey){
+    try{ return JSON.parse(localStorage.getItem(_wrongQKey(lessonKey)) || '[]'); }catch(e){ return []; }
+}
+function addWrongQIndices(lessonKey, indices){
+    if(!indices || !indices.length) return;
+    const cur = new Set(getWrongQIndices(lessonKey));
+    indices.forEach(i => cur.add(i));
+    try{ localStorage.setItem(_wrongQKey(lessonKey), JSON.stringify(Array.from(cur))); }catch(e){}
+}
+function clearWrongQIndices(lessonKey){
+    try{ localStorage.removeItem(_wrongQKey(lessonKey)); }catch(e){}
+}
+
+let _wrTimer = null;
+let _reviewPending = null; // { nextHref, lessonKey }
+
+// Gọi thay cho go(href) trực tiếp khi bấm "Bài tiếp": nếu bài vừa học có câu
+// từng làm sai, bắt xem lại (tối thiểu 5s/câu) trước khi thực sự chuyển bài.
+function goNextLessonWithReview(nextHref){
+    const lessonKey = _lessonCurrentKey;
+    const wrongIdx = getWrongQIndices(lessonKey);
+    if(!wrongIdx.length){ go(nextHref); return; }
+    const info = findLesson(lessonKey);
+    const qs = (info && info.lesson.baitap) || [];
+    const items = wrongIdx.filter(i => qs[i]).map(i => ({ qi:i, q:qs[i] }));
+    if(!items.length){ clearWrongQIndices(lessonKey); go(nextHref); return; }
+    _reviewPending = { nextHref: nextHref, lessonKey: lessonKey };
+    openWrongReviewOverlay(items);
+}
+
+function openWrongReviewOverlay(items){
+    const totalSec = items.length * 5;
+    let html = `<div class="wr-title"><i class="fa-solid fa-rotate-left"></i> Ôn lại ${items.length} câu đã làm sai trong bài này</div>
+        <div class="wr-sub">Xem kỹ lại đáp án đúng bên dưới trước khi sang bài tiếp theo nhé!</div>
+        <div class="wr-list">`;
+    items.forEach(function(it){
+        const q = it.q;
+        const ans = (q.ans || q.correct || q.dapan || '').toString().toUpperCase().trim();
+        html += `<div class="wr-block">
+            <div class="wr-qtext">Câu ${it.qi + 1}: ${q.q || ''}</div>
+            <div class="wr-opts">`;
+        ['A','B','C','D'].forEach(function(L){
+            if(!q[L] && !q[L.toLowerCase()]) return;
+            const txt = q[L] || q[L.toLowerCase()] || '';
+            const isCorrect = L === ans;
+            html += `<div class="wr-opt${isCorrect ? ' wr-correct' : ''}">
+                <span class="pq-letter">${L}.</span><span>${pqSafe(txt)}</span>
+                ${isCorrect ? '<span class="wr-badge"><i class="fa-solid fa-check"></i> Đáp án đúng</span>' : ''}
+            </div>`;
+        });
+        html += `</div></div>`;
+    });
+    html += `</div>
+        <div class="wr-actions">
+            <button class="wr-continue-btn" id="wr-continue-btn" disabled onclick="confirmWrongReviewed()">
+                <i class="fa-solid fa-check"></i> Em đã nhớ rõ, sang bài tiếp (<span id="wr-countdown">${totalSec}</span>s)
+            </button>
+        </div>`;
+
+    let overlay = document.getElementById('wr-overlay');
+    if(!overlay){
+        overlay = document.createElement('div');
+        overlay.id = 'wr-overlay';
+        document.body.appendChild(overlay);
+    }
+    overlay.innerHTML = `<div id="wr-card">${html}</div>`;
+    overlay.classList.add('open');
+    renderMath(overlay);
+
+    let remain = totalSec;
+    const cdEl = document.getElementById('wr-countdown');
+    const btn = document.getElementById('wr-continue-btn');
+    clearInterval(_wrTimer);
+    _wrTimer = setInterval(function(){
+        remain--;
+        if(cdEl) cdEl.textContent = Math.max(remain, 0);
+        if(remain <= 0){
+            clearInterval(_wrTimer);
+            if(btn){ btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-check"></i> Em đã nhớ rõ, sang bài tiếp'; }
+        }
+    }, 1000);
+}
+
+function confirmWrongReviewed(){
+    if(!_reviewPending) return;
+    clearInterval(_wrTimer);
+    clearWrongQIndices(_reviewPending.lessonKey);
+    const overlay = document.getElementById('wr-overlay');
+    if(overlay) overlay.classList.remove('open');
+    const href = _reviewPending.nextHref;
+    _reviewPending = null;
+    go(href);
+}
+
+/* ═══════════════════════════════════════════
    QUIZ LOGIC
 ═══════════════════════════════════════════ */
 function checkPractice(key,force){
@@ -1300,6 +1428,7 @@ function checkPractice(key,force){
     if(!info) return;
     const qs=info.lesson.baitap;
     let correct=0, answered=0;
+    const wrongThisAttempt=[];
     qs.forEach((q,qi)=>{
         const sel=document.querySelector(`input[name="pq${qi}"]:checked`);
         const opts=document.querySelectorAll(`#pq-${qi} .pq-opt`);
@@ -1313,6 +1442,7 @@ function checkPractice(key,force){
             const got=sel.value.toUpperCase();
             const isRight=got===ans;
             if(isRight) correct++;
+            else wrongThisAttempt.push(qi);
             const chosenOpt=document.querySelector(`#pq-${qi}-${got}`);
             if(chosenOpt){
                 chosenOpt.classList.add(isRight?'result-correct':'result-wrong');
@@ -1334,6 +1464,9 @@ function checkPractice(key,force){
             }
         }
     });
+    // Ghi nhớ câu đã từng trả lời sai trong bài này (giữ nguyên qua các lần làm lại)
+    // để nhắc ôn trước khi sang bài tiếp — xem goNextLessonWithReview().
+    if(wrongThisAttempt.length) addWrongQIndices(_lessonCurrentKey, wrongThisAttempt);
     if(answered<qs.length && !force){ toast('<i class="fa-solid fa-triangle-exclamation"></i> Hãy trả lời đủ các câu nhé!','err'); return; }
     const scoreEl=document.getElementById('quiz-score');
     const pct10 = qs.length > 0 ? (correct / qs.length * 10) : 0;

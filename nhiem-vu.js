@@ -178,6 +178,13 @@
     document.head.appendChild(s);
   }
 
+  // ─── Chỉ tự bật popup lớn ở trang chủ; các trang khác chỉ hiện banner góc phải ──
+  function isTrangChu() {
+    var p = (location.pathname || '').replace(/\/+$/, '');
+    var file = p.substring(p.lastIndexOf('/') + 1);
+    return file === '' || file.toLowerCase() === 'index.html';
+  }
+
   // ─── Overlay helpers ──────────────────────────────────────
   function getOrCreateOverlay() {
     var o = document.getElementById('vlxt-nv-overlay');
@@ -441,9 +448,11 @@
       var oldBanner = document.getElementById('vlxt-mission-banner');
 
       if (!caughtUp) {
-        // Vẫn CHƯA xong nhiệm vụ → đẩy lại popup đầy đủ để nhắc học ngay
+        // Vẫn CHƯA xong nhiệm vụ → đẩy lại nhắc nhở (popup đầy đủ CHỈ ở trang chủ,
+        // trang khác chỉ banner góc phải theo yêu cầu của thầy)
         if (oldBanner) oldBanner.remove();
-        showMissionPopup(_state.nv, _state.xps, _state.user, _state.teachingKey, false);
+        if (isTrangChu()) showMissionPopup(_state.nv, _state.xps, _state.user, _state.teachingKey, false);
+        else showMissionBanner(_state.nv, _state.xps);
       } else if (oldBanner) {
         // Vừa bắt kịp tiến độ → cập nhật lại banner (vd chuyển sang "Chế độ Đua Top")
         oldBanner.remove();
@@ -464,9 +473,9 @@
       var data = await resp.json();
       var nv   = (data && data.ok) ? data.data : null;
 
-      // Chưa setup — hỏi nhịp học
+      // Chưa setup — hỏi nhịp học (chỉ hỏi ở trang chủ, trang khác im lặng bỏ qua)
       if (!nv || !nv.nhipHoc) {
-        showNhipHocSelector(user);
+        if (isTrangChu()) showNhipHocSelector(user);
         return;
       }
 
@@ -506,7 +515,8 @@
 
       if (nv.lastMissionDate === todayS || localShown) {
         if (realConTro < xps.length) {
-          showMissionPopup(nv, xps, user, teachingKey, false);
+          if (isTrangChu()) showMissionPopup(nv, xps, user, teachingKey, false);
+          else showMissionBanner(nv, xps);
         } else {
           showMissionBanner(nv, xps);
         }
@@ -540,11 +550,13 @@
       // thái "hết bài" từ trước (không có gì mới hôm nay) thì chỉ hiện banner
       // nhắc nhẹ, tránh lặp lại popup ăn mừng mỗi ngày.
       if (realConTro >= xps.length && streakToday) {
-        showDuaTopUnlocked(nv, user);
+        if (isTrangChu()) showDuaTopUnlocked(nv, user);
+        else showMissionBanner(nv, xps);
       } else if (realConTro >= xps.length) {
         showMissionBanner(nv, xps);
       } else {
-        showMissionPopup(nv, xps, user, teachingKey, streakToday);
+        if (isTrangChu()) showMissionPopup(nv, xps, user, teachingKey, streakToday);
+        else showMissionBanner(nv, xps);
       }
 
     } catch (e) {
