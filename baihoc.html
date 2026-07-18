@@ -1301,8 +1301,10 @@ function _vqStartWatch(){
 function _vqStopWatch(){ if(_vqTimer){ clearInterval(_vqTimer); _vqTimer = null; } }
 
 // Panel "nhắc nhẹ" cho mốc ĐÃ từng trả lời đúng: dừng video, hiện lại câu hỏi ở
-// dạng chỉ-xem (đã tô đáp án đúng, không cho chọn), rồi tự tiếp tục sau vài giây
-// hoặc HS bấm nút/tua đi chỗ khác đều được — không khoá như câu chưa từng làm đúng.
+// dạng chỉ-xem (đã tô đáp án đúng, không cho chọn). Video GIỮ NGUYÊN trạng thái dừng —
+// KHÔNG tự phát tiếp. Chỉ tiếp tục khi HS tự bấm nút "Tiếp tục xem", tự bấm play trên
+// video, hoặc tự tua đi chỗ khác (mọi hành động phát lại đều do HS chủ động, không có
+// timer tự động nào ở đây).
 function _vqShowReminder(i){
     _vqReminderActive = true;
     try{ _ytPlayer.pauseVideo(); }catch(e){}
@@ -1330,14 +1332,13 @@ function _vqShowReminder(i){
         </div>
         <div class="vq-foot">
             <i class="fa-solid fa-circle-check" style="color:var(--green)"></i>
-            Em đã làm đúng câu này rồi — xem lại rồi video tự tiếp tục nhé (hoặc bấm nút, hoặc tua đi chỗ khác cũng được).
+            Em đã làm đúng câu này rồi — video đang tạm dừng, bấm nút bên dưới (hoặc tự bấm play, tua đi chỗ khác) khi em xem xong nhé.
             <button type="button" class="vq-continue-btn" onclick="vqContinueReminder()">Tiếp tục xem <i class="fa-solid fa-play"></i></button>
         </div>
     </div>`;
     renderMath(holder);
     setTimeout(function(){ holder.scrollIntoView({behavior:'smooth', block:'center'}); }, 150);
-    clearTimeout(_vqReminderTimer);
-    _vqReminderTimer = setTimeout(function(){ window.vqContinueReminder(); }, 3000);
+    clearTimeout(_vqReminderTimer); _vqReminderTimer = null; // không còn timer tự-phát-tiếp: HS phải tự bấm hoặc tự play video
 }
 
 window.vqContinueReminder = function(){
