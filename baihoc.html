@@ -930,30 +930,28 @@ function renderLesson(key){
         </div>`;
     }
 
-    // ── Video chữa bài ──
-    let solutionHtml='';
+    // ── Video bài học + Video chữa bài: gộp thành 2 tab (thay vì 2 khối xếp chồng) ──
+    let sEmbed = '';
+    let _hasSolutionVideo = false;
     if(lesson.videogiai){
         const svid=ytId(lesson.videogiai); const sdid=driveId(lesson.videogiai);
         if(svid||sdid){
-            const sEmbed=svid
+            _hasSolutionVideo = true;
+            sEmbed = svid
                 ?`<iframe src="https://www.youtube-nocookie.com/embed/${svid}?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
                 :`<iframe src="https://drive.google.com/file/d/${sdid}/preview" allow="autoplay; encrypted-media" allowfullscreen style="border:0;width:100%;height:100%;position:absolute;inset:0"></iframe>`;
-            solutionHtml=`<div class="section-block">
-                <div class="section-block-head">
-                    <div class="s-icon s-icon-green"><i class="fa-solid fa-lightbulb"></i></div>
-                    <div>
-                        <h3>Video chữa bài</h3>
-                        <p>Thầy giải chi tiết từng câu</p>
-                    </div>
-                </div>
-                <div class="section-block-body">
-                    <div class="video-box solution-video">
-                        <div class="ratio">${sEmbed}</div>
-                    </div>
-                </div>
-            </div>`;
         }
     }
+    const videoTabsHtml = _hasSolutionVideo
+        ? `<div class="section-block" id="video-tabs-block">
+            <div class="lt-tabs-bar">
+                <button class="lt-tab-btn active" data-vtab="baihoc" onclick="switchVideoTab('baihoc')"><i class="fa-solid fa-circle-play"></i> Video bài học lí thuyết</button>
+                <button class="lt-tab-btn" data-vtab="chuabai" onclick="switchVideoTab('chuabai')"><i class="fa-solid fa-lightbulb"></i> Video chữa bài luyện tập</button>
+            </div>
+            <div class="lt-tab-pane active" data-vpane="baihoc" style="padding:14px 22px 22px"><div class="video-box">${videoHtml}</div></div>
+            <div class="lt-tab-pane" data-vpane="chuabai" style="padding:14px 22px 22px"><div class="video-box solution-video"><div class="ratio">${sEmbed}</div></div></div>
+        </div>`
+        : `<div class="video-box">${videoHtml}</div>`;
 
     // ── Render trang bài học ──
     const _hasQuiz = !!(lesson.baitap && lesson.baitap.length>0);
@@ -974,7 +972,7 @@ function renderLesson(key){
         </div>
         <div class="player-layout">
             <div class="lesson-main">
-                <div class="video-box">${videoHtml}</div>
+                ${videoTabsHtml}
                 <div id="vq-holder"></div>
                 <div class="lesson-detail">
                     <div style="font-size:12px;font-weight:800;color:var(--blue);opacity:.7;margin-bottom:5px;letter-spacing:.04em">BUỔI ${_lsn_session}/${course.total}</div>
@@ -1002,7 +1000,6 @@ function renderLesson(key){
                     </div>
                 </div>
                 ${tabsBlockHtml}
-                ${solutionHtml}
             </div>
             <div class="lesson-sidebar">${side}</div>
         </div>`;
@@ -1074,8 +1071,22 @@ function onVideoComplete(key){
 
 /* ── Chuyển tab trong khối "Tài liệu lý thuyết / Tài liệu bài tập / Luyện tập trắc nghiệm" ── */
 function switchLessonTab(tabKey){
-    document.querySelectorAll('.lt-tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tabKey));
-    document.querySelectorAll('.lt-tab-pane').forEach(p=>p.classList.toggle('active', p.dataset.pane===tabKey));
+    document.querySelectorAll('#lesson-tabs-block .lt-tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tabKey));
+    document.querySelectorAll('#lesson-tabs-block .lt-tab-pane').forEach(p=>p.classList.toggle('active', p.dataset.pane===tabKey));
+    // Thông minh: bấm vào "PDF luyện tập thêm" hoặc "Luyện tập trắc nghiệm" thì tự nhảy
+    // tab video ở trên sang "Video chữa bài luyện tập" luôn (nếu bài có video chữa bài).
+    if(tabKey==='luyentap-pdf' || tabKey==='quiz') switchVideoTab('chuabai', true);
+}
+
+/* ── Chuyển tab video ở trên: "Video bài học lí thuyết" / "Video chữa bài luyện tập" ── */
+function switchVideoTab(tabKey, silent){
+    const bar = document.getElementById('video-tabs-block');
+    if(!bar) return; // bài không có video chữa bài thì không có khối tab này
+    const wasActive = bar.querySelector(`.lt-tab-btn[data-vtab="${tabKey}"]`)?.classList.contains('active');
+    bar.querySelectorAll('.lt-tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.vtab===tabKey));
+    bar.querySelectorAll('.lt-tab-pane').forEach(p=>p.classList.toggle('active', p.dataset.vpane===tabKey));
+    if(!silent) return;
+    if(!wasActive && tabKey==='chuabai') toast('<i class="fa-solid fa-lightbulb"></i> Đã chuyển sang Video chữa bài ở trên ⬆','ok');
 }
 
 /* ── Non-video (slide/PDF/text): auto-mark sau 30 giây ── */
