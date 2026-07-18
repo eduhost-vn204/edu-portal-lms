@@ -977,7 +977,6 @@ function renderLesson(key){
         <div class="player-layout">
             <div class="lesson-main">
                 <div class="video-sticky-wrap">${videoTabsHtml}</div>
-                <div id="vq-holder"></div>
                 <div class="lesson-detail">
                     <div style="font-size:12px;font-weight:800;color:var(--blue);opacity:.7;margin-bottom:5px;letter-spacing:.04em">BUỔI ${_lsn_session}/${course.total}</div>
                     <h1>${esc(lesson.name)}</h1>
@@ -1005,7 +1004,7 @@ function renderLesson(key){
                 </div>
                 ${tabsBlockHtml}
             </div>
-            <div class="lesson-sidebar">${side}</div>
+            <div class="lesson-sidebar"><div id="vq-holder"></div><div id="side-list-wrap">${side}</div></div>
         </div>`;
     renderMath(app());
     // Lưu context bài hiện tại
@@ -1223,6 +1222,7 @@ function _vqFmt(s){
 function loadVideoQuiz(key, vtype){
     _vqData = []; _vqActive = -1; _vqWrong = 0; _vqKey = key; _vqLock = false;
     _vqRemindedIds = new Set(); _vqReminderActive = false; _vqReminderIdx = -1;
+    _vqToggleSideList(true); // đề phòng lệch trạng thái từ bài trước
     clearTimeout(_vqReminderTimer); _vqReminderTimer = null;
     _vqStopWatch();
     const holder = document.getElementById('vq-holder');
@@ -1316,6 +1316,14 @@ function _vqStartWatch(){
 }
 function _vqStopWatch(){ if(_vqTimer){ clearInterval(_vqTimer); _vqTimer = null; } }
 
+// Ẩn/hiện danh sách bài học bên phải để nhường chỗ cho panel câu hỏi trong video —
+// tận dụng khoảng trống cột phải (vốn đang rảnh) thay vì chèn câu hỏi dưới video làm
+// che nội dung/phải cuộn lên xuống. Khi không có câu hỏi thì list bài hiện lại bình thường.
+function _vqToggleSideList(showList){
+    const sl = document.getElementById('side-list-wrap');
+    if(sl) sl.style.display = showList ? '' : 'none';
+}
+
 // Panel "nhắc nhẹ" cho mốc ĐÃ từng trả lời đúng: dừng video, hiện lại câu hỏi ở
 // dạng chỉ-xem (đã tô đáp án đúng, không cho chọn). Video GIỮ NGUYÊN trạng thái dừng —
 // KHÔNG tự phát tiếp. Chỉ tiếp tục khi HS tự bấm nút "Tiếp tục xem", tự bấm play trên
@@ -1338,6 +1346,7 @@ function _vqShowReminder(i){
             ${isAns ? '<span class="pq-tag correct-mark">✓ Đáp án đúng</span>' : ''}
         </div>`;
     });
+    _vqToggleSideList(false);
     holder.innerHTML = `<div class="vq-panel vq-reminder" id="vq-panel">
         <div class="vq-head">
             <span class="vq-badge vq-badge-done"><i class="fa-solid fa-lightbulb"></i> NHẮC LẠI CÂU ĐÃ HỌC</span>
@@ -1354,7 +1363,7 @@ function _vqShowReminder(i){
         </div>
     </div>`;
     renderMath(holder);
-    setTimeout(function(){ holder.scrollIntoView({behavior:'smooth', block:'center'}); }, 150);
+    if(window.innerWidth <= 900) setTimeout(function(){ holder.scrollIntoView({behavior:'smooth', block:'center'}); }, 150);
     clearTimeout(_vqReminderTimer); _vqReminderTimer = null; // không còn timer tự-phát-tiếp: HS phải tự bấm hoặc tự play video
 }
 
@@ -1363,6 +1372,7 @@ window.vqContinueReminder = function(){
     _vqReminderActive = false;
     const holder = document.getElementById('vq-holder');
     if(holder) holder.innerHTML = '';
+    _vqToggleSideList(true);
     // Nhảy đúng về mốc thời gian của câu này trước khi phát tiếp, để HS luôn xem lại
     // đúng đoạn thầy chữa câu đó từ đầu (không bị lệch do polling/pause không tuyệt đối chính xác).
     const cp = _vqData[_vqReminderIdx];
@@ -1384,6 +1394,7 @@ function _vqShow(i){
             <span>${pqSafe(cp[L])}</span>
         </label>`;
     });
+    _vqToggleSideList(false);
     holder.innerHTML = `<div class="vq-panel" id="vq-panel">
         <div class="vq-head">
             <span class="vq-badge"><i class="fa-solid fa-bolt"></i> LUYỆN TẬP NHANH</span>
@@ -1396,7 +1407,7 @@ function _vqShow(i){
         <div class="vq-foot" id="vq-foot"><i class="fa-solid fa-lock" style="color:var(--blue)"></i> Video tạm dừng — chọn đáp án đúng để xem thầy chữa câu này nhé!</div>
     </div>`;
     renderMath(holder);
-    setTimeout(function(){ holder.scrollIntoView({behavior:'smooth', block:'center'}); }, 150);
+    if(window.innerWidth <= 900) setTimeout(function(){ holder.scrollIntoView({behavior:'smooth', block:'center'}); }, 150);
 }
 
 function vqAnswer(L){
@@ -1417,6 +1428,7 @@ function vqAnswer(L){
             _vqActive = -1;
             const holder = document.getElementById('vq-holder');
             if(holder) holder.innerHTML = '';
+            _vqToggleSideList(true);
             // Nhảy đúng về mốc câu hỏi trước khi phát tiếp, đảm bảo HS luôn xem đoạn thầy
             // chữa câu đó từ đúng điểm bắt đầu (video có thể đã dừng hơi sớm/muộn vài trăm ms
             // do polling 500ms, seekTo đảm bảo luôn khớp chính xác mốc thầy đặt).
