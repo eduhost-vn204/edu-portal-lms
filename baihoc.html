@@ -162,6 +162,10 @@
         .player-layout { display:grid; grid-template-columns:minmax(0,70fr) minmax(0,30fr); gap:24px; margin-top:8px; align-items:start; }
         .lesson-main { min-width:0; }
         .lesson-sidebar { position:sticky; top:68px; }
+        /* Ghim khối video (+ panel câu hỏi trong video) tại đầu cột khi cuộn xuống xem PDF/quiz bên dưới —
+           tránh phải cuộn lên thủ công để xem lại video sau khi trả lời câu hỏi. Không thu nhỏ video,
+           chỉ tận dụng việc video luôn "dính" ở khoảng trống đầu màn hình khi cuộn. */
+        .video-sticky-wrap { position:sticky; top:68px; z-index:7; background:var(--bg); padding-bottom:6px; }
 
         .video-box { background:#000; border:1.5px solid var(--line); border-radius:var(--radius); overflow:hidden; }
         .ratio { position:relative; width:100%; padding-top:56.25%; }
@@ -306,7 +310,7 @@
         .subject-label h2 { font-size:19px; font-weight:800; letter-spacing:-.02em; }
         .subject-label .subj-pill { font-size:12px; font-weight:700; background:rgba(11,132,243,.1); color:var(--blue); border-radius:20px; padding:3px 12px; }
 
-        @media(max-width:900px) { .player-layout { grid-template-columns:1fr; } .lesson-sidebar { position:static; } .side-list { max-height:400px; } }
+        @media(max-width:900px) { .player-layout { grid-template-columns:1fr; } .lesson-sidebar { position:static; } .side-list { max-height:400px; } .video-sticky-wrap { position:static; } }
         @media(max-width:560px) {
             header { padding:12px 16px; }
             .nav a span,.nav button span { display:none; }
@@ -972,7 +976,7 @@ function renderLesson(key){
         </div>
         <div class="player-layout">
             <div class="lesson-main">
-                ${videoTabsHtml}
+                <div class="video-sticky-wrap">${videoTabsHtml}</div>
                 <div id="vq-holder"></div>
                 <div class="lesson-detail">
                     <div style="font-size:12px;font-weight:800;color:var(--blue);opacity:.7;margin-bottom:5px;letter-spacing:.04em">BUỔI ${_lsn_session}/${course.total}</div>
