@@ -341,6 +341,12 @@
         .vq-panel .pq-opt.vq-right { border-color:var(--green); background:rgba(22,163,74,.12); }
         @keyframes vqShake { 0%,100%{transform:none} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
         .vq-foot { padding:10px 16px; border-top:1px solid var(--line); font-size:12.5px; color:var(--sub); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+        /* Panel nhắc nhẹ (câu đã từng làm đúng, xem lại) — viền xanh lá thay vì xanh dương để phân biệt với câu bắt buộc trả lời */
+        .vq-panel.vq-reminder { border-color:var(--green); box-shadow:0 6px 24px rgba(22,163,74,.18); }
+        .vq-panel.vq-reminder .vq-head { background:rgba(22,163,74,.08); }
+        .vq-badge-done { background:var(--green); }
+        .vq-continue-btn { background:var(--green); color:#fff; border:none; border-radius:50px; padding:8px 18px; font-size:13px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:7px; font-family:inherit; transition:opacity .15s; margin-left:auto; }
+        .vq-continue-btn:hover { opacity:.85; }
 </style>
   <script src="auth.js?v=7"></script>
   <script src="thongbao.js?v=1"></script>
@@ -1173,6 +1179,9 @@ let _vqWrong = 0;          // số lần chọn sai ở mốc hiện tại
 let _vqTimer = null;
 let _vqKey = null;
 let _vqLock = false;
+let _vqRemindedIds = new Set(); // các mốc ĐÃ trả lời đúng từ trước, đã nhắc lại trong lượt xem này rồi
+let _vqReminderActive = false;  // true khi đang hiện panel "nhắc nhẹ" (không khoá tua/tiếp tục)
+let _vqReminderTimer = null;
 
 // Bug 18/7: trước đây key KHÔNG có HS.sdt -> "đã trả lời đúng" lưu chung cho MỌI
 // tài khoản trên cùng trình duyệt (khác với WATCHED luôn có HS.sdt) -> tài khoản HS
@@ -1189,6 +1198,8 @@ function _vqFmt(s){
 
 function loadVideoQuiz(key, vtype){
     _vqData = []; _vqActive = -1; _vqWrong = 0; _vqKey = key; _vqLock = false;
+    _vqRemindedIds = new Set(); _vqReminderActive = false;
+    clearTimeout(_vqReminderTimer); _vqReminderTimer = null;
     _vqStopWatch();
     const holder = document.getElementById('vq-holder');
     if(holder) holder.innerHTML = '';
@@ -1237,7 +1248,15 @@ function loadVideoQuiz(key, vtype){
 }
 
 function _vqOnPlaying(){
-    // Nếu đang có câu hỏi chưa trả lời mà HS cố bấm play → dừng lại ngay
+    // Nếu HS bấm play khi đang xem panel "nhắc nhẹ" (câu đã từng làm đúng) →
+    // không chặn: âm thầm dọn panel rồi cho phát tiếp bình thường.
+    if(_vqReminderActive){
+        _vqReminderActive = false;
+        clearTimeout(_vqReminderTimer); _vqReminderTimer = null;
+        const h = document.getElementById('vq-holder');
+        if(h) h.innerHTML = '';
+    }
+    // Nếu đang có câu hỏi CHƯA từng trả lời đúng mà HS cố bấm play → dừng lại ngay
     if(_vqActive >= 0){
         setTimeout(function(){ try{ _ytPlayer.pauseVideo(); }catch(e){} }, 60);
         toast('<i class="fa-solid fa-circle-question"></i> Trả lời đúng câu hỏi bên dưới để xem tiếp nhé!','err');
@@ -1250,18 +1269,76 @@ function _vqStartWatch(){
     _vqStopWatch();
     if(!_vqData.length) return;
     _vqTimer = setInterval(function(){
-        if(!_ytPlayer || _vqActive >= 0) return;
+        if(!_ytPlayer || _vqActive >= 0 || _vqReminderActive) return;
         if(!document.getElementById('vq-holder')){ _vqStopWatch(); return; } // đã rời trang bài học
         let cur = 0;
         try{ cur = _ytPlayer.getCurrentTime(); }catch(e){ return; }
         for(let i = 0; i < _vqData.length; i++){
             const cp = _vqData[i];
-            if(_vqAnswered.has(_vqIdOf(cp))) continue;
+            const id = _vqIdOf(cp);
+            if(_vqAnswered.has(id)){
+                // Đã từng làm đúng bài này rồi (xem lại) — chỉ nhắc nhẹ 1 lần cho mỗi
+                // mốc mỗi lượt xem, KHÔNG bắt chọn lại, KHÔNG chặn tua đi chỗ khác.
+                if(!_vqRemindedIds.has(id) && cur >= cp.t - 0.3){
+                    _vqRemindedIds.add(id);
+                    _vqShowReminder(i);
+                    break;
+                }
+                continue;
+            }
             if(cur >= cp.t - 0.3){ _vqShow(i); break; } // bắt cả trường hợp tua qua mốc
         }
     }, 500);
 }
 function _vqStopWatch(){ if(_vqTimer){ clearInterval(_vqTimer); _vqTimer = null; } }
+
+// Panel "nhắc nhẹ" cho mốc ĐÃ từng trả lời đúng: dừng video, hiện lại câu hỏi ở
+// dạng chỉ-xem (đã tô đáp án đúng, không cho chọn), rồi tự tiếp tục sau vài giây
+// hoặc HS bấm nút/tua đi chỗ khác đều được — không khoá như câu chưa từng làm đúng.
+function _vqShowReminder(i){
+    _vqReminderActive = true;
+    try{ _ytPlayer.pauseVideo(); }catch(e){}
+    const cp = _vqData[i];
+    const holder = document.getElementById('vq-holder');
+    if(!holder) return;
+    let opts = '';
+    ['A','B','C','D'].forEach(function(L){
+        if(!(cp[L]||'').toString().trim()) return;
+        const isAns = L === cp.ans;
+        opts += `<div class="pq-opt${isAns ? ' result-correct' : ''}" style="pointer-events:none">
+            <span class="pq-letter">${L}.</span>
+            <span>${pqSafe(cp[L])}</span>
+            ${isAns ? '<span class="pq-tag correct-mark">✓ Đáp án đúng</span>' : ''}
+        </div>`;
+    });
+    holder.innerHTML = `<div class="vq-panel vq-reminder" id="vq-panel">
+        <div class="vq-head">
+            <span class="vq-badge vq-badge-done"><i class="fa-solid fa-lightbulb"></i> NHẮC LẠI CÂU ĐÃ HỌC</span>
+            <span class="vq-time-tag"><i class="fa-regular fa-clock"></i> ${_vqFmt(cp.t)} &nbsp;·&nbsp; Câu ${i + 1}/${_vqData.length}</span>
+        </div>
+        <div class="vq-body">
+            <div class="pq-text" style="margin-bottom:12px">${pqSafe(cp.q)}</div>
+            <div class="pq-opts">${opts}</div>
+        </div>
+        <div class="vq-foot">
+            <i class="fa-solid fa-circle-check" style="color:var(--green)"></i>
+            Em đã làm đúng câu này rồi — xem lại rồi video tự tiếp tục nhé (hoặc bấm nút, hoặc tua đi chỗ khác cũng được).
+            <button type="button" class="vq-continue-btn" onclick="vqContinueReminder()">Tiếp tục xem <i class="fa-solid fa-play"></i></button>
+        </div>
+    </div>`;
+    renderMath(holder);
+    setTimeout(function(){ holder.scrollIntoView({behavior:'smooth', block:'center'}); }, 150);
+    clearTimeout(_vqReminderTimer);
+    _vqReminderTimer = setTimeout(function(){ window.vqContinueReminder(); }, 3000);
+}
+
+window.vqContinueReminder = function(){
+    clearTimeout(_vqReminderTimer); _vqReminderTimer = null;
+    _vqReminderActive = false;
+    const holder = document.getElementById('vq-holder');
+    if(holder) holder.innerHTML = '';
+    try{ _ytPlayer.playVideo(); }catch(e){}
+};
 
 function _vqShow(i){
     _vqActive = i; _vqWrong = 0; _vqLock = false;
