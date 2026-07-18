@@ -1201,6 +1201,7 @@ let _vqLock = false;
 let _vqRemindedIds = new Set(); // các mốc ĐÃ trả lời đúng từ trước, đã nhắc lại trong lượt xem này rồi
 let _vqReminderActive = false;  // true khi đang hiện panel "nhắc nhẹ" (không khoá tua/tiếp tục)
 let _vqReminderTimer = null;
+let _vqReminderIdx = -1;   // index câu đang hiện ở panel "nhắc nhẹ" — dùng để seekTo đúng mốc khi bấm Tiếp tục xem
 
 // Bug 18/7: trước đây key KHÔNG có HS.sdt -> "đã trả lời đúng" lưu chung cho MỌI
 // tài khoản trên cùng trình duyệt (khác với WATCHED luôn có HS.sdt) -> tài khoản HS
@@ -1217,7 +1218,7 @@ function _vqFmt(s){
 
 function loadVideoQuiz(key, vtype){
     _vqData = []; _vqActive = -1; _vqWrong = 0; _vqKey = key; _vqLock = false;
-    _vqRemindedIds = new Set(); _vqReminderActive = false;
+    _vqRemindedIds = new Set(); _vqReminderActive = false; _vqReminderIdx = -1;
     clearTimeout(_vqReminderTimer); _vqReminderTimer = null;
     _vqStopWatch();
     const holder = document.getElementById('vq-holder');
@@ -1318,6 +1319,7 @@ function _vqStopWatch(){ if(_vqTimer){ clearInterval(_vqTimer); _vqTimer = null;
 // timer tự động nào ở đây).
 function _vqShowReminder(i){
     _vqReminderActive = true;
+    _vqReminderIdx = i;
     try{ _ytPlayer.pauseVideo(); }catch(e){}
     const cp = _vqData[i];
     const holder = document.getElementById('vq-holder');
@@ -1357,7 +1359,11 @@ window.vqContinueReminder = function(){
     _vqReminderActive = false;
     const holder = document.getElementById('vq-holder');
     if(holder) holder.innerHTML = '';
-    try{ _ytPlayer.playVideo(); }catch(e){}
+    // Nhảy đúng về mốc thời gian của câu này trước khi phát tiếp, để HS luôn xem lại
+    // đúng đoạn thầy chữa câu đó từ đầu (không bị lệch do polling/pause không tuyệt đối chính xác).
+    const cp = _vqData[_vqReminderIdx];
+    try{ if(cp) _ytPlayer.seekTo(cp.t, true); _ytPlayer.playVideo(); }catch(e){}
+    _vqReminderIdx = -1;
 };
 
 function _vqShow(i){
@@ -1407,7 +1413,10 @@ function vqAnswer(L){
             _vqActive = -1;
             const holder = document.getElementById('vq-holder');
             if(holder) holder.innerHTML = '';
-            try{ _ytPlayer.playVideo(); }catch(e){}
+            // Nhảy đúng về mốc câu hỏi trước khi phát tiếp, đảm bảo HS luôn xem đoạn thầy
+            // chữa câu đó từ đúng điểm bắt đầu (video có thể đã dừng hơi sớm/muộn vài trăm ms
+            // do polling 500ms, seekTo đảm bảo luôn khớp chính xác mốc thầy đặt).
+            try{ _ytPlayer.seekTo(cp.t, true); _ytPlayer.playVideo(); }catch(e){}
             if(doneAll) toast('<i class="fa-solid fa-trophy"></i> Tuyệt vời! Bạn đã làm hết câu hỏi trong video này!','ok');
         }, 1600);
     } else {
