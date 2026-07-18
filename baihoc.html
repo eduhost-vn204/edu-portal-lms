@@ -1217,6 +1217,21 @@ function loadVideoQuiz(key, vtype){
                     ans: String(r.correct||'').toUpperCase().trim()
                 }))
                 .sort((a,b) => a.t - b.t);
+            // Bug: fetch mốc câu hỏi là bất đồng bộ. Nếu video đã bắt đầu phát
+            // TRƯỚC KHI mảng _vqData tải xong xong, _vqOnPlaying() → _vqStartWatch()
+            // đã chạy lúc _vqData còn rỗng nên no-op (return ngay, không setInterval)
+            // và KHÔNG có gì gọi lại _vqStartWatch() nữa cho tới khi video bị pause/
+            // play lại → mốc không bao giờ kích hoạt, video chạy xuyên qua mốc.
+            // Chủ động khởi động lại watch ngay khi dữ liệu vừa tải xong, nếu lúc
+            // này video vẫn đang phát.
+            if(_vqData.length && _vqActive < 0 && _vqKey === key){
+                try{
+                    if(_ytPlayer && typeof _ytPlayer.getPlayerState === 'function' &&
+                       _ytPlayer.getPlayerState() === YT.PlayerState.PLAYING){
+                        _vqStartWatch();
+                    }
+                }catch(e){}
+            }
         })
         .catch(e => {});
 }
