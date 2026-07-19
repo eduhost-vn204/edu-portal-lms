@@ -240,14 +240,8 @@
     var lesson  = xps[conTro] || null;
     var dlDays  = daysLeft();
 
-    // Tính học chậm so với lịch tự đặt
-    var nhip      = Number(nv.nhipHoc) || 5;
-    var startD    = nv.startDate || today();
-    var daysPast  = Math.max(0, Math.floor((new Date() - new Date(startD)) / 86400000));
-    var expected  = Math.min(Math.floor(daysPast / 7 * nhip), total);
-    var cham      = Math.max(0, expected - conTro);
-
-    // Tìm vị trí thầy đang dạy trong lộ trình XPS
+    // Tìm vị trí thầy đang dạy trong lộ trình XPS (cần tính TRƯỚC "chậm bao nhiêu buổi"
+    // để giới hạn lịch tự đặt không vượt quá nội dung thầy ĐÃ dạy tới — xem bên dưới).
     var teacherIdx = -1;
     if (teachingKey) {
       for (var ti = 0; ti < xps.length; ti++) {
@@ -255,6 +249,22 @@
         if (tKey === teachingKey) { teacherIdx = ti; break; }
       }
     }
+
+    // Tính học chậm so với lịch tự đặt (nhịp buổi/tuần do em chọn).
+    // Giới hạn "expected" (vị trí lẽ ra phải đạt tới) KHÔNG được vượt quá vị trí
+    // thầy đang dạy (teacherIdx) — nếu không, khi em chọn nhịp nhanh hơn tốc độ
+    // thầy dạy thực tế, hệ thống sẽ báo "chậm" rất nhiều buổi dù nội dung đó thầy
+    // còn CHƯA dạy/CHƯA có video, gây hiểu lầm và nản (bug 19/7: thầy mới dạy đến
+    // buổi 2 mà hệ thống báo em chậm 6 buổi dù em chỉ chậm thầy 1 buổi).
+    var nhip      = Number(nv.nhipHoc) || 5;
+    var startD    = nv.startDate || today();
+    var daysPast  = Math.max(0, Math.floor((new Date() - new Date(startD)) / 86400000));
+    // Dùng CÙNG đơn vị "vị trí" (index) như khối so-sánh-với-thầy bên dưới
+    // (diff = teacherIdx - conTro) để 2 con số hiển thị luôn khớp nhau — không
+    // dùng teacherIdx+1 (số buổi đã dạy) vì sẽ lệch 1 buổi so với khối kia.
+    var paceCap   = teacherIdx >= 0 ? teacherIdx : total;
+    var expected  = Math.min(Math.floor(daysPast / 7 * nhip), total, paceCap);
+    var cham      = Math.max(0, expected - conTro);
 
     // Khối "Thầy đang dạy đến" + chiến lược
     var teacherHtml = '';
