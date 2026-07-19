@@ -277,15 +277,17 @@
           '<div style="font-size:11px;color:#f59e0b;font-weight:700;letter-spacing:.05em;margin-bottom:6px;">📍 THẦY ĐANG DẠY ĐẾN</div>' +
           '<div style="font-size:17px;font-weight:700;color:#e6edf3;margin-bottom:2px;">' + (tLesson.TenBai || '') + '</div>' +
           '<div style="font-size:13px;color:#8b949e;margin-bottom:10px;">' +
-            'Chương ' + (tLesson.Chuong || '?') + ' · Buổi ' + (teacherIdx + 1) + '/' + total +
+            (tLesson.KhoaHoc || '') + ' · Chương ' + (tLesson.Chuong || '?') + ' · Buổi ' + (teacherIdx + 1) + '/' + total +
           '</div>' +
           '<div style="font-size:13px;color:#e6edf3;line-height:1.5;">' + strategyText + '</div>' +
         '</div>';
     }
 
     var lessonHtml = lesson
-      ? ('<div class="nv-lesson-card">' +
-          '<div class="nv-lesson-name">📖 ' + (lesson.TenBai || 'Buổi học') + '</div>' +
+      ? ('<div style="background:rgba(0,240,255,.06);border:1px solid rgba(0,240,255,.25);' +
+        'border-radius:12px;padding:14px 18px;margin-bottom:14px;">' +
+          '<div style="font-size:11px;color:#22d3ee;font-weight:700;letter-spacing:.05em;margin-bottom:6px;">📌 EM HỌC ĐẾN BÀI NÀY</div>' +
+          '<div class="nv-lesson-name" style="margin:0 0 2px">📖 ' + (lesson.TenBai || 'Buổi học') + '</div>' +
           '<div class="nv-lesson-meta">Chương ' + (lesson.Chuong || '?') + ' · ' + (lesson.KhoaHoc || '') + '</div>' +
           (lesson.MoTaBai ? '<div class="nv-lesson-meta" style="margin-top:3px">' + lesson.MoTaBai + '</div>' : '') +
          '</div>')
@@ -301,10 +303,10 @@
 
     openOverlay(
       '<div class="nv-title">📋 Nhiệm vụ hôm nay</div>' +
-      '<div class="nv-sub">' + today() + ' · Buổi ' + (conTro + 1) + '/' + total + ' · Còn ' + dlDays + ' ngày đến thi</div>' +
+      '<div class="nv-sub">' + today() + (lesson ? ' · ' + (lesson.KhoaHoc || '') : '') + ' · Buổi ' + (conTro + 1) + '/' + total + ' · Còn ' + dlDays + ' ngày đến thi</div>' +
       teacherHtml +
       lessonHtml +
-      '<div class="nv-chips">' + chamChip + '<span class="nv-chip">' + (total - conTro) + ' buổi còn lại</span>' +
+      '<div class="nv-chips">' + chamChip +
         (streakToday ? '<span class="nv-chip ok">🔥 Đã hoàn thành hôm qua — Chuỗi ' + (Number(nv.chuoiDung) || 0) + ' ngày!</span>' : '') +
       '</div>' +
       '<div class="nv-progress-wrap">' +
@@ -397,11 +399,24 @@
     var khoaMap = {};
     khoaRaw.forEach(function (k) { khoaMap[k.khoaHoc] = k; });
 
-    // XPS = bài từ TẤT CẢ khoá đã khai giảng (daKhaiGiang=true), xếp theo thuTu → chương → thứ tự sheet
+    // Hạng tài khoản của học sinh — dùng để lọc các khoá giới hạn đối tượng
+    // (loaiTK) y hệt cách baihoc.html quyết định canAccess(), để 1 khoá chỉ
+    // dành cho Premium thì cũng chỉ được thêm vào lộ trình Nhiệm vụ của các
+    // tài khoản Premium, KHÔNG tính vào nhiệm vụ của tài khoản free/vip.
+    var myTier = (user && user.loaiTK) || 'free';
+    function courseAllowsTier(khoaHoc) {
+      var cfg = khoaMap[khoaHoc || ''];
+      var allowed = ((cfg && cfg.loaiTK) || 'free,vip,premium').split(',').map(function (s) { return s.trim(); });
+      return allowed.indexOf(myTier) !== -1;
+    }
+
+    // XPS = bài từ TẤT CẢ khoá đã khai giảng (daKhaiGiang=true) MÀ học sinh
+    // có quyền học (đúng hạng tài khoản), xếp theo thuTu → chương → thứ tự sheet
     var xps = allL
       .filter(function (l) {
         var cfg = khoaMap[l.KhoaHoc || ''];
-        return cfg && (cfg.daKhaiGiang === true || String(cfg.daKhaiGiang) === 'true');
+        if (!cfg || !(cfg.daKhaiGiang === true || String(cfg.daKhaiGiang) === 'true')) return false;
+        return courseAllowsTier(l.KhoaHoc);
       })
       .sort(function (a, b) {
         var cfgA = khoaMap[a.KhoaHoc] || {}, cfgB = khoaMap[b.KhoaHoc] || {};
