@@ -100,7 +100,7 @@
 
     /* ─── MAIN ARENA ─── */
     .arena {
-      max-width: 640px; margin: 0 auto; padding: 28px 20px 48px;
+      max-width: 820px; margin: 0 auto; padding: 28px 20px 48px;
     }
 
     /* ─── LOADING ─── */
@@ -121,6 +121,8 @@
       border-radius: 18px; padding: 24px;
       animation: qIn .2s ease-out;
     }
+    .q-img { max-width: 100%; overflow-x: auto; }
+    .q-img img { max-width: 100%; height: auto; display: block; margin: 8px auto; }
     @keyframes qIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
     .q-meta {
@@ -244,6 +246,7 @@
     @media (max-width: 480px) {
       .hero-title { font-size: 22px; }
       .q-card { padding: 18px; }
+      .arena { padding: 20px 12px 40px; }
       .result-stats { grid-template-columns: 1fr 1fr; }
     }
 
@@ -447,7 +450,7 @@
           '<span class="q-timer" id="q-timer">0s</span>' +
         '</div>' +
         (q.deBaiChung ? '<div class="q-context">' + fixLatexQuirks(q.deBaiChung) + '</div>' : '') +
-        (q.hinhAnh ? '<div class="q-img"><img src="' + q.hinhAnh + '" alt="Hình minh hoạ" style="max-width:100%;border-radius:8px;margin:8px 0;"></div>' : '') +
+        (q.hinhAnh ? '<div class="q-img"><img src="' + q.hinhAnh + '" alt="Hình minh hoạ" style="max-width:100%;height:auto;display:block;border-radius:8px;margin:8px auto;"></div>' : '') +
         '<div class="q-text">' + fixLatexQuirks(q.question || q.cauHoi || '') + '</div>' +
         '<div class="q-options" id="q-opts">' +
           opts.map(function (o) {
