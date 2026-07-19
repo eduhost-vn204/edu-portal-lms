@@ -334,7 +334,7 @@
         .num-label { font-size: 14px; color: var(--gray2); font-weight: 500; }
 
         /* Cards lịch + bảng vàng */
-        .panels-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .panels-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
         .panel-card {
             border: 1px solid var(--border); border-radius: 12px;
             overflow: hidden; background: #fff;
@@ -904,7 +904,7 @@
             </div>
             <div class="num-item">
                 <div class="num-big">4×</div>
-                <div class="num-label">Livestream bổ trợ mỗi tuần</div>
+                <div class="num-label">Livestream TikTok mỗi tuần</div>
             </div>
             <div class="num-item">
                 <div class="num-big">9.2</div>
@@ -913,13 +913,23 @@
         </div>
 
         <div class="panels-grid">
-            <!-- Lịch Live -->
+            <!-- Lịch Live TikTok -->
             <div class="panel-card">
                 <div class="panel-card-head">
-                    <i class="fa-solid fa-video"></i> Lịch Livestream Bổ Trợ
+                    <i class="fa-brands fa-tiktok"></i> Lịch Live TikTok
                 </div>
                 <div id="ll-home-list">
                     <div class="panel-card-row"><span class="row-left"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải lịch live...</span></div>
+                </div>
+            </div>
+
+            <!-- Lịch học tuần này -->
+            <div class="panel-card">
+                <div class="panel-card-head">
+                    <i class="fa-solid fa-calendar-days"></i> Lịch Học Tuần Này
+                </div>
+                <div id="lh-home-list">
+                    <div class="panel-card-row"><span class="row-left"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải lịch học...</span></div>
                 </div>
             </div>
 
@@ -1003,11 +1013,13 @@ function vlxtOpenNhiemVuFromHome(){
         .catch(() => { box.innerHTML = '<div style="text-align:center;color:var(--gray2);font-size:13px;padding:16px">Không thể tải bảng vàng.</div>'; });
 })();
 
-// ─── LỊCH LIVE loader (chỉ hiện các buổi live trong tuần hiện tại: Thứ 2 → Chủ Nhật) ───
+// ─── LỊCH LIVE (TikTok) + LỊCH HỌC loader (chỉ hiện trong tuần hiện tại: Thứ 2 → Chủ Nhật) ───
+// Dùng chung sheet LichLive, phân biệt bằng trường "loai": 'hoc' = lịch học, còn lại (rỗng/'live') = lịch live TikTok
 (function(){
     const GAS = 'https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec';
-    const box = document.getElementById('ll-home-list');
-    if (!box) return;
+    const liveBox = document.getElementById('ll-home-list');
+    const hocBox = document.getElementById('lh-home-list');
+    if (!liveBox && !hocBox) return;
     const WEEKDAY_FULL = ['Chủ Nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'];
 
     function parseVnDate(str){
@@ -1026,17 +1038,20 @@ function vlxtOpenNhiemVuFromHome(){
         return [mon, sun];
     }
 
-    function renderWeekLive(data){
-        const all = Array.isArray(data) ? data : [];
+    function weekOf(all, isHoc){
         const [mon, sun] = currentWeekRange();
-        const week = all
+        return all
             .filter(s => !s.done)
+            .filter(s => (String(s.loai||'').toLowerCase() === 'hoc') === isHoc)
             .map(s => ({ s, dt: parseVnDate(s.date) }))
             .filter(x => x.dt && x.dt >= mon && x.dt <= sun)
             .sort((a,b) => a.dt - b.dt || String(a.s.time||'').localeCompare(String(b.s.time||'')));
+    }
 
+    function renderInto(box, week, emptyText){
+        if (!box) return;
         if (!week.length){
-            box.innerHTML = '<div class="panel-card-row"><span class="row-left" style="color:var(--gray2)">Tuần này thầy chưa lên lịch live.</span></div>';
+            box.innerHTML = `<div class="panel-card-row"><span class="row-left" style="color:var(--gray2)">${emptyText}</span></div>`;
             return;
         }
         box.innerHTML = week.map(({s, dt}) => `
@@ -1046,23 +1061,31 @@ function vlxtOpenNhiemVuFromHome(){
             </div>`).join('');
     }
 
-    function loadWeekLive(){
+    function renderAll(data){
+        const all = Array.isArray(data) ? data : [];
+        renderInto(liveBox, weekOf(all, false), 'Tuần này thầy chưa lên lịch live TikTok.');
+        renderInto(hocBox, weekOf(all, true), 'Tuần này thầy chưa lên lịch học.');
+    }
+
+    function loadWeek(){
         const fetcher = (typeof cachedFetch === 'function') ? cachedFetch : fetch;
         fetcher(GAS + '?type=lichlive&t=' + Date.now())
             .then(r => r.json())
-            .then(renderWeekLive)
+            .then(renderAll)
             .catch(() => {
-                box.innerHTML = '<div class="panel-card-row"><span class="row-left" style="color:var(--gray2)">Không thể tải lịch live.</span></div>';
+                const errText = '<div class="panel-card-row"><span class="row-left" style="color:var(--gray2)">Không thể tải lịch.</span></div>';
+                if (liveBox) liveBox.innerHTML = errText;
+                if (hocBox) hocBox.innerHTML = errText;
             });
     }
-    loadWeekLive();
+    loadWeek();
 
     // Tu dong ve lai khi cache.js phat hien du lieu Lich Live moi (khong can F5)
     window.addEventListener('vlxt:data-updated', function(e){
-        if (e.detail && e.detail.type === 'lichlive') renderWeekLive(e.detail.data);
+        if (e.detail && e.detail.type === 'lichlive') renderAll(e.detail.data);
     });
     // Poll ngam de bat kip du lieu moi trong khi trang van dang mo
-    setInterval(loadWeekLive, 20000);
+    setInterval(loadWeek, 20000);
 })();
 </script>
 
