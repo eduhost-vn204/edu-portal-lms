@@ -279,7 +279,13 @@
         .si-name { flex:1; line-height:1.4; }
 
         /* ═══ SOLUTION VIDEO ═══ */
-        .solution-video { margin-top:10px; }
+        .solution-video { margin-top:10px; position:relative; }
+        .solution-video.is-locked { background:var(--card2); }
+        .video-lock-msg { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:10px; padding:24px; }
+        .video-lock-msg i { font-size:30px; color:var(--blue); opacity:.75; }
+        .video-lock-msg p { margin:0; font-size:13.5px; font-weight:600; color:var(--text); max-width:440px; line-height:1.55; }
+        .video-lock-msg .vlm-sub { font-size:12px; font-weight:500; color:var(--sub); }
+        .video-lock-msg .btn-quiz-goto { margin-top:4px; }
 
         /* ═══ STATES ═══ */
         .loading,.empty { text-align:center; padding:60px 20px; color:var(--sub); }
@@ -457,6 +463,15 @@ function renderMath(el){ if(typeof renderMathInElement==='function'){ try{ rende
 function ytId(url){ if(!url) return ''; url=url.toString().trim(); if(/^[A-Za-z0-9_-]{11}$/.test(url)) return url; const m=url.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([A-Za-z0-9_-]{11})/); return m?m[1]:''; }
 function driveId(url){ if(!url) return ''; const m=url.toString().trim().match(/\/file\/d\/([^\/\?&]+)/); return m?m[1]:''; }
 function videoType(url){ if(!url) return 'none'; if(ytId(url)) return 'youtube'; if(driveId(url)) return 'drive'; return 'none'; }
+// Dựng HTML iframe nhúng video chữa bài — dùng chung cho lần render đầu tiên (khi đã mở khoá)
+// và lúc mở khoá động ngay khi học sinh vừa bấm "Kiểm tra đáp án" (xem unlockSolutionVideoUI()).
+function buildSolutionEmbed(lesson){
+    if(!lesson || !lesson.videogiai) return '';
+    const svid=ytId(lesson.videogiai), sdid=driveId(lesson.videogiai);
+    if(svid) return `<iframe src="https://www.youtube-nocookie.com/embed/${svid}?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    if(sdid) return `<iframe src="https://drive.google.com/file/d/${sdid}/preview" allow="autoplay; encrypted-media" allowfullscreen style="border:0;width:100%;height:100%;position:absolute;inset:0"></iframe>`;
+    return '';
+}
 function daysAgo(d){ if(!d) return 9999; const p=parseVND(d); if(!p) return 9999; return Math.floor((Date.now()-p)/86400000); }
 function parseVND(s){ s=(s||'').toString().trim(); if(!s) return null; const m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/); if(m){ let y=+m[3]; if(y<100)y+=2000; return new Date(y,(+m[2])-1,+m[1]).getTime(); } const d=new Date(s); return isNaN(d)?null:d.getTime(); }
 
@@ -941,14 +956,20 @@ function renderLesson(key){
     let sEmbed = '';
     let _hasSolutionVideo = false;
     if(lesson.videogiai){
-        const svid=ytId(lesson.videogiai); const sdid=driveId(lesson.videogiai);
-        if(svid||sdid){
-            _hasSolutionVideo = true;
-            sEmbed = svid
-                ?`<iframe src="https://www.youtube-nocookie.com/embed/${svid}?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
-                :`<iframe src="https://drive.google.com/file/d/${sdid}/preview" allow="autoplay; encrypted-media" allowfullscreen style="border:0;width:100%;height:100%;position:absolute;inset:0"></iframe>`;
-        }
+        sEmbed = buildSolutionEmbed(lesson);
+        if(sEmbed) _hasSolutionVideo = true;
     }
+    // Khoá video chữa bài: chỉ mở khi bài không có quiz, bài đã hoàn thành trước đó,
+    // hoặc học sinh đã từng bấm "Kiểm tra đáp án" cho quiz của bài này (xem checkPractice()).
+    const _quizGateOk = !(lesson.baitap && lesson.baitap.length>0) || done || isQuizChecked(key);
+    const _solutionPaneInner = _quizGateOk
+        ? `<div class="ratio">${sEmbed}</div>`
+        : `<div class="ratio"><div class="video-lock-msg">
+                <i class="fa-solid fa-lock"></i>
+                <p>Em cần <strong>làm trắc nghiệm</strong> và bấm <strong>"Kiểm tra đáp án"</strong> ở mục <strong>Luyện tập trắc nghiệm</strong> bên dưới để mở khoá video chữa bài nhé!</p>
+                <p class="vlm-sub">Tự làm và tự kiểm tra trước khi xem chữa sẽ giúp em nhớ bài lâu hơn và đạt kết quả tốt hơn.</p>
+                <button class="btn-quiz-goto" onclick="scrollToQuiz()"><i class="fa-solid fa-pen-to-square"></i> Đến phần luyện tập</button>
+           </div></div>`;
     const videoTabsHtml = _hasSolutionVideo
         ? `<div class="section-block" id="video-tabs-block">
             <div class="lt-tabs-bar">
@@ -956,7 +977,7 @@ function renderLesson(key){
                 <button class="lt-tab-btn" data-vtab="chuabai" onclick="switchVideoTab('chuabai')"><i class="fa-solid fa-lightbulb"></i> Video chữa bài luyện tập</button>
             </div>
             <div class="lt-tab-pane active" data-vpane="baihoc" style="padding:14px 22px 22px"><div class="video-box">${videoHtml}</div></div>
-            <div class="lt-tab-pane" data-vpane="chuabai" style="padding:14px 22px 22px"><div class="video-box solution-video"><div class="ratio">${sEmbed}</div></div></div>
+            <div class="lt-tab-pane" data-vpane="chuabai" style="padding:14px 22px 22px"><div class="video-box solution-video${_quizGateOk?'':' is-locked'}" id="solution-video-box">${_solutionPaneInner}</div></div>
         </div>`
         : `<div class="video-box">${videoHtml}</div>`;
 
@@ -1488,6 +1509,25 @@ function _wrongQKey(lessonKey){
     // chung với tài khoản khác từng test trên cùng máy/trình duyệt.
     return 'vlxt_wrongq_' + ((HS && HS.sdt) || '') + '_' + (lessonKey || '');
 }
+// ── Khoá video chữa bài: chỉ mở sau khi học sinh đã bấm "Kiểm tra đáp án" ít nhất 1 lần ──
+function _quizCheckedKey(lessonKey){
+    return 'vlxt_quizchecked_' + ((HS && HS.sdt) || '') + '_' + (lessonKey || '');
+}
+function isQuizChecked(lessonKey){
+    try{ return localStorage.getItem(_quizCheckedKey(lessonKey)) === '1'; }catch(e){ return false; }
+}
+function markQuizChecked(lessonKey){
+    try{ localStorage.setItem(_quizCheckedKey(lessonKey), '1'); }catch(e){}
+}
+// Mở khoá video chữa ngay trên DOM (không cần tải lại trang) khi vừa kiểm tra xong bài tập
+function unlockSolutionVideoUI(lesson){
+    const box = document.getElementById('solution-video-box');
+    if(!box || !box.classList.contains('is-locked')) return;
+    const embed = buildSolutionEmbed(lesson);
+    if(!embed) return;
+    box.classList.remove('is-locked');
+    box.innerHTML = `<div class="ratio">${embed}</div>`;
+}
 function getWrongQIndices(lessonKey){
     try{ return JSON.parse(localStorage.getItem(_wrongQKey(lessonKey)) || '[]'); }catch(e){ return []; }
 }
@@ -1631,6 +1671,21 @@ function checkPractice(key,force){
     // để nhắc ôn trước khi sang bài tiếp — xem goNextLessonWithReview().
     if(wrongThisAttempt.length) addWrongQIndices(_lessonCurrentKey, wrongThisAttempt);
     if(answered<qs.length && !force){ toast('<i class="fa-solid fa-triangle-exclamation"></i> Hãy trả lời đủ các câu nhé!','err'); return; }
+    // Đã kiểm tra xong (dù đúng hay sai) → mở khoá Video chữa bài luyện tập cho bài này.
+    // (Không gọi toast() ở đây — dồn hết thông báo vào 1 toast cuối cùng bên dưới vì
+    // toast() dùng chung 1 khối UI, gọi nhiều lần liên tiếp thì chỉ lần cuối hiện ra.)
+    markQuizChecked(_lessonCurrentKey);
+    unlockSolutionVideoUI(info.lesson);
+    const _hasSolutionVideoNow = !!document.getElementById('video-tabs-block');
+    let _vgReminder = '';
+    if(_hasSolutionVideoNow){
+        if(wrongThisAttempt.length){
+            switchVideoTab('chuabai');
+            _vgReminder = ` Xem <strong>Video chữa bài</strong> ở trên (câu ${wrongThisAttempt.map(i=>i+1).join(', ')}) để hiểu rõ hơn nhé!`;
+        } else {
+            _vgReminder = ' Video chữa bài đã mở khoá, xem lại nếu muốn!';
+        }
+    }
     const scoreEl=document.getElementById('quiz-score');
     const pct10 = qs.length > 0 ? (correct / qs.length * 10) : 0;
     // Ngưỡng cố định: luôn cần đúng ≥90% số câu (không còn phụ thuộc đã xem video hay chưa)
@@ -1657,10 +1712,10 @@ function checkPractice(key,force){
         if(_videoWatched90){
             markWatchedUI(decodeURIComponent(key)); // markWatchedUI gọi unlockNextBtn
             bannerEl.innerHTML = `<i class="fa-solid fa-trophy"></i><span>Xuất sắc! ${correct}/${qs.length} câu: Bài tiếp đã mở khoá!</span>`;
-            toast('<i class="fa-solid fa-trophy"></i> Đạt ≥90%: hoàn thành bài!','ok');
+            toast('<i class="fa-solid fa-trophy"></i> Đạt ≥90%: hoàn thành bài!' + _vgReminder,'ok');
         } else {
             bannerEl.innerHTML = `<i class="fa-solid fa-circle-check"></i><span>Bài tập đã đạt ≥90%! ${(vtypeNow==='youtube'||vtypeNow==='drive')?'Xem đủ ≥90% thời lượng video':'Chờ hệ thống ghi nhận'} để hoàn thành bài.</span>`;
-            toast('<i class="fa-solid fa-circle-check"></i> Bài tập đạt yêu cầu! Xem đủ video để hoàn thành bài.','ok');
+            toast('<i class="fa-solid fa-circle-check"></i> Bài tập đạt yêu cầu! Xem đủ video để hoàn thành bài.' + _vgReminder,'ok');
         }
     } else {
         if(bannerEl) bannerEl.remove();
@@ -1671,7 +1726,7 @@ function checkPractice(key,force){
             document.querySelector('.quiz-actions')?.after(warnEl);
         }
         warnEl.innerHTML = `<i class="fa-solid fa-rotate-left"></i><span>Chưa đủ điểm (cần ≥90%, tức từ ${neededCount}/${qs.length} câu trở lên). Thử lại nhé!</span>`;
-        toast('<i class="fa-solid fa-triangle-exclamation"></i> Cần đúng ≥90% để đạt phần này. Cố lên!','err');
+        toast('<i class="fa-solid fa-triangle-exclamation"></i> Cần đúng ≥90% để đạt phần này. Cố lên!' + _vgReminder,'err');
     }
 }
 
