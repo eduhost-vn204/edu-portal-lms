@@ -830,6 +830,7 @@ function renderLesson(key){
         </div>`;
         return;
     }
+    try{ if(typeof vlxtLog==='function' && HS && HS.sdt){ const _lk='vlxt_seen_'+HS.sdt+'_'+key; if(Date.now()-Number(localStorage.getItem(_lk)||0)>10*60*1000){ localStorage.setItem(_lk,String(Date.now())); vlxtLog('Xem bài học', lesson.name+' · '+course.name); } } }catch(e){}
     const flat=flatLessons(course); const idx=flat.findIndex(l=>l.key===key);
     const prev=idx>0?flat[idx-1]:null, next=idx<flat.length-1?flat[idx+1]:null;
     const vid=ytId(lesson.video); const did=driveId(lesson.video); const vtype=videoType(lesson.video); const done=WATCHED.has(key);
@@ -2008,5 +2009,6 @@ const DEMO_ROWS = [
 
 window.addEventListener('DOMContentLoaded', init);
 </script>
+<script src="hoat-dong.js?v=1"></script>
 </body>
 </html>

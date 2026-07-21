@@ -646,6 +646,7 @@
         window.scrollTo({top:0,behavior:'smooth'});
         setTimeout(()=>{ if(typeof renderMathInElement==='function'){ try{ renderMathInElement(container,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]}); }catch(e){} } },60);
         loadSolutionsAfterSubmit();
+        try{ if(typeof vlxtLog==='function') vlxtLog('Nộp bài thi', 'Đề '+_examId+' — '+score+'/'+max+' điểm ('+nCorrectQ+'/'+totalQ+' câu đúng)'); }catch(e){}
         const payload={ name:studentData.name, studentClass:studentData.class, phone:studentData.phone, score:`${score}/${max}` };
         fetch(databaseUrl,{ method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload) })
         .then(()=>{ const s=document.getElementById('save-status'); if(s) s.innerHTML='<i class="fa-solid fa-circle-check" style="color:var(--green)"></i> Đã lưu điểm lên Bảng Vàng thành công!'; })
@@ -656,5 +657,6 @@
 function toggleTheme(){document.body.classList.toggle('dark');localStorage.setItem('vlxt_theme',document.body.classList.contains('dark')?'dark':'light');}
 if(localStorage.getItem('vlxt_theme')==='dark')document.body.classList.add('dark');
 </script>
+<script src="hoat-dong.js?v=1"></script>
 </body>
 </html>

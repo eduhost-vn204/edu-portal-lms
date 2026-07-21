@@ -253,6 +253,7 @@ async function doLogin() {
     const d = await r.json();
     if (d.ok) {
       localStorage.setItem('vlxt_user_v2', JSON.stringify(d.user));
+      try{ if(typeof vlxtLog==='function') vlxtLog('Đăng nhập','Bằng SĐT + mật khẩu'); }catch(e){}
       showMsg('login-msg','success','Đang chuyển trang...');
       setTimeout(() => { window.location.href = getRedirect(); }, 700);
     } else {
@@ -339,6 +340,7 @@ async function handleGoogleCredential(response) {
         showSetupModal(user, payload.name);
       } else {
         localStorage.setItem('vlxt_user_v2', JSON.stringify(user));
+        try{ if(typeof vlxtLog==='function') vlxtLog('Đăng nhập','Bằng Google'); }catch(e){}
         window.location.href = getRedirect();
       }
     } else {
@@ -369,6 +371,7 @@ async function confirmSetup() {
   if (!lop)   { document.getElementById('setup-msg').textContent = 'Vui lòng nhập lớp!'; return; }
   const user = { ...window._pendingUser, hoten, lop };
   localStorage.setItem('vlxt_user_v2', JSON.stringify(user));
+  try{ if(typeof vlxtLog==='function') vlxtLog('Đăng nhập','Bằng Google (lần đầu, lớp '+lop+')'); }catch(e){}
   // Cập nhật lên Sheets
   try {
     await fetch(GAS, { method:'POST', mode:'cors',
@@ -457,5 +460,6 @@ if (typeof google !== 'undefined' && google.accounts) {
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script src="device-id.js?v=1"></script>
 <script src="ho-tro-chat.js?v=1"></script>
+<script src="hoat-dong.js?v=1"></script>
 </body>
 </html>

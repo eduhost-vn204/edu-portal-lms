@@ -31,6 +31,7 @@ function doGet(e) {
     if (type === 'nganhang')         return getNganHang();
     if (type === 'khoaconfig')       return getKhoaConfig();
     if (type === 'danhsachtaikhoan')  return getDanhSachTaiKhoan(e);
+    if (type === 'hoatdong')          return getHoatDong(e);
     if (type === 'examquestions')    return getExamQuestions(examId || 'de01');
     if (type === 'nhiemvu')          return getNhiemVu(hs);
     if (type === 'settings')         return getSettings();
@@ -63,6 +64,8 @@ function doPost(e) {
     if (action === 'incrementlam')       return incrementLam(data);
     if (action === 'setvipstatus')       return setVipStatus(data);
     if (action === 'deleteaccount')      return deleteAccount(data);
+    if (action === 'loghoatdong')        return logHoatDong(data);
+    if (action === 'updateaccount')      return updateAccount(data);
     if (action === 'savenhiemvu')        return saveNhiemVu(data);
     if (action === 'saveduatop')         return saveDuaTop(data);
     if (action === 'savesetting')        return saveSetting(data);
@@ -241,6 +244,7 @@ function loginGoogle(data) {
   for (let i = 1; i < rows.length; i++) {
     if (String(rows[i][0]).trim().toLowerCase() === email) {
       if (data.hoten) sheet.getRange(i+1, 2).setValue(data.hoten);
+      if (data.lop && data.lop !== 'Google') sheet.getRange(i + 1, 3).setValue(String(data.lop));
       let loaiTK      = rows[i][7] || 'vip';
       let trialExpiry = rows[i][8] ? Number(rows[i][8]) : 0;
       if (!trialExpiry && rows[i][4]) {
@@ -974,7 +978,7 @@ function deleteAccount(data) {
   const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
   const rows = sheet.getDataRange().getValues();
   for (let i = 1; i < rows.length; i++) {
-    if (normSdt(rows[i][0]) === normSdt(sdt)) {
+    if (sameTaiKhoan(rows[i][0], sdt)) {
       sheet.deleteRow(i + 1);
       return jsonOut({ ok: true, msg: 'Đã xóa tài khoản ' + sdt });
     }
@@ -1095,4 +1099,72 @@ function saveSetting(data) {
     sheet.appendRow([data.key, data.value !== undefined ? data.value : '']);
   }
   return jsonOut({ ok: true });
+}
+
+// ══════════ v50: LỊCH SỬ HOẠT ĐỘNG + SỬA THÔNG TIN TÀI KHOẢN ══════════
+
+// So khớp tài khoản an toàn: email so email, SĐT so SĐT
+function sameTaiKhoan(a, b) {
+  a = String(a || '').trim().toLowerCase();
+  b = String(b || '').trim().toLowerCase();
+  if (!a || !b) return false;
+  if (a === b) return true;
+  const da = a.replace(/\D/g,'').replace(/^0+/,'');
+  const db = b.replace(/\D/g,'').replace(/^0+/,'');
+  return da !== '' && da === db;
+}
+
+// ── POST (web học sinh tự gọi): ghi 1 dòng hoạt động ──
+function logHoatDong(data) {
+  const sdt = String(data.sdt || '').trim();
+  if (!sdt) return jsonOut({ ok: false });
+  const sheet = getOrCreate('HoatDong', ['sdt','thoigian','hanhdong','chitiet']);
+  sheet.getRange(sheet.getLastRow() + 1, 1, 1, 1).setNumberFormat('@'); // giữ số 0 đầu SĐT
+  sheet.appendRow([
+    sdt,
+    new Date().toISOString(),
+    String(data.hanhdong || '').slice(0, 100),
+    String(data.chitiet  || '').slice(0, 300)
+  ]);
+  // Giữ sheet gọn: vượt 20.000 dòng thì xoá 2.000 dòng cũ nhất
+  const n = sheet.getLastRow();
+  if (n > 20000) sheet.deleteRows(2, 2000);
+  return jsonOut({ ok: true });
+}
+
+// ── GET Admin: lịch sử hoạt động của 1 học sinh (mới nhất trước) ──
+function getHoatDong(e) {
+  const key = e.parameter.adminKey || '';
+  const ADMIN_KEY = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || 'vlxt_admin_2025';
+  if (key !== ADMIN_KEY) return jsonOut({ error: 'Unauthorized' });
+  const hs = String(e.parameter.hs || '').trim();
+  if (!hs) return jsonOut({ ok: false, msg: 'Thiếu hs' });
+  const sheet = getOrCreate('HoatDong', ['sdt','thoigian','hanhdong','chitiet']);
+  const rows  = sheet.getDataRange().getValues();
+  const out = [];
+  for (let i = rows.length - 1; i >= 1 && out.length < 200; i--) {
+    if (sameTaiKhoan(rows[i][0], hs)) {
+      out.push({ thoigian: rows[i][1], hanhdong: rows[i][2], chitiet: rows[i][3] });
+    }
+  }
+  return jsonOut({ ok: true, data: out });
+}
+
+// ── POST Admin: sửa thông tin tài khoản (hiện dùng cho Lớp, Họ tên) ──
+function updateAccount(data) {
+  const key = String(data.adminKey || '').trim();
+  const ADMIN_KEY = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || 'vlxt_admin_2025';
+  if (key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
+  const sdt = String(data.sdt || '').trim();
+  if (!sdt) return jsonOut({ ok: false, msg: 'Thiếu sdt' });
+  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
+  const rows  = sheet.getDataRange().getValues();
+  for (let i = 1; i < rows.length; i++) {
+    if (sameTaiKhoan(rows[i][0], sdt)) {
+      if (data.lop)   sheet.getRange(i + 1, 3).setValue(String(data.lop));
+      if (data.hoten) sheet.getRange(i + 1, 2).setValue(String(data.hoten));
+      return jsonOut({ ok: true, msg: 'Đã cập nhật thông tin.' });
+    }
+  }
+  return jsonOut({ ok: false, msg: 'Không tìm thấy học sinh.' });
 }
