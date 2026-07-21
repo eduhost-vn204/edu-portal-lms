@@ -637,7 +637,7 @@ function markWatched(key){
     }
     if(USING_DEMO){ localStorage.setItem('vlxt_demo_watched',JSON.stringify([...WATCHED])); toast('<i class="fa-solid fa-circle-check"></i> Đã lưu (chế độ demo)','ok'); return; }
     const info=findLesson(key);
-    const payload={action:'saveProgress',hs:HS.sdt,ten:HS.ten,lop:HS.lop,khoa:info?info.course.name:'',lesson:key,ngay:new Date().toLocaleDateString('vi-VN')};
+    const payload={action:'saveProgress',sdt:HS.sdt,ten:HS.ten,lop:HS.lop,khoa:info?info.course.name:'',lesson:key,ngay:new Date().toLocaleDateString('vi-VN')};
     fetch(APPS_SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
         .then(r=>r.json()).then(()=>toast('<i class="fa-solid fa-circle-check"></i> Đã lưu tiến độ!','ok'))
         .catch(()=>toast('<i class="fa-solid fa-circle-check"></i> Đã lưu tiến độ!','ok'));
