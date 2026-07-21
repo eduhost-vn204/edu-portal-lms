@@ -3,13 +3,34 @@
   const GAS = 'https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec';
   function getUser(){ try{ return JSON.parse(localStorage.getItem('vlxt_user_v2')||'null'); }catch(e){ return null; } }
 
-  function send(hanhdong, chitiet){
+  // ── Chỉ gửi log khi Apps Script đã có v50 (tránh doPost fallback ghi rác vào Bảng Vàng) ──
+  // Cách dò: GET ?type=hoatdong KHÔNG kèm adminKey → v50 trả {error:'Unauthorized'}, bản cũ trả đề thi.
+  let _ok = null;            // null = chưa biết, true/false = đã dò xong
+  let _queue = [];
+  (function checkV50(){
+    try{
+      const cached = JSON.parse(localStorage.getItem('vlxt_logok')||'null');
+      if (cached && Date.now() - cached.t < 30*60*1000){ _ok = !!cached.ok; if(_ok) flush(); else _queue=[]; return; }
+    }catch(e){}
+    fetch(GAS + '?type=hoatdong&hs=ping').then(function(r){ return r.json(); }).then(function(d){
+      _ok = !!(d && (d.error === 'Unauthorized' || d.ok === false && d.msg));
+      localStorage.setItem('vlxt_logok', JSON.stringify({ ok:_ok, t:Date.now() }));
+      if (_ok) flush(); else _queue = [];
+    }).catch(function(){ _ok = false; _queue = []; });
+  })();
+  function flush(){ const q=_queue; _queue=[]; q.forEach(function(a){ post(a[0],a[1]); }); }
+  function post(hanhdong, chitiet){
     const u = getUser(); if(!u || !u.sdt) return;
     try{
       fetch(GAS, { method:'POST', mode:'cors', keepalive:true,
         headers:{'Content-Type':'text/plain;charset=utf-8'},
         body: JSON.stringify({ action:'loghoatdong', sdt:u.sdt, hanhdong:String(hanhdong||''), chitiet:String(chitiet||'') }) }).catch(function(){});
     }catch(e){}
+  }
+  function send(hanhdong, chitiet){
+    if (_ok === true) post(hanhdong, chitiet);
+    else if (_ok === null) _queue.push([hanhdong, chitiet]);
+    // _ok === false → GAS chưa cập nhật v50, bỏ qua để không ghi rác
   }
   window.vlxtLog = send;
 
