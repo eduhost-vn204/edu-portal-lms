@@ -535,6 +535,13 @@ function hsMienVideo(){
     try{ const u = JSON.parse(localStorage.getItem('vlxt_user_v2')||'null'); return !!(u && u.mienVideo); }
     catch(e){ return false; }
 }
+// Chỉ có ý nghĩa với HS đã hsMienVideo()=true. Mặc định false (chưa tích ở Admin)
+// = video chữa/bài học phát liền mạch, không dừng lại hỏi câu hỏi trong video.
+// Tích "Làm trắc nghiệm cùng thầy" = vẫn dừng video hỏi bài như học sinh thường.
+function hsTracNghiemVideo(){
+    try{ const u = JSON.parse(localStorage.getItem('vlxt_user_v2')||'null'); return !!(u && u.tracNghiemVideo); }
+    catch(e){ return false; }
+}
 function saveIdentity(){
     const ten=$('#g-name').value.trim(), lop=$('#g-class').value.trim(), sdt=$('#g-phone').value.trim();
     if(!ten||!lop||!sdt){ $('#g-err').textContent='Vui lòng điền đầy đủ thông tin nhé!'; return; }
@@ -1091,7 +1098,10 @@ function renderLesson(key){
     const _hasQuiz = !!(lesson.baitap && lesson.baitap.length>0);
     const _hasRealVideo = (vtype==='youtube'||vtype==='drive');
     let _doneLabel;
+    const _mienVideoHS = hsMienVideo(); // đã học live/đã đăng ký khoá -> miễn điều kiện xem video
     if(done) _doneLabel='Đã hoàn thành';
+    else if(_mienVideoHS && _hasQuiz) _doneLabel='Làm đúng ≥90% bài tập luyện tập để hoàn thành';
+    else if(_mienVideoHS) _doneLabel='Tự động hoàn thành (đã miễn điều kiện video)';
     else if(_hasRealVideo && _hasQuiz) _doneLabel='Xem ≥90% video VÀ làm đúng ≥90% bài tập để hoàn thành';
     else if(_hasRealVideo) _doneLabel='Xem ≥90% video để hoàn thành';
     else if(_hasQuiz) _doneLabel='Làm đúng ≥90% bài tập luyện tập để hoàn thành';
@@ -1362,6 +1372,9 @@ function loadVideoQuiz(key, vtype){
     try{ _vqAnswered = new Set(JSON.parse(localStorage.getItem(_vqStoreKey(key))||'[]')); }
     catch(e){ _vqAnswered = new Set(); }
     if(vtype !== 'youtube') return; // Drive/none: không theo dõi được thời gian
+    // HS đã miễn điều kiện video (đã học live) và thầy CHƯA tích "Làm trắc nghiệm cùng thầy"
+    // -> không tải câu hỏi trong video, để video phát liền mạch không bị dừng hỏi bài.
+    if(hsMienVideo() && !hsTracNghiemVideo()) return;
     // Luôn gọi thẳng GAS (KHÔNG dùng cachedFetch): dữ liệu mốc câu hỏi rất ít,
     // và cache stale-while-revalidate (cache.js) trả ngay bản CŨ trong localStorage
     // (kể cả rỗng, tới 24h) rồi mới âm thầm tải lại — khiến câu hỏi mới thêm ở admin
