@@ -179,7 +179,7 @@ function vlxtRenderWidget(user){
           doneEl.textContent=best;
     
         }
-        vlxtSaveUser(Object.assign({},user,{lpTotal:d.user.lpTotal}));
+        vlxtSaveUser(Object.assign({},user,{lpTotal:d.user.lpTotal,mienVideo:d.user.mienVideo,tracNghiemVideo:d.user.tracNghiemVideo}));
       }
     }).catch(function(){});
 }
