@@ -467,7 +467,12 @@ function esc(s){ return(s==null?'':s).toString().replace(/&/g,'&amp;').replace(/
 /* Render nội dung câu hỏi/đáp án: cho phép HTML (img, sup, sub...) nhưng chặn script */
 function pqSafe(s){
     s=(s==null?'':s.toString());
-    if(!/<\/?[a-zA-Z][^>]*>/.test(s)) return esc(s);
+    // DocxEngine (va cau lay tu Ngan hang) da tu HTML-escape san khi tao ra optA-D/cau hoi,
+    // KE CA KHI khong co the tag nao (vi du dau "<" trong cong thuc "$r < r_0$" duoc luu san
+    // thanh "&lt;") - truoc day chi kiem tra "co tag khong" nen bi hieu nham la chu tho, escape
+    // THEM 1 LAN NUA thanh "&amp;lt;" (hien loi chu "&lt;" tren man hinh thay vi dau <). Gio kiem
+    // tra them "co entity HTML san khong" truoc khi quyet dinh escape, tranh escape 2 lan.
+    if(!/<\/?[a-zA-Z][^>]*>/.test(s) && !/&(#\d+|#x[0-9a-fA-F]+|[a-zA-Z]+);/.test(s)) return esc(s);
     return s.replace(/<script[\s\S]*?(<\/script>|$)/gi,'')
             .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*')/gi,'')
             .replace(/<img\b(?![^<]*>)[\s\S]*$/i,'')
