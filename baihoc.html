@@ -235,6 +235,22 @@
         .pq-tag.ok { background:#d1f4e0; color:#15803d; }
         .pq-tag.wrong { background:#fee2e2; color:#b91c1c; }
         .pq-tag.correct-mark { background:#d1f4e0; color:#15803d; }
+        /* Câu Đúng/Sai (4 ý) và Trả lời ngắn — cùng ngôn ngữ hình ảnh với .pq-opt */
+        .pq-tf-row { display:flex; align-items:center; gap:12px; padding:10px 14px; margin-bottom:8px; border:1.5px solid var(--line); border-radius:9px; }
+        .pq-tf-row:last-child { margin-bottom:0; }
+        .pq-tf-stmt { flex:1; font-size:14.5px; line-height:1.6; }
+        .pq-tf-choice { display:flex; gap:14px; flex-shrink:0; }
+        .pq-tf-btn { display:flex; align-items:center; gap:5px; font-size:13px; font-weight:600; cursor:pointer; user-select:none; }
+        .pq-tf-btn input[type=radio] { accent-color:var(--blue); width:15px; height:15px; }
+        .pq-tf-row.result-correct { border-color:var(--green); background:#f0fdf4; }
+        .pq-tf-row.result-wrong { border-color:var(--red); background:#fff5f5; }
+        .pq-short-wrap { display:flex; align-items:center; gap:10px; font-weight:600; font-size:14.5px; }
+        .pq-short-input { background:var(--card); border:1.5px solid var(--line); color:var(--black); font-weight:700; border-radius:8px; padding:9px 14px; font-size:15px; width:140px; text-align:center; outline:none; font-family:'Inter',sans-serif; }
+        .pq-short-input:focus { border-color:var(--blue); }
+        .pq-block.pq-short.result-correct .pq-short-input, .pq-block.pq-tf.result-correct { border-color:var(--green); }
+        .pq-short-input.result-correct { border-color:var(--green) !important; background:#f0fdf4; color:var(--green); }
+        .pq-short-input.result-wrong { border-color:var(--red) !important; background:#fff5f5; color:var(--red); }
+        .pq-short-answer-hint { font-size:12.5px; margin-top:8px; font-weight:600; }
 
         .quiz-actions { display:flex; align-items:center; gap:12px; margin-top:20px; flex-wrap:wrap; }
         .btn-check { background:var(--blue); color:#fff; border:none; border-radius:50px; padding:12px 28px; font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition:opacity .15s; }
@@ -460,6 +476,21 @@ function pqSafe(s){
 function field(row,names){ for(const k in row){ const nk=norm(k); for(const n of names){ if(nk===norm(n)) return row[k]; } } return ''; }
 function toast(msg,type){ const t=$('#toast'); t.className='toast show '+(type||''); t.innerHTML=msg; clearTimeout(t._t); t._t=setTimeout(()=>t.className='toast',2600); }
 function renderMath(el){ if(typeof renderMathInElement==='function'){ try{ renderMathInElement(el,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]}); }catch(e){} } }
+/* Chuẩn hoá vài lỗi công thức hay gặp khi bóc từ Word/MathType (giống hệt bản
+   dùng cho trang thi thử thithu.html — trước đây trang bài học KHÔNG có, nên
+   câu hỏi trong "Luyện tập trắc nghiệm"/"Câu hỏi trong video" hiển thị công
+   thức sai dù dữ liệu gốc đã đúng): \\cdotp không được KaTeX hỗ trợ ổn định,
+   và ký hiệu vector/mũi tên tổ hợp Unicode từ MathType không phông nào hiển
+   thị đồng nhất -> chuyển về cú pháp KaTeX \\vec{}/\\overleftarrow{}. */
+function fixLatexQuirks(html){
+    if(!html) return html;
+    html = html.replace(/\\cdotp/g, '\\cdot');
+    html = html.replace(/([A-Za-zÀ-ỹ])\u20D7/g, '\\vec{$1}');
+    html = html.replace(/([A-Za-zÀ-ỹ])\u20D6/g, '\\overleftarrow{$1}');
+    return html;
+}
+function normNum(s){ return (s==null?'':s).toString().trim().replace(/\s/g,'').replace(',', '.'); }
+
 function ytId(url){ if(!url) return ''; url=url.toString().trim(); if(/^[A-Za-z0-9_-]{11}$/.test(url)) return url; const m=url.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([A-Za-z0-9_-]{11})/); return m?m[1]:''; }
 function driveId(url){ if(!url) return ''; const m=url.toString().trim().match(/\/file\/d\/([^\/\?&]+)/); return m?m[1]:''; }
 function videoType(url){ if(!url) return 'none'; if(ytId(url)) return 'youtube'; if(driveId(url)) return 'drive'; return 'none'; }
@@ -917,19 +948,45 @@ function renderLesson(key){
         const _needCnt = Math.ceil(lesson.baitap.length*0.9);
         let _qz = `<p class="quiz-threshold-hint" id="quiz-threshold-hint">Cần làm đúng ≥90% số câu (từ ${_needCnt}/${lesson.baitap.length} câu trở lên) để đạt phần này.</p>`;
         lesson.baitap.forEach((q,qi)=>{
-            _qz += `<div class="pq-block" id="pq-${qi}">
-                <div class="pq-text">Câu ${qi+1}: ${q.q}</div>
-                <div class="pq-opts">`;
-            ['A','B','C','D'].forEach(L=>{
-                if(!q[L]&&!q[L.toLowerCase()]) return;
-                const txt=q[L]||q[L.toLowerCase()]||'';
-                _qz += `<label class="pq-opt" id="pq-${qi}-${L}">
-                    <input type="radio" name="pq${qi}" value="${L}">
-                    <span class="pq-letter">${L}.</span>
-                    <span>${pqSafe(txt)}</span>
-                </label>`;
-            });
-            _qz += `</div></div>`;
+            const _qType=(q.type==='tf'||q.type==='short')?q.type:'mc';
+            const _qText=fixLatexQuirks(q.q||q.question||'');
+            if(_qType==='tf'){
+                _qz += `<div class="pq-block pq-tf" id="pq-${qi}" data-type="tf">
+                    <div class="pq-text">Câu ${qi+1}: ${_qText}</div>
+                    <div class="pq-tf-instruction" style="font-size:12.5px;color:var(--gray2);margin:4px 0 8px">Chọn Đúng hoặc Sai cho mỗi ý:</div>`;
+                ['A','B','C','D'].forEach(L=>{
+                    if(!q[L]&&!q[L.toLowerCase()]) return;
+                    const txt=fixLatexQuirks(q[L]||q[L.toLowerCase()]||'');
+                    _qz += `<div class="pq-tf-row" id="pq-${qi}-${L}">
+                        <span class="pq-letter">${({A:'a)',B:'b)',C:'c)',D:'d)'})[L]}</span>
+                        <span class="pq-tf-stmt">${pqSafe(txt)}</span>
+                        <div class="pq-tf-choice">
+                            <label class="pq-tf-btn"><input type="radio" name="pq${qi}_${L}" value="Đ"> Đúng</label>
+                            <label class="pq-tf-btn"><input type="radio" name="pq${qi}_${L}" value="S"> Sai</label>
+                        </div>
+                    </div>`;
+                });
+                _qz += `</div>`;
+            } else if(_qType==='short'){
+                _qz += `<div class="pq-block pq-short" id="pq-${qi}" data-type="short">
+                    <div class="pq-text">Câu ${qi+1}: ${_qText}</div>
+                    <div class="pq-short-wrap"><i class="fa-solid fa-keyboard" style="color:var(--blue)"></i> Đáp án của em: <input type="text" class="pq-short-input" id="pq-${qi}-input" placeholder="Nhập số..."></div>
+                </div>`;
+            } else {
+                _qz += `<div class="pq-block" id="pq-${qi}" data-type="mc">
+                    <div class="pq-text">Câu ${qi+1}: ${_qText}</div>
+                    <div class="pq-opts">`;
+                ['A','B','C','D'].forEach(L=>{
+                    if(!q[L]&&!q[L.toLowerCase()]) return;
+                    const txt=fixLatexQuirks(q[L]||q[L.toLowerCase()]||'');
+                    _qz += `<label class="pq-opt" id="pq-${qi}-${L}">
+                        <input type="radio" name="pq${qi}" value="${L}">
+                        <span class="pq-letter">${L}.</span>
+                        <span>${pqSafe(txt)}</span>
+                    </label>`;
+                });
+                _qz += `</div></div>`;
+            }
         });
         _qz += `<div class="quiz-actions">
                 <button class="btn-check" onclick="checkPractice('${esc(key)}',false)">
@@ -1273,10 +1330,12 @@ function loadVideoQuiz(key, vtype){
                     t: Number(r.thoiGian)||0,
                     thuTu: Number(r.thuTu)||(ix+1),
                     nhId: (r.nhId||'').toString(),
+                    type: (r.type==='tf'||r.type==='short')?r.type:'mc',
                     q: (r.question||'').toString(),
                     A: (r.optA||'').toString(), B: (r.optB||'').toString(),
                     C: (r.optC||'').toString(), D: (r.optD||'').toString(),
-                    ans: String(r.correct||'').toUpperCase().trim()
+                    ans: String(r.correct||'').toUpperCase().trim(),
+                    correct: (r.correct||'').toString()
                 }))
                 .sort((a,b) => a.t - b.t);
             // Bug: fetch mốc câu hỏi là bất đồng bộ. Nếu video đã bắt đầu phát
@@ -1384,26 +1443,46 @@ function _vqShowReminder(i){
     const cp = _vqData[i];
     const holder = document.getElementById('vq-holder');
     if(!holder) return;
-    let opts = '';
-    ['A','B','C','D'].forEach(function(L){
-        if(!(cp[L]||'').toString().trim()) return;
-        const isAns = L === cp.ans;
-        opts += `<div class="pq-opt${isAns ? ' result-correct' : ''}" style="pointer-events:none">
-            <span class="pq-letter">${L}.</span>
-            <span>${pqSafe(cp[L])}</span>
-            ${isAns ? '<span class="pq-tag correct-mark">✓ Đáp án đúng</span>' : ''}
-        </div>`;
-    });
+    const type=(cp.type==='tf'||cp.type==='short')?cp.type:'mc';
+    const SUB={A:'a)',B:'b)',C:'c)',D:'d)'};
+    let body;
+    if(type==='tf'){
+        const corr=(cp.correct||'').toString();
+        let rows='';
+        ['A','B','C','D'].forEach(function(L){
+            if(!(cp[L]||'').toString().trim()) return;
+            const pos={A:0,B:1,C:2,D:3}[L]; const dung=corr[pos]==='Đ';
+            rows += `<div class="pq-tf-row result-correct" style="pointer-events:none">
+                <span class="pq-letter">${SUB[L]}</span>
+                <span class="pq-tf-stmt">${pqSafe(fixLatexQuirks(cp[L]))}</span>
+                <span class="pq-tag correct-mark">${dung?'Đúng':'Sai'}</span>
+            </div>`;
+        });
+        body = `<div class="pq-text" style="margin-bottom:12px">${pqSafe(fixLatexQuirks(cp.q))}</div>${rows}`;
+    } else if(type==='short'){
+        body = `<div class="pq-text" style="margin-bottom:12px">${pqSafe(fixLatexQuirks(cp.q))}</div>
+            <div class="pq-short-wrap"><b>Đáp án đúng:</b>&nbsp;${pqSafe((cp.correct||'').toString())}</div>`;
+    } else {
+        let opts = '';
+        ['A','B','C','D'].forEach(function(L){
+            if(!(cp[L]||'').toString().trim()) return;
+            const isAns = L === cp.ans;
+            opts += `<div class="pq-opt${isAns ? ' result-correct' : ''}" style="pointer-events:none">
+                <span class="pq-letter">${L}.</span>
+                <span>${pqSafe(fixLatexQuirks(cp[L]))}</span>
+                ${isAns ? '<span class="pq-tag correct-mark">✓ Đáp án đúng</span>' : ''}
+            </div>`;
+        });
+        body = `<div class="pq-text" style="margin-bottom:12px">${pqSafe(fixLatexQuirks(cp.q))}</div>
+            <div class="pq-opts">${opts}</div>`;
+    }
     _vqToggleSideList(false);
     holder.innerHTML = `<div class="vq-panel vq-reminder" id="vq-panel">
         <div class="vq-head">
             <span class="vq-badge vq-badge-done"><i class="fa-solid fa-lightbulb"></i> NHẮC LẠI CÂU ĐÃ HỌC</span>
             <span class="vq-time-tag"><i class="fa-regular fa-clock"></i> ${_vqFmt(cp.t)} &nbsp;·&nbsp; Câu ${i + 1}/${_vqData.length}</span>
         </div>
-        <div class="vq-body">
-            <div class="pq-text" style="margin-bottom:12px">${pqSafe(cp.q)}</div>
-            <div class="pq-opts">${opts}</div>
-        </div>
+        <div class="vq-body">${body}</div>
         <div class="vq-foot">
             <i class="fa-solid fa-circle-check" style="color:var(--green)"></i>
             Em đã làm đúng câu này rồi — video đang tạm dừng, bấm nút bên dưới (hoặc tự bấm play, tua đi chỗ khác) khi em xem xong nhé.
@@ -1434,28 +1513,80 @@ function _vqShow(i){
     const cp = _vqData[i];
     const holder = document.getElementById('vq-holder');
     if(!holder) return;
-    let opts = '';
-    ['A','B','C','D'].forEach(function(L){
-        if(!(cp[L]||'').toString().trim()) return;
-        opts += `<label class="pq-opt" id="vq-opt-${L}" onclick="vqAnswer('${L}')">
-            <span class="pq-letter">${L}.</span>
-            <span>${pqSafe(cp[L])}</span>
-        </label>`;
-    });
+    const type=(cp.type==='tf'||cp.type==='short')?cp.type:'mc';
+    const SUB={A:'a)',B:'b)',C:'c)',D:'d)'};
+    let body;
+    if(type==='tf'){
+        let rows='';
+        ['A','B','C','D'].forEach(function(L){
+            if(!(cp[L]||'').toString().trim()) return;
+            rows += `<div class="pq-tf-row" id="vq-tf-${L}">
+                <span class="pq-letter">${SUB[L]}</span>
+                <span class="pq-tf-stmt">${pqSafe(fixLatexQuirks(cp[L]))}</span>
+                <div class="pq-tf-choice">
+                    <label class="pq-tf-btn"><input type="radio" name="vqtf-${L}" value="Đ"> Đúng</label>
+                    <label class="pq-tf-btn"><input type="radio" name="vqtf-${L}" value="S"> Sai</label>
+                </div>
+            </div>`;
+        });
+        body = `<div class="pq-text" style="margin-bottom:12px">${pqSafe(fixLatexQuirks(cp.q))}</div>
+            <div class="pq-tf-instruction" style="font-size:12.5px;color:var(--gray2);margin-bottom:8px">Chọn Đúng hoặc Sai cho mỗi ý rồi bấm Nộp đáp án:</div>
+            ${rows}
+            <button type="button" class="btn-check" style="margin-top:10px" onclick="vqSubmitTF()"><i class="fa-solid fa-check-circle"></i> Nộp đáp án</button>`;
+    } else if(type==='short'){
+        body = `<div class="pq-text" style="margin-bottom:12px">${pqSafe(fixLatexQuirks(cp.q))}</div>
+            <div class="pq-short-wrap"><i class="fa-solid fa-keyboard" style="color:var(--blue)"></i> Đáp án của em: <input type="text" class="pq-short-input" id="vq-short-input" placeholder="Nhập số..."></div>
+            <button type="button" class="btn-check" style="margin-top:10px" onclick="vqSubmitShort()"><i class="fa-solid fa-check-circle"></i> Nộp đáp án</button>`;
+    } else {
+        let opts = '';
+        ['A','B','C','D'].forEach(function(L){
+            if(!(cp[L]||'').toString().trim()) return;
+            opts += `<label class="pq-opt" id="vq-opt-${L}" onclick="vqAnswer('${L}')">
+                <span class="pq-letter">${L}.</span>
+                <span>${pqSafe(fixLatexQuirks(cp[L]))}</span>
+            </label>`;
+        });
+        body = `<div class="pq-text" style="margin-bottom:12px">${pqSafe(fixLatexQuirks(cp.q))}</div>
+            <div class="pq-opts">${opts}</div>`;
+    }
     _vqToggleSideList(false);
     holder.innerHTML = `<div class="vq-panel" id="vq-panel">
         <div class="vq-head">
             <span class="vq-badge"><i class="fa-solid fa-bolt"></i> LUYỆN TẬP NHANH</span>
             <span class="vq-time-tag"><i class="fa-regular fa-clock"></i> ${_vqFmt(cp.t)} &nbsp;·&nbsp; Câu ${i+1}/${_vqData.length}</span>
         </div>
-        <div class="vq-body">
-            <div class="pq-text" style="margin-bottom:12px">${pqSafe(cp.q)}</div>
-            <div class="pq-opts">${opts}</div>
-        </div>
-        <div class="vq-foot" id="vq-foot"><i class="fa-solid fa-lock" style="color:var(--blue)"></i> Video tạm dừng — chọn đáp án đúng để xem thầy chữa câu này nhé!</div>
+        <div class="vq-body">${body}</div>
+        <div class="vq-foot" id="vq-foot"><i class="fa-solid fa-lock" style="color:var(--blue)"></i> Video tạm dừng — trả lời đúng để xem thầy chữa câu này nhé!</div>
     </div>`;
     renderMath(holder);
     if(window.innerWidth <= 900) setTimeout(function(){ holder.scrollIntoView({behavior:'smooth', block:'center'}); }, 150);
+}
+
+/* Khoá + chuyển tiếp video khi trả lời đúng — dùng chung cho cả 3 loại câu (mc/tf/short) */
+function _vqMarkCorrect(cp){
+    _vqLock = true;
+    const foot = document.getElementById('vq-foot');
+    if(foot) foot.innerHTML = '<i class="fa-solid fa-circle-check" style="color:var(--green)"></i> <b style="color:var(--green)">Chính xác!</b>&nbsp;Video tiếp tục — xem thầy chữa chi tiết nhé.';
+    _vqAnswered.add(_vqIdOf(cp));
+    try{ localStorage.setItem(_vqStoreKey(_vqKey), JSON.stringify(Array.from(_vqAnswered))); }catch(e){}
+    _vqLog(cp);
+    const doneAll = _vqData.every(c => _vqAnswered.has(_vqIdOf(c)));
+    setTimeout(function(){
+        _vqActive = -1;
+        const holder = document.getElementById('vq-holder');
+        if(holder) holder.innerHTML = '';
+        _vqToggleSideList(true);
+        // Nhảy đúng về mốc câu hỏi trước khi phát tiếp, đảm bảo HS luôn xem đoạn thầy
+        // chữa câu đó từ đúng điểm bắt đầu (video có thể đã dừng hơi sớm/muộn vài trăm ms
+        // do polling 500ms, seekTo đảm bảo luôn khớp chính xác mốc thầy đặt).
+        try{ _ytPlayer.seekTo(cp.t, true); _ytPlayer.playVideo(); }catch(e){}
+        if(doneAll) toast('<i class="fa-solid fa-trophy"></i> Tuyệt vời! Bạn đã làm hết câu hỏi trong video này!','ok');
+    }, 1600);
+}
+function _vqMarkWrong(msg){
+    _vqWrong++;
+    const foot = document.getElementById('vq-foot');
+    if(foot) foot.innerHTML = msg || '<i class="fa-solid fa-rotate-left" style="color:var(--red)"></i> Chưa đúng rồi — nghĩ kỹ lại và chọn đáp án khác nhé!';
 }
 
 function vqAnswer(L){
@@ -1463,31 +1594,55 @@ function vqAnswer(L){
     const cp = _vqData[_vqActive];
     const el = document.getElementById('vq-opt-' + L);
     if(L === cp.ans){
-        _vqLock = true;
         if(el){ el.classList.remove('vq-wrong'); el.classList.add('vq-right'); }
         document.querySelectorAll('#vq-panel .pq-opt').forEach(o => o.style.pointerEvents = 'none');
-        const foot = document.getElementById('vq-foot');
-        if(foot) foot.innerHTML = '<i class="fa-solid fa-circle-check" style="color:var(--green)"></i> <b style="color:var(--green)">Chính xác!</b>&nbsp;Video tiếp tục — xem thầy chữa chi tiết nhé.';
-        _vqAnswered.add(_vqIdOf(cp));
-        try{ localStorage.setItem(_vqStoreKey(_vqKey), JSON.stringify(Array.from(_vqAnswered))); }catch(e){}
-        _vqLog(cp);
-        const doneAll = _vqData.every(c => _vqAnswered.has(_vqIdOf(c)));
-        setTimeout(function(){
-            _vqActive = -1;
-            const holder = document.getElementById('vq-holder');
-            if(holder) holder.innerHTML = '';
-            _vqToggleSideList(true);
-            // Nhảy đúng về mốc câu hỏi trước khi phát tiếp, đảm bảo HS luôn xem đoạn thầy
-            // chữa câu đó từ đúng điểm bắt đầu (video có thể đã dừng hơi sớm/muộn vài trăm ms
-            // do polling 500ms, seekTo đảm bảo luôn khớp chính xác mốc thầy đặt).
-            try{ _ytPlayer.seekTo(cp.t, true); _ytPlayer.playVideo(); }catch(e){}
-            if(doneAll) toast('<i class="fa-solid fa-trophy"></i> Tuyệt vời! Bạn đã làm hết câu hỏi trong video này!','ok');
-        }, 1600);
+        _vqMarkCorrect(cp);
     } else {
-        _vqWrong++;
         if(el){ el.classList.remove('vq-wrong'); void el.offsetWidth; el.classList.add('vq-wrong'); }
-        const foot = document.getElementById('vq-foot');
-        if(foot) foot.innerHTML = '<i class="fa-solid fa-rotate-left" style="color:var(--red)"></i> Chưa đúng rồi — nghĩ kỹ lại và chọn đáp án khác nhé!';
+        _vqMarkWrong();
+    }
+}
+
+function vqSubmitTF(){
+    if(_vqActive < 0 || _vqLock) return;
+    const cp = _vqData[_vqActive];
+    const letters=['A','B','C','D'].filter(L=>(cp[L]||'').toString().trim());
+    const corr=(cp.correct||'').toString();
+    let allAnswered=true, allRight=true;
+    letters.forEach(function(L){
+        const pos={A:0,B:1,C:2,D:3}[L];
+        const want=corr[pos]==='Đ'?'Đ':'S';
+        const sel=document.querySelector(`input[name="vqtf-${L}"]:checked`);
+        const row=document.getElementById('vq-tf-'+L);
+        if(row) row.classList.remove('result-correct','result-wrong');
+        if(!sel){ allAnswered=false; return; }
+        const ok=sel.value===want;
+        if(!ok) allRight=false;
+        if(row) row.classList.add(ok?'result-correct':'result-wrong');
+    });
+    if(!allAnswered){ toast('<i class="fa-solid fa-triangle-exclamation"></i> Chọn Đúng/Sai cho đủ cả 4 ý nhé!','err'); return; }
+    if(allRight){
+        document.querySelectorAll('#vq-panel input[type=radio]').forEach(r=>r.disabled=true);
+        _vqMarkCorrect(cp);
+    } else {
+        _vqMarkWrong('<i class="fa-solid fa-rotate-left" style="color:var(--red)"></i> Còn ý chưa đúng — xem lại và nộp lại nhé!');
+    }
+}
+
+function vqSubmitShort(){
+    if(_vqActive < 0 || _vqLock) return;
+    const cp = _vqData[_vqActive];
+    const inp = document.getElementById('vq-short-input');
+    const val = inp?inp.value:'';
+    if(!val.trim()){ toast('<i class="fa-solid fa-triangle-exclamation"></i> Em chưa nhập đáp án!','err'); return; }
+    const ok = normNum(val)!=='' && normNum(val)===normNum(cp.correct||'');
+    if(inp) inp.classList.remove('result-correct','result-wrong');
+    if(ok){
+        if(inp){ inp.classList.add('result-correct'); inp.disabled=true; }
+        _vqMarkCorrect(cp);
+    } else {
+        if(inp) inp.classList.add('result-wrong');
+        _vqMarkWrong();
     }
 }
 
@@ -1566,13 +1721,36 @@ function openWrongReviewOverlay(items){
         <div class="wr-list">`;
     items.forEach(function(it){
         const q = it.q;
+        const qType=(q.type==='tf'||q.type==='short')?q.type:'mc';
+        if(qType==='tf'){
+            const corr=(q.correct||q.dapan||'').toString();
+            html += `<div class="wr-block"><div class="wr-qtext">Câu ${it.qi + 1}: ${fixLatexQuirks(q.q||q.question||'')}</div><div class="wr-opts">`;
+            ['A','B','C','D'].forEach(function(L,li){
+                if(!q[L] && !q[L.toLowerCase()]) return;
+                const txt = fixLatexQuirks(q[L] || q[L.toLowerCase()] || '');
+                const pos={A:0,B:1,C:2,D:3}[L];
+                const dung = corr[pos]==='Đ';
+                html += `<div class="wr-opt wr-correct">
+                    <span class="pq-letter">${({A:'a)',B:'b)',C:'c)',D:'d)'})[L]}</span><span>${pqSafe(txt)}</span>
+                    <span class="wr-badge"><i class="fa-solid fa-check"></i> ${dung?'Đúng':'Sai'}</span>
+                </div>`;
+            });
+            html += `</div></div>`;
+            return;
+        }
+        if(qType==='short'){
+            html += `<div class="wr-block"><div class="wr-qtext">Câu ${it.qi + 1}: ${fixLatexQuirks(q.q||q.question||'')}</div>
+                <div class="wr-opts"><div class="wr-opt wr-correct"><span>Đáp án đúng: <b>${pqSafe((q.correct||q.dapan||'').toString())}</b></span>
+                <span class="wr-badge"><i class="fa-solid fa-check"></i> Đáp án đúng</span></div></div></div>`;
+            return;
+        }
         const ans = (q.ans || q.correct || q.dapan || '').toString().toUpperCase().trim();
         html += `<div class="wr-block">
-            <div class="wr-qtext">Câu ${it.qi + 1}: ${q.q || ''}</div>
+            <div class="wr-qtext">Câu ${it.qi + 1}: ${fixLatexQuirks(q.q || q.question || '')}</div>
             <div class="wr-opts">`;
         ['A','B','C','D'].forEach(function(L){
             if(!q[L] && !q[L.toLowerCase()]) return;
-            const txt = q[L] || q[L.toLowerCase()] || '';
+            const txt = fixLatexQuirks(q[L] || q[L.toLowerCase()] || '');
             const isCorrect = L === ans;
             html += `<div class="wr-opt${isCorrect ? ' wr-correct' : ''}">
                 <span class="pq-letter">${L}.</span><span>${pqSafe(txt)}</span>
@@ -1634,6 +1812,48 @@ function checkPractice(key,force){
     let correct=0, answered=0;
     const wrongThisAttempt=[];
     qs.forEach((q,qi)=>{
+        const qType=(q.type==='tf'||q.type==='short')?q.type:'mc';
+        if(qType==='tf'){
+            const corr=(q.correct||q.dapan||'').toString();
+            const letters=['A','B','C','D'].filter(L=>q[L]||q[L.toLowerCase()]);
+            document.querySelectorAll(`#pq-${qi} .pq-tf-row`).forEach(row=>row.classList.remove('result-correct','result-wrong'));
+            let allAnswered=letters.length>0, allRight=true;
+            letters.forEach(L=>{
+                const pos={A:0,B:1,C:2,D:3}[L];
+                const want=corr[pos]==='Đ'?'Đ':(corr[pos]==='S'?'S':'');
+                const sel=document.querySelector(`input[name="pq${qi}_${L}"]:checked`);
+                const row=document.getElementById(`pq-${qi}-${L}`);
+                if(!sel){ allAnswered=false; allRight=false; return; }
+                const ok=sel.value===want;
+                if(!ok) allRight=false;
+                if(row) row.classList.add(ok?'result-correct':'result-wrong');
+            });
+            if(allAnswered){ answered++; if(allRight) correct++; else wrongThisAttempt.push(qi); }
+            return;
+        }
+        if(qType==='short'){
+            const inp=document.getElementById(`pq-${qi}-input`);
+            const block=document.getElementById(`pq-${qi}`);
+            block?.querySelector('.pq-short-answer-hint')?.remove();
+            if(inp) inp.classList.remove('result-correct','result-wrong');
+            const rawVal=inp?inp.value:'';
+            const wantN=normNum(q.correct||q.dapan||'');
+            if(rawVal.trim()){
+                answered++;
+                const gotN=normNum(rawVal);
+                const isRight=gotN!==''&&gotN===wantN;
+                if(isRight) correct++; else wrongThisAttempt.push(qi);
+                if(inp) inp.classList.add(isRight?'result-correct':'result-wrong');
+                if(!isRight && block){
+                    const hint=document.createElement('div');
+                    hint.className='pq-short-answer-hint';
+                    hint.style.color='var(--green)';
+                    hint.innerHTML='Đáp án đúng: <b>'+pqSafe((q.correct||q.dapan||'').toString())+'</b>';
+                    block.appendChild(hint);
+                }
+            }
+            return;
+        }
         const sel=document.querySelector(`input[name="pq${qi}"]:checked`);
         const opts=document.querySelectorAll(`#pq-${qi} .pq-opt`);
         const ans=(q.ans||q.correct||q.dapan||'').toString().toUpperCase().trim();
@@ -1740,6 +1960,10 @@ function scrollToQuiz(){
 function resetPractice(){
     document.querySelectorAll('.pq-opt').forEach(o=>{ o.classList.remove('result-correct','result-wrong'); o.querySelector('.pq-tag')?.remove(); });
     document.querySelectorAll('.pq-opt input[type=radio]').forEach(r=>r.checked=false);
+    document.querySelectorAll('.pq-tf-row').forEach(o=>o.classList.remove('result-correct','result-wrong'));
+    document.querySelectorAll('.pq-tf-row input[type=radio]').forEach(r=>r.checked=false);
+    document.querySelectorAll('.pq-short-input').forEach(i=>{ i.value=''; i.classList.remove('result-correct','result-wrong'); });
+    document.querySelectorAll('.pq-short-answer-hint').forEach(h=>h.remove());
     const s=document.getElementById('quiz-score'); if(s) s.style.display='none';
     const b=document.getElementById('quiz-unlock-banner'); if(b) b.remove();
     const w=document.getElementById('quiz-warn'); if(w) w.remove();
