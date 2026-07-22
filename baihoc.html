@@ -555,6 +555,41 @@ async function fetchLessons(){
     USING_DEMO=true; return DEMO_ROWS;
 }
 
+// Luyện tập trắc nghiệm giờ lưu ở sheet riêng BaiTapTracNghiem (1 hàng/câu, không còn
+// giới hạn 50.000 ký tự/ô của cột BaiHoc.BaiTap) — xem project_quiz-3loai-docxengine-reuse.
+// Tải 1 lần toàn bộ sheet này song song với fetchLessons() rồi ghi đè lesson.baitap theo
+// từng bài (chỉ ghi đè khi sheet CÓ dữ liệu cho bài đó — bài cũ chưa từng lưu lại bằng
+// bản mới vẫn giữ nguyên baitap đã đọc được từ cột BaiTap cũ, không bị mất dữ liệu).
+async function fetchQbAll(){
+    try{
+        const r = await fetch(APPS_SCRIPT_URL + '?type=baitaptracnghiem&t=' + Date.now());
+        const data = await r.json();
+        return Array.isArray(data) ? data : (data.baitaptracnghiem || data.data || []);
+    }catch(e){ console.warn('Chưa tải được sheet BaiTapTracNghiem:', e); return []; }
+}
+function applyQbOverrides(courses, qbRows){
+    if(!qbRows || !qbRows.length) return;
+    const byKey = {};
+    qbRows.forEach(rw=>{
+        const k = String(rw && rw.baiKey || '');
+        if(!k) return;
+        (byKey[k] = byKey[k] || []).push(rw);
+    });
+    courses.forEach(c => c.chapters.forEach(ch => ch.lessons.forEach(l => {
+        const items = byKey[l.key];
+        if(!items || !items.length) return;
+        items.sort((a,b) => (Number(a.thuTu)||0) - (Number(b.thuTu)||0));
+        l.baitap = items.map(rw => ({
+            type: (rw.type==='tf'||rw.type==='short') ? rw.type : 'mc',
+            q: (rw.question||'').toString(),
+            A: (rw.optA||'').toString(), B: (rw.optB||'').toString(),
+            C: (rw.optC||'').toString(), D: (rw.optD||'').toString(),
+            ans: String(rw.correct||'').toUpperCase().trim(),
+            correct: (rw.correct||'').toString()
+        }));
+    })));
+}
+
 async function fetchProgress(){
     WATCHED=new Set();
     if(!HS||USING_DEMO){
@@ -2112,8 +2147,9 @@ function showUpgrade(courseName){
 ═══════════════════════════════════════════ */
 async function boot(){
     renderWho();
-    const [rows] = await Promise.all([fetchLessons(), fetchKhoaConfig()]);
+    const [rows, , qbRows] = await Promise.all([fetchLessons(), fetchKhoaConfig(), fetchQbAll()]);
     COURSES=buildCourses(rows);
+    applyQbOverrides(COURSES, qbRows);
     GROUPS=new Map();
     COURSES.forEach(c=>{ if(c.group){ if(!GROUPS.has(c.group))GROUPS.set(c.group,[]); GROUPS.get(c.group).push(c); }});
     route();
