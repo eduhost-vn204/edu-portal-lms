@@ -527,6 +527,14 @@ function loadIdentity(){
         HS=JSON.parse(localStorage.getItem(LS_HS)||'null');
     }catch(e){ HS=null; }
 }
+
+// Học sinh đã học trong lớp/khoá của thầy + đã xem live rồi (thầy đánh dấu trong Admin)
+// → không cần bắt xem ≥90% video/làm câu áp dụng trong bài mới qua được bài tiếp theo,
+// chỉ cần đạt ≥90% Luyện tập trắc nghiệm (xem checkLessonComplete/_videoWatched90 bên dưới).
+function hsMienVideo(){
+    try{ const u = JSON.parse(localStorage.getItem('vlxt_user_v2')||'null'); return !!(u && u.mienVideo); }
+    catch(e){ return false; }
+}
 function saveIdentity(){
     const ten=$('#g-name').value.trim(), lop=$('#g-class').value.trim(), sdt=$('#g-phone').value.trim();
     if(!ten||!lop||!sdt){ $('#g-err').textContent='Vui lòng điền đầy đủ thông tin nhé!'; return; }
@@ -1135,7 +1143,7 @@ function renderLesson(key){
     _lessonCurrentKey = key;
     _lessonHasQuiz = !!(lesson.baitap && lesson.baitap.length > 0);
     _lessonQuizMinutes = lesson.thoigian || 0;
-    _videoWatched90 = WATCHED.has(key); // đã hoàn thành trước = tính là đã xem
+    _videoWatched90 = WATCHED.has(key) || hsMienVideo(); // đã hoàn thành trước, hoặc HS được miễn (đã học live) = tính là đã xem
     _quizPassed90 = WATCHED.has(key) || !_lessonHasQuiz; // không có quiz thì coi như đạt sẵn
     loadVideoQuiz(key, vtype); // câu hỏi trong video (chỉ YouTube)
     // Đếm ngược thời gian làm bài (nếu thầy đặt giới hạn phút cho bài này)
