@@ -1629,6 +1629,9 @@ function _vqMarkCorrect(cp){
     const foot = document.getElementById('vq-foot');
     if(foot) foot.innerHTML = '<i class="fa-solid fa-circle-check" style="color:var(--green)"></i> <b style="color:var(--green)">Chính xác!</b>&nbsp;Video tiếp tục — xem thầy chữa chi tiết nhé.';
     _vqAnswered.add(_vqIdOf(cp));
+    _vqRemindedIds.add(_vqIdOf(cp)); // đánh dấu đã "nhắc" luôn lượt này — tránh vòng lặp watch
+    // phát hiện lại ĐÚNG mốc vừa trả lời (do sắp seekTo(cp.t) rồi play lại) và bật panel
+    // "nhắc lại" một lần nữa ngay sau khi vừa trả lời đúng (gây khựng video 2 lần liên tiếp).
     try{ localStorage.setItem(_vqStoreKey(_vqKey), JSON.stringify(Array.from(_vqAnswered))); }catch(e){}
     _vqLog(cp);
     const doneAll = _vqData.every(c => _vqAnswered.has(_vqIdOf(c)));
