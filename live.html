@@ -292,6 +292,57 @@
     #trial-countdown.tc-expiring .tc-time  { color:#fca5a5; }
     @keyframes tcPulse { 0%,100%{box-shadow:0 4px 20px rgba(239,68,68,0.2)} 50%{box-shadow:0 4px 28px rgba(239,68,68,0.5)} }
     body:not(.dark) #trial-countdown { background:rgba(30,30,50,0.88); }
+
+    /* ───────────────── OFFLINE SCHEDULE ───────────────── */
+    .offline-schedule {
+        margin-top:2px; display:inline-flex; align-items:center; gap:8px;
+        background:rgba(11,132,243,.14); border:1px solid rgba(96,165,250,.4);
+        color:#bfdbfe; padding:8px 18px; border-radius:50px; font-size:13px; font-weight:700;
+    }
+    .offline-schedule strong { color:#fff; }
+
+    /* ───────────────── RIGHT PANEL (tabs: Danh sách bài học / Bình luận) ───────────────── */
+    .right-panel { display:flex; flex-direction:column; background:var(--card); height:100%; overflow:hidden; }
+    @media(max-width:900px) { .right-panel { height:640px; } }
+    .rp-tabs { display:flex; border-bottom:1px solid var(--line); flex-shrink:0; }
+    .rp-tab-btn {
+        flex:1; background:none; border:none; cursor:pointer; padding:13px 8px;
+        font-size:13px; font-weight:700; color:var(--sub);
+        display:flex; align-items:center; justify-content:center; gap:7px;
+        border-bottom:2.5px solid transparent; transition:all .15s;
+        font-family:'Plus Jakarta Sans',sans-serif;
+    }
+    .rp-tab-btn:hover { color:var(--text); }
+    .rp-tab-btn.active { color:var(--blue); border-bottom-color:var(--blue); }
+    .rp-pane { display:none; flex:1; min-height:0; flex-direction:column; overflow:hidden; }
+    .rp-pane.active { display:flex; }
+    #rp-pane-list.active { display:block; overflow-y:auto; padding:14px; }
+    #rp-pane-list::-webkit-scrollbar { width:4px; }
+    #rp-pane-list::-webkit-scrollbar-thumb { background:var(--line); border-radius:4px; }
+
+    /* ───────────────── LESSON LIST (copy phong cách từ baihoc.html) ───────────────── */
+    .side-list { background:var(--card); border:1.5px solid var(--line); border-radius:var(--radius); overflow:hidden; }
+    .side-hd { padding:14px 16px 12px; border-bottom:1.5px solid var(--line); background:var(--card2); }
+    .side-hd-title { font-size:14.5px; font-weight:700; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .side-chap { border-top:1.5px solid var(--line); }
+    .side-chap:first-of-type { border-top:none; }
+    .side-chap-name { display:flex; align-items:center; gap:8px; padding:10px 14px 8px; font-size:12px; font-weight:700; color:var(--sub); text-transform:uppercase; letter-spacing:.5px; }
+    .side-chap-num { width:20px; height:20px; border-radius:5px; background:rgba(11,132,243,.1); color:var(--blue); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; flex-shrink:0; }
+    .side-item { display:flex; gap:10px; padding:11px 16px; cursor:pointer; font-size:13.5px; align-items:center; transition:background .12s; border-top:1px solid var(--line); }
+    .side-item:first-of-type { border-top:none; }
+    .side-item:hover { background:var(--card2); }
+    .side-item.is-live-now { background:rgba(220,38,38,.08); border-left:3px solid var(--red); }
+    .si-ic { color:var(--sub); font-size:11px; flex-shrink:0; }
+    .side-item.is-live-now .si-ic { color:var(--red); }
+    .si-name { flex:1; line-height:1.4; }
+    .side-live-badge {
+        margin-left:auto; font-size:9.5px; font-weight:800; color:#fff; background:var(--red);
+        padding:2px 8px; border-radius:20px; letter-spacing:.03em; text-transform:uppercase; flex-shrink:0;
+    }
+    .lesson-list-empty { text-align:center; padding:40px 16px; color:var(--sub); }
+    .lesson-list-empty i { font-size:30px; opacity:.4; margin-bottom:12px; display:block; }
+
+    .live-lesson-context { font-size:12.5px; color:var(--sub); margin-top:5px; display:flex; align-items:center; gap:6px; }
     </style>
 </head>
 <body>
@@ -331,6 +382,7 @@
                 <div class="off-icon">📡</div>
                 <h2>Chưa có buổi live nào đang diễn ra</h2>
                 <p>Thầy sẽ thông báo lịch live qua Zalo &amp; trang <a href="lichlive.html" style="color:#60a5fa">Lịch Live</a>. Bạn quay lại sau nhé!</p>
+                <div class="offline-schedule"><i class="fa-regular fa-clock"></i> Lịch live cố định: <strong>Thứ 2 - 4 - 6, 19h30</strong> mỗi tuần</div>
             </div>
             <iframe id="yt-player" src="" allowfullscreen allow="autoplay; encrypted-media" style="display:none"></iframe>
         </div>
@@ -342,6 +394,7 @@
                     <span class="viewer-count"><i class="fa-solid fa-eye"></i> <span id="viewer-count">0</span> đang xem</span>
                 </div>
                 <div class="vi-title" id="live-title">Vật Lý Xuân Trường: Live Dạy Học</div>
+                <div class="live-lesson-context" id="live-lesson-context"></div>
             </div>
             <div class="vi-meta">
                 <span id="live-date" style="font-size:13px;color:var(--sub)"></span>
@@ -349,40 +402,53 @@
         </div>
     </div>
 
-    <!-- ── CHAT PANEL ── -->
-    <div class="chat-panel">
-        <div class="chat-header">
-            <div class="chat-header-left">
-                <i class="fa-solid fa-comments"></i>
-                <span>Bình luận trực tiếp</span>
-            </div>
-            <span id="msg-count" style="font-size:12px;color:var(--sub)">0 tin nhắn</span>
+    <!-- ── RIGHT PANEL (tabs) ── -->
+    <div class="right-panel">
+        <div class="rp-tabs">
+            <button class="rp-tab-btn" data-rp="list" onclick="switchRP('list')"><i class="fa-solid fa-list-ul"></i> Danh sách bài học</button>
+            <button class="rp-tab-btn" data-rp="chat" onclick="switchRP('chat')"><i class="fa-solid fa-comments"></i> Bình luận</button>
         </div>
 
-        <div class="msg-list" id="msg-list">
-            <div class="msg-system">Chào mừng bạn đến buổi live! 🎉</div>
+        <div class="rp-pane" data-rp-pane="list" id="rp-pane-list">
+            <div id="lesson-list-holder">
+                <div class="lesson-list-empty"><i class="fa-solid fa-spinner fa-spin"></i>Đang tải danh sách bài học…</div>
+            </div>
         </div>
 
-        <div class="chat-input-wrap">
-            <div id="name-setup" class="chat-name-row" style="display:none">
-                <input type="text" id="input-name" placeholder="Nhập tên hiển thị của bạn…" maxlength="30">
-                <button class="send-btn" onclick="saveName()" title="Lưu tên"><i class="fa-solid fa-check"></i></button>
-            </div>
-            <div id="name-display" class="chat-name-saved" style="display:none">
-                👤 <strong id="display-name-label"></strong>
-                <button class="name-edit-btn" onclick="editName()">✏️ Đổi tên</button>
-            </div>
-
-            <div class="chat-row">
-                <input type="text" id="input-msg" placeholder="Nhắn gì đó…" maxlength="200" onkeydown="if(event.key==='Enter')sendMsg()">
-                <button class="send-btn" id="send-btn" onclick="sendMsg()"><i class="fa-solid fa-paper-plane"></i></button>
+        <div class="rp-pane" data-rp-pane="chat" id="rp-pane-chat">
+            <div class="chat-header">
+                <div class="chat-header-left">
+                    <i class="fa-solid fa-comments"></i>
+                    <span>Bình luận trực tiếp</span>
+                </div>
+                <span id="msg-count" style="font-size:12px;color:var(--sub)">0 tin nhắn</span>
             </div>
 
-            <div class="react-row">
-                <button class="heart-btn" id="heart-btn" onclick="sendHeart()">
-                    &#9829; <span class="heart-count" id="heart-total">0</span>
-                </button>
-                <span style="font-size:12px;color:var(--sub)">Thả tim để cổ vũ thầy!</span>
+            <div class="msg-list" id="msg-list">
+                <div class="msg-system">Chào mừng bạn đến buổi live! 🎉</div>
+            </div>
+
+            <div class="chat-input-wrap">
+                <div id="name-setup" class="chat-name-row" style="display:none">
+                    <input type="text" id="input-name" placeholder="Nhập tên hiển thị của bạn…" maxlength="30">
+                    <button class="send-btn" onclick="saveName()" title="Lưu tên"><i class="fa-solid fa-check"></i></button>
+                </div>
+                <div id="name-display" class="chat-name-saved" style="display:none">
+                    👤 <strong id="display-name-label"></strong>
+                    <button class="name-edit-btn" onclick="editName()">✏️ Đổi tên</button>
+                </div>
+
+                <div class="chat-row">
+                    <input type="text" id="input-msg" placeholder="Nhắn gì đó…" maxlength="200" onkeydown="if(event.key==='Enter')sendMsg()">
+                    <button class="send-btn" id="send-btn" onclick="sendMsg()"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+
+                <div class="react-row">
+                    <button class="heart-btn" id="heart-btn" onclick="sendHeart()">
+                        &#9829; <span class="heart-count" id="heart-total">0</span>
+                    </button>
+                    <span style="font-size:12px;color:var(--sub)">Thả tim để cổ vũ thầy!</span>
+                </div>
             </div>
         </div>
     </div>
@@ -418,6 +484,9 @@ const FIREBASE_CONFIG = {
 // Path thay đổi theo sessionId để tránh hiện dữ liệu buổi cũ
 let SESSION_PATH = "live_sessions/main";
 let currentSessionId = null;
+
+// GAS backend (cùng deployment với baihoc.html) — dùng để đọc danh sách bài học + bài đang dạy
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec";
 
 let db = null;
 let isFirebaseOK = false;
@@ -716,12 +785,135 @@ window.addEventListener('load', function() {
                 initViewers();
             }
             updateLiveUI(cfg.videoId, cfg.title, cfg.isLive);
+            llSetDefaultTab(!!cfg.isLive);
         });
     } catch(e) {
         console.error('Firebase init error:', e);
         showDemoMessages();
     }
 });
+
+/* ════════════════════════════════════════════
+   DANH SÁCH BÀI HỌC (tab bên phải) — bê logic khóa/chương/bài từ baihoc.html
+════════════════════════════════════════════ */
+const LL_SEP = "|||";
+function llNorm(s){ return(s==null?'':s).toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/[^a-z0-9]/g,''); }
+function llField(row,names){ for(const k in row){ const nk=llNorm(k); for(const n of names){ if(nk===llNorm(n)) return row[k]; } } return ''; }
+function llEsc(s){ return(s==null?'':s.toString()).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function llBuildCourses(rows){
+    const cmap = new Map();
+    rows.forEach((row, idx) => {
+        const cname = llField(row,['khoahoc','khoa','course','mon']).toString().trim();
+        const chname = (llField(row,['chuong','chapter','phan'])||'Nội dung').toString().trim();
+        const lname = llField(row,['tenbai','bai','baihoc','tieude','title','ten']).toString().trim();
+        if(!cname || !lname) return;
+        if(!cmap.has(cname)) cmap.set(cname, { name:cname, order:idx, chMap:new Map() });
+        const c = cmap.get(cname);
+        if(!c.chMap.has(chname)) c.chMap.set(chname, { name:chname, lessons:[] });
+        const ttbRaw = llField(row,['thutubai']).toString().trim();
+        const ttb = (ttbRaw !== '' && !isNaN(Number(ttbRaw))) ? Number(ttbRaw) : null;
+        c.chMap.get(chname).lessons.push({
+            key: [cname, chname, lname].join(LL_SEP),
+            name: lname,
+            video: llField(row,['video','youtube','link','url','lienket']).toString().trim(),
+            ttb: ttb
+        });
+    });
+    cmap.forEach(c => c.chMap.forEach(ch => ch.lessons.sort((a,b) => (a.ttb===null?999999:a.ttb) - (b.ttb===null?999999:b.ttb))));
+    return [...cmap.values()].map(c => ({ name:c.name, order:c.order, chapters:[...c.chMap.values()] }));
+}
+
+let LL_COURSES = [];
+let LL_TEACHING_KEY = '';
+
+async function llLoadData(){
+    try{
+        const [rowsRaw, settingsRaw] = await Promise.all([
+            fetch(APPS_SCRIPT_URL + '?type=baihoc&t=' + Date.now()).then(r => r.json()),
+            fetch(APPS_SCRIPT_URL + '?type=settings&_t=' + Date.now()).then(r => r.json())
+        ]);
+        const rows = Array.isArray(rowsRaw) ? rowsRaw : (rowsRaw.data || []);
+        LL_COURSES = llBuildCourses(rows);
+        LL_TEACHING_KEY = (settingsRaw && settingsRaw.data && settingsRaw.data.currentTeachingLesson) || '';
+    }catch(e){
+        console.error('Không tải được danh sách bài học:', e);
+    }
+    llRenderList();
+    llUpdateContext();
+}
+
+function llRenderList(){
+    const holder = document.getElementById('lesson-list-holder');
+    if(!holder) return;
+    if(!LL_TEACHING_KEY){
+        holder.innerHTML = '<div class="lesson-list-empty"><i class="fa-solid fa-chalkboard"></i>Thầy chưa đánh dấu bài đang dạy.<br>Danh sách bài học sẽ hiện ở đây khi thầy chọn bài trong trang quản trị.</div>';
+        return;
+    }
+    const cname = LL_TEACHING_KEY.split(LL_SEP)[0];
+    const course = LL_COURSES.find(c => c.name === cname);
+    if(!course){
+        holder.innerHTML = '<div class="lesson-list-empty"><i class="fa-solid fa-circle-exclamation"></i>Chưa tải được khóa học tương ứng.</div>';
+        return;
+    }
+    let html = `<div class="side-list">
+        <div class="side-hd">
+            <div class="side-hd-title"><i class="fa-solid fa-graduation-cap" style="color:var(--blue)"></i> ${llEsc(course.name)}</div>
+        </div>`;
+    let sn = 0;
+    course.chapters.forEach((ch, ci) => {
+        html += `<div class="side-chap">
+            <div class="side-chap-name"><span class="side-chap-num">${ci+1}</span>${llEsc(ch.name)}</div>`;
+        ch.lessons.forEach(l => {
+            sn++;
+            const isLiveNow = l.key === LL_TEACHING_KEY;
+            const noVid = !l.video;
+            html += `<div class="side-item ${isLiveNow?'is-live-now':''}" data-lesson-key="${llEsc(l.key)}">
+                <span class="si-ic"><i class="fa-solid ${isLiveNow?'fa-tower-broadcast':(noVid?'fa-clock':'fa-circle-play')}"></i></span>
+                <span class="si-name"><span style="font-size:10px;font-weight:800;opacity:.6;margin-right:3px">B${sn}.</span>${llEsc(l.name)}</span>
+                ${isLiveNow?'<span class="side-live-badge">Đang dạy</span>':''}
+            </div>`;
+        });
+        html += '</div>';
+    });
+    html += '</div>';
+    holder.innerHTML = html;
+}
+
+// Click vào 1 bài trong danh sách -> sang trang bài học tương ứng
+document.getElementById('lesson-list-holder').addEventListener('click', e => {
+    const item = e.target.closest('.side-item[data-lesson-key]');
+    if(!item) return;
+    location.href = 'baihoc.html#lesson/' + encodeURIComponent(item.dataset.lessonKey);
+});
+
+// Cập nhật dòng "Chương · Bài" hiện dưới tiêu đề live, theo bài thầy đang dạy
+function llUpdateContext(){
+    const el = document.getElementById('live-lesson-context');
+    if(!el) return;
+    if(!LL_TEACHING_KEY){ el.innerHTML = ''; return; }
+    const parts = LL_TEACHING_KEY.split(LL_SEP);
+    el.innerHTML = `<i class="fa-solid fa-book-open"></i> ${llEsc(parts[1]||'')} · ${llEsc(parts[2]||'')}`;
+}
+
+/* ════════════════════════════════════════════
+   TAB CHUYỂN ĐỔI: Danh sách bài học / Bình luận
+════════════════════════════════════════════ */
+let _rpDefaultSet = false;
+function switchRP(tab){
+    document.querySelectorAll('.rp-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.rp === tab));
+    document.querySelectorAll('.rp-pane').forEach(p => p.classList.toggle('active', p.dataset.rpPane === tab));
+}
+// Mặc định: đang live -> mở tab Bình luận; chưa live -> mở tab Danh sách bài học (chỉ set 1 lần đầu)
+function llSetDefaultTab(isLive){
+    if(_rpDefaultSet) return;
+    _rpDefaultSet = true;
+    switchRP(isLive ? 'chat' : 'list');
+}
+
+llLoadData();
+// Tải lại danh sách mỗi 2 phút để cập nhật khi thầy đổi bài đang dạy trong lúc học sinh đang xem live
+setInterval(llLoadData, 120000);
 
 initNameUI();
 </script>
