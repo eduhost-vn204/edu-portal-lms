@@ -447,6 +447,13 @@ const LS_HS   = "vlxt_hocsinh";
 const SEP     = "|||";
 const NEW_DAYS = 10;
 
+// Danh sách SĐT tài khoản TEST của thầy — được phép nhảy tự do qua mọi bài (bỏ khoá "học
+// vượt" thứ tự bài), KHÔNG ảnh hưởng gì khác: video/quiz vẫn chấm điểm, log tiến độ, thông
+// báo "Đã lưu tiến độ" vẫn hoạt động y hệt tài khoản học sinh thật để thầy kiểm chứng.
+// Thêm/bớt số điện thoại vào mảng này khi cần thêm/bớt tài khoản test.
+const TEST_ACCOUNTS = ["0900000001"];
+function isTestAccount(){ return !!(HS && HS.sdt && TEST_ACCOUNTS.includes(HS.sdt)); }
+
 /* ═══════════════════════════════════════════
    TRẠNG THÁI
 ═══════════════════════════════════════════ */
@@ -702,6 +709,7 @@ function findLesson(key){ for(const c of COURSES) for(const ch of c.chapters) fo
 // để học sinh vẫn vào xem PDF lý thuyết/bài tập của nhiệm vụ hôm nay dù thầy chưa kịp thêm video.
 // Đã xem rồi thì luôn được xem lại, không bao giờ khoá ngược.
 function isLessonBlocked(course, key){
+    if(isTestAccount()) return {blocked:false}; // tài khoản test: luôn mở, không khoá thứ tự
     const flat = flatLessons(course);
     const idx = flat.findIndex(l => l.key === key);
     if(idx < 0) return {blocked:false};
@@ -938,6 +946,7 @@ function renderLesson(key){
     const _allKeys = [];
     course.chapters.forEach(ch => ch.lessons.forEach(l => _allKeys.push(l.key)));
     const isSideLocked = (lkey) => {
+        if(isTestAccount()) return false;           // tài khoản test: luôn mở
         if(WATCHED.has(lkey)) return false;        // đã xem → không khoá
         const idx = _allKeys.indexOf(lkey);
         if(idx <= 0) return false;                 // bài đầu tiên luôn mở
