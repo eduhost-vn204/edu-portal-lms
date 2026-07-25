@@ -1369,6 +1369,7 @@ let _vqRemindedIds = new Set(); // các mốc ĐÃ trả lời đúng từ trư�
 let _vqReminderActive = false;  // true khi đang hiện panel "nhắc nhẹ" (không khoá tua/tiếp tục)
 let _vqReminderTimer = null;
 let _vqReminderIdx = -1;   // index câu đang hiện ở panel "nhắc nhẹ" — dùng để seekTo đúng mốc khi bấm Tiếp tục xem
+let _vqResumeDone = false; // đã thử tự động chuyển tới chỗ học dở cho lượt xem này chưa
 
 // Bug 18/7: trước đây key KHÔNG có HS.sdt -> "đã trả lời đúng" lưu chung cho MỌI
 // tài khoản trên cùng trình duyệt (khác với WATCHED luôn có HS.sdt) -> tài khoản HS
@@ -1385,7 +1386,7 @@ function _vqFmt(s){
 
 function loadVideoQuiz(key, vtype){
     _vqData = []; _vqActive = -1; _vqWrong = 0; _vqKey = key; _vqLock = false;
-    _vqRemindedIds = new Set(); _vqReminderActive = false; _vqReminderIdx = -1;
+    _vqRemindedIds = new Set(); _vqReminderActive = false; _vqReminderIdx = -1; _vqResumeDone = false;
     _vqToggleSideList(true); // đề phòng lệch trạng thái từ bài trước
     clearTimeout(_vqReminderTimer); _vqReminderTimer = null;
     _vqStopWatch();
@@ -1430,6 +1431,7 @@ function loadVideoQuiz(key, vtype){
             // Chủ động khởi động lại watch ngay khi dữ liệu vừa tải xong, nếu lúc
             // này video vẫn đang phát.
             if(_vqData.length && _vqActive < 0 && _vqKey === key){
+                _vqTryAutoResume();
                 try{
                     if(_ytPlayer && typeof _ytPlayer.getPlayerState === 'function' &&
                        _ytPlayer.getPlayerState() === YT.PlayerState.PLAYING){
@@ -1441,7 +1443,35 @@ function loadVideoQuiz(key, vtype){
         .catch(e => {});
 }
 
+// Tự động chuyển video tới đúng chỗ HS học dở, thay vì bắt xem lại từ đầu rồi bấm
+// "Tiếp tục xem" từng câu một mới tới được câu cũ (ví dụ đang làm câu 13/40 mà thoát
+// ra/reload). Đếm số câu ĐÃ trả lời đúng liên tiếp từ đầu (_vqAnswered lưu localStorage
+// theo tài khoản), coi như đã ôn xong đoạn đó — nhảy thẳng video tới mốc câu cuối cùng
+// trong dải đó và im lặng bỏ qua panel "nhắc lại" của các câu này trong lượt xem này.
+// Chỉ chạy 1 lần cho mỗi lần vào bài (guard bằng _vqResumeDone), và cần _ytPlayer đã
+// sẵn sàng — nếu chưa (dữ liệu mốc tải xong trước khi player dựng xong) thì bỏ qua,
+// để lần gọi tiếp theo (lúc HS bấm play, _vqOnPlaying) tự thử lại.
+function _vqTryAutoResume(){
+    if(_vqResumeDone) return;
+    if(!_vqData.length || !_ytPlayer || typeof _ytPlayer.seekTo !== 'function') return;
+    _vqResumeDone = true;
+    let leadingAnswered = 0;
+    while(leadingAnswered < _vqData.length && _vqAnswered.has(_vqIdOf(_vqData[leadingAnswered]))) leadingAnswered++;
+    if(leadingAnswered <= 0) return; // chưa làm đúng câu nào từ đầu -> không có gì để nhảy tới
+    for(let i = 0; i < leadingAnswered; i++) _vqRemindedIds.add(_vqIdOf(_vqData[i]));
+    const resumeT = _vqData[leadingAnswered - 1].t;
+    try{
+        const cur = _ytPlayer.getCurrentTime();
+        if(cur < resumeT - 1){
+            _ytPlayer.seekTo(resumeT, true);
+            const cauTiep = leadingAnswered < _vqData.length ? (leadingAnswered + 1) : _vqData.length;
+            toast('<i class="fa-solid fa-clock-rotate-left"></i> Đã chuyển tới chỗ em học dở (câu ' + cauTiep + '/' + _vqData.length + ')', 'ok');
+        }
+    }catch(e){}
+}
+
 function _vqOnPlaying(){
+    _vqTryAutoResume();
     // Nếu HS bấm play khi đang xem panel "nhắc nhẹ" (câu đã từng làm đúng) →
     // không chặn: âm thầm dọn panel rồi cho phát tiếp bình thường.
     if(_vqReminderActive){
