@@ -452,7 +452,13 @@ const NEW_DAYS = 10;
 // báo "Đã lưu tiến độ" vẫn hoạt động y hệt tài khoản học sinh thật để thầy kiểm chứng.
 // Thêm/bớt số điện thoại vào mảng này khi cần thêm/bớt tài khoản test.
 const TEST_ACCOUNTS = ["0900000001"];
-function isTestAccount(){ return !!(HS && HS.sdt && TEST_ACCOUNTS.includes(HS.sdt)); }
+// So sánh sau khi bỏ số 0 đầu: Google Sheets/GAS tự chuyển SĐT thành số nên HS.sdt có thể
+// là 900000001 (number) thay vì "0900000001" (string) — so trực tiếp sẽ luôn sai.
+function isTestAccount(){
+    if(!HS || HS.sdt==null || HS.sdt==='') return false;
+    const norm = s => String(s).replace(/^0+/, '');
+    return TEST_ACCOUNTS.some(t => norm(t) === norm(HS.sdt));
+}
 
 /* ═══════════════════════════════════════════
    TRẠNG THÁI
