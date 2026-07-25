@@ -1147,7 +1147,7 @@ function renderLesson(key){
                         <i class="fa-solid fa-folder-open" style="color:var(--blue)"></i> ${esc(chapter.name)}
                         ${lesson.date?' &nbsp;·&nbsp; <i class="fa-regular fa-calendar"></i> '+esc(lesson.date):''}
                     </div>
-                    ${lesson.desc?`<div class="ld-desc">${lesson.desc}</div>`:'<div class="ld-desc" style="color:var(--sub)">Thầy sẽ bổ sung mô tả bài học này sớm.</div>'}
+                    ${lesson.desc?`<div class="ld-desc">${lesson.desc}</div>`:''}
                     <div class="ld-actions">
                         <span class="btn btn-done ${done?'is-done':''}" id="done-btn" style="cursor:default;user-select:none">
                             <i class="fa-solid ${done?'fa-circle-check':'fa-hourglass-half'}"></i>
