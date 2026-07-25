@@ -161,7 +161,11 @@
         /* ═══ LESSON PLAYER LAYOUT ═══ */
         .player-layout { display:grid; grid-template-columns:minmax(0,70fr) minmax(0,30fr); gap:24px; margin-top:8px; align-items:start; }
         .lesson-main { min-width:0; }
-        .lesson-sidebar { position:sticky; top:68px; }
+        /* Cả sidebar (câu hỏi trong video + danh sách bài) cuộn CHUNG trong 1 vùng cao tối đa
+           = chiều cao màn hình — trước đây không có max-height/overflow ở đây nên khi panel
+           "câu hỏi trong video" (#vq-holder) đủ dài, phần dưới của nó bị đẩy ra ngoài vùng
+           position:sticky và KHÔNG cách nào cuộn tới được (bị "khoá", nội dung câu hỏi bị khuất). */
+        .lesson-sidebar { position:sticky; top:68px; max-height:calc(100vh - 88px); overflow-y:auto; }
         /* Ghim khối video (+ panel câu hỏi trong video) tại đầu cột khi cuộn xuống xem PDF/quiz bên dưới —
            tránh phải cuộn lên thủ công để xem lại video sau khi trả lời câu hỏi. Không thu nhỏ video,
            chỉ tận dụng việc video luôn "dính" ở khoảng trống đầu màn hình khi cuộn. */
@@ -275,7 +279,7 @@
         @keyframes quizTimerPulse { 0%,100%{opacity:1} 50%{opacity:.6} }
 
         /* ═══ SIDEBAR ═══ */
-        .side-list { background:var(--card); border:1.5px solid var(--line); border-radius:var(--radius); overflow:hidden; max-height:calc(100vh - 90px); overflow-y:auto; }
+        .side-list { background:var(--card); border:1.5px solid var(--line); border-radius:var(--radius); overflow:hidden; }
         .side-hd { padding:14px 16px 12px; border-bottom:1.5px solid var(--line); background:var(--card2); }
         .side-hd-title { font-size:14.5px; font-weight:700; color:var(--text); margin-bottom:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
         .side-hd-prog { font-size:13px; color:var(--sub); margin-bottom:6px; }
@@ -335,7 +339,7 @@
         .subject-label h2 { font-size:19px; font-weight:800; letter-spacing:-.02em; }
         .subject-label .subj-pill { font-size:12px; font-weight:700; background:rgba(11,132,243,.1); color:var(--blue); border-radius:20px; padding:3px 12px; }
 
-        @media(max-width:900px) { .player-layout { grid-template-columns:1fr; } .lesson-sidebar { position:static; } .side-list { max-height:400px; } }
+        @media(max-width:900px) { .player-layout { grid-template-columns:1fr; } .lesson-sidebar { position:static; max-height:none; overflow-y:visible; } .side-list { max-height:400px; overflow-y:auto; } }
         @media(max-width:560px) {
             header { padding:12px 16px; }
             .nav a span,.nav button span { display:none; }
