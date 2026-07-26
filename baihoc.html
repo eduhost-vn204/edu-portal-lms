@@ -279,6 +279,9 @@
         @keyframes quizTimerPulse { 0%,100%{opacity:1} 50%{opacity:.6} }
 
         /* ═══ SIDEBAR ═══ */
+        #sidebar-tab-nav { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+        #sidebar-tab-nav .lt-tab-btn { flex:1; justify-content:center; padding:9px 10px; font-size:12.5px; white-space:nowrap; }
+        @media(max-width:900px) { #sidebar-tab-nav { display:none !important; } }
         .side-list { background:var(--card); border:1.5px solid var(--line); border-radius:var(--radius); overflow:hidden; }
         .side-hd { padding:14px 16px 12px; border-bottom:1.5px solid var(--line); background:var(--card2); }
         .side-hd-title { font-size:14.5px; font-weight:700; color:var(--text); margin-bottom:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -1532,9 +1535,17 @@ async function renderLiveLesson(){
                 </div>
                 ${tabsBlockHtml}
             </div>
-            <div class="lesson-sidebar"><div id="vq-holder">${liveChatHtml}</div><div id="side-list-wrap">${side}</div></div>
+            <div class="lesson-sidebar">
+                <div id="sidebar-tab-nav">
+                    <button class="lt-tab-btn active" data-stab="chat" onclick="switchSidebarTab('chat')"><i class="fa-solid fa-comments"></i> Bình luận trực tiếp</button>
+                    <button class="lt-tab-btn" data-stab="list" onclick="switchSidebarTab('list')"><i class="fa-solid fa-list-ul"></i> Danh sách bài học</button>
+                </div>
+                <div id="vq-holder">${liveChatHtml}</div>
+                <div id="side-list-wrap">${side}</div>
+            </div>
         </div>`;
     renderMath(app());
+    _sidebarActiveTab = 'chat';
     _vqPositionHolder();
 
     // Lưu context bài hiện tại (để checkPractice/scrollToQuiz/quiz-timer hoạt động bình thường)
@@ -2052,6 +2063,28 @@ function _vqPositionHolder(){
     } else if(sideWrap && holder.nextElementSibling !== sideWrap){
         sideWrap.insertAdjacentElement('beforebegin', holder);
     }
+    _applySidebarTabDisplay();
+}
+
+/* ── Tab "Bình luận trực tiếp" / "Danh sách bài học" ở cột phải trang Live ──
+   Desktop (>900px): chỉ hiện 1 tab tại 1 thời điểm, chuyển bằng nút bấm.
+   Mobile (≤900px): #vq-holder đã bị _vqPositionHolder() dời xuống dưới video rồi,
+   nên ở đây luôn hiện cả 2 phần (list bài + chat) và ẩn thanh tab đi vì không còn ý nghĩa. */
+let _sidebarActiveTab = 'chat';
+function switchSidebarTab(tabKey){
+    _sidebarActiveTab = tabKey;
+    _applySidebarTabDisplay();
+}
+function _applySidebarTabDisplay(){
+    const nav = document.getElementById('sidebar-tab-nav');
+    const chat = document.getElementById('vq-holder');
+    const list = document.getElementById('side-list-wrap');
+    if(!nav || !chat || !list) return;
+    const isMobile = window.innerWidth <= 900;
+    nav.style.display = isMobile ? 'none' : 'flex';
+    nav.querySelectorAll('.lt-tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.stab===_sidebarActiveTab));
+    chat.style.display = (isMobile || _sidebarActiveTab==='chat') ? '' : 'none';
+    list.style.display = (isMobile || _sidebarActiveTab==='list') ? '' : 'none';
 }
 window.addEventListener('resize', (function(){
     let t = null;
