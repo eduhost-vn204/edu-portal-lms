@@ -423,6 +423,15 @@
         .lv-react-row { display:flex; align-items:center; gap:9px; }
         .lv-heart-btn { background:none; border:1.5px solid var(--line); cursor:pointer; padding:5px 12px; border-radius:20px; font-size:14px; color:#e53e3e; display:flex; align-items:center; gap:5px; font-family:'Plus Jakarta Sans',sans-serif; transition:all .15s; }
         .lv-heart-btn:hover { border-color:#e53e3e; background:rgba(229,62,62,.06); }
+        .lv-heart-btn.lv-heart-pulse { animation:lvHeartPulse .28s ease-out; }
+        @keyframes lvHeartPulse { 0%{transform:scale(1)} 35%{transform:scale(1.22)} 100%{transform:scale(1)} }
+        /* Tim bay khi bấm thả tim (spam nhiều tim cùng lúc vẫn mượt vì mỗi tim là 1 phần tử riêng, tự xoá sau khi bay xong) */
+        .lv-heart-fly { position:fixed; pointer-events:none; z-index:9999; line-height:1; animation-name:lvHeartFly; animation-timing-function:cubic-bezier(.2,.7,.35,1); animation-fill-mode:forwards; will-change:transform,opacity; }
+        @keyframes lvHeartFly {
+            0%   { transform:translate(0,0) rotate(0deg) scale(.5); opacity:0; }
+            12%  { opacity:1; }
+            100% { transform:translate(var(--dx,0px),-170px) rotate(var(--rot,0deg)) scale(1); opacity:0; }
+        }
 </style>
   <script src="auth.js?v=7"></script>
   <script src="thongbao.js?v=1"></script>
@@ -1710,6 +1719,32 @@ function lvSendMsg(){
 }
 function lvSendHeart(){
     if(lvFirebaseOK) lvDb.ref(LV_SESSION_PATH + '/hearts').transaction(v => (v||0) + 1);
+    lvSpawnFlyingHeart();
+}
+
+/* ── Hiệu ứng tim bay lên khi bấm/spam nút thả tim (kiểu livestream TikTok) ── */
+function lvSpawnFlyingHeart(){
+    const btn = document.getElementById('lv-heart-btn');
+    if(!btn) return;
+    // Nảy nhẹ nút khi bấm — bỏ rồi gắn lại class để animation chạy lại được cả khi spam liên tục
+    btn.classList.remove('lv-heart-pulse');
+    void btn.offsetWidth; // ép trình duyệt tính lại layout để restart animation
+    btn.classList.add('lv-heart-pulse');
+
+    const rect = btn.getBoundingClientRect();
+    const colors = ['#e53e3e','#ff6b81','#ff4d6d','#f472b6','#fb7185'];
+    const heart = document.createElement('span');
+    heart.className = 'lv-heart-fly';
+    heart.innerHTML = '&#9829;';
+    heart.style.left = (rect.left + rect.width * 0.22 + (Math.random()*14 - 7)) + 'px';
+    heart.style.top = (rect.top + 2) + 'px';
+    heart.style.fontSize = (15 + Math.random()*12) + 'px';
+    heart.style.color = colors[Math.floor(Math.random()*colors.length)];
+    heart.style.setProperty('--dx', (Math.random()*70 - 35).toFixed(0) + 'px');
+    heart.style.setProperty('--rot', (Math.random()*50 - 25).toFixed(0) + 'deg');
+    heart.style.animationDuration = (1.0 + Math.random()*0.7).toFixed(2) + 's';
+    document.body.appendChild(heart);
+    heart.addEventListener('animationend', () => heart.remove());
 }
 
 /* ── Globals theo dõi trạng thái bài ── */
