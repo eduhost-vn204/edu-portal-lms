@@ -380,6 +380,46 @@
         .vq-badge-done { background:var(--green); }
         .vq-continue-btn { background:var(--green); color:#fff; border:none; border-radius:50px; padding:8px 18px; font-size:13px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:7px; font-family:inherit; transition:opacity .15s; margin-left:auto; }
         .vq-continue-btn:hover { opacity:.85; }
+
+        /* ═══ LIVE MODE (nhúng live vào trang bài học, thay cho video ghi hình) ═══ */
+        .lv-video-status { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:var(--card2); border:1.5px solid var(--line); border-top:none; border-radius:0 0 var(--radius) var(--radius); font-size:13px; margin-top:-1px; }
+        .badge-live { display:inline-flex; align-items:center; gap:5px; background:var(--red); color:#fff; font-size:11px; font-weight:800; padding:3px 9px; border-radius:4px; letter-spacing:.06em; text-transform:uppercase; }
+        .badge-offline { display:inline-flex; align-items:center; gap:5px; background:#666; color:#fff; font-size:11px; font-weight:800; padding:3px 9px; border-radius:4px; letter-spacing:.06em; }
+        .lv-viewer-count { display:flex; align-items:center; gap:6px; color:var(--sub); font-weight:600; }
+        .lv-offline-overlay { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; background:linear-gradient(160deg,#0d1117,#1a1f2e); color:#fff; text-align:center; gap:14px; z-index:5; padding:20px; }
+        .lv-offline-overlay .lv-off-icon { font-size:44px; opacity:.5; }
+        .lv-offline-overlay h3 { font-size:17px; font-weight:800; opacity:.85; }
+        .lv-offline-overlay p { font-size:13px; color:#8b949e; max-width:340px; line-height:1.6; }
+        .lv-schedule-pill { display:inline-flex; align-items:center; gap:8px; background:rgba(11,132,243,.16); border:1px solid rgba(96,165,250,.4); color:#bfdbfe; padding:7px 16px; border-radius:50px; font-size:12.5px; font-weight:700; }
+        .lv-schedule-pill strong { color:#fff; }
+        .lv-live-tag { display:inline-flex; align-items:center; gap:6px; background:var(--red); color:#fff; font-size:11px; font-weight:800; padding:3px 10px; border-radius:20px; letter-spacing:.05em; text-transform:uppercase; margin-left:10px; vertical-align:middle; }
+
+        /* Chat gọn trong sidebar (thay vị trí "câu hỏi trong video") */
+        .lv-chat-box { border:1.5px solid var(--line); border-radius:var(--radius); overflow:hidden; margin-bottom:16px; background:var(--card); }
+        .lv-chat-header { padding:11px 14px; border-bottom:1px solid var(--line); font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:space-between; background:var(--card2); }
+        .lv-msg-list { max-height:260px; overflow-y:auto; padding:10px 12px; display:flex; flex-direction:column; gap:8px; }
+        .lv-msg-list::-webkit-scrollbar { width:4px; }
+        .lv-msg-list::-webkit-scrollbar-thumb { background:var(--line); border-radius:4px; }
+        .lv-msg-item { display:flex; gap:8px; align-items:flex-start; }
+        .lv-msg-avatar { width:26px; height:26px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#fff; }
+        .lv-msg-body { flex:1; min-width:0; }
+        .lv-msg-name { font-size:10.5px; font-weight:700; margin-bottom:1px; }
+        .lv-msg-text { font-size:12.5px; line-height:1.45; word-break:break-word; color:var(--text); }
+        .lv-msg-time { font-size:9.5px; color:var(--sub); margin-top:1px; }
+        .lv-msg-system { text-align:center; font-size:11px; color:var(--sub); padding:4px 0; }
+        .lv-chat-input { padding:9px 12px 12px; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:7px; }
+        .lv-name-row { display:flex; align-items:center; gap:7px; }
+        .lv-name-row input, .lv-chat-row input { flex:1; border:1.5px solid var(--line); background:var(--card2); color:var(--text); padding:7px 10px; border-radius:8px; font-size:12.5px; font-family:'Plus Jakarta Sans',sans-serif; outline:none; transition:border-color .15s; }
+        .lv-name-row input:focus, .lv-chat-row input:focus { border-color:var(--blue); }
+        .lv-name-saved { font-size:11px; color:var(--sub); display:flex; align-items:center; gap:6px; }
+        .lv-name-edit-btn { background:none; border:none; cursor:pointer; color:var(--sub); font-size:11px; padding:2px 4px; }
+        .lv-name-edit-btn:hover { color:var(--text); }
+        .lv-chat-row { display:flex; gap:7px; }
+        .lv-send-btn { background:var(--blue); color:#fff; border:none; cursor:pointer; padding:7px 12px; border-radius:8px; font-size:13px; display:flex; align-items:center; justify-content:center; transition:opacity .15s; }
+        .lv-send-btn:hover { opacity:.85; }
+        .lv-react-row { display:flex; align-items:center; gap:9px; }
+        .lv-heart-btn { background:none; border:1.5px solid var(--line); cursor:pointer; padding:5px 12px; border-radius:20px; font-size:14px; color:#e53e3e; display:flex; align-items:center; gap:5px; font-family:'Plus Jakarta Sans',sans-serif; transition:all .15s; }
+        .lv-heart-btn:hover { border-color:#e53e3e; background:rgba(229,62,62,.06); }
 </style>
   <script src="auth.js?v=7"></script>
   <script src="thongbao.js?v=1"></script>
@@ -442,6 +482,10 @@
     <footer>© Vật Lý Xuân Trường: Học là phải hiểu bản chất!</footer>
     <div class="toast" id="toast"></div>
 
+<!-- Firebase SDK cho chế độ Live (chỉ thực sự kết nối khi vào #live) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
 <script>
 /* ═══════════════════════════════════════════
    CẤU HÌNH
@@ -450,6 +494,21 @@ const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb
 const LS_HS   = "vlxt_hocsinh";
 const SEP     = "|||";
 const NEW_DAYS = 10;
+
+// ═══ LIVE MODE: cấu hình Firebase (dùng chung project với live.html cũ) ═══
+const LV_FIREBASE_CONFIG = {
+    apiKey: "AIzaSyBCwxhKlvJXrms7AdKfI1NyzOXQ3onbdH0",
+    authDomain: "edu-portal-live.firebaseapp.com",
+    databaseURL: "https://edu-portal-live-default-rtdb.firebaseio.com",
+    projectId: "edu-portal-live",
+    storageBucket: "edu-portal-live.firebasestorage.app",
+    messagingSenderId: "49980372137",
+    appId: "1:49980372137:web:ab7483591b9dcabca865b8"
+};
+let lvDb = null, lvFirebaseOK = false, lvViewerRef = null;
+let LV_SESSION_PATH = "live_sessions/main", lvSessionId = null;
+let lvMsgCount = 0, lvUserName = localStorage.getItem('vlxt_live_name') || '';
+let lvConfigListenerAttached = false, lvLastCfg = null;
 
 // Danh sách SĐT tài khoản TEST của thầy — được phép nhảy tự do qua mọi bài (bỏ khoá "học
 // vượt" thứ tự bài), KHÔNG ảnh hưởng gì khác: video/quiz vẫn chấm điểm, log tiến độ, thông
@@ -773,6 +832,7 @@ function route(){
     const nh=$('#nav-home'); if(nh) nh.classList.toggle('active',h==='#home'||h==='');
     if(h.startsWith('#course/')) renderCourse(h.slice(8));
     else if(h.startsWith('#lesson/')) renderLesson(h.slice(8));
+    else if(h==='#live') renderLiveLesson();
     else renderHome();
     window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -1185,6 +1245,458 @@ function renderLesson(key){
     if(vtype==='youtube') initYTPlayer(vid, key);
     else if(vtype==='drive') initDrivePlayer(did, key);
     else initNonePlayer(key); // Slide/PDF/text: auto-mark sau 30s
+}
+
+
+/* ═══════════════════════════════════════════
+   VIEW: LIVE — nhúng trực tiếp vào ĐÚNG layout trang bài học (player-layout,
+   lesson-detail, tabs PDF/quiz, sidebar). Bài được xác định qua nút ⭐ "Đánh dấu
+   đang dạy" ở trang quản trị (currentTeachingLesson). Chỉ thay khối "Video bài
+   học lí thuyết" bằng khung live; mọi phần khác GIỐNG Y HỆT renderLesson().
+   Lưu ý: hàm này CHỦ ĐỘNG NHÂN BẢN phần dựng khung của renderLesson() (không gọi
+   lại renderLesson trực tiếp) vì renderLesson() có chặn "học vượt" — học sinh
+   xem live không nên bị khoá theo tiến độ. Nếu sau này chỉnh sửa giao diện
+   trang bài học (renderLesson), nhớ chỉnh lại tương ứng ở đây.
+═══════════════════════════════════════════ */
+async function renderLiveLesson(){
+    app().className = 'container';
+    app().innerHTML = `<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p style="margin-top:12px">Đang tải buổi live...</p></div>`;
+    let teachingKey = '';
+    try{
+        const r = await fetch(APPS_SCRIPT_URL + '?type=settings&_t=' + Date.now());
+        const d = await r.json();
+        teachingKey = (d && d.data && d.data.currentTeachingLesson) || '';
+    }catch(e){ console.error('Không tải được cấu hình bài đang dạy:', e); }
+
+    // Nếu học sinh đã chuyển hash sang trang khác trong lúc đang tải thì bỏ qua
+    if(decodeURIComponent(location.hash||'') !== '#live') return;
+
+    if(!teachingKey){
+        app().innerHTML = `<div class="empty"><i class="fa-solid fa-tower-broadcast"></i><p>Thầy chưa chọn bài để live.</p><p style="color:var(--sub);margin-top:6px">Quay lại sau hoặc xem <a onclick="go('#home')">danh sách khóa học</a> nhé!</p></div>`;
+        return;
+    }
+    const info = findLesson(teachingKey);
+    if(!info){
+        app().innerHTML = `<div class="empty"><i class="fa-solid fa-circle-exclamation"></i><p>Không tìm thấy bài học tương ứng trong khóa.</p></div>`;
+        return;
+    }
+    const {course,chapter,lesson} = info;
+    const key = teachingKey;
+    const flat=flatLessons(course); const idx=flat.findIndex(l=>l.key===key);
+    const prev=idx>0?flat[idx-1]:null, next=idx<flat.length-1?flat[idx+1]:null;
+    const done=WATCHED.has(key);
+    const pct=coursePct(course), w=courseWatched(course);
+    const _lsn_session = idx + 1;
+
+    // ── Khung LIVE thay cho video ghi hình ──
+    const liveVideoHtml = `<div class="ratio">
+        <div class="lv-offline-overlay" id="lv-offline-overlay">
+            <div class="lv-off-icon">📡</div>
+            <h3>Chưa có buổi live nào đang diễn ra</h3>
+            <p>Thầy sẽ thông báo lịch live qua Zalo &amp; trang <a href="lichlive.html" style="color:#60a5fa">Lịch Live</a>. Bạn quay lại sau nhé!</p>
+            <div class="lv-schedule-pill"><i class="fa-regular fa-clock"></i> Lịch live cố định: <strong>Thứ 2 - 4 - 6, 19h30</strong> mỗi tuần</div>
+        </div>
+        <iframe id="lv-yt-player" src="" allowfullscreen allow="autoplay; encrypted-media" style="display:none"></iframe>
+    </div>`;
+    const liveStatusBar = `<div class="lv-video-status">
+        <span id="lv-badge" class="badge-offline">⚫ Offline</span>
+        <span class="lv-viewer-count"><i class="fa-solid fa-eye"></i> <span id="lv-viewer-count">0</span> đang xem</span>
+    </div>`;
+
+    // ── Sidebar: build flat list để check lock (giữ nguyên như renderLesson) ──
+    const _allKeys = [];
+    course.chapters.forEach(ch => ch.lessons.forEach(l => _allKeys.push(l.key)));
+    const isSideLocked = (lkey) => {
+        if(isTestAccount()) return false;
+        if(WATCHED.has(lkey)) return false;
+        const idx2 = _allKeys.indexOf(lkey);
+        if(idx2 <= 0) return false;
+        return !WATCHED.has(_allKeys[idx2 - 1]);
+    };
+    let side=`<div class="side-list">
+        <div class="side-hd">
+            <div class="side-hd-title"><i class="fa-solid fa-graduation-cap" style="color:var(--blue)"></i> ${esc(course.name)}</div>
+            <div class="side-hd-prog">${pct}% hoàn thành · ${w}/${course.total} bài</div>
+            <div class="bar" style="margin-top:4px"><i style="width:${pct}%"></i></div>
+        </div>`;
+    let _sideSessionNum = 0;
+    const _sideSessionMap = new Map();
+    course.chapters.forEach(ch => ch.lessons.forEach(l => { _sideSessionMap.set(l.key, ++_sideSessionNum); }));
+    course.chapters.forEach((ch,ci)=>{
+        const cw=ch.lessons.filter(l=>WATCHED.has(l.key)).length;
+        side+=`<div class="side-chap">
+            <div class="side-chap-name">
+                <span class="side-chap-num">${ci+1}</span>
+                ${esc(ch.name)}
+                <span class="side-chap-cnt">${cw}/${ch.lessons.length}</span>
+            </div>`;
+        ch.lessons.forEach(l=>{
+            const d=WATCHED.has(l.key); const active=l.key===key;
+            const _lk=isSideLocked(l.key);
+            const _sn=_sideSessionMap.get(l.key);
+            const _sClick=_lk ? "toast('🔒 Hoàn thành bài trước để mở khoá!','err')" : `go('#lesson/${encodeURIComponent(l.key)}')`;
+            const _noVid = !l.video;
+            side+=`<div class="side-item ${active?'active':''} ${d?'done':''} ${_lk?'si-locked':''}" onclick="${_sClick}">
+                <span class="si-ic"><i class="fa-solid ${active?'fa-tower-broadcast':(d?'fa-circle-check':_lk?'fa-lock':(_noVid?'fa-clock':'fa-circle-play'))}"></i></span>
+                <span class="si-name"><span style="font-size:10px;font-weight:800;opacity:.6;margin-right:3px">B${_sn}.</span>${esc(l.name)}${!_lk&&_noVid?'<span class="badge-soon" style="margin-left:5px">Sắp có</span>':''}</span>
+                ${active?'<span class="lv-live-tag" style="margin-left:auto">Đang dạy</span>':(!_lk&&l.baitap&&l.baitap.length?'<i class="fa-solid fa-pen-to-square" style="font-size:10px;color:var(--blue);opacity:.6"></i>':'')}
+            </div>`;
+        });
+        side+='</div>';
+    });
+    side+='</div>';
+
+    // ── Tabs tài liệu: giống hệt renderLesson() ──
+    const _lessonTabs = [];
+    if(lesson.pdflt){
+        const _idLt = driveId(lesson.pdflt);
+        _lessonTabs.push({ key:'lythuyet', label:'Tài liệu lý thuyết', icon:'fa-file-pdf', html:
+            `${_idLt?`<div class="pdf-embed-box"><iframe src="https://drive.google.com/file/d/${_idLt}/preview" allow="autoplay"></iframe></div>`:''}
+            <a class="pdf-embed-dl" href="${lesson.pdflt}" target="_blank" rel="noopener" style="background:rgba(11,132,243,.1);color:var(--blue)"><i class="fa-solid fa-arrow-up-right-from-square"></i> Mở/tải file PDF lý thuyết</a>` });
+    }
+    if(lesson.pdf){
+        const _idBt = driveId(lesson.pdf);
+        _lessonTabs.push({ key:'baitap-pdf', label:'Bài tập áp dụng trong video', icon:'fa-file-pdf', html:
+            `${_idBt?`<div class="pdf-embed-box"><iframe src="https://drive.google.com/file/d/${_idBt}/preview" allow="autoplay"></iframe></div>`:''}
+            <a class="pdf-embed-dl" href="${lesson.pdf}" target="_blank" rel="noopener" style="background:rgba(239,68,68,.1);color:#ef4444"><i class="fa-solid fa-arrow-up-right-from-square"></i> Mở/tải file PDF bài tập</a>` });
+    }
+    if(lesson.pdfluyentap){
+        const _idLtt = driveId(lesson.pdfluyentap);
+        _lessonTabs.push({ key:'luyentap-pdf', label:'PDF luyện tập thêm', icon:'fa-file-lines', html:
+            `${_idLtt?`<div class="pdf-embed-box"><iframe src="https://drive.google.com/file/d/${_idLtt}/preview" allow="autoplay"></iframe></div>`:''}
+            <a class="pdf-embed-dl" href="${lesson.pdfluyentap}" target="_blank" rel="noopener" style="background:rgba(124,58,237,.1);color:var(--purple)"><i class="fa-solid fa-arrow-up-right-from-square"></i> Mở/tải file PDF luyện tập thêm</a>` });
+    }
+    if(lesson.baitap && lesson.baitap.length>0){
+        const _needCnt = Math.ceil(lesson.baitap.length*0.9);
+        let _qz = `<p class="quiz-threshold-hint" id="quiz-threshold-hint">Cần làm đúng ≥90% số câu (từ ${_needCnt}/${lesson.baitap.length} câu trở lên) để đạt phần này.</p>`;
+        lesson.baitap.forEach((q,qi)=>{
+            const _qType=(q.type==='tf'||q.type==='short')?q.type:'mc';
+            const _qText=fixLatexQuirks(q.q||q.question||'');
+            if(_qType==='tf'){
+                _qz += `<div class="pq-block pq-tf" id="pq-${qi}" data-type="tf">
+                    <div class="pq-text">Câu ${qi+1}: ${_qText}</div>
+                    <div class="pq-tf-instruction" style="font-size:12.5px;color:var(--gray2);margin:4px 0 8px">Chọn Đúng hoặc Sai cho mỗi ý:</div>`;
+                ['A','B','C','D'].forEach(L=>{
+                    if(!q[L]&&!q[L.toLowerCase()]) return;
+                    const txt=fixLatexQuirks(q[L]||q[L.toLowerCase()]||'');
+                    _qz += `<div class="pq-tf-row" id="pq-${qi}-${L}">
+                        <span class="pq-letter">${({A:'a)',B:'b)',C:'c)',D:'d)'})[L]}</span>
+                        <span class="pq-tf-stmt">${pqSafe(txt)}</span>
+                        <div class="pq-tf-choice">
+                            <label class="pq-tf-btn"><input type="radio" name="pq${qi}_${L}" value="Đ"> Đúng</label>
+                            <label class="pq-tf-btn"><input type="radio" name="pq${qi}_${L}" value="S"> Sai</label>
+                        </div>
+                    </div>`;
+                });
+                _qz += `</div>`;
+            } else if(_qType==='short'){
+                _qz += `<div class="pq-block pq-short" id="pq-${qi}" data-type="short">
+                    <div class="pq-text">Câu ${qi+1}: ${_qText}</div>
+                    <div class="pq-short-wrap"><i class="fa-solid fa-keyboard" style="color:var(--blue)"></i> Đáp án của em: <input type="text" class="pq-short-input" id="pq-${qi}-input" placeholder="Nhập số..."></div>
+                </div>`;
+            } else {
+                _qz += `<div class="pq-block" id="pq-${qi}" data-type="mc">
+                    <div class="pq-text">Câu ${qi+1}: ${_qText}</div>
+                    <div class="pq-opts">`;
+                ['A','B','C','D'].forEach(L=>{
+                    if(!q[L]&&!q[L.toLowerCase()]) return;
+                    const txt=fixLatexQuirks(q[L]||q[L.toLowerCase()]||'');
+                    _qz += `<label class="pq-opt" id="pq-${qi}-${L}">
+                        <input type="radio" name="pq${qi}" value="${L}">
+                        <span class="pq-letter">${L}.</span>
+                        <span>${pqSafe(txt)}</span>
+                    </label>`;
+                });
+                _qz += `</div></div>`;
+            }
+        });
+        _qz += `<div class="quiz-actions">
+                <button class="btn-check" onclick="checkPractice('${esc(key)}',false)">
+                    <i class="fa-solid fa-check-circle"></i> Kiểm tra đáp án
+                </button>
+                <button class="btn-reset" onclick="resetPractice()">
+                    <i class="fa-solid fa-rotate-left"></i> Làm lại
+                </button>
+                <span class="quiz-score" id="quiz-score" style="display:none"></span>
+            </div>`;
+        const _timerHtml=(lesson.thoigian>0 && !done)?`<div id="quiz-timer" class="quiz-timer" style="margin-bottom:14px"><i class="fa-solid fa-stopwatch"></i> ${String(lesson.thoigian).padStart(2,'0')}:00</div>`:'';
+        _lessonTabs.push({ key:'quiz', label:'Luyện tập trắc nghiệm ('+lesson.baitap.length+')', icon:'fa-pen-to-square', html: _timerHtml + _qz, isQuiz:true });
+    }
+    let tabsBlockHtml = '';
+    if(_lessonTabs.length){
+        tabsBlockHtml = `<div class="section-block" id="lesson-tabs-block">
+            <div class="lt-tabs-bar">
+                ${_lessonTabs.map((t,ti)=>`<button class="lt-tab-btn${ti===0?' active':''}" data-tab="${t.key}" onclick="switchLessonTab('${t.key}')"><i class="fa-solid ${t.icon}"></i> ${t.label}</button>`).join('')}
+            </div>
+            ${_lessonTabs.map((t,ti)=>`<div class="lt-tab-pane${ti===0?' active':''}" data-pane="${t.key}"${t.isQuiz?' id="quiz-block"':''}>${t.html}</div>`).join('')}
+        </div>`;
+    }
+
+    // ── Video chữa bài (nếu có) — giữ nguyên như renderLesson, chỉ tab đầu đổi thành LIVE ──
+    let sEmbed = '';
+    let _hasSolutionVideo = false;
+    if(lesson.videogiai){
+        sEmbed = buildSolutionEmbed(lesson);
+        if(sEmbed) _hasSolutionVideo = true;
+    }
+    const _quizGateOk = !(lesson.baitap && lesson.baitap.length>0) || done || isQuizChecked(key);
+    const _solutionPaneInner = _quizGateOk
+        ? `<div class="ratio">${sEmbed}</div>`
+        : `<div class="ratio"><div class="video-lock-msg">
+                <i class="fa-solid fa-lock"></i>
+                <p>Em cần <strong>làm trắc nghiệm</strong> và bấm <strong>"Kiểm tra đáp án"</strong> ở mục <strong>Luyện tập trắc nghiệm</strong> bên dưới để mở khoá video chữa bài nhé!</p>
+                <p class="vlm-sub">Tự làm và tự kiểm tra trước khi xem chữa sẽ giúp em nhớ bài lâu hơn và đạt kết quả tốt hơn.</p>
+                <button class="btn-quiz-goto" onclick="scrollToQuiz()"><i class="fa-solid fa-pen-to-square"></i> Đến phần luyện tập</button>
+           </div></div>`;
+    const videoTabsHtml = _hasSolutionVideo
+        ? `<div class="section-block" id="video-tabs-block">
+            <div class="lt-tabs-bar">
+                <button class="lt-tab-btn active" data-vtab="baihoc" onclick="switchVideoTab('baihoc')"><i class="fa-solid fa-tower-broadcast"></i> Đang Live</button>
+                <button class="lt-tab-btn" data-vtab="chuabai" onclick="switchVideoTab('chuabai')"><i class="fa-solid fa-lightbulb"></i> Video chữa bài luyện tập</button>
+            </div>
+            <div class="lt-tab-pane active" data-vpane="baihoc" style="padding:14px 22px 22px">
+                <div class="video-box">${liveVideoHtml}</div>
+                ${liveStatusBar}
+            </div>
+            <div class="lt-tab-pane" data-vpane="chuabai" style="padding:14px 22px 22px"><div class="video-box solution-video${_quizGateOk?'':' is-locked'}" id="solution-video-box">${_solutionPaneInner}</div></div>
+        </div>`
+        : `<div class="video-box">${liveVideoHtml}</div>${liveStatusBar}`;
+
+    // ── Chat gọn (thay vị trí "câu hỏi trong video") ──
+    const liveChatHtml = `<div class="lv-chat-box" id="lv-chat-box">
+        <div class="lv-chat-header">
+            <span><i class="fa-solid fa-comments" style="color:var(--blue)"></i> Bình luận trực tiếp</span>
+            <span id="lv-msg-count" style="font-size:11px;color:var(--sub);font-weight:600">0 tin nhắn</span>
+        </div>
+        <div class="lv-msg-list" id="lv-msg-list">
+            <div class="lv-msg-system">Chào mừng bạn đến buổi live! 🎉</div>
+        </div>
+        <div class="lv-chat-input">
+            <div id="lv-name-setup" class="lv-name-row" style="display:none">
+                <input type="text" id="lv-input-name" placeholder="Nhập tên hiển thị…" maxlength="30">
+                <button class="lv-send-btn" onclick="lvSaveName()" title="Lưu tên"><i class="fa-solid fa-check"></i></button>
+            </div>
+            <div id="lv-name-display" class="lv-name-saved" style="display:none">
+                👤 <strong id="lv-display-name-label"></strong>
+                <button class="lv-name-edit-btn" onclick="lvEditName()">✏️ Đổi tên</button>
+            </div>
+            <div class="lv-chat-row">
+                <input type="text" id="lv-input-msg" placeholder="Nhắn gì đó…" maxlength="200" onkeydown="if(event.key==='Enter')lvSendMsg()">
+                <button class="lv-send-btn" onclick="lvSendMsg()"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+            <div class="lv-react-row">
+                <button class="lv-heart-btn" id="lv-heart-btn" onclick="lvSendHeart()">&#9829; <span id="lv-heart-total">0</span></button>
+                <span style="font-size:11px;color:var(--sub)">Thả tim cổ vũ thầy!</span>
+            </div>
+        </div>
+    </div>`;
+
+    const _hasQuiz = !!(lesson.baitap && lesson.baitap.length>0);
+    let _doneLabel;
+    if(done) _doneLabel='Đã hoàn thành';
+    else if(_hasQuiz) _doneLabel='Làm đúng ≥90% bài tập luyện tập để hoàn thành';
+    else _doneLabel='Tự động lưu sau 30 giây';
+
+    app().classList.add('wide-lesson');
+    app().innerHTML=`
+        <div class="crumb">
+            <a onclick="go('#home')">Khóa học</a><span class="sep">›</span>
+            <a onclick="go('#course/${encodeURIComponent(course.name)}')">${esc(course.name)}</a>
+            <span class="sep">›</span><span class="cur">${esc(lesson.name)}</span>
+        </div>
+        <div class="player-layout">
+            <div class="lesson-main">
+                <div class="video-sticky-wrap">${videoTabsHtml}</div>
+                <div id="vq-holder-anchor"></div>
+                <div class="lesson-detail">
+                    <div style="font-size:12px;font-weight:800;color:var(--blue);opacity:.7;margin-bottom:5px;letter-spacing:.04em">BUỔI ${_lsn_session}/${course.total}</div>
+                    <h1>${esc(lesson.name)} <span class="lv-live-tag" id="lv-live-tag" style="display:none"><i class="fa-solid fa-tower-broadcast"></i> LIVE</span></h1>
+                    <div class="ld-sub">
+                        <i class="fa-solid fa-folder-open" style="color:var(--blue)"></i> ${esc(chapter.name)}
+                        ${lesson.date?' &nbsp;·&nbsp; <i class="fa-regular fa-calendar"></i> '+esc(lesson.date):''}
+                    </div>
+                    ${lesson.desc?`<div class="ld-desc">${lesson.desc}</div>`:''}
+                    <div class="ld-actions">
+                        <span class="btn btn-done ${done?'is-done':''}" id="done-btn" style="cursor:default;user-select:none">
+                            <i class="fa-solid ${done?'fa-circle-check':'fa-hourglass-half'}"></i>
+                            ${_doneLabel}
+                        </span>
+                        ${(!done && _hasQuiz) ? '<button class="btn-quiz-goto" onclick="scrollToQuiz()"><i class="fa-solid fa-pen-to-square"></i> Làm bài tập</button>' : ''}
+                        <button class="btn btn-nav" onclick="${prev?`go('#lesson/${encodeURIComponent(prev.key)}')`:''}" ${prev?'':'disabled'}>
+                            <i class="fa-solid fa-arrow-left"></i> Bài trước
+                        </button>
+                        <button class="btn btn-nav" onclick="${next?`go('#lesson/${encodeURIComponent(next.key)}')`:''}" ${next?'':'disabled'}>
+                            Bài tiếp <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                ${tabsBlockHtml}
+            </div>
+            <div class="lesson-sidebar"><div id="vq-holder">${liveChatHtml}</div><div id="side-list-wrap">${side}</div></div>
+        </div>`;
+    renderMath(app());
+    _vqPositionHolder();
+
+    // Lưu context bài hiện tại (để checkPractice/scrollToQuiz/quiz-timer hoạt động bình thường)
+    _lessonCurrentKey = key;
+    _lessonHasQuiz = _hasQuiz;
+    _lessonQuizMinutes = lesson.thoigian || 0;
+    _videoWatched90 = WATCHED.has(key) || hsMienVideo();
+    _quizPassed90 = WATCHED.has(key) || !_lessonHasQuiz;
+    if(_lessonHasQuiz && _lessonQuizMinutes > 0 && !done) startQuizTimer(key, _lessonQuizMinutes);
+    else clearQuizTimer();
+
+    lvInitNameUI();
+}
+
+/* ═══════════════════════════════════════════
+   LIVE MODE: Firebase (video/chat/tim/mắt xem)
+═══════════════════════════════════════════ */
+function lvInitFirebase(){
+    if(lvFirebaseOK) return;
+    try{
+        if(!firebase.apps.length) firebase.initializeApp(LV_FIREBASE_CONFIG);
+        lvDb = firebase.database();
+        lvFirebaseOK = true;
+    }catch(e){ console.error('Firebase (live) init error:', e); }
+}
+
+function lvSubscribeConfig(){
+    lvInitFirebase();
+    if(!lvFirebaseOK || lvConfigListenerAttached) return;
+    lvConfigListenerAttached = true;
+    lvDb.ref('live_config/current').on('value', snap => {
+        const cfg = snap.val() || {};
+        lvLastCfg = cfg;
+        lvApplyState(cfg);
+    });
+}
+
+function lvApplyState(cfg){
+    const badge = document.getElementById('lv-badge');
+    const iframe = document.getElementById('lv-yt-player');
+    const overlay = document.getElementById('lv-offline-overlay');
+    const liveTag = document.getElementById('lv-live-tag');
+    if(!badge || !iframe || !overlay) return; // DOM chưa sẵn sàng (đang ở trang khác)
+
+    const newSessionId = cfg.sessionId || 'main';
+    if(newSessionId !== lvSessionId){
+        lvSessionId = newSessionId;
+        LV_SESSION_PATH = 'live_sessions/' + newSessionId;
+    }
+    // Luôn (re)subscribe chat/tim/mắt-xem mỗi lần áp dụng state — vừa xử lý đổi session,
+    // vừa tự lấp lại danh sách bình luận khi DOM vừa được dựng lại (route() có thể chạy 2 lần).
+    lvResubscribeSession(LV_SESSION_PATH);
+
+    if(cfg.videoId){
+        overlay.style.display = 'none';
+        const newSrc = 'https://www.youtube-nocookie.com/embed/' + cfg.videoId + '?autoplay=1&rel=0&modestbranding=1';
+        if(iframe.src !== newSrc) iframe.src = newSrc;
+        iframe.style.display = 'block';
+        badge.className = 'badge-live';
+        badge.innerHTML = '&#128308; LIVE';
+        if(liveTag) liveTag.style.display = 'inline-flex';
+    } else {
+        overlay.style.display = 'flex';
+        iframe.src = '';
+        iframe.style.display = 'none';
+        badge.className = 'badge-offline';
+        badge.textContent = '⚫ Offline';
+        if(liveTag) liveTag.style.display = 'none';
+    }
+}
+
+function lvResubscribeSession(path){
+    if(!lvFirebaseOK) return;
+    const msgList = document.getElementById('lv-msg-list');
+    if(!msgList) return;
+    lvDb.ref(path + '/messages').off();
+    lvDb.ref(path + '/viewers').off();
+    lvDb.ref(path + '/hearts').off();
+
+    msgList.innerHTML = '<div class="lv-msg-system">Chào mừng bạn đến buổi live! 🎉</div>';
+    lvMsgCount = 0;
+    const cntEl = document.getElementById('lv-msg-count'); if(cntEl) cntEl.textContent = '0 tin nhắn';
+
+    lvDb.ref(path + '/messages').limitToLast(100).on('child_added', snap => lvAppendMsg(snap.val()));
+    if(lvViewerRef){ lvViewerRef.remove(); lvViewerRef = null; }
+    lvViewerRef = lvDb.ref(path + '/viewers').push(true);
+    lvViewerRef.onDisconnect().remove();
+    lvDb.ref(path + '/viewers').on('value', snap => {
+        const el = document.getElementById('lv-viewer-count'); if(el) el.textContent = snap.numChildren();
+    });
+    lvDb.ref(path + '/hearts').on('value', snap => {
+        const el = document.getElementById('lv-heart-total'); if(el) el.textContent = snap.val() || 0;
+    });
+}
+window.addEventListener('beforeunload', () => { if(lvViewerRef) lvViewerRef.remove(); });
+
+const LV_COLORS = ['#e53e3e','#dd6b20','#d69e2e','#38a169','#3182ce','#6b46c1','#d53f8c'];
+function lvColorForName(name){ let h=0; for(let i=0;i<name.length;i++) h=(h*31+name.charCodeAt(i))>>>0; return LV_COLORS[h % LV_COLORS.length]; }
+function lvInitials(name){ return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function lvFormatTime(ts){ const d=new Date(ts); return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0'); }
+
+function lvAppendMsg({name,text,ts,system}){
+    const list = document.getElementById('lv-msg-list');
+    if(!list) return;
+    const el = document.createElement('div');
+    if(system){
+        el.className = 'lv-msg-system'; el.textContent = text;
+    } else {
+        el.className = 'lv-msg-item';
+        const color = lvColorForName(name);
+        el.innerHTML = '<div class="lv-msg-avatar" style="background:'+color+'">'+lvInitials(name)+'</div>'+
+            '<div class="lv-msg-body">'+
+            '<div class="lv-msg-name" style="color:'+color+'">'+esc(name)+'</div>'+
+            '<div class="lv-msg-text">'+esc(text)+'</div>'+
+            '<div class="lv-msg-time">'+lvFormatTime(ts)+'</div></div>';
+    }
+    list.appendChild(el);
+    list.scrollTop = list.scrollHeight;
+    lvMsgCount++;
+    const cntEl = document.getElementById('lv-msg-count'); if(cntEl) cntEl.textContent = lvMsgCount + ' tin nhắn';
+}
+
+function lvInitNameUI(){
+    if(!lvUserName){
+        try{
+            const au = JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null');
+            if(au && (au.hoten||au.name)){ lvUserName = au.hoten||au.name; localStorage.setItem('vlxt_live_name', lvUserName); }
+        }catch(e){}
+    }
+    if(!lvUserName && HS && HS.ten){ lvUserName = HS.ten; localStorage.setItem('vlxt_live_name', lvUserName); }
+    const setupEl = document.getElementById('lv-name-setup'), dispEl = document.getElementById('lv-name-display');
+    if(!setupEl || !dispEl) return;
+    if(lvUserName){
+        setupEl.style.display = 'none'; dispEl.style.display = 'flex';
+        document.getElementById('lv-display-name-label').textContent = lvUserName;
+    } else {
+        setupEl.style.display = 'flex'; dispEl.style.display = 'none';
+    }
+}
+function lvSaveName(){
+    const v = document.getElementById('lv-input-name').value.trim();
+    if(!v) return;
+    lvUserName = v; localStorage.setItem('vlxt_live_name', v);
+    lvInitNameUI();
+    document.getElementById('lv-input-msg').focus();
+}
+function lvEditName(){
+    document.getElementById('lv-name-setup').style.display = 'flex';
+    document.getElementById('lv-name-display').style.display = 'none';
+    document.getElementById('lv-input-name').value = lvUserName;
+    document.getElementById('lv-input-name').focus();
+}
+function lvSendMsg(){
+    if(!lvFirebaseOK) return;
+    const input = document.getElementById('lv-input-msg');
+    const text = input.value.trim();
+    if(!text) return;
+    lvDb.ref(LV_SESSION_PATH + '/messages').push({ name: lvUserName || 'Học sinh', text, ts: Date.now() });
+    input.value = ''; input.focus();
+}
+function lvSendHeart(){
+    if(lvFirebaseOK) lvDb.ref(LV_SESSION_PATH + '/hearts').transaction(v => (v||0) + 1);
 }
 
 /* ── Globals theo dõi trạng thái bài ── */
