@@ -403,6 +403,11 @@
         .lv-msg-list { max-height:260px; overflow-y:auto; padding:10px 12px; display:flex; flex-direction:column; gap:8px; }
         .lv-msg-list::-webkit-scrollbar { width:4px; }
         .lv-msg-list::-webkit-scrollbar-thumb { background:var(--line); border-radius:4px; }
+        /* Tab "Làm bài tập cùng thầy" — dùng chung khung .lv-chat-box, KHÔNG giới hạn
+           chiều cao riêng (khác .lv-msg-list) vì đã có .lesson-sidebar tự cuộn bên ngoài;
+           video ở cột trái nhờ vậy vẫn luôn trong tầm mắt khi HS cuộn làm bài ở đây. */
+        .lv-ct-body { padding:16px 16px 4px; }
+        .lv-ct-body .pq-block:last-child { padding-bottom:0; margin-bottom:0; border-bottom:none; }
         .lv-msg-item { display:flex; gap:8px; align-items:flex-start; }
         .lv-msg-avatar { width:26px; height:26px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#fff; }
         .lv-msg-body { flex:1; min-width:0; }
@@ -1548,8 +1553,10 @@ async function renderLiveLesson(){
                 <div id="sidebar-tab-nav">
                     <button class="lt-tab-btn active" data-stab="chat" onclick="switchSidebarTab('chat')"><i class="fa-solid fa-comments"></i> Bình luận trực tiếp</button>
                     <button class="lt-tab-btn" data-stab="list" onclick="switchSidebarTab('list')"><i class="fa-solid fa-list-ul"></i> Danh sách bài học</button>
+                    <button class="lt-tab-btn" id="sidebar-tab-cungthay-btn" data-stab="cungthay" onclick="switchSidebarTab('cungthay')" style="display:none"><i class="fa-solid fa-chalkboard-user"></i> Làm bài cùng thầy</button>
                 </div>
                 <div id="vq-holder">${liveChatHtml}</div>
+                <div id="cungthay-holder"></div>
                 <div id="side-list-wrap">${side}</div>
             </div>
         </div>`;
@@ -1569,6 +1576,7 @@ async function renderLiveLesson(){
     lvInitNameUI();
     lvSubscribeConfig();
     if(lvLastCfg) lvApplyState(lvLastCfg);
+    lvLoadCungThayTab(key); // tab "Làm bài cùng thầy" — câu hỏi để trống mốc thời gian
 }
 
 /* ═══════════════════════════════════════════
@@ -1969,8 +1977,12 @@ function loadVideoQuiz(key, vtype){
         .then(r => r.json())
         .then(j => {
             if(_vqKey !== key) return; // đã chuyển bài khác
+            // Câu để TRỐNG mốc thời gian (thoiGian rỗng) KHÔNG phải là điểm dừng video —
+            // thầy dùng nó cho tab "Làm bài tập cùng thầy" ở trang Live (xem lvLoadCungThayTab),
+            // nên phải loại khỏi _vqData ở đây để không bị hiểu nhầm thành mốc 0:00.
             _vqData = ((j && j.data) || [])
-                .filter(r => r && String(r.baiKey||'') === key && (r.question||'').toString().trim())
+                .filter(r => r && String(r.baiKey||'') === key && (r.question||'').toString().trim()
+                    && !(r.thoiGian === '' || r.thoiGian === null || r.thoiGian === undefined))
                 .map((r,ix) => ({
                     t: Number(r.thoiGian)||0,
                     thuTu: Number(r.thuTu)||(ix+1),
@@ -2114,17 +2126,219 @@ function _applySidebarTabDisplay(){
     const nav = document.getElementById('sidebar-tab-nav');
     const chat = document.getElementById('vq-holder');
     const list = document.getElementById('side-list-wrap');
+    const ct = document.getElementById('cungthay-holder');
     if(!nav || !chat || !list) return;
     const isMobile = window.innerWidth <= 900;
     nav.style.display = isMobile ? 'none' : 'flex';
     nav.querySelectorAll('.lt-tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.stab===_sidebarActiveTab));
     chat.style.display = (isMobile || _sidebarActiveTab==='chat') ? '' : 'none';
     list.style.display = (isMobile || _sidebarActiveTab==='list') ? '' : 'none';
+    if(ct) ct.style.display = (isMobile || _sidebarActiveTab==='cungthay') ? '' : 'none';
 }
 window.addEventListener('resize', (function(){
     let t = null;
     return function(){ clearTimeout(t); t = setTimeout(_vqPositionHolder, 200); };
 })());
+
+/* ═══════════════════════════════════════════
+   TAB "LÀM BÀI TẬP CÙNG THẦY" — chỉ ở trang Live (renderLiveLesson), KHÔNG liên
+   quan tới trang bài học thường. Lấy các câu trong "Câu hỏi trong video" mà thầy
+   để TRỐNG mốc thời gian (khác với _vqData ở trên — đó là các câu CÓ mốc, dùng để
+   dừng video). Hiện thành 1 danh sách tuần tự, không dừng/khoá video: HS vừa xem
+   live vừa cuộn làm cùng. Cột phải (.lesson-sidebar) vốn đã sticky + tự cuộn riêng
+   (CSS #main), nên không cần thêm gì để "ghim" video — nó tự nằm trong tầm mắt.
+═══════════════════════════════════════════ */
+let _lvCungThayData = []; // [{type,q,A,B,C,D,ans,correct}]
+let _lvCungThayKey = null;
+
+function lvLoadCungThayTab(key){
+    _lvCungThayKey = key;
+    _lvCungThayData = [];
+    const btn = document.getElementById('sidebar-tab-cungthay-btn');
+    if(btn) btn.style.display = 'none';
+    const holder = document.getElementById('cungthay-holder');
+    if(holder) holder.innerHTML = '';
+    fetch(APPS_SCRIPT_URL + '?type=videocauhoi&bai=' + encodeURIComponent(key) + '&t=' + Date.now())
+        .then(r => r.json())
+        .then(j => {
+            if(_lvCungThayKey !== key) return; // đã chuyển bài khác trong lúc tải
+            _lvCungThayData = ((j && j.data) || [])
+                .filter(r => r && String(r.baiKey||'') === key && (r.question||'').toString().trim()
+                    && (r.thoiGian === '' || r.thoiGian === null || r.thoiGian === undefined))
+                .map(r => ({
+                    type: (r.type==='tf'||r.type==='short')?r.type:'mc',
+                    q: (r.question||'').toString(),
+                    A: (r.optA||'').toString(), B: (r.optB||'').toString(),
+                    C: (r.optC||'').toString(), D: (r.optD||'').toString(),
+                    ans: String(r.correct||'').toUpperCase().trim(),
+                    correct: (r.correct||'').toString()
+                }));
+            if(btn) btn.style.display = _lvCungThayData.length ? '' : 'none';
+            _lvRenderCungThay();
+        })
+        .catch(e => {});
+}
+
+function _lvRenderCungThay(){
+    const holder = document.getElementById('cungthay-holder');
+    if(!holder) return;
+    if(!_lvCungThayData.length){ holder.innerHTML = ''; return; }
+    let h = `<div class="lv-chat-box lv-ct-box">
+        <div class="lv-chat-header">
+            <span><i class="fa-solid fa-chalkboard-user" style="color:var(--blue)"></i> Làm bài tập cùng thầy</span>
+            <span style="font-size:11px;color:var(--sub);font-weight:600">${_lvCungThayData.length} câu</span>
+        </div>
+        <div class="lv-ct-body">`;
+    _lvCungThayData.forEach((q,qi)=>{
+        const qText = fixLatexQuirks(q.q||'');
+        if(q.type==='tf'){
+            h += `<div class="pq-block pq-tf" id="lvpq-${qi}" data-type="tf">
+                <div class="pq-text">Câu ${qi+1}: ${qText}</div>
+                <div class="pq-tf-instruction" style="font-size:12.5px;color:var(--gray2);margin:4px 0 8px">Chọn Đúng hoặc Sai cho mỗi ý:</div>`;
+            ['A','B','C','D'].forEach(L=>{
+                if(!q[L]) return;
+                const txt = fixLatexQuirks(q[L]||'');
+                h += `<div class="pq-tf-row" id="lvpq-${qi}-${L}">
+                    <span class="pq-letter">${({A:'a)',B:'b)',C:'c)',D:'d)'})[L]}</span>
+                    <span class="pq-tf-stmt">${pqSafe(txt)}</span>
+                    <div class="pq-tf-choice">
+                        <label class="pq-tf-btn"><input type="radio" name="lvpq${qi}_${L}" value="Đ"> Đúng</label>
+                        <label class="pq-tf-btn"><input type="radio" name="lvpq${qi}_${L}" value="S"> Sai</label>
+                    </div>
+                </div>`;
+            });
+            h += `</div>`;
+        } else if(q.type==='short'){
+            h += `<div class="pq-block pq-short" id="lvpq-${qi}" data-type="short">
+                <div class="pq-text">Câu ${qi+1}: ${qText}</div>
+                <div class="pq-short-wrap"><i class="fa-solid fa-keyboard" style="color:var(--blue)"></i> Đáp án của em: <input type="text" class="pq-short-input" id="lvpq-${qi}-input" placeholder="Nhập số..."></div>
+            </div>`;
+        } else {
+            h += `<div class="pq-block" id="lvpq-${qi}" data-type="mc">
+                <div class="pq-text">Câu ${qi+1}: ${qText}</div>
+                <div class="pq-opts">`;
+            ['A','B','C','D'].forEach(L=>{
+                if(!q[L]) return;
+                const txt = fixLatexQuirks(q[L]||'');
+                h += `<label class="pq-opt" id="lvpq-${qi}-${L}">
+                    <input type="radio" name="lvpqmc${qi}" value="${L}">
+                    <span class="pq-letter">${L}.</span>
+                    <span>${pqSafe(txt)}</span>
+                </label>`;
+            });
+            h += `</div></div>`;
+        }
+    });
+    h += `</div>
+        <div class="quiz-actions" style="padding:2px 16px 16px">
+            <button class="btn-check" onclick="lvCheckCungThay()"><i class="fa-solid fa-check-circle"></i> Kiểm tra đáp án</button>
+            <button class="btn-reset" onclick="lvResetCungThay()"><i class="fa-solid fa-rotate-left"></i> Làm lại</button>
+            <span class="quiz-score" id="lvpq-score" style="display:none"></span>
+        </div>
+    </div>`;
+    holder.innerHTML = h;
+    renderMath(holder);
+}
+
+function lvCheckCungThay(){
+    const qs = _lvCungThayData;
+    if(!qs.length) return;
+    let correct=0, answered=0;
+    qs.forEach((q,qi)=>{
+        if(q.type==='tf'){
+            const corr=(q.correct||'').toString();
+            const letters=['A','B','C','D'].filter(L=>q[L]);
+            document.querySelectorAll(`#lvpq-${qi} .pq-tf-row`).forEach(row=>row.classList.remove('result-correct','result-wrong'));
+            let allAnswered=letters.length>0, allRight=true;
+            letters.forEach(L=>{
+                const pos={A:0,B:1,C:2,D:3}[L];
+                const want=corr[pos]==='Đ'?'Đ':(corr[pos]==='S'?'S':'');
+                const sel=document.querySelector(`input[name="lvpq${qi}_${L}"]:checked`);
+                const row=document.getElementById(`lvpq-${qi}-${L}`);
+                if(!sel){ allAnswered=false; allRight=false; return; }
+                const ok=sel.value===want;
+                if(!ok) allRight=false;
+                if(row) row.classList.add(ok?'result-correct':'result-wrong');
+            });
+            if(allAnswered){ answered++; if(allRight) correct++; }
+            return;
+        }
+        if(q.type==='short'){
+            const inp=document.getElementById(`lvpq-${qi}-input`);
+            const block=document.getElementById(`lvpq-${qi}`);
+            block?.querySelector('.pq-short-answer-hint')?.remove();
+            if(inp) inp.classList.remove('result-correct','result-wrong');
+            const rawVal=inp?inp.value:'';
+            const wantN=normNum(q.correct||'');
+            if(rawVal.trim()){
+                answered++;
+                const gotN=normNum(rawVal);
+                const isRight=gotN!==''&&gotN===wantN;
+                if(isRight) correct++;
+                if(inp) inp.classList.add(isRight?'result-correct':'result-wrong');
+                if(!isRight && block){
+                    const hint=document.createElement('div');
+                    hint.className='pq-short-answer-hint';
+                    hint.style.color='var(--green)';
+                    hint.innerHTML='Đáp án đúng: <b>'+pqSafe((q.correct||'').toString())+'</b>';
+                    block.appendChild(hint);
+                }
+            }
+            return;
+        }
+        const sel=document.querySelector(`input[name="lvpqmc${qi}"]:checked`);
+        const opts=document.querySelectorAll(`#lvpq-${qi} .pq-opt`);
+        const ans=(q.ans||'').toString().toUpperCase().trim();
+        opts.forEach(opt=>{
+            opt.classList.remove('result-correct','result-wrong');
+            opt.querySelector('.pq-tag')?.remove();
+        });
+        if(sel){
+            answered++;
+            const got=sel.value.toUpperCase();
+            const isRight=got===ans;
+            if(isRight) correct++;
+            const chosenOpt=document.querySelector(`#lvpq-${qi}-${got}`);
+            if(chosenOpt){
+                chosenOpt.classList.add(isRight?'result-correct':'result-wrong');
+                const tag=document.createElement('span');
+                tag.className='pq-tag '+(isRight?'ok':'wrong');
+                tag.textContent=isRight?'✓ Đúng':'✗ Sai';
+                chosenOpt.appendChild(tag);
+            }
+        }
+        if(ans){
+            const correctOpt=document.querySelector(`#lvpq-${qi}-${ans}`);
+            if(correctOpt && sel && sel.value.toUpperCase()!==ans){
+                correctOpt.classList.add('result-correct');
+                const tag=document.createElement('span');
+                tag.className='pq-tag correct-mark';
+                tag.textContent='← Đáp án đúng';
+                correctOpt.appendChild(tag);
+            }
+        }
+    });
+    if(answered<qs.length){ toast('<i class="fa-solid fa-triangle-exclamation"></i> Hãy trả lời đủ các câu nhé!','err'); }
+    const scoreEl=document.getElementById('lvpq-score');
+    if(scoreEl){
+        const pct10 = qs.length>0 ? (correct/qs.length*10) : 0;
+        scoreEl.style.display='inline-flex';
+        scoreEl.className='quiz-score'+(correct===qs.length?' great':(correct>=Math.ceil(qs.length*0.9)?' pass':''));
+        scoreEl.innerHTML=`<i class="fa-solid fa-star"></i> ${correct}/${qs.length} câu đúng (${pct10.toFixed(1)}/10)`;
+    }
+}
+
+function lvResetCungThay(){
+    const holder = document.getElementById('cungthay-holder');
+    if(!holder) return;
+    holder.querySelectorAll('.pq-opt').forEach(o=>{ o.classList.remove('result-correct','result-wrong'); o.querySelector('.pq-tag')?.remove(); });
+    holder.querySelectorAll('.pq-opt input[type=radio]').forEach(r=>r.checked=false);
+    holder.querySelectorAll('.pq-tf-row').forEach(o=>o.classList.remove('result-correct','result-wrong'));
+    holder.querySelectorAll('.pq-tf-row input[type=radio]').forEach(r=>r.checked=false);
+    holder.querySelectorAll('.pq-short-input').forEach(i=>{ i.value=''; i.classList.remove('result-correct','result-wrong'); });
+    holder.querySelectorAll('.pq-short-answer-hint').forEach(hh=>hh.remove());
+    const s=document.getElementById('lvpq-score'); if(s) s.style.display='none';
+}
 
 
 // Panel "nhắc nhẹ" cho mốc ĐÃ từng trả lời đúng: dừng video, hiện lại câu hỏi ở
