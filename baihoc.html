@@ -1547,6 +1547,8 @@ async function renderLiveLesson(){
     else clearQuizTimer();
 
     lvInitNameUI();
+    lvSubscribeConfig();
+    if(lvLastCfg) lvApplyState(lvLastCfg);
 }
 
 /* ═══════════════════════════════════════════
