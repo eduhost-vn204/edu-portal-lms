@@ -726,7 +726,14 @@ async function fetchProgress(){
         const data=await r.json();
         const arr=Array.isArray(data)?data:(data.tiendo||data.data||[]);
         const prevSize = WATCHED.size;
-        arr.forEach(it=>{ const k=(typeof it==='string')?it:field(it,['lesson','bai','key']); if(k) WATCHED.add(k.toString()); });
+        // QUAN TRỌNG: KHÔNG dùng field(it,['lesson',...]) ở đây — sheet TienDo có
+        // cột CŨ "Lesson" (viết hoa, luôn rỗng, còn sót từ trước khi đổi schema 21/7)
+        // đứng TRƯỚC cột MỚI "lesson" (viết thường, chứa giá trị thật) trong thứ tự
+        // cột. field() so khớp không phân biệt hoa/thường nên bắt trúng "Lesson"
+        // rỗng trước, trả về '' -> bỏ sót MỌI dòng tiến độ. Đây là nguyên nhân THẬT
+        // khiến HS đổi máy/trình duyệt mới (không có cache cục bộ) bị mất sạch tiến
+        // độ dù server có đủ dữ liệu — ưu tiên đọc thẳng it.lesson trước.
+        arr.forEach(it=>{ const k=(typeof it==='string')?it:(it.lesson || field(it,['lesson','bai','key'])); if(k) WATCHED.add(k.toString()); });
         // Chỉ cập nhật localStorage nếu GAS trả về dữ liệu mới (không ghi đè nếu GAS trả về ít hơn)
         if(HS && HS.sdt && WATCHED.size >= prevSize){
             try{ localStorage.setItem('vlxt_watched_'+HS.sdt, JSON.stringify([...WATCHED])); }catch(e){}
