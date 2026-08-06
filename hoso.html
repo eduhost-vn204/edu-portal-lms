@@ -11,6 +11,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <script src="device-id.js?v=1"></script>
   <script src="ho-tro-chat.js?v=1"></script>
+  <script src="ban-be.js?v=1"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -446,10 +447,11 @@ function renderPage(profile, lb) {
 
     <!-- Profile card -->
     <div class="profile-card">
-      <div class="avatar-big">${initials}</div>
+      <div class="avatar-big" id="vlxt-avatar-slot">${initials}</div>
       <div class="profile-info">
         <h2>${u.hoten}</h2>
         <p>Lớp ${u.lop}${u.sdt && !String(u.sdt).includes('@') ? ' · ' + u.sdt : ''}</p>
+        <div id="vlxt-bio-slot"></div>
         ${myRankPos > 0 ? `<p style="margin-top:4px;font-size:13px;color:var(--blue);font-weight:600;">🏆 Xếp hạng #${myRankPos} toàn khoá</p>` : ''}
       </div>
       <div class="rank-badge">
@@ -479,6 +481,7 @@ function renderPage(profile, lb) {
       <button class="tab-btn active" onclick="switchTab('tiendo')">📚 Tiến Độ</button>
       <button class="tab-btn" onclick="switchTab('diem')">📝 Điểm Thi</button>
       <button class="tab-btn" onclick="switchTab('lb')">🏆 Xếp Hạng</button>
+      <button class="tab-btn" onclick="switchTab('banbe')">🤝 Bạn Bè</button>
     </div>
 
     <!-- Tab: Tiến độ -->
@@ -555,10 +558,16 @@ function renderPage(profile, lb) {
         </div>
       </div>
     </div>
+
+    <!-- Tab: Bạn bè -->
+    <div class="tab-panel" id="tab-banbe"></div>
   `;
 
   // Render auth widget
   if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(u);
+  // Cập nhật lại ảnh đại diện/bio/tab Bạn bè (ban-be.js) sau khi DOM vừa được dựng lại
+  if (typeof vlxtBanBeRefreshProfileUI === 'function') vlxtBanBeRefreshProfileUI();
+  if (typeof vlxtRenderBanBeTab === 'function') { document.getElementById('tab-banbe').dataset.bbMounted = ''; vlxtRenderBanBeTab(); }
 }
 
 function switchTab(name) {
