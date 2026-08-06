@@ -461,12 +461,24 @@
     var playersObj = {};
     playersObj[mySdt] = { hoten: user.hoten || '', lop: user.lop || '', lpTotal: myLp };
     playersObj[inv.from] = { hoten: inv.fromName || '', lop: inv.fromLop || '', lpTotal: inv.fromLp || 0 };
-    var matchVal = { status: 'battle', createdAt: Date.now(), questions: inv.questions, players: playersObj };
-    db.ref('solo_matches/' + mid).set(matchVal).then(function () {
+    var proposedVal = { status: 'battle', createdAt: Date.now(), questions: inv.questions, players: playersObj };
+    // Dùng transaction (không set() thẳng): nếu 2 bên vô tình mời NHAU cùng lúc (mỗi bên vừa
+    // gửi invite vừa nhận invite), cả 2 sẽ cùng gọi acceptInvite() gần như đồng thời — set()
+    // thẳng sẽ khiến bản ghi trận bị GHI ĐÈ, mỗi bên tự ý dùng bộ câu hỏi cục bộ của invite
+    // mình nhận được (khác nhau) => 2 người thấy 2 đề khác nhau trong cùng 1 trận (đã tái hiện
+    // được bug này khi test 2 tab bấm Tìm trận cùng lúc). Transaction đảm bảo chỉ 1 bản ghi
+    // thắng, và CẢ HAI bên đều lấy lại đúng bản ghi đã thắng đó từ server (snap.val()) để vào
+    // trận — không dùng dữ liệu cục bộ nữa.
+    db.ref('solo_matches/' + mid).transaction(function (cur) {
+      if (cur) return; // đối phương đã ghi trước (do mời chéo cùng lúc) -> giữ nguyên bản của họ
+      return proposedVal;
+    }, function (err, committed, snap) {
+      if (err) return;
+      var finalVal = (snap && snap.val()) || proposedVal;
       db.ref('solo_queue/' + mySdt).remove();
       db.ref('solo_queue/' + inv.from).remove();
       try { db.ref('solo_queue/' + mySdt).onDisconnect().cancel(); } catch (e) {}
-      enterBattle(mid, matchVal);
+      enterBattle(mid, finalVal);
     });
   }
 
