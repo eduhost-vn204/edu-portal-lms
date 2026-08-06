@@ -778,7 +778,14 @@ function buildCourses(rows){
         const ttbRaw = field(row,['thutubai']).toString().trim();
         const ttb = (ttbRaw !== '' && !isNaN(Number(ttbRaw))) ? Number(ttbRaw) : null;
         ch.lessons.push({
-            key:[cname,chname,lname].join(SEP),
+            key:(function(){
+                // Uu tien MaBai (ma dinh danh ON DINH, khong doi khi doi ten khoa/chuong/bai
+                // hoac sap xep lai vi tri - xem migration 6/8/2026) de tien do hoc sinh (TienDo.lesson)
+                // khong bao gio bi mo coi. Bai cu chua kip gan MaBai (hiem, se tu gan khi luu lai
+                // trong admin) fallback ve key ten cu de khong vo hieu bai do.
+                var mb = field(row,['mabai']).toString().trim();
+                return mb || [cname,chname,lname].join(SEP);
+            })(),
             name:lname,
             video:field(row,['video','youtube','link','url','lienket']).toString().trim(),
             videogiai:field(row,['videogiai','videochua','videogiangiai','chua','giai']).toString().trim(),
