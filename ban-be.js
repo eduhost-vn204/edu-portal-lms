@@ -453,6 +453,7 @@
   /* ── Mount tab "Bạn bè" ────────────────────────────────── */
 
   function renderTab() {
+    if (!db || !mySdt) return; // chưa init xong (trang có thể gọi hàm này sớm trước khi DOMContentLoaded) — an toàn bỏ qua, init() sẽ tự gọi lại
     var host = document.getElementById('tab-banbe');
     if (!host || host.dataset.bbMounted) return;
     host.dataset.bbMounted = '1';

@@ -567,7 +567,7 @@ function renderPage(profile, lb) {
   if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(u);
   // Cập nhật lại ảnh đại diện/bio/tab Bạn bè (ban-be.js) sau khi DOM vừa được dựng lại
   if (typeof vlxtBanBeRefreshProfileUI === 'function') vlxtBanBeRefreshProfileUI();
-  if (typeof vlxtRenderBanBeTab === 'function') { document.getElementById('tab-banbe').dataset.bbMounted = ''; vlxtRenderBanBeTab(); }
+  if (typeof vlxtRenderBanBeTab === 'function') vlxtRenderBanBeTab(); // an toàn gọi nhiều lần — tự bỏ qua nếu chưa init xong hoặc đã mount rồi
 }
 
 function switchTab(name) {
