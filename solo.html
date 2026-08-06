@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solo Vật Lý — Vật Lý Xuân Trường</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:    #f4f6fb;
+      --bg2:   #ffffff;
+      --cyan:  #0891b2;
+      --blue:  #0072ff;
+      --gold:  #d97706;
+      --pink:  #db2777;
+      --green: #059669;
+      --red:   #dc2626;
+      --text:  #16213e;
+      --sub:   #6b7280;
+      --border:rgba(0,0,0,.12);
+    }
+    body.dark {
+      --bg:    #0d1117;
+      --bg2:   #0d1b2a;
+      --cyan:  #00f0ff;
+      --blue:  #0072ff;
+      --gold:  #fbbf24;
+      --pink:  #f472b6;
+      --green: #34d399;
+      --red:   #f87171;
+      --text:  #e6edf3;
+      --sub:   #8b949e;
+      --border:rgba(0,240,255,.2);
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+    .nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 56px; background: rgba(13,17,23,.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-size: 15px; font-weight: 800; color: var(--cyan); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .nav-back { font-size: 13px; color: var(--sub); text-decoration: none; display: flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,.1); transition: all .15s; margin-left: 8px; }
+    .nav-back:hover { color: var(--text); border-color: rgba(255,255,255,.3); }
+    .nav-right-wrap { display:flex; align-items:center; }
+
+    .hero { text-align: center; padding: 44px 24px 28px; background: linear-gradient(180deg, rgba(219,39,119,.08) 0%, transparent 100%); }
+    .hero-icon { font-size: 50px; margin-bottom: 10px; }
+    .hero-title { font-size: 27px; font-weight: 900; color: var(--pink); text-shadow: 0 0 24px rgba(219,39,119,.3); margin-bottom: 6px; }
+    .hero-sub { font-size: 13.5px; color: var(--sub); line-height: 1.6; max-width: 480px; margin: 0 auto; }
+
+    .arena { max-width: 760px; margin: 0 auto; padding: 24px 20px 48px; }
+
+    .rank-chip { display:inline-flex; align-items:center; gap:6px; background: rgba(219,39,119,.08); border:1px solid rgba(219,39,119,.25); border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 700; margin: 0 auto 22px; }
+
+    .spinner { width: 40px; height: 40px; border: 3px solid rgba(219,39,119,.2); border-top-color: var(--pink); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 16px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-box, .search-box { text-align: center; padding: 50px 20px; }
+    .search-timer { font-size: 13px; color: var(--sub); margin-top: 10px; }
+    .search-hint { font-size: 12px; color: var(--sub); margin-top: 4px; opacity: .8; }
+
+    .btn-primary { padding: 14px 28px; background: linear-gradient(135deg, var(--pink), #f97316); color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; transition: opacity .15s; }
+    .btn-primary:hover { opacity: .88; }
+    .btn-secondary { padding: 12px 20px; background: rgba(255,255,255,.06); color: var(--sub); border: 1px solid rgba(255,255,255,.1); border-radius: 12px; font-size: 13.5px; font-weight: 600; cursor: pointer; font-family: inherit; text-decoration: none; display: inline-block; transition: all .15s; }
+    .btn-secondary:hover { background: rgba(255,255,255,.1); color: var(--text); }
+
+    /* VS screen */
+    .vs-wrap { display: flex; align-items: center; justify-content: center; gap: 18px; padding: 44px 20px; text-align: center; animation: qIn .25s ease-out; }
+    @keyframes qIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    .vs-side { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 130px; }
+    .vs-avatar { width: 62px; height: 62px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--cyan)); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 22px; overflow: hidden; flex-shrink: 0; }
+    .vs-avatar.bot { background: linear-gradient(135deg, #64748b, #334155); }
+    .vs-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .vs-name { font-weight: 700; font-size: 13.5px; }
+    .vs-rank { font-size: 11px; color: var(--sub); }
+    .vs-mid { font-size: 24px; font-weight: 900; color: var(--gold); }
+
+    /* Battle */
+    .battle-wrap { display: flex; flex-direction: column; gap: 12px; }
+    .opp-bar { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,.04); border: 1px solid var(--border); border-radius: 12px; padding: 9px 14px; }
+    .opp-bar .vs-avatar { width: 30px; height: 30px; font-size: 12px; }
+    .opp-progress-track { flex: 1; height: 8px; border-radius: 6px; background: rgba(255,255,255,.08); overflow: hidden; }
+    .opp-progress-fill { height: 100%; background: linear-gradient(90deg, var(--pink), #f97316); transition: width .35s ease; }
+    .opp-score { font-size: 11.5px; font-weight: 700; color: var(--sub); white-space: nowrap; }
+
+    .q-card { background: linear-gradient(135deg, var(--bg2), var(--bg)); border: 1.5px solid var(--border); border-radius: 18px; padding: 24px; animation: qIn .2s ease-out; }
+    .q-img { max-width: 100%; overflow-x: auto; }
+    .q-img img { max-width: 100%; height: auto; display: block; margin: 8px auto; }
+    .q-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+    .q-num { font-size: 12px; color: var(--sub); }
+    .q-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 12px; border: 1px solid; }
+    .badge-NB  { color: #60a5fa; border-color: rgba(96,165,250,.3); background: rgba(96,165,250,.08); }
+    .badge-TH  { color: #a78bfa; border-color: rgba(167,139,250,.3); background: rgba(167,139,250,.08); }
+    .badge-VD  { color: var(--gold); border-color: rgba(251,191,36,.3); background: rgba(251,191,36,.08); }
+    .badge-VDC { color: var(--red);  border-color: rgba(248,113,113,.3); background: rgba(248,113,113,.08); }
+    .q-timer { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--pink); font-variant-numeric: tabular-nums; }
+    .q-timer.warn { color: var(--red); }
+    .q-text { font-size: 15px; line-height: 1.7; color: var(--text); margin-bottom: 18px; white-space: pre-wrap; }
+    .q-options { display: flex; flex-direction: column; gap: 10px; }
+    .q-opt { display: flex; align-items: flex-start; gap: 12px; background: rgba(255,255,255,.04); border: 1.5px solid rgba(255,255,255,.08); border-radius: 12px; padding: 12px 16px; cursor: pointer; transition: all .15s; text-align: left; font-family: inherit; color: var(--text); font-size: 14px; line-height: 1.5; }
+    .q-opt:hover:not(:disabled) { border-color: var(--pink); background: rgba(219,39,119,.06); }
+    .q-opt .opt-key { width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; background: rgba(219,39,119,.1); border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--pink); }
+    .q-opt.correct { border-color: var(--green); background: rgba(52,211,153,.1); }
+    .q-opt.correct .opt-key { background: var(--green); border-color: var(--green); color: #0d1117; }
+    .q-opt.wrong { border-color: var(--red); background: rgba(248,113,113,.08); }
+    .q-opt.wrong .opt-key { background: var(--red); border-color: var(--red); color: #0d1117; }
+    .q-opt:disabled { cursor: not-allowed; }
+    .q-feedback { margin-top: 14px; padding: 12px 16px; border-radius: 10px; font-size: 13px; line-height: 1.5; display: none; }
+    .q-feedback.correct { background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.3); color: var(--green); }
+    .q-feedback.wrong { background: rgba(248,113,113,.08); border: 1px solid rgba(248,113,113,.3); color: var(--red); }
+    .q-next { display: none; width: 100%; margin-top: 16px; background: linear-gradient(135deg, var(--pink), #f97316); color: #fff; border: none; border-radius: 12px; padding: 13px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; transition: opacity .15s; }
+    .q-next:hover { opacity: .88; }
+
+    .waiting-box { text-align: center; padding: 40px 20px; }
+
+    /* Result */
+    .result-screen { text-align: center; padding: 36px 20px; }
+    .result-icon { font-size: 54px; margin-bottom: 12px; }
+    .result-banner { font-size: 21px; font-weight: 900; margin-bottom: 6px; }
+    .result-banner.win { color: var(--green); }
+    .result-banner.draw { color: var(--gold); }
+    .result-banner.lose { color: var(--sub); }
+    .result-sub { font-size: 13.5px; color: var(--sub); margin-bottom: 22px; }
+    .cmp-table { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px 16px; max-width: 340px; margin: 0 auto 26px; font-size: 13.5px; align-items: center; }
+    .cmp-table .me { text-align: right; font-weight: 800; color: var(--cyan); }
+    .cmp-table .opp { text-align: left; font-weight: 800; color: var(--pink); }
+    .cmp-table .lbl { color: var(--sub); text-align: center; font-size: 10.5px; text-transform: uppercase; letter-spacing: .04em; }
+    .result-actions { display: flex; flex-direction: column; gap: 10px; max-width: 300px; margin: 0 auto; }
+
+    .empty-box { text-align: center; padding: 60px 20px; color: var(--sub); }
+    .empty-box h3 { font-size: 18px; color: var(--text); margin-bottom: 10px; }
+
+    @media (max-width: 480px) {
+      .hero-title { font-size: 21px; }
+      .q-card { padding: 18px; }
+      .arena { padding: 18px 12px 40px; }
+      .vs-wrap { gap: 10px; }
+      .vs-side { width: 96px; }
+    }
+
+    .nav-back { border-color: rgba(0,0,0,.1); }
+    .nav-back:hover { border-color: rgba(0,0,0,.25); }
+    .q-opt { background: rgba(0,0,0,.02); border-color: rgba(0,0,0,.1); }
+    .opp-bar { background: rgba(0,0,0,.02); border-color: rgba(0,0,0,.1); }
+    .opp-progress-track { background: rgba(0,0,0,.08); }
+    .btn-secondary { background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.12); }
+    .btn-secondary:hover { background: rgba(0,0,0,.07); }
+
+    body.dark .nav-back { border-color: rgba(255,255,255,.1); }
+    body.dark .nav-back:hover { border-color: rgba(255,255,255,.3); }
+    body.dark .q-opt { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.08); }
+    body.dark .opp-bar { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.08); }
+    body.dark .opp-progress-track { background: rgba(255,255,255,.1); }
+    body.dark .btn-secondary { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.1); }
+    body.dark .btn-secondary:hover { background: rgba(255,255,255,.1); }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <style>
+    .katex { color: inherit; }
+    body.dark .katex svg { filter: invert(1); }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">⚡ Vật Lý Xuân Trường</a>
+  <div class="nav-right-wrap">
+    <a href="dua-top.html" class="nav-back">🏆 Đua Top</a>
+    <a href="index.html" class="nav-back">← Trang chủ</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-icon">⚔️</div>
+  <h1 class="hero-title">Solo Vật Lý</h1>
+  <p class="hero-sub">Đấu 1-1 theo thời gian thực — ghép cặp theo hạng, ai điểm cao hơn thắng.<br>Không tìm thấy đối thủ trong 12 giây? Tự động đấu với AI theo đúng trình độ của bạn.</p>
+</div>
+
+<div class="arena" id="arena">
+  <div class="loading-box">
+    <div class="spinner"></div>
+    <div style="color:var(--sub);font-size:14px">Đang tải dữ liệu…</div>
+  </div>
+</div>
+
+<script src="auth.js?v=7"></script>
+<script src="xephang-fx.js?v=1"></script>
+<script src="thongbao.js?v=1"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="device-id.js?v=1"></script>
+<script src="ho-tro-chat.js?v=1"></script>
+<script>
+(function () {
+  'use strict';
+
+  var GAS = 'https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec';
+  var FIREBASE_CONFIG = {
+    apiKey: "AIzaSyBCwxhKlvJXrms7AdKfI1NyzOXQ3onbdH0",
+    authDomain: "edu-portal-live.firebaseapp.com",
+    databaseURL: "https://edu-portal-live-default-rtdb.firebaseio.com",
+    projectId: "edu-portal-live",
+    storageBucket: "edu-portal-live.firebasestorage.app",
+    messagingSenderId: "49980372137",
+    appId: "1:49980372137:web:ab7483591b9dcabca865b8"
+  };
+
+  var BASE_PTS = { NB: 10, TH: 20, VD: 35, VDC: 50 };
+  var Q_PER_MATCH = 8;
+  var Q_TIME_CAP = 40;       // giây mỗi câu, hết giờ tự tính sai
+  var SEARCH_BOT_MS = 12000; // sau 12s không có đối thủ -> đấu bot
+  var INVITE_TIMEOUT_MS = 6000;
+  var FORFEIT_MS = 45000;    // đối thủ im lặng 45s -> xử thắng
+  var LP_WIN = 25, LP_DRAW = 10, LP_LOSE = 8;
+
+  function calcScore(mucDo, seconds) {
+    var base = BASE_PTS[mucDo] || 10;
+    var pts = base;
+    if (seconds <= 20) pts += Math.round(base * 0.2);
+    return pts;
+  }
+  function fixLatexQuirks(html) {
+    if (!html) return html;
+    html = html.replace(/\\cdotp/g, '\\cdot');
+    html = html.replace(/([A-Za-zÀ-ỹ])⃗/g, '\\vec{$1}');
+    html = html.replace(/([A-Za-zÀ-ỹ])⃖/g, '\\overleftarrow{$1}');
+    return html;
+  }
+  function escHtml(s) { return (s == null ? '' : s).toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function normKey(s) { s = String(s || '').trim(); if (!s) return ''; if (s.indexOf('@') > -1) return s.toLowerCase(); return s.replace(/\D/g, ''); }
+  function renderKatex(root) {
+    setTimeout(function () {
+      if (typeof renderMathInElement === 'function') {
+        try {
+          renderMathInElement(root || document.body, {
+            delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }],
+            throwOnError: false
+          });
+        } catch (e) {}
+      }
+    }, 80);
+  }
+
+  // ─── State ────────────────────────────────────────────────
+  var db = null, user = null, mySdt = '';
+  var myLp = 0, myRankIdx = 0;
+  var bank = [];
+  var arena = document.getElementById('arena');
+
+  var matched = false;
+  var myPendingInviteTo = null;
+  var lastQueueSnapVal = null;
+  var queueValueListener = null, myInviteListener = null;
+  var botFallbackTimer = null, inviteWaitTimer = null;
+
+  var matchId = null, isBotMatch = false, botTier = 0;
+  var opponent = null; // {sdt,hoten,lop,lpTotal,isBot}
+  var matchQuestions = [];
+  var qIdx = 0, qStartTime = 0, qTimerInterval = null;
+  var myProgress = { idx: 0, correct: 0, score: 0, finished: false };
+  var oppProgress = { idx: 0, correct: 0, score: 0, finished: false };
+  var oppProgressRef = null, oppProgressListener = null;
+  var forfeitTimer = null;
+  var botStepTimeouts = [];
+
+  // ─── Firebase init ────────────────────────────────────────
+  function initFirebase() {
+    try {
+      if (typeof firebase === 'undefined') return false;
+      if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+      db = firebase.database();
+      return true;
+    } catch (e) { return false; }
+  }
+
+  // ─── Rank helpers (dùng chung xephang-fx.js) ───────────────
+  function rankIdxFor(lp) {
+    var rank = (typeof vlxtGetRank === 'function') ? vlxtGetRank(lp) : { min: 0 };
+    var arr = window.VLXT_RANKS || [];
+    for (var i = 0; i < arr.length; i++) { if (arr[i].min === rank.min) return i; }
+    return 0;
+  }
+  function rankBadgeHtml(lp) {
+    var rank = (typeof vlxtGetRank === 'function') ? vlxtGetRank(lp) : { name: '🔩 Sắt' };
+    var sub = (typeof vlxtSubRank === 'function') ? vlxtSubRank(lp) : '';
+    return rank.name + (sub ? ' ' + sub : '');
+  }
+
+  // ─── Load ngân hàng câu hỏi TN ──────────────────────────────
+  function loadBank(cb) {
+    fetch(GAS + '?type=nganhang')
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var raw = Array.isArray(data) ? data : (data.data || data.rows || []);
+        bank = raw.filter(function (q) { return (!q.loai || q.loai === 'TN') && q.optA && q.optB && q.correct; });
+        cb();
+      })
+      .catch(function () { cb(); });
+  }
+
+  function pickQuestionIds() {
+    var byDiff = { NB: [], TH: [], VD: [], VDC: [] };
+    bank.forEach(function (q) { (byDiff[q.mucDo || 'NB'] || byDiff.NB).push(q); });
+    function shuffle(arr) {
+      arr = arr.slice();
+      for (var i = arr.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = arr[i]; arr[i] = arr[j]; arr[j] = t; }
+      return arr;
+    }
+    var quota = { NB: 3, TH: 3, VD: 1, VDC: 1 };
+    var picked = [];
+    Object.keys(quota).forEach(function (k) {
+      var pool = shuffle(byDiff[k] || []);
+      picked = picked.concat(pool.slice(0, quota[k]));
+    });
+    if (picked.length < Q_PER_MATCH) {
+      var rest = shuffle(bank.filter(function (q) { return picked.indexOf(q) === -1; }));
+      picked = picked.concat(rest.slice(0, Q_PER_MATCH - picked.length));
+    }
+    picked = shuffle(picked).slice(0, Q_PER_MATCH);
+    return picked.map(function (q) { return String(q.id); });
+  }
+  function resolveQuestions(ids) {
+    return ids.map(function (id) {
+      return bank.filter(function (q) { return String(q.id) === String(id); })[0];
+    }).filter(Boolean);
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // MATCHMAKING
+  // ═══════════════════════════════════════════════════════════
+  function renderIdle() {
+    resetMatchState();
+    arena.innerHTML =
+      '<div style="text-align:center">' +
+        '<div class="rank-chip">🎖️ Hạng hiện tại: ' + rankBadgeHtml(myLp) + '</div>' +
+        '<div><button class="btn-primary" id="btn-find">🔍 Tìm trận</button></div>' +
+      '</div>';
+    document.getElementById('btn-find').onclick = startSearch;
+  }
+
+  function resetMatchState() {
+    matched = false; myPendingInviteTo = null; matchId = null; isBotMatch = false;
+    opponent = null; matchQuestions = []; qIdx = 0;
+    myProgress = { idx: 0, correct: 0, score: 0, finished: false };
+    oppProgress = { idx: 0, correct: 0, score: 0, finished: false };
+    clearTimeout(botFallbackTimer); clearTimeout(inviteWaitTimer); clearTimeout(forfeitTimer);
+    botStepTimeouts.forEach(clearTimeout); botStepTimeouts = [];
+    if (queueValueListener) { db.ref('solo_queue').off('value', queueValueListener); queueValueListener = null; }
+    if (myInviteListener) { db.ref('solo_queue/' + mySdt + '/invite').off('value', myInviteListener); myInviteListener = null; }
+    if (oppProgressListener && oppProgressRef) { oppProgressRef.off('value', oppProgressListener); oppProgressListener = null; }
+  }
+
+  function startSearch() {
+    matched = false;
+    var searchStart = Date.now();
+    arena.innerHTML =
+      '<div class="search-box">' +
+        '<div class="spinner"></div>' +
+        '<div style="font-size:15px;font-weight:700">Đang tìm đối thủ cùng hạng…</div>' +
+        '<div class="search-timer" id="search-timer">0s</div>' +
+        '<div class="search-hint">Không có ai online? Sau 12 giây bạn sẽ đấu với AI.</div>' +
+        '<button class="btn-secondary" id="btn-cancel" style="margin-top:18px">Huỷ tìm trận</button>' +
+      '</div>';
+    var timerEl = document.getElementById('search-timer');
+    var searchInterval = setInterval(function () {
+      timerEl.textContent = Math.round((Date.now() - searchStart) / 1000) + 's';
+    }, 1000);
+    document.getElementById('btn-cancel').onclick = function () {
+      clearInterval(searchInterval);
+      leaveQueue();
+      renderIdle();
+    };
+
+    myRankIdx = rankIdxFor(myLp);
+    db.ref('solo_queue/' + mySdt).set({ hoten: user.hoten || '', lop: user.lop || '', rankIdx: myRankIdx, lpTotal: myLp, time: Date.now() });
+    try { db.ref('solo_queue/' + mySdt).onDisconnect().remove(); } catch (e) {}
+
+    myInviteListener = function (snap) {
+      var inv = snap.val();
+      if (!inv || matched) return;
+      matched = true;
+      clearInterval(searchInterval);
+      acceptInvite(inv);
+    };
+    db.ref('solo_queue/' + mySdt + '/invite').on('value', myInviteListener);
+
+    queueValueListener = function (snap) {
+      lastQueueSnapVal = snap.val() || {};
+      if (matched || myPendingInviteTo) return;
+      scanQueue();
+    };
+    db.ref('solo_queue').on('value', queueValueListener);
+
+    botFallbackTimer = setTimeout(function () {
+      if (matched) return;
+      matched = true;
+      clearInterval(searchInterval);
+      startBotMatch();
+    }, SEARCH_BOT_MS);
+  }
+
+  function leaveQueue() {
+    resetMatchState();
+    if (mySdt) {
+      db.ref('solo_queue/' + mySdt).remove();
+      try { db.ref('solo_queue/' + mySdt).onDisconnect().cancel(); } catch (e) {}
+    }
+  }
+
+  function scanQueue() {
+    var all = lastQueueSnapVal || {};
+    var candidates = Object.keys(all)
+      .filter(function (k) { return k !== mySdt && !all[k].invite; })
+      .map(function (k) { return Object.assign({ key: k }, all[k]); });
+    if (!candidates.length) return;
+    candidates.sort(function (a, b) {
+      var da = Math.abs((a.rankIdx || 0) - myRankIdx), db2 = Math.abs((b.rankIdx || 0) - myRankIdx);
+      return da - db2 || (a.time || 0) - (b.time || 0);
+    });
+    sendInvite(candidates[0]);
+  }
+
+  function sendInvite(candidate) {
+    if (myPendingInviteTo) return;
+    myPendingInviteTo = candidate.key;
+    var mid = [mySdt, candidate.key].sort().join('__');
+    var qIds = pickQuestionIds();
+    db.ref('solo_queue/' + candidate.key + '/invite').transaction(function (cur) {
+      if (cur) return; // đã bị người khác mời trước, bỏ qua
+      return { from: mySdt, fromName: user.hoten || '', fromLop: user.lop || '', fromLp: myLp, matchId: mid, questions: qIds, time: Date.now() };
+    }, function (err, committed) {
+      if (err || !committed) { myPendingInviteTo = null; return; }
+      watchForAccept(mid, candidate.key);
+    });
+  }
+
+  function watchForAccept(mid, oppKey) {
+    var ref = db.ref('solo_matches/' + mid);
+    var listener = ref.on('value', function (snap) {
+      var v = snap.val();
+      if (v && v.status === 'battle' && !matched) {
+        matched = true;
+        ref.off('value', listener);
+        clearTimeout(inviteWaitTimer);
+        db.ref('solo_queue/' + mySdt).remove();
+        try { db.ref('solo_queue/' + mySdt).onDisconnect().cancel(); } catch (e) {}
+        enterBattle(mid, v);
+      }
+    });
+    inviteWaitTimer = setTimeout(function () {
+      if (matched) return;
+      ref.off('value', listener);
+      db.ref('solo_queue/' + oppKey + '/invite').remove();
+      myPendingInviteTo = null;
+      scanQueue();
+    }, INVITE_TIMEOUT_MS);
+  }
+
+  function acceptInvite(inv) {
+    var mid = inv.matchId;
+    var playersObj = {};
+    playersObj[mySdt] = { hoten: user.hoten || '', lop: user.lop || '', lpTotal: myLp };
+    playersObj[inv.from] = { hoten: inv.fromName || '', lop: inv.fromLop || '', lpTotal: inv.fromLp || 0 };
+    var matchVal = { status: 'battle', createdAt: Date.now(), questions: inv.questions, players: playersObj };
+    db.ref('solo_matches/' + mid).set(matchVal).then(function () {
+      db.ref('solo_queue/' + mySdt).remove();
+      db.ref('solo_queue/' + inv.from).remove();
+      try { db.ref('solo_queue/' + mySdt).onDisconnect().cancel(); } catch (e) {}
+      enterBattle(mid, matchVal);
+    });
+  }
+
+  function startBotMatch() {
+    leaveQueueSilently();
+    matchId = mySdt + '__BOT' + Date.now();
+    isBotMatch = true;
+    botTier = Math.max(0, Math.min(5, myRankIdx + (Math.floor(Math.random() * 3) - 1)));
+    var qIds = pickQuestionIds();
+    enterBattle(matchId, { status: 'battle', questions: qIds, players: {} });
+  }
+  function leaveQueueSilently() {
+    if (queueValueListener) { db.ref('solo_queue').off('value', queueValueListener); queueValueListener = null; }
+    if (myInviteListener) { db.ref('solo_queue/' + mySdt + '/invite').off('value', myInviteListener); myInviteListener = null; }
+    db.ref('solo_queue/' + mySdt).remove();
+    try { db.ref('solo_queue/' + mySdt).onDisconnect().cancel(); } catch (e) {}
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // BATTLE
+  // ═══════════════════════════════════════════════════════════
+  function enterBattle(mid, matchVal) {
+    matchId = mid;
+    matchQuestions = resolveQuestions(matchVal.questions || []);
+    qIdx = 0;
+    myProgress = { idx: 0, correct: 0, score: 0, finished: false };
+    oppProgress = { idx: 0, correct: 0, score: 0, finished: false };
+
+    if (isBotMatch) {
+      opponent = { isBot: true, hoten: 'AI Vật Lý', lop: '🤖', lpTotal: myLp };
+    } else {
+      var players = matchVal.players || {};
+      var oppKey = Object.keys(players).filter(function (k) { return k !== mySdt; })[0];
+      opponent = Object.assign({ sdt: oppKey }, players[oppKey] || {});
+      oppProgressRef = db.ref('solo_matches/' + mid + '/progress/' + oppKey);
+      oppProgressListener = oppProgressRef.on('value', function (snap) {
+        var v = snap.val();
+        if (v) { oppProgress = v; if (state_isBattleScreen) updateOppBar(); checkBothFinished(); }
+      });
+    }
+
+    if (!matchQuestions.length) {
+      arena.innerHTML = '<div class="empty-box"><h3>Không đủ câu hỏi</h3><p>Ngân hàng câu hỏi chưa đủ dữ liệu để đấu solo. Quay lại sau nhé!</p></div>';
+      return;
+    }
+    renderVsIntro();
+  }
+
+  function initialsOf(name) {
+    return (name || 'HS').trim().split(' ').map(function (w) { return w[0]; }).slice(-2).join('').toUpperCase();
+  }
+
+  function renderVsIntro() {
+    arena.innerHTML =
+      '<div class="vs-wrap">' +
+        '<div class="vs-side">' +
+          '<div class="vs-avatar">' + initialsOf(user.hoten) + '</div>' +
+          '<div class="vs-name">' + escHtml(user.hoten || 'Bạn') + '</div>' +
+          '<div class="vs-rank">' + rankBadgeHtml(myLp) + '</div>' +
+        '</div>' +
+        '<div class="vs-mid">VS</div>' +
+        '<div class="vs-side">' +
+          '<div class="vs-avatar' + (opponent.isBot ? ' bot' : '') + '">' + (opponent.isBot ? '🤖' : initialsOf(opponent.hoten)) + '</div>' +
+          '<div class="vs-name">' + escHtml(opponent.hoten || 'Đối thủ') + '</div>' +
+          '<div class="vs-rank">' + (opponent.isBot ? rankBadgeHtml((window.VLXT_RANKS && window.VLXT_RANKS[botTier] && window.VLXT_RANKS[botTier].min) || 0) : rankBadgeHtml(opponent.lpTotal || 0)) + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="text-align:center;color:var(--sub);font-size:13px">Trận đấu bắt đầu sau giây lát…</div>';
+    setTimeout(function () {
+      state_isBattleScreen = true;
+      if (isBotMatch) runBotMatch();
+      renderBattleQuestion();
+    }, 1800);
+  }
+
+  var state_isBattleScreen = false;
+
+  function updateOppBar() {
+    var bar = document.getElementById('opp-bar-fill');
+    if (!bar) return;
+    var pct = Math.round((oppProgress.idx || 0) / Q_PER_MATCH * 100);
+    bar.style.width = pct + '%';
+    var scoreEl = document.getElementById('opp-bar-score');
+    if (scoreEl) scoreEl.textContent = (oppProgress.correct || 0) + '✓ · ' + (oppProgress.score || 0) + 'đ';
+  }
+
+  function oppBarHtml() {
+    return '<div class="opp-bar">' +
+      '<div class="vs-avatar' + (opponent.isBot ? ' bot' : '') + '">' + (opponent.isBot ? '🤖' : initialsOf(opponent.hoten)) + '</div>' +
+      '<div class="opp-progress-track"><div class="opp-progress-fill" id="opp-bar-fill" style="width:0%"></div></div>' +
+      '<div class="opp-score" id="opp-bar-score">0✓ · 0đ</div>' +
+    '</div>';
+  }
+
+  function badgeHtml(mucDo) {
+    var labels = { NB: 'Nhận biết', TH: 'Thông hiểu', VD: 'Vận dụng', VDC: 'Vận dụng cao' };
+    return '<span class="q-badge badge-' + mucDo + '">' + (labels[mucDo] || mucDo) + ' +' + (BASE_PTS[mucDo] || 10) + 'đ</span>';
+  }
+
+  function startQTimer(el) {
+    var secs = Q_TIME_CAP;
+    clearInterval(qTimerInterval);
+    el.textContent = secs + 's';
+    el.classList.remove('warn');
+    qTimerInterval = setInterval(function () {
+      secs--;
+      el.textContent = Math.max(0, secs) + 's';
+      if (secs <= 10) el.classList.add('warn');
+      if (secs <= 0) { clearInterval(qTimerInterval); autoFailQuestion(); }
+    }, 1000);
+  }
+
+  function renderBattleQuestion() {
+    if (qIdx >= matchQuestions.length) { finishMyProgress(); return; }
+    var q = matchQuestions[qIdx];
+    var optKeys = ['A', 'B', 'C', 'D'];
+    var opts = optKeys.map(function (k) { return { key: k, text: fixLatexQuirks(q['opt' + k] || q['opt' + k.toLowerCase()] || '') }; }).filter(function (o) { return o.text; });
+
+    arena.innerHTML =
+      '<div class="battle-wrap">' +
+        oppBarHtml() +
+        '<div class="q-card">' +
+          '<div class="q-meta">' +
+            '<span class="q-num">Câu ' + (qIdx + 1) + '/' + matchQuestions.length + '</span>' +
+            badgeHtml(q.mucDo || 'NB') +
+            '<span class="q-timer" id="q-timer">' + Q_TIME_CAP + 's</span>' +
+          '</div>' +
+          (q.deBaiChung ? '<div class="q-context">' + fixLatexQuirks(q.deBaiChung) + '</div>' : '') +
+          (q.hinhAnh ? '<div class="q-img"><img src="' + q.hinhAnh + '" alt="Hình minh hoạ"></div>' : '') +
+          '<div class="q-text">' + fixLatexQuirks(q.question || q.cauHoi || '') + '</div>' +
+          '<div class="q-options" id="q-opts">' +
+            opts.map(function (o) {
+              return '<button class="q-opt" data-key="' + o.key + '" onclick="vlxtSoloAnswer(this)"><span class="opt-key">' + o.key + '</span><span>' + o.text + '</span></button>';
+            }).join('') +
+          '</div>' +
+          '<div class="q-feedback" id="q-feedback"></div>' +
+          '<button class="q-next" id="q-next" onclick="vlxtSoloNext()">Câu tiếp theo →</button>' +
+        '</div>' +
+      '</div>';
+
+    updateOppBar();
+    qStartTime = Date.now();
+    startQTimer(document.getElementById('q-timer'));
+    renderKatex(document.querySelector('.q-card'));
+  }
+
+  function lockOptions(correctKey) {
+    clearInterval(qTimerInterval);
+    var all = document.querySelectorAll('.q-opt');
+    all.forEach(function (o) { o.disabled = true; if (o.dataset.key === correctKey) o.classList.add('correct'); });
+  }
+
+  function submitAnswer(chosenKey) {
+    var q = matchQuestions[qIdx];
+    var seconds = Math.round((Date.now() - qStartTime) / 1000);
+    var correct = String(q.correct || '').toUpperCase().trim();
+    var isRight = chosenKey === correct;
+    lockOptions(correct);
+    if (chosenKey) {
+      var btn = document.querySelector('.q-opt[data-key="' + chosenKey + '"]');
+      if (btn && !isRight) btn.classList.add('wrong');
+    }
+    var fb = document.getElementById('q-feedback');
+    fb.style.display = 'block';
+    if (isRight) {
+      myProgress.correct++;
+      var earned = calcScore(q.mucDo || 'NB', seconds);
+      myProgress.score += earned;
+      fb.className = 'q-feedback correct';
+      fb.innerHTML = '✅ Đúng rồi! +' + earned + 'đ' + (q.giaiThich ? '<br><span style="color:var(--sub)">' + q.giaiThich + '</span>' : '');
+    } else {
+      fb.className = 'q-feedback wrong';
+      fb.innerHTML = (chosenKey ? '❌ Sai rồi.' : '⏱️ Hết giờ.') + ' Đáp án đúng là <strong>' + correct + '</strong>.' + (q.giaiThich ? '<br><span style="color:var(--sub)">' + q.giaiThich + '</span>' : '');
+    }
+    qIdx++;
+    myProgress.idx = qIdx;
+    if (!isBotMatch) db.ref('solo_matches/' + matchId + '/progress/' + mySdt).set(myProgress);
+    document.getElementById('q-next').style.display = 'block';
+  }
+
+  window.vlxtSoloAnswer = function (btn) { submitAnswer(btn.dataset.key); };
+  window.vlxtSoloNext = function () { renderBattleQuestion(); };
+  function autoFailQuestion() { submitAnswer(''); }
+
+  // ─── BOT simulation ─────────────────────────────────────────
+  function botAccuracy(tier, mucDo) {
+    var base = [0.35, 0.45, 0.58, 0.70, 0.82, 0.93][tier] || 0.5;
+    var penalty = { NB: 0, TH: 0.05, VD: 0.16, VDC: 0.26 }[mucDo] || 0.1;
+    return Math.max(0.05, Math.min(0.96, base - penalty));
+  }
+  function botAnswerSeconds(tier, mucDo) {
+    var mean = [30, 25, 21, 17, 13, 9][tier] || 20;
+    var add = { NB: 0, TH: 3, VD: 8, VDC: 14 }[mucDo] || 5;
+    var jitter = (Math.random() - 0.5) * (mean + add) * 0.5;
+    return Math.max(3, Math.round(mean + add + jitter));
+  }
+  function runBotMatch() {
+    var i = 0;
+    function step() {
+      if (i >= matchQuestions.length) { botProgress_finish(); return; }
+      var q = matchQuestions[i];
+      var secs = botAnswerSeconds(botTier, q.mucDo || 'NB');
+      var t = setTimeout(function () {
+        var isRight = Math.random() < botAccuracy(botTier, q.mucDo || 'NB');
+        if (isRight) { oppProgress.correct++; oppProgress.score += calcScore(q.mucDo || 'NB', secs); }
+        i++; oppProgress.idx = i;
+        updateOppBar();
+        checkBothFinished();
+        step();
+      }, Math.min(secs * 1000, 6000)); // rút ngắn thời gian chờ thật để trận đấu không quá dài
+      botStepTimeouts.push(t);
+    }
+    step();
+  }
+  function botProgress_finish() { oppProgress.finished = true; checkBothFinished(); }
+
+  // ─── Finish handling ────────────────────────────────────────
+  function finishMyProgress() {
+    myProgress.finished = true;
+    if (!isBotMatch) db.ref('solo_matches/' + matchId + '/progress/' + mySdt).set(myProgress);
+    if (checkBothFinished()) return;
+    arena.innerHTML =
+      '<div class="waiting-box">' +
+        '<div class="spinner"></div>' +
+        '<div style="font-weight:700;font-size:14px">Bạn đã xong! Đang chờ đối thủ hoàn thành…</div>' +
+        '<div style="color:var(--sub);font-size:12.5px;margin-top:6px">Điểm của bạn: ' + myProgress.score + 'đ (' + myProgress.correct + '/' + Q_PER_MATCH + ' câu đúng)</div>' +
+      '</div>';
+    forfeitTimer = setTimeout(function () { finalizeResult(); }, FORFEIT_MS);
+  }
+
+  function checkBothFinished() {
+    if (myProgress.finished && oppProgress.finished) {
+      clearTimeout(forfeitTimer);
+      finalizeResult();
+      return true;
+    }
+    return false;
+  }
+
+  function finalizeResult() {
+    state_isBattleScreen = false;
+    clearTimeout(forfeitTimer);
+    if (oppProgressListener && oppProgressRef) { oppProgressRef.off('value', oppProgressListener); oppProgressListener = null; }
+
+    var outcome;
+    if (myProgress.score === oppProgress.score && myProgress.correct === oppProgress.correct) outcome = 'draw';
+    else if (myProgress.score > oppProgress.score || (myProgress.score === oppProgress.score && myProgress.correct > oppProgress.correct)) outcome = 'win';
+    else outcome = 'lose';
+
+    var lpAward = outcome === 'win' ? LP_WIN : outcome === 'draw' ? LP_DRAW : LP_LOSE;
+    var titles = { win: '🏆 Chiến thắng!', draw: '🤝 Hoà!', lose: '💪 Thua rồi, cố lên!' };
+    var icons = { win: '🏆', draw: '🤝', lose: '📘' };
+    var subs = {
+      win: 'Bạn đã đánh bại ' + (opponent.isBot ? 'AI' : escHtml(opponent.hoten)) + '!',
+      draw: 'Cân tài cân sức với ' + (opponent.isBot ? 'AI' : escHtml(opponent.hoten)) + '.',
+      lose: (opponent.isBot ? 'AI' : escHtml(opponent.hoten)) + ' đã thắng lần này. Luyện thêm rồi đấu lại nhé!'
+    };
+
+    arena.innerHTML =
+      '<div class="result-screen">' +
+        '<div class="result-icon">' + icons[outcome] + '</div>' +
+        '<div class="result-banner ' + outcome + '">' + titles[outcome] + '</div>' +
+        '<div class="result-sub">' + subs[outcome] + '</div>' +
+        '<div class="cmp-table">' +
+          '<div class="me">' + myProgress.score + 'đ</div><div class="lbl">Điểm</div><div class="opp">' + oppProgress.score + 'đ</div>' +
+          '<div class="me">' + myProgress.correct + '/' + Q_PER_MATCH + '</div><div class="lbl">Đúng</div><div class="opp">' + oppProgress.correct + '/' + Q_PER_MATCH + '</div>' +
+        '</div>' +
+        '<div class="result-actions">' +
+          '<button class="btn-primary" id="btn-again">Đấu tiếp ⚔️</button>' +
+          '<a href="hoso.html" class="btn-secondary">Xem hồ sơ →</a>' +
+          '<a href="index.html" class="btn-secondary">Về trang chủ</a>' +
+        '</div>' +
+      '</div>';
+    document.getElementById('btn-again').onclick = function () { renderIdle(); };
+
+    if (typeof vlxtShowLPGain === 'function') vlxtShowLPGain(lpAward);
+    fetch(GAS, { method: 'POST', body: JSON.stringify({ action: 'savesoloresult', sdt: mySdt, diemCong: lpAward, ketQua: outcome }) })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        myLp = (res && typeof res.lpTotal === 'number') ? res.lpTotal : (myLp + lpAward);
+        if (res && res.rankUp && typeof vlxtShowRankUp === 'function') setTimeout(function () { vlxtShowRankUp(res.lpTotal); }, 900);
+      })
+      .catch(function () {});
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // BOOT
+  // ═══════════════════════════════════════════════════════════
+  window.addEventListener('beforeunload', function () { if (mySdt && db) db.ref('solo_queue/' + mySdt).remove(); });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
+    if (!user) { window.location.href = 'login.html?from=solo.html'; return; }
+    mySdt = normKey(user.sdt);
+    if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(user);
+    if (!initFirebase()) {
+      arena.innerHTML = '<div class="empty-box"><h3>Không kết nối được máy chủ realtime</h3><p>Thử tải lại trang nhé.</p></div>';
+      return;
+    }
+    fetch(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt) + '&_t=' + Date.now())
+      .then(function (r) { return r.json(); })
+      .then(function (profile) {
+        myLp = (profile && profile.ok && profile.user) ? (Number(profile.user.lpTotal) || 0) : (Number(user.lpTotal) || 0);
+        loadBank(function () {
+          if (!bank.length) {
+            arena.innerHTML = '<div class="empty-box"><h3>Chưa có câu hỏi</h3><p>Ngân hàng câu hỏi đang được bổ sung. Quay lại sau nhé!</p></div>';
+            return;
+          }
+          renderIdle();
+        });
+      })
+      .catch(function () {
+        myLp = Number(user.lpTotal) || 0;
+        loadBank(function () { if (bank.length) renderIdle(); });
+      });
+  });
+})();
+</script>
+<script src="hoat-dong.js?v=1"></script>
+</body>
+</html>
