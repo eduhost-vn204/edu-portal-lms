@@ -317,7 +317,7 @@
       teacherHtml +
       lessonHtml +
       '<div class="nv-chips">' + chamChip +
-        (streakToday ? '<span class="nv-chip ok">🔥 Đã hoàn thành hôm qua — Chuỗi ' + (Number(nv.chuoiDung) || 0) + ' ngày!</span>' : '') +
+        (streakToday ? '<span class="nv-chip ok">Đã hoàn thành hôm qua — ' + (typeof vlxtStreakFireHTML === 'function' ? vlxtStreakFireHTML(Number(nv.chuoiDung) || 0) : ('🔥 Chuỗi ' + (Number(nv.chuoiDung) || 0) + ' ngày')) + '!</span>' : '') +
       '</div>' +
       '<div class="nv-progress-wrap">' +
         '<div class="nv-progress-label"><span>Tiến độ XPS 2k9</span><span>' + pct + '%</span></div>' +
@@ -341,7 +341,7 @@
         '<div class="nv-sub" style="text-align:center">Em đã hoàn thành tốt nhiệm vụ hôm nay,<br>giờ là lúc leo Bảng Vàng!</div>' +
         '<div class="nv-chips" style="justify-content:center">' +
           '<span class="nv-chip ok">Tổng điểm Đua Top: ' + (nv.tongDiemDuaTop || 0) + ' LP</span>' +
-          (nv.chuoiDung ? '<span class="nv-chip">🔥 Chuỗi ' + Number(nv.chuoiDung) + ' ngày</span>' : '') +
+          (nv.chuoiDung ? '<span class="nv-chip">' + (typeof vlxtStreakFireHTML === 'function' ? vlxtStreakFireHTML(Number(nv.chuoiDung)) : ('🔥 Chuỗi ' + Number(nv.chuoiDung) + ' ngày')) + '</span>' : '') +
         '</div>' +
         '<div class="nv-btn-row" style="margin-top:18px">' +
           '<button class="nv-btn nv-btn-secondary" onclick="vlxtCloseNhiemVu()">Để sau</button>' +

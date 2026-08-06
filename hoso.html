@@ -6,6 +6,7 @@
   <title>Hồ Sơ Học Sinh | Vật Lý Xuân Trường</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script defer src="auth.js?v=7"></script>
+  <script src="xephang-fx.js?v=1"></script>
   <script defer src="thongbao.js?v=1"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
@@ -90,6 +91,7 @@
       flex-shrink: 0;
     }
     .rank-name { font-size: 18px; font-weight: 900; color: #92400e; }
+    .rank-sub { font-size: 12px; font-weight: 700; opacity: .7; margin-left: 2px; }
     .rank-lp { font-size: 13px; color: #b45309; margin-top: 2px; }
     @media (max-width: 540px) {
       .profile-card { flex-wrap: wrap; }
@@ -326,32 +328,11 @@
 <script>
 const GAS = 'https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec';
 
-// Rank tiers theo LP
-const RANKS = [
-  { name: '🔩 Sắt',     min: 0,    cls: 'rank-iron',    color: '#475569' },
-  { name: '🥉 Đồng',    min: 50,   cls: 'rank-bronze',  color: '#92400e' },
-  { name: '🥈 Bạc',     min: 150,  cls: 'rank-silver',  color: '#334155' },
-  { name: '🥇 Vàng',    min: 300,  cls: 'rank-gold',    color: '#b45309' },
-  { name: '💎 Bạch Kim',min: 600,  cls: 'rank-plat',    color: '#065f46' },
-  { name: '👑 Kim Cương',min: 1000, cls: 'rank-diamond', color: '#5b21b6' },
-];
-
-function getRank(lp) {
-  let r = RANKS[0];
-  for (const tier of RANKS) { if (lp >= tier.min) r = tier; }
-  return r;
-}
-
-function nextRank(lp) {
-  // BUG cũ: duyệt từ hạng CAO nhất xuống thấp và trả về ngay match đầu tiên
-  // → vì Kim Cương (min 1000) > lp hầu như luôn đúng nên luôn trả về Kim Cương,
-  // bất kể đang ở hạng nào (Bạc/Vàng đều bị đề xuất thẳng lên Kim Cương).
-  // Sửa: duyệt từ hạng THẤP nhất lên, trả về hạng liền kề tiếp theo đầu tiên vượt qua lp.
-  for (let i = 0; i < RANKS.length; i++) {
-    if (RANKS[i].min > lp) return RANKS[i];
-  }
-  return null; // đã đạt hạng cao nhất (Kim Cương)
-}
+// Rank tiers theo LP — nguồn DUY NHẤT giờ nằm ở xephang-fx.js (window.VLXT_RANKS),
+// dùng chung với baihoc.html/dua-top.html/nhiem-vu.js để tránh lệch mốc giữa các trang.
+const RANKS = VLXT_RANKS;
+function getRank(lp) { return vlxtGetRank(lp); }
+function nextRank(lp) { return vlxtNextRank(lp); }
 
 function formatDate(d) {
   if (!d) return '';
@@ -372,14 +353,15 @@ if (!user) {
 // Render ngay từ localStorage, không chờ GAS
 document.getElementById('loading').style.display = 'none';
 document.getElementById('content').style.display = 'block';
-renderPage({ ok: true, user: user, scores: [], tiendo: [] }, { ok: false, data: [] });
+renderPage({ ok: true, user: user, scores: [], tiendo: [] }, { ok: false, data: [] }, { ok: false, data: null });
 
 // Sau đó fetch GAS để cập nhật dữ liệu thực (async, không chặn render)
 Promise.all([
   fetch(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt) + '&_t=' + Date.now()).then(r => r.json()),
-  cachedFetch(GAS + '?type=leaderboard').then(r => r.json())
-]).then(([profile, lb]) => {
-  renderPage(profile, lb);
+  cachedFetch(GAS + '?type=leaderboard').then(r => r.json()),
+  fetch(GAS + '?type=nhiemvu&hs=' + encodeURIComponent(user.sdt) + '&_t=' + Date.now()).then(r => r.json()).catch(() => ({ ok: false, data: null }))
+]).then(([profile, lb, nvRes]) => {
+  renderPage(profile, lb, nvRes);
 }).catch(function() {});
 
 function vipInfo(u) {
@@ -400,7 +382,8 @@ function vipInfo(u) {
   return { label:'🆓 Miễn phí', color:'#6b7280', bg:'rgba(107,114,128,.08)', border:'rgba(107,114,128,.25)', note:'Nâng lên VIP để truy cập toàn bộ', countdown: '' };
 }
 
-function renderPage(profile, lb) {
+function renderPage(profile, lb, nvRes) {
+  const nv = (nvRes && nvRes.ok && nvRes.data) ? nvRes.data : null;
   const u = (profile.ok && profile.user) ? profile.user : user;
   const scores  = profile.scores  || [];
   const tiendo  = profile.tiendo  || [];
@@ -427,6 +410,7 @@ function renderPage(profile, lb) {
   const lp     = Number(u.lpTotal) || 0;
   const rank   = getRank(lp);
   const next   = nextRank(lp);
+  const subLabel = vlxtSubRank(lp);
   const initials = (u.hoten || 'HS').split(' ').map(w=>w[0]).slice(-2).join('').toUpperCase();
   const bestScore = scores.length ? Math.max(...scores.map(s => Number(s.diem) || 0)) : 0;
   const vip = vipInfo(u);
@@ -453,9 +437,10 @@ function renderPage(profile, lb) {
         <p>Lớp ${u.lop}${u.sdt && !String(u.sdt).includes('@') ? ' · ' + u.sdt : ''}</p>
         <div id="vlxt-bio-slot"></div>
         ${myRankPos > 0 ? `<p style="margin-top:4px;font-size:13px;color:var(--blue);font-weight:600;">🏆 Xếp hạng #${myRankPos} toàn khoá</p>` : ''}
+        ${nv && nv.chuoiDung > 0 ? `<p style="margin-top:4px;font-size:13px;">${vlxtStreakFireHTML(nv.chuoiDung)} chuỗi học liên tục</p>` : ''}
       </div>
       <div class="rank-badge">
-        <div class="rank-name">${rank.name}</div>
+        <div class="rank-name">${rank.name}${subLabel ? ` <span class="rank-sub">${subLabel}</span>` : ''}</div>
         <div class="rank-lp">${lp} LP${next ? ' / ' + next.min + ' lên ' + next.name : ' · Đỉnh!'}</div>
       </div>
     </div>

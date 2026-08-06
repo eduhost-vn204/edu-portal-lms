@@ -439,6 +439,7 @@
         }
 </style>
   <script src="auth.js?v=7"></script>
+  <script src="xephang-fx.js?v=1"></script>
   <script src="thongbao.js?v=1"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
@@ -851,7 +852,17 @@ function markWatched(key){
     const info=findLesson(key);
     const payload={action:'saveProgress',sdt:HS.sdt,ten:HS.ten,lop:HS.lop,khoa:info?info.course.name:'',lesson:key,ngay:new Date().toLocaleDateString('vi-VN')};
     fetch(APPS_SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
-        .then(r=>r.json()).then(()=>toast('<i class="fa-solid fa-circle-check"></i> Đã lưu tiến độ!','ok'))
+        .then(r=>r.json()).then(function(res){
+            toast('<i class="fa-solid fa-circle-check"></i> Đã lưu tiến độ!','ok');
+            // Hiệu ứng +LP / lên hạng khi đây là lần hoàn thành ĐẦU TIÊN của bài này
+            // (res.lpEarned chỉ >0 khi GAS xác nhận là lần đầu — xem saveProgress)
+            if(res && res.lpEarned > 0){
+                if(typeof vlxtShowLPGain === 'function') vlxtShowLPGain(res.lpEarned);
+                if(res.rankUp && typeof vlxtShowRankUp === 'function'){
+                    setTimeout(function(){ vlxtShowRankUp(res.lpTotal); }, 900);
+                }
+            }
+        })
         .catch(function(err){
             // KHÔNG báo "Đã lưu" giả khi POST thực sự lỗi (trước đây catch cũng báo thành công,
             // che mất lỗi mạng thật — HS tưởng đã lưu nhưng server chưa nhận được).
