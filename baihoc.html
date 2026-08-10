@@ -2599,9 +2599,32 @@ function vqSubmitShort(){
         if(inp){ inp.classList.add('result-correct'); inp.disabled=true; }
         _vqMarkCorrect(cp);
     } else {
-        if(inp) inp.classList.add('result-wrong');
-        _vqMarkWrong();
+        if(inp){ inp.classList.add('result-wrong'); inp.disabled=true; }
+        _vqWrong++;
+        _vqRevealShort(cp);
     }
+}
+/* Câu trả lời ngắn: nếu sai thì KHÔNG khoá học sinh lại vô thời hạn như mc/tf — vì kiểu
+   gõ tay dễ lệch định dạng (dấu phẩy/chấm, khoảng trắng, đơn vị...), bắt buộc đúng tuyệt
+   đối mới cho xem tiếp sẽ khiến nhiều em bị kẹt không qua nổi câu này. Thay vào đó: hiện
+   đáp án đúng rồi tự phát tiếp video để HS xem thầy chữa và tự đối chiếu. */
+function _vqRevealShort(cp){
+    _vqLock = true;
+    const foot = document.getElementById('vq-foot');
+    if(foot) foot.innerHTML = '<i class="fa-solid fa-circle-info" style="color:var(--red)"></i> <b style="color:var(--red)">Chưa đúng.</b>&nbsp;Đáp án đúng: <b>' + pqSafe((cp.correct||'').toString()) + '</b> — video tiếp tục để em xem thầy chữa nhé.';
+    _vqAnswered.add(_vqIdOf(cp));
+    _vqRemindedIds.add(_vqIdOf(cp));
+    try{ localStorage.setItem(_vqStoreKey(_vqKey), JSON.stringify(Array.from(_vqAnswered))); }catch(e){}
+    _vqLog(cp);
+    const doneAll = _vqData.every(c => _vqAnswered.has(_vqIdOf(c)));
+    setTimeout(function(){
+        _vqActive = -1;
+        const holder = document.getElementById('vq-holder');
+        if(holder) holder.innerHTML = '';
+        _vqToggleSideList(true);
+        try{ _ytPlayer.seekTo(cp.t, true); _ytPlayer.playVideo(); }catch(e){}
+        if(doneAll) toast('<i class="fa-solid fa-trophy"></i> Bạn đã hoàn thành hết câu hỏi trong video này!','ok');
+    }, 2200);
 }
 
 function _vqLog(cp){
