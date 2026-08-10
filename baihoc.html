@@ -2458,9 +2458,29 @@ window.vqContinueReminder = function(){
     // Nhảy đúng về mốc thời gian của câu này trước khi phát tiếp, để HS luôn xem lại
     // đúng đoạn thầy chữa câu đó từ đầu (không bị lệch do polling/pause không tuyệt đối chính xác).
     const cp = _vqData[_vqReminderIdx];
-    try{ if(cp) _ytPlayer.seekTo(cp.t, true); _ytPlayer.playVideo(); }catch(e){}
+    if(cp) _vqSeekAndPlay(cp.t);
     _vqReminderIdx = -1;
 };
+
+/* Gọi seekTo() ngay trước playVideo() đôi khi bị YouTube IFrame API "nuốt" (video
+   tiếp tục phát từ vị trí TRƯỚC khi seek thay vì nhảy tới mốc mong muốn) — gặp khi HS
+   tự tua xa (vd tua nhanh tới cuối để né chờ, xem trước câu hỏi) rồi seekTo lại đúng
+   mốc câu hỏi để phát tiếp: video không lùi về mà cứ phát tiếp ở chỗ vừa tua. Cách né:
+   tách seekTo và playVideo ra 2 bước có độ trễ nhỏ, rồi tự kiểm tra + seek lại 1 lần
+   nữa nếu vẫn còn lệch xa mốc sau khi phát. */
+function _vqSeekAndPlay(t){
+    if(typeof t !== 'number' || !_ytPlayer) return;
+    try{ _ytPlayer.seekTo(t, true); }catch(e){}
+    setTimeout(function(){
+        try{ _ytPlayer.playVideo(); }catch(e){}
+        setTimeout(function(){
+            try{
+                const cur = _ytPlayer.getCurrentTime();
+                if(Math.abs(cur - t) > 2){ _ytPlayer.seekTo(t, true); }
+            }catch(e){}
+        }, 500);
+    }, 150);
+}
 
 function _vqShow(i){
     _vqActive = i; _vqWrong = 0; _vqLock = false;
@@ -2537,7 +2557,7 @@ function _vqMarkCorrect(cp){
         // Nhảy đúng về mốc câu hỏi trước khi phát tiếp, đảm bảo HS luôn xem đoạn thầy
         // chữa câu đó từ đúng điểm bắt đầu (video có thể đã dừng hơi sớm/muộn vài trăm ms
         // do polling 500ms, seekTo đảm bảo luôn khớp chính xác mốc thầy đặt).
-        try{ _ytPlayer.seekTo(cp.t, true); _ytPlayer.playVideo(); }catch(e){}
+        _vqSeekAndPlay(cp.t);
         if(doneAll) toast('<i class="fa-solid fa-trophy"></i> Tuyệt vời! Bạn đã làm hết câu hỏi trong video này!','ok');
     }, 1600);
 }
@@ -2622,7 +2642,7 @@ function _vqRevealShort(cp){
         const holder = document.getElementById('vq-holder');
         if(holder) holder.innerHTML = '';
         _vqToggleSideList(true);
-        try{ _ytPlayer.seekTo(cp.t, true); _ytPlayer.playVideo(); }catch(e){}
+        _vqSeekAndPlay(cp.t);
         if(doneAll) toast('<i class="fa-solid fa-trophy"></i> Bạn đã hoàn thành hết câu hỏi trong video này!','ok');
     }, 2200);
 }
