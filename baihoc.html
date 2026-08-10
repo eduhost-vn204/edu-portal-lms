@@ -315,7 +315,7 @@
         .loading i { color:var(--blue); font-size:28px; }
         .empty i { font-size:40px; opacity:.4; margin-bottom:14px; }
         .notice { background:rgba(245,158,11,.08); border:1.5px solid rgba(245,158,11,.3); color:#92400e; border-radius:12px; padding:12px 16px; font-size:13.5px; margin-bottom:18px; line-height:1.6; }
-        .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(120px); background:#181c23; color:#fff; padding:12px 22px; border-radius:50px; font-weight:600; font-size:14px; box-shadow:0 8px 24px rgba(0,0,0,.35); transition:transform .3s; z-index:900; border:1.5px solid rgba(255,255,255,.14); }
+        .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(120px); background:var(--text); color:#fff; padding:12px 22px; border-radius:50px; font-weight:600; font-size:14px; box-shadow:0 8px 24px rgba(0,0,0,.15); transition:transform .3s; z-index:900; border:1.5px solid var(--line); }
         .toast.show { transform:translateX(-50%) translateY(0); }
         .toast.ok { border-color:var(--green); } .toast.err { border-color:var(--red); }
 
@@ -2458,29 +2458,9 @@ window.vqContinueReminder = function(){
     // Nhảy đúng về mốc thời gian của câu này trước khi phát tiếp, để HS luôn xem lại
     // đúng đoạn thầy chữa câu đó từ đầu (không bị lệch do polling/pause không tuyệt đối chính xác).
     const cp = _vqData[_vqReminderIdx];
-    if(cp) _vqSeekAndPlay(cp.t);
+    try{ if(cp) _ytPlayer.seekTo(cp.t, true); _ytPlayer.playVideo(); }catch(e){}
     _vqReminderIdx = -1;
 };
-
-/* Gọi seekTo() ngay trước playVideo() đôi khi bị YouTube IFrame API "nuốt" (video
-   tiếp tục phát từ vị trí TRƯỚC khi seek thay vì nhảy tới mốc mong muốn) — gặp khi HS
-   tự tua xa (vd tua nhanh tới cuối để né chờ, xem trước câu hỏi) rồi seekTo lại đúng
-   mốc câu hỏi để phát tiếp: video không lùi về mà cứ phát tiếp ở chỗ vừa tua. Cách né:
-   tách seekTo và playVideo ra 2 bước có độ trễ nhỏ, rồi tự kiểm tra + seek lại 1 lần
-   nữa nếu vẫn còn lệch xa mốc sau khi phát. */
-function _vqSeekAndPlay(t){
-    if(typeof t !== 'number' || !_ytPlayer) return;
-    try{ _ytPlayer.seekTo(t, true); }catch(e){}
-    setTimeout(function(){
-        try{ _ytPlayer.playVideo(); }catch(e){}
-        setTimeout(function(){
-            try{
-                const cur = _ytPlayer.getCurrentTime();
-                if(Math.abs(cur - t) > 2){ _ytPlayer.seekTo(t, true); }
-            }catch(e){}
-        }, 500);
-    }, 150);
-}
 
 function _vqShow(i){
     _vqActive = i; _vqWrong = 0; _vqLock = false;
@@ -2557,7 +2537,7 @@ function _vqMarkCorrect(cp){
         // Nhảy đúng về mốc câu hỏi trước khi phát tiếp, đảm bảo HS luôn xem đoạn thầy
         // chữa câu đó từ đúng điểm bắt đầu (video có thể đã dừng hơi sớm/muộn vài trăm ms
         // do polling 500ms, seekTo đảm bảo luôn khớp chính xác mốc thầy đặt).
-        _vqSeekAndPlay(cp.t);
+        try{ _ytPlayer.seekTo(cp.t, true); _ytPlayer.playVideo(); }catch(e){}
         if(doneAll) toast('<i class="fa-solid fa-trophy"></i> Tuyệt vời! Bạn đã làm hết câu hỏi trong video này!','ok');
     }, 1600);
 }
@@ -2619,32 +2599,9 @@ function vqSubmitShort(){
         if(inp){ inp.classList.add('result-correct'); inp.disabled=true; }
         _vqMarkCorrect(cp);
     } else {
-        if(inp){ inp.classList.add('result-wrong'); inp.disabled=true; }
-        _vqWrong++;
-        _vqRevealShort(cp);
+        if(inp) inp.classList.add('result-wrong');
+        _vqMarkWrong();
     }
-}
-/* Câu trả lời ngắn: nếu sai thì KHÔNG khoá học sinh lại vô thời hạn như mc/tf — vì kiểu
-   gõ tay dễ lệch định dạng (dấu phẩy/chấm, khoảng trắng, đơn vị...), bắt buộc đúng tuyệt
-   đối mới cho xem tiếp sẽ khiến nhiều em bị kẹt không qua nổi câu này. Thay vào đó: hiện
-   đáp án đúng rồi tự phát tiếp video để HS xem thầy chữa và tự đối chiếu. */
-function _vqRevealShort(cp){
-    _vqLock = true;
-    const foot = document.getElementById('vq-foot');
-    if(foot) foot.innerHTML = '<i class="fa-solid fa-circle-info" style="color:var(--red)"></i> <b style="color:var(--red)">Chưa đúng.</b>&nbsp;Đáp án đúng: <b>' + pqSafe((cp.correct||'').toString()) + '</b> — video tiếp tục để em xem thầy chữa nhé.';
-    _vqAnswered.add(_vqIdOf(cp));
-    _vqRemindedIds.add(_vqIdOf(cp));
-    try{ localStorage.setItem(_vqStoreKey(_vqKey), JSON.stringify(Array.from(_vqAnswered))); }catch(e){}
-    _vqLog(cp);
-    const doneAll = _vqData.every(c => _vqAnswered.has(_vqIdOf(c)));
-    setTimeout(function(){
-        _vqActive = -1;
-        const holder = document.getElementById('vq-holder');
-        if(holder) holder.innerHTML = '';
-        _vqToggleSideList(true);
-        _vqSeekAndPlay(cp.t);
-        if(doneAll) toast('<i class="fa-solid fa-trophy"></i> Bạn đã hoàn thành hết câu hỏi trong video này!','ok');
-    }, 2200);
 }
 
 function _vqLog(cp){
