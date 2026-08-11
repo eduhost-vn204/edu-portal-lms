@@ -1315,7 +1315,7 @@ function renderLesson(key){
     // Khởi động player theo loại video
     if(vtype==='youtube') initYTPlayer(vid, key);
     else if(vtype==='drive') initDrivePlayer(did, key);
-    else initNonePlayer(key); // Slide/PDF/text: auto-mark sau 30s
+    else initNonePlayer(key, lesson); // Slide/PDF/text: auto-mark sau 30s (chỉ khi đã có nội dung)
 }
 
 
@@ -1879,11 +1879,19 @@ function switchVideoTab(tabKey, silent){
     if(!wasActive && tabKey==='chuabai') toast('<i class="fa-solid fa-lightbulb"></i> Đã chuyển sang Video chữa bài ở trên ⬆','ok');
 }
 
-/* ── Non-video (slide/PDF/text): auto-mark sau 30 giây ── */
+/* ── Non-video (slide/PDF/text): auto-mark sau 30 giây ──
+   ⚠️ FIX 11/8/2026: chỉ tự động đánh dấu hoàn thành nếu bài THỰC SỰ có nội dung
+   thay thế video (PDF lý thuyết/bài tập/luyện tập hoặc video chữa bài/quiz).
+   Bài hoàn toàn trống (chưa có video VÀ chưa có bất kỳ nội dung nào — tức thầy
+   chưa kịp soạn/dạy, ví dụ badge "Sắp có") sẽ KHÔNG auto-complete nữa — trước đây
+   học sinh vào nhanh tới bài này rồi ngồi 30s là bị tính "Đã hoàn thành" dù
+   chưa học gì, làm sai lệch tiến độ. */
 let _noneTimer = null;
-function initNonePlayer(key){
+function initNonePlayer(key, lesson){
     if(_noneTimer){ clearTimeout(_noneTimer); _noneTimer = null; }
     if(WATCHED.has(key)) return;
+    const hasContent = !!(lesson && (lesson.pdf || lesson.pdflt || lesson.pdfluyentap || lesson.videogiai || (lesson.baitap && lesson.baitap.length > 0)));
+    if(!hasContent) return; // bài trống hoàn toàn (chưa dạy) — không tự hoàn thành
     _noneTimer = setTimeout(function(){
         onVideoComplete(key);
     }, 30 * 1000); // 30 giây
