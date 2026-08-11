@@ -639,6 +639,13 @@ function hsTracNghiemVideo(){
     try{ const u = JSON.parse(localStorage.getItem('vlxt_user_v2')||'null'); return !(u && u.tracNghiemVideo === false); }
     catch(e){ return true; }
 }
+// Miễn điều kiện Luyện tập trắc nghiệm — mặc định KHÔNG bật (chỉ thầy chủ động
+// tích ở Admin cho từng tài khoản). Khi bật: HS chỉ cần xem hết video là qua bài,
+// không cần đạt ≥90% Luyện tập trắc nghiệm nữa.
+function hsMienLuyenTap(){
+    try{ const u = JSON.parse(localStorage.getItem('vlxt_user_v2')||'null'); return !!(u && u.mienLuyenTap); }
+    catch(e){ return false; }
+}
 function saveIdentity(){
     const ten=$('#g-name').value.trim(), lop=$('#g-class').value.trim(), sdt=$('#g-phone').value.trim();
     if(!ten||!lop||!sdt){ $('#g-err').textContent='Vui lòng điền đầy đủ thông tin nhé!'; return; }
@@ -1243,9 +1250,11 @@ function renderLesson(key){
     const _hasRealVideo = (vtype==='youtube'||vtype==='drive');
     let _doneLabel;
     const _mienVideoHS = hsMienVideo(); // đã học live/đã đăng ký khoá -> miễn điều kiện xem video
+    const _mienLuyenTapHS = hsMienLuyenTap(); // thầy miễn ĐK luyện tập -> chỉ cần xem hết video là qua bài
     if(done) _doneLabel='Đã hoàn thành';
     else if(_mienVideoHS && _hasQuiz) _doneLabel='Làm đúng ≥90% bài tập luyện tập để hoàn thành';
     else if(_mienVideoHS) _doneLabel='Tự động hoàn thành (đã miễn điều kiện video)';
+    else if(_mienLuyenTapHS && _hasRealVideo) _doneLabel='Xem hết video để hoàn thành (đã miễn điều kiện luyện tập)';
     else if(_hasRealVideo && _hasQuiz) _doneLabel='Xem ≥90% video VÀ làm đúng ≥90% bài tập để hoàn thành';
     else if(_hasRealVideo) _doneLabel='Xem ≥90% video để hoàn thành';
     else if(_hasQuiz) _doneLabel='Làm đúng ≥90% bài tập luyện tập để hoàn thành';
@@ -1298,7 +1307,7 @@ function renderLesson(key){
     _lessonHasQuiz = !!(lesson.baitap && lesson.baitap.length > 0);
     _lessonQuizMinutes = lesson.thoigian || 0;
     _videoWatched90 = WATCHED.has(key) || hsMienVideo(); // đã hoàn thành trước, hoặc HS được miễn (đã học live) = tính là đã xem
-    _quizPassed90 = WATCHED.has(key) || !_lessonHasQuiz; // không có quiz thì coi như đạt sẵn
+    _quizPassed90 = WATCHED.has(key) || !_lessonHasQuiz || hsMienLuyenTap(); // không có quiz, hoặc HS được miễn ĐK luyện tập = coi như đạt sẵn
     loadVideoQuiz(key, vtype); // câu hỏi trong video (chỉ YouTube)
     // Đếm ngược thời gian làm bài (nếu thầy đặt giới hạn phút cho bài này)
     if(_lessonHasQuiz && _lessonQuizMinutes > 0 && !done) startQuizTimer(key, _lessonQuizMinutes);
@@ -1556,6 +1565,7 @@ async function renderLiveLesson(){
     const _hasQuiz = !!(lesson.baitap && lesson.baitap.length>0);
     let _doneLabel;
     if(done) _doneLabel='Đã hoàn thành';
+    else if(hsMienLuyenTap() && _hasQuiz) _doneLabel='Xem hết video để hoàn thành (đã miễn điều kiện luyện tập)';
     else if(_hasQuiz) _doneLabel='Làm đúng ≥90% bài tập luyện tập để hoàn thành';
     else _doneLabel='Tự động lưu sau 30 giây';
 
@@ -1614,7 +1624,7 @@ async function renderLiveLesson(){
     _lessonHasQuiz = _hasQuiz;
     _lessonQuizMinutes = lesson.thoigian || 0;
     _videoWatched90 = WATCHED.has(key) || hsMienVideo();
-    _quizPassed90 = WATCHED.has(key) || !_lessonHasQuiz;
+    _quizPassed90 = WATCHED.has(key) || !_lessonHasQuiz || hsMienLuyenTap();
     if(_lessonHasQuiz && _lessonQuizMinutes > 0 && !done) startQuizTimer(key, _lessonQuizMinutes);
     else clearQuizTimer();
 

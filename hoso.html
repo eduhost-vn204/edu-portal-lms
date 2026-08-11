@@ -353,15 +353,16 @@ if (!user) {
 // Render ngay từ localStorage, không chờ GAS
 document.getElementById('loading').style.display = 'none';
 document.getElementById('content').style.display = 'block';
-renderPage({ ok: true, user: user, scores: [], tiendo: [] }, { ok: false, data: [] }, { ok: false, data: null });
+renderPage({ ok: true, user: user, scores: [], tiendo: [] }, { ok: false, data: [] }, { ok: false, data: null }, []);
 
 // Sau đó fetch GAS để cập nhật dữ liệu thực (async, không chặn render)
 Promise.all([
   fetch(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt) + '&_t=' + Date.now()).then(r => r.json()),
   cachedFetch(GAS + '?type=leaderboard').then(r => r.json()),
-  fetch(GAS + '?type=nhiemvu&hs=' + encodeURIComponent(user.sdt) + '&_t=' + Date.now()).then(r => r.json()).catch(() => ({ ok: false, data: null }))
-]).then(([profile, lb, nvRes]) => {
-  renderPage(profile, lb, nvRes);
+  fetch(GAS + '?type=nhiemvu&hs=' + encodeURIComponent(user.sdt) + '&_t=' + Date.now()).then(r => r.json()).catch(() => ({ ok: false, data: null })),
+  cachedFetch(GAS + '?type=baihoc').then(r => r.json()).catch(() => [])
+]).then(([profile, lb, nvRes, baihocRows]) => {
+  renderPage(profile, lb, nvRes, baihocRows);
 }).catch(function() {});
 
 function vipInfo(u) {
@@ -382,7 +383,7 @@ function vipInfo(u) {
   return { label:'🆓 Miễn phí', color:'#6b7280', bg:'rgba(107,114,128,.08)', border:'rgba(107,114,128,.25)', note:'Nâng lên VIP để truy cập toàn bộ', countdown: '' };
 }
 
-function renderPage(profile, lb, nvRes) {
+function renderPage(profile, lb, nvRes, baihocRows) {
   const nv = (nvRes && nvRes.ok && nvRes.data) ? nvRes.data : null;
   const u = (profile.ok && profile.user) ? profile.user : user;
   const scores  = profile.scores  || [];
@@ -402,6 +403,34 @@ function renderPage(profile, lb, nvRes) {
     });
     tiendoSyncNote = '<div class="empty-msg" style="padding:6px 0 12px;font-size:12px;color:var(--sub,#8b949e)">💡 Đang đồng bộ với máy chủ: số liệu có thể cập nhật lại trong giây lát.</div>';
   }
+
+  // Tra ten bai hoc that su tu gia tri TienDo.lesson da luu — co the la MaBai on dinh
+  // (dang "B..." tu 6/8/2026) hoac key ghep cu "Khoa|||Chuong|||TenBai". CHI DOC du lieu
+  // BaiHoc da tai (baihocRows), KHONG ghi/sua bat ky du lieu nao — an toan, khong anh
+  // huong tien do/diem cua hoc sinh, chi sua CACH HIEN THI cho de doc hon.
+  const _lessonNameMap = new Map();
+  (Array.isArray(baihocRows) ? baihocRows : []).forEach(row => {
+    const mb = String(row.MaBai || row.mabai || '').trim();
+    const ten = String(row.TenBai || row.tenbai || row.title || row.ten || '').trim();
+    if (mb && ten) _lessonNameMap.set(mb, ten);
+  });
+  const _TKD_OLDKEYS = {
+    'B1036d251af19':'B1. Khai giảng GĐ1 + Cấu trúc của chất & Mô hình động học phân tử',
+    'B04e20f0ec67d':'B2. Lực liên kết và Sự chuyển thể của chất',
+    'Bfb85fde44802':'B3. Nhiệt độ – Thang nhiệt độ – Nhiệt kế',
+    'Bfc4552a2a3b2':'B4. Nhiệt dung riêng - Nóng chảy riêng - Hoá Hơi riêng',
+    'Be5b72ccf1261':'B5. Nội Năng – Định Luật I Nhiệt Động Lực Học',
+    'B04ff6fe289da':'Ngày 1: Ý NGHĨA CỦA ĐƠN VỊ TRONG VẬT LÝ'
+  };
+  function resolveLessonName(raw) {
+    const s = String(raw || '').trim();
+    if (!s) return '---';
+    if (_lessonNameMap.has(s)) return _lessonNameMap.get(s);
+    if (_TKD_OLDKEYS[s]) return _TKD_OLDKEYS[s];
+    if (s.includes('|||')) { const parts = s.split('|||'); return parts[parts.length - 1] || s; }
+    return s;
+  }
+  displayTiendo = displayTiendo.map(t => ({ ...t, lesson: resolveLessonName(t.lesson) }));
   // Lọc bớt các tài khoản test rõ ràng (vd "Test User", "Test Google") khỏi bảng xếp hạng
   // công khai — dữ liệu rác còn lại (tên vô nghĩa khác) cần thầy xoá thủ công trong Google Sheets
   // vì không có cách nhận diện an toàn 100% bằng code mà không lỡ ẩn học sinh thật.
