@@ -1040,7 +1040,7 @@ function renderCourse(name){
             const _blk = isLessonBlocked(c, l.key);
             const _locked = _blk.blocked;
             const _clickAttr = _locked
-                ? `toast('${_blk.reason==='empty'?'⏳ Bài này thầy chưa cập nhật xong. Em đã học kịp tiến độ rồi — qua Đua Top luyện tập thêm nhé! 🏆':'🔒 Hoàn thành bài trước để mở khoá bài này!'}','err')`
+                ? `toast('${_blk.reason==='empty'?'⏳ Em đã học kịp tiến độ rồi — qua Đua Top luyện tập thêm nhé! 🏆':'🔒 Hoàn thành bài trước để mở khoá bài này!'}','err')`
                 : `go('#lesson/${encodeURIComponent(l.key)}')`;
             h+=`<div class="lesson-row ${done?'watched':''} ${_locked?'is-locked':''}" onclick="${_clickAttr}">
                 <div class="lesson-ic"><i class="fa-solid ${done?'fa-circle-check':_locked?(_blk.reason==='empty'?'fa-clock':'fa-lock'):(noVideo?'fa-clock':'fa-play')}"></i></div>
@@ -1068,7 +1068,7 @@ function renderLesson(key){
     if(_blkCheck.blocked){
         const _isEmpty = _blkCheck.reason==='empty';
         const _msg = _isEmpty
-            ? 'Bài này thầy chưa cập nhật xong. Em đã học kịp tiến độ rồi — qua Đua Top luyện tập thêm trong lúc chờ nhé!'
+            ? 'Em đã học kịp tiến độ rồi — qua Đua Top luyện tập thêm trong lúc chờ nhé!'
             : 'Em cần hoàn thành bài trước để mở khoá bài này.';
         app().innerHTML=`<div class="empty">
             <i class="fa-solid ${_isEmpty?'fa-hourglass-half':'fa-lock'}" style="font-size:34px;opacity:.5"></i>
