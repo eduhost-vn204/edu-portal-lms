@@ -828,8 +828,18 @@ function findCourse(name){ return COURSES.find(c=>c.name===name); }
 function flatLessons(c){ const out=[]; c.chapters.forEach(ch=>ch.lessons.forEach(l=>out.push(Object.assign({chapter:ch.name},l)))); return out; }
 function findLesson(key){ for(const c of COURSES) for(const ch of c.chapters) for(const l of ch.lessons) if(l.key===key) return {course:c,chapter:ch,lesson:l}; return null; }
 
-// Chặn "học vượt": chỉ khoá khi bài TRƯỚC chưa hoàn thành — KHÔNG khoá vì bài này chưa có video,
-// để học sinh vẫn vào xem PDF lý thuyết/bài tập của nhiệm vụ hôm nay dù thầy chưa kịp thêm video.
+// Bài "trống" = chưa có video VÀ chưa có bất kỳ nội dung nào khác (PDF lý thuyết/bài tập/
+// luyện tập, video chữa bài, quiz) — tức thầy chưa kịp soạn/dạy, không phải chỉ thiếu video.
+function lessonHasContent(l){
+    return !!(l && (l.video || l.pdf || l.pdflt || l.pdfluyentap || l.videogiai || (l.baitap && l.baitap.length > 0)));
+}
+
+// Chặn "học vượt":
+// 1) Bài TRƯỚC chưa hoàn thành → khoá (reason 'sequence').
+// 2) Bài trống hoàn toàn (chưa cập nhật gì) → khoá luôn (reason 'empty'), hướng học sinh
+//    sang Đua Top luyện tập trong lúc chờ thầy soạn bài — SỬA 11/8/2026 (trước đây cố tình
+//    KHÔNG khoá để học sinh vào xem PDF/bài tập tạm thời, nhưng gây lỗi bài trống bị tự động
+//    tính "Đã hoàn thành" sau 30s — nay khoá hẳn cho đơn giản và đúng thực tế).
 // Đã xem rồi thì luôn được xem lại, không bao giờ khoá ngược.
 function isLessonBlocked(course, key){
     if(isTestAccount()) return {blocked:false}; // tài khoản test: luôn mở, không khoá thứ tự
@@ -837,6 +847,7 @@ function isLessonBlocked(course, key){
     const idx = flat.findIndex(l => l.key === key);
     if(idx < 0) return {blocked:false};
     if(WATCHED.has(key)) return {blocked:false};
+    if(!lessonHasContent(flat[idx])) return {blocked:true, reason:'empty'};
     if(idx > 0 && !WATCHED.has(flat[idx-1].key)) return {blocked:true, reason:'sequence'};
     return {blocked:false};
 }
@@ -1029,15 +1040,15 @@ function renderCourse(name){
             const _blk = isLessonBlocked(c, l.key);
             const _locked = _blk.blocked;
             const _clickAttr = _locked
-                ? `toast('${_blk.reason==='novideo'?'⏳ Video bài này chưa được cập nhật, thầy sẽ thêm sớm nhé!':'🔒 Hoàn thành bài trước để mở khoá bài này!'}','err')`
+                ? `toast('${_blk.reason==='empty'?'⏳ Bài này thầy chưa cập nhật xong. Em đã học kịp tiến độ rồi — qua Đua Top luyện tập thêm nhé! 🏆':'🔒 Hoàn thành bài trước để mở khoá bài này!'}','err')`
                 : `go('#lesson/${encodeURIComponent(l.key)}')`;
             h+=`<div class="lesson-row ${done?'watched':''} ${_locked?'is-locked':''}" onclick="${_clickAttr}">
-                <div class="lesson-ic"><i class="fa-solid ${done?'fa-circle-check':_locked?'fa-lock':(noVideo?'fa-clock':'fa-play')}"></i></div>
+                <div class="lesson-ic"><i class="fa-solid ${done?'fa-circle-check':_locked?(_blk.reason==='empty'?'fa-clock':'fa-lock'):(noVideo?'fa-clock':'fa-play')}"></i></div>
                 <div class="lesson-info">
                     <div class="lesson-name"><span class="lesson-session-num">Buổi ${sn}</span> ${esc(l.name)}${isNew?'<span class="badge-new">MỚI</span>':''}${noVideo?'<span class="badge-soon"><i class="fa-solid fa-clock" style="font-size:9px"></i> Sắp có</span>':''}${l.baitap&&l.baitap.length?'<span style="margin-left:6px;font-size:10.5px;background:rgba(11,132,243,.1);color:var(--blue);border-radius:10px;padding:2px 7px;font-weight:700"><i class="fa-solid fa-pen-to-square" style="font-size:9px"></i> Quiz</span>':''}</div>
                     ${l.date?`<div class="lesson-date"><i class="fa-regular fa-calendar"></i> ${esc(l.date)}</div>`:''}
                 </div>
-                <div class="lesson-status">${done?'✓ Đã xem':_locked?(_blk.reason==='novideo'?'Video sắp có':'🔒 Khoá'):'Chưa xem'}</div>
+                <div class="lesson-status">${done?'✓ Đã xem':_locked?(_blk.reason==='empty'?'Chưa cập nhật':'🔒 Khoá'):'Chưa xem'}</div>
             </div>`;
         });
         h+=`</div></div>`;
@@ -1055,14 +1066,17 @@ function renderLesson(key){
     // Chặn "học vượt" kể cả khi vào thẳng bằng link/hash — không chỉ chặn ở danh sách bài
     const _blkCheck = isLessonBlocked(course, key);
     if(_blkCheck.blocked){
-        const _msg = _blkCheck.reason==='novideo'
-            ? 'Video bài này chưa được thầy cập nhật, quay lại sau nhé!'
+        const _isEmpty = _blkCheck.reason==='empty';
+        const _msg = _isEmpty
+            ? 'Bài này thầy chưa cập nhật xong. Em đã học kịp tiến độ rồi — qua Đua Top luyện tập thêm trong lúc chờ nhé!'
             : 'Em cần hoàn thành bài trước để mở khoá bài này.';
         app().innerHTML=`<div class="empty">
-            <i class="fa-solid ${_blkCheck.reason==='novideo'?'fa-clock':'fa-lock'}" style="font-size:34px;opacity:.5"></i>
+            <i class="fa-solid ${_isEmpty?'fa-hourglass-half':'fa-lock'}" style="font-size:34px;opacity:.5"></i>
             <p style="margin-top:10px;font-weight:700">${esc(lesson.name)}</p>
             <p style="color:var(--sub)">${_msg}</p>
-            <p style="margin-top:10px"><a onclick="go('#course/${encodeURIComponent(course.name)}')">← Về danh sách bài học</a></p>
+            <p style="margin-top:14px">
+                ${_isEmpty?`<a onclick="window.location.href='dua-top.html'" style="cursor:pointer;font-weight:700;color:#fbbf24">🏆 Vào Đua Top</a>&nbsp;&nbsp;·&nbsp;&nbsp;`:''}<a onclick="go('#course/${encodeURIComponent(course.name)}')">← Về danh sách bài học</a>
+            </p>
         </div>`;
         return;
     }
