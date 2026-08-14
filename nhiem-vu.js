@@ -66,15 +66,30 @@
       .catch(function () { return watched; });
   }
 
-  function keyOf(l) {
+  // FIX 14/8: 2 loại "key" khác nhau cho 2 mục đích khác nhau — trước đây chỉ có 1 hàm
+  // keyOf() dùng key ghép chuỗi cũ (Khoa|||Chuong|||TenBai) cho MỌI việc, nên sau khi
+  // baihoc.html chuyển sang dùng MaBai (mã định danh ổn định, xem migration 6/8/2026),
+  // nhiem-vu.js không còn khớp được với dữ liệu tiến độ thật (TienDo.lesson lưu MaBai) →
+  // "Em học đến bài" luôn báo sai (kẹt ở bài rất cũ), % tiến độ sai, nút "Học ngay" mở
+  // link hỏng ("Không tìm thấy bài học") vì gửi key ghép chuỗi mà baihoc.html không nhận ra.
+  function legacyKeyOf(l) {
     return (l.KhoaHoc || '') + '|||' + (l.Chuong || '') + '|||' + (l.TenBai || '');
   }
+  // Key ỔN ĐỊNH — PHẢI khớp chính xác cách baihoc.html tính l.key (ưu tiên MaBai, xem
+  // buildCourses() trong baihoc.html): dùng để so khớp với TienDo/WATCHED và để build
+  // link "Học ngay". KHÔNG dùng để so với settings.currentTeachingLesson — admin panel
+  // (edu-portal-console) vẫn đang lưu currentTeachingLesson theo key ghép chuỗi cũ.
+  function stableKeyOf(l) {
+    var mb = (fieldOf(l, ['mabai']) || '').toString().trim();
+    return mb || legacyKeyOf(l);
+  }
 
-  // Vị trí trong XPS mà thầy đang dạy tới (khớp settings.currentTeachingLesson), -1 nếu chưa đặt
+  // Vị trí trong XPS mà thầy đang dạy tới (khớp settings.currentTeachingLesson — admin
+  // panel vẫn lưu theo key ghép chuỗi cũ, KHÔNG phải MaBai), -1 nếu chưa đặt
   function findTeacherIdx(xps, teachingKey) {
     if (!teachingKey) return -1;
     for (var i = 0; i < xps.length; i++) {
-      if (keyOf(xps[i]) === teachingKey) return i;
+      if (legacyKeyOf(xps[i]) === teachingKey) return i;
     }
     return -1;
   }
@@ -91,7 +106,7 @@
     // lai chưa sẵn sàng) thì vẫn bỏ qua, không chặn tiến độ.
     for (var i = 0; i < xps.length; i++) {
       var l = xps[i];
-      var key = keyOf(l);
+      var key = stableKeyOf(l);
       var hasVideo = !!(l.Video || l.video || l.link);
       if (!watched.has(key)) {
         if (hasVideo) return i;
@@ -353,7 +368,10 @@
 
   // ─── Banner sticky (sau khi tắt popup) ──────────────────
   function showMissionBanner(nv, xps) {
-    if (document.getElementById('vlxt-mission-banner')) return;
+    // FIX 14/8: trước đây chỉ "nếu đã có thì bỏ qua" — có tình huống hiếm bị tạo trùng
+    // (2 banner giống hệt nhau chồng lên nhau ở góc phải). Giờ luôn dọn sạch banner cũ
+    // trước khi tạo mới (idempotent) để đảm bảo tối đa 1 banner tồn tại trên trang.
+    document.querySelectorAll('#vlxt-mission-banner').forEach(function (el) { el.remove(); });
     injectCSS();
     var conTro  = Number(nv.conTro) || 0;
     var total   = xps ? xps.length : 0;
@@ -623,8 +641,9 @@
     var lesson = _state.xps[Number(_state.nv.conTro) || 0];
     if (!lesson) return;
     closeOverlay();
-    // Truyền đủ 3 phần: khoa + chuong + tenbai → baihoc.html tự scroll/mở đúng bài
-    var key = encodeURIComponent((lesson.KhoaHoc || '') + '|||' + (lesson.Chuong || '') + '|||' + (lesson.TenBai || ''));
+    // Dùng key ỔN ĐỊNH (ưu tiên MaBai) — khớp đúng với l.key trong baihoc.html, tránh
+    // lỗi "Không tìm thấy bài học" khi gửi key ghép chuỗi cũ mà bài đã có MaBai mới.
+    var key = encodeURIComponent(stableKeyOf(lesson));
     window.location.href = 'baihoc.html?openLesson=' + key;
   };
 
