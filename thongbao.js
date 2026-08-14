@@ -116,14 +116,24 @@
       }).catch(function () { return watched; });
   }
 
-  function keyOf(l) {
+  // FIX 14/8: y hệt bug + fix đã áp dụng trong nhiem-vu.js (xem memory
+  // project_nhiemvu-mabai-migration-140826) — file này có 1 bản SAO RIÊNG của cùng logic
+  // nên bị bỏ sót migration MaBai y hệt, khiến chuông thông báo vẫn hiện sai "Buổi 1/xx"
+  // dù trang Nhiệm vụ hôm nay đã báo đúng. legacyKeyOf = key ghép chuỗi cũ, CHỈ dùng để so
+  // khớp settings.currentTeachingLesson (admin panel chưa migrate). stableKeyOf ưu tiên
+  // MaBai, PHẢI khớp cách baihoc.html tính l.key — dùng để so khớp TienDo/watched.
+  function legacyKeyOf(l) {
     return (l.KhoaHoc || '') + '|||' + (l.Chuong || '') + '|||' + (l.TenBai || '');
+  }
+  function stableKeyOf(l) {
+    var mb = (fieldOf(l, ['mabai']) || '').toString().trim();
+    return mb || legacyKeyOf(l);
   }
 
   function findTeacherIdx(xps, teachingKey) {
     if (!teachingKey) return -1;
     for (var i = 0; i < xps.length; i++) {
-      if (keyOf(xps[i]) === teachingKey) return i;
+      if (legacyKeyOf(xps[i]) === teachingKey) return i;
     }
     return -1;
   }
@@ -134,7 +144,7 @@
   function computeRealConTro(xps, watched, teacherIdx) {
     for (var i = 0; i < xps.length; i++) {
       var l = xps[i];
-      var key = keyOf(l);
+      var key = stableKeyOf(l);
       var hasVideo = !!(l.Video || l.video || l.link);
       if (!watched.has(key)) {
         if (hasVideo) return i;
