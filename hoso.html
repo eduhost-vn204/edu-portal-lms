@@ -432,7 +432,7 @@ setInterval(function(){
   cachedFetch(GAS + '?type=leaderboard').then(r => r.json()).then(function(lb){
     refreshLeaderboardOnly(normalizeLbData(lb));
   }).catch(function(){});
-}, 15000);
+}, 5000);
 
 function renderPage(profile, lb, nvRes, baihocRows) {
   const nv = (nvRes && nvRes.ok && nvRes.data) ? nvRes.data : null;

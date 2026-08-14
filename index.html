@@ -1028,7 +1028,7 @@ function vlxtOpenNhiemVuFromHome(){
     window.addEventListener('vlxt:data-updated', function(e){
         if (e.detail && e.detail.type === 'leaderboard') renderLb(e.detail.data);
     });
-    setInterval(loadLb, 15000);
+    setInterval(loadLb, 5000);
 })();
 
 // ─── LỊCH LIVE (TikTok) + LỊCH HỌC loader (chỉ hiện trong tuần hiện tại: Thứ 2 → Chủ Nhật) ───
