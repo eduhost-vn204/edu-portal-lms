@@ -21,7 +21,7 @@
   var MAX_STALE_MS = 86400000; // 24 gio: qua han nay thi PHAI cho du lieu moi
 
   // Rieng vai loai du lieu can "gan nhu tuc thi" (da co auto-refresh backend)
-  var FRESH_MS_OVERRIDE = { lichlive: 8000 };
+  var FRESH_MS_OVERRIDE = { lichlive: 8000, leaderboard: 15000 };
 
   // 'lichlive' KHONG dung file tinh nua: GitHub Pages CDN (Fastly) co the
   // mat vai phut de cap nhat file tinh sau moi lan deploy, ngoai tam kiem

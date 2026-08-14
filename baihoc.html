@@ -1320,6 +1320,7 @@ function renderLesson(key){
     _lessonCurrentKey = key;
     _lessonHasQuiz = !!(lesson.baitap && lesson.baitap.length > 0);
     _lessonQuizMinutes = lesson.thoigian || 0;
+    setupQuizAutosave(key, lesson);
     _videoWatched90 = WATCHED.has(key) || hsMienVideo(); // đã hoàn thành trước, hoặc HS được miễn (đã học live) = tính là đã xem
     _quizPassed90 = WATCHED.has(key) || !_lessonHasQuiz || hsMienLuyenTap(); // không có quiz, hoặc HS được miễn ĐK luyện tập = coi như đạt sẵn
     loadVideoQuiz(key, vtype); // câu hỏi trong video (chỉ YouTube)
@@ -1637,6 +1638,7 @@ async function renderLiveLesson(){
     _lessonCurrentKey = key;
     _lessonHasQuiz = _hasQuiz;
     _lessonQuizMinutes = lesson.thoigian || 0;
+    setupQuizAutosave(key, lesson);
     _videoWatched90 = WATCHED.has(key) || hsMienVideo();
     _quizPassed90 = WATCHED.has(key) || !_lessonHasQuiz || hsMienLuyenTap();
     if(_lessonHasQuiz && _lessonQuizMinutes > 0 && !done) startQuizTimer(key, _lessonQuizMinutes);
@@ -1828,6 +1830,86 @@ function lvSpawnFlyingHeart(){
 let _lessonCurrentKey = null;
 let _lessonHasQuiz = false;
 let _lessonQuizMinutes = 0;
+
+/* ── FIX 14/8: tự lưu tạm câu đang làm dở trong "Luyện tập trắc nghiệm" khi bài
+   KHÔNG đặt giới hạn thời gian VÀ có > 20 câu (đề dài) — học sinh out/thoát giữa
+   chừng, quay lại làm tiếp thay vì phải làm lại từ đầu. Chỉ lưu trong máy học
+   sinh (localStorage), không đụng tới điểm/dữ liệu trên Google Sheets. Xoá khi
+   bấm "Kiểm tra đáp án" (đã nộp xong) hoặc "Làm lại". ──*/
+function _quizProgressKey(key){ return 'vlxt_quiz_progress_' + key; }
+function shouldAutosaveQuiz(lesson){
+    return !(Number(lesson && lesson.thoigian) > 0) && !!(lesson && lesson.baitap && lesson.baitap.length > 20);
+}
+function saveQuizProgressNow(key, qs){
+    const answers = {};
+    qs.forEach((q,qi)=>{
+        const qType=(q.type==='tf'||q.type==='short')?q.type:'mc';
+        if(qType==='tf'){
+            const val={};
+            ['A','B','C','D'].forEach(L=>{
+                const sel=document.querySelector(`input[name="pq${qi}_${L}"]:checked`);
+                if(sel) val[L]=sel.value;
+            });
+            if(Object.keys(val).length) answers[qi]=val;
+        } else if(qType==='short'){
+            const inp=document.getElementById(`pq-${qi}-input`);
+            if(inp && inp.value.trim()) answers[qi]=inp.value;
+        } else {
+            const sel=document.querySelector(`input[name="pq${qi}"]:checked`);
+            if(sel) answers[qi]=sel.value;
+        }
+    });
+    try{ localStorage.setItem(_quizProgressKey(key), JSON.stringify({ t: Date.now(), answers: answers })); }catch(e){}
+}
+function restoreQuizProgress(key, qs){
+    let saved=null;
+    try{ saved=JSON.parse(localStorage.getItem(_quizProgressKey(key))||'null'); }catch(e){}
+    if(!saved || !saved.answers) return;
+    let restoredCount=0;
+    qs.forEach((q,qi)=>{
+        const a=saved.answers[qi];
+        if(a===undefined || a===null) return;
+        const qType=(q.type==='tf'||q.type==='short')?q.type:'mc';
+        if(qType==='tf'){
+            Object.keys(a).forEach(L=>{
+                const r=document.querySelector(`input[name="pq${qi}_${L}"][value="${a[L]}"]`);
+                if(r){ r.checked=true; restoredCount++; }
+            });
+        } else if(qType==='short'){
+            const inp=document.getElementById(`pq-${qi}-input`);
+            if(inp){ inp.value=a; restoredCount++; }
+        } else {
+            const r=document.querySelector(`input[name="pq${qi}"][value="${a}"]`);
+            if(r){ r.checked=true; restoredCount++; }
+        }
+    });
+    if(restoredCount>0 && typeof toast==='function'){
+        toast('<i class="fa-solid fa-clock-rotate-left"></i> Đã khôi phục bài làm dở lần trước, em làm tiếp nhé!','ok');
+    }
+}
+function clearQuizProgress(key){
+    if(!key) return;
+    try{ localStorage.removeItem(_quizProgressKey(key)); }catch(e){}
+}
+let _quizAutosaveHandler = null;
+function setupQuizAutosave(key, lesson){
+    // Gỡ listener của bài trước (nếu có) tránh chồng nhiều listener khi chuyển bài
+    if(_quizAutosaveHandler){
+        document.removeEventListener('change', _quizAutosaveHandler);
+        document.removeEventListener('input', _quizAutosaveHandler);
+        _quizAutosaveHandler = null;
+    }
+    if(!shouldAutosaveQuiz(lesson)) return;
+    const qs = lesson.baitap;
+    restoreQuizProgress(key, qs);
+    _quizAutosaveHandler = function(e){
+        if(!e.target || !e.target.matches) return;
+        if(!e.target.matches('.pq-opt input[type=radio], .pq-tf-row input[type=radio], .pq-short-input')) return;
+        saveQuizProgressNow(key, qs);
+    };
+    document.addEventListener('change', _quizAutosaveHandler);
+    document.addEventListener('input', _quizAutosaveHandler);
+}
 let _videoWatched90 = false; // true khi đã xem ≥90% video (hoặc bài không có video)
 let _quizPassed90 = false;   // true khi làm đúng ≥90% bài tập luyện tập (hoặc bài không có quiz)
 
@@ -2905,6 +2987,7 @@ function checkPractice(key,force){
     // để nhắc ôn trước khi sang bài tiếp — xem goNextLessonWithReview().
     if(wrongThisAttempt.length) addWrongQIndices(_lessonCurrentKey, wrongThisAttempt);
     if(answered<qs.length && !force){ toast('<i class="fa-solid fa-triangle-exclamation"></i> Hãy trả lời đủ các câu nhé!','err'); return; }
+    clearQuizProgress(_lessonCurrentKey);
     // Đã kiểm tra xong (dù đúng hay sai) → mở khoá Video chữa bài luyện tập cho bài này.
     // (Không gọi toast() ở đây — dồn hết thông báo vào 1 toast cuối cùng bên dưới vì
     // toast() dùng chung 1 khối UI, gọi nhiều lần liên tiếp thì chỉ lần cuối hiện ra.)
@@ -2971,6 +3054,7 @@ function scrollToQuiz(){
 }
 
 function resetPractice(){
+    clearQuizProgress(_lessonCurrentKey);
     document.querySelectorAll('.pq-opt').forEach(o=>{ o.classList.remove('result-correct','result-wrong'); o.querySelector('.pq-tag')?.remove(); });
     document.querySelectorAll('.pq-opt input[type=radio]').forEach(r=>r.checked=false);
     document.querySelectorAll('.pq-tf-row').forEach(o=>o.classList.remove('result-correct','result-wrong'));

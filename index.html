@@ -1002,18 +1002,33 @@ function vlxtOpenNhiemVuFromHome(){
     const box = document.getElementById('lb-list');
     if (!box) return;
     const fetcher = (typeof cachedFetch === 'function') ? cachedFetch : fetch;
-    fetcher(GAS + '?type=leaderboard')
-        .then(r => r.json())
-        .then(res => {
-            const data = (res && Array.isArray(res.data)) ? res.data : (Array.isArray(res) ? res : []);
-            if (!data.length) { box.innerHTML = '<div style="text-align:center;color:var(--gray2);font-size:13px;padding:16px">Chưa có kết quả nào.</div>'; return; }
-            box.innerHTML = data.slice(0,5).map((r,i) => `
+
+    function renderLb(res){
+        const data = (res && Array.isArray(res.data)) ? res.data : (Array.isArray(res) ? res : []);
+        if (!data.length) { box.innerHTML = '<div style="text-align:center;color:var(--gray2);font-size:13px;padding:16px">Chưa có kết quả nào.</div>'; return; }
+        box.innerHTML = data.slice(0,5).map((r,i) => `
                 <div class="panel-card-row" style="display:flex;justify-content:space-between;align-items:center;">
                     <span style="font-size:13px;color:var(--gray)"><span style="font-weight:700;color:var(--blue);margin-right:6px">${i+1}.</span>${r.hoten||'Ẩn danh'}</span>
                     <span class="row-badge" style="background:rgba(11,132,243,.1);color:var(--blue)">${r.lpTotal||0} LP</span>
                 </div>`).join('');
-        })
-        .catch(() => { box.innerHTML = '<div style="text-align:center;color:var(--gray2);font-size:13px;padding:16px">Không thể tải bảng vàng.</div>'; });
+    }
+
+    function loadLb(){
+        fetcher(GAS + '?type=leaderboard')
+            .then(r => r.json())
+            .then(renderLb)
+            .catch(() => { box.innerHTML = '<div style="text-align:center;color:var(--gray2);font-size:13px;padding:16px">Không thể tải bảng vàng.</div>'; });
+    }
+    loadLb();
+
+    // FIX 14/8: trang chủ và trang cá nhân trước đây mỗi trang chỉ tải bảng vàng 1 lần lúc mở,
+    // nên nếu 1 trang mở lâu còn trang kia mới mở/tải lại thì số LP hiện lệch nhau (không đồng bộ).
+    // Giờ tự lắng nghe sự kiện cache.js phát ra khi có dữ liệu mới (vẽ lại ngay không cần reload)
+    // + tự tải lại định kỳ mỗi 15s để luôn khớp với trang cá nhân.
+    window.addEventListener('vlxt:data-updated', function(e){
+        if (e.detail && e.detail.type === 'leaderboard') renderLb(e.detail.data);
+    });
+    setInterval(loadLb, 15000);
 })();
 
 // ─── LỊCH LIVE (TikTok) + LỊCH HỌC loader (chỉ hiện trong tuần hiện tại: Thứ 2 → Chủ Nhật) ───

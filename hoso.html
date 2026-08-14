@@ -383,6 +383,57 @@ function vipInfo(u) {
   return { label:'🆓 Miễn phí', color:'#6b7280', bg:'rgba(107,114,128,.08)', border:'rgba(107,114,128,.25)', note:'Nâng lên VIP để truy cập toàn bộ', countdown: '' };
 }
 
+// FIX 14/8: trang chủ (index.html) và trang cá nhân trước đây mỗi trang chỉ tải bảng
+// xếp hạng 1 lần lúc mở, nên nếu 1 trang mở lâu còn trang kia mới mở/tải lại thì số LP
+// hiện lệch nhau (không đồng bộ). Tách phần HTML của bảng xếp hạng ra hàm riêng để có thể
+// vẽ lại RIÊNG phần này (không phải render lại cả trang, tránh mất tab/scroll đang xem) mỗi
+// khi cache.js phát hiện dữ liệu mới, hoặc theo chu kỳ 15s — khớp với cơ chế bên index.html.
+let _lbLastUser = null;
+function normalizeLbData(lb) {
+  return ((lb && lb.ok && lb.data) ? lb.data : []).filter(r => !/^test\b/i.test((r.hoten || '').trim()));
+}
+function lbSectionHTML(lbData, u) {
+  return `
+        <div class="rank-info-row">
+          ${RANKS.map(r => `<span class="rank-chip ${r.cls}">${r.name} ≥${r.min} LP</span>`).join('')}
+        </div>
+        <div class="section-head">🏆 Top ${lbData.length} học sinh (LP cao nhất)</div>
+        <div>
+          ${lbData.length === 0
+            ? '<div class="empty-msg">Chưa có dữ liệu xếp hạng.</div>'
+            : lbData.map((row, i) => {
+                const rankCls = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
+                const medal   = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1;
+                const isMe    = (row.hoten === u.hoten && row.lop === u.lop);
+                return `
+                <div class="lb-row ${isMe ? 'me' : ''}">
+                  <div class="lb-rank ${rankCls}">${medal}</div>
+                  <div style="flex:1">
+                    <div class="lb-name">${row.hoten} ${isMe ? '<span style="color:var(--blue);font-size:12px">(bạn)</span>' : ''}</div>
+                    <div class="lb-class">${row.lop}</div>
+                  </div>
+                  <div style="text-align:right">
+                    <div class="lb-lp">${row.lpTotal}</div>
+                    <div class="lb-lp-lbl">LP</div>
+                  </div>
+                </div>`;
+              }).join('')
+          }
+        </div>`;
+}
+function refreshLeaderboardOnly(lbData) {
+  const el = document.getElementById('lb-section');
+  if (el && _lbLastUser) el.innerHTML = lbSectionHTML(lbData, _lbLastUser);
+}
+window.addEventListener('vlxt:data-updated', function(e){
+  if (e.detail && e.detail.type === 'leaderboard') refreshLeaderboardOnly(normalizeLbData(e.detail.data));
+});
+setInterval(function(){
+  cachedFetch(GAS + '?type=leaderboard').then(r => r.json()).then(function(lb){
+    refreshLeaderboardOnly(normalizeLbData(lb));
+  }).catch(function(){});
+}, 15000);
+
 function renderPage(profile, lb, nvRes, baihocRows) {
   const nv = (nvRes && nvRes.ok && nvRes.data) ? nvRes.data : null;
   const u = (profile.ok && profile.user) ? profile.user : user;
@@ -434,7 +485,8 @@ function renderPage(profile, lb, nvRes, baihocRows) {
   // Lọc bớt các tài khoản test rõ ràng (vd "Test User", "Test Google") khỏi bảng xếp hạng
   // công khai — dữ liệu rác còn lại (tên vô nghĩa khác) cần thầy xoá thủ công trong Google Sheets
   // vì không có cách nhận diện an toàn 100% bằng code mà không lỡ ẩn học sinh thật.
-  const lbData  = ((lb.ok && lb.data) ? lb.data : []).filter(r => !/^test\b/i.test((r.hoten || '').trim()));
+  const lbData  = normalizeLbData(lb);
+  _lbLastUser = u;
 
   const lp     = Number(u.lpTotal) || 0;
   const rank   = getRank(lp);
@@ -543,33 +595,8 @@ function renderPage(profile, lb, nvRes, baihocRows) {
 
     <!-- Tab: Bảng xếp hạng -->
     <div class="tab-panel" id="tab-lb">
-      <div class="section-card">
-        <div class="rank-info-row">
-          ${RANKS.map(r => `<span class="rank-chip ${r.cls}">${r.name} ≥${r.min} LP</span>`).join('')}
-        </div>
-        <div class="section-head">🏆 Top ${lbData.length} học sinh (LP cao nhất)</div>
-        <div>
-          ${lbData.length === 0
-            ? '<div class="empty-msg">Chưa có dữ liệu xếp hạng.</div>'
-            : lbData.map((row, i) => {
-                const rankCls = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
-                const medal   = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1;
-                const isMe    = (row.hoten === u.hoten && row.lop === u.lop);
-                return `
-                <div class="lb-row ${isMe ? 'me' : ''}">
-                  <div class="lb-rank ${rankCls}">${medal}</div>
-                  <div style="flex:1">
-                    <div class="lb-name">${row.hoten} ${isMe ? '<span style="color:var(--blue);font-size:12px">(bạn)</span>' : ''}</div>
-                    <div class="lb-class">${row.lop}</div>
-                  </div>
-                  <div style="text-align:right">
-                    <div class="lb-lp">${row.lpTotal}</div>
-                    <div class="lb-lp-lbl">LP</div>
-                  </div>
-                </div>`;
-              }).join('')
-          }
-        </div>
+      <div class="section-card" id="lb-section">
+        ${lbSectionHTML(lbData, u)}
       </div>
     </div>
 
