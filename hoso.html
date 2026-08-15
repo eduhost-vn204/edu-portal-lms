@@ -341,6 +341,12 @@ function formatDate(d) {
   return dt.toLocaleDateString('vi-VN', { day:'2-digit', month:'2-digit', year:'numeric' });
 }
 
+// FIX 15/8: _lbLastUser phải khai báo TRƯỚC lệnh gọi renderPage() đầu tiên bên dưới
+// (chạy ngay từ localStorage khi load trang) — nếu không sẽ rơi vào temporal dead zone
+// và ném lỗi "Cannot access '_lbLastUser' before initialization", làm hỏng toàn bộ script
+// phía sau khiến trang hồ sơ hiện đen thui không có gì (bug từ lần fix 14/8).
+let _lbLastUser = null;
+
 // Require auth
 const user = (function() {
   try { return JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null'); } catch { return null; }
@@ -383,12 +389,6 @@ function vipInfo(u) {
   return { label:'🆓 Miễn phí', color:'#6b7280', bg:'rgba(107,114,128,.08)', border:'rgba(107,114,128,.25)', note:'Nâng lên VIP để truy cập toàn bộ', countdown: '' };
 }
 
-// FIX 14/8: trang chủ (index.html) và trang cá nhân trước đây mỗi trang chỉ tải bảng
-// xếp hạng 1 lần lúc mở, nên nếu 1 trang mở lâu còn trang kia mới mở/tải lại thì số LP
-// hiện lệch nhau (không đồng bộ). Tách phần HTML của bảng xếp hạng ra hàm riêng để có thể
-// vẽ lại RIÊNG phần này (không phải render lại cả trang, tránh mất tab/scroll đang xem) mỗi
-// khi cache.js phát hiện dữ liệu mới, hoặc theo chu kỳ 15s — khớp với cơ chế bên index.html.
-let _lbLastUser = null;
 function normalizeLbData(lb) {
   return ((lb && lb.ok && lb.data) ? lb.data : []).filter(r => !/^test\b/i.test((r.hoten || '').trim()));
 }
