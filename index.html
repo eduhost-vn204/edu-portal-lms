@@ -1106,6 +1106,7 @@ function vlxtOpenNhiemVuFromHome(){
 })();
 </script>
 
+<script src="huongdan-popup.js?v=1"></script>
 <!-- ═══ WELCOME MODAL ═══ -->
 <div id="vlxt-welcome-modal" style="display:none;position:fixed;inset:0;z-index:999999;background:rgba(0,0,20,0.85);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
   <div style="background:linear-gradient(135deg,#0d1117,#0d1b2a);border:1.5px solid rgba(0,240,255,0.3);border-radius:20px;padding:36px 32px 28px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,114,255,0.3);position:relative;">
@@ -1116,7 +1117,7 @@ function vlxtOpenNhiemVuFromHome(){
       <div style="font-size:11px;color:#8b949e;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px">Thời gian dùng thử còn lại</div>
       <div id="vlxt-countdown-val" style="font-size:26px;font-weight:800;color:#00f0ff;font-variant-numeric:tabular-nums">7 ngày 00:00:00</div>
     </div>
-    <button onclick="document.getElementById('vlxt-welcome-modal').style.display='none'" style="background:#0b84f3;color:#fff;border:none;border-radius:10px;padding:12px 32px;font-size:15px;font-weight:700;cursor:pointer;width:100%">Bắt đầu học ngay 🚀</button>
+    <button onclick="document.getElementById('vlxt-welcome-modal').style.display='none'; if(typeof vlxtAutoShowGuide==='function') vlxtAutoShowGuide('signup');" style="background:#0b84f3;color:#fff;border:none;border-radius:10px;padding:12px 32px;font-size:15px;font-weight:700;cursor:pointer;width:100%">Bắt đầu học ngay 🚀</button>
   </div>
 </div>
 <script>

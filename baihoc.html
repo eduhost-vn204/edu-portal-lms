@@ -912,8 +912,8 @@ function route(){
     const nh=$('#nav-home'); if(nh) nh.classList.toggle('active',h==='#home'||h==='');
     if(h.startsWith('#course/')) renderCourse(h.slice(8));
     else if(h.startsWith('#lesson/')) renderLesson(h.slice(8));
-    else if(h==='#live') renderLiveLesson();
-    else renderHome();
+    else if(h==='#live'){ renderLiveLesson(); if(typeof vlxtAutoShowGuide==='function') vlxtAutoShowGuide('live'); }
+    else { renderHome(); if(typeof vlxtAutoShowGuide==='function') vlxtAutoShowGuide('baihoc'); }
     window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -3332,5 +3332,6 @@ const DEMO_ROWS = [
 window.addEventListener('DOMContentLoaded', init);
 </script>
 <script src="hoat-dong.js?v=1"></script>
+<script src="huongdan-popup.js?v=1"></script>
 </body>
 </html>
