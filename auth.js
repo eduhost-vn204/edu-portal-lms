@@ -121,7 +121,7 @@ function vlxtRenderWidget(user){
     +'<a href="danhsach-ly12.html" class="vlxt-nav-link">📝 Đề thi</a>'
     +'<a href="trochoi.html" class="vlxt-nav-link">🎮 Tr\xf2 chơi</a>'
     +'<a href="hoso.html" class="vlxt-nav-link">👤 Hồ sơ & Xếp hạng</a>'
-    /* TAM AN 7/8/2026: Dua Top dang phat trien them -- +'<a href="dua-top.html" class="vlxt-nav-link" style="color:#fbbf24;font-weight:700">🏆 Đua Top</a>' */
+    +'<a href="dua-top.html" class="vlxt-nav-link" style="color:#fbbf24;font-weight:700">🏆 Đua Top</a>' 
     +'</div><hr class="vlxt-divider">'
     +'<button class="vlxt-logout-btn" onclick="vlxtLogout()">↩ Đăng xuất</button>'
     +'</div>';
