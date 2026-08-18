@@ -1,5 +1,5 @@
 /* ============================================================
-   cache.js v4 - Toc do TUC THI cho web Vat Ly Xuan Truong (mien phi)
+   cache.js v5 - Toc do TUC THI cho web Vat Ly Xuan Truong (mien phi)
    (A) stale-while-revalidate: mo trang HIEN NGAY du lieu lan truoc
        (localStorage, 0 giay), dong thoi tai moi ngam de lan sau dung.
    (B) uu tien JSON tinh tren GitHub Pages (~50ms) thay cho goi GAS (~1.6s)
@@ -114,4 +114,80 @@
         .forEach(function (k) { localStorage.removeItem(k); });
     } catch (e) {}
   };
+
+  /* Menu dieu huong cho dien thoai. Tu dong lay cac muc da co tren thanh menu
+     cua tung trang, nen cac trang van dung chung mot giao dien va khong anh
+     huong den menu tren may tinh. */
+  function setupMobileMenu() {
+    var linksBox = document.querySelector('.nav-links') || document.querySelector('header .nav');
+    if (!linksBox || document.getElementById('vlxt-mobile-menu')) return;
+
+    var bar = linksBox.closest('header, nav');
+    if (!bar) return;
+    /* Các trang đã có drawer riêng (bản GitHub mới nhất) giữ nguyên giao diện đó. */
+    if (bar.querySelector('.nav-hamburger')) return;
+
+    var menu = document.createElement('aside');
+    menu.id = 'vlxt-mobile-menu';
+    menu.className = 'vlxt-mobile-menu';
+    menu.setAttribute('aria-hidden', 'true');
+    menu.innerHTML = '<div class="vlxt-mobile-menu__head"><strong>Điều hướng</strong><button type="button" class="vlxt-mobile-menu__close" aria-label="Đóng menu"><i class="fa-solid fa-xmark"></i></button></div><nav class="vlxt-mobile-menu__links"></nav>';
+
+    var menuLinks = menu.querySelector('.vlxt-mobile-menu__links');
+    var hasHome = false;
+    Array.prototype.forEach.call(linksBox.querySelectorAll('a[href]'), function (link) {
+      var item = link.cloneNode(true);
+      if ((item.getAttribute('href') || '').indexOf('index.html') === 0) hasHome = true;
+      menuLinks.appendChild(item);
+    });
+    if (!hasHome) {
+      var home = document.createElement('a');
+      home.href = 'index.html';
+      home.innerHTML = '<i class="fa-solid fa-house"></i> Trang chủ';
+      menuLinks.insertBefore(home, menuLinks.firstChild);
+    }
+
+    var overlay = document.createElement('button');
+    overlay.type = 'button';
+    overlay.className = 'vlxt-mobile-menu__overlay';
+    overlay.setAttribute('aria-label', 'Đóng menu');
+
+    var trigger = document.createElement('button');
+    trigger.type = 'button';
+    trigger.className = 'vlxt-mobile-menu__trigger';
+    trigger.setAttribute('aria-label', 'Mở menu điều hướng');
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.innerHTML = '<i class="fa-solid fa-bars"></i>';
+
+    var right = bar.querySelector(':scope > .nav-right');
+    if (right) bar.insertBefore(trigger, right); else bar.appendChild(trigger);
+    document.body.appendChild(overlay);
+    document.body.appendChild(menu);
+
+    function closeMenu() {
+      menu.classList.remove('is-open'); overlay.classList.remove('is-open');
+      menu.setAttribute('aria-hidden', 'true'); trigger.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('vlxt-menu-open');
+    }
+    function openMenu() {
+      menu.classList.add('is-open'); overlay.classList.add('is-open');
+      menu.setAttribute('aria-hidden', 'false'); trigger.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('vlxt-menu-open'); menu.querySelector('a, button').focus();
+    }
+    trigger.addEventListener('click', function () { menu.classList.contains('is-open') ? closeMenu() : openMenu(); });
+    overlay.addEventListener('click', closeMenu);
+    menu.querySelector('.vlxt-mobile-menu__close').addEventListener('click', closeMenu);
+    menuLinks.addEventListener('click', function (event) { if (event.target.closest('a')) closeMenu(); });
+    document.addEventListener('keydown', function (event) { if (event.key === 'Escape') closeMenu(); });
+  }
+
+  function addMobileMenuStyles() {
+    var style = document.createElement('style');
+    style.textContent = '.vlxt-mobile-menu__trigger,.vlxt-mobile-menu,.vlxt-mobile-menu__overlay{display:none}@media(max-width:760px){body.vlxt-menu-open{overflow:hidden}.navbar .nav-links,header .nav{display:none!important}.vlxt-mobile-menu__trigger{display:inline-flex!important;align-items:center;justify-content:center;width:40px;height:40px;flex:0 0 40px;padding:0;border:1px solid #e2e8f0;border-radius:10px;background:#fff;color:#1f2937;font-size:18px;cursor:pointer}.dark .vlxt-mobile-menu__trigger,body.dark .vlxt-mobile-menu__trigger{background:#161b22;color:#e6edf3;border-color:#30363d}.vlxt-mobile-menu__overlay{position:fixed;inset:0;z-index:900;background:rgba(15,23,42,.45);border:0;opacity:0;transition:opacity .22s}.vlxt-mobile-menu__overlay.is-open{display:block;opacity:1}.vlxt-mobile-menu{display:block;position:fixed;top:0;left:0;bottom:0;z-index:901;width:min(82vw,330px);padding:18px 16px;background:#fff;color:#111827;box-shadow:12px 0 36px rgba(15,23,42,.22);transform:translateX(-105%);transition:transform .24s ease;overflow-y:auto}.vlxt-mobile-menu.is-open{transform:translateX(0)}body.dark .vlxt-mobile-menu,.dark .vlxt-mobile-menu{background:#0d1117;color:#e6edf3}.vlxt-mobile-menu__head{display:flex;align-items:center;justify-content:space-between;padding:2px 4px 16px;border-bottom:1px solid #e5e7eb;font-size:17px}.dark .vlxt-mobile-menu__head,body.dark .vlxt-mobile-menu__head{border-color:#30363d}.vlxt-mobile-menu__close{width:36px;height:36px;border:0;border-radius:9px;background:#f1f5f9;color:#334155;font-size:20px;cursor:pointer}.dark .vlxt-mobile-menu__close,body.dark .vlxt-mobile-menu__close{background:#21262d;color:#e6edf3}.vlxt-mobile-menu__links{display:flex!important;flex-direction:column!important;gap:4px!important;padding-top:14px}.vlxt-mobile-menu__links a{display:flex!important;align-items:center;gap:11px;min-height:46px;padding:11px 12px!important;border-radius:9px!important;color:#334155!important;background:transparent!important;font-size:15px!important;font-weight:650!important;text-decoration:none!important}.vlxt-mobile-menu__links a.active,.vlxt-mobile-menu__links a:hover{color:#0b84f3!important;background:rgba(11,132,243,.10)!important}.dark .vlxt-mobile-menu__links a,body.dark .vlxt-mobile-menu__links a{color:#c9d1d9!important}.navbar .nav-left{min-width:0}.navbar .nav-right{gap:8px!important}.navbar .nav-right .nav-btn{display:none!important}}';
+    document.head.appendChild(style);
+  }
+
+  addMobileMenuStyles();
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setupMobileMenu);
+  else setupMobileMenu();
 })();
