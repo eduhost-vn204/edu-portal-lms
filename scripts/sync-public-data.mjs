@@ -1,5 +1,6 @@
-import { mkdir, readdir, rm, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { buildQuizGrouping } from './quiz-merge.mjs';
 
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec';
 const root = path.resolve(import.meta.dirname, '..');
@@ -44,6 +45,26 @@ async function writeJson(file, value) {
   await writeFile(file, `${JSON.stringify(value)}\n`, 'utf8');
 }
 
+async function readJsonSafe(file) {
+  try { return JSON.parse(await readFile(file, 'utf8')); }
+  catch { return null; }
+}
+
+// Khong ghi mang RONG de de len 1 file JSON dang co du lieu that (vd sheet
+// tra ve tam thoi rong do loi GAS/thao tac giua chung). Neu file cu KHONG co
+// hoac cung dang rong thi van cho ghi (lan dau chay / du lieu thuc su rong).
+async function writeJsonGuarded(file, value, label) {
+  if (Array.isArray(value) && value.length === 0) {
+    const old = await readJsonSafe(file);
+    const oldLen = Array.isArray(old) ? old.length : (old && typeof old === 'object' ? Object.keys(old).length : 0);
+    if (oldLen > 0) {
+      console.warn(`⚠️  ${label}: nguồn trả về RỖNG (0 dòng) — GIỮ NGUYÊN file cũ (${oldLen} mục) để tránh làm trống trang thật.`);
+      return;
+    }
+  }
+  await writeJson(file, value);
+}
+
 const [lessonData, configData, quizData, liveData, examData, settingsData, guideData] = await Promise.all([
   fetchJson('baihoc'),
   fetchJson('khoaconfig'),
@@ -64,64 +85,57 @@ if (!lessons.length) throw new Error('Không nhận được dữ liệu BaiHoc;
 
 await mkdir(quizDir, { recursive: true });
 await writeJson(path.join(dataDir, 'baihoc.json'), lessons);
-await writeJson(path.join(dataDir, 'khoaconfig.json'), configs);
-await writeJson(path.join(dataDir, 'lichlive.json'), liveRows);
-await writeJson(path.join(dataDir, 'danhsachde.json'), exams);
+// khoaconfig/lichlive/danhsachde CO THE hop le rong tam thoi (vd chua co lich
+// live tuan nay) nhung neu truoc do dang co du lieu that thi rong dot ngot
+// nhieu kha nang la loi nguon, khong phai that su rong - giu file cu, canh bao.
+await writeJsonGuarded(path.join(dataDir, 'khoaconfig.json'), configs, 'khoaconfig');
+await writeJsonGuarded(path.join(dataDir, 'lichlive.json'), liveRows, 'lichlive');
+await writeJsonGuarded(path.join(dataDir, 'danhsachde.json'), exams, 'danhsachde');
 if (settingsData) await writeJson(path.join(dataDir, 'settings.json'), settingsData);
 if (guideData) await writeJson(path.join(dataDir, 'huongdan.json'), guideData);
 
 const examRows = rowsOf(examData, ['data', 'danhsachde']);
 
-if (quizData) {
-const grouped = new Map();
-const normalize = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '');
-const lessonAliases = new Map();
-const stableLessonKeys = new Set();
-for (const lesson of lessons) {
-  const stableKey = String(lesson?.MaBai || '').trim();
-  if (!stableKey) continue;
-  stableLessonKeys.add(stableKey);
-  const legacyKey = [lesson.KhoaHoc, lesson.Chuong, lesson.TenBai].map(normalize).join('|');
-  lessonAliases.set(legacyKey, stableKey);
-}
-// Neu MaBai moi da co du lieu, do la nguon chuan. Khong tron them cac dong
-// baiKey kieu cu (KhoaHoc|||Chuong|||TenBai), neu khong se cong don 30+20=50.
-const stableKeysWithRows = new Set(quizRows
-  .map(row => String(row?.baiKey || '').trim())
-  .filter(key => stableLessonKeys.has(key)));
-for (const row of quizRows) {
-  const rawKey = String(row?.baiKey || '').trim();
-  let key = rawKey;
-  if (!key) continue;
-  if (key.includes('|||')) {
-    const legacyKey = key.split('|||').map(normalize).join('|');
-    const mappedKey = lessonAliases.get(legacyKey);
-    if (mappedKey && stableKeysWithRows.has(mappedKey)) continue;
-    key = mappedKey || key;
-  }
-  if (!grouped.has(key)) grouped.set(key, []);
-  grouped.get(key).push(row);
-}
+// FIX 19/8: truoc day, neu quizData KHAC null nhung quizRows rong (0 dong -
+// vi du GAS tra ve mang rong do loi tam thoi, KHONG phai do fetchOptional bat
+// loi mang), code cu van chay tiep vao khoi duoi va XOA SACH toan bo file
+// quiz-*.json + ghi quiz-index.json rong - lam MAT toan bo cau hoi luyen tap
+// dang hien co tren web hoc sinh dù nguon that su khong loi han. Gio coi
+// truong hop nay GIONG HET fetch that bai: bo qua, giu nguyen file cu.
+if (quizData && quizRows.length === 0) {
+  console.warn('⚠️  baitaptracnghiem: nguồn trả về RỖNG (0 dòng) — GIỮ NGUYÊN toàn bộ file quiz-*.json và quiz-index.json cũ, KHÔNG xoá.');
+} else if (quizData) {
+  const { grouped, warnings } = buildQuizGrouping(lessons, quizRows);
 
-const index = { lessons: {} };
-const expectedFiles = new Set();
-const buildVersion = Date.now().toString(36);
-let sequence = 1;
-for (const key of [...grouped.keys()].sort((a, b) => a.localeCompare(b, 'vi'))) {
-  const rows = grouped.get(key).sort((a, b) => (Number(a.thuTu) || 0) - (Number(b.thuTu) || 0));
-  const fileName = `quiz-${String(sequence).padStart(4, '0')}.json`;
-  sequence += 1;
-  expectedFiles.add(fileName);
-  index.lessons[key] = { file: `data/quizzes/${fileName}?v=${buildVersion}`, count: rows.length };
-  await writeJson(path.join(quizDir, fileName), rows);
-}
-
-for (const fileName of await readdir(quizDir)) {
-  if (/^quiz-\d+\.json$/.test(fileName) && !expectedFiles.has(fileName)) {
-    await rm(path.join(quizDir, fileName));
+  if (warnings.length) {
+    console.warn(`⚠️  Phát hiện ${warnings.length} cảnh báo khi gộp câu hỏi luyện tập:`);
+    for (const w of warnings) console.warn('   -', JSON.stringify(w));
+    await writeJson(path.join(dataDir, 'quiz-warnings.json'), { generatedAt: new Date().toISOString(), warnings });
+  } else {
+    // Khong con canh bao nao -> xoa file canh bao cu (neu co) de khong con lai
+    // thong tin loi thoi.
+    await rm(path.join(dataDir, 'quiz-warnings.json'), { force: true });
   }
-}
-await writeJson(path.join(dataDir, 'quiz-index.json'), index);
+
+  const index = { lessons: {} };
+  const expectedFiles = new Set();
+  const buildVersion = Date.now().toString(36);
+  let sequence = 1;
+  for (const key of [...grouped.keys()].sort((a, b) => a.localeCompare(b, 'vi'))) {
+    const rows = grouped.get(key).sort((a, b) => (Number(a.thuTu) || 0) - (Number(b.thuTu) || 0));
+    const fileName = `quiz-${String(sequence).padStart(4, '0')}.json`;
+    sequence += 1;
+    expectedFiles.add(fileName);
+    index.lessons[key] = { file: `data/quizzes/${fileName}?v=${buildVersion}`, count: rows.length };
+    await writeJson(path.join(quizDir, fileName), rows);
+  }
+
+  for (const fileName of await readdir(quizDir)) {
+    if (/^quiz-\d+\.json$/.test(fileName) && !expectedFiles.has(fileName)) {
+      await rm(path.join(quizDir, fileName));
+    }
+  }
+  await writeJson(path.join(dataDir, 'quiz-index.json'), index);
 }
 
 console.log(`Đã đồng bộ ${lessons.length} bài học, ${configs.length} cấu hình, ${quizRows.length} câu hỏi, ${liveRows.length} lịch live và ${examRows.length} đề.`);
