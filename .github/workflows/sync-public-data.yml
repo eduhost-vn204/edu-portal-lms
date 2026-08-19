@@ -1,0 +1,42 @@
+name: Đồng bộ dữ liệu học tập
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/15 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/sync-public-data.mjs'
+      - '.github/workflows/sync-public-data.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-public-data
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Đọc Google Sheets và tạo JSON tĩnh
+        run: node scripts/sync-public-data.mjs
+      - name: Chỉ commit khi dữ liệu thay đổi
+        shell: bash
+        run: |
+          if git diff --quiet -- data; then
+            echo "Dữ liệu không thay đổi."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          git commit -m "data: đồng bộ Google Sheets"
+          git push

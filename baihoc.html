@@ -658,60 +658,66 @@ function renderWho(){ const w=$('#who'); if(w) w.innerHTML=HS?`<i class="fa-soli
 /* ═══════════════════════════════════════════
    TẢI DỮ LIỆU
 ═══════════════════════════════════════════ */
-const _LC_KEY='vlxt_lessons_cache', _LC_TTL=5*60*1000; // 5 phút: đủ nhanh cho reload, đủ tươi cho BaiTap mới
+const _LC_KEY='vlxt_lessons_cache', _LC_TTL=7*24*60*60*1000;
 function _lcSave(rows){ try{ localStorage.setItem(_LC_KEY,JSON.stringify({ts:Date.now(),rows})); }catch(e){} }
 function _lcLoad(){ try{ const c=JSON.parse(localStorage.getItem(_LC_KEY)||'null'); if(c&&Date.now()-c.ts<_LC_TTL) return c.rows; }catch(e){} return null; }
 function _lcClear(){ try{ localStorage.removeItem(_LC_KEY); }catch(e){} }
+async function fetchJsonTimeout(url, timeoutMs, options){
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),timeoutMs||4000);
+    try{
+        const r=await fetch(url,Object.assign({},options||{},{signal:controller.signal}));
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        return await r.json();
+    }finally{ clearTimeout(timer); }
+}
 async function _fetchFromSheets(){
-    // Dùng fetch() trực tiếp (KHÔNG qua cachedFetch) để luôn lấy BaiTap từ GAS
-    const r=await fetch(APPS_SCRIPT_URL+'?type=baihoc&t='+Date.now());
-    const data=await r.json();
+    const data=await fetchJsonTimeout(APPS_SCRIPT_URL+'?type=baihoc',8000);
     const rows=Array.isArray(data)?data:(data.baihoc||data.data||[]);
     return rows.filter(x=>field(x,['khoahoc','khoa','course','mon']).toString().trim());
 }
 async function fetchLessons(){
     const cached=_lcLoad();
-    if(cached){ USING_DEMO=false; _fetchFromSheets().then(rows=>{ if(rows.length) _lcSave(rows); }).catch(()=>{}); return cached; }
+    try{
+        const data=await fetchJsonTimeout('data/baihoc.json',3000,{cache:'no-cache'});
+        const valid=(Array.isArray(data)?data:(data.baihoc||data.data||[]))
+            .filter(x=>field(x,['khoahoc','khoa','course','mon']).toString().trim());
+        if(valid.length){ USING_DEMO=false; _lcSave(valid); return valid; }
+    }catch(e){ console.warn('Chưa tải được JSON bài học:',e); }
+    if(cached){ USING_DEMO=false; return cached; }
     try{
         const valid=await _fetchFromSheets();
         if(valid.length){ USING_DEMO=false; _lcSave(valid); return valid; }
-    }catch(e){ console.warn('Chưa kết nối Sheets:',e); }
+    }catch(e){ console.warn('GAS bài học không phản hồi:',e); }
     USING_DEMO=true; return DEMO_ROWS;
 }
 
-// Luyện tập trắc nghiệm giờ lưu ở sheet riêng BaiTapTracNghiem (1 hàng/câu, không còn
-// giới hạn 50.000 ký tự/ô của cột BaiHoc.BaiTap) — xem project_quiz-3loai-docxengine-reuse.
-// Tải 1 lần toàn bộ sheet này song song với fetchLessons() rồi ghi đè lesson.baitap theo
-// từng bài (chỉ ghi đè khi sheet CÓ dữ liệu cho bài đó — bài cũ chưa từng lưu lại bằng
-// bản mới vẫn giữ nguyên baitap đã đọc được từ cột BaiTap cũ, không bị mất dữ liệu).
-async function fetchQbAll(){
-    try{
-        const r = await fetch(APPS_SCRIPT_URL + '?type=baitaptracnghiem&t=' + Date.now());
-        const data = await r.json();
-        return Array.isArray(data) ? data : (data.baitaptracnghiem || data.data || []);
-    }catch(e){ console.warn('Chưa tải được sheet BaiTapTracNghiem:', e); return []; }
+// Chỉ tải câu hỏi của đúng bài đang mở. Danh sách khóa học không còn phải chờ
+// toàn bộ sheet BaiTapTracNghiem như trước.
+let QUIZ_INDEX={lessons:{}};
+async function fetchQuizIndex(){
+    try{ QUIZ_INDEX=await fetchJsonTimeout('data/quiz-index.json',3000,{cache:'no-cache'}); }
+    catch(e){ QUIZ_INDEX={lessons:{}}; console.warn('Chưa tải được chỉ mục bài tập:',e); }
 }
-function applyQbOverrides(courses, qbRows){
-    if(!qbRows || !qbRows.length) return;
-    const byKey = {};
-    qbRows.forEach(rw=>{
-        const k = String(rw && rw.baiKey || '');
-        if(!k) return;
-        (byKey[k] = byKey[k] || []).push(rw);
-    });
-    courses.forEach(c => c.chapters.forEach(ch => ch.lessons.forEach(l => {
-        const items = byKey[l.key];
-        if(!items || !items.length) return;
-        items.sort((a,b) => (Number(a.thuTu)||0) - (Number(b.thuTu)||0));
-        l.baitap = items.map(rw => ({
+function mapQuizRows(rows){
+    return (rows||[]).sort((a,b)=>(Number(a.thuTu)||0)-(Number(b.thuTu)||0)).map(rw=>({
             type: (rw.type==='tf'||rw.type==='short') ? rw.type : 'mc',
             q: (rw.question||'').toString(),
             A: (rw.optA||'').toString(), B: (rw.optB||'').toString(),
             C: (rw.optC||'').toString(), D: (rw.optD||'').toString(),
             ans: String(rw.correct||'').toUpperCase().trim(),
             correct: (rw.correct||'').toString()
-        }));
-    })));
+    }));
+}
+async function loadLessonQuiz(key,lesson){
+    if(lesson._quizLoaded) return;
+    const meta=QUIZ_INDEX&&QUIZ_INDEX.lessons&&QUIZ_INDEX.lessons[key];
+    if(!meta){ lesson._quizLoaded=true; return; }
+    try{
+        const rows=await fetchJsonTimeout(meta.file,4000,{cache:'no-cache'});
+        lesson.baitap=mapQuizRows(Array.isArray(rows)?rows:[]);
+    }catch(e){ console.warn('Chưa tải được bài tập của bài '+key+':',e); }
+    lesson._quizLoaded=true;
 }
 
 async function fetchProgress(){
@@ -831,7 +837,7 @@ function findLesson(key){ for(const c of COURSES) for(const ch of c.chapters) fo
 // Bài "trống" = chưa có video VÀ chưa có bất kỳ nội dung nào khác (PDF lý thuyết/bài tập/
 // luyện tập, video chữa bài, quiz) — tức thầy chưa kịp soạn/dạy, không phải chỉ thiếu video.
 function lessonHasContent(l){
-    return !!(l && (l.video || l.pdf || l.pdflt || l.pdfluyentap || l.videogiai || (l.baitap && l.baitap.length > 0)));
+    return !!(l && (l.video || l.pdf || l.pdflt || l.pdfluyentap || l.videogiai || (l.baitap && l.baitap.length > 0) || Number(l._quizCount)>0));
 }
 
 // Chặn "học vượt":
@@ -855,6 +861,36 @@ function isLessonBlocked(course, key){
 /* ═══════════════════════════════════════════
    ĐÁNH DẤU ĐÃ HỌC
 ═══════════════════════════════════════════ */
+const _PROGRESS_QUEUE_KEY='vlxt_progress_queue_v1';
+let _progressSyncing=false;
+function readProgressQueue(){ try{ return JSON.parse(localStorage.getItem(_PROGRESS_QUEUE_KEY)||'[]'); }catch(e){ return []; } }
+function writeProgressQueue(items){ try{ localStorage.setItem(_PROGRESS_QUEUE_KEY,JSON.stringify(items)); }catch(e){} }
+function queueProgress(payload){
+    const items=readProgressQueue().filter(x=>!(x.sdt===payload.sdt&&x.lesson===payload.lesson));
+    items.push(payload); writeProgressQueue(items);
+}
+function handleProgressResponse(res){
+    if(res&&res.lpEarned>0){
+        if(typeof vlxtShowLPGain==='function') vlxtShowLPGain(res.lpEarned);
+        if(res.rankUp&&typeof vlxtShowRankUp==='function') setTimeout(()=>vlxtShowRankUp(res.lpTotal),900);
+    }
+}
+async function syncPendingProgress(showSuccess){
+    if(_progressSyncing||!navigator.onLine) return;
+    _progressSyncing=true;
+    try{
+        let items=readProgressQueue();
+        while(items.length){
+            const payload=items[0];
+            const res=await fetchJsonTimeout(APPS_SCRIPT_URL,30000,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+            handleProgressResponse(res);
+            items.shift(); writeProgressQueue(items);
+        }
+        if(showSuccess) toast('<i class="fa-solid fa-cloud-arrow-up"></i> Đã đồng bộ tiến độ!','ok');
+    }catch(e){ console.warn('Tiến độ đang chờ đồng bộ:',e); setTimeout(()=>syncPendingProgress(false),30000); }
+    finally{ _progressSyncing=false; }
+}
+window.addEventListener('online',()=>syncPendingProgress(false));
 function markWatched(key){
     if(WATCHED.has(key)) return;
     WATCHED.add(key);
@@ -869,24 +905,9 @@ function markWatched(key){
     if(USING_DEMO){ localStorage.setItem('vlxt_demo_watched',JSON.stringify([...WATCHED])); toast('<i class="fa-solid fa-circle-check"></i> Đã lưu (chế độ demo)','ok'); return; }
     const info=findLesson(key);
     const payload={action:'saveProgress',sdt:HS.sdt,ten:HS.ten,lop:HS.lop,khoa:info?info.course.name:'',lesson:key,ngay:new Date().toLocaleDateString('vi-VN')};
-    fetch(APPS_SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
-        .then(r=>r.json()).then(function(res){
-            toast('<i class="fa-solid fa-circle-check"></i> Đã lưu tiến độ!','ok');
-            // Hiệu ứng +LP / lên hạng khi đây là lần hoàn thành ĐẦU TIÊN của bài này
-            // (res.lpEarned chỉ >0 khi GAS xác nhận là lần đầu — xem saveProgress)
-            if(res && res.lpEarned > 0){
-                if(typeof vlxtShowLPGain === 'function') vlxtShowLPGain(res.lpEarned);
-                if(res.rankUp && typeof vlxtShowRankUp === 'function'){
-                    setTimeout(function(){ vlxtShowRankUp(res.lpTotal); }, 900);
-                }
-            }
-        })
-        .catch(function(err){
-            // KHÔNG báo "Đã lưu" giả khi POST thực sự lỗi (trước đây catch cũng báo thành công,
-            // che mất lỗi mạng thật — HS tưởng đã lưu nhưng server chưa nhận được).
-            console.warn('Lưu tiến độ lên server thất bại:', err);
-            toast('<i class="fa-solid fa-triangle-exclamation"></i> Lưu tiến độ chưa thành công, kiểm tra lại mạng nhé!','err');
-        });
+    queueProgress(payload);
+    toast('<i class="fa-solid fa-circle-check"></i> Đã lưu trên thiết bị, đang đồng bộ...','ok');
+    syncPendingProgress(true);
 }
 
 /* ═══════════════════════════════════════════
@@ -1045,7 +1066,7 @@ function renderCourse(name){
             h+=`<div class="lesson-row ${done?'watched':''} ${_locked?'is-locked':''}" onclick="${_clickAttr}">
                 <div class="lesson-ic"><i class="fa-solid ${done?'fa-circle-check':_locked?(_blk.reason==='empty'?'fa-clock':'fa-lock'):(noVideo?'fa-clock':'fa-play')}"></i></div>
                 <div class="lesson-info">
-                    <div class="lesson-name"><span class="lesson-session-num">Buổi ${sn}</span> ${esc(l.name)}${isNew?'<span class="badge-new">MỚI</span>':''}${noVideo?'<span class="badge-soon"><i class="fa-solid fa-clock" style="font-size:9px"></i> Sắp có</span>':''}${l.baitap&&l.baitap.length?'<span style="margin-left:6px;font-size:10.5px;background:rgba(11,132,243,.1);color:var(--blue);border-radius:10px;padding:2px 7px;font-weight:700"><i class="fa-solid fa-pen-to-square" style="font-size:9px"></i> Quiz</span>':''}</div>
+                    <div class="lesson-name"><span class="lesson-session-num">Buổi ${sn}</span> ${esc(l.name)}${isNew?'<span class="badge-new">MỚI</span>':''}${noVideo?'<span class="badge-soon"><i class="fa-solid fa-clock" style="font-size:9px"></i> Sắp có</span>':''}${(l.baitap&&l.baitap.length)||Number(l._quizCount)>0?'<span style="margin-left:6px;font-size:10.5px;background:rgba(11,132,243,.1);color:var(--blue);border-radius:10px;padding:2px 7px;font-weight:700"><i class="fa-solid fa-pen-to-square" style="font-size:9px"></i> Quiz</span>':''}</div>
                     ${l.date?`<div class="lesson-date"><i class="fa-regular fa-calendar"></i> ${esc(l.date)}</div>`:''}
                 </div>
                 <div class="lesson-status">${done?'✓ Đã xem':_locked?(_blk.reason==='empty'?'Chưa cập nhật':'🔒 Khoá'):'Chưa xem'}</div>
@@ -1063,6 +1084,14 @@ function renderLesson(key){
     const info=findLesson(key);
     if(!info){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-circle-question"></i><p>Không tìm thấy bài học.</p><p><a onclick="go('#home')">← Về trang chủ</a></p></div>`; return; }
     const {course,chapter,lesson}=info;
+    const _quizMeta=QUIZ_INDEX&&QUIZ_INDEX.lessons&&QUIZ_INDEX.lessons[key];
+    if(_quizMeta&&!lesson._quizLoaded&&!lesson._quizLoading){
+        lesson._quizLoading=true;
+        app().innerHTML=`<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p style="margin-top:12px">Đang mở bài học...</p></div>`;
+        loadLessonQuiz(key,lesson).finally(()=>{ lesson._quizLoading=false; if(location.hash==='#lesson/'+encodeURIComponent(key)) renderLesson(key); });
+        return;
+    }
+    if(_quizMeta&&lesson._quizLoading) return;
     // Chặn "học vượt" kể cả khi vào thẳng bằng link/hash — không chỉ chặn ở danh sách bài
     const _blkCheck = isLessonBlocked(course, key);
     if(_blkCheck.blocked){
@@ -3114,8 +3143,7 @@ let KHOACONFIG = {}; // { courseName: { trangThai, loaiTK, hienThi, thuTu, daKha
 
 async function fetchKhoaConfig(){
     try{
-        const r = await fetch(APPS_SCRIPT_URL + '?type=khoaconfig&t=' + Date.now());
-        const d = await r.json();
+        const d = await fetchJsonTimeout('data/khoaconfig.json',3000,{cache:'no-cache'});
         const arr = Array.isArray(d) ? d : (d.data || []);
         arr.forEach(c => {
             KHOACONFIG[c.khoaHoc] = {
@@ -3209,12 +3237,16 @@ function showUpgrade(courseName){
 ═══════════════════════════════════════════ */
 async function boot(){
     renderWho();
-    const [rows, , qbRows] = await Promise.all([fetchLessons(), fetchKhoaConfig(), fetchQbAll()]);
+    const [rows] = await Promise.all([fetchLessons(), fetchKhoaConfig(), fetchQuizIndex()]);
     COURSES=buildCourses(rows);
-    applyQbOverrides(COURSES, qbRows);
+    COURSES.forEach(c=>c.chapters.forEach(ch=>ch.lessons.forEach(l=>{
+        const meta=QUIZ_INDEX&&QUIZ_INDEX.lessons&&QUIZ_INDEX.lessons[l.key];
+        l._quizCount=meta?Number(meta.count)||0:0;
+    })));
     GROUPS=new Map();
     COURSES.forEach(c=>{ if(c.group){ if(!GROUPS.has(c.group))GROUPS.set(c.group,[]); GROUPS.get(c.group).push(c); }});
     route();
+    syncPendingProgress(false);
     fetchProgress().then(function(){ route(); });
 }
 function init(){
