@@ -1,6 +1,6 @@
-import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { buildQuizGrouping } from './quiz-merge.mjs';
+import { planQuizPublish, applyQuizPublishPlan } from './quiz-publish.mjs';
 
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec';
 const root = path.resolve(import.meta.dirname, '..');
@@ -45,26 +45,6 @@ async function writeJson(file, value) {
   await writeFile(file, `${JSON.stringify(value)}\n`, 'utf8');
 }
 
-async function readJsonSafe(file) {
-  try { return JSON.parse(await readFile(file, 'utf8')); }
-  catch { return null; }
-}
-
-// Khong ghi mang RONG de de len 1 file JSON dang co du lieu that (vd sheet
-// tra ve tam thoi rong do loi GAS/thao tac giua chung). Neu file cu KHONG co
-// hoac cung dang rong thi van cho ghi (lan dau chay / du lieu thuc su rong).
-async function writeJsonGuarded(file, value, label) {
-  if (Array.isArray(value) && value.length === 0) {
-    const old = await readJsonSafe(file);
-    const oldLen = Array.isArray(old) ? old.length : (old && typeof old === 'object' ? Object.keys(old).length : 0);
-    if (oldLen > 0) {
-      console.warn(`⚠️  ${label}: nguồn trả về RỖNG (0 dòng) — GIỮ NGUYÊN file cũ (${oldLen} mục) để tránh làm trống trang thật.`);
-      return;
-    }
-  }
-  await writeJson(file, value);
-}
-
 const [lessonData, configData, quizData, liveData, examData, settingsData, guideData] = await Promise.all([
   fetchJson('baihoc'),
   fetchJson('khoaconfig'),
@@ -85,12 +65,18 @@ if (!lessons.length) throw new Error('Không nhận được dữ liệu BaiHoc;
 
 await mkdir(quizDir, { recursive: true });
 await writeJson(path.join(dataDir, 'baihoc.json'), lessons);
-// khoaconfig/lichlive/danhsachde CO THE hop le rong tam thoi (vd chua co lich
-// live tuan nay) nhung neu truoc do dang co du lieu that thi rong dot ngot
-// nhieu kha nang la loi nguon, khong phai that su rong - giu file cu, canh bao.
-await writeJsonGuarded(path.join(dataDir, 'khoaconfig.json'), configs, 'khoaconfig');
-await writeJsonGuarded(path.join(dataDir, 'lichlive.json'), liveRows, 'lichlive');
-await writeJsonGuarded(path.join(dataDir, 'danhsachde.json'), exams, 'danhsachde');
+// FIX (Codex review 19/8): khoaconfig/lichlive/danhsachde KHONG con dung guard
+// "rong thi giu file cu" nua. Rong o 3 loai nay CO THE la trang thai hop le that
+// (vd giao vien xoa het lich live tuan nay, xoa het de thi cu) - neu am tham giu
+// file cu khi khong co tin hieu/version xac nhan tu backend rang du lieu rong la
+// LOI (khong phai giao vien chu dong xoa that), website se giu mai du lieu da bi
+// xoa hop le, khong bao gio phan anh dung trang thai that. Quay lai hanh vi ghi
+// truc tiep nhu truoc, CHI rieng quiz (cau hoi luyen tap - rong bat ngo rui ro cao
+// hon nhieu vi anh huong truc tiep den viec hoc, kho phan biet loi/that su rong o
+// muc dong hang loat) moi co lop bao ve rieng (xem duoi).
+await writeJson(path.join(dataDir, 'khoaconfig.json'), configs);
+await writeJson(path.join(dataDir, 'lichlive.json'), liveRows);
+await writeJson(path.join(dataDir, 'danhsachde.json'), exams);
 if (settingsData) await writeJson(path.join(dataDir, 'settings.json'), settingsData);
 if (guideData) await writeJson(path.join(dataDir, 'huongdan.json'), guideData);
 
@@ -105,37 +91,23 @@ const examRows = rowsOf(examData, ['data', 'danhsachde']);
 if (quizData && quizRows.length === 0) {
   console.warn('⚠️  baitaptracnghiem: nguồn trả về RỖNG (0 dòng) — GIỮ NGUYÊN toàn bộ file quiz-*.json và quiz-index.json cũ, KHÔNG xoá.');
 } else if (quizData) {
-  const { grouped, warnings } = buildQuizGrouping(lessons, quizRows);
-
-  if (warnings.length) {
-    console.warn(`⚠️  Phát hiện ${warnings.length} cảnh báo khi gộp câu hỏi luyện tập:`);
-    for (const w of warnings) console.warn('   -', JSON.stringify(w));
-    await writeJson(path.join(dataDir, 'quiz-warnings.json'), { generatedAt: new Date().toISOString(), warnings });
-  } else {
-    // Khong con canh bao nao -> xoa file canh bao cu (neu co) de khong con lai
-    // thong tin loi thoi.
-    await rm(path.join(dataDir, 'quiz-warnings.json'), { force: true });
-  }
-
-  const index = { lessons: {} };
-  const expectedFiles = new Set();
+  // FIX (Codex review 19/8): plan/apply tach rieng (scripts/quiz-publish.mjs) -
+  // neu buildQuizGrouping phat hien canh bao (migration-in-progress/alias-
+  // collision/duplicate-id) thi KHONG ghi bo du lieu moi (co kha nang sai) de,
+  // chi ghi quiz-warnings.json de bao cho admin. Khi an toan de xuat ban, ghi
+  // HET file moi + index moi TRUOC, chi don dep file cu KHONG CON DUNG toi SAU
+  // khi da ghi thanh cong (xem chi tiet trong quiz-publish.mjs).
   const buildVersion = Date.now().toString(36);
-  let sequence = 1;
-  for (const key of [...grouped.keys()].sort((a, b) => a.localeCompare(b, 'vi'))) {
-    const rows = grouped.get(key).sort((a, b) => (Number(a.thuTu) || 0) - (Number(b.thuTu) || 0));
-    const fileName = `quiz-${String(sequence).padStart(4, '0')}.json`;
-    sequence += 1;
-    expectedFiles.add(fileName);
-    index.lessons[key] = { file: `data/quizzes/${fileName}?v=${buildVersion}`, count: rows.length };
-    await writeJson(path.join(quizDir, fileName), rows);
+  const plan = planQuizPublish(lessons, quizRows, { buildVersion });
+  if (plan.action === 'blocked') {
+    console.warn(`⚠️  Phát hiện ${plan.warnings.length} cảnh báo khi gộp câu hỏi luyện tập — KHÔNG xuất bản dữ liệu mới, GIỮ NGUYÊN toàn bộ quiz-*.json và quiz-index.json cũ:`);
+    for (const w of plan.warnings) console.warn('   -', JSON.stringify(w));
   }
-
-  for (const fileName of await readdir(quizDir)) {
-    if (/^quiz-\d+\.json$/.test(fileName) && !expectedFiles.has(fileName)) {
-      await rm(path.join(quizDir, fileName));
-    }
-  }
-  await writeJson(path.join(dataDir, 'quiz-index.json'), index);
+  await applyQuizPublishPlan(plan, {
+    quizDir,
+    quizIndexFile: path.join(dataDir, 'quiz-index.json'),
+    quizWarningsFile: path.join(dataDir, 'quiz-warnings.json')
+  });
 }
 
 console.log(`Đã đồng bộ ${lessons.length} bài học, ${configs.length} cấu hình, ${quizRows.length} câu hỏi, ${liveRows.length} lịch live và ${examRows.length} đề.`);
