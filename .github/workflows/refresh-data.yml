@@ -1,38 +1,42 @@
-name: Refresh static data JSON
+name: Đồng bộ dữ liệu học tập
 
 on:
   schedule:
-    - cron: '*/20 * * * *'
+    - cron: '*/15 * * * *'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/sync-public-data.mjs'
+      - '.github/workflows/refresh-data.yml'
 
 permissions:
   contents: write
 
+concurrency:
+  group: sync-public-data
+  cancel-in-progress: false
+
 jobs:
-  refresh:
+  sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Fetch fresh data from Apps Script
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Đọc Google Sheets và tạo JSON tĩnh
+        run: node scripts/sync-public-data.mjs
+      - name: Chỉ commit khi dữ liệu thay đổi
+        shell: bash
         run: |
-          GAS="https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec"
-          mkdir -p data
-          curl -sL "$GAS?type=lichlive" -o data/lichlive.json
-          curl -sL "$GAS?type=baihoc" -o data/baihoc.json
-          curl -sL "$GAS?type=danhsachde" -o data/danhsachde.json
-
-      - name: Validate JSON before commit
-        run: |
-          for f in data/lichlive.json data/baihoc.json data/danhsachde.json; do
-            python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$f" || { echo "INVALID JSON: $f"; exit 1; }
-          done
-
-      - name: Commit if changed
-        run: |
+          if git diff --quiet -- data; then
+            echo "Dữ liệu không thay đổi."
+            exit 0
+          fi
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/lichlive.json data/baihoc.json data/danhsachde.json
-          git diff --cached --quiet || git commit -m "Auto-refresh static data JSON tu Apps Script"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          git commit -m "data: đồng bộ Google Sheets"
           git push

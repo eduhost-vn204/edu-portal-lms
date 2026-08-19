@@ -38,21 +38,27 @@ async function writeJson(file, value) {
   await writeFile(file, `${JSON.stringify(value)}\n`, 'utf8');
 }
 
-const [lessonData, configData, quizData] = await Promise.all([
+const [lessonData, configData, quizData, liveData, examData] = await Promise.all([
   fetchJson('baihoc'),
   fetchJson('khoaconfig'),
-  fetchJson('baitaptracnghiem')
+  fetchJson('baitaptracnghiem'),
+  fetchJson('lichlive'),
+  fetchJson('danhsachde')
 ]);
 
 const lessons = rowsOf(lessonData, ['baihoc', 'data']);
 const configs = rowsOf(configData, ['khoaconfig', 'data']);
 const quizRows = rowsOf(quizData, ['baitaptracnghiem', 'data']);
+const liveRows = rowsOf(liveData, ['lichlive', 'data']);
+const exams = Array.isArray(examData) ? examData : examData;
 
 if (!lessons.length) throw new Error('Không nhận được dữ liệu BaiHoc; giữ nguyên JSON cũ.');
 
 await mkdir(quizDir, { recursive: true });
 await writeJson(path.join(dataDir, 'baihoc.json'), lessons);
 await writeJson(path.join(dataDir, 'khoaconfig.json'), configs);
+await writeJson(path.join(dataDir, 'lichlive.json'), liveRows);
+await writeJson(path.join(dataDir, 'danhsachde.json'), exams);
 
 const grouped = new Map();
 const normalize = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '');
@@ -93,4 +99,4 @@ for (const fileName of await readdir(quizDir)) {
 }
 await writeJson(path.join(dataDir, 'quiz-index.json'), index);
 
-console.log(`Đã đồng bộ ${lessons.length} bài học, ${configs.length} cấu hình, ${quizRows.length} câu hỏi.`);
+console.log(`Đã đồng bộ ${lessons.length} bài học, ${configs.length} cấu hình, ${quizRows.length} câu hỏi, ${liveRows.length} lịch live.`);
