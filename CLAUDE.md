@@ -1,72 +1,38 @@
-# 🔬 Vật Lý Xuân Trường — Project Brief
+# Hướng dẫn dành cho Claude — Vật Lý Xuân Trường
 
-## Tổng quan
-Website học vật lý online tại **xuantruongmyself-png.github.io/vatly-xuantruong** (GitHub Pages, auto-deploy qua GitHub Actions), do thầy Trường (không biết lập trình) xây dựng cùng Claude. Stack **100% miễn phí, serverless**: HTML/CSS/JS thuần + Google Sheets làm database + Netlify hosting.
+## Bắt buộc trước khi làm
 
-## Kiến trúc hệ thống
-```
-[Học sinh / Thầy]
-       ↕ fetch/POST
-[Google Apps Script] ← cầu nối API duy nhất
-       ↕
-[Google Sheets] — 4 tab: BaiHoc | NganHangDe | BangVang | TienDo
-       ↕
-[Netlify] — host các file .html tĩnh
-```
+1. Chạy `git fetch origin main` và đối chiếu `HEAD` với `origin/main`.
+2. Đọc toàn bộ `PROJECT_STATE.md`. Đây là nguồn sự thật chung của dự án.
+3. Đọc `git log -10 --oneline` và `git status --short --branch`.
+4. Nếu thư mục đang có thay đổi không phải của mình, không xóa hoặc ghi đè. Với sửa đổi lớn, tạo clone/worktree sạch từ `origin/main`.
 
-## Các file trong dự án
+Không dựa vào nội dung cũ trong cuộc trò chuyện nếu nó mâu thuẫn với GitHub hoặc `PROJECT_STATE.md`.
 
-| File | Vai trò | Trạng thái |
-|------|---------|------------|
-| `index.html` | Trang chủ | ✅ Xong |
-| `baihoc.html` | Học sinh xem bài học + video YouTube, theo dõi tiến độ | ✅ Xong (có cache localStorage 5 phút) |
-| `danhsach-ly12.html` | Danh sách đề thi | ✅ Xong |
-| `thithu.html` | Giao diện làm bài thi — đếm giờ, chấm điểm, ghi Sheets | ✅ Xong |
-| `admin.html` | Bảng điều khiển: quản lý bài học, soạn đề từ .docx, xem điểm | ✅ Gần hoàn chỉnh |
-| `apps-script-CAPNHAT.txt` | Code Google Apps Script — dán vào script.google.com và Deploy | ✅ Có sẵn |
-| `DE_THI_MAU.docx` | File Word mẫu để test tính năng soạn đề | ✅ Có sẵn |
+## Quy tắc phối hợp với Codex
 
-## Cách dữ liệu hoạt động
+- Claude và Codex cùng làm trên kho chính thức; GitHub `main` là nguồn mã chuẩn.
+- `PROJECT_STATE.md` là sổ bàn giao chung. Không tạo thêm một tài liệu trạng thái cạnh tranh.
+- Sau mỗi thay đổi đáng kể, cập nhật mục **Bàn giao gần nhất** trong `PROJECT_STATE.md` cùng commit hoặc ngay sau commit mã.
+- Ghi rõ: commit, file đã sửa, hành vi mới, kiểm tra đã chạy, điều phải giữ nguyên và việc còn lại.
+- Trước khi push phải fetch lại. Nếu `origin/main` đã tiến lên, ghép thay đổi trên bản mới nhất rồi kiểm tra lại.
+- Không force-push, không đẩy bản máy cũ đè lên thay đổi mới và không tự ý khôi phục một thiết kế đã được thay thế.
 
-**Đọc (GET):** `?type=baihoc` / `?type=diemthi` / `?type=tiendo`
-**Ghi (POST):** `action: saveBaiHoc / deleteBaiHoc / saveQuestions / saveDiemThi`
+## Quy tắc kỹ thuật bắt buộc
 
-**Apps Script URL:** `https://script.google.com/macros/s/AKfycbzxn5Zue4GdGMTnZuts_sNRc2X-BWulWCwKe8fdwJd6PyBbn7pOqxDBG4alOuk96is5/exec`
+- Website tĩnh: HTML, CSS và JavaScript thuần; triển khai bằng GitHub Pages.
+- Không dùng Netlify và không dùng URL kho cũ cho công việc mới.
+- Không đưa token, mật khẩu, API key hoặc khóa quản trị vào mã nguồn/tài liệu.
+- Sau khi sửa JavaScript: chạy kiểm tra cú pháp.
+- Sau khi sửa HTML lớn: kiểm tra còn thẻ đóng `</html>`.
+- Giữ giao diện máy tính khi sửa responsive.
+- Khi sửa menu điện thoại, ưu tiên menu chuyên biệt trên `index.html`, `hoso.html`, `danhsach-ly12.html`; menu chung trong `cache.js` không được tạo nút trùng.
+- Không đưa việc tải toàn bộ `BaiTapTracNghiem` trở lại bước khởi động `baihoc.html`.
+- Không để danh sách khóa học phải chờ Google Apps Script. Dữ liệu đọc công khai phải ưu tiên JSON tĩnh.
+- Tiến độ học phải được lưu cục bộ trước rồi đồng bộ nền; lỗi GAS không được khóa giao diện học sinh.
 
-**Netlify Site ID:** `412fbb45-580b-410c-bfbb-6590331f4407`
+## Cách nói chuyện với thầy Trường
 
-## Đặc điểm kỹ thuật quan trọng
-
-- **Cache localStorage** (`vlxt_lessons_cache`, TTL 5 phút): `baihoc.html` tải tức thì từ cache, fetch ngầm update. Admin xóa cache sau khi lưu/xóa bài → học sinh thấy dữ liệu mới ngay lần tiếp theo.
-- **POST dùng `mode:'no-cors'`** → không đọc được response, nhưng dữ liệu vẫn lưu đúng vào Sheets.
-- **Parser .docx** trong admin.html: dùng `mammoth.js` + `JSZip` để đọc file Word ngay trên trình duyệt, tách câu hỏi A/B/C/D, nhận dạng đáp án đúng bằng dấu `*` (ví dụ `*C.`).
-- **KaTeX**: render công thức vật lý dạng `$...$` và `$$...$$`.
-- **Deploy**: Push lên GitHub → GitHub Actions tự build và deploy lên GitHub Pages (~1 phút). Không cần Netlify.
-
-## Admin panel (admin.html) — 3 tab
-
-1. **Bài Học**: Thêm/sửa/xóa bài giảng (KhoaHoc, Chuong, TenBai, Video YouTube, VideoGiai, MoTaBai)
-2. **Soạn Đề**: Upload file .docx → parser tự động tách câu hỏi → xem preview → Xuất Bản lên Sheets NganHangDe
-3. **Kết Quả**: Xem bảng điểm học sinh từ Sheets BangVang
-
-## Cấu trúc Google Sheets cần có
-
-- `BaiHoc`: KhoaHoc | Chuong | TenBai | Video | VideoGiai | MoTaBai | NgayDang | BaiTap
-- `NganHangDe`: id | type | question | optA | optB | optC | optD | correct
-- `BangVang`: name | studentClass | phone | score | timestamp
-- `TienDo`: sdt | lesson | khoa | ten | lop | ngay
-
-## Việc còn cần làm (theo thứ tự ưu tiên)
-
-1. Deploy file mới lên Netlify (kéo thả thư mục)
-2. Xác nhận Apps Script đang chạy đúng URL
-3. Test upload DE_THI_MAU.docx → soạn đề → xuất bản
-4. Test chu trình thi: học sinh vào thi → điểm ghi vào Sheets
-5. Kiểm tra responsive trên điện thoại
-
-## Nguyên tắc làm việc
-
-- Thầy Trường không biết lập trình — giải thích bằng ngôn ngữ đơn giản, không dùng thuật ngữ kỹ thuật khi không cần
-- Luôn viết code hoàn chỉnh, copy-paste được
-- Giữ theme tối giản, sạch (không dark space nữa — đã chuyển sang light theme trắng chuyên nghiệp)
-- Ưu tiên sửa trực tiếp file, không tạo file mới thừa
+- Giải thích bằng tiếng Việt, ngắn gọn và dễ hiểu.
+- Chủ động làm và kiểm tra khi yêu cầu đã rõ.
+- Khi hoàn thành, nêu kết quả, commit, kiểm tra và lưu ý vận hành; không bắt thầy xử lý các bước kỹ thuật không cần thiết.
