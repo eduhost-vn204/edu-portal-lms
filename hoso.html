@@ -531,11 +531,16 @@ function refreshLeaderboardOnly(lbData) {
 window.addEventListener('vlxt:data-updated', function(e){
   if (e.detail && e.detail.type === 'leaderboard') refreshLeaderboardOnly(normalizeLbData(e.detail.data));
 });
-setInterval(function(){
+// FIX 19/8: truoc day poll 5s/lan (qua day, vuot yeu cau toi da 1 request/phut/tab).
+// Doi sang 90s + chi poll khi tab dang hien; dong bo giua cac tab van qua event
+// 'vlxt:data-updated' o tren (khong can cho het chu ky 90s).
+function pollLbOnce(){
   cachedFetch(GAS + '?type=leaderboard').then(r => r.json()).then(function(lb){
     refreshLeaderboardOnly(normalizeLbData(lb));
   }).catch(function(){});
-}, 5000);
+}
+if (typeof vlxtVisiblePoll === 'function') vlxtVisiblePoll(pollLbOnce, 90000);
+else setInterval(pollLbOnce, 90000);
 
 function renderPage(profile, lb, nvRes, baihocRows) {
   const nv = (nvRes && nvRes.ok && nvRes.data) ? nvRes.data : null;

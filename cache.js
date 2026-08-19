@@ -17,7 +17,10 @@
   var MAX_STALE_MS = 86400000; // 24 gio: qua han nay thi PHAI cho du lieu moi
 
   // Rieng vai loai du lieu can "gan nhu tuc thi" (da co auto-refresh backend)
-  var FRESH_MS_OVERRIDE = { lichlive: 8000, leaderboard: 5000 };
+  // FIX 19/8: leaderboard tung la 5000 (5s) - qua day, vuot yeu cau toi da 1 request/phut/tab.
+  // Doi sang 90s; dong bo tuc thi giua cac trang van dam bao qua event 'vlxt:data-updated'
+  // duoi day (khong can revalidate ngam nhanh nua).
+  var FRESH_MS_OVERRIDE = { lichlive: 8000, leaderboard: 90000 };
 
   var REQUEST_TIMEOUT_MS = 15000;
   var STATIC_TYPES = { danhsachde: 1, baihoc: 1, khoaconfig: 1, lichlive: 1,
@@ -116,6 +119,27 @@
         .filter(function (k) { return k.indexOf('vlxt_cache_') === 0; })
         .forEach(function (k) { localStorage.removeItem(k); });
     } catch (e) {}
+  };
+
+  /* FIX 19/8: poll dinh ky nhung CHI khi tab dang hien (document.visibilityState==='visible'),
+     tranh spam GAS khi nguoi dung mo nhieu tab/de tab nen (yeu cau: khong qua 1 request/phut/tab
+     khi trang dang hien, dung han khi an tab). Khi tab an roi hien lai va da qua >= intervalMs
+     ke tu lan goi truoc, goi ngay 1 lan de khong phai cho het chu ky. Dung cho leaderboard va
+     cac vong lap poll ngam khac muon tiet kiem request. */
+  window.vlxtVisiblePoll = function (fn, intervalMs) {
+    var last = Date.now();
+    function tick() {
+      if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return;
+      last = Date.now();
+      try { fn(); } catch (e) {}
+    }
+    var timer = setInterval(tick, intervalMs);
+    if (typeof document !== 'undefined') {
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible' && (Date.now() - last) >= intervalMs) tick();
+      });
+    }
+    return timer;
   };
 
   /* Menu dieu huong cho dien thoai. Tu dong lay cac muc da co tren thanh menu
