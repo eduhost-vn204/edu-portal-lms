@@ -76,18 +76,28 @@ if (quizData) {
 const grouped = new Map();
 const normalize = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '');
 const lessonAliases = new Map();
+const stableLessonKeys = new Set();
 for (const lesson of lessons) {
   const stableKey = String(lesson?.MaBai || '').trim();
   if (!stableKey) continue;
+  stableLessonKeys.add(stableKey);
   const legacyKey = [lesson.KhoaHoc, lesson.Chuong, lesson.TenBai].map(normalize).join('|');
   lessonAliases.set(legacyKey, stableKey);
 }
+// Neu MaBai moi da co du lieu, do la nguon chuan. Khong tron them cac dong
+// baiKey kieu cu (KhoaHoc|||Chuong|||TenBai), neu khong se cong don 30+20=50.
+const stableKeysWithRows = new Set(quizRows
+  .map(row => String(row?.baiKey || '').trim())
+  .filter(key => stableLessonKeys.has(key)));
 for (const row of quizRows) {
-  let key = String(row?.baiKey || '').trim();
+  const rawKey = String(row?.baiKey || '').trim();
+  let key = rawKey;
   if (!key) continue;
   if (key.includes('|||')) {
     const legacyKey = key.split('|||').map(normalize).join('|');
-    key = lessonAliases.get(legacyKey) || key;
+    const mappedKey = lessonAliases.get(legacyKey);
+    if (mappedKey && stableKeysWithRows.has(mappedKey)) continue;
+    key = mappedKey || key;
   }
   if (!grouped.has(key)) grouped.set(key, []);
   grouped.get(key).push(row);
@@ -95,13 +105,14 @@ for (const row of quizRows) {
 
 const index = { lessons: {} };
 const expectedFiles = new Set();
+const buildVersion = Date.now().toString(36);
 let sequence = 1;
 for (const key of [...grouped.keys()].sort((a, b) => a.localeCompare(b, 'vi'))) {
   const rows = grouped.get(key).sort((a, b) => (Number(a.thuTu) || 0) - (Number(b.thuTu) || 0));
   const fileName = `quiz-${String(sequence).padStart(4, '0')}.json`;
   sequence += 1;
   expectedFiles.add(fileName);
-  index.lessons[key] = { file: `data/quizzes/${fileName}`, count: rows.length };
+  index.lessons[key] = { file: `data/quizzes/${fileName}?v=${buildVersion}`, count: rows.length };
   await writeJson(path.join(quizDir, fileName), rows);
 }
 
