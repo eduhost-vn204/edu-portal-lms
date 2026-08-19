@@ -91,7 +91,7 @@ baihoc.html
 - `.github/workflows/refresh-data.yml`: lịch đồng bộ dữ liệu 15 phút.
 - `.github/workflows/deploy.yml`: triển khai GitHub Pages.
 - `apps-script-CAPNHAT.txt`: bản tham chiếu mã Google Apps Script; có thể không phản ánh mọi thay đổi trực tiếp trên GAS nếu chưa được đồng bộ về repo.
-- Website Admin nằm ở kho riêng `eduhost-vn204/edu-portal-console`; không dùng tên kho admin cũ. Mốc Admin gần nhất: `f665fea`, đã thu hồi toàn bộ tối ưu Admin và khôi phục mã đúng trạng thái ổn định `351eb97`.
+- Website Admin nằm ở kho riêng `eduhost-vn204/edu-portal-console`; không dùng tên kho admin cũ. Mốc Admin gần nhất: `dc714f1`.
 
 ## Mốc thay đổi quan trọng
 
@@ -103,6 +103,7 @@ baihoc.html
 - Admin `6576136` — tải dữ liệu song song, ưu tiên CDN/cache và buộc đọc GAS mới sau thao tác sửa.
 - Admin `e393438` — hotfix không chấp nhận cache bài học rỗng; xác nhận 42 bài trong JSON vẫn nguyên vẹn.
 - Admin `f665fea` — thu hồi `6576136` và `e393438` vì làm trống giao diện Bài học/Ngân hàng; không áp dụng lại hướng tối ưu này nếu chưa thử nghiệm đầy đủ trên bản staging.
+- Admin `dc714f1` — phương án thay thế đã kiểm thử: bài học xem nhanh từ cache/CDN, ngân hàng lưu IndexedDB và làm mới nền; cache rỗng không được chấp nhận.
 
 ## Điều phải giữ nguyên
 
