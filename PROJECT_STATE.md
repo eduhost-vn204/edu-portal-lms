@@ -91,6 +91,7 @@ baihoc.html
 - `.github/workflows/refresh-data.yml`: lịch đồng bộ dữ liệu 15 phút.
 - `.github/workflows/deploy.yml`: triển khai GitHub Pages.
 - `apps-script-CAPNHAT.txt`: bản tham chiếu mã Google Apps Script; có thể không phản ánh mọi thay đổi trực tiếp trên GAS nếu chưa được đồng bộ về repo.
+- Website Admin nằm ở kho riêng `eduhost-vn204/edu-portal-console`; không dùng tên kho admin cũ. Mốc tăng tốc Admin gần nhất: `6576136`.
 
 ## Mốc thay đổi quan trọng
 
@@ -98,6 +99,8 @@ baihoc.html
 - `bcf0df6` — menu điện thoại chung cho các trang học sinh còn thiếu.
 - `54a767d` — danh sách khóa học đọc JSON tĩnh; quiz tải theo từng bài; tiến độ có hàng đợi nền.
 - `aada5d9` — hợp nhất thành một workflow đồng bộ dữ liệu duy nhất.
+- `73e2295` — mở rộng tăng tốc toàn website học sinh, dữ liệu cá nhân cache cục bộ an toàn.
+- Admin `6576136` — tải dữ liệu song song, ưu tiên CDN/cache và buộc đọc GAS mới sau thao tác sửa.
 
 ## Điều phải giữ nguyên
 

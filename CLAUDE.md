@@ -12,6 +12,7 @@ Không dựa vào nội dung cũ trong cuộc trò chuyện nếu nó mâu thu�
 ## Quy tắc phối hợp với Codex
 
 - Claude và Codex cùng làm trên kho chính thức; GitHub `main` là nguồn mã chuẩn.
+- Kho học sinh: `eduhost-vn204/edu-portal-lms`. Kho Admin riêng: `eduhost-vn204/edu-portal-console`. Không dùng các tên kho cũ dù GitHub còn chuyển hướng.
 - `PROJECT_STATE.md` là sổ bàn giao chung. Không tạo thêm một tài liệu trạng thái cạnh tranh.
 - Sau mỗi thay đổi đáng kể, cập nhật mục **Bàn giao gần nhất** trong `PROJECT_STATE.md` cùng commit hoặc ngay sau commit mã.
 - Ghi rõ: commit, file đã sửa, hành vi mới, kiểm tra đã chạy, điều phải giữ nguyên và việc còn lại.
