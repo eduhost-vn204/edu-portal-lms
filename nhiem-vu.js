@@ -53,7 +53,7 @@
     try {
       (JSON.parse(localStorage.getItem('vlxt_watched_' + sdt) || '[]')).forEach(function (k) { watched.add(k); });
     } catch (e) {}
-    return fetch(GAS + '?type=tiendo&hs=' + encodeURIComponent(sdt) + '&t=' + Date.now())
+    return cachedFetch(GAS + '?type=tiendo&hs=' + encodeURIComponent(sdt))
       .then(function (r) { return r.json(); })
       .then(function (data) {
         var arr = Array.isArray(data) ? data : (data.tiendo || data.data || []);
@@ -412,9 +412,9 @@
   // ─── Tải lại dữ liệu tiến độ + lộ trình (dùng chung cho init() và tự kiểm tra định kỳ) ──
   async function loadProgressData(user) {
     var fetches = await Promise.all([
-      fetch(GAS + '?type=baihoc').then(function (r) { return r.json(); }).catch(function () { return []; }),
-      fetch(GAS + '?type=settings').then(function (r) { return r.json(); }).catch(function () { return {}; }),
-      fetch(GAS + '?type=khoaconfig').then(function (r) { return r.json(); }).catch(function () { return []; }),
+      cachedFetch(GAS + '?type=baihoc').then(function (r) { return r.json(); }).catch(function () { return []; }),
+      cachedFetch(GAS + '?type=settings').then(function (r) { return r.json(); }).catch(function () { return {}; }),
+      cachedFetch(GAS + '?type=khoaconfig').then(function (r) { return r.json(); }).catch(function () { return []; }),
       fetchWatchedSet(user.sdt)
     ]);
     var allL        = Array.isArray(fetches[0]) ? fetches[0] : [];
@@ -512,7 +512,7 @@
     if (!user || !user.sdt) return;
 
     try {
-      var resp = await fetch(GAS + '?type=nhiemvu&hs=' + encodeURIComponent(user.sdt));
+      var resp = await cachedFetch(GAS + '?type=nhiemvu&hs=' + encodeURIComponent(user.sdt));
       var data = await resp.json();
       var nv   = (data && data.ok) ? data.data : null;
 

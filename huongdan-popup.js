@@ -19,7 +19,7 @@
   async function hdFetchAll(){
     if(_hdCache) return _hdCache;
     try{
-      const r = await fetch(HD_GAS + '?type=huongdan').then(r=>r.json());
+      const r = await cachedFetch(HD_GAS + '?type=huongdan').then(r=>r.json());
       const map = {};
       (r.data||[]).forEach(row=>{ if(row.key) map[row.key] = row; });
       _hdCache = map;

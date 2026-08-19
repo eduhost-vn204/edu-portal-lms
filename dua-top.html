@@ -654,7 +654,7 @@
   }
 
   function loadQuestions() {
-    fetch(GAS + '?type=nganhang')
+    cachedFetch(GAS + '?type=nganhang')
       .then(function (r) { return r.json(); })
       .then(function (data) {
         var raw = Array.isArray(data) ? data : (data.data || data.rows || []);
@@ -683,7 +683,7 @@
 
     // Kiểm tra đủ LP mới cho vào — lấy LP MỚI NHẤT từ server (localStorage có thể cũ),
     // lỗi mạng thì không chặn oan, cứ cho vào luôn.
-    fetch(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt) + '&_t=' + Date.now())
+    cachedFetch(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt))
       .then(function (r) { return r.json(); })
       .then(function (profile) {
         var lp = (profile && profile.ok && profile.user) ? (Number(profile.user.lpTotal) || 0) : (Number(user.lpTotal) || 0);

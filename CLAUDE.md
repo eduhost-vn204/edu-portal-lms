@@ -30,6 +30,8 @@ Không dựa vào nội dung cũ trong cuộc trò chuyện nếu nó mâu thu�
 - Không đưa việc tải toàn bộ `BaiTapTracNghiem` trở lại bước khởi động `baihoc.html`.
 - Không để danh sách khóa học phải chờ Google Apps Script. Dữ liệu đọc công khai phải ưu tiên JSON tĩnh.
 - Tiến độ học phải được lưu cục bộ trước rồi đồng bộ nền; lỗi GAS không được khóa giao diện học sinh.
+- Dữ liệu cá nhân và quản trị chỉ được cache cục bộ theo người dùng; tuyệt đối không đưa hồ sơ, tiến độ, nhiệm vụ, điểm, tài khoản, nội dung đề hoặc đáp án vào `data/` công khai.
+- Admin có thể đọc JSON công khai ở lần mở đầu, nhưng sau thao tác ghi/xóa/đổi tên phải buộc tải lại dữ liệu mới trực tiếp từ GAS.
 
 ## Cách nói chuyện với thầy Trường
 

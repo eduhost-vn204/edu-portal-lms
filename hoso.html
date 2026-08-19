@@ -466,9 +466,9 @@ renderPage({ ok: true, user: user, scores: [], tiendo: [] }, { ok: false, data: 
 
 // Sau đó fetch GAS để cập nhật dữ liệu thực (async, không chặn render)
 Promise.all([
-  fetch(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt) + '&_t=' + Date.now()).then(r => r.json()),
+  cachedFetch(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt)).then(r => r.json()),
   cachedFetch(GAS + '?type=leaderboard').then(r => r.json()),
-  fetch(GAS + '?type=nhiemvu&hs=' + encodeURIComponent(user.sdt) + '&_t=' + Date.now()).then(r => r.json()).catch(() => ({ ok: false, data: null })),
+  cachedFetch(GAS + '?type=nhiemvu&hs=' + encodeURIComponent(user.sdt)).then(r => r.json()).catch(() => ({ ok: false, data: null })),
   cachedFetch(GAS + '?type=baihoc').then(r => r.json()).catch(() => [])
 ]).then(([profile, lb, nvRes, baihocRows]) => {
   renderPage(profile, lb, nvRes, baihocRows);

@@ -288,7 +288,7 @@
 
   // ─── Load ngân hàng câu hỏi TN ──────────────────────────────
   function loadBank(cb) {
-    fetch(GAS + '?type=nganhang')
+    cachedFetch(GAS + '?type=nganhang')
       .then(function (r) { return r.json(); })
       .then(function (data) {
         var raw = Array.isArray(data) ? data : (data.data || data.rows || []);
@@ -778,7 +778,7 @@
       arena.innerHTML = '<div class="empty-box"><h3>Không kết nối được máy chủ realtime</h3><p>Thử tải lại trang nhé.</p></div>';
       return;
     }
-    fetch(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt) + '&_t=' + Date.now())
+    cachedFetch(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt))
       .then(function (r) { return r.json(); })
       .then(function (profile) {
         myLp = (profile && profile.ok && profile.user) ? (Number(profile.user.lpTotal) || 0) : (Number(user.lpTotal) || 0);

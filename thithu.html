@@ -563,7 +563,7 @@
     }
     async function loadSolutionsAfterSubmit(){
         try{
-            const res = await fetch(databaseUrl+'?type=examsolutions&examId='+_examId);
+            const res = await cachedFetch(databaseUrl+'?type=examsolutions&examId='+_examId);
             const sol = await res.json();
             myQuestions.forEach(q=>{
                 const text=((sol&&sol[q.id])||'').toString().trim();

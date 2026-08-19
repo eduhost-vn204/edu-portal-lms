@@ -6,13 +6,14 @@ const root = path.resolve(import.meta.dirname, '..');
 const dataDir = path.join(root, 'data');
 const quizDir = path.join(dataDir, 'quizzes');
 
-async function fetchJson(type, attempts = 3) {
+async function fetchJson(type, attempts = 3, params = {}, timeoutMs = 120_000) {
   let lastError;
   for (let attempt = 1; attempt <= attempts; attempt += 1) {
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 120_000);
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {
-      const response = await fetch(`${GAS_URL}?type=${encodeURIComponent(type)}`, {
+      const query = new URLSearchParams({ type, ...params });
+      const response = await fetch(`${GAS_URL}?${query}`, {
         signal: controller.signal,
         redirect: 'follow'
       });
@@ -28,6 +29,11 @@ async function fetchJson(type, attempts = 3) {
   throw lastError;
 }
 
+async function fetchOptional(type) {
+  try { return await fetchJson(type, 2, {}, 30_000); }
+  catch (error) { console.warn(`Bỏ qua ${type}, giữ dữ liệu cũ: ${error.message}`); return null; }
+}
+
 function rowsOf(value, keys) {
   if (Array.isArray(value)) return value;
   for (const key of keys) if (Array.isArray(value?.[key])) return value[key];
@@ -38,12 +44,14 @@ async function writeJson(file, value) {
   await writeFile(file, `${JSON.stringify(value)}\n`, 'utf8');
 }
 
-const [lessonData, configData, quizData, liveData, examData] = await Promise.all([
+const [lessonData, configData, quizData, liveData, examData, settingsData, guideData] = await Promise.all([
   fetchJson('baihoc'),
   fetchJson('khoaconfig'),
-  fetchJson('baitaptracnghiem'),
+  fetchOptional('baitaptracnghiem'),
   fetchJson('lichlive'),
-  fetchJson('danhsachde')
+  fetchJson('danhsachde'),
+  fetchOptional('settings'),
+  fetchOptional('huongdan')
 ]);
 
 const lessons = rowsOf(lessonData, ['baihoc', 'data']);
@@ -59,7 +67,12 @@ await writeJson(path.join(dataDir, 'baihoc.json'), lessons);
 await writeJson(path.join(dataDir, 'khoaconfig.json'), configs);
 await writeJson(path.join(dataDir, 'lichlive.json'), liveRows);
 await writeJson(path.join(dataDir, 'danhsachde.json'), exams);
+if (settingsData) await writeJson(path.join(dataDir, 'settings.json'), settingsData);
+if (guideData) await writeJson(path.join(dataDir, 'huongdan.json'), guideData);
 
+const examRows = rowsOf(examData, ['data', 'danhsachde']);
+
+if (quizData) {
 const grouped = new Map();
 const normalize = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '');
 const lessonAliases = new Map();
@@ -98,5 +111,6 @@ for (const fileName of await readdir(quizDir)) {
   }
 }
 await writeJson(path.join(dataDir, 'quiz-index.json'), index);
+}
 
-console.log(`Đã đồng bộ ${lessons.length} bài học, ${configs.length} cấu hình, ${quizRows.length} câu hỏi, ${liveRows.length} lịch live.`);
+console.log(`Đã đồng bộ ${lessons.length} bài học, ${configs.length} cấu hình, ${quizRows.length} câu hỏi, ${liveRows.length} lịch live và ${examRows.length} đề.`);

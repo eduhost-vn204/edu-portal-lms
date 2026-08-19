@@ -2,13 +2,9 @@
    cache.js v5 - Toc do TUC THI cho web Vat Ly Xuan Truong (mien phi)
    (A) stale-while-revalidate: mo trang HIEN NGAY du lieu lan truoc
        (localStorage, 0 giay), dong thoi tai moi ngam de lan sau dung.
-   (B) uu tien JSON tinh tren GitHub Pages (~50ms) thay cho goi GAS (~1.6s)
-       CHO danhsachde/baihoc (it doi, khong gap).
-   (C) 'lichlive' KHONG dung file tinh (tu v4): GitHub Pages CDN (Fastly)
-       co the mat vai phut moi cap nhat file tinh sau khi da commit xong
-       tren GitHub - ngoai tam kiem soat. Du lieu lichlive rat it (vai
-       dong) nen goi thang GAS moi lan, nhanh va LUON dung nhat.
-   (D) rieng 'lichlive' refresh ngam nhanh hon (8s thay vi 3 phut). Khi
+   (B) uu tien JSON tinh tren GitHub Pages cho du lieu cong khai.
+   (C) du lieu ca nhan van cache rieng theo URL, khong xuat ra JSON cong khai.
+   (D) rieng 'lichlive' refresh ngam nhanh hon. Khi
        phat hien du lieu MOI (khac ban cu), tu dispatch event
        'vlxt:data-updated' de trang tu ve lai KHONG CAN bam reload.
    Cach dung KHONG DOI: van goi cachedFetch(url).then(r=>r.json())
@@ -23,11 +19,9 @@
   // Rieng vai loai du lieu can "gan nhu tuc thi" (da co auto-refresh backend)
   var FRESH_MS_OVERRIDE = { lichlive: 8000, leaderboard: 5000 };
 
-  // 'lichlive' KHONG dung file tinh nua: GitHub Pages CDN (Fastly) co the
-  // mat vai phut de cap nhat file tinh sau moi lan deploy, ngoai tam kiem
-  // soat cua minh. Du lieu lichlive it (vai dong) nen goi thang GAS moi lan
-  // nhanh hon va LUON dung nhat, khong can cho CDN.
-  var STATIC_TYPES = { danhsachde: 1, baihoc: 1 };
+  var REQUEST_TIMEOUT_MS = 15000;
+  var STATIC_TYPES = { danhsachde: 1, baihoc: 1, khoaconfig: 1, lichlive: 1,
+    settings: 1, huongdan: 1 };
 
   function keyOf(url) {
     return 'vlxt_cache_' + url.replace(/([?&])t=\d+/g, '').replace(/[?&]$/, '');
@@ -39,6 +33,15 @@
   function staticUrlFor(url) {
     var t = typeOf(url);
     return STATIC_TYPES[t] ? ('data/' + t + '.json') : null;
+  }
+
+  function fetchJson(url) {
+    var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    var timer = setTimeout(function () { if (controller) controller.abort(); }, REQUEST_TIMEOUT_MS);
+    return fetch(url, controller ? { signal: controller.signal } : undefined).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    }).finally(function () { clearTimeout(timer); });
   }
   function freshMsFor(url) {
     var t = typeOf(url);
@@ -64,9 +67,9 @@
           if (!r.ok) throw new Error('static ' + r.status);
           return r.json();
         }).catch(function () {
-          return fetch(url).then(function (r) { return r.json(); });
+          return fetchJson(url);
         })
-      : fetch(url).then(function (r) { return r.json(); });
+      : fetchJson(url);
 
     return p.then(function (data) {
       var newRaw = JSON.stringify(data);
@@ -103,7 +106,7 @@
     return revalidate(url, key).then(function (data) { return wrap(data); })
       .catch(function () {
         if (hit) return wrap(hit.data);
-        return fetch(url).then(function (r) { return r.json(); }).then(function (d) { return wrap(d); });
+        return fetchJson(url).then(function (d) { return wrap(d); });
       });
   };
 

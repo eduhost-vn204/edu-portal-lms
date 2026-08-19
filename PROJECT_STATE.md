@@ -30,6 +30,9 @@ Tài liệu này là nguồn sự thật chung cho Claude, Codex và các cộng
 - GitHub Pages/CDN: phục vụ HTML, JS, hình ảnh và JSON công khai.
 - `cache.js` v5: cache stale-while-revalidate và menu điện thoại dùng chung.
 - Không lưu token, mật khẩu, API key hoặc khóa quản trị trong kho/tài liệu.
+- Các GET cá nhân (`profile`, `tiendo`, `nhiemvu`) cache riêng theo URL trên đúng trình duyệt, hiện dữ liệu cũ ngay rồi cập nhật nền; không xuất thành JSON công khai.
+- `lichlive`, `settings`, `huongdan`, `baihoc`, `khoaconfig`, `danhsachde` ưu tiên JSON công khai; khi thiếu file sẽ tự quay về GAS.
+- Nội dung đề, đáp án, tài khoản, điểm và dữ liệu quản trị không được sinh thành JSON công khai.
 
 ### Luồng dữ liệu khóa học nhanh
 
@@ -40,6 +43,8 @@ scripts/sync-public-data.mjs
     ↓
 data/baihoc.json
 data/khoaconfig.json
+data/settings.json
+data/huongdan.json
 data/quiz-index.json
 data/quizzes/quiz-*.json
     ↓ GitHub Pages/CDN
@@ -104,8 +109,8 @@ baihoc.html
 
 ## Việc có thể làm tiếp
 
-- Tối ưu các luồng đăng nhập/hồ sơ còn gọi GAS trực tiếp.
-- Tối ưu thao tác Admin bằng phản hồi lạc quan và hàng đợi khi phù hợp.
+- Đo lại thời gian thực tế sau mỗi lần Apps Script hoặc dung lượng dữ liệu thay đổi lớn.
+- Với thao tác ghi Admin, chỉ dùng phản hồi lạc quan khi không làm giảm tính đúng đắn; thao tác hàng loạt luôn đọc dữ liệu GAS mới nhất.
 - Theo dõi độ ổn định của workflow đồng bộ và dung lượng các file quiz.
 - Cập nhật `apps-script-CAPNHAT.txt` khi mã GAS thật thay đổi.
 
@@ -119,6 +124,8 @@ baihoc.html
   - Đo trên website: `baihoc.json` khoảng 0,64 giây; `khoaconfig.json` và `quiz-index.json` khoảng 0,51 giây.
   - 42 bài học, 15 cấu hình, 268 câu hỏi; 7/7 mã bài có quiz đã khớp.
   - Hai workflow triển khai và đồng bộ đã chạy thành công.
+  - Mở rộng cache sang hồ sơ, nhiệm vụ, tiến độ, thông báo, lịch live, hướng dẫn, thi thử và trò chơi.
+  - Admin tải bài học/cấu hình/thiết lập song song; ưu tiên dữ liệu CDN và cache cục bộ, nhưng buộc đọc GAS mới sau thao tác sửa.
+  - Ngân hàng câu hỏi Admin có cache riêng; đề, đáp án, tài khoản và điểm không bị công khai hóa.
 - Kiểm tra đã chạy: cú pháp JavaScript, thẻ `</html>`, parse JSON, đối chiếu mã quiz, HTTP 200 trên website thật.
 - Bước tiếp theo: cập nhật mục này sau mỗi thay đổi đáng kể, không thêm một sổ bàn giao cạnh tranh.
-
