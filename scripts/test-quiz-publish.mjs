@@ -2,12 +2,23 @@
 //   1) Khi buildQuizGrouping phát hiện lỗi (migration-in-progress/alias-
 //      collision/duplicate-id), applyQuizPublishPlan() TUYỆT ĐỐI không đụng
 //      vào snapshot cũ.
-//   2) (FAULT-INJECTION, yêu cầu review vòng 3) Nếu quá trình ghi file MỚI bị
-//      lỗi giữa chừng (vd hết dung lượng đĩa ở file thứ 2), quiz-index.json
-//      CŨ và mọi file nó đang tham chiếu phải còn NGUYÊN VẸN byte-for-byte.
-//   3) (FAULT-INJECTION) Nếu lỗi xảy ra khi ghi/rename quiz-index.json mới,
-//      snapshot cũ vẫn dùng được bình thường; file mới dư (đã ghi thành công
-//      trước khi lỗi) có thể được dọn ở lần chạy sau, không cần dọn ngay.
+//   2) (FAULT-INJECTION, vòng 3) Nếu quá trình ghi file MỚI bị lỗi giữa chừng
+//      (vd hết dung lượng đĩa ở file thứ 2), quiz-index.json CŨ và mọi file
+//      nó đang tham chiếu phải còn NGUYÊN VẸN byte-for-byte.
+//   3) (FAULT-INJECTION, vòng 3) Nếu lỗi xảy ra khi ghi/rename quiz-index.json
+//      mới, snapshot cũ vẫn dùng được bình thường; file mới dư (đã ghi thành
+//      công trước khi lỗi) có thể được dọn ở lần chạy sau, không cần dọn ngay.
+//   4) (vòng 4, theo review Codex) applyQuizPublishPlan() KHÔNG được coi
+//      "readFile thành công" (file tồn tại) là bằng chứng nội dung đã đúng -
+//      nếu 1 file content-addressed đã tồn tại nhưng nội dung bị CẮT CỤT/SAI
+//      (mô phỏng lần chạy trước bị ngắt giữa chừng đúng lúc đang ghi file
+//      đó), lần chạy này PHẢI phát hiện sai khác và ghi lại đầy đủ (qua file
+//      tạm + rename), KHÔNG được bỏ qua rồi để index mới trỏ tới file hỏng.
+//   5) (FAULT-INJECTION, vòng 4) Lỗi khi ghi file TẠM của 1 quiz file (không
+//      phải index) cũng phải giữ nguyên snapshot cũ - và không để lại file
+//      tạm mồ côi nếu dọn được.
+//   6) Sau MỌI kịch bản (kể cả các fault-injection), quiz-index.json (nếu có)
+//      không bao giờ được trỏ tới file thiếu hoặc JSON hỏng - assertIndexConsistent().
 // Chạy: node scripts/test-quiz-publish.mjs
 import assert from 'node:assert/strict';
 import { mkdtemp, mkdir, readFile, writeFile, readdir, writeFile as writeFileReal } from 'node:fs/promises';
@@ -42,6 +53,38 @@ async function makeTempQuizDir() {
     quizIndexFile: path.join(root, 'quiz-index.json'),
     quizWarningsFile: path.join(root, 'quiz-warnings.json')
   };
+}
+
+// Xác nhận quiz-index.json (nếu tồn tại) KHÔNG BAO GIỜ trỏ tới file thiếu
+// hoặc JSON hỏng - gọi sau MỌI kịch bản test (kể cả các fault-injection) để
+// đảm bảo bất kể thành công hay lỗi giữa chừng, trạng thái trên đĩa luôn ở
+// dạng mà 1 client đọc quiz-index.json rồi tải file nó trỏ tới sẽ KHÔNG BAO
+// GIỜ gặp 404 hay JSON.parse lỗi.
+async function assertIndexConsistent(paths, label) {
+  let indexRaw;
+  try {
+    indexRaw = await readFile(paths.quizIndexFile, 'utf8');
+  } catch {
+    return; // chưa từng publish thành công lần nào - không có gì để kiểm tra
+  }
+  const index = JSON.parse(indexRaw); // phải là JSON hợp lệ - nếu không, assert này tự ném lỗi rõ ràng
+  for (const [key, entry] of Object.entries(index.lessons || {})) {
+    const fileName = String(entry.file || '').split('?')[0].replace(/^data\/quizzes\//, '');
+    const filePath = path.join(paths.quizDir, fileName);
+    let content;
+    try {
+      content = await readFile(filePath, 'utf8');
+    } catch (e) {
+      throw new Error(`[${label}] quiz-index.json trỏ tới file KHÔNG TỒN TẠI cho khoá "${key}": ${fileName} (${e.message})`);
+    }
+    let parsed;
+    try {
+      parsed = JSON.parse(content);
+    } catch (e) {
+      throw new Error(`[${label}] file "${fileName}" (khoá "${key}") mà quiz-index.json trỏ tới KHÔNG PHẢI JSON hợp lệ: ${e.message}`);
+    }
+    assert.ok(Array.isArray(parsed), `[${label}] file "${fileName}" (khoá "${key}") phải là mảng câu hỏi`);
+  }
 }
 
 // Gieo sẵn 1 snapshot "tốt" (cũ) trong thư mục tạm để kiểm tra không bị đụng tới.
@@ -92,6 +135,8 @@ for (const [label, warnLessons, warnRows] of [
 
     const warningsRaw = JSON.parse(await readFile(paths.quizWarningsFile, 'utf8'));
     assert.ok(Array.isArray(warningsRaw.warnings) && warningsRaw.warnings.length >= 1, 'phải ghi quiz-warnings.json để admin biết');
+
+    await assertIndexConsistent(paths, label);
   });
 }
 
@@ -121,6 +166,8 @@ await check('Gộp sạch (không cảnh báo) -> ghi file mới + index mới, 
 
   const filesInDir = await readdir(paths.quizDir);
   assert.deepEqual(filesInDir, [plan.files[0].fileName], 'file cũ (quiz-0001.json) phải đã bị xoá, chỉ còn file mới');
+
+  await assertIndexConsistent(paths, 'gop-sach');
 });
 
 await check('Nội dung 1 bài KHÔNG đổi giữa 2 lần chạy -> tên file giữ nguyên, không ghi lại, file cũ (được index cũ tham chiếu) không hề bị đụng tới', async () => {
@@ -142,6 +189,8 @@ await check('Nội dung 1 bài KHÔNG đổi giữa 2 lần chạy -> tên file 
 
   const contentAfterRun2 = await readFile(path.join(paths.quizDir, fileName1), 'utf8');
   assert.equal(contentAfterRun2, contentAfterRun1, 'nội dung file không được đổi khi dữ liệu nguồn không đổi');
+
+  await assertIndexConsistent(paths, 'noi-dung-khong-doi');
 });
 
 await check('Nội dung 1 bài THAY ĐỔI giữa 2 lần chạy -> ra tên file MỚI, file CŨ (index cũ đang tham chiếu) không bị ghi đè', async () => {
@@ -175,6 +224,95 @@ await check('Nội dung 1 bài THAY ĐỔI giữa 2 lần chạy -> ra tên file
   const filesInDir = await readdir(paths.quizDir);
   assert.ok(!filesInDir.includes(fileNameV1) || (await readFile(path.join(paths.quizDir, fileNameV1), 'utf8')) === contentV1Before,
     'nếu file cũ (tên v1) còn tồn tại trên đĩa, nội dung của nó phải VẪN LÀ nội dung v1 - không được bị ghi đè bởi nội dung v2');
+
+  await assertIndexConsistent(paths, 'noi-dung-thay-doi');
+});
+
+await check('File content-addressed đã tồn tại nhưng nội dung bị CẮT CỤT/SAI (mô phỏng lần chạy trước bị ngắt giữa chừng) -> publish PHẢI phát hiện và ghi lại đầy đủ, KHÔNG được bỏ qua', async () => {
+  const paths = await makeTempQuizDir();
+
+  // Bài MBT1 (sẽ bị gieo file hỏng) VÀ bài MBT2 (bình thường, dùng để xác
+  // nhận phần còn lại của lần publish này vẫn đúng) - cùng nằm trong 1 lần
+  // publish, giống thực tế sync-public-data.mjs luôn tính lại TOÀN BỘ danh
+  // sách bài học mỗi lần chạy (không phải publish từng phần).
+  const lessons = [lesson('MBT1', 'K', 'C', 'BT1'), lesson('MBT2', 'K', 'C', 'BT2')];
+  const quizRows = [
+    ...Array.from({ length: 4 }, (_, i) => stableRow('MBT1', 't1-' + i)),
+    ...Array.from({ length: 2 }, (_, i) => stableRow('MBT2', 't2-' + i))
+  ];
+  const plan = planQuizPublish(lessons, quizRows);
+  assert.equal(plan.action, 'publish');
+  assert.equal(plan.files.length, 2);
+
+  const truncatedEntry = plan.files.find(f => f.key === 'MBT1');
+  const untouchedEntry = plan.files.find(f => f.key === 'MBT2');
+  const expectedContent = `${JSON.stringify(truncatedEntry.rows)}\n`;
+
+  // Gieo sẵn file ĐÚNG TÊN content-addressed (đúng như plan sẽ tính ra cho
+  // MBT1) nhưng NỘI DUNG BỊ CẮT CỤT - mô phỏng writeFile() của lần chạy
+  // TRƯỚC bị ngắt giữa chừng (mất điện/OOM/crash) ngay sau khi tạo file
+  // nhưng trước khi ghi xong. Đây chính là kịch bản review Codex chỉ ra:
+  // "readFile thành công" (file này ĐỌC ĐƯỢC bình thường, không lỗi) KHÔNG
+  // phải bằng chứng nội dung đã đúng.
+  const truncatedContent = expectedContent.slice(0, Math.floor(expectedContent.length / 2));
+  assert.notEqual(truncatedContent, expectedContent, 'nội dung cắt cụt trong test phải THỰC SỰ khác nội dung đầy đủ');
+  await writeFile(path.join(paths.quizDir, truncatedEntry.fileName), truncatedContent, 'utf8');
+
+  const result = await applyQuizPublishPlan(plan, paths);
+
+  // File bị cắt cụt PHẢI được coi là "đã ghi lại" (không được bỏ qua chỉ vì
+  // tên đã tồn tại). File MBT2 (chưa từng tồn tại) dĩ nhiên cũng được ghi.
+  assert.ok(result.written.includes(truncatedEntry.fileName), 'phải ghi lại file bị cắt cụt, không được bỏ qua chỉ vì tên đã tồn tại');
+  assert.ok(result.written.includes(untouchedEntry.fileName));
+
+  const finalContent = await readFile(path.join(paths.quizDir, truncatedEntry.fileName), 'utf8');
+  assert.equal(finalContent, expectedContent, 'nội dung cuối cùng trên đĩa phải là nội dung ĐẦY ĐỦ, không còn bị cắt cụt');
+
+  const indexAfter = JSON.parse(await readFile(paths.quizIndexFile, 'utf8'));
+  assert.deepEqual(indexAfter, plan.index, 'index mới phải cutover sau khi file đã được ghi lại đầy đủ và đúng cho CẢ 2 bài');
+
+  await assertIndexConsistent(paths, 'file-cat-cut-duoc-ghi-lai');
+});
+
+await check('FAULT-INJECTION: lỗi khi ghi file TẠM của 1 quiz file (không phải index) -> snapshot cũ giữ nguyên, file tạm được dọn nếu có thể', async () => {
+  const paths = await makeTempQuizDir();
+  const { oldIndex, oldFile, oldFileContent } = await seedGoodSnapshot(paths);
+
+  const lessons = [lesson('MBW1', 'K', 'C', 'BW1')];
+  const quizRows = Array.from({ length: 3 }, (_, i) => stableRow('MBW1', 'w1-' + i));
+  const plan = planQuizPublish(lessons, quizRows);
+  assert.equal(plan.action, 'publish');
+  const targetFileName = plan.files[0].fileName;
+
+  // Chỉ chặn ghi vào file TẠM của CHÍNH quiz file này (tên dạng
+  // ".<fileName>.tmp-...") - phân biệt với file tạm của index
+  // ('.quiz-index.json.tmp-...') đã có test riêng ở trên.
+  const faultyWriteFile = async (filePath, ...rest) => {
+    if (String(filePath).includes(`.${targetFileName}.tmp-`)) {
+      throw new Error('Giả lập lỗi đĩa khi ghi file tạm của 1 quiz file');
+    }
+    return writeFileReal(filePath, ...rest);
+  };
+
+  await assert.rejects(
+    () => applyQuizPublishPlan(plan, paths, { writeFile: faultyWriteFile }),
+    /Giả lập lỗi đĩa khi ghi file tạm của 1 quiz file/
+  );
+
+  const indexAfter = JSON.parse(await readFile(paths.quizIndexFile, 'utf8'));
+  assert.deepEqual(indexAfter, oldIndex, 'quiz-index.json CŨ phải giữ nguyên (lỗi xảy ra trước khi kịp cutover)');
+
+  const oldFileContentAfter = await readFile(path.join(paths.quizDir, oldFile), 'utf8');
+  assert.equal(oldFileContentAfter, oldFileContent, 'file cũ mà index cũ tham chiếu vẫn còn nguyên vẹn');
+
+  // File đích (targetFileName) KHÔNG được tồn tại - vì rename() chưa bao giờ
+  // chạy tới (writeFile file tạm đã lỗi trước đó).
+  const filesInDir = await readdir(paths.quizDir);
+  assert.ok(!filesInDir.includes(targetFileName), 'file đích chưa từng được rename() vào vì file tạm ghi lỗi trước đó');
+  // Không được để lại file tạm mồ côi (đã được dọn trong catch của applyQuizPublishPlan).
+  assert.ok(!filesInDir.some(f => f.includes(`.${targetFileName}.tmp-`)), 'file tạm của lần ghi lỗi phải được dọn, không để mồ côi trên đĩa');
+
+  await assertIndexConsistent(paths, 'loi-ghi-file-tam-cua-1-quiz-file');
 });
 
 await check('FAULT-INJECTION: lỗi khi ghi file MỚI thứ 2 -> quiz-index.json cũ + file nó tham chiếu GIỮ NGUYÊN byte-for-byte', async () => {
@@ -212,6 +350,8 @@ await check('FAULT-INJECTION: lỗi khi ghi file MỚI thứ 2 -> quiz-index.jso
 
   const oldFileContentAfter = await readFile(path.join(paths.quizDir, oldFile), 'utf8');
   assert.equal(oldFileContentAfter, oldFileContent, 'file quiz CŨ (đang được index cũ tham chiếu) phải còn nguyên byte-for-byte');
+
+  await assertIndexConsistent(paths, 'loi-ghi-file-moi-thu-2');
 });
 
 await check('FAULT-INJECTION: lỗi khi ghi file TẠM của index -> snapshot cũ vẫn dùng được, file mới dư chờ dọn ở lần sau', async () => {
@@ -251,6 +391,8 @@ await check('FAULT-INJECTION: lỗi khi ghi file TẠM của index -> snapshot c
   // snapshot cũ - trang web vẫn phục vụ đúng dữ liệu qua quiz-index.json cũ.
   const filesInDir = await readdir(paths.quizDir);
   assert.ok(filesInDir.includes(oldFile), 'file cũ vẫn phải còn trong thư mục');
+
+  await assertIndexConsistent(paths, 'loi-ghi-file-tam-cua-index');
 });
 
 await check('FAULT-INJECTION: lỗi khi rename() file tạm thành quiz-index.json -> snapshot cũ vẫn dùng được', async () => {
@@ -275,6 +417,8 @@ await check('FAULT-INJECTION: lỗi khi rename() file tạm thành quiz-index.js
 
   const oldFileContentAfter = await readFile(path.join(paths.quizDir, oldFile), 'utf8');
   assert.equal(oldFileContentAfter, oldFileContent, 'file cũ mà index cũ tham chiếu vẫn còn nguyên vẹn');
+
+  await assertIndexConsistent(paths, 'loi-rename-index');
 });
 
 await check('fileNameForEntry: cùng khoá + cùng nội dung -> cùng tên; đổi nội dung -> đổi tên dù cùng khoá', () => {

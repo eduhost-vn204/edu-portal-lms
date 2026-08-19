@@ -23,10 +23,18 @@
 //      cau hoi da thay doi, nen ghi de o buoc 1 sẽ pha snapshot dang duoc
 //      index CU (chua kip thay) tham chieu.
 //   3) Thu tu ghi bat buoc:
-//        a. Ghi TOAN BO file quiz-*.json MOI (ten content-addressed, khong
-//           trung ten voi file nao dang duoc quiz-index.json HIEN TAI tham
-//           chieu) - neu buoc nay loi giua chung, quiz-index.json va moi file
-//           no dang tro toi VAN NGUYEN VEN (chua bi dung toi o buoc nay).
+//        a. Voi MOI file quiz-*.json trong ke hoach: neu file dung ten
+//           content-addressed nay DA TON TAI, PHAI DOC VA SO SANH noi dung
+//           that su voi noi dung ky vong - KHONG duoc coi "doc thanh cong"
+//           (file ton tai) la bang chung noi dung dung, vi lan chay TRUOC co
+//           the da bi ngat giua chung va de lai 1 file dung ten nhung noi
+//           dung BI CAT CUT/SAI. Neu noi dung khop -> bo qua. Neu khong ton
+//           tai hoac noi dung khong khop -> ghi noi dung ky vong vao file TAM
+//           cung thu muc roi rename() sang dung ten (atomic tren POSIX, nen
+//           tai bat ky thoi diem nao file ton tai duoi ten content-addressed,
+//           noi dung CHAC CHAN da day du/dung). Neu buoc nay loi giua chung,
+//           quiz-index.json va moi file no dang tro toi VAN NGUYEN VEN (chua
+//           bi dung toi o buoc nay).
 //        b. CHI sau khi (a) xong TOAN BO, ghi quiz-index.json MOI: ghi ra 1
 //           file TAM trong CUNG thu muc data/ (dam bao cung filesystem) roi
 //           rename() sang quiz-index.json - rename() la thao tac ATOMIC tren
@@ -146,23 +154,57 @@ export async function applyQuizPublishPlan(plan, paths, fsDeps = {}) {
   // plan.action === 'publish'
   await mkdir(quizDir, { recursive: true });
 
-  // BUOC (a): ghi TOAN BO file MOI truoc. Ten content-addressed nen file nao
-  // da ton tai dung ten nay chac chan da co noi dung giong het (bo qua, khong
-  // ghi lai) - file nao chua ton tai la file THAT SU MOI, khong trung ten voi
-  // bat ky file nao dang duoc quiz-index.json HIEN TAI (chua doi) tham chieu.
-  // Neu vong lap nay nem loi giua chung (vd het dung luong dia), TOAN BO
+  // BUOC (a): ghi TOAN BO file MOI truoc. QUAN TRONG (sua theo review Codex -
+  // "readFile thanh cong khong phai bang chung file da hoan chinh"): KHONG
+  // duoc coi readFile() THANH CONG la du de bo qua ghi lai - phai SO SANH noi
+  // dung that su voi expectedContent. Neu lan chay TRUOC bi ngat giua chung
+  // (vd mat dien/OOM) ngay sau khi writeFile() bat dau nhung truoc khi ghi
+  // xong, co the de lai 1 file dung TEN content-addressed nhung noi dung BI
+  // CAT CUT/SAI - neu chi kiem tra "ton tai" ma khong kiem tra noi dung, lan
+  // chay nay se am tham BO QUA file hong do, roi quiz-index.json MOI se tro
+  // toi 1 file JSON hong.
+  //   - Neu file dich ton tai VA noi dung KHOP CHINH XAC expectedContent ->
+  //     bo qua, khong ghi lai (that su khong doi, tiet kiem I/O).
+  //   - Neu file dich KHONG ton tai, HOAC noi dung KHONG khop (bao gom truong
+  //     hop file cu bi cat cut/hong) -> ghi expectedContent vao 1 file TAM
+  //     trong CUNG thu muc data/quizzes/, roi rename() sang dung ten
+  //     content-addressed. Vi rename() la atomic tren POSIX, tai BAT KY thoi
+  //     diem nao file ton tai duoi ten content-addressed nay, noi dung cua no
+  //     CHAC CHAN da duoc ghi day du va dung - khong bao gio co trang thai
+  //     "dang ghi do" duoi ten cuoi cung. Day chinh la dieu kien de
+  //     quiz-index.json MOI duoc phep tham chieu toi no.
+  // Neu 1 buoc trong vong lap nay nem loi giua chung (vd het dung luong dia),
+  // file TAM cua RIENG lan ghi dang loi do se duoc don (neu con ton tai), con
   // quiz-index.json + moi file no dang tro toi VAN CHUA BI DUNG TOI o day.
   const written = [];
   for (const f of plan.files) {
-    let alreadyExists = false;
+    const targetPath = path.join(quizDir, f.fileName);
+    const expectedContent = `${JSON.stringify(f.rows)}\n`;
+
+    let alreadyCorrect = false;
     try {
-      await readFile(path.join(quizDir, f.fileName), 'utf8');
-      alreadyExists = true;
+      const existingContent = await readFile(targetPath, 'utf8');
+      alreadyCorrect = existingContent === expectedContent;
     } catch {
-      alreadyExists = false;
+      alreadyCorrect = false;
     }
-    if (alreadyExists) continue; // trung ten content-addressed -> noi dung da giong het, khong can ghi lai
-    await writeFile(path.join(quizDir, f.fileName), `${JSON.stringify(f.rows)}\n`, 'utf8');
+    if (alreadyCorrect) continue; // ten VA noi dung deu khop -> khong can ghi lai
+
+    const tmpFilePath = path.join(
+      quizDir,
+      `.${f.fileName}.tmp-${process.pid}-${crypto.randomBytes(6).toString('hex')}`
+    );
+    try {
+      await writeFile(tmpFilePath, expectedContent, 'utf8');
+      await rename(tmpFilePath, targetPath);
+    } catch (err) {
+      // Don file tam cua CHINH lan ghi nay neu con do dang tren dia - KHONG
+      // dung toi targetPath (co the dang la file hong cua lan chay truoc, co
+      // the la khong ton tai - ca 2 truong hop deu KHONG duoc dong tay vao,
+      // de lan chay SAU tu phat hien lai va ghi lai dung).
+      await rm(tmpFilePath, { force: true }).catch(() => {});
+      throw err;
+    }
     written.push(f.fileName);
   }
 
