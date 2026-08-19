@@ -1,5 +1,6 @@
-import { mkdir, readdir, rm, writeFile } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { planQuizPublish, applyQuizPublishPlan } from './quiz-publish.mjs';
 
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec';
 const root = path.resolve(import.meta.dirname, '..');
@@ -64,6 +65,15 @@ if (!lessons.length) throw new Error('Không nhận được dữ liệu BaiHoc;
 
 await mkdir(quizDir, { recursive: true });
 await writeJson(path.join(dataDir, 'baihoc.json'), lessons);
+// FIX (Codex review 19/8): khoaconfig/lichlive/danhsachde KHONG con dung guard
+// "rong thi giu file cu" nua. Rong o 3 loai nay CO THE la trang thai hop le that
+// (vd giao vien xoa het lich live tuan nay, xoa het de thi cu) - neu am tham giu
+// file cu khi khong co tin hieu/version xac nhan tu backend rang du lieu rong la
+// LOI (khong phai giao vien chu dong xoa that), website se giu mai du lieu da bi
+// xoa hop le, khong bao gio phan anh dung trang thai that. Quay lai hanh vi ghi
+// truc tiep nhu truoc, CHI rieng quiz (cau hoi luyen tap - rong bat ngo rui ro cao
+// hon nhieu vi anh huong truc tiep den viec hoc, kho phan biet loi/that su rong o
+// muc dong hang loat) moi co lop bao ve rieng (xem duoi).
 await writeJson(path.join(dataDir, 'khoaconfig.json'), configs);
 await writeJson(path.join(dataDir, 'lichlive.json'), liveRows);
 await writeJson(path.join(dataDir, 'danhsachde.json'), exams);
@@ -72,56 +82,32 @@ if (guideData) await writeJson(path.join(dataDir, 'huongdan.json'), guideData);
 
 const examRows = rowsOf(examData, ['data', 'danhsachde']);
 
-if (quizData) {
-const grouped = new Map();
-const normalize = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '');
-const lessonAliases = new Map();
-const stableLessonKeys = new Set();
-for (const lesson of lessons) {
-  const stableKey = String(lesson?.MaBai || '').trim();
-  if (!stableKey) continue;
-  stableLessonKeys.add(stableKey);
-  const legacyKey = [lesson.KhoaHoc, lesson.Chuong, lesson.TenBai].map(normalize).join('|');
-  lessonAliases.set(legacyKey, stableKey);
-}
-// Neu MaBai moi da co du lieu, do la nguon chuan. Khong tron them cac dong
-// baiKey kieu cu (KhoaHoc|||Chuong|||TenBai), neu khong se cong don 30+20=50.
-const stableKeysWithRows = new Set(quizRows
-  .map(row => String(row?.baiKey || '').trim())
-  .filter(key => stableLessonKeys.has(key)));
-for (const row of quizRows) {
-  const rawKey = String(row?.baiKey || '').trim();
-  let key = rawKey;
-  if (!key) continue;
-  if (key.includes('|||')) {
-    const legacyKey = key.split('|||').map(normalize).join('|');
-    const mappedKey = lessonAliases.get(legacyKey);
-    if (mappedKey && stableKeysWithRows.has(mappedKey)) continue;
-    key = mappedKey || key;
+// FIX 19/8: truoc day, neu quizData KHAC null nhung quizRows rong (0 dong -
+// vi du GAS tra ve mang rong do loi tam thoi, KHONG phai do fetchOptional bat
+// loi mang), code cu van chay tiep vao khoi duoi va XOA SACH toan bo file
+// quiz-*.json + ghi quiz-index.json rong - lam MAT toan bo cau hoi luyen tap
+// dang hien co tren web hoc sinh dù nguon that su khong loi han. Gio coi
+// truong hop nay GIONG HET fetch that bai: bo qua, giu nguyen file cu.
+if (quizData && quizRows.length === 0) {
+  console.warn('⚠️  baitaptracnghiem: nguồn trả về RỖNG (0 dòng) — GIỮ NGUYÊN toàn bộ file quiz-*.json và quiz-index.json cũ, KHÔNG xoá.');
+} else if (quizData) {
+  // FIX (Codex review 19/8): plan/apply tach rieng (scripts/quiz-publish.mjs) -
+  // neu buildQuizGrouping phat hien canh bao (migration-in-progress/alias-
+  // collision/duplicate-id) thi KHONG ghi bo du lieu moi (co kha nang sai) de,
+  // chi ghi quiz-warnings.json de bao cho admin. Khi an toan de xuat ban, ghi
+  // HET file moi + index moi TRUOC, chi don dep file cu KHONG CON DUNG toi SAU
+  // khi da ghi thanh cong (xem chi tiet trong quiz-publish.mjs).
+  const buildVersion = Date.now().toString(36);
+  const plan = planQuizPublish(lessons, quizRows, { buildVersion });
+  if (plan.action === 'blocked') {
+    console.warn(`⚠️  Phát hiện ${plan.warnings.length} cảnh báo khi gộp câu hỏi luyện tập — KHÔNG xuất bản dữ liệu mới, GIỮ NGUYÊN toàn bộ quiz-*.json và quiz-index.json cũ:`);
+    for (const w of plan.warnings) console.warn('   -', JSON.stringify(w));
   }
-  if (!grouped.has(key)) grouped.set(key, []);
-  grouped.get(key).push(row);
-}
-
-const index = { lessons: {} };
-const expectedFiles = new Set();
-const buildVersion = Date.now().toString(36);
-let sequence = 1;
-for (const key of [...grouped.keys()].sort((a, b) => a.localeCompare(b, 'vi'))) {
-  const rows = grouped.get(key).sort((a, b) => (Number(a.thuTu) || 0) - (Number(b.thuTu) || 0));
-  const fileName = `quiz-${String(sequence).padStart(4, '0')}.json`;
-  sequence += 1;
-  expectedFiles.add(fileName);
-  index.lessons[key] = { file: `data/quizzes/${fileName}?v=${buildVersion}`, count: rows.length };
-  await writeJson(path.join(quizDir, fileName), rows);
-}
-
-for (const fileName of await readdir(quizDir)) {
-  if (/^quiz-\d+\.json$/.test(fileName) && !expectedFiles.has(fileName)) {
-    await rm(path.join(quizDir, fileName));
-  }
-}
-await writeJson(path.join(dataDir, 'quiz-index.json'), index);
+  await applyQuizPublishPlan(plan, {
+    quizDir,
+    quizIndexFile: path.join(dataDir, 'quiz-index.json'),
+    quizWarningsFile: path.join(dataDir, 'quiz-warnings.json')
+  });
 }
 
 console.log(`Đã đồng bộ ${lessons.length} bài học, ${configs.length} cấu hình, ${quizRows.length} câu hỏi, ${liveRows.length} lịch live và ${examRows.length} đề.`);
