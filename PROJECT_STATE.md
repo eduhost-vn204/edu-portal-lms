@@ -161,11 +161,12 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ### 23/08/2026 — Hồ sơ công khai từ Bạn bè và Xếp hạng
 
+- Điều chỉnh giao diện lần 2 theo phản hồi: hồ sơ bạn bè mở thành chế độ toàn trang rộng như trang cá nhân, có thanh quay lại, thẻ thông tin, ba ô thống kê và khu vực tương tác; không còn popup nhỏ làm mờ nền.
 - Thêm hộp hồ sơ công khai dùng chung trong `ban-be.js`: ảnh đại diện, họ tên, lớp, giới thiệu; nếu mở từ bảng xếp hạng có thêm thứ hạng và LP.
 - Có thể mở hồ sơ khi bấm kết quả tìm bạn, lời mời, danh sách bạn bè hoặc một dòng trong bảng xếp hạng.
 - Nút hành động theo đúng quan hệ: chưa kết bạn thì gửi lời mời, đã gửi thì hiện trạng thái, đã là bạn thì chuyển sang tab Bạn bè và mở chat.
 - Không hiển thị mật khẩu, số điện thoại/email đầy đủ, điểm thi, tiến độ hay dữ liệu quản trị.
-- `hoso.html` tăng cache-buster lên `ban-be.js?v=3`.
+- `hoso.html` tăng cache-buster lên `ban-be.js?v=4`.
 
 ### 23/08/2026 — Sửa tìm bạn bè
 

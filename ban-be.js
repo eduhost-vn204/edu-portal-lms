@@ -111,24 +111,34 @@
       '.vlxt-bb-btn.no{background:transparent;border:1px solid var(--border);color:var(--gray2);}',
       '.vlxt-bb-btn.pending{background:transparent;border:1px solid var(--border);color:var(--gray2);cursor:default;}',
       '.vlxt-bb-btn[disabled]{opacity:.55;cursor:default;}',
-      '.vlxt-profile-overlay{position:fixed;inset:0;z-index:10050;background:rgba(3,7,18,.68);display:flex;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(3px);}',
-      '.vlxt-profile-card{width:min(420px,100%);background:var(--card,#fff);color:var(--text,#111827);border:1px solid var(--border);border-radius:20px;box-shadow:0 24px 70px rgba(0,0,0,.35);overflow:hidden;}',
+      '.vlxt-profile-overlay{position:fixed;inset:0;z-index:10050;background:var(--bg,#f7f8fa);color:var(--text,#111827);overflow-y:auto;}',
+      'body.dark .vlxt-profile-overlay{background:#0d1117;color:#f0f6fc;}',
+      '.vlxt-profile-pagebar{height:64px;position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:14px;padding:0 max(20px,calc((100% - 848px)/2));background:var(--nav-bg,#fff);border-bottom:1px solid var(--border);}',
+      'body.dark .vlxt-profile-pagebar{background:#0d1117;}',
+      '.vlxt-profile-pagebar b{font-size:15px;}',
+      '.vlxt-profile-close{width:auto;height:36px;padding:0 13px;border:1px solid var(--border);border-radius:10px;background:transparent;color:inherit;font-size:13px;font-weight:700;cursor:pointer;}',
+      '.vlxt-profile-shell{width:min(848px,calc(100% - 32px));margin:24px auto 60px;}',
+      '.vlxt-profile-card{width:100%;background:var(--card,#fff);color:var(--text,#111827);border:1px solid var(--border);border-radius:18px;overflow:hidden;}',
       'body.dark .vlxt-profile-card{background:#161b22;color:#f0f6fc;}',
-      '.vlxt-profile-cover{height:82px;background:linear-gradient(135deg,#0072ff,#7c3aed);position:relative;}',
-      '.vlxt-profile-close{position:absolute;right:12px;top:12px;width:32px;height:32px;border:0;border-radius:50%;background:rgba(0,0,0,.28);color:#fff;font-size:20px;cursor:pointer;}',
-      '.vlxt-profile-body{padding:0 22px 22px;text-align:center;}',
-      '.vlxt-profile-avatar{width:84px;height:84px;margin:-42px auto 10px;border:4px solid var(--card,#fff);border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;overflow:hidden;position:relative;}',
-      'body.dark .vlxt-profile-avatar{border-color:#161b22;}',
+      '.vlxt-profile-body{padding:30px 28px;display:grid;grid-template-columns:88px minmax(0,1fr) auto;gap:5px 18px;align-items:center;}',
+      '.vlxt-profile-avatar{width:76px;height:76px;grid-row:1/4;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:900;overflow:hidden;}',
       '.vlxt-profile-avatar img{width:100%;height:100%;object-fit:cover;}',
-      '.vlxt-profile-name{font-size:20px;font-weight:850;}',
-      '.vlxt-profile-class{margin-top:3px;color:var(--gray2);font-size:13px;}',
-      '.vlxt-profile-bio{margin:14px 0;padding:12px;border-radius:12px;background:rgba(120,120,120,.09);font-size:13px;line-height:1.5;color:var(--gray2);min-height:42px;}',
-      '.vlxt-profile-stats{display:flex;justify-content:center;gap:10px;margin-bottom:16px;}',
-      '.vlxt-profile-stat{min-width:92px;padding:9px 12px;border:1px solid var(--border);border-radius:12px;}',
-      '.vlxt-profile-stat b{display:block;color:var(--blue);font-size:16px;}',
-      '.vlxt-profile-stat span{font-size:11px;color:var(--gray2);}',
-      '.vlxt-profile-actions{display:flex;gap:9px;justify-content:center;}',
+      '.vlxt-profile-name{font-size:21px;font-weight:850;}',
+      '.vlxt-profile-class{color:var(--gray2);font-size:13px;}',
+      '.vlxt-profile-bio{font-size:13px;line-height:1.5;color:var(--gray2);font-style:italic;}',
+      '.vlxt-profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0;}',
+      '.vlxt-profile-stat{min-height:90px;padding:18px 12px;border:1px solid var(--border);border-radius:14px;background:var(--card,#fff);display:flex;flex-direction:column;align-items:center;justify-content:center;}',
+      'body.dark .vlxt-profile-stat{background:#161b22;}',
+      '.vlxt-profile-stat b{display:block;color:var(--blue);font-size:25px;}',
+      '.vlxt-profile-stat span{margin-top:4px;font-size:12px;color:var(--gray2);}',
+      '.vlxt-profile-actions{grid-column:3;grid-row:1/4;display:flex;gap:9px;justify-content:center;}',
       '.vlxt-profile-actions .vlxt-bb-btn{padding:9px 16px;}',
+      '.vlxt-profile-section{background:var(--card,#fff);border:1px solid var(--border);border-radius:14px;overflow:hidden;}',
+      'body.dark .vlxt-profile-section{background:#161b22;}',
+      '.vlxt-profile-tabs{display:flex;border-bottom:1px solid var(--border);}',
+      '.vlxt-profile-tabs span{flex:1;text-align:center;padding:13px;font-size:13px;font-weight:700;}',
+      '.vlxt-profile-tabs span:first-child{color:var(--blue);box-shadow:inset 0 -3px var(--blue);}',
+      '.vlxt-profile-note{padding:28px;text-align:center;color:var(--gray2);font-size:13px;}',
       '.vlxt-bb-badge{background:#ef4444;color:#fff;font-size:10px;font-weight:800;border-radius:10px;',
       'padding:1px 6px;margin-left:6px;}',
       '.vlxt-bb-empty{padding:24px 12px;text-align:center;color:var(--gray2);font-size:13px;}',
@@ -153,7 +163,9 @@
       'font-family:inherit;height:38px;line-height:1.3;}',
       '.vlxt-bb-chat-foot button{width:38px;height:38px;flex-shrink:0;border:none;border-radius:10px;',
       'background:var(--blue);color:#fff;font-size:15px;cursor:pointer;}',
-      '@media(max-width:700px){.vlxt-bb-wrap{flex-direction:column;} .vlxt-bb-chatbox{height:360px;}}'
+      '@media(max-width:700px){.vlxt-bb-wrap{flex-direction:column;} .vlxt-bb-chatbox{height:360px;}',
+      '.vlxt-profile-body{grid-template-columns:68px 1fr;padding:22px 18px}.vlxt-profile-avatar{width:60px;height:60px;}',
+      '.vlxt-profile-actions{grid-column:1/3;grid-row:auto;margin-top:14px}.vlxt-profile-stats{gap:8px}.vlxt-profile-stat{min-height:78px}.vlxt-profile-stat b{font-size:20px;}}'
     ].join('');
     document.head.appendChild(s);
   }
@@ -363,22 +375,34 @@
   }
   function openPublicProfile(seed) {
     seed = seed || {};
+    if (seed.rank == null && Array.isArray(window._vlxtCurrentLbRows)) {
+      var lbIndex = window._vlxtCurrentLbRows.findIndex(function (row) {
+        return String(row.hoten || '').trim().toLowerCase() === String(seed.hoten || '').trim().toLowerCase() &&
+          String(row.lop || '').trim().toLowerCase() === String(seed.lop || '').trim().toLowerCase();
+      });
+      if (lbIndex > -1) {
+        seed.rank = lbIndex + 1;
+        seed.lpTotal = Number(window._vlxtCurrentLbRows[lbIndex].lpTotal) || 0;
+      }
+    }
     closePublicProfile();
     var overlay = document.createElement('div');
     overlay.id = 'vlxt-profile-overlay'; overlay.className = 'vlxt-profile-overlay';
-    overlay.innerHTML = '<div class="vlxt-profile-card" role="dialog" aria-modal="true" aria-label="Hồ sơ học sinh">' +
-      '<div class="vlxt-profile-cover"><button class="vlxt-profile-close" aria-label="Đóng">×</button></div>' +
+    overlay.innerHTML = '<div class="vlxt-profile-pagebar"><button class="vlxt-profile-close" aria-label="Quay lại">← Quay lại</button><b>Hồ sơ học sinh</b></div>' +
+      '<main class="vlxt-profile-shell"><div class="vlxt-profile-card" role="region" aria-label="Hồ sơ học sinh">' +
       '<div class="vlxt-profile-body"><div class="vlxt-profile-avatar">' + escHtml(profileInitials(seed.hoten)) + '</div>' +
       '<div class="vlxt-profile-name">' + escHtml(seed.hoten || 'Học sinh') + '</div>' +
       '<div class="vlxt-profile-class">' + (seed.lop ? 'Lớp ' + escHtml(seed.lop) : 'Đang tải thông tin...') + '</div>' +
-      '<div class="vlxt-profile-bio">Đang tải giới thiệu...</div><div class="vlxt-profile-stats"></div>' +
-      '<div class="vlxt-profile-actions"></div></div></div>';
+      '<div class="vlxt-profile-bio">Đang tải giới thiệu...</div><div class="vlxt-profile-actions"></div></div></div>' +
+      '<div class="vlxt-profile-stats"></div><div class="vlxt-profile-section"><div class="vlxt-profile-tabs">' +
+      '<span>👤 Hồ sơ</span><span>🏆 Thành tích</span><span>🤝 Tương tác</span></div>' +
+      '<div class="vlxt-profile-note">Thông tin công khai của học sinh trên Vật Lý Xuân Trường</div></div></main>';
     document.body.appendChild(overlay);
-    overlay.onclick = function (e) { if (e.target === overlay) closePublicProfile(); };
     overlay.querySelector('.vlxt-profile-close').onclick = closePublicProfile;
     var stats = overlay.querySelector('.vlxt-profile-stats');
-    if (seed.rank != null) stats.innerHTML += '<div class="vlxt-profile-stat"><b>#' + escHtml(seed.rank) + '</b><span>Xếp hạng</span></div>';
-    if (seed.lpTotal != null) stats.innerHTML += '<div class="vlxt-profile-stat"><b>' + escHtml(seed.lpTotal) + '</b><span>LP</span></div>';
+    stats.innerHTML = '<div class="vlxt-profile-stat"><b>' + (seed.lpTotal != null ? escHtml(seed.lpTotal) : '—') + '</b><span>⚡ Tổng LP</span></div>' +
+      '<div class="vlxt-profile-stat"><b>' + (seed.rank != null ? '#' + escHtml(seed.rank) : '—') + '</b><span>🏆 Xếp hạng</span></div>' +
+      '<div class="vlxt-profile-stat"><b>—</b><span>🏅 Điểm cao nhất</span></div>';
     resolveProfileKey(seed).then(function (key) {
       if (!document.body.contains(overlay)) return;
       if (!key) { overlay.querySelector('.vlxt-profile-bio').textContent = 'Học sinh chưa cập nhật phần giới thiệu.'; return; }
