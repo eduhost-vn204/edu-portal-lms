@@ -36,6 +36,7 @@ function doGet(e) {
     if (type === 'nhiemvu')          return getNhiemVu(hs);
     if (type === 'settings')         return getSettings();
     if (type === 'danhsachthietbi')  return getDanhSachThietBi(e);
+    if (type === 'searchprofiles')   return searchPublicProfiles(e);
     if (type === 'lichlive')          return getLiveSessions();
     return getExamQuestions('de01'); // backward compat — không có type param
   } catch(err) {
@@ -953,6 +954,42 @@ function getDanhSachThietBi(e) {
     });
   }
   return jsonOut({ ok: true, data: result });
+}
+
+// ── GET: Tìm hồ sơ công khai để kết bạn ─────────────────────
+// Chỉ trả mã tài khoản, họ tên và lớp; không trả mật khẩu, điểm hay thông tin riêng tư.
+function searchPublicProfiles(e) {
+  const requester = String(e.parameter.hs || '').trim();
+  const rawQuery  = String(e.parameter.q || '').trim();
+  const query = normalizeSearchText(rawQuery);
+  const digits = rawQuery.replace(/\D/g, '');
+  if (!requester || (!query && digits.length < 4)) return jsonOut({ ok: true, data: [] });
+  if (query.length < 3 && digits.length < 4) return jsonOut({ ok: true, data: [] });
+
+  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
+  const rows = sheet.getDataRange().getValues();
+  let requesterExists = false;
+  for (let i = 1; i < rows.length; i++) {
+    if (sameTaiKhoan(rows[i][0], requester)) { requesterExists = true; break; }
+  }
+  if (!requesterExists) return jsonOut({ ok: false, msg: 'Tài khoản chưa đăng nhập hoặc không còn tồn tại.' });
+
+  const result = [];
+  for (let i = 1; i < rows.length && result.length < 20; i++) {
+    const account = String(rows[i][0] || '').trim();
+    if (!account || sameTaiKhoan(account, requester)) continue;
+    const name = String(rows[i][1] || '').trim();
+    const accountDigits = account.replace(/\D/g, '');
+    const nameMatch = query.length >= 3 && normalizeSearchText(name).indexOf(query) !== -1;
+    const accountMatch = digits.length >= 4 && accountDigits.indexOf(digits) !== -1;
+    if (nameMatch || accountMatch) result.push({ key: account.toLowerCase(), hoten: name, lop: rows[i][2] || '' });
+  }
+  return jsonOut({ ok: true, data: result });
+}
+
+function normalizeSearchText(value) {
+  return String(value || '').toLowerCase().normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/\s+/g, ' ').trim();
 }
 
 // ── POST Admin: Mở khoá thiết bị (cho học thử lại) ───────────

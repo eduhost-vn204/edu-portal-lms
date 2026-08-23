@@ -159,6 +159,16 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 23/08/2026 — Sửa tìm bạn bè
+
+- Nguyên nhân: `ban-be.js` chỉ tìm trong `profiles_public` trên Firebase; production lúc kiểm tra chỉ có 4 hồ sơ nên đa số tài khoản thật không thể tìm thấy.
+- Thêm GET `type=searchprofiles` trong bản tham chiếu Apps Script: yêu cầu tài khoản người tìm phải tồn tại, tìm không dấu theo tên hoặc từ 4 chữ số, tối đa 20 kết quả, chỉ trả mã tài khoản/họ tên/lớp.
+- `ban-be.js` gộp kết quả Firebase với API tìm hồ sơ; có trạng thái “Đang tìm” và thông báo lỗi mạng rõ ràng; sửa key Firebase hợp lệ cho tài khoản email.
+- `hoso.html` tăng cache-buster `ban-be.js?v=2`.
+- Không đồng bộ/bulk-publish danh sách học sinh vào Firebase công khai; phương án đó đã loại bỏ vì rủi ro riêng tư.
+- Kiểm tra cú pháp `ban-be.js`, script trong `hoso.html`, và `apps-script-CAPNHAT.txt` đều qua.
+- Điều kiện để tìm toàn bộ tài khoản hoạt động trên production: phát hành bản Apps Script chứa `searchprofiles` thành phiên bản web app mới.
+
 ### 23/08/2026 — Sửa quản lý tài khoản và đồng bộ Premium
 
 - Kho Student: sửa `auth.js`, `baihoc.html`, `apps-script-CAPNHAT.txt`.

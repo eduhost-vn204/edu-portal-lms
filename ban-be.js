@@ -32,7 +32,7 @@
   function normKey(s) {
     s = String(s || '').trim();
     if (!s) return '';
-    if (s.indexOf('@') > -1) return s.toLowerCase(); // email (đăng nhập Google)
+    if (s.indexOf('@') > -1) return s.toLowerCase().replace(/[.#$\[\]\/]/g, '_'); // key Firebase hợp lệ
     return s.replace(/\D/g, '');
   }
   function escHtml(s) {
@@ -235,6 +235,19 @@
     });
   }
 
+  function searchProfilesGAS(term) {
+    if (typeof VLXT_GAS === 'undefined') return Promise.resolve([]);
+    var url = VLXT_GAS + '?type=searchprofiles&hs=' + encodeURIComponent(me.sdt) +
+      '&q=' + encodeURIComponent(term) + '&t=' + Date.now();
+    return fetch(url, { cache: 'no-store' }).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    }).then(function (d) {
+      if (!d || d.ok !== true || !Array.isArray(d.data)) return [];
+      return d.data;
+    });
+  }
+
   function friendState(targetKey, requestsIn, requestsOut) {
     if (friendsCache[targetKey]) return 'friend';
     if (requestsOut && requestsOut[targetKey]) return 'sent';
@@ -245,10 +258,12 @@
   function doSearch(term, resultsEl) {
     term = term.trim().toLowerCase();
     if (!term) { resultsEl.innerHTML = ''; return; }
+    resultsEl.innerHTML = '<div class="vlxt-bb-empty">Đang tìm...</div>';
     Promise.all([
       loadSearchCache(),
       db.ref('friend_requests/' + mySdt).once('value').then(function (s) { return s.val() || {}; }),
-      db.ref('friend_outgoing/' + mySdt).once('value').then(function (s) { return s.val() || {}; })
+      db.ref('friend_outgoing/' + mySdt).once('value').then(function (s) { return s.val() || {}; }),
+      searchProfilesGAS(term)
     ]).then(function (r) {
       var all = r[0], reqIn = r[1], reqOut = r[2];
       var termDigits = term.replace(/\D/g, '');
@@ -259,6 +274,12 @@
         var nameMatch = (p.hoten || '').toLowerCase().indexOf(term) > -1;
         var sdtMatch = termDigits.length >= 4 && k.indexOf(termDigits) > -1;
         if (nameMatch || sdtMatch) matches.push({ key: k, hoten: p.hoten, lop: p.lop });
+      });
+      // API GAS bổ sung các học sinh chưa từng mở tab Bạn bè/Firebase.
+      (r[3] || []).forEach(function (p) {
+        var key = normKey(p.key);
+        if (!key || key === mySdt || matches.some(function (m) { return m.key === key; })) return;
+        matches.push({ key: key, hoten: p.hoten || '', lop: p.lop || '' });
       });
       matches = matches.slice(0, 20);
       if (!matches.length) { resultsEl.innerHTML = '<div class="vlxt-bb-empty">Không tìm thấy học sinh nào.</div>'; return; }
@@ -281,6 +302,8 @@
         row.appendChild(btn);
         resultsEl.appendChild(row);
       });
+    }).catch(function () {
+      resultsEl.innerHTML = '<div class="vlxt-bb-empty">Không tải được danh sách bạn. Vui lòng thử lại.</div>';
     });
   }
 
