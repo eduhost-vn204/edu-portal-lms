@@ -3237,6 +3237,8 @@ function showUpgrade(courseName){
 ═══════════════════════════════════════════ */
 async function boot(){
     renderWho();
+    // Lấy quyền mới nhất trước khi quyết định khóa/mở khóa học.
+    if(typeof vlxtRefreshUser==='function') await vlxtRefreshUser();
     const [rows] = await Promise.all([fetchLessons(), fetchKhoaConfig(), fetchQuizIndex()]);
     COURSES=buildCourses(rows);
     COURSES.forEach(c=>c.chapters.forEach(ch=>ch.lessons.forEach(l=>{

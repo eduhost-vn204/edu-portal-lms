@@ -159,6 +159,18 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 23/08/2026 — Sửa quản lý tài khoản và đồng bộ Premium
+
+- Kho Student: sửa `auth.js`, `baihoc.html`, `apps-script-CAPNHAT.txt`.
+- Kho Admin: sửa `index.html`, `apps-script-CAPNHAT.txt`.
+- Web học sinh tự tải hồ sơ mới nhất khi mở trang và trước khi kiểm tra quyền khóa học; thay đổi Premium/Free/VIP từ admin không còn yêu cầu đăng xuất rồi đăng nhập lại.
+- Mọi luồng hồ sơ/tiến độ/điểm/nhiệm vụ liên quan tài khoản dùng `sameTaiKhoan`: email chỉ khớp đúng email, SĐT chỉ khớp đúng SĐT; khắc phục lỗi nhiều email cùng bị chuẩn hóa thành chuỗi rỗng.
+- `setVipStatus` bắt buộc `adminKey`, kiểm tra loại tài khoản hợp lệ; Premium lưu vĩnh viễn (`trialExpiry=0`), VIP mới có ngày hết hạn.
+- Xóa tài khoản dọn `TienDo`, `BangVang`, `NhiemVu`, `HoatDong`, sau đó mới xóa `TaiKhoan`.
+- Admin dùng `postAdminWriteWithRetry` và chỉ báo thành công khi máy chủ trả JSON `{ok:true}`; `deleteaccount` được thêm vào danh sách thao tác tự gắn khóa admin.
+- Kiểm tra: `git diff --check`; `node --check auth.js`; kiểm tra cú pháp toàn bộ script trong `baihoc.html` và Admin `index.html`; kiểm tra cú pháp hai bản `apps-script-CAPNHAT.txt` — đều qua.
+- Chưa triển khai production: `git fetch` thất bại vì môi trường không có thông tin xác thực GitHub; mã Apps Script tham chiếu vẫn phải được đưa vào deployment GAS đúng phiên bản trước khi chức năng backend có hiệu lực.
+
 - Ngày: 19/08/2026 (vòng 4, sau khi Codex xác nhận vòng 3 gần đạt nhưng còn 1 lỗi atomic cuối — CHƯA chấp nhận merge)
 - Người thực hiện: Claude
 - Nhánh: `perf/cache-integrity-audit-20260819` — CHỈ repo Student (`edu-portal-lms`) có thay đổi code trong vòng này; repo Admin (`edu-portal-console`) KHÔNG bị đụng tới theo đúng yêu cầu vòng 4. KHÔNG merge/push main, KHÔNG deploy.

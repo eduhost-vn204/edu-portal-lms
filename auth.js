@@ -22,6 +22,23 @@ function vlxtRequireAuth(){
   return u;
 }
 
+// Luôn đối chiếu lại quyền tài khoản với GAS. Nhờ vậy khi admin nâng/hạ cấp,
+// học sinh chỉ cần tải lại trang, không phải đăng xuất rồi đăng nhập lại.
+function vlxtRefreshUser(){
+  var current=vlxtGetUser();
+  if(!current||!current.sdt) return Promise.resolve(current);
+  return fetch(VLXT_GAS+'?type=profile&hs='+encodeURIComponent(current.sdt)+'&t='+Date.now(), {cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(d){
+      if(!d||!d.ok||!d.user) return current;
+      var fresh=Object.assign({},current,d.user);
+      vlxtSaveUser(fresh);
+      window.dispatchEvent(new CustomEvent('vlxt:user-refreshed',{detail:fresh}));
+      return fresh;
+    }).catch(function(){ return current; });
+}
+window.vlxtRefreshUser=vlxtRefreshUser;
+
 function vlxtToggleDropdown(){
   const dd=document.getElementById('vlxt-dropdown');
   if(dd) dd.classList.toggle('open');
@@ -180,7 +197,13 @@ function vlxtRenderWidget(user){
           doneEl.textContent=best;
     
         }
-        vlxtSaveUser(Object.assign({},user,{lpTotal:d.user.lpTotal,mienVideo:d.user.mienVideo,tracNghiemVideo:d.user.tracNghiemVideo,mienLuyenTap:d.user.mienLuyenTap}));
+        // Đồng bộ toàn bộ hồ sơ, đặc biệt loaiTK/trialExpiry sau khi admin nâng cấp.
+        var fresh=Object.assign({},user,d.user);
+        vlxtSaveUser(fresh);
+        if(fresh.loaiTK!==user.loaiTK || Number(fresh.trialExpiry||0)!==Number(user.trialExpiry||0)){
+          vlxtRenderWidget(fresh);
+          window.dispatchEvent(new CustomEvent('vlxt:user-refreshed',{detail:fresh}));
+        }
       }
     }).catch(function(){});
 }

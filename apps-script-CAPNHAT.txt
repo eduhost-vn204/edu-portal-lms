@@ -210,7 +210,7 @@ function loginUser(data) {
   const rows  = sheet.getDataRange().getValues();
   for (let i = 1; i < rows.length; i++) {
     const row = rows[i];
-    if (normSdt(row[0]) === normSdt(data.sdt) &&
+    if (sameTaiKhoan(row[0], data.sdt) &&
         String(row[3]).trim() === String(data.matkhau).trim()) {
       let loaiTK      = row[7] || 'vip';  // mặc định vip cho TK cũ chưa có cột
       let trialExpiry = row[8] ? Number(row[8]) : 0;
@@ -303,7 +303,7 @@ function getProfile(sdt) {
   const rows  = acc.getDataRange().getValues();
   let user    = null;
   for (let i = 1; i < rows.length; i++) {
-    if (normSdt(rows[i][0]) === normSdt(sdt)) {
+    if (sameTaiKhoan(rows[i][0], sdt)) {
       let _loaiTK      = rows[i][7] || 'vip';
       let _trialExpiry = rows[i][8] ? Number(rows[i][8]) : 0;
       if (!_trialExpiry && rows[i][4]) {
@@ -323,7 +323,7 @@ function getProfile(sdt) {
   const bgRows = bg.getDataRange().getValues();
   const scores = [];
   for (let i = 1; i < bgRows.length; i++) {
-    if (normSdt(bgRows[i][2]) === normSdt(sdt)) {
+    if (sameTaiKhoan(bgRows[i][2], sdt)) {
       scores.push({ ten: bgRows[i][0], diem: bgRows[i][3], ngay: bgRows[i][4] });
     }
   }
@@ -332,7 +332,7 @@ function getProfile(sdt) {
   const tdRows = td.getDataRange().getValues();
   const tiendo = [];
   for (let i = 1; i < tdRows.length; i++) {
-    if (normSdt(tdRows[i][0]) === normSdt(sdt)) {
+    if (sameTaiKhoan(tdRows[i][0], sdt)) {
       tiendo.push({ lesson: tdRows[i][1], khoa: tdRows[i][2] });
     }
   }
@@ -440,7 +440,7 @@ function saveScore(data) {
     const acc = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame']);
     const rows = acc.getDataRange().getValues();
     for (let i = 1; i < rows.length; i++) {
-      if (normSdt(rows[i][0]) === normSdt(sdt)) {
+      if (sameTaiKhoan(rows[i][0], sdt)) {
         const cur = Number(rows[i][5]) || 0;
         const newScore = Number(data.score || data.diem || 0);
         acc.getRange(i+1, 6).setValue(Math.max(cur, newScore));
@@ -881,17 +881,22 @@ function saveKhoaConfig(data) {
 // ── POST admin: Đặt VIP cho học sinh ─────────────────────────
 function setVipStatus(data) {
   // Dùng qua admin: { action:'setvipstatus', adminKey:..., sdt:..., loaiTK:'vip'|'free'|'premium', days:30 }
+  const key = String(data.adminKey || '').trim();
+  const ADMIN_KEY = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || 'vlxt_admin_2025';
+  if (key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
   const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
   const rows  = sheet.getDataRange().getValues();
   const target = String(data.sdt || '').trim();
   for (let i = 1; i < rows.length; i++) {
-    if (String(rows[i][0]).trim() === target) {
-      const loaiTK = data.loaiTK || 'vip';
+    if (sameTaiKhoan(rows[i][0], target)) {
+      const loaiTK = ['free','vip','premium'].indexOf(String(data.loaiTK || '').toLowerCase()) !== -1
+        ? String(data.loaiTK).toLowerCase() : 'vip';
       const days   = Number(data.days) || 30;
       const expiry = Date.now() + days * 24 * 60 * 60 * 1000;
       sheet.getRange(i + 1, 8).setValue(loaiTK);
-      sheet.getRange(i + 1, 9).setValue(loaiTK === 'free' ? 0 : expiry);
-      return jsonOut({ ok: true, msg: `Đã cập nhật ${target} → ${loaiTK} (${days} ngày)` });
+      sheet.getRange(i + 1, 9).setValue(loaiTK === 'vip' ? expiry : 0);
+      const han = loaiTK === 'premium' ? 'vĩnh viễn' : (loaiTK === 'free' ? 'miễn phí' : days + ' ngày');
+      return jsonOut({ ok: true, msg: `Đã cập nhật ${target} → ${loaiTK} (${han})` });
     }
   }
   return jsonOut({ ok: false, msg: 'Không tìm thấy học sinh.' });
@@ -975,12 +980,25 @@ function deleteAccount(data) {
   if (key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
   const sdt = String(data.sdt || '').trim();
   if (!sdt) return jsonOut({ ok: false, msg: 'Thiếu sdt' });
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
   const rows = sheet.getDataRange().getValues();
   for (let i = 1; i < rows.length; i++) {
     if (sameTaiKhoan(rows[i][0], sdt)) {
+      // Dọn dữ liệu cá nhân liên quan để lời cảnh báo trên admin đúng với hành vi thật.
+      ['TienDo','BangVang','NhiemVu','HoatDong'].forEach(function(name){
+        const related = ss.getSheetByName(name);
+        if (!related || related.getLastRow() < 2) return;
+        const values = related.getRange(2, 1, related.getLastRow() - 1, related.getLastColumn()).getValues();
+        for (let row = values.length - 1; row >= 0; row--) {
+          // BangVang lưu tài khoản ở cột 3; các bảng còn lại lưu ở cột 1.
+          const accountCol = name === 'BangVang' ? 2 : 0;
+          if (sameTaiKhoan(values[row][accountCol], sdt)) related.deleteRow(row + 2);
+        }
+      });
+      // Xóa tài khoản sau cùng; nếu dọn dữ liệu phụ lỗi thì vẫn giữ tài khoản để thử lại.
       sheet.deleteRow(i + 1);
-      return jsonOut({ ok: true, msg: 'Đã xóa tài khoản ' + sdt });
+      return jsonOut({ ok: true, msg: 'Đã xóa tài khoản và dữ liệu liên quan: ' + sdt });
     }
   }
   return jsonOut({ ok: false, msg: 'Không tìm thấy học sinh.' });
@@ -996,7 +1014,7 @@ function getNhiemVu(sdt) {
   const sheet = getOrCreate('NhiemVu', ['sdt','nhipHoc','conTro','lastMissionDate','startDate','chuoiDung','tongDiemDuaTop']);
   const rows = sheetToJson(sheet);
   for (const r of rows) {
-    if (normSdt(r.sdt) === normSdt(sdt)) {
+    if (sameTaiKhoan(r.sdt, sdt)) {
       return jsonOut({ ok: true, data: {
         nhipHoc:         Number(r.nhipHoc) || 0,
         conTro:          Number(r.conTro)  || 0,
@@ -1017,7 +1035,7 @@ function saveNhiemVu(data) {
   const sheet = getOrCreate('NhiemVu', COLS);
   const rows  = sheetToJson(sheet);
   for (const r of rows) {
-    if (normSdt(r.sdt) === normSdt(data.sdt)) {
+    if (sameTaiKhoan(r.sdt, data.sdt)) {
       const updated = {
         sdt:             r.sdt,
         nhipHoc:         data.nhipHoc        !== undefined ? Number(data.nhipHoc)  : (Number(r.nhipHoc)||0),
@@ -1052,7 +1070,7 @@ function saveDuaTop(data) {
   const acc     = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
   const accRows = sheetToJson(acc);
   for (const r of accRows) {
-    if (normSdt(r.sdt) === normSdt(data.sdt)) {
+    if (sameTaiKhoan(r.sdt, data.sdt)) {
       writeRowNamed(acc, r._rowIndex, Object.assign({}, r, { lpTotal: (Number(r.lpTotal)||0) + diem }));
       break;
     }
@@ -1061,7 +1079,7 @@ function saveDuaTop(data) {
   const nv     = getOrCreate('NhiemVu', ['sdt','nhipHoc','conTro','lastMissionDate','startDate','chuoiDung','tongDiemDuaTop']);
   const nvRows = sheetToJson(nv);
   for (const r of nvRows) {
-    if (normSdt(r.sdt) === normSdt(data.sdt)) {
+    if (sameTaiKhoan(r.sdt, data.sdt)) {
       writeRowNamed(nv, r._rowIndex, Object.assign({}, r, {
         chuoiDung:      Number(data.chuoiDung) || 0,
         tongDiemDuaTop: (Number(r.tongDiemDuaTop)||0) + diem
