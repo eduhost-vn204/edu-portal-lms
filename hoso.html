@@ -12,7 +12,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <script src="device-id.js?v=1"></script>
   <script src="ho-tro-chat.js?v=1"></script>
-  <script src="ban-be.js?v=2"></script>
+  <script src="ban-be.js?v=3"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -223,6 +223,8 @@
     }
     .lb-row:last-child { border-bottom: none; }
     .lb-row.me { background: #eff6ff; }
+    .lb-row.profile-link { cursor: pointer; transition: background .15s, transform .15s; }
+    .lb-row.profile-link:hover { background: rgba(11,132,243,.07); transform: translateX(2px); }
     .lb-rank {
       width: 28px; text-align: center;
       font-size: 15px; font-weight: 800;
@@ -496,6 +498,7 @@ function normalizeLbData(lb) {
   return ((lb && lb.ok && lb.data) ? lb.data : []).filter(r => !/^test\b/i.test((r.hoten || '').trim()));
 }
 function lbSectionHTML(lbData, u) {
+  window._vlxtCurrentLbRows = lbData;
   return `
         <div class="rank-info-row">
           ${RANKS.map(r => `<span class="rank-chip ${r.cls}">${r.name} ≥${r.min} LP</span>`).join('')}
@@ -509,7 +512,7 @@ function lbSectionHTML(lbData, u) {
                 const medal   = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1;
                 const isMe    = (row.hoten === u.hoten && row.lop === u.lop);
                 return `
-                <div class="lb-row ${isMe ? 'me' : ''}">
+                <div class="lb-row profile-link ${isMe ? 'me' : ''}" data-lb-index="${i}">
                   <div class="lb-rank ${rankCls}">${medal}</div>
                   <div style="flex:1">
                     <div class="lb-name">${row.hoten} ${isMe ? '<span style="color:var(--blue);font-size:12px">(bạn)</span>' : ''}</div>
@@ -524,6 +527,18 @@ function lbSectionHTML(lbData, u) {
           }
         </div>`;
 }
+document.addEventListener('click', function(e) {
+  const rowEl = e.target.closest('.lb-row[data-lb-index]');
+  if (!rowEl || typeof window.vlxtOpenPublicProfile !== 'function') return;
+  const rows = window._vlxtCurrentLbRows || [];
+  const i = Number(rowEl.dataset.lbIndex);
+  const row = rows[i];
+  if (!row) return;
+  window.vlxtOpenPublicProfile({
+    key: row.sdt || row.key || '', hoten: row.hoten || '', lop: row.lop || '',
+    lpTotal: Number(row.lpTotal) || 0, rank: i + 1
+  });
+});
 function refreshLeaderboardOnly(lbData) {
   const el = document.getElementById('lb-section');
   if (el && _lbLastUser) el.innerHTML = lbSectionHTML(lbData, _lbLastUser);

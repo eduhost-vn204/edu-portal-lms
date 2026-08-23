@@ -95,6 +95,8 @@
       'font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;}',
 
       '.vlxt-bb-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border);}',
+      '.vlxt-bb-row.profile-link{cursor:pointer;transition:background .15s;}',
+      '.vlxt-bb-row.profile-link:hover{background:rgba(11,132,243,.07);}',
       '.vlxt-bb-row:last-child{border-bottom:none;}',
       '.vlxt-bb-av{width:38px;height:38px;border-radius:50%;background:var(--blue);color:#fff;',
       'display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;overflow:hidden;}',
@@ -109,6 +111,24 @@
       '.vlxt-bb-btn.no{background:transparent;border:1px solid var(--border);color:var(--gray2);}',
       '.vlxt-bb-btn.pending{background:transparent;border:1px solid var(--border);color:var(--gray2);cursor:default;}',
       '.vlxt-bb-btn[disabled]{opacity:.55;cursor:default;}',
+      '.vlxt-profile-overlay{position:fixed;inset:0;z-index:10050;background:rgba(3,7,18,.68);display:flex;align-items:center;justify-content:center;padding:18px;backdrop-filter:blur(3px);}',
+      '.vlxt-profile-card{width:min(420px,100%);background:var(--card,#fff);color:var(--text,#111827);border:1px solid var(--border);border-radius:20px;box-shadow:0 24px 70px rgba(0,0,0,.35);overflow:hidden;}',
+      'body.dark .vlxt-profile-card{background:#161b22;color:#f0f6fc;}',
+      '.vlxt-profile-cover{height:82px;background:linear-gradient(135deg,#0072ff,#7c3aed);position:relative;}',
+      '.vlxt-profile-close{position:absolute;right:12px;top:12px;width:32px;height:32px;border:0;border-radius:50%;background:rgba(0,0,0,.28);color:#fff;font-size:20px;cursor:pointer;}',
+      '.vlxt-profile-body{padding:0 22px 22px;text-align:center;}',
+      '.vlxt-profile-avatar{width:84px;height:84px;margin:-42px auto 10px;border:4px solid var(--card,#fff);border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;overflow:hidden;position:relative;}',
+      'body.dark .vlxt-profile-avatar{border-color:#161b22;}',
+      '.vlxt-profile-avatar img{width:100%;height:100%;object-fit:cover;}',
+      '.vlxt-profile-name{font-size:20px;font-weight:850;}',
+      '.vlxt-profile-class{margin-top:3px;color:var(--gray2);font-size:13px;}',
+      '.vlxt-profile-bio{margin:14px 0;padding:12px;border-radius:12px;background:rgba(120,120,120,.09);font-size:13px;line-height:1.5;color:var(--gray2);min-height:42px;}',
+      '.vlxt-profile-stats{display:flex;justify-content:center;gap:10px;margin-bottom:16px;}',
+      '.vlxt-profile-stat{min-width:92px;padding:9px 12px;border:1px solid var(--border);border-radius:12px;}',
+      '.vlxt-profile-stat b{display:block;color:var(--blue);font-size:16px;}',
+      '.vlxt-profile-stat span{font-size:11px;color:var(--gray2);}',
+      '.vlxt-profile-actions{display:flex;gap:9px;justify-content:center;}',
+      '.vlxt-profile-actions .vlxt-bb-btn{padding:9px 16px;}',
       '.vlxt-bb-badge{background:#ef4444;color:#fff;font-size:10px;font-weight:800;border-radius:10px;',
       'padding:1px 6px;margin-left:6px;}',
       '.vlxt-bb-empty{padding:24px 12px;text-align:center;color:var(--gray2);font-size:13px;}',
@@ -287,7 +307,8 @@
       matches.forEach(function (m) {
         var st = friendState(m.key, reqIn, reqOut);
         var row = document.createElement('div');
-        row.className = 'vlxt-bb-row';
+        row.className = 'vlxt-bb-row profile-link';
+        row.onclick = function () { openPublicProfile({ key: m.key, hoten: m.hoten, lop: m.lop }); };
         row.innerHTML = '<div class="vlxt-bb-av">' + (m.hoten || 'HS').charAt(0).toUpperCase() + '</div>' +
           '<div class="vlxt-bb-info"><div class="vlxt-bb-name">' + escHtml(m.hoten) + '</div>' +
           '<div class="vlxt-bb-sub">Lớp ' + escHtml(m.lop || '') + '</div></div>';
@@ -297,7 +318,7 @@
         else if (st === 'incoming') { btn.className = 'vlxt-bb-btn pending'; btn.textContent = 'Xem lời mời ⬇'; btn.disabled = true; }
         else {
           btn.className = 'vlxt-bb-btn add'; btn.textContent = '+ Kết bạn';
-          btn.onclick = function () { sendFriendRequest(m.key, m.hoten, m.lop, btn); };
+          btn.onclick = function (e) { e.stopPropagation(); sendFriendRequest(m.key, m.hoten, m.lop, btn); };
         }
         row.appendChild(btn);
         resultsEl.appendChild(row);
@@ -315,6 +336,86 @@
       db.ref('friend_outgoing/' + mySdt + '/' + targetKey).set({ toName: targetName, toLop: targetLop, time: now })
     ]).then(function () {
       btn.className = 'vlxt-bb-btn pending'; btn.textContent = 'Đã gửi lời mời';
+    });
+  }
+
+  /* ── Hồ sơ công khai ───────────────────────────────────── */
+  function profileInitials(name) {
+    return (name || 'HS').trim().split(/\s+/).map(function (w) { return w.charAt(0); }).slice(-2).join('').toUpperCase();
+  }
+  function closePublicProfile() {
+    var old = document.getElementById('vlxt-profile-overlay');
+    if (old) old.remove();
+  }
+  function resolveProfileKey(seed) {
+    var key = normKey(seed.key);
+    if (key) return Promise.resolve(key);
+    if (!seed.hoten) return Promise.resolve('');
+    return searchProfilesGAS(seed.hoten).then(function (rows) {
+      var wantedName = String(seed.hoten || '').trim().toLowerCase();
+      var wantedClass = String(seed.lop || '').trim().toLowerCase();
+      var exact = rows.find(function (p) {
+        return String(p.hoten || '').trim().toLowerCase() === wantedName &&
+          (!wantedClass || String(p.lop || '').trim().toLowerCase() === wantedClass);
+      });
+      return exact ? normKey(exact.key) : '';
+    }).catch(function () { return ''; });
+  }
+  function openPublicProfile(seed) {
+    seed = seed || {};
+    closePublicProfile();
+    var overlay = document.createElement('div');
+    overlay.id = 'vlxt-profile-overlay'; overlay.className = 'vlxt-profile-overlay';
+    overlay.innerHTML = '<div class="vlxt-profile-card" role="dialog" aria-modal="true" aria-label="Hồ sơ học sinh">' +
+      '<div class="vlxt-profile-cover"><button class="vlxt-profile-close" aria-label="Đóng">×</button></div>' +
+      '<div class="vlxt-profile-body"><div class="vlxt-profile-avatar">' + escHtml(profileInitials(seed.hoten)) + '</div>' +
+      '<div class="vlxt-profile-name">' + escHtml(seed.hoten || 'Học sinh') + '</div>' +
+      '<div class="vlxt-profile-class">' + (seed.lop ? 'Lớp ' + escHtml(seed.lop) : 'Đang tải thông tin...') + '</div>' +
+      '<div class="vlxt-profile-bio">Đang tải giới thiệu...</div><div class="vlxt-profile-stats"></div>' +
+      '<div class="vlxt-profile-actions"></div></div></div>';
+    document.body.appendChild(overlay);
+    overlay.onclick = function (e) { if (e.target === overlay) closePublicProfile(); };
+    overlay.querySelector('.vlxt-profile-close').onclick = closePublicProfile;
+    var stats = overlay.querySelector('.vlxt-profile-stats');
+    if (seed.rank != null) stats.innerHTML += '<div class="vlxt-profile-stat"><b>#' + escHtml(seed.rank) + '</b><span>Xếp hạng</span></div>';
+    if (seed.lpTotal != null) stats.innerHTML += '<div class="vlxt-profile-stat"><b>' + escHtml(seed.lpTotal) + '</b><span>LP</span></div>';
+    resolveProfileKey(seed).then(function (key) {
+      if (!document.body.contains(overlay)) return;
+      if (!key) { overlay.querySelector('.vlxt-profile-bio').textContent = 'Học sinh chưa cập nhật phần giới thiệu.'; return; }
+      Promise.all([
+        db.ref('profiles_public/' + key).once('value'), db.ref('profiles/' + key).once('value'),
+        db.ref('friend_requests/' + mySdt + '/' + key).once('value'), db.ref('friend_outgoing/' + mySdt + '/' + key).once('value')
+      ]).then(function (r) {
+        if (!document.body.contains(overlay)) return;
+        var pub = r[0].val() || {}, detail = r[1].val() || {};
+        var name = pub.hoten || seed.hoten || 'Học sinh', lop = pub.lop || seed.lop || '';
+        overlay.querySelector('.vlxt-profile-name').textContent = name;
+        overlay.querySelector('.vlxt-profile-class').textContent = lop ? 'Lớp ' + lop : '';
+        overlay.querySelector('.vlxt-profile-bio').textContent = detail.bio || 'Học sinh chưa cập nhật phần giới thiệu.';
+        if (detail.avatar) {
+          overlay.querySelector('.vlxt-profile-avatar').innerHTML = '<img alt="Ảnh đại diện">';
+          overlay.querySelector('.vlxt-profile-avatar img').src = detail.avatar;
+        }
+        var actions = overlay.querySelector('.vlxt-profile-actions');
+        if (key === mySdt) return;
+        var state = friendsCache[key] ? 'friend' : (r[3].exists() ? 'sent' : (r[2].exists() ? 'incoming' : 'none'));
+        var btn = document.createElement('button');
+        if (state === 'friend') {
+          btn.className = 'vlxt-bb-btn add'; btn.textContent = '💬 Nhắn tin';
+          btn.onclick = function () {
+            closePublicProfile();
+            if (typeof window.switchTab === 'function') window.switchTab('banbe');
+            openChat(key, name);
+          };
+        } else if (state === 'none') {
+          btn.className = 'vlxt-bb-btn add'; btn.textContent = '+ Kết bạn';
+          btn.onclick = function () { sendFriendRequest(key, name, lop, btn); };
+        } else {
+          btn.className = 'vlxt-bb-btn pending'; btn.disabled = true;
+          btn.textContent = state === 'sent' ? 'Đã gửi lời mời' : 'Đang chờ bạn xác nhận';
+        }
+        actions.appendChild(btn);
+      });
     });
   }
 
@@ -346,17 +447,18 @@
       keys.forEach(function (k) {
         var r = data[k];
         var row = document.createElement('div');
-        row.className = 'vlxt-bb-row';
+        row.className = 'vlxt-bb-row profile-link';
+        row.onclick = function () { openPublicProfile({ key: k, hoten: r.fromName, lop: r.fromLop }); };
         row.innerHTML = '<div class="vlxt-bb-av">' + (r.fromName || 'HS').charAt(0).toUpperCase() + '</div>' +
           '<div class="vlxt-bb-info"><div class="vlxt-bb-name">' + escHtml(r.fromName) + '</div>' +
           '<div class="vlxt-bb-sub">Lớp ' + escHtml(r.fromLop || '') + '</div></div>';
         var okBtn = document.createElement('button');
         okBtn.className = 'vlxt-bb-btn ok'; okBtn.textContent = 'Đồng ý';
-        okBtn.onclick = function () { okBtn.disabled = true; acceptRequest(k, r.fromName, r.fromLop); };
+        okBtn.onclick = function (e) { e.stopPropagation(); okBtn.disabled = true; acceptRequest(k, r.fromName, r.fromLop); };
         var noBtn = document.createElement('button');
         noBtn.className = 'vlxt-bb-btn no'; noBtn.textContent = 'Từ chối';
         noBtn.style.marginLeft = '6px';
-        noBtn.onclick = function () { declineRequest(k); };
+        noBtn.onclick = function (e) { e.stopPropagation(); declineRequest(k); };
         row.appendChild(okBtn); row.appendChild(noBtn);
         reqEl.appendChild(row);
       });
@@ -378,15 +480,14 @@
           var meta = mSnap.val() || {};
           var streak = (meta.streak && meta.streak.count) || 0;
           var row = document.createElement('div');
-          row.className = 'vlxt-bb-row';
-          row.style.cursor = 'pointer';
+          row.className = 'vlxt-bb-row profile-link';
           var unread = meta.unread && meta.unread[mySdt];
           row.innerHTML = '<div class="vlxt-bb-av" id="vlxt-bb-fav-' + k + '">' + (f.name || 'HS').charAt(0).toUpperCase() + '</div>' +
             '<div class="vlxt-bb-info"><div class="vlxt-bb-name">' + escHtml(f.name) +
             (unread ? '<span class="vlxt-bb-badge">mới</span>' : '') + '</div>' +
             '<div class="vlxt-bb-sub">Lớp ' + escHtml(f.lop || '') +
             (streak > 0 ? ' · <span class="vlxt-bb-streak">🔥 ' + streak + ' ngày</span>' : '') + '</div></div>';
-          row.onclick = function () { openChat(k, f.name); };
+          row.onclick = function () { openPublicProfile({ key: k, hoten: f.name, lop: f.lop }); };
           friendsEl.appendChild(row);
           db.ref('profiles/' + k + '/avatar').once('value').then(function (aSnap) {
             var av = aSnap.val();
@@ -515,6 +616,7 @@
 
   window.vlxtBanBeRefreshProfileUI = function () { if (db && mySdt) renderAvatarSlot(); };
   window.vlxtRenderBanBeTab = renderTab;
+  window.vlxtOpenPublicProfile = function (seed) { if (db && mySdt) openPublicProfile(seed || {}); };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);

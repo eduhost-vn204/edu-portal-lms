@@ -159,6 +159,14 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 23/08/2026 — Hồ sơ công khai từ Bạn bè và Xếp hạng
+
+- Thêm hộp hồ sơ công khai dùng chung trong `ban-be.js`: ảnh đại diện, họ tên, lớp, giới thiệu; nếu mở từ bảng xếp hạng có thêm thứ hạng và LP.
+- Có thể mở hồ sơ khi bấm kết quả tìm bạn, lời mời, danh sách bạn bè hoặc một dòng trong bảng xếp hạng.
+- Nút hành động theo đúng quan hệ: chưa kết bạn thì gửi lời mời, đã gửi thì hiện trạng thái, đã là bạn thì chuyển sang tab Bạn bè và mở chat.
+- Không hiển thị mật khẩu, số điện thoại/email đầy đủ, điểm thi, tiến độ hay dữ liệu quản trị.
+- `hoso.html` tăng cache-buster lên `ban-be.js?v=3`.
+
 ### 23/08/2026 — Sửa tìm bạn bè
 
 - Nguyên nhân: `ban-be.js` chỉ tìm trong `profiles_public` trên Firebase; production lúc kiểm tra chỉ có 4 hồ sơ nên đa số tài khoản thật không thể tìm thấy.
@@ -167,7 +175,7 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 - `hoso.html` tăng cache-buster `ban-be.js?v=2`.
 - Không đồng bộ/bulk-publish danh sách học sinh vào Firebase công khai; phương án đó đã loại bỏ vì rủi ro riêng tư.
 - Kiểm tra cú pháp `ban-be.js`, script trong `hoso.html`, và `apps-script-CAPNHAT.txt` đều qua.
-- Điều kiện để tìm toàn bộ tài khoản hoạt động trên production: phát hành bản Apps Script chứa `searchprofiles` thành phiên bản web app mới.
+- Apps Script chứa `searchprofiles` đã được phát hành thành phiên bản web app 71 và đã kiểm tra trả đúng kết quả production.
 
 ### 23/08/2026 — Sửa quản lý tài khoản và đồng bộ Premium
 
