@@ -159,6 +159,16 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 26/08/2026 — Thiết lập vận hành dài hạn bằng Antigravity
+
+- Xác định hai repo chính thức: Student `eduhost-vn204/edu-portal-lms`, Admin `eduhost-vn204/edu-portal-console`; loại repository Netlify legacy khỏi phạm vi làm việc mới.
+- Tạo baseline cục bộ `codex/antigravity-baseline-20260826` tại Student `255d770` và Admin `0d491ca`.
+- Thêm `AI_RUNBOOK.md` và cập nhật `AGENTS.md` để mọi AI dùng một quy trình: khảo sát → worktree/nhánh riêng → sửa tối thiểu → test → review diff/secret → commit → push nhánh → bàn giao.
+- Repo Admin có `AGENTS.md` và `AI_RUNBOOK.md` riêng nhưng vẫn dùng file này làm nguồn trạng thái chung, tránh tạo sổ kiến trúc cạnh tranh.
+- Antigravity đã xác minh hai baseline: đúng remote/commit, worktree sạch; HTML có thẻ đóng, JSON hợp lệ, secret scan không phát hiện credential server; test quiz Student 6/6 và 12/12 qua.
+- GitHub credentials trên máy chưa được xác minh cho fetch/push. Không coi khả năng push tự động là hoàn tất cho tới khi thử trên một nhánh vô hại.
+- Netlify token trong lịch sử repository legacy phải được thu hồi; không sao chép token đó vào bất kỳ tài liệu hoặc prompt nào.
+
 ### 23/08/2026 — Hồ sơ công khai từ Bạn bè và Xếp hạng
 
 - Điều chỉnh giao diện lần 2 theo phản hồi: hồ sơ bạn bè mở thành chế độ toàn trang rộng như trang cá nhân, có thanh quay lại, thẻ thông tin, ba ô thống kê và khu vực tương tác; không còn popup nhỏ làm mờ nền.
