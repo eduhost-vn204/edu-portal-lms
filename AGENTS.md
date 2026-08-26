@@ -26,3 +26,11 @@
 
 Chi tiết kiến trúc, triển khai và trạng thái mới nhất nằm trong `PROJECT_STATE.md`.
 
+## Quy trình tự chủ cho mọi AI
+
+- Đọc `AI_RUNBOOK.md` trước khi bắt đầu bất kỳ nhiệm vụ nào.
+- Không dựa vào lịch sử chat để xác định trạng thái dự án; thứ tự nguồn sự thật là `AGENTS.md` → `PROJECT_STATE.md` → Git/GitHub → mã nguồn hiện tại.
+- Mọi thay đổi phải đi qua nhánh riêng, kiểm thử, commit có mô tả và cập nhật bàn giao. Không push thẳng hoặc force-push `main`.
+- Nếu làm trong project có cả Student và Admin, phải xác nhận đúng remote của từng repo trước khi sửa.
+- Agent được tự sửa, kiểm thử, commit và push nhánh khi thông tin xác thực hợp lệ. Agent phải dừng trước thao tác dữ liệu production, deploy Google Apps Script, thay đổi credential/quyền truy cập hoặc merge `main` nếu chưa có chỉ thị rõ ràng của thầy.
+
