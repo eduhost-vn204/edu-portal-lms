@@ -1,0 +1,58 @@
+{
+  "teachingScope": {
+    "scopeId": "SCOPE_2026_GD1_ACTIVE",
+    "courseId": "XPS_2K9",
+    "stage": "GD1_LY_THUYET",
+    "isActive": true,
+    "validFrom": "2026-08-01T00:00:00Z",
+    "validTo": "2026-09-30T23:59:59Z",
+    "activeChapters": [
+      {
+        "chapterNumber": 1,
+        "chapterCode": "C1",
+        "chapterTitle": "Vật lí nhiệt",
+        "isOpen": true
+      },
+      {
+        "chapterNumber": 2,
+        "chapterCode": "C2",
+        "chapterTitle": "Khí lí tưởng",
+        "isOpen": false
+      }
+    ],
+    "activeLessons": [
+      "G12_C1_B01",
+      "G12_C1_B02",
+      "G12_C1_B03"
+    ],
+    "qualityPolicy": {
+      "requireApprovedOnly": true,
+      "allowedTiers": ["TINH"],
+      "allowedStatuses": ["TEACHER_APPROVED", "PUBLISHED"]
+    },
+    "gameModes": {
+      "solo": {
+        "enabled": true,
+        "matchQuestionsCount": 8,
+        "quota": {
+          "NB": 3,
+          "TH": 3,
+          "VD": 1,
+          "VDC": 1
+        },
+        "timePerQuestionSeconds": 40,
+        "fallbackPolicy": "FILL_FROM_ADJACENT_TIER"
+      },
+      "duatop": {
+        "enabled": true,
+        "sessionQuestionsCount": 20,
+        "progressiveDifficulty": true,
+        "speedBonusThresholdSeconds": 30,
+        "streakMultiplierThresholds": [
+          { "minStreak": 5, "multiplier": 1.2 },
+          { "minStreak": 10, "multiplier": 1.5 }
+        ]
+      }
+    }
+  }
+}
