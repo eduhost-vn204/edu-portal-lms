@@ -1,11 +1,12 @@
 // ════════════════════════════════════════════════════════════════
+
 // APPS SCRIPT TOÀN DIỆN — Vật Lý Xuân Trường  (v22: + Settings / currentTeachingLesson)
 // Dán toàn bộ đoạn này vào Google Apps Script, rồi Deploy lại.
 // ════════════════════════════════════════════════════════════════
 // CẤU TRÚC GOOGLE SHEETS CẦN CÓ:
 //   Tab "BaiHoc"     : KhoaHoc | Chuong | TenBai | Video | VideoGiai | MoTaBai | NgayDang | BaiTap
 //   Tab "NganHangDe" : id | type | question | optA | optB | optC | optD | correct | examId
-//   Tab "NganHang"   : id | mon | chuong | mucDo | loai | nhomId | deBaiChung | question | optA | optB | optC | optD | correct | hinhAnh | giaiThich | ngayThem
+//   Tab "NganHang"   : id | mon | chuong | mucDo | loai | nhomId | deBaiChung | question | optA | optB | optC | optD | correct | hinhAnh | giaiThich | ngayThem | baiHoc
 //   Tab "DanhSachDe" : examId | tenDe | moTa | thoiGian | trangThai | lop | soLuotLam
 //   Tab "BangVang"   : name | studentClass | phone | score | timestamp
 //   Tab "TienDo"     : sdt | lesson | khoa | ten | lop | ngay
@@ -15,12 +16,16 @@
 //   Tab "Settings"  : key | value   (cấu hình toàn trang, vd: currentTeachingLesson)
 //   Tab "ThietBiHocThu" : deviceId | sdt | hoten | trialStart | trialExpiry | soLanChan  ← chống học thử nhiều lần
 // ════════════════════════════════════════════════════════════════
+const DEVICE_LOCK_ENABLED = false; // 18/7 TAM THOI TAT de thay lam video (theo yeu cau) -- doi lai thanh true + Trien khai > Phien ban moi de BAT LAI chan hoc thu nhieu lan
 
 function doGet(e) {
   const type   = (e.parameter.type || '').toLowerCase();
   const hs     = e.parameter.hs || '';
   const examId = e.parameter.examId || '';
   try {
+    if (type === 'videocauhoi')     return getVideoCauHoi(e.parameter.bai || '');
+    if (type === 'baitaptracnghiem') return getBaiTapTracNghiem(e.parameter.bai || '');
+    if (type === 'transcript')       return getVideoTranscript(e.parameter.v || '', e.parameter.lang || '');
     if (type === 'baihoc')           return getBaiHoc();
     if (type === 'diemthi')          return getDiemThi();
     if (type === 'tiendo')           return getTienDo(hs);
@@ -31,13 +36,15 @@ function doGet(e) {
     if (type === 'nganhang')         return getNganHang();
     if (type === 'khoaconfig')       return getKhoaConfig();
     if (type === 'danhsachtaikhoan')  return getDanhSachTaiKhoan(e);
-    if (type === 'hoatdong')          return getHoatDong(e);
+    if (type === 'hoatdong')         return getHoatDong(e);
     if (type === 'examquestions')    return getExamQuestions(examId || 'de01');
+    if (type === 'examsolutions')    return getExamSolutions(examId || 'de01');
     if (type === 'nhiemvu')          return getNhiemVu(hs);
     if (type === 'settings')         return getSettings();
     if (type === 'danhsachthietbi')  return getDanhSachThietBi(e);
-    if (type === 'searchprofiles')   return searchPublicProfiles(e);
+        if (type === 'searchprofiles')   return searchPublicProfiles(e);
     if (type === 'lichlive')          return getLiveSessions();
+    if (type === 'huongdan')       return getHuongDan();
     return getExamQuestions('de01'); // backward compat — không có type param
   } catch(err) {
     return jsonOut({ error: err.message });
@@ -51,12 +58,18 @@ function doPost(e) {
     if (action === 'register')           return registerUser(data);
     if (action === 'login')              return loginUser(data);
     if (action === 'logingoogle')        return loginGoogle(data);
+    if (action === 'savevideocauhoi') return saveVideoCauHoi(data);
+    if (action === 'savebaitaptracnghiem') return saveBaiTapTracNghiem(data);
+    if (action === 'logvideoquiz')    return logVideoQuiz(data);
     if (action === 'savebaihoc')         return saveBaiHoc(data);
     if (action === 'deletebaihoc')       return deleteBaiHoc(data);
     if (action === 'savequestions')      return saveQuestions(data);
     if (action === 'savenganhang')       return saveNganHang(data);
+    if (action === 'savehuongdan')     return saveHuongDan(data);
     if (action === 'deletenganhang')     return deleteNganHang(data);
     if (action === 'updatenganhang')     return updateNganHang(data);
+    if (action === 'bulksetbainganhang') return bulkSetBaiHocNganHang(data);
+    if (action === 'bulksetchatluongnganhang') return bulkSetChatLuongNganHang(data);
     if (action === 'saveprogress')       return saveProgress(data);
     if (action === 'savescore')          return saveScore(data);
     if (action === 'updatebaihocvideo')  return updateBaiHocVideo(data);
@@ -70,6 +83,7 @@ function doPost(e) {
     if (action === 'updateaccount')      return updateAccount(data);
     if (action === 'savenhiemvu')        return saveNhiemVu(data);
     if (action === 'saveduatop')         return saveDuaTop(data);
+    if (action === 'savesoloresult')     return saveSoloResult(data);
     if (action === 'savesetting')        return saveSetting(data);
     if (action === 'savekhoaconfig')     return saveKhoaConfig(data);
     if (action === 'resetdevice')        return resetDevice(data);
@@ -77,14 +91,25 @@ function doPost(e) {
     if (action === 'deletelivesession')  return deleteLiveSession(data.id);
     return jsonOut({ ok: false, msg: 'Unknown action' });
   } catch(err) {
-    return jsonOut({ ok: false, error: err.message });
+    return jsonOut({ error: err.message });
   }
 }
 
 // ── Tiện ích ──────────────────────────────────────────────────
 
+
+// ── Quản lý Khóa Quản trị Bảo mật ───────────────────────────
 function getAdminKey() {
   return PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || '';
+}
+
+function requireAdmin(key) {
+  const ADMIN_KEY = getAdminKey();
+  const provided = String(key || '').trim();
+  if (!ADMIN_KEY || !provided || provided !== ADMIN_KEY) {
+    return false;
+  }
+  return true;
 }
 
 function getOrCreate(name, headers) {
@@ -153,6 +178,20 @@ function findRowByKey(sheet, key) {
   return null;
 }
 
+function findRowByMaBai(sheet, maBai) {
+  if (!maBai) return null;
+  const headers = sheet.getRange(1,1,1,sheet.getLastColumn()).getValues()[0];
+  const col = headers.indexOf('MaBai');
+  if (col < 0) return null;
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return null;
+  const data = sheet.getRange(2, col+1, lastRow-1, 1).getValues();
+  for (let i = 0; i < data.length; i++) {
+    if (data[i][0] && String(data[i][0]) === String(maBai)) return i + 2;
+  }
+  return null;
+}
+
 function jsonOut(obj) {
   return ContentService
     .createTextOutput(JSON.stringify(obj))
@@ -165,7 +204,7 @@ function jsonOut(obj) {
 function normSdt(s) { return String(s || '').replace(/\D/g,'').replace(/^0+/,''); }
 
 function registerUser(data) {
-  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
+  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry','mienVideo','tracNghiemVideo','mienLuyenTap']);
   // Chuẩn hoá SĐT: chỉ giữ số
   const sdtClean = String(data.sdt || '').replace(/\D/g,'').trim();
   if (!sdtClean) return jsonOut({ ok: false, msg: 'Số điện thoại không hợp lệ!' });
@@ -179,7 +218,7 @@ function registerUser(data) {
 
   // ── Chống học thử nhiều lần: nhận diện thiết bị (best-effort) ──
   const deviceId = String(data.deviceId || '').trim();
-  if (deviceId) {
+  if (DEVICE_LOCK_ENABLED && deviceId) {
     const devSheet = getOrCreate('ThietBiHocThu', ['deviceId','sdt','hoten','trialStart','trialExpiry','soLanChan']);
     const devRows  = devSheet.getDataRange().getValues();
     for (let i = 1; i < devRows.length; i++) {
@@ -198,25 +237,25 @@ function registerUser(data) {
     data.sdt, data.hoten, data.lop, data.matkhau,
     now.toISOString(), 0, 0, loaiTK, trialExpiry
   ]);
-  if (deviceId) {
+  if (DEVICE_LOCK_ENABLED && deviceId) {
     const devSheet = getOrCreate('ThietBiHocThu', ['deviceId','sdt','hoten','trialStart','trialExpiry','soLanChan']);
     devSheet.getRange(devSheet.getLastRow() + 1, 2, 1, 1).setNumberFormat('@'); // giữ số 0 đầu SĐT
     devSheet.appendRow([deviceId, String(data.sdt), data.hoten, now.getTime(), trialExpiry, 0]);
   }
   return jsonOut({ ok: true, msg: 'Đăng ký thành công! Bạn có 7 ngày dùng thử VIP miễn phí.', user: {
     sdt: data.sdt, hoten: data.hoten, lop: data.lop,
-    lpTotal: 0, diemGame: 0, loaiTK: loaiTK, trialExpiry: trialExpiry
+    lpTotal: 0, diemGame: 0, loaiTK: loaiTK, trialExpiry: trialExpiry, mienVideo: false, tracNghiemVideo: false
   }});
 }
 
 // ── AUTH: Đăng nhập ──────────────────────────────────────────
 
 function loginUser(data) {
-  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
+  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry','mienVideo','tracNghiemVideo','mienLuyenTap']);
   const rows  = sheet.getDataRange().getValues();
   for (let i = 1; i < rows.length; i++) {
     const row = rows[i];
-    if (sameTaiKhoan(row[0], data.sdt) &&
+    if (normSdt(row[0]) === normSdt(data.sdt) &&
         String(row[3]).trim() === String(data.matkhau).trim()) {
       let loaiTK      = row[7] || 'vip';  // mặc định vip cho TK cũ chưa có cột
       let trialExpiry = row[8] ? Number(row[8]) : 0;
@@ -231,7 +270,7 @@ function loginUser(data) {
       return jsonOut({ ok: true, user: {
         sdt: row[0], hoten: row[1], lop: row[2],
         lpTotal: typeof row[5] === 'number' ? (row[5] || 0) : 0, diemGame: typeof row[6] === 'number' ? (row[6] || 0) : 0,
-        loaiTK: loaiTK, trialExpiry: trialExpiry
+        loaiTK: loaiTK, trialExpiry: trialExpiry, mienVideo: !!(row[9]), tracNghiemVideo: (row[10] === false ? false : true), mienLuyenTap: !!(row[11])
       }});
     }
   }
@@ -241,7 +280,7 @@ function loginUser(data) {
 // ── Đăng nhập bằng Google ────────────────────────────────────
 
 function loginGoogle(data) {
-  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
+  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry','mienVideo','tracNghiemVideo','mienLuyenTap']);
   const rows  = sheet.getDataRange().getValues();
   const email = String(data.email || '').trim().toLowerCase();
   if (!email) return jsonOut({ ok: false, msg: 'Không có email Google.' });
@@ -264,7 +303,7 @@ function loginGoogle(data) {
         sdt: rows[i][0], hoten: data.hoten || rows[i][1],
         lop: rows[i][2] || 'Google', email: email,
         avatar: data.avatar || '', lpTotal: rows[i][5] || 0,
-        loaiTK: loaiTK, trialExpiry: trialExpiry
+        loaiTK: loaiTK, trialExpiry: trialExpiry, mienVideo: !!(rows[i][9]), tracNghiemVideo: (rows[i][10] === false ? false : true)
       }});
     }
   }
@@ -273,7 +312,7 @@ function loginGoogle(data) {
   // (trước đây chỉ chặn ở registerUser bằng SĐT — học sinh lách bằng cách
   //  đổi sang tài khoản Google khác trên cùng máy, không hề bị chặn)
   const deviceId = String(data.deviceId || '').trim();
-  if (deviceId) {
+  if (DEVICE_LOCK_ENABLED && deviceId) {
     const devSheet = getOrCreate('ThietBiHocThu', ['deviceId','sdt','hoten','trialStart','trialExpiry','soLanChan']);
     const devRows  = devSheet.getDataRange().getValues();
     for (let i = 1; i < devRows.length; i++) {
@@ -289,7 +328,7 @@ function loginGoogle(data) {
   const trialExpiry = now.getTime() + 7 * 24 * 60 * 60 * 1000;
   const loaiTK      = 'vip';
   sheet.appendRow([email, data.hoten || email, 'Google', 'GOOGLE_AUTH', now.toISOString(), 0, 0, loaiTK, trialExpiry]);
-  if (deviceId) {
+  if (DEVICE_LOCK_ENABLED && deviceId) {
     const devSheet = getOrCreate('ThietBiHocThu', ['deviceId','sdt','hoten','trialStart','trialExpiry','soLanChan']);
     devSheet.getRange(devSheet.getLastRow() + 1, 2, 1, 1).setNumberFormat('@');
     devSheet.appendRow([deviceId, email, data.hoten || email, now.getTime(), trialExpiry, 0]);
@@ -298,7 +337,7 @@ function loginGoogle(data) {
     sdt: email, hoten: data.hoten || email,
     lop: 'Google', email: email,
     avatar: data.avatar || '', lpTotal: 0,
-    loaiTK: loaiTK, trialExpiry: trialExpiry
+    loaiTK: loaiTK, trialExpiry: trialExpiry, mienVideo: false, tracNghiemVideo: false
   }});
 }
 
@@ -309,7 +348,7 @@ function getProfile(sdt) {
   const rows  = acc.getDataRange().getValues();
   let user    = null;
   for (let i = 1; i < rows.length; i++) {
-    if (sameTaiKhoan(rows[i][0], sdt)) {
+    if (normSdt(rows[i][0]) === normSdt(sdt)) {
       let _loaiTK      = rows[i][7] || 'vip';
       let _trialExpiry = rows[i][8] ? Number(rows[i][8]) : 0;
       if (!_trialExpiry && rows[i][4]) {
@@ -319,7 +358,7 @@ function getProfile(sdt) {
         _loaiTK = 'free';
         acc.getRange(i + 1, 8).setValue('free');
       }
-      user = { sdt: rows[i][0], hoten: rows[i][1], lop: rows[i][2], lpTotal: typeof rows[i][5]==='number'?(rows[i][5]||0):0, diemGame: typeof rows[i][6]==='number'?(rows[i][6]||0):0, loaiTK: _loaiTK, trialExpiry: _trialExpiry };
+      user = { sdt: rows[i][0], hoten: rows[i][1], lop: rows[i][2], lpTotal: typeof rows[i][5]==='number'?(rows[i][5]||0):0, diemGame: typeof rows[i][6]==='number'?(rows[i][6]||0):0, loaiTK: _loaiTK, trialExpiry: _trialExpiry, mienVideo: !!(rows[i][9]), tracNghiemVideo: (rows[i][10] === false ? false : true), mienLuyenTap: !!(rows[i][11]) };
       break;
     }
   }
@@ -329,17 +368,23 @@ function getProfile(sdt) {
   const bgRows = bg.getDataRange().getValues();
   const scores = [];
   for (let i = 1; i < bgRows.length; i++) {
-    if (sameTaiKhoan(bgRows[i][2], sdt)) {
+    if (normSdt(bgRows[i][2]) === normSdt(sdt)) {
       scores.push({ ten: bgRows[i][0], diem: bgRows[i][3], ngay: bgRows[i][4] });
     }
   }
 
   const td    = getOrCreate('TienDo', ['sdt','lesson','khoa','ten','lop','ngay']);
-  const tdRows = td.getDataRange().getValues();
+  // 11/8: doc THEO TEN cot (giong sheetToJson) thay vi vi tri cung 0/1/2 - sheet nay co ca
+  // header CU (HocSinh,Ten,Lop,Khoa,Lesson,Ngay) lan header MOI (sdt,lesson,khoa,ten,lop,ngay)
+  // noi duoi nhau nen doc vi tri se luon lech voi du lieu ghi tu 21/7 tro di. CHI sua CACH DOC,
+  // khong dung/sua du lieu nao.
+  const tdJson = sheetToJson(td);
   const tiendo = [];
-  for (let i = 1; i < tdRows.length; i++) {
-    if (sameTaiKhoan(tdRows[i][0], sdt)) {
-      tiendo.push({ lesson: tdRows[i][1], khoa: tdRows[i][2] });
+  for (let i = 0; i < tdJson.length; i++) {
+    const r = tdJson[i];
+    const rSdt = r.sdt || r.HocSinh || '';
+    if (normSdt(rSdt) === normSdt(sdt)) {
+      tiendo.push({ lesson: r.lesson || r.Lesson || '', khoa: r.khoa || r.Khoa || '' });
     }
   }
 
@@ -369,7 +414,7 @@ function getLeaderboard() {
 // ── GET: Bài học ──────────────────────────────────────────────
 
 function getBaiHoc() {
-  const sheet = getOrCreate('BaiHoc', ['KhoaHoc','Chuong','TenBai','Video','VideoGiai','MoTaBai','NgayDang','BaiTap']);
+  const sheet = getOrCreate('BaiHoc', ['KhoaHoc','Chuong','TenBai','Video','VideoGiai','MoTaBai','NgayDang','BaiTap','PDF','PDFLyThuyet','PDFLuyenTap','ThoiGianLamBai','ThuTuBai','MaBai']);
   return jsonOut(sheetToJson(sheet));
 }
 
@@ -396,7 +441,7 @@ function getDanhSachDe() {
 // NganHangDe schema: id(0) | type(1) | question(2) | optA(3) | optB(4) | optC(5) | optD(6) | correct(7) | examId(8)
 
 function getExamQuestions(examId) {
-  const sheet = getOrCreate('NganHangDe', ['id','type','question','optA','optB','optC','optD','correct','examId']);
+  const sheet = getOrCreate('NganHangDe', ['id','type','question','optA','optB','optC','optD','correct','examId','giaiThich']);
   const data  = sheet.getDataRange().getValues();
   if (data.length < 2) return jsonOut([]);
   let rows = data.slice(1).map(r => ({
@@ -412,6 +457,19 @@ function getExamQuestions(examId) {
     rows = rows.filter(r => r.examId === examId);
   }
   return jsonOut(rows);
+}
+
+// ── GET: Lời giải chi tiết theo đề (chỉ gọi SAU khi học sinh nộp bài, KHÔNG kèm trong examquestions) ──
+function getExamSolutions(examId) {
+  const sheet = getOrCreate('NganHangDe', ['id','type','question','optA','optB','optC','optD','correct','examId','giaiThich']);
+  const data  = sheet.getDataRange().getValues();
+  const out = {};
+  if (data.length < 2) return jsonOut(out);
+  const ex = String(examId || 'de01').trim();
+  data.slice(1).forEach(r => {
+    if (String(r[8] || 'de01').trim() === ex && r[2]) out[r[0]] = r[9] || '';
+  });
+  return jsonOut(out);
 }
 
 // ── GET: Điểm thi ─────────────────────────────────────────────
@@ -446,7 +504,7 @@ function saveScore(data) {
     const acc = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame']);
     const rows = acc.getDataRange().getValues();
     for (let i = 1; i < rows.length; i++) {
-      if (sameTaiKhoan(rows[i][0], sdt)) {
+      if (normSdt(rows[i][0]) === normSdt(sdt)) {
         const cur = Number(rows[i][5]) || 0;
         const newScore = Number(data.score || data.diem || 0);
         acc.getRange(i+1, 6).setValue(Math.max(cur, newScore));
@@ -457,26 +515,95 @@ function saveScore(data) {
   return jsonOut({ ok: true });
 }
 
+
 // ── POST: Lưu tiến độ ────────────────────────────────────────
 
 function saveProgress(data) {
+  // FIX 21/7: sheet TienDo có header cũ lệch cột (HocSinh,Ten,Lop,Khoa,Lesson,Ngay) so với
+  // header hiện tại (sdt,lesson,khoa,ten,lop,ngay) do getOrCreate từng tự thêm cột mới.
+  // Ghi/đọc theo TÊN cột (appendRowNamed/sheetToJson) thay vì theo VỊ TRÍ để luôn đúng cột dù thứ tự cột thế nào.
   const sheet = getOrCreate('TienDo', ['sdt','lesson','khoa','ten','lop','ngay']);
-  const rows = sheet.getDataRange().getValues();
-  for (let i = 1; i < rows.length; i++) {
-    if (String(rows[i][0]) === String(data.sdt) && String(rows[i][1]) === String(data.lesson)) {
-      return jsonOut({ ok: true, msg: 'already' });
+  const rows = sheetToJson(sheet);
+  // 11/8: chong cong LP TRUNG khi 1 bai da hoan thanh duoi TEN/KEY CU (truoc migration MaBai
+  // 6/8) nay duoc gui len duoi MA BAI moi - tra thu KhoaHoc|||Chuong|||TenBai HIEN TAI cua
+  // MaBai nay (+ fallback vai ma da biet bi doi ten) de nhan dien la CUNG 1 bai. CHI mo rong
+  // dieu kien nhan dien 'da lam roi', KHONG dung gi den logic ghi/tinh LP khac.
+  let _oldKeyForThisLesson = '';
+  try {
+    const bhSheet = getOrCreate('BaiHoc', ['KhoaHoc','Chuong','TenBai','Video','VideoGiai','MoTaBai','NgayDang','BaiTap','PDF','PDFLyThuyet','PDFLuyenTap','ThoiGianLamBai','ThuTuBai','MaBai']);
+    const bhRows = sheetToJson(bhSheet);
+    const bhRow = bhRows.find(function(b){ return String(b.MaBai||'').trim() === String(data.lesson||'').trim(); });
+    if (bhRow) _oldKeyForThisLesson = [bhRow.KhoaHoc||'', bhRow.Chuong||'', bhRow.TenBai||''].join('|||');
+  } catch(e) {}
+  const _MIGRATION_OLDKEYS_SP = {
+    'B1036d251af19':'Chuyên đề lí thuyết GĐ1 - Vật Lý 12|||Chương 1 – Vật lý Nhiệt|||B1. Khai giảng GĐ1 + Cấu trúc của chất & Mô hình động học phân tử',
+    'B04e20f0ec67d':'Chuyên đề lí thuyết GĐ1 - Vật Lý 12|||Chương 1 – Vật lý Nhiệt|||B2. Lực liên kết và Sự chuyển thể của chất',
+    'Bfb85fde44802':'Chuyên đề lí thuyết GĐ1 - Vật Lý 12|||Chương 1 – Vật lý Nhiệt|||B3. Nhiệt độ – Thang nhiệt độ – Nhiệt kế',
+    'Bfc4552a2a3b2':'Chuyên đề lí thuyết GĐ1 - Vật Lý 12|||Chương 1 – Vật lý Nhiệt|||B4. Nhiệt dung riêng - Nóng chảy riêng - Hoá Hơi riêng',
+    'Be5b72ccf1261':'CHUYÊN ĐỀ LÝ THUYẾT GĐ1 - Vật Lý 12|||Chương 1 – Vật lý Nhiệt|||B5. Nội Năng – Định Luật I Nhiệt Động Lực Học',
+    'B04ff6fe289da':'5 NGÀY LẤY GỐC VẬT LÍ ( NÊN HỌC ⭐) - Vật Lý 12|||VẬT LÍ 10|||Ngày 1: Ý NGHĨA CỦA ĐƠN VỊ TRONG VẬT LÝ'
+  };
+  const _oldKeyFallback = _MIGRATION_OLDKEYS_SP[String(data.lesson||'').trim()] || '';
+  const exists = rows.some(function(r){ return String(r.sdt) === String(data.sdt) && (
+    String(r.lesson) === String(data.lesson) ||
+    (_oldKeyForThisLesson && String(r.lesson) === _oldKeyForThisLesson) ||
+    (_oldKeyFallback && String(r.lesson) === _oldKeyFallback)
+  ); });
+  if (exists) return jsonOut({ ok: true, msg: 'already', lpEarned: 0 });
+  appendRowNamed(sheet, {
+    sdt: data.sdt || '',
+    lesson: data.lesson || '',
+    khoa: data.khoa || '',
+    ten: data.ten || '',
+    lop: data.lop || '',
+    ngay: new Date().toISOString()
+  });
+
+  // 6/8: cong LP xep hang khi hoan thanh bai hoc LAN DAU (truoc day hoan thanh bai khong
+  // cong LP, chi Dua Top moi cong - theo yeu cau thay, gio hoc bai cung len hang duoc).
+  const LP_PER_LESSON = 10;
+  const RANK_MINS = [0, 50, 150, 300, 600, 1000]; // phai khop VLXT_RANKS phia frontend (xephang-fx.js)
+  function rankIdx(lp) { let idx = 0; for (let i = 0; i < RANK_MINS.length; i++) { if (lp >= RANK_MINS[i]) idx = i; } return idx; }
+  let lpEarned = 0, lpTotal = 0, rankUp = false;
+  const acc = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry','mienVideo','tracNghiemVideo','mienLuyenTap']);
+  const accRows = sheetToJson(acc);
+  for (const r of accRows) {
+    if (normSdt(r.sdt) === normSdt(data.sdt)) {
+      const oldLp = Number(r.lpTotal) || 0;
+      const newLp = oldLp + LP_PER_LESSON;
+      writeRowNamed(acc, r._rowIndex, Object.assign({}, r, { lpTotal: newLp }));
+      lpEarned = LP_PER_LESSON; lpTotal = newLp;
+      rankUp = rankIdx(newLp) > rankIdx(oldLp);
+      break;
     }
   }
-  sheet.appendRow([data.sdt, data.lesson, data.khoa||'', data.ten||'', data.lop||'', new Date().toISOString()]);
-  return jsonOut({ ok: true });
+  return jsonOut({ ok: true, lpEarned: lpEarned, lpTotal: lpTotal, rankUp: rankUp });
 }
 
 // ── POST: Quản lý bài học (Admin) ─────────────────────────────
 
 function saveBaiHoc(data) {
-  const COLS = ['KhoaHoc','Chuong','TenBai','Video','VideoGiai','MoTaBai','NgayDang','BaiTap','PDF'];
+  const COLS = ['KhoaHoc','Chuong','TenBai','Video','VideoGiai','MoTaBai','NgayDang','BaiTap','PDF','PDFLyThuyet','PDFLuyenTap','ThoiGianLamBai','ThuTuBai','MaBai'];
   const sheet = getOrCreate('BaiHoc', COLS); // tự thêm cột thiếu nếu sheet cũ
-  const rowIdx = data.rowIndex || findRowByKey(sheet, data.originalKey);
+  const rowIdx = (data.maBai && findRowByMaBai(sheet, data.maBai)) || data.rowIndex || findRowByKey(sheet, data.originalKey);
+  // MaBai: ma dinh danh ON DINH cho moi bai hoc, KHONG BAO GIO doi khi doi ten khoa/chuong/bai
+  // hoac sap xep lai vi tri - tien do hoc sinh (TienDo.lesson) bam theo ma nay de khong bao gio mat.
+  let maBai = '';
+  let existingThuTuBai = '';
+  if (rowIdx) {
+    const h_ = sheet.getRange(1,1,1,sheet.getLastColumn()).getValues()[0];
+    const c_ = h_.indexOf('MaBai');
+    if (c_ >= 0) maBai = sheet.getRange(rowIdx, c_+1).getValue() || '';
+    const ct_ = h_.indexOf('ThuTuBai');
+    if (ct_ >= 0) {
+      const v_ = sheet.getRange(rowIdx, ct_+1).getValue();
+      existingThuTuBai = (v_===null || v_===undefined) ? '' : v_;
+    }
+  }
+  if (!maBai) maBai = data.maBai || ('B' + Utilities.getUuid().replace(/-/g,'').slice(0,12));
+  // Giu nguyen ThuTuBai hien co neu client khong gui gia tri hop le (VD: cache trinh duyet cu
+  // luc mo form Sua bai chua co ThuTuBai) - tranh bai tu "nhay xuong cuoi chuong" moi lan Luu (6/8/2026).
+  const ttbToSave = (data.ThuTuBai !== undefined && data.ThuTuBai !== null && data.ThuTuBai !== '') ? data.ThuTuBai : existingThuTuBai;
   const rowData = {
     KhoaHoc:   data.KhoaHoc   || '',
     Chuong:    data.Chuong    || '',
@@ -486,32 +613,39 @@ function saveBaiHoc(data) {
     MoTaBai:   data.MoTaBai   || '',
     NgayDang:  data.NgayDang  || new Date().toISOString(),
     BaiTap:    data.BaiTap    || '',
-    PDF:       data.PDF       || ''
+    PDF:       data.PDF       || '',
+        PDFLyThuyet: data.PDFLyThuyet || '',
+        PDFLuyenTap: data.PDFLuyenTap || '',
+    ThoiGianLamBai: data.ThoiGianLamBai || '',
+    ThuTuBai: ttbToSave,
+    MaBai:     maBai
   };
   if (rowIdx) {
     writeRowNamed(sheet, rowIdx, rowData);
   } else {
     appendRowNamed(sheet, rowData);
   }
+  triggerStaticRefresh();
   return jsonOut({ ok: true });
 }
 
 function deleteBaiHoc(data) {
-  const sheet = getOrCreate('BaiHoc', ['KhoaHoc','Chuong','TenBai','Video','VideoGiai','MoTaBai','NgayDang','BaiTap','PDF']);
+  const sheet = getOrCreate('BaiHoc', ['KhoaHoc','Chuong','TenBai','Video','VideoGiai','MoTaBai','NgayDang','BaiTap','PDF','PDFLyThuyet','ThoiGianLamBai']);
   const rowIdx = data.rowIndex || findRowByKey(sheet, data.key || data.originalKey);
   if (rowIdx) sheet.deleteRow(rowIdx);
+  triggerStaticRefresh();
   return jsonOut({ ok: true });
 }
 
 // ── Lịch Live (Quản lý Lịch Live trong Admin) ──────────────────
-const LIVE_COLS = ['id','title','date','time','grade','desc','docUrl','ytUrl','thumb','done'];
+const LIVE_COLS = ['id','title','date','time','loai','grade','desc','docUrl','ytUrl','thumb','done'];
 
 
 function triggerStaticRefresh() {
   try {
     var token = PropertiesService.getScriptProperties().getProperty('GH_TOKEN');
     if (!token) return;
-    UrlFetchApp.fetch('https://api.github.com/repos/xuantruongmyself-png/vatly-xuantruong/actions/workflows/refresh-data.yml/dispatches', {
+    UrlFetchApp.fetch('https://api.github.com/repos/eduhost-vn204/edu-portal-lms/actions/workflows/refresh-data.yml/dispatches', {
       method: 'post',
       contentType: 'application/json',
       headers: { Authorization: 'token ' + token, Accept: 'application/vnd.github+json' },
@@ -537,6 +671,7 @@ function getLiveSessions() {
       obj[h] = (v2 !== undefined && v2 !== null) ? String(v2) : '';
     });
     obj.done = (obj.done === '1' || obj.done === 'TRUE' || obj.done === 'true' || obj.done === true);
+    if (!obj.loai) obj.loai = 'live';
     return obj;
   });
   return jsonOut(rows);
@@ -551,7 +686,7 @@ function saveLiveSession(data) {
     if (String(rowsRaw[i][0]) === String(data.id)) { rowIdx = i + 1; break; }
   }
   const rowData = {
-    id: data.id, title: data.title || '', date: data.date || '', time: data.time || '',
+    id: data.id, title: data.title || '', date: data.date || '', time: data.time || '', loai: data.loai || 'live',
     grade: data.grade || '', desc: data.desc || '', docUrl: data.docUrl || '',
     ytUrl: data.ytUrl || '', thumb: data.thumb || '', done: (data.done === true || data.done === '1' || data.done === 1) ? '1' : '0'
   };
@@ -655,7 +790,7 @@ function incrementLam(data) {
 // NganHangDe: id | type | question | optA | optB | optC | optD | correct | examId
 
 function saveQuestions(data) {
-  const sheet  = getOrCreate('NganHangDe', ['id','type','question','optA','optB','optC','optD','correct','examId']);
+  const sheet  = getOrCreate('NganHangDe', ['id','type','question','optA','optB','optC','optD','correct','examId','giaiThich']);
   const examId = String(data.examId || 'de01').trim();
 
   if (data.clearFirst) {
@@ -674,7 +809,8 @@ function saveQuestions(data) {
       q.optC || q.options?.C || '',
       q.optD || q.options?.D || '',
       q.correct || '',
-      examId
+      examId,
+      q.giaiThich || ''
     ]);
   });
   return jsonOut({ ok: true, count: (data.questions || []).length });
@@ -684,11 +820,10 @@ function saveQuestions(data) {
 // NGÂN HÀNG CÂU HỎI (v16) — kho câu hỏi độc lập, dùng để tổng hợp đề
 // Schema: id(0) | mon(1) | chuong(2) | mucDo(3) | loai(4) | nhomId(5) |
 //         deBaiChung(6) | question(7) | optA(8) | optB(9) | optC(10) |
-//         optD(11) | correct(12) | hinhAnh(13) | giaiThich(14) | ngayThem(15)
+//         optD(11) | correct(12) | hinhAnh(13) | giaiThich(14) | ngayThem(15) | baiHoc(16)
 // ════════════════════════════════════════════════════════════════
 
-const NH_HEADERS = ['id','mon','chuong','mucDo','loai','nhomId','deBaiChung','question','optA','optB','optC','optD','correct','hinhAnh','giaiThich','ngayThem'];
-
+const NH_HEADERS = ['id','mon','chuong','mucDo','loai','nhomId','deBaiChung','question','optA','optB','optC','optD','correct','hinhAnh','giaiThich','ngayThem','baiHoc','chatLuong'];
 // ── GET: Toàn bộ ngân hàng câu hỏi ───────────────────────────
 function getNganHang() {
   const sheet = getOrCreate('NganHang', NH_HEADERS);
@@ -698,7 +833,8 @@ function getNganHang() {
     id: r[0], mon: r[1], chuong: r[2], mucDo: r[3], loai: r[4] || 'TN',
     nhomId: r[5], deBaiChung: r[6], question: r[7],
     optA: r[8], optB: r[9], optC: r[10], optD: r[11],
-    correct: r[12], hinhAnh: r[13], giaiThich: r[14], ngayThem: r[15]
+    correct: r[12], hinhAnh: r[13], giaiThich: r[14], ngayThem: r[15],
+    baiHoc: r[16] || '', chatLuong: r[17] || 'tho'
   })).filter(r => r.question);
   return jsonOut({ ok: true, data: rows });
 }
@@ -722,7 +858,8 @@ function saveNganHang(data) {
       id, q.mon || '', q.chuong || '', q.mucDo || '', q.loai || 'TN',
       q.nhomId || '', q.deBaiChung || '', q.question || '',
       q.optA || '', q.optB || '', q.optC || '', q.optD || '',
-      q.correct || '', q.hinhAnh || '', q.giaiThich || '', now
+      q.correct || '', q.hinhAnh || '', q.giaiThich || '', now,
+      q.baiHoc || '', q.chatLuong || 'tho'
     ]);
     added.push(id);
   });
@@ -751,7 +888,7 @@ function updateNganHang(data) {
   for (let i = 1; i < rows.length; i++) {
     if (String(rows[i][0]).trim() === id) {
       const q = data.q || data;
-      sheet.getRange(i + 1, 1, 1, 16).setValues([[
+      sheet.getRange(i + 1, 1, 1, 18).setValues([[
         id, q.mon || rows[i][1], q.chuong || rows[i][2], q.mucDo || rows[i][3],
         q.loai || rows[i][4], q.nhomId !== undefined ? q.nhomId : rows[i][5],
         q.deBaiChung !== undefined ? q.deBaiChung : rows[i][6],
@@ -763,7 +900,8 @@ function updateNganHang(data) {
         q.correct !== undefined ? q.correct : rows[i][12],
         q.hinhAnh !== undefined ? q.hinhAnh : rows[i][13],
         q.giaiThich !== undefined ? q.giaiThich : rows[i][14],
-        rows[i][15]
+        rows[i][15],
+        q.baiHoc !== undefined ? q.baiHoc : rows[i][16], q.chatLuong !== undefined ? q.chatLuong : (rows[i][17] || 'tho')
       ]]);
       return jsonOut({ ok: true });
     }
@@ -771,7 +909,42 @@ function updateNganHang(data) {
   return jsonOut({ ok: false, msg: 'Không tìm thấy id ' + id });
 }
 
-// ── GET: Lấy link video từ Sheet nguồn (khoá luyện đề 2k8) ──
+// ── POST: Gán "Bài học" cho nhiều câu cùng lúc (phân loại hàng loạt) ──
+function bulkSetBaiHocNganHang(data) {
+  const ids = (data.ids || []).map(x => String(x).trim()).filter(Boolean);
+  if (!ids.length) return jsonOut({ ok: false, msg: 'Thiếu ids' });
+  const baiHoc = (data.baiHoc || '').toString();
+  const sheet = getOrCreate('NganHang', NH_HEADERS);
+  const col = NH_HEADERS.indexOf('baiHoc') + 1;
+  const rows = sheet.getDataRange().getValues();
+  let updated = 0;
+  for (let i = 1; i < rows.length; i++) {
+    if (ids.indexOf(String(rows[i][0]).trim()) !== -1) {
+      sheet.getRange(i + 1, col).setValue(baiHoc);
+      updated++;
+    }
+  }
+  return jsonOut({ ok: true, updated });
+}
+
+function bulkSetChatLuongNganHang(data) {
+  const ids = (data.ids || []).map(x => String(x).trim()).filter(Boolean);
+  if (!ids.length) return jsonOut({ ok: false, msg: 'Thiếu ids' });
+  const chatLuong = (data.chatLuong || 'tho').toString();
+  const sheet = getOrCreate('NganHang', NH_HEADERS);
+  const col = NH_HEADERS.indexOf('chatLuong') + 1;
+  const rows = sheet.getDataRange().getValues();
+  let updated = 0;
+  for (let i = 1; i < rows.length; i++) {
+    if (ids.indexOf(String(rows[i][0]).trim()) !== -1) {
+      sheet.getRange(i + 1, col).setValue(chatLuong);
+      updated++;
+    }
+  }
+  return jsonOut({ ok: true, updated });
+}
+
+  // ── GET: Lấy link video từ Sheet nguồn (khoá luyện đề 2k8) ──
 
 function getSourceVideoLinks() {
   try {
@@ -886,31 +1059,34 @@ function saveKhoaConfig(data) {
 
 // ── POST Admin: Ping kiểm tra kết nối, CORS và quyền Admin (không đụng Sheets) ──
 function pingAdmin(data) {
-  const key = String(data.adminKey || '').trim();
-  const ADMIN_KEY = getAdminKey();
-  if (!ADMIN_KEY || key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
+  if (!requireAdmin(data.adminKey)) return jsonOut({ ok: false, msg: 'Unauthorized' });
   return jsonOut({ ok: true, ping: 'pong', ts: Date.now() });
 }
 
 // ── POST admin: Đặt VIP cho học sinh ─────────────────────────
 function setVipStatus(data) {
   // Dùng qua admin: { action:'setvipstatus', adminKey:..., sdt:..., loaiTK:'vip'|'free'|'premium', days:30 }
-  const key = String(data.adminKey || '').trim();
-  const ADMIN_KEY = getAdminKey();
-  if (!ADMIN_KEY || key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
-  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
+  if (!requireAdmin(data.adminKey)) return jsonOut({ ok: false, msg: 'Unauthorized' });
+  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry','mienVideo','tracNghiemVideo','mienLuyenTap']);
   const rows  = sheet.getDataRange().getValues();
   const target = String(data.sdt || '').trim();
   for (let i = 1; i < rows.length; i++) {
     if (sameTaiKhoan(rows[i][0], target)) {
       const loaiTK = ['free','vip','premium'].indexOf(String(data.loaiTK || '').toLowerCase()) !== -1
         ? String(data.loaiTK).toLowerCase() : 'vip';
-      const days   = Number(data.days) || 30;
-      const expiry = Date.now() + days * 24 * 60 * 60 * 1000;
+      let days = 0;
+      let expiry = 0;
+      if (loaiTK === 'vip') {
+        days = Number(data.days);
+        if (!Number.isFinite(days) || days <= 0 || days > 3650) {
+          return jsonOut({ ok: false, msg: 'Số ngày VIP không hợp lệ (phải từ 1 đến 3650).' });
+        }
+        expiry = Date.now() + days * 24 * 60 * 60 * 1000;
+      }
       sheet.getRange(i + 1, 8).setValue(loaiTK);
-      sheet.getRange(i + 1, 9).setValue(loaiTK === 'vip' ? expiry : 0);
+      sheet.getRange(i + 1, 9).setValue(expiry);
       const han = loaiTK === 'premium' ? 'vĩnh viễn' : (loaiTK === 'free' ? 'miễn phí' : days + ' ngày');
-      return jsonOut({ ok: true, msg: `Đã cập nhật ${target} → ${loaiTK} (${han})` });
+      return jsonOut({ ok: true, msg: 'Đã cập nhật ' + target + ' → ' + loaiTK + ' (' + han + ')' });
     }
   }
   return jsonOut({ ok: false, msg: 'Không tìm thấy học sinh.' });
@@ -918,12 +1094,9 @@ function setVipStatus(data) {
 
 // ── GET Admin: Danh sách tài khoản học sinh ──────────────────
 function getDanhSachTaiKhoan(e) {
-  // Kiểm tra adminKey đơn giản
-  const key = e.parameter.adminKey || '';
-  const ADMIN_KEY = getAdminKey();
-  if (!ADMIN_KEY || key !== ADMIN_KEY) return jsonOut({ error: 'Unauthorized' });
+  if (!requireAdmin(e.parameter.adminKey)) return jsonOut({ error: 'Unauthorized' });
 
-  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
+  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry','mienVideo','tracNghiemVideo','mienLuyenTap']);
   const rows  = sheet.getDataRange().getValues();
   const result = [];
   for (let i = 1; i < rows.length; i++) {
@@ -936,6 +1109,9 @@ function getDanhSachTaiKhoan(e) {
       lpTotal:      rows[i][5] || 0,
       loaiTK:       rows[i][7] || 'vip',
       trialExpiry:  rows[i][8] || 0,
+      mienVideo:    !!(rows[i][9]),
+      tracNghiemVideo: (rows[i][10] === false ? false : true),
+      mienLuyenTap: !!(rows[i][11]),
     });
   }
   return jsonOut({ ok: true, data: result });
@@ -949,9 +1125,7 @@ function dispSdt(s) {
 }
 
 function getDanhSachThietBi(e) {
-  const key = e.parameter.adminKey || '';
-  const ADMIN_KEY = getAdminKey();
-  if (!ADMIN_KEY || key !== ADMIN_KEY) return jsonOut({ error: 'Unauthorized' });
+  if (!requireAdmin(e.parameter.adminKey)) return jsonOut({ error: 'Unauthorized' });
   const sheet = getOrCreate('ThietBiHocThu', ['deviceId','sdt','hoten','trialStart','trialExpiry','soLanChan']);
   const rows = sheet.getDataRange().getValues();
   const result = [];
@@ -969,45 +1143,9 @@ function getDanhSachThietBi(e) {
   return jsonOut({ ok: true, data: result });
 }
 
-
-// ── GET: Tìm hồ sơ công khai để kết bạn ─────────────────────
-function searchPublicProfiles(e) {
-  const requester = String(e.parameter.hs || '').trim();
-  const rawQuery  = String(e.parameter.q || '').trim();
-  const query = normalizeSearchText(rawQuery);
-  const digits = rawQuery.replace(/\D/g, '');
-  if (!requester || (!query && digits.length < 4)) return jsonOut({ ok: true, data: [] });
-  if (query.length < 3 && digits.length < 4) return jsonOut({ ok: true, data: [] });
-  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
-  const rows = sheet.getDataRange().getValues();
-  let requesterExists = false;
-  for (let i = 1; i < rows.length; i++) {
-    if (sameTaiKhoan(rows[i][0], requester)) { requesterExists = true; break; }
-  }
-  if (!requesterExists) return jsonOut({ ok: false, msg: 'Tài khoản chưa đăng nhập hoặc không còn tồn tại.' });
-  const result = [];
-  for (let i = 1; i < rows.length && result.length < 20; i++) {
-    const account = String(rows[i][0] || '').trim();
-    if (!account || sameTaiKhoan(account, requester)) continue;
-    const name = String(rows[i][1] || '').trim();
-    const accountDigits = account.replace(/\D/g, '');
-    const nameMatch = query.length >= 3 && normalizeSearchText(name).indexOf(query) !== -1;
-    const accountMatch = digits.length >= 4 && accountDigits.indexOf(digits) !== -1;
-    if (nameMatch || accountMatch) result.push({ key: account.toLowerCase(), hoten: name, lop: rows[i][2] || '' });
-  }
-  return jsonOut({ ok: true, data: result });
-}
-
-function normalizeSearchText(value) {
-  return String(value || '').toLowerCase().normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/\s+/g, ' ').trim();
-}
-
 // ── POST Admin: Mở khoá thiết bị (cho học thử lại) ───────────
 function resetDevice(data) {
-  const key = String(data.adminKey || '').trim();
-  const ADMIN_KEY = getAdminKey();
-  if (!ADMIN_KEY || key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
+  if (!requireAdmin(data.adminKey)) return jsonOut({ ok: false, msg: 'Unauthorized' });
   const deviceId = String(data.deviceId || '').trim();
   if (!deviceId) return jsonOut({ ok: false, msg: 'Thiếu deviceId' });
   const sheet = getOrCreate('ThietBiHocThu', ['deviceId','sdt','hoten','trialStart','trialExpiry','soLanChan']);
@@ -1023,13 +1161,11 @@ function resetDevice(data) {
 
 // ── POST: Xóa tài khoản học sinh ─────────────────────────────
 function deleteAccount(data) {
-  const key = String(data.adminKey || '').trim();
-  const ADMIN_KEY = getAdminKey();
-  if (!ADMIN_KEY || key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
+  if (!requireAdmin(data.adminKey)) return jsonOut({ ok: false, msg: 'Unauthorized' });
   const sdt = String(data.sdt || '').trim();
   if (!sdt) return jsonOut({ ok: false, msg: 'Thiếu sdt' });
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
+  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry','mienVideo','tracNghiemVideo','mienLuyenTap']);
   const rows = sheet.getDataRange().getValues();
   for (let i = 1; i < rows.length; i++) {
     if (sameTaiKhoan(rows[i][0], sdt)) {
@@ -1059,7 +1195,7 @@ function getNhiemVu(sdt) {
   const sheet = getOrCreate('NhiemVu', ['sdt','nhipHoc','conTro','lastMissionDate','startDate','chuoiDung','tongDiemDuaTop']);
   const rows = sheetToJson(sheet);
   for (const r of rows) {
-    if (sameTaiKhoan(r.sdt, sdt)) {
+    if (normSdt(r.sdt) === normSdt(sdt)) {
       return jsonOut({ ok: true, data: {
         nhipHoc:         Number(r.nhipHoc) || 0,
         conTro:          Number(r.conTro)  || 0,
@@ -1080,7 +1216,7 @@ function saveNhiemVu(data) {
   const sheet = getOrCreate('NhiemVu', COLS);
   const rows  = sheetToJson(sheet);
   for (const r of rows) {
-    if (sameTaiKhoan(r.sdt, data.sdt)) {
+    if (normSdt(r.sdt) === normSdt(data.sdt)) {
       const updated = {
         sdt:             r.sdt,
         nhipHoc:         data.nhipHoc        !== undefined ? Number(data.nhipHoc)  : (Number(r.nhipHoc)||0),
@@ -1112,11 +1248,19 @@ function saveDuaTop(data) {
   if (!data.sdt || !data.diemCong) return jsonOut({ ok: false, msg: 'Thiếu dữ liệu' });
   const diem = Number(data.diemCong) || 0;
 
-  const acc     = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
+  const RANK_MINS = [0, 50, 150, 300, 600, 1000]; // phai khop VLXT_RANKS phia frontend (xephang-fx.js)
+  function rankIdx(lp) { let idx = 0; for (let i = 0; i < RANK_MINS.length; i++) { if (lp >= RANK_MINS[i]) idx = i; } return idx; }
+  let lpTotal = 0, rankUp = false;
+
+  const acc     = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry','mienVideo','tracNghiemVideo','mienLuyenTap']);
   const accRows = sheetToJson(acc);
   for (const r of accRows) {
-    if (sameTaiKhoan(r.sdt, data.sdt)) {
-      writeRowNamed(acc, r._rowIndex, Object.assign({}, r, { lpTotal: (Number(r.lpTotal)||0) + diem }));
+    if (normSdt(r.sdt) === normSdt(data.sdt)) {
+      const oldLp = Number(r.lpTotal) || 0;
+      const newLp = oldLp + diem;
+      writeRowNamed(acc, r._rowIndex, Object.assign({}, r, { lpTotal: newLp }));
+      lpTotal = newLp;
+      rankUp = rankIdx(newLp) > rankIdx(oldLp);
       break;
     }
   }
@@ -1124,7 +1268,7 @@ function saveDuaTop(data) {
   const nv     = getOrCreate('NhiemVu', ['sdt','nhipHoc','conTro','lastMissionDate','startDate','chuoiDung','tongDiemDuaTop']);
   const nvRows = sheetToJson(nv);
   for (const r of nvRows) {
-    if (sameTaiKhoan(r.sdt, data.sdt)) {
+    if (normSdt(r.sdt) === normSdt(data.sdt)) {
       writeRowNamed(nv, r._rowIndex, Object.assign({}, r, {
         chuoiDung:      Number(data.chuoiDung) || 0,
         tongDiemDuaTop: (Number(r.tongDiemDuaTop)||0) + diem
@@ -1133,7 +1277,37 @@ function saveDuaTop(data) {
     }
   }
 
-  return jsonOut({ ok: true, lpCong: diem });
+  return jsonOut({ ok: true, lpCong: diem, lpTotal: lpTotal, rankUp: rankUp });
+}
+
+// 6/8 dem: Solo Vat Ly - dau 1-1 (hoac voi bot) theo hang, chi cong LP xep hang,
+// KHONG dung toi NhiemVu/tongDiemDuaTop (de khong lan voi thong ke Dua Top).
+function saveSoloResult(data) {
+  if (!data.sdt) return jsonOut({ ok: false, msg: 'Thieu du lieu' });
+  const diem = Number(data.diemCong) || 0;
+  const RANK_MINS = [0, 50, 150, 300, 600, 1000];
+  function rankIdx(lp) { let idx = 0; for (let i = 0; i < RANK_MINS.length; i++) { if (lp >= RANK_MINS[i]) idx = i; } return idx; }
+  let lpTotal = 0, rankUp = false;
+  let found = false;
+  const acc = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry','mienVideo','tracNghiemVideo','mienLuyenTap']);
+  const accRows = sheetToJson(acc);
+  for (const r of accRows) {
+    if (normSdt(r.sdt) === normSdt(data.sdt)) {
+      found = true;
+      const oldLp = Number(r.lpTotal) || 0;
+      const newLp = oldLp + diem;
+      writeRowNamed(acc, r._rowIndex, Object.assign({}, r, { lpTotal: newLp }));
+      lpTotal = newLp;
+      rankUp = rankIdx(newLp) > rankIdx(oldLp);
+      break;
+    }
+  }
+  if (!found) {
+    lpTotal = diem;
+    rankUp = rankIdx(lpTotal) > rankIdx(0);
+    appendRowNamed(acc, { sdt: data.sdt, hoten: data.hoten || '', lop: data.lop || '', lpTotal: lpTotal });
+  }
+  return jsonOut({ ok: true, lpCong: diem, lpTotal: lpTotal, rankUp: rankUp, ketQua: data.ketQua || '' });
 }
 
 
@@ -1164,6 +1338,187 @@ function saveSetting(data) {
   return jsonOut({ ok: true });
 }
 
+
+// ═══════════ CÂU HỎI TRONG VIDEO (video quiz checkpoint) ═══════════
+
+// GET ?type=videocauhoi&bai=<baiKey>
+function getVideoCauHoi(bai) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('VideoCauHoi');
+  if (!sheet) return jsonOut({ data: [] });
+  let rows = sheetToJson(sheet);
+  if (bai) rows = rows.filter(function(r){ return String(r.baiKey) === String(bai); });
+  function _sortKeyTG(t){ return (t===null||t===undefined||t==='') ? Infinity : (Number(t)||0); }
+  rows.sort(function(a,b){ return _sortKeyTG(a.thoiGian)-_sortKeyTG(b.thoiGian); });
+  return jsonOut({ data: rows });
+}
+
+// GET ?type=transcript&v=<youtubeVideoId>&lang=<vi|en|...>
+// Lay phu de (transcript) video YouTube de admin panel tu do moc cau hoi
+// theo noi dung (khop chu, khong can thay tu canh gio). Ky thuat: tai trang
+// xem video (can User-Agent trinh duyet that, YouTube chan UA mac dinh cua
+// UrlFetchApp) roi trich mang captionTracks nhung trong player response.
+// Neu video khong co phu de thi tra ok:false, phia admin bao thay tu nhap tay.
+function getVideoTranscript(videoId, preferLang) {
+  try {
+    if (!videoId) return jsonOut({ ok: false, error: 'missing_video_id' });
+    var watchUrl = 'https://www.youtube.com/watch?v=' + encodeURIComponent(videoId);
+    var resp = UrlFetchApp.fetch(watchUrl, {
+      muteHttpExceptions: true,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'Accept-Language': 'en-US,en;q=0.9'
+      }
+    });
+    var html = resp.getContentText();
+    var idx = html.indexOf('captionTracks');
+    if (idx < 0) return jsonOut({ ok: false, error: 'no_captions', videoId: videoId });
+    var arrStart = html.indexOf('[', idx);
+    var depth = 0, i = arrStart, arrEnd = -1;
+    for (; i < html.length; i++) {
+      if (html[i] === '[') depth++;
+      else if (html[i] === ']') { depth--; if (depth === 0) { arrEnd = i; break; } }
+    }
+    if (arrEnd < 0) return jsonOut({ ok: false, error: 'parse_failed', videoId: videoId });
+    var tracks;
+    try { tracks = JSON.parse(html.slice(arrStart, arrEnd + 1)); }
+    catch (e) { return jsonOut({ ok: false, error: 'json_parse_failed', videoId: videoId }); }
+    if (!tracks || !tracks.length) return jsonOut({ ok: false, error: 'no_captions', videoId: videoId });
+    var norm = function (t) { return (t.languageCode || '').toLowerCase(); };
+    var want = (preferLang || 'vi').toLowerCase();
+    var chosen = tracks.filter(function (t) { return norm(t) === want; })[0];
+    if (!chosen) chosen = tracks.filter(function (t) { return norm(t) === 'vi'; })[0];
+    if (!chosen) chosen = tracks[0];
+    var baseUrl = chosen.baseUrl || '';
+    if (baseUrl.indexOf('http') !== 0) baseUrl = 'https://www.youtube.com' + baseUrl;
+    var capResp = UrlFetchApp.fetch(baseUrl, { muteHttpExceptions: true, headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36' } });
+    var capXml = capResp.getContentText();
+    var segRe = /<text start="([\d.]+)"(?:\s+dur="([\d.]+)")?[^>]*>([\s\S]*?)<\/text>/g;
+    var segs = [];
+    var sm;
+    while ((sm = segRe.exec(capXml))) {
+      var txt = sm[3]
+        .replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"')
+        .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+        .replace(/<[^>]+>/g, '');
+      segs.push({ start: parseFloat(sm[1]), dur: parseFloat(sm[2] || '0'), text: txt.trim() });
+    }
+    if (!segs.length) return jsonOut({ ok: false, error: 'empty_captions', videoId: videoId });
+    return jsonOut({ ok: true, videoId: videoId, lang: norm(chosen), segments: segs });
+  } catch (err) {
+    return jsonOut({ ok: false, error: String(err) });
+  }
+}
+
+
+// POST {action:'savevideocauhoi', baiKey, originalKey, items:[{t,nhId,q,A,B,C,D,ans}]}
+// Ghi đè toàn bộ mốc câu hỏi của 1 bài (xoá cũ, ghi mới)
+function saveVideoCauHoi(data) {
+  const COLS = ['baiKey','thuTu','thoiGian','nhId','type','question','optA','optB','optC','optD','correct'];
+  const sheet = getOrCreate('VideoCauHoi', COLS);
+  const keys = [String(data.baiKey || '')];
+  if (data.originalKey && String(data.originalKey) !== String(data.baiKey)) keys.push(String(data.originalKey));
+  const lastCol = sheet.getLastColumn();
+  const headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0].map(String);
+  const kCol = headers.indexOf('baiKey');
+  if (kCol >= 0 && sheet.getLastRow() > 1) {
+    const vals = sheet.getRange(2, kCol + 1, sheet.getLastRow() - 1, 1).getValues();
+    for (var i = vals.length - 1; i >= 0; i--) {
+      if (keys.indexOf(String(vals[i][0])) >= 0) sheet.deleteRow(i + 2);
+    }
+  }
+  // Ep kieu chuoi cho cac truong co the bi Google Sheets tu dong doi thanh
+  // Ngay thang/So (vd dap so '4,6' -> 4.6, '700' -> 700) - cung bug da gap
+  // o BaiTapTracNghiem/NganHang, xem memory project_nganhang-2k9-campaign.
+  function asText(v) { const s = String(v == null ? '' : v); return s === '' ? '' : ("'" + s); }
+    function _sortKeyT(t){ return (t===null||t===undefined||t==='') ? Infinity : (Number(t)||0); }
+    const items = (data.items || []).slice().sort(function(a,b){ return _sortKeyT(a.t)-_sortKeyT(b.t); });
+  items.forEach(function(it, ix) {
+    appendRowNamed(sheet, {
+      baiKey:   asText(data.baiKey || ''),
+      thuTu:    ix + 1,
+      thoiGian: (it.t===null||it.t===undefined||it.t==='') ? '' : (Number(it.t)||0),
+      nhId:     it.nhId || '',
+      type:     (it.type === 'tf' || it.type === 'short') ? it.type : 'mc',
+      question: asText(it.q || ''),
+      optA:     asText(it.A || ''),
+      optB:     asText(it.B || ''),
+      optC:     asText(it.C || ''),
+      optD:     asText(it.D || ''),
+      correct:  asText(String((it.correct !== undefined && it.correct !== null && it.correct !== '') ? it.correct : (it.ans || '')).toUpperCase().trim())
+    });
+  });
+  if (typeof clearReadCache === 'function') { try { clearReadCache(); } catch(e) {} }
+  return jsonOut({ ok: true, count: items.length });
+}
+
+// GET ?type=baitaptracnghiem&bai=<baiKey>
+function getBaiTapTracNghiem(bai) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('BaiTapTracNghiem');
+  if (!sheet) return jsonOut({ data: [] });
+  let rows = sheetToJson(sheet);
+  if (bai) rows = rows.filter(function(r){ return String(r.baiKey) === String(bai); });
+  rows.sort(function(a,b){ return (Number(a.thuTu)||0) - (Number(b.thuTu)||0); });
+  return jsonOut({ data: rows });
+}
+
+// POST {action:'savebaitaptracnghiem', baiKey, originalKey, items:[{type,q,A,B,C,D,correct}]}
+// Ghi de toan bo cau hoi Luyen tap trac nghiem cua 1 bai (xoa cu, ghi moi) - tach sheet rieng
+// de khong bi gioi han 50.000 ky tu/o cua Google Sheets khi 1 bai co hang tram cau.
+function saveBaiTapTracNghiem(data) {
+  const COLS = ['baiKey','thuTu','type','question','optA','optB','optC','optD','correct'];
+  const sheet = getOrCreate('BaiTapTracNghiem', COLS);
+  const keys = [String(data.baiKey || '')];
+  if (data.originalKey && String(data.originalKey) !== String(data.baiKey)) keys.push(String(data.originalKey));
+  const lastCol = sheet.getLastColumn();
+  const headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0].map(String);
+  const kCol = headers.indexOf('baiKey');
+  if (kCol >= 0 && sheet.getLastRow() > 1) {
+    const vals = sheet.getRange(2, kCol + 1, sheet.getLastRow() - 1, 1).getValues();
+    for (var i = vals.length - 1; i >= 0; i--) {
+      if (keys.indexOf(String(vals[i][0])) >= 0) sheet.deleteRow(i + 2);
+    }
+  }
+  // Ep kieu chuoi (khong de Google Sheets tu dong doi thanh Ngay thang/So, vd
+  // dap so "2.5" hoac dap an co dang "1/2" bi hieu nham thanh ngay - da tung
+  // gap bug nay o nhieu sheet khac, xem memory project_nganhang-2k9-campaign).
+  function asText(v) { const s = String(v == null ? '' : v); return s === '' ? '' : ("'" + s); }
+  const items = (data.items || []).slice();
+  items.forEach(function(it, ix) {
+    appendRowNamed(sheet, {
+      baiKey:   asText(data.baiKey || ''),
+      thuTu:    ix + 1,
+      type:     (it.type === 'tf' || it.type === 'short') ? it.type : 'mc',
+      question: asText(it.q || it.question || ''),
+      optA:     asText(it.A || it.optA || ''),
+      optB:     asText(it.B || it.optB || ''),
+      optC:     asText(it.C || it.optC || ''),
+      optD:     asText(it.D || it.optD || ''),
+      correct:  asText(String(it.correct != null ? it.correct : (it.ans || '')).trim())
+    });
+  });
+  if (typeof clearReadCache === 'function') { try { clearReadCache(); } catch(e) {} }
+  return jsonOut({ ok: true, count: items.length });
+}
+
+// POST {action:'logvideoquiz', sdt, ten, lop, baiKey, thuTu, nhId, soLanSai}
+// Học sinh trả lời ĐÚNG 1 câu trong video → ghi 1 dòng log
+function logVideoQuiz(data) {
+  const sheet = getOrCreate('VideoQuizLog', ['ngay','sdt','ten','lop','baiKey','thuTu','nhId','soLanSai']);
+  appendRowNamed(sheet, {
+    ngay:     new Date(),
+    sdt:      "'" + String(data.sdt || ''),
+    ten:      data.ten || '',
+    lop:      data.lop || '',
+    baiKey:   String(data.baiKey || ''),
+    thuTu:    Number(data.thuTu) || 0,
+    nhId:     data.nhId || '',
+    soLanSai: Number(data.soLanSai) || 0
+  });
+  return jsonOut({ ok: true });
+}
+
 // ══════════ v50: LỊCH SỬ HOẠT ĐỘNG + SỬA THÔNG TIN TÀI KHOẢN ══════════
 
 // So khớp tài khoản an toàn: email so email, SĐT so SĐT
@@ -1182,14 +1537,13 @@ function logHoatDong(data) {
   const sdt = String(data.sdt || '').trim();
   if (!sdt) return jsonOut({ ok: false });
   const sheet = getOrCreate('HoatDong', ['sdt','thoigian','hanhdong','chitiet']);
-  sheet.getRange(sheet.getLastRow() + 1, 1, 1, 1).setNumberFormat('@'); // giữ số 0 đầu SĐT
+  sheet.getRange(sheet.getLastRow() + 1, 1, 1, 1).setNumberFormat('@');
   sheet.appendRow([
     sdt,
     new Date().toISOString(),
     String(data.hanhdong || '').slice(0, 100),
     String(data.chitiet  || '').slice(0, 300)
   ]);
-  // Giữ sheet gọn: vượt 20.000 dòng thì xoá 2.000 dòng cũ nhất
   const n = sheet.getLastRow();
   if (n > 20000) sheet.deleteRows(2, 2000);
   return jsonOut({ ok: true });
@@ -1197,9 +1551,7 @@ function logHoatDong(data) {
 
 // ── GET Admin: lịch sử hoạt động của 1 học sinh (mới nhất trước) ──
 function getHoatDong(e) {
-  const key = e.parameter.adminKey || '';
-  const ADMIN_KEY = getAdminKey();
-  if (!ADMIN_KEY || key !== ADMIN_KEY) return jsonOut({ error: 'Unauthorized' });
+  if (!requireAdmin(e.parameter.adminKey)) return jsonOut({ error: 'Unauthorized' });
   const hs = String(e.parameter.hs || '').trim();
   if (!hs) return jsonOut({ ok: false, msg: 'Thiếu hs' });
   const sheet = getOrCreate('HoatDong', ['sdt','thoigian','hanhdong','chitiet']);
@@ -1213,21 +1565,174 @@ function getHoatDong(e) {
   return jsonOut({ ok: true, data: out });
 }
 
-// ── POST Admin: sửa thông tin tài khoản (hiện dùng cho Lớp, Họ tên) ──
+// ── POST Admin: sửa thông tin tài khoản (Lớp, Họ tên) ──
 function updateAccount(data) {
-  const key = String(data.adminKey || '').trim();
-  const ADMIN_KEY = getAdminKey();
-  if (!ADMIN_KEY || key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
+  if (!requireAdmin(data.adminKey)) return jsonOut({ ok: false, msg: 'Unauthorized' });
   const sdt = String(data.sdt || '').trim();
   if (!sdt) return jsonOut({ ok: false, msg: 'Thiếu sdt' });
-  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
+  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry','mienVideo','tracNghiemVideo','mienLuyenTap']);
   const rows  = sheet.getDataRange().getValues();
   for (let i = 1; i < rows.length; i++) {
     if (sameTaiKhoan(rows[i][0], sdt)) {
       if (data.lop)   sheet.getRange(i + 1, 3).setValue(String(data.lop));
+      if (data.mienVideo !== undefined) sheet.getRange(i + 1, 10).setValue(!!data.mienVideo);
+      if (data.tracNghiemVideo !== undefined) sheet.getRange(i + 1, 11).setValue(!!data.tracNghiemVideo);
+      if (data.mienLuyenTap !== undefined) sheet.getRange(i + 1, 12).setValue(!!data.mienLuyenTap);
       if (data.hoten) sheet.getRange(i + 1, 2).setValue(String(data.hoten));
       return jsonOut({ ok: true, msg: 'Đã cập nhật thông tin.' });
     }
   }
   return jsonOut({ ok: false, msg: 'Không tìm thấy học sinh.' });
+}
+
+// ─── MIGRATION MOT LAN (5/8-6/8/2026): gan MaBai on dinh cho moi bai hoc + noi lai
+// tien do hoc sinh bi mo côi do doi ten khoa 'CHUYEN DE LY THUYET GD1' -> 'Chuyen De Li Thuyet GD1'.
+// Chay thu cong 1 lan tu trinh chinh sua (chon ham nay o dropdown roi bam Chay), AN TOAN de chay
+// lai nhieu lan (idempotent): bai da co MaBai thi giu nguyen, TienDo da khop MaBai thi bo qua.
+function debugTienDoRunOnce() {
+  const sheet = getOrCreate('TienDo', ['sdt','lesson','khoa','ten','lop','ngay']);
+  const rows = sheetToJson(sheet);
+  Logger.log('total=' + rows.length);
+  const withLesson = rows.filter(function(r){ return r.lesson; });
+  Logger.log('withLesson=' + withLesson.length);
+  const withoutLesson = rows.filter(function(r){ return !r.lesson; });
+  Logger.log('withoutLesson=' + withoutLesson.length);
+  Logger.log('sample_withoutLesson=' + JSON.stringify(withoutLesson.slice(0,3)));
+  const distinctKhoa = {};
+  withLesson.forEach(function(r){ distinctKhoa[String(r.khoa||'')] = (distinctKhoa[String(r.khoa||'')]||0)+1; });
+  Logger.log('khoaCounts=' + JSON.stringify(distinctKhoa));
+  const sampleLessons = withLesson.slice(0,8).map(function(r){ return r.lesson; });
+  Logger.log('sampleLessons=' + JSON.stringify(sampleLessons));
+  const chuyDe = withLesson.filter(function(r){ return String(r.lesson||'').toUpperCase().indexOf('CHUY') >= 0 || String(r.khoa||'').toUpperCase().indexOf('CHUY') >= 0; });
+  Logger.log('chuyDeCount=' + chuyDe.length);
+  Logger.log('chuyDeSample=' + JSON.stringify(chuyDe.slice(0,10)));
+  return 'done';
+}
+function _normKey_(s) {
+  return String(s||'').trim().toLowerCase().replace(/\u2013|\u2014/g,'-').replace(/\s+/g,' ');
+}
+
+function migrateLessonIdsRunOnce() {
+  const COLS = ['KhoaHoc','Chuong','TenBai','Video','VideoGiai','MoTaBai','NgayDang','BaiTap','PDF','PDFLyThuyet','PDFLuyenTap','ThoiGianLamBai','ThuTuBai','MaBai'];
+  const sheet = getOrCreate('BaiHoc', COLS);
+  const headers = sheet.getRange(1,1,1,sheet.getLastColumn()).getValues()[0];
+  const maBaiCol = headers.indexOf('MaBai') + 1;
+  const khoaCol = headers.indexOf('KhoaHoc') + 1;
+  const chuongCol = headers.indexOf('Chuong') + 1;
+  const tenBaiCol = headers.indexOf('TenBai') + 1;
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return jsonOut({ ok:true, assigned:0, reconciled:0, note:'BaiHoc rong' });
+  const data = sheet.getRange(2, 1, lastRow-1, sheet.getLastColumn()).getValues();
+  let assigned = 0;
+  const rowsInfo = [];
+  for (let i = 0; i < data.length; i++) {
+    const rowNum = i + 2;
+    let mb = data[i][maBaiCol-1];
+    if (!mb) {
+      mb = 'B' + Utilities.getUuid().replace(/-/g,'').slice(0,12);
+      sheet.getRange(rowNum, maBaiCol).setValue(mb);
+      assigned++;
+    }
+    rowsInfo.push({ khoa: String(data[i][khoaCol-1]||''), chuong: String(data[i][chuongCol-1]||''), tenBai: String(data[i][tenBaiCol-1]||''), maBai: mb });
+  }
+  const tdSheet = getOrCreate('TienDo', ['sdt','lesson','khoa','ten','lop','ngay']);
+  const tdHeaders = tdSheet.getRange(1,1,1,tdSheet.getLastColumn()).getValues()[0];
+  const lessonCol = tdHeaders.indexOf('lesson') + 1;
+  const tdLastRow = tdSheet.getLastRow();
+  if (tdLastRow < 2) return jsonOut({ ok:true, assigned: assigned, reconciled: 0 });
+  const tdData = tdSheet.getRange(2, 1, tdLastRow-1, tdSheet.getLastColumn()).getValues();
+  const currentKeys = {};
+  const currentMaBaiSet = {};
+  rowsInfo.forEach(function(u){ currentKeys[_normKey_(u.khoa)+'|||'+_normKey_(u.chuong)+'|||'+_normKey_(u.tenBai)] = u.maBai; currentMaBaiSet[u.maBai] = true; });
+  const byChuongTenBai = {};
+  rowsInfo.forEach(function(u){
+    const k = _normKey_(u.chuong)+'|||'+_normKey_(u.tenBai);
+    if (!byChuongTenBai[k]) byChuongTenBai[k] = [];
+    byChuongTenBai[k].push(u.maBai);
+  });
+  let reconciled = 0;
+  const ambiguous = [];
+  for (let i = 0; i < tdData.length; i++) {
+    const rowNum = i + 2;
+    const lessonVal = String(tdData[i][lessonCol-1]||'');
+    if (!lessonVal || currentMaBaiSet[lessonVal]) continue;
+    const normFull = _normKey_(lessonVal.split('|||')[0]||'') + '|||' + _normKey_(lessonVal.split('|||')[1]||'') + '|||' + _normKey_(lessonVal.split('|||')[2]||'');
+    if (currentKeys[normFull]) {
+      tdSheet.getRange(rowNum, lessonCol).setValue(currentKeys[normFull]);
+      reconciled++;
+      continue;
+    }
+    const parts = lessonVal.split('|||');
+    if (parts.length === 3) {
+      const ctKey = _normKey_(parts[1]) + '|||' + _normKey_(parts[2]);
+      const candidates = byChuongTenBai[ctKey];
+      if (candidates && candidates.length === 1) {
+        tdSheet.getRange(rowNum, lessonCol).setValue(candidates[0]);
+        reconciled++;
+      } else if (candidates && candidates.length > 1) {
+        ambiguous.push(lessonVal);
+      }
+    }
+  }
+  Logger.log(JSON.stringify({ ok:true, assigned: assigned, reconciled: reconciled, ambiguous: ambiguous }));
+  return jsonOut({ ok:true, assigned: assigned, reconciled: reconciled, ambiguous: ambiguous });
+}
+
+
+// ════════════════════════════════════════════════════════════════
+// HƯỚNG DẪN HỌC TẬP (popup video, thêm 17/8/2026) — Tab "HuongDan"
+// Schema: key(0) | tieuDe(1) | videoUrl(2) | noiDung(3)
+// key cố định: 'signup' + 'baihoc' | 'danhsach-ly12' | 'hoso' | 'live' | 'lichlive'
+// ════════════════════════════════════════════════════════════════
+function getHuongDan() {
+  const sheet = getOrCreate('HuongDan', ['key','tieuDe','videoUrl','noiDung']);
+  return jsonOut({ ok: true, data: sheetToJson(sheet) });
+}
+
+function saveHuongDan(data) {
+  const sheet = getOrCreate('HuongDan', ['key','tieuDe','videoUrl','noiDung']);
+  const key = String(data.key || '').trim();
+  if (!key) return jsonOut({ ok: false, msg: 'Thieu key' });
+  const rows = sheet.getDataRange().getValues();
+  for (let i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]).trim() === key) {
+      sheet.getRange(i+1, 1, 1, 4).setValues([[key, data.tieuDe||'', data.videoUrl||'', data.noiDung||'']]);
+      return jsonOut({ ok: true, action: 'updated' });
+    }
+  }
+  sheet.appendRow([key, data.tieuDe||'', data.videoUrl||'', data.noiDung||'']);
+  return jsonOut({ ok: true, action: 'created' });
+}
+
+
+function searchPublicProfiles(e) {
+  const requester = String(e.parameter.hs || '').trim();
+  const rawQuery = String(e.parameter.q || '').trim();
+  const query = normalizeSearchText(rawQuery);
+  const digits = rawQuery.replace(/\D/g, '');
+  if (!requester || (!query && digits.length < 4)) return jsonOut({ ok: true, data: [] });
+  if (query.length < 3 && digits.length < 4) return jsonOut({ ok: true, data: [] });
+  const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
+  const rows = sheet.getDataRange().getValues();
+  let requesterExists = false;
+  for (let i = 1; i < rows.length; i++) {
+    if (sameTaiKhoan(rows[i][0], requester)) { requesterExists = true; break; }
+  }
+  if (!requesterExists) return jsonOut({ ok: false, msg: 'Tai khoan chua dang nhap hoac khong con ton tai.' });
+  const result = [];
+  for (let i = 1; i < rows.length && result.length < 20; i++) {
+    const account = String(rows[i][0] || '').trim();
+    if (!account || sameTaiKhoan(account, requester)) continue;
+    const name = String(rows[i][1] || '').trim();
+    const accountDigits = account.replace(/\D/g, '');
+    const nameMatch = query.length >= 3 && normalizeSearchText(name).indexOf(query) !== -1;
+    const accountMatch = digits.length >= 4 && accountDigits.indexOf(digits) !== -1;
+    if (nameMatch || accountMatch) result.push({ key: account.toLowerCase(), hoten: name, lop: rows[i][2] || '' });
+  }
+  return jsonOut({ ok: true, data: result });
+}
+
+function normalizeSearchText(value) {
+  return String(value || '').toLowerCase().normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/\s+/g, ' ').trim();
 }
