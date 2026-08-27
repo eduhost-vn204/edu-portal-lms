@@ -215,13 +215,13 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 ### 27/08/2026 — Hoàn tất hotfix Quản lý tài khoản Admin & Xác nhận CORS PingAdmin
 
 - **Nhiệm vụ 1: Hotfix Quản lý tài khoản Admin (Xóa tài khoản & Nâng Premium)**:
-  - Admin `index.html`: Cập nhật `ADMIN_WRITE_ACTIONS` whitelist đầy đủ (`deleteaccount`, `setvipstatus`, `pingadmin`, `bulksetbainganhang`, `bulksetchatluongnganhang`, `updateaccount`, `savevideocauhoi`, `savebaitaptracnghiem`, `resetdevice`).
+  - Admin `index.html`: Cập nhật `ADMIN_WRITE_ACTIONS` whitelist đầy đủ (`deleteaccount`, `setvipstatus`, `pingadmin`, `bulksetbainganhang`, `bulksetchatluongnganhang`, `updateaccount`, `savevideocauhoi`, `savebaitaptracnghiem`, `savesetting`, `resetdevice`).
   - Hàm `postAdminWrite` được chuẩn hóa nghiêm ngặt và đồng nhất 100% với `scripts/postAdminWrite.mjs`: chỉ coi là thành công khi `res.ok && typeof json === 'object' && json.ok === true`, có `AbortController` timeout 55s và try-finally `clearTimeout`.
-  - Loại bỏ hoàn toàn mọi `mode: 'no-cors'` và fetch trực tiếp không qua helper trong toàn bộ file `index.html` của Admin (`savehuongdan`, `savelivesession`, `deletelivesession`, `saveQuestions`, `updatenganhang`, `bulksetbainganhang`, `deleteNganHang`, `savenganhang`, `savevideocauhoi`, `savebaitaptracnghiem`, `updateaccount`, `resetdevice`).
+  - Loại bỏ hoàn toàn mọi `mode: 'no-cors'` và fetch trực tiếp không qua helper trong toàn bộ file `index.html` của Admin (`savehuongdan`, `savelivesession`, `deletelivesession`, `saveQuestions`, `updatenganhang`, `bulksetbainganhang`, `deleteNganHang`, `savenganhang`, `savevideocauhoi`, `savebaitaptracnghiem`, `savesetting`, `updateaccount`, `resetdevice`).
   - Modal `tk-modal`: hỗ trợ chọn động VIP Trial (nhập số ngày), Premium (vĩnh viễn, ẩn ô số ngày), Miễn phí (hạ cấp, ẩn ô số ngày).
   - `confirmSetVip` & `deleteTK`: kiểm tra id/SĐT hợp lệ, gọi `postAdminWriteWithRetry`, hiển thị toast phản hồi tương ứng theo từng loại tài khoản, tự động làm mới danh sách `loadTaiKhoan(true)` khi thành công, thông báo lỗi rõ ràng khi thất bại.
   - Backend tham chiếu `apps-script-CAPNHAT.txt` (cả 2 repo): `deleteAccount` thực hiện dọn dẹp liên hoàn ở `TienDo`, `BangVang`, `NhiemVu`, `HoatDong` trước khi xóa dòng trong `TaiKhoan`; `setVipStatus` phân biệt rõ `premium` (`trialExpiry=0`), `vip` (`trialExpiry=expiry`), `free` (`trialExpiry=0`).
-  - Unit test Admin `scripts/test-postAdminWrite.mjs`: **10/10 pass** (kiểm thử mock fetch nội bộ cho logic `postAdminWriteCore`).
+  - Unit test Admin `scripts/test-postAdminWrite.mjs`: **15/15 pass** (kiểm thử mock fetch nội bộ cho logic `postAdminWriteCore`, đính kèm `adminKey` qua `ADMIN_WRITE_ACTIONS` cho `savebaitaptracnghiem`, `savesetting` và tất cả các action ghi).
 
 - **Nhiệm vụ 2: Bổ sung pingadmin & Xác nhận cấu hình CORS**:
   - `apps-script-CAPNHAT.txt` (cả 2 repo): thêm route `action === 'pingadmin'` trong `doPost(e)` và hàm `pingAdmin(data)` chỉ kiểm tra `adminKey` rồi trả `{ ok: true, ping: 'pong', ts: Date.now() }`, không đọc/ghi Sheets.
@@ -229,7 +229,7 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
   - Xác nhận kiến trúc CORS thực tế: Request POST dùng `Content-Type: text/plain;charset=utf-8` được trình duyệt coi là CORS Simple Request, không kích hoạt preflight `OPTIONS` bị chặn; Google Apps Script trả 302 Redirect kèm `Access-Control-Allow-Origin: *` và endpoint echo trả status 200 JSON hợp lệ.
 
 - **Phân loại kết quả kiểm thử thực tế**:
-  - **Kiểm thử Mock (Unit test trong Node, không nối mạng)**: `node scripts/test-postAdminWrite.mjs` trên repo Admin -> **10/10 pass**.
+  - **Kiểm thử Mock (Unit test trong Node, không nối mạng)**: `node scripts/test-postAdminWrite.mjs` trên repo Admin -> **15/15 pass**; `node scripts/audit-actions.mjs` -> **17/17 write actions in index.html verified registered**.
   - **Kiểm thử Cú pháp (Static check)**: Toàn bộ 12 khối `<script>` và thẻ `</html>` trong `index.html` -> **12/12 pass**; cú pháp `apps-script-CAPNHAT.txt` (cả 2 repo) -> **pass**.
   - **Kiểm thử Local Server (HTTP 8088)**: Phục vụ `index.html` qua HTTP server cục bộ, nạp đầy đủ DOM, script và các hàm chẩn đoán -> **pass**.
   - **Kiểm thử Backend hiện tại (Live Apps Script chưa deploy code mới)**: Request POST text/plain được định tuyến 302 Redirect và trả `Access-Control-Allow-Origin: *`; action chưa có trong backend cũ rơi vào fallback `{ok: true}`.
