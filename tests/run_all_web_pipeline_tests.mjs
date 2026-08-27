@@ -89,18 +89,18 @@ console.log('\n[SUITE 2] Kiểm thử QuestionApprovalService & Rào chắn An t
   assert.strictEqual(failedWithoutTeacher, true, 'Hệ thống PHẢI từ chối duyệt nếu thiếu teacherId');
   console.log('  ✓ 2.3: Bắt buộc xác nhận của Thầy (chặn thao tác tự động/vô danh).');
 
-  // 2.4 Thầy duyệt chính thức
+  // 2.4 Thầy duyệt chính thức (trong môi trường test dùng SYNTHETIC_ADMIN_REVIEWER)
   const approveRes = await service.approveQuestionsToTinh({
     questionIds: ['VLXT-G12-C1-B03-Q0099'],
-    teacherId: 'THAY_XUAN_TRUONG_ADMIN',
+    teacherId: 'SYNTHETIC_ADMIN_REVIEWER',
     timestamp: '2026-08-27T21:00:00Z'
   });
   assert.strictEqual(approveRes.approvedCount, 1);
   const approvedQ = await service.store.getQuestion('VLXT-G12-C1-B03-Q0099');
   assert.strictEqual(approvedQ.rawTier, 'TINH');
   assert.strictEqual(approvedQ.status, 'TEACHER_APPROVED');
-  assert.strictEqual(approvedQ.reviewedBy, 'THAY_XUAN_TRUONG_ADMIN');
-  console.log('  ✓ 2.4: Thầy duyệt chuyển Tinh thành công (rawTier: TINH, version + 1).');
+  assert.strictEqual(approvedQ.reviewedBy, 'SYNTHETIC_ADMIN_REVIEWER');
+  console.log('  ✓ 2.4: Phê duyệt chuyển Tinh thành công với Synthetic Reviewer (rawTier: TINH, version + 1).');
 
   // 2.5 Rào chắn xuất bản cho học sinh
   const publishRes = await service.getPublicPublishableQuestions(teachingScope);

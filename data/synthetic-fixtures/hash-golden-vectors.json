@@ -1,0 +1,2781 @@
+[
+  {
+    "vectorId": "GV_01_TN4_STANDARD",
+    "description": "TN4 Chuẩn tắc cơ bản",
+    "inputQuestion": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "Khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối T.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "Mô hình ĐHPT",
+        "topic": "Động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề tổng hợp",
+        "sourceAuthor": "Vật Lý Xuân Trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ],
+      "mediaAssets": [],
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "status": "QA_PASSED",
+      "rawTier": "THO"
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "parentContext": "",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "MULTIPLE_CHOICE_4",
+        "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+        "parentContext": "",
+        "options": [
+          {
+            "key": "A",
+            "content": "tăng gấp đôi."
+          },
+          {
+            "key": "B",
+            "content": "tăng gấp bốn lần."
+          },
+          {
+            "key": "C",
+            "content": "giảm một nửa."
+          },
+          {
+            "key": "D",
+            "content": "không đổi."
+          }
+        ],
+        "correctAnswer": "A",
+        "essentialMediaHashes": []
+      },
+      "explanation": "động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "mô hình đhpt",
+        "topic": "động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề tổng hợp",
+        "sourceAuthor": "vật lý xuân trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":2,\"difficultyName\":\"THONG_HIEU\",\"explanation\":\"động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.\",\"identity\":{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"},\"qualityFlags\":[\"MATH_CHECKED\",\"VERIFIED_ANSWER\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 1\",\"sourceAuthor\":\"vật lý xuân trường\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề tổng hợp\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B01\",\"lessonTitle\":\"mô hình đhpt\",\"topic\":\"động năng\"}}",
+    "expectedContentIdentityHash": "d6dccaf170ee84dc80cab964aa6e041969e04f63b309f6749ff6e03a6443db4a",
+    "expectedRevisionHash": "e122cec7de2a4b7b507671a9f7c7635772f578b0af7cc69902dd0db5632dbdf0"
+  },
+  {
+    "vectorId": "GV_02_TN4_WHITESPACE_CASE",
+    "description": "TN4 với biến thể khoảng trắng và chữ hoa chữ thường",
+    "inputQuestion": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "  Khi   Nhiệt Độ Tuyệt Đối Của Khối Khí Tăng 2 Lần Thì Động Năng Tịnh Tiến Trung Bình Tăng 2 Lần.  \n",
+      "options": [
+        {
+          "key": "A",
+          "content": "  tăng   gấp đôi.  "
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối T.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "Mô hình ĐHPT",
+        "topic": "Động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề tổng hợp",
+        "sourceAuthor": "Vật Lý Xuân Trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ],
+      "mediaAssets": [],
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "status": "QA_PASSED",
+      "rawTier": "THO"
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "parentContext": "",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "MULTIPLE_CHOICE_4",
+        "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+        "parentContext": "",
+        "options": [
+          {
+            "key": "A",
+            "content": "tăng gấp đôi."
+          },
+          {
+            "key": "B",
+            "content": "tăng gấp bốn lần."
+          },
+          {
+            "key": "C",
+            "content": "giảm một nửa."
+          },
+          {
+            "key": "D",
+            "content": "không đổi."
+          }
+        ],
+        "correctAnswer": "A",
+        "essentialMediaHashes": []
+      },
+      "explanation": "động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "mô hình đhpt",
+        "topic": "động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề tổng hợp",
+        "sourceAuthor": "vật lý xuân trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":2,\"difficultyName\":\"THONG_HIEU\",\"explanation\":\"động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.\",\"identity\":{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"},\"qualityFlags\":[\"MATH_CHECKED\",\"VERIFIED_ANSWER\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 1\",\"sourceAuthor\":\"vật lý xuân trường\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề tổng hợp\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B01\",\"lessonTitle\":\"mô hình đhpt\",\"topic\":\"động năng\"}}",
+    "expectedContentIdentityHash": "d6dccaf170ee84dc80cab964aa6e041969e04f63b309f6749ff6e03a6443db4a",
+    "expectedRevisionHash": "e122cec7de2a4b7b507671a9f7c7635772f578b0af7cc69902dd0db5632dbdf0"
+  },
+  {
+    "vectorId": "GV_03_TN4_REVERSED_OPTIONS",
+    "description": "TN4 với thứ tự options bị đảo ngược trong mảng đầu vào",
+    "inputQuestion": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "Khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "options": [
+        {
+          "key": "D",
+          "content": "không đổi."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối T.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "Mô hình ĐHPT",
+        "topic": "Động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề tổng hợp",
+        "sourceAuthor": "Vật Lý Xuân Trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ],
+      "mediaAssets": [],
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "status": "QA_PASSED",
+      "rawTier": "THO"
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "parentContext": "",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "MULTIPLE_CHOICE_4",
+        "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+        "parentContext": "",
+        "options": [
+          {
+            "key": "A",
+            "content": "tăng gấp đôi."
+          },
+          {
+            "key": "B",
+            "content": "tăng gấp bốn lần."
+          },
+          {
+            "key": "C",
+            "content": "giảm một nửa."
+          },
+          {
+            "key": "D",
+            "content": "không đổi."
+          }
+        ],
+        "correctAnswer": "A",
+        "essentialMediaHashes": []
+      },
+      "explanation": "động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "mô hình đhpt",
+        "topic": "động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề tổng hợp",
+        "sourceAuthor": "vật lý xuân trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":2,\"difficultyName\":\"THONG_HIEU\",\"explanation\":\"động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.\",\"identity\":{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"},\"qualityFlags\":[\"MATH_CHECKED\",\"VERIFIED_ANSWER\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 1\",\"sourceAuthor\":\"vật lý xuân trường\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề tổng hợp\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B01\",\"lessonTitle\":\"mô hình đhpt\",\"topic\":\"động năng\"}}",
+    "expectedContentIdentityHash": "d6dccaf170ee84dc80cab964aa6e041969e04f63b309f6749ff6e03a6443db4a",
+    "expectedRevisionHash": "e122cec7de2a4b7b507671a9f7c7635772f578b0af7cc69902dd0db5632dbdf0"
+  },
+  {
+    "vectorId": "GV_04_TN4_DIFF_ANSWER",
+    "description": "TN4 đổi phương án đúng từ A sang B",
+    "inputQuestion": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "Khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "B",
+      "explanation": "Động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối T.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "Mô hình ĐHPT",
+        "topic": "Động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề tổng hợp",
+        "sourceAuthor": "Vật Lý Xuân Trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ],
+      "mediaAssets": [],
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "status": "QA_PASSED",
+      "rawTier": "THO"
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "parentContext": "",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "B",
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "MULTIPLE_CHOICE_4",
+        "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+        "parentContext": "",
+        "options": [
+          {
+            "key": "A",
+            "content": "tăng gấp đôi."
+          },
+          {
+            "key": "B",
+            "content": "tăng gấp bốn lần."
+          },
+          {
+            "key": "C",
+            "content": "giảm một nửa."
+          },
+          {
+            "key": "D",
+            "content": "không đổi."
+          }
+        ],
+        "correctAnswer": "B",
+        "essentialMediaHashes": []
+      },
+      "explanation": "động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "mô hình đhpt",
+        "topic": "động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề tổng hợp",
+        "sourceAuthor": "vật lý xuân trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"correctAnswer\":\"B\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":2,\"difficultyName\":\"THONG_HIEU\",\"explanation\":\"động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.\",\"identity\":{\"correctAnswer\":\"B\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"},\"qualityFlags\":[\"MATH_CHECKED\",\"VERIFIED_ANSWER\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 1\",\"sourceAuthor\":\"vật lý xuân trường\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề tổng hợp\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B01\",\"lessonTitle\":\"mô hình đhpt\",\"topic\":\"động năng\"}}",
+    "expectedContentIdentityHash": "d3f2c7f3d046db715fa689fd3b312b30fd0e135aa51b656d62568402416c34b6",
+    "expectedRevisionHash": "1d873ae142ba615635839b31473edf1be63824cda5e4f909599b6b3135503415"
+  },
+  {
+    "vectorId": "GV_05_TF4_STANDARD",
+    "description": "Đúng/Sai 4 ý chuẩn tắc",
+    "inputQuestion": {
+      "type": "TRUE_FALSE_4PART",
+      "stem": "Một khối khí lí tưởng nhận nhiệt lượng 100 J và sinh công 40 J.",
+      "subItems": [
+        {
+          "key": "a",
+          "statement": "Công khí nhận vào là A = -40 J.",
+          "isCorrect": true,
+          "explanation": "A = -40J"
+        },
+        {
+          "key": "b",
+          "statement": "Độ biến thiên nội năng là 60 J.",
+          "isCorrect": true,
+          "explanation": "100 - 40 = 60J"
+        },
+        {
+          "key": "c",
+          "statement": "Nhiệt độ khối khí bị giảm đi.",
+          "isCorrect": false,
+          "explanation": "Nhiệt độ tăng"
+        },
+        {
+          "key": "d",
+          "statement": "Nếu giữ đẳng tích thì A = 0.",
+          "isCorrect": true,
+          "explanation": "Đẳng tích A = 0"
+        }
+      ],
+      "explanation": "Áp dụng định luật 1 nhiệt động lực học.",
+      "difficultyLevel": 3,
+      "difficultyName": "VAN_DUNG",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B02",
+        "lessonTitle": "Định luật 1",
+        "topic": "Nội năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề",
+        "sourceAuthor": "VLXT",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 2"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ],
+      "mediaAssets": []
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "TRUE_FALSE_4PART",
+      "stem": "một khối khí lí tưởng nhận nhiệt lượng 100 j và sinh công 40 j.",
+      "parentContext": "",
+      "subItems": [
+        {
+          "key": "a",
+          "statement": "công khí nhận vào là a = -40 j.",
+          "isCorrect": true
+        },
+        {
+          "key": "b",
+          "statement": "độ biến thiên nội năng là 60 j.",
+          "isCorrect": true
+        },
+        {
+          "key": "c",
+          "statement": "nhiệt độ khối khí bị giảm đi.",
+          "isCorrect": false
+        },
+        {
+          "key": "d",
+          "statement": "nếu giữ đẳng tích thì a = 0.",
+          "isCorrect": true
+        }
+      ],
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "TRUE_FALSE_4PART",
+        "stem": "một khối khí lí tưởng nhận nhiệt lượng 100 j và sinh công 40 j.",
+        "parentContext": "",
+        "subItems": [
+          {
+            "key": "a",
+            "statement": "công khí nhận vào là a = -40 j.",
+            "isCorrect": true
+          },
+          {
+            "key": "b",
+            "statement": "độ biến thiên nội năng là 60 j.",
+            "isCorrect": true
+          },
+          {
+            "key": "c",
+            "statement": "nhiệt độ khối khí bị giảm đi.",
+            "isCorrect": false
+          },
+          {
+            "key": "d",
+            "statement": "nếu giữ đẳng tích thì a = 0.",
+            "isCorrect": true
+          }
+        ],
+        "essentialMediaHashes": []
+      },
+      "explanation": "áp dụng định luật 1 nhiệt động lực học.",
+      "difficultyLevel": 3,
+      "difficultyName": "VAN_DUNG",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B02",
+        "lessonTitle": "định luật 1",
+        "topic": "nội năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề",
+        "sourceAuthor": "vlxt",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 2"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"essentialMediaHashes\":[],\"parentContext\":\"\",\"stem\":\"một khối khí lí tưởng nhận nhiệt lượng 100 j và sinh công 40 j.\",\"subItems\":[{\"isCorrect\":true,\"key\":\"a\",\"statement\":\"công khí nhận vào là a = -40 j.\"},{\"isCorrect\":true,\"key\":\"b\",\"statement\":\"độ biến thiên nội năng là 60 j.\"},{\"isCorrect\":false,\"key\":\"c\",\"statement\":\"nhiệt độ khối khí bị giảm đi.\"},{\"isCorrect\":true,\"key\":\"d\",\"statement\":\"nếu giữ đẳng tích thì a = 0.\"}],\"type\":\"TRUE_FALSE_4PART\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":3,\"difficultyName\":\"VAN_DUNG\",\"explanation\":\"áp dụng định luật 1 nhiệt động lực học.\",\"identity\":{\"essentialMediaHashes\":[],\"parentContext\":\"\",\"stem\":\"một khối khí lí tưởng nhận nhiệt lượng 100 j và sinh công 40 j.\",\"subItems\":[{\"isCorrect\":true,\"key\":\"a\",\"statement\":\"công khí nhận vào là a = -40 j.\"},{\"isCorrect\":true,\"key\":\"b\",\"statement\":\"độ biến thiên nội năng là 60 j.\"},{\"isCorrect\":false,\"key\":\"c\",\"statement\":\"nhiệt độ khối khí bị giảm đi.\"},{\"isCorrect\":true,\"key\":\"d\",\"statement\":\"nếu giữ đẳng tích thì a = 0.\"}],\"type\":\"TRUE_FALSE_4PART\"},\"qualityFlags\":[\"MATH_CHECKED\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 2\",\"sourceAuthor\":\"vlxt\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B02\",\"lessonTitle\":\"định luật 1\",\"topic\":\"nội năng\"}}",
+    "expectedContentIdentityHash": "0730c52574326f16e443d87015ecaac658f6ad331773f93a04a12af0dd10d285",
+    "expectedRevisionHash": "cfa22bfdd299020414ab28d5bff4f9fbb460eaeb671810e20b84a3a3d3356228"
+  },
+  {
+    "vectorId": "GV_06_TF4_SHUFFLED_SUBITEMS",
+    "description": "Đúng/Sai 4 ý với mảng subItems xáo trộn thứ tự",
+    "inputQuestion": {
+      "type": "TRUE_FALSE_4PART",
+      "stem": "Một khối khí lí tưởng nhận nhiệt lượng 100 J và sinh công 40 J.",
+      "subItems": [
+        {
+          "key": "c",
+          "statement": "Nhiệt độ khối khí bị giảm đi.",
+          "isCorrect": false,
+          "explanation": "Nhiệt độ tăng"
+        },
+        {
+          "key": "a",
+          "statement": "Công khí nhận vào là A = -40 J.",
+          "isCorrect": true,
+          "explanation": "A = -40J"
+        },
+        {
+          "key": "d",
+          "statement": "Nếu giữ đẳng tích thì A = 0.",
+          "isCorrect": true,
+          "explanation": "Đẳng tích A = 0"
+        },
+        {
+          "key": "b",
+          "statement": "Độ biến thiên nội năng là 60 J.",
+          "isCorrect": true,
+          "explanation": "100 - 40 = 60J"
+        }
+      ],
+      "explanation": "Áp dụng định luật 1 nhiệt động lực học.",
+      "difficultyLevel": 3,
+      "difficultyName": "VAN_DUNG",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B02",
+        "lessonTitle": "Định luật 1",
+        "topic": "Nội năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề",
+        "sourceAuthor": "VLXT",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 2"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ],
+      "mediaAssets": []
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "TRUE_FALSE_4PART",
+      "stem": "một khối khí lí tưởng nhận nhiệt lượng 100 j và sinh công 40 j.",
+      "parentContext": "",
+      "subItems": [
+        {
+          "key": "a",
+          "statement": "công khí nhận vào là a = -40 j.",
+          "isCorrect": true
+        },
+        {
+          "key": "b",
+          "statement": "độ biến thiên nội năng là 60 j.",
+          "isCorrect": true
+        },
+        {
+          "key": "c",
+          "statement": "nhiệt độ khối khí bị giảm đi.",
+          "isCorrect": false
+        },
+        {
+          "key": "d",
+          "statement": "nếu giữ đẳng tích thì a = 0.",
+          "isCorrect": true
+        }
+      ],
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "TRUE_FALSE_4PART",
+        "stem": "một khối khí lí tưởng nhận nhiệt lượng 100 j và sinh công 40 j.",
+        "parentContext": "",
+        "subItems": [
+          {
+            "key": "a",
+            "statement": "công khí nhận vào là a = -40 j.",
+            "isCorrect": true
+          },
+          {
+            "key": "b",
+            "statement": "độ biến thiên nội năng là 60 j.",
+            "isCorrect": true
+          },
+          {
+            "key": "c",
+            "statement": "nhiệt độ khối khí bị giảm đi.",
+            "isCorrect": false
+          },
+          {
+            "key": "d",
+            "statement": "nếu giữ đẳng tích thì a = 0.",
+            "isCorrect": true
+          }
+        ],
+        "essentialMediaHashes": []
+      },
+      "explanation": "áp dụng định luật 1 nhiệt động lực học.",
+      "difficultyLevel": 3,
+      "difficultyName": "VAN_DUNG",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B02",
+        "lessonTitle": "định luật 1",
+        "topic": "nội năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề",
+        "sourceAuthor": "vlxt",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 2"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"essentialMediaHashes\":[],\"parentContext\":\"\",\"stem\":\"một khối khí lí tưởng nhận nhiệt lượng 100 j và sinh công 40 j.\",\"subItems\":[{\"isCorrect\":true,\"key\":\"a\",\"statement\":\"công khí nhận vào là a = -40 j.\"},{\"isCorrect\":true,\"key\":\"b\",\"statement\":\"độ biến thiên nội năng là 60 j.\"},{\"isCorrect\":false,\"key\":\"c\",\"statement\":\"nhiệt độ khối khí bị giảm đi.\"},{\"isCorrect\":true,\"key\":\"d\",\"statement\":\"nếu giữ đẳng tích thì a = 0.\"}],\"type\":\"TRUE_FALSE_4PART\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":3,\"difficultyName\":\"VAN_DUNG\",\"explanation\":\"áp dụng định luật 1 nhiệt động lực học.\",\"identity\":{\"essentialMediaHashes\":[],\"parentContext\":\"\",\"stem\":\"một khối khí lí tưởng nhận nhiệt lượng 100 j và sinh công 40 j.\",\"subItems\":[{\"isCorrect\":true,\"key\":\"a\",\"statement\":\"công khí nhận vào là a = -40 j.\"},{\"isCorrect\":true,\"key\":\"b\",\"statement\":\"độ biến thiên nội năng là 60 j.\"},{\"isCorrect\":false,\"key\":\"c\",\"statement\":\"nhiệt độ khối khí bị giảm đi.\"},{\"isCorrect\":true,\"key\":\"d\",\"statement\":\"nếu giữ đẳng tích thì a = 0.\"}],\"type\":\"TRUE_FALSE_4PART\"},\"qualityFlags\":[\"MATH_CHECKED\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 2\",\"sourceAuthor\":\"vlxt\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B02\",\"lessonTitle\":\"định luật 1\",\"topic\":\"nội năng\"}}",
+    "expectedContentIdentityHash": "0730c52574326f16e443d87015ecaac658f6ad331773f93a04a12af0dd10d285",
+    "expectedRevisionHash": "cfa22bfdd299020414ab28d5bff4f9fbb460eaeb671810e20b84a3a3d3356228"
+  },
+  {
+    "vectorId": "GV_07_TF4_FLIPPED_TRUTH",
+    "description": "Đúng/Sai 4 ý với mệnh đề a đổi từ True sang False",
+    "inputQuestion": {
+      "type": "TRUE_FALSE_4PART",
+      "stem": "Một khối khí lí tưởng nhận nhiệt lượng 100 J và sinh công 40 J.",
+      "subItems": [
+        {
+          "key": "a",
+          "statement": "Công khí nhận vào là A = -40 J.",
+          "isCorrect": false,
+          "explanation": "A = -40J"
+        },
+        {
+          "key": "b",
+          "statement": "Độ biến thiên nội năng là 60 J.",
+          "isCorrect": true,
+          "explanation": "100 - 40 = 60J"
+        },
+        {
+          "key": "c",
+          "statement": "Nhiệt độ khối khí bị giảm đi.",
+          "isCorrect": false,
+          "explanation": "Nhiệt độ tăng"
+        },
+        {
+          "key": "d",
+          "statement": "Nếu giữ đẳng tích thì A = 0.",
+          "isCorrect": true,
+          "explanation": "Đẳng tích A = 0"
+        }
+      ],
+      "explanation": "Áp dụng định luật 1 nhiệt động lực học.",
+      "difficultyLevel": 3,
+      "difficultyName": "VAN_DUNG",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B02",
+        "lessonTitle": "Định luật 1",
+        "topic": "Nội năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề",
+        "sourceAuthor": "VLXT",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 2"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ],
+      "mediaAssets": []
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "TRUE_FALSE_4PART",
+      "stem": "một khối khí lí tưởng nhận nhiệt lượng 100 j và sinh công 40 j.",
+      "parentContext": "",
+      "subItems": [
+        {
+          "key": "a",
+          "statement": "công khí nhận vào là a = -40 j.",
+          "isCorrect": false
+        },
+        {
+          "key": "b",
+          "statement": "độ biến thiên nội năng là 60 j.",
+          "isCorrect": true
+        },
+        {
+          "key": "c",
+          "statement": "nhiệt độ khối khí bị giảm đi.",
+          "isCorrect": false
+        },
+        {
+          "key": "d",
+          "statement": "nếu giữ đẳng tích thì a = 0.",
+          "isCorrect": true
+        }
+      ],
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "TRUE_FALSE_4PART",
+        "stem": "một khối khí lí tưởng nhận nhiệt lượng 100 j và sinh công 40 j.",
+        "parentContext": "",
+        "subItems": [
+          {
+            "key": "a",
+            "statement": "công khí nhận vào là a = -40 j.",
+            "isCorrect": false
+          },
+          {
+            "key": "b",
+            "statement": "độ biến thiên nội năng là 60 j.",
+            "isCorrect": true
+          },
+          {
+            "key": "c",
+            "statement": "nhiệt độ khối khí bị giảm đi.",
+            "isCorrect": false
+          },
+          {
+            "key": "d",
+            "statement": "nếu giữ đẳng tích thì a = 0.",
+            "isCorrect": true
+          }
+        ],
+        "essentialMediaHashes": []
+      },
+      "explanation": "áp dụng định luật 1 nhiệt động lực học.",
+      "difficultyLevel": 3,
+      "difficultyName": "VAN_DUNG",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B02",
+        "lessonTitle": "định luật 1",
+        "topic": "nội năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề",
+        "sourceAuthor": "vlxt",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 2"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"essentialMediaHashes\":[],\"parentContext\":\"\",\"stem\":\"một khối khí lí tưởng nhận nhiệt lượng 100 j và sinh công 40 j.\",\"subItems\":[{\"isCorrect\":false,\"key\":\"a\",\"statement\":\"công khí nhận vào là a = -40 j.\"},{\"isCorrect\":true,\"key\":\"b\",\"statement\":\"độ biến thiên nội năng là 60 j.\"},{\"isCorrect\":false,\"key\":\"c\",\"statement\":\"nhiệt độ khối khí bị giảm đi.\"},{\"isCorrect\":true,\"key\":\"d\",\"statement\":\"nếu giữ đẳng tích thì a = 0.\"}],\"type\":\"TRUE_FALSE_4PART\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":3,\"difficultyName\":\"VAN_DUNG\",\"explanation\":\"áp dụng định luật 1 nhiệt động lực học.\",\"identity\":{\"essentialMediaHashes\":[],\"parentContext\":\"\",\"stem\":\"một khối khí lí tưởng nhận nhiệt lượng 100 j và sinh công 40 j.\",\"subItems\":[{\"isCorrect\":false,\"key\":\"a\",\"statement\":\"công khí nhận vào là a = -40 j.\"},{\"isCorrect\":true,\"key\":\"b\",\"statement\":\"độ biến thiên nội năng là 60 j.\"},{\"isCorrect\":false,\"key\":\"c\",\"statement\":\"nhiệt độ khối khí bị giảm đi.\"},{\"isCorrect\":true,\"key\":\"d\",\"statement\":\"nếu giữ đẳng tích thì a = 0.\"}],\"type\":\"TRUE_FALSE_4PART\"},\"qualityFlags\":[\"MATH_CHECKED\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 2\",\"sourceAuthor\":\"vlxt\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B02\",\"lessonTitle\":\"định luật 1\",\"topic\":\"nội năng\"}}",
+    "expectedContentIdentityHash": "6e527548b2927d11eb44718ae7c6f5251b37df9ee11719aa606a64cec160ba72",
+    "expectedRevisionHash": "85bd745a0f5bd2bc76d1fd5179b40f06dfb05681dba5c294f2c709ef622c258f"
+  },
+  {
+    "vectorId": "GV_08_SHORT_STANDARD",
+    "description": "Trả lời ngắn với số thực, tolerance và acceptedAnswers",
+    "inputQuestion": {
+      "type": "SHORT_ANSWER",
+      "stem": "Một ấm điện công suất 1000 W đun 1.5 kg nước từ 20 0C đến sôi.",
+      "numericValue": 600.0,
+      "tolerance": 5.0,
+      "unit": "\\text{s}",
+      "acceptedAnswers": [
+        "600",
+        "600.0",
+        "600s"
+      ],
+      "explanation": "Tính thời gian đun nước.",
+      "difficultyLevel": 3,
+      "difficultyName": "VAN_DUNG",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B02",
+        "lessonTitle": "Nhiệt lượng",
+        "topic": "Công suất"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề",
+        "sourceAuthor": "VLXT",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 3"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ],
+      "mediaAssets": []
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "SHORT_ANSWER",
+      "stem": "một ấm điện công suất 1000 w đun 1.5 kg nước từ 20^{\\circ}\\text{c} đến sôi.",
+      "parentContext": "",
+      "shortAnswer": {
+        "numericValue": 600.0,
+        "tolerance": 5.0,
+        "unit": "\\text{s}",
+        "acceptedAnswers": [
+          "600",
+          "600.0",
+          "600s"
+        ]
+      },
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "SHORT_ANSWER",
+        "stem": "một ấm điện công suất 1000 w đun 1.5 kg nước từ 20^{\\circ}\\text{c} đến sôi.",
+        "parentContext": "",
+        "shortAnswer": {
+          "numericValue": 600.0,
+          "tolerance": 5.0,
+          "unit": "\\text{s}",
+          "acceptedAnswers": [
+            "600",
+            "600.0",
+            "600s"
+          ]
+        },
+        "essentialMediaHashes": []
+      },
+      "explanation": "tính thời gian đun nước.",
+      "difficultyLevel": 3,
+      "difficultyName": "VAN_DUNG",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B02",
+        "lessonTitle": "nhiệt lượng",
+        "topic": "công suất"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề",
+        "sourceAuthor": "vlxt",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 3"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"essentialMediaHashes\":[],\"parentContext\":\"\",\"shortAnswer\":{\"acceptedAnswers\":[\"600\",\"600.0\",\"600s\"],\"numericValue\":600.0,\"tolerance\":5.0,\"unit\":\"\\\\text{s}\"},\"stem\":\"một ấm điện công suất 1000 w đun 1.5 kg nước từ 20^{\\\\circ}\\\\text{c} đến sôi.\",\"type\":\"SHORT_ANSWER\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":3,\"difficultyName\":\"VAN_DUNG\",\"explanation\":\"tính thời gian đun nước.\",\"identity\":{\"essentialMediaHashes\":[],\"parentContext\":\"\",\"shortAnswer\":{\"acceptedAnswers\":[\"600\",\"600.0\",\"600s\"],\"numericValue\":600.0,\"tolerance\":5.0,\"unit\":\"\\\\text{s}\"},\"stem\":\"một ấm điện công suất 1000 w đun 1.5 kg nước từ 20^{\\\\circ}\\\\text{c} đến sôi.\",\"type\":\"SHORT_ANSWER\"},\"qualityFlags\":[\"MATH_CHECKED\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 3\",\"sourceAuthor\":\"vlxt\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B02\",\"lessonTitle\":\"nhiệt lượng\",\"topic\":\"công suất\"}}",
+    "expectedContentIdentityHash": "ef7c16db7470c03ae54e1963981db004a47d72a579554d518807e08ecf9e0fed",
+    "expectedRevisionHash": "b03d06a7dd65f769cd1ff3e040d52b41f4cda7855b5a2e75f84e68d17582cc21"
+  },
+  {
+    "vectorId": "GV_09_SHORT_INTEGER_VAL",
+    "description": "Trả lời ngắn với giá trị số nguyên",
+    "inputQuestion": {
+      "type": "SHORT_ANSWER",
+      "stem": "Một ấm điện công suất 1000 W đun 1.5 kg nước từ 20 0C đến sôi.",
+      "numericValue": 600,
+      "tolerance": 5.0,
+      "unit": "\\text{s}",
+      "acceptedAnswers": [
+        "600",
+        "600.0",
+        "600s"
+      ],
+      "explanation": "Tính thời gian đun nước.",
+      "difficultyLevel": 3,
+      "difficultyName": "VAN_DUNG",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B02",
+        "lessonTitle": "Nhiệt lượng",
+        "topic": "Công suất"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề",
+        "sourceAuthor": "VLXT",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 3"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ],
+      "mediaAssets": []
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "SHORT_ANSWER",
+      "stem": "một ấm điện công suất 1000 w đun 1.5 kg nước từ 20^{\\circ}\\text{c} đến sôi.",
+      "parentContext": "",
+      "shortAnswer": {
+        "numericValue": 600.0,
+        "tolerance": 5.0,
+        "unit": "\\text{s}",
+        "acceptedAnswers": [
+          "600",
+          "600.0",
+          "600s"
+        ]
+      },
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "SHORT_ANSWER",
+        "stem": "một ấm điện công suất 1000 w đun 1.5 kg nước từ 20^{\\circ}\\text{c} đến sôi.",
+        "parentContext": "",
+        "shortAnswer": {
+          "numericValue": 600.0,
+          "tolerance": 5.0,
+          "unit": "\\text{s}",
+          "acceptedAnswers": [
+            "600",
+            "600.0",
+            "600s"
+          ]
+        },
+        "essentialMediaHashes": []
+      },
+      "explanation": "tính thời gian đun nước.",
+      "difficultyLevel": 3,
+      "difficultyName": "VAN_DUNG",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B02",
+        "lessonTitle": "nhiệt lượng",
+        "topic": "công suất"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề",
+        "sourceAuthor": "vlxt",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 3"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"essentialMediaHashes\":[],\"parentContext\":\"\",\"shortAnswer\":{\"acceptedAnswers\":[\"600\",\"600.0\",\"600s\"],\"numericValue\":600.0,\"tolerance\":5.0,\"unit\":\"\\\\text{s}\"},\"stem\":\"một ấm điện công suất 1000 w đun 1.5 kg nước từ 20^{\\\\circ}\\\\text{c} đến sôi.\",\"type\":\"SHORT_ANSWER\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":3,\"difficultyName\":\"VAN_DUNG\",\"explanation\":\"tính thời gian đun nước.\",\"identity\":{\"essentialMediaHashes\":[],\"parentContext\":\"\",\"shortAnswer\":{\"acceptedAnswers\":[\"600\",\"600.0\",\"600s\"],\"numericValue\":600.0,\"tolerance\":5.0,\"unit\":\"\\\\text{s}\"},\"stem\":\"một ấm điện công suất 1000 w đun 1.5 kg nước từ 20^{\\\\circ}\\\\text{c} đến sôi.\",\"type\":\"SHORT_ANSWER\"},\"qualityFlags\":[\"MATH_CHECKED\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 3\",\"sourceAuthor\":\"vlxt\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B02\",\"lessonTitle\":\"nhiệt lượng\",\"topic\":\"công suất\"}}",
+    "expectedContentIdentityHash": "ef7c16db7470c03ae54e1963981db004a47d72a579554d518807e08ecf9e0fed",
+    "expectedRevisionHash": "b03d06a7dd65f769cd1ff3e040d52b41f4cda7855b5a2e75f84e68d17582cc21"
+  },
+  {
+    "vectorId": "GV_10_SHORT_DIFF_TOLERANCE",
+    "description": "Trả lời ngắn với sai số tolerance thay đổi từ 5.0 về 1.0",
+    "inputQuestion": {
+      "type": "SHORT_ANSWER",
+      "stem": "Một ấm điện công suất 1000 W đun 1.5 kg nước từ 20 0C đến sôi.",
+      "numericValue": 600.0,
+      "tolerance": 1.0,
+      "unit": "\\text{s}",
+      "acceptedAnswers": [
+        "600",
+        "600.0",
+        "600s"
+      ],
+      "explanation": "Tính thời gian đun nước.",
+      "difficultyLevel": 3,
+      "difficultyName": "VAN_DUNG",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B02",
+        "lessonTitle": "Nhiệt lượng",
+        "topic": "Công suất"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề",
+        "sourceAuthor": "VLXT",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 3"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ],
+      "mediaAssets": []
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "SHORT_ANSWER",
+      "stem": "một ấm điện công suất 1000 w đun 1.5 kg nước từ 20^{\\circ}\\text{c} đến sôi.",
+      "parentContext": "",
+      "shortAnswer": {
+        "numericValue": 600.0,
+        "tolerance": 1.0,
+        "unit": "\\text{s}",
+        "acceptedAnswers": [
+          "600",
+          "600.0",
+          "600s"
+        ]
+      },
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "SHORT_ANSWER",
+        "stem": "một ấm điện công suất 1000 w đun 1.5 kg nước từ 20^{\\circ}\\text{c} đến sôi.",
+        "parentContext": "",
+        "shortAnswer": {
+          "numericValue": 600.0,
+          "tolerance": 1.0,
+          "unit": "\\text{s}",
+          "acceptedAnswers": [
+            "600",
+            "600.0",
+            "600s"
+          ]
+        },
+        "essentialMediaHashes": []
+      },
+      "explanation": "tính thời gian đun nước.",
+      "difficultyLevel": 3,
+      "difficultyName": "VAN_DUNG",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B02",
+        "lessonTitle": "nhiệt lượng",
+        "topic": "công suất"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề",
+        "sourceAuthor": "vlxt",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 3"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"essentialMediaHashes\":[],\"parentContext\":\"\",\"shortAnswer\":{\"acceptedAnswers\":[\"600\",\"600.0\",\"600s\"],\"numericValue\":600.0,\"tolerance\":1.0,\"unit\":\"\\\\text{s}\"},\"stem\":\"một ấm điện công suất 1000 w đun 1.5 kg nước từ 20^{\\\\circ}\\\\text{c} đến sôi.\",\"type\":\"SHORT_ANSWER\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":3,\"difficultyName\":\"VAN_DUNG\",\"explanation\":\"tính thời gian đun nước.\",\"identity\":{\"essentialMediaHashes\":[],\"parentContext\":\"\",\"shortAnswer\":{\"acceptedAnswers\":[\"600\",\"600.0\",\"600s\"],\"numericValue\":600.0,\"tolerance\":1.0,\"unit\":\"\\\\text{s}\"},\"stem\":\"một ấm điện công suất 1000 w đun 1.5 kg nước từ 20^{\\\\circ}\\\\text{c} đến sôi.\",\"type\":\"SHORT_ANSWER\"},\"qualityFlags\":[\"MATH_CHECKED\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 3\",\"sourceAuthor\":\"vlxt\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B02\",\"lessonTitle\":\"nhiệt lượng\",\"topic\":\"công suất\"}}",
+    "expectedContentIdentityHash": "888e5e98907aca5bd92319336906c5e36fc0d71cf22bd13564aaa6bd62c69ae2",
+    "expectedRevisionHash": "ff11e019abdaea9abdc0c61cfa20422f8577dc753604bfe1685ad5e82ec32661"
+  },
+  {
+    "vectorId": "GV_11_GROUP_STANDARD",
+    "description": "Chùm câu hỏi với introText và childQuestionIds",
+    "inputQuestion": {
+      "type": "QUESTION_GROUP",
+      "stem": "Chùm câu hỏi khảo sát sự chuyển thể chất rắn kết tinh.",
+      "introText": "Một học sinh đun nóng 100 g chất rắn từ 20 °C lên 80 °C với công suất P = 50 W.",
+      "childQuestionIds": [
+        "VLXT-G12-C1-B03-Q0001",
+        "VLXT-G12-C1-B03-Q0002"
+      ],
+      "explanation": "Khảo sát thực nghiệm nhiệt học.",
+      "difficultyLevel": 3,
+      "difficultyName": "VAN_DUNG",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B03",
+        "lessonTitle": "Nóng chảy",
+        "topic": "Thực nghiệm"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề",
+        "sourceAuthor": "VLXT",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Chùm 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ],
+      "mediaAssets": []
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "QUESTION_GROUP",
+      "stem": "chùm câu hỏi khảo sát sự chuyển thể chất rắn kết tinh.",
+      "parentContext": "một học sinh đun nóng 100 g chất rắn từ 20^{\\circ}\\text{c} lên 80^{\\circ}\\text{c} với công suất p = 50 w.",
+      "childQuestionIds": [
+        "VLXT-G12-C1-B03-Q0001",
+        "VLXT-G12-C1-B03-Q0002"
+      ],
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "QUESTION_GROUP",
+        "stem": "chùm câu hỏi khảo sát sự chuyển thể chất rắn kết tinh.",
+        "parentContext": "một học sinh đun nóng 100 g chất rắn từ 20^{\\circ}\\text{c} lên 80^{\\circ}\\text{c} với công suất p = 50 w.",
+        "childQuestionIds": [
+          "VLXT-G12-C1-B03-Q0001",
+          "VLXT-G12-C1-B03-Q0002"
+        ],
+        "essentialMediaHashes": []
+      },
+      "explanation": "khảo sát thực nghiệm nhiệt học.",
+      "difficultyLevel": 3,
+      "difficultyName": "VAN_DUNG",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B03",
+        "lessonTitle": "nóng chảy",
+        "topic": "thực nghiệm"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề",
+        "sourceAuthor": "vlxt",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Chùm 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"childQuestionIds\":[\"VLXT-G12-C1-B03-Q0001\",\"VLXT-G12-C1-B03-Q0002\"],\"essentialMediaHashes\":[],\"parentContext\":\"một học sinh đun nóng 100 g chất rắn từ 20^{\\\\circ}\\\\text{c} lên 80^{\\\\circ}\\\\text{c} với công suất p = 50 w.\",\"stem\":\"chùm câu hỏi khảo sát sự chuyển thể chất rắn kết tinh.\",\"type\":\"QUESTION_GROUP\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":3,\"difficultyName\":\"VAN_DUNG\",\"explanation\":\"khảo sát thực nghiệm nhiệt học.\",\"identity\":{\"childQuestionIds\":[\"VLXT-G12-C1-B03-Q0001\",\"VLXT-G12-C1-B03-Q0002\"],\"essentialMediaHashes\":[],\"parentContext\":\"một học sinh đun nóng 100 g chất rắn từ 20^{\\\\circ}\\\\text{c} lên 80^{\\\\circ}\\\\text{c} với công suất p = 50 w.\",\"stem\":\"chùm câu hỏi khảo sát sự chuyển thể chất rắn kết tinh.\",\"type\":\"QUESTION_GROUP\"},\"qualityFlags\":[\"MATH_CHECKED\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Chùm 1\",\"sourceAuthor\":\"vlxt\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B03\",\"lessonTitle\":\"nóng chảy\",\"topic\":\"thực nghiệm\"}}",
+    "expectedContentIdentityHash": "70d185d3d80bf3605bad9f86ba8c7fcd02a4eec7cdb4ef89f91ff248d9c62314",
+    "expectedRevisionHash": "60ec38553409c65a9ff17723a5134c717c12eda16503569c78495cb160f1addc"
+  },
+  {
+    "vectorId": "GV_12_CHILD_PARENT_CTX1",
+    "description": "Câu con nằm trong ngữ cảnh Chùm 1",
+    "inputQuestion": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "Nhiệt dung riêng của chất ở thể rắn là bao nhiêu?",
+      "options": [
+        {
+          "key": "A",
+          "content": "1000 J/(kg.K)"
+        },
+        {
+          "key": "B",
+          "content": "500 J/(kg.K)"
+        },
+        {
+          "key": "C",
+          "content": "2000 J/(kg.K)"
+        },
+        {
+          "key": "D",
+          "content": "250 J/(kg.K)"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Tính từ độ dốc đồ thị nhiệt lượng.",
+      "difficultyLevel": 3,
+      "difficultyName": "VAN_DUNG",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B03",
+        "lessonTitle": "Nóng chảy",
+        "topic": "Nhiệt dung riêng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề",
+        "sourceAuthor": "VLXT",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1.1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ],
+      "mediaAssets": []
+    },
+    "parentContext": {
+      "introText": "Một học sinh đun nóng 100 g chất rắn từ 20 °C lên 80 °C với công suất P = 50 W."
+    },
+    "canonicalIdentityPayload": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "nhiệt dung riêng của chất ở thể rắn là bao nhiêu?",
+      "parentContext": "một học sinh đun nóng 100 g chất rắn từ 20^{\\circ}\\text{c} lên 80^{\\circ}\\text{c} với công suất p = 50 w.",
+      "options": [
+        {
+          "key": "A",
+          "content": "1000 j/(kg.k)"
+        },
+        {
+          "key": "B",
+          "content": "500 j/(kg.k)"
+        },
+        {
+          "key": "C",
+          "content": "2000 j/(kg.k)"
+        },
+        {
+          "key": "D",
+          "content": "250 j/(kg.k)"
+        }
+      ],
+      "correctAnswer": "A",
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "MULTIPLE_CHOICE_4",
+        "stem": "nhiệt dung riêng của chất ở thể rắn là bao nhiêu?",
+        "parentContext": "một học sinh đun nóng 100 g chất rắn từ 20^{\\circ}\\text{c} lên 80^{\\circ}\\text{c} với công suất p = 50 w.",
+        "options": [
+          {
+            "key": "A",
+            "content": "1000 j/(kg.k)"
+          },
+          {
+            "key": "B",
+            "content": "500 j/(kg.k)"
+          },
+          {
+            "key": "C",
+            "content": "2000 j/(kg.k)"
+          },
+          {
+            "key": "D",
+            "content": "250 j/(kg.k)"
+          }
+        ],
+        "correctAnswer": "A",
+        "essentialMediaHashes": []
+      },
+      "explanation": "tính từ độ dốc đồ thị nhiệt lượng.",
+      "difficultyLevel": 3,
+      "difficultyName": "VAN_DUNG",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B03",
+        "lessonTitle": "nóng chảy",
+        "topic": "nhiệt dung riêng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề",
+        "sourceAuthor": "vlxt",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1.1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"1000 j/(kg.k)\",\"key\":\"A\"},{\"content\":\"500 j/(kg.k)\",\"key\":\"B\"},{\"content\":\"2000 j/(kg.k)\",\"key\":\"C\"},{\"content\":\"250 j/(kg.k)\",\"key\":\"D\"}],\"parentContext\":\"một học sinh đun nóng 100 g chất rắn từ 20^{\\\\circ}\\\\text{c} lên 80^{\\\\circ}\\\\text{c} với công suất p = 50 w.\",\"stem\":\"nhiệt dung riêng của chất ở thể rắn là bao nhiêu?\",\"type\":\"MULTIPLE_CHOICE_4\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":3,\"difficultyName\":\"VAN_DUNG\",\"explanation\":\"tính từ độ dốc đồ thị nhiệt lượng.\",\"identity\":{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"1000 j/(kg.k)\",\"key\":\"A\"},{\"content\":\"500 j/(kg.k)\",\"key\":\"B\"},{\"content\":\"2000 j/(kg.k)\",\"key\":\"C\"},{\"content\":\"250 j/(kg.k)\",\"key\":\"D\"}],\"parentContext\":\"một học sinh đun nóng 100 g chất rắn từ 20^{\\\\circ}\\\\text{c} lên 80^{\\\\circ}\\\\text{c} với công suất p = 50 w.\",\"stem\":\"nhiệt dung riêng của chất ở thể rắn là bao nhiêu?\",\"type\":\"MULTIPLE_CHOICE_4\"},\"qualityFlags\":[\"MATH_CHECKED\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 1.1\",\"sourceAuthor\":\"vlxt\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B03\",\"lessonTitle\":\"nóng chảy\",\"topic\":\"nhiệt dung riêng\"}}",
+    "expectedContentIdentityHash": "65177718f7ce37f0647096bbab4c5f0ccf8a8b49e7563a2fa711c89b68de89a2",
+    "expectedRevisionHash": "94a7ec47784cb52ecc9e9f00db8ff06685bba6f378957cf2c5d495b0f54ff789"
+  },
+  {
+    "vectorId": "GV_13_CHILD_PARENT_CTX2",
+    "description": "Cùng câu con nhưng đặt trong ngữ cảnh Chùm 2 (khác introText)",
+    "inputQuestion": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "Nhiệt dung riêng của chất ở thể rắn là bao nhiêu?",
+      "options": [
+        {
+          "key": "A",
+          "content": "1000 J/(kg.K)"
+        },
+        {
+          "key": "B",
+          "content": "500 J/(kg.K)"
+        },
+        {
+          "key": "C",
+          "content": "2000 J/(kg.K)"
+        },
+        {
+          "key": "D",
+          "content": "250 J/(kg.K)"
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Tính từ độ dốc đồ thị nhiệt lượng.",
+      "difficultyLevel": 3,
+      "difficultyName": "VAN_DUNG",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B03",
+        "lessonTitle": "Nóng chảy",
+        "topic": "Nhiệt dung riêng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề",
+        "sourceAuthor": "VLXT",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1.1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ],
+      "mediaAssets": []
+    },
+    "parentContext": {
+      "introText": "Một học sinh đun nóng 200 g chất rắn từ 10 °C lên 90 °C với công suất P = 100 W."
+    },
+    "canonicalIdentityPayload": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "nhiệt dung riêng của chất ở thể rắn là bao nhiêu?",
+      "parentContext": "một học sinh đun nóng 200 g chất rắn từ 10^{\\circ}\\text{c} lên 90^{\\circ}\\text{c} với công suất p = 100 w.",
+      "options": [
+        {
+          "key": "A",
+          "content": "1000 j/(kg.k)"
+        },
+        {
+          "key": "B",
+          "content": "500 j/(kg.k)"
+        },
+        {
+          "key": "C",
+          "content": "2000 j/(kg.k)"
+        },
+        {
+          "key": "D",
+          "content": "250 j/(kg.k)"
+        }
+      ],
+      "correctAnswer": "A",
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "MULTIPLE_CHOICE_4",
+        "stem": "nhiệt dung riêng của chất ở thể rắn là bao nhiêu?",
+        "parentContext": "một học sinh đun nóng 200 g chất rắn từ 10^{\\circ}\\text{c} lên 90^{\\circ}\\text{c} với công suất p = 100 w.",
+        "options": [
+          {
+            "key": "A",
+            "content": "1000 j/(kg.k)"
+          },
+          {
+            "key": "B",
+            "content": "500 j/(kg.k)"
+          },
+          {
+            "key": "C",
+            "content": "2000 j/(kg.k)"
+          },
+          {
+            "key": "D",
+            "content": "250 j/(kg.k)"
+          }
+        ],
+        "correctAnswer": "A",
+        "essentialMediaHashes": []
+      },
+      "explanation": "tính từ độ dốc đồ thị nhiệt lượng.",
+      "difficultyLevel": 3,
+      "difficultyName": "VAN_DUNG",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B03",
+        "lessonTitle": "nóng chảy",
+        "topic": "nhiệt dung riêng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề",
+        "sourceAuthor": "vlxt",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1.1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"1000 j/(kg.k)\",\"key\":\"A\"},{\"content\":\"500 j/(kg.k)\",\"key\":\"B\"},{\"content\":\"2000 j/(kg.k)\",\"key\":\"C\"},{\"content\":\"250 j/(kg.k)\",\"key\":\"D\"}],\"parentContext\":\"một học sinh đun nóng 200 g chất rắn từ 10^{\\\\circ}\\\\text{c} lên 90^{\\\\circ}\\\\text{c} với công suất p = 100 w.\",\"stem\":\"nhiệt dung riêng của chất ở thể rắn là bao nhiêu?\",\"type\":\"MULTIPLE_CHOICE_4\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":3,\"difficultyName\":\"VAN_DUNG\",\"explanation\":\"tính từ độ dốc đồ thị nhiệt lượng.\",\"identity\":{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"1000 j/(kg.k)\",\"key\":\"A\"},{\"content\":\"500 j/(kg.k)\",\"key\":\"B\"},{\"content\":\"2000 j/(kg.k)\",\"key\":\"C\"},{\"content\":\"250 j/(kg.k)\",\"key\":\"D\"}],\"parentContext\":\"một học sinh đun nóng 200 g chất rắn từ 10^{\\\\circ}\\\\text{c} lên 90^{\\\\circ}\\\\text{c} với công suất p = 100 w.\",\"stem\":\"nhiệt dung riêng của chất ở thể rắn là bao nhiêu?\",\"type\":\"MULTIPLE_CHOICE_4\"},\"qualityFlags\":[\"MATH_CHECKED\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 1.1\",\"sourceAuthor\":\"vlxt\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B03\",\"lessonTitle\":\"nóng chảy\",\"topic\":\"nhiệt dung riêng\"}}",
+    "expectedContentIdentityHash": "84fd0a9ef022e08a8bd8c0eb70c15c218b37b4e1bf0970fb42801d70bd9f0329",
+    "expectedRevisionHash": "41c10ffcde1a7148f635905a91c42ab0afee6db2ae41392d8602de987c688074"
+  },
+  {
+    "vectorId": "GV_14_VIETNAMESE_ACCENTS",
+    "description": "Tiếng Việt có dấu phức tạp (pit-tông, đẳng áp, xilanh)",
+    "inputQuestion": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "Quá trình biến đổi đẳng áp của khối khí lí tưởng được thực hiện trong xilanh có pit-tông nhẹ, di chuyển không ma sát.",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối T.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "Mô hình ĐHPT",
+        "topic": "Động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề tổng hợp",
+        "sourceAuthor": "Vật Lý Xuân Trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ],
+      "mediaAssets": [],
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "status": "QA_PASSED",
+      "rawTier": "THO"
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "quá trình biến đổi đẳng áp của khối khí lí tưởng được thực hiện trong xilanh có pit-tông nhẹ, di chuyển không ma sát.",
+      "parentContext": "",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "MULTIPLE_CHOICE_4",
+        "stem": "quá trình biến đổi đẳng áp của khối khí lí tưởng được thực hiện trong xilanh có pit-tông nhẹ, di chuyển không ma sát.",
+        "parentContext": "",
+        "options": [
+          {
+            "key": "A",
+            "content": "tăng gấp đôi."
+          },
+          {
+            "key": "B",
+            "content": "tăng gấp bốn lần."
+          },
+          {
+            "key": "C",
+            "content": "giảm một nửa."
+          },
+          {
+            "key": "D",
+            "content": "không đổi."
+          }
+        ],
+        "correctAnswer": "A",
+        "essentialMediaHashes": []
+      },
+      "explanation": "động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "mô hình đhpt",
+        "topic": "động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề tổng hợp",
+        "sourceAuthor": "vật lý xuân trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"quá trình biến đổi đẳng áp của khối khí lí tưởng được thực hiện trong xilanh có pit-tông nhẹ, di chuyển không ma sát.\",\"type\":\"MULTIPLE_CHOICE_4\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":2,\"difficultyName\":\"THONG_HIEU\",\"explanation\":\"động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.\",\"identity\":{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"quá trình biến đổi đẳng áp của khối khí lí tưởng được thực hiện trong xilanh có pit-tông nhẹ, di chuyển không ma sát.\",\"type\":\"MULTIPLE_CHOICE_4\"},\"qualityFlags\":[\"MATH_CHECKED\",\"VERIFIED_ANSWER\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 1\",\"sourceAuthor\":\"vật lý xuân trường\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề tổng hợp\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B01\",\"lessonTitle\":\"mô hình đhpt\",\"topic\":\"động năng\"}}",
+    "expectedContentIdentityHash": "7f4f6a4acfc3354106f55025e5380d29796087b26b467e5b39972556109733a4",
+    "expectedRevisionHash": "c9848b4480367588b3e1539367846d7ed94fb692661ad41432eddfbf87bdb47d"
+  },
+  {
+    "vectorId": "GV_15_KATEX_PHYSICS_NOTATION",
+    "description": "Ký hiệu vật lý KaTeX tự động chuẩn hóa (NA, 1023 hạt, 105 Pa, To, vecto F)",
+    "inputQuestion": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "Xét khối khí có số phân tử N = NA = 6.02 . 1023 hạt ở áp suất p = 105 Pa và nhiệt độ T = To dưới tác dụng của vecto F.",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối T.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "Mô hình ĐHPT",
+        "topic": "Động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề tổng hợp",
+        "sourceAuthor": "Vật Lý Xuân Trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ],
+      "mediaAssets": [],
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "status": "QA_PASSED",
+      "rawTier": "THO"
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "xét khối khí có số phân tử n = n_a = 6.02 . 10^{23}\\text{ hạt} ở áp suất p = 10^5\\text{ pa} và nhiệt độ t = t_0 dưới tác dụng của \\vec{f}.",
+      "parentContext": "",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "MULTIPLE_CHOICE_4",
+        "stem": "xét khối khí có số phân tử n = n_a = 6.02 . 10^{23}\\text{ hạt} ở áp suất p = 10^5\\text{ pa} và nhiệt độ t = t_0 dưới tác dụng của \\vec{f}.",
+        "parentContext": "",
+        "options": [
+          {
+            "key": "A",
+            "content": "tăng gấp đôi."
+          },
+          {
+            "key": "B",
+            "content": "tăng gấp bốn lần."
+          },
+          {
+            "key": "C",
+            "content": "giảm một nửa."
+          },
+          {
+            "key": "D",
+            "content": "không đổi."
+          }
+        ],
+        "correctAnswer": "A",
+        "essentialMediaHashes": []
+      },
+      "explanation": "động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "mô hình đhpt",
+        "topic": "động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề tổng hợp",
+        "sourceAuthor": "vật lý xuân trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"xét khối khí có số phân tử n = n_a = 6.02 . 10^{23}\\\\text{ hạt} ở áp suất p = 10^5\\\\text{ pa} và nhiệt độ t = t_0 dưới tác dụng của \\\\vec{f}.\",\"type\":\"MULTIPLE_CHOICE_4\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":2,\"difficultyName\":\"THONG_HIEU\",\"explanation\":\"động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.\",\"identity\":{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"xét khối khí có số phân tử n = n_a = 6.02 . 10^{23}\\\\text{ hạt} ở áp suất p = 10^5\\\\text{ pa} và nhiệt độ t = t_0 dưới tác dụng của \\\\vec{f}.\",\"type\":\"MULTIPLE_CHOICE_4\"},\"qualityFlags\":[\"MATH_CHECKED\",\"VERIFIED_ANSWER\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 1\",\"sourceAuthor\":\"vật lý xuân trường\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề tổng hợp\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B01\",\"lessonTitle\":\"mô hình đhpt\",\"topic\":\"động năng\"}}",
+    "expectedContentIdentityHash": "9e410fb81b7f0fd1bec57e0a35562a2b836a69667aaac294f95b21da62538fc4",
+    "expectedRevisionHash": "47dda8469c62cd5786c1114532cc40be40b9ed9b142382681015633d521c2879"
+  },
+  {
+    "vectorId": "GV_16_ESSENTIAL_MEDIA_STEM",
+    "description": "Câu hỏi có hình ảnh thiết yếu gắn với STEM (sha256 đưa vào hash)",
+    "inputQuestion": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "Khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối T.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "Mô hình ĐHPT",
+        "topic": "Động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề tổng hợp",
+        "sourceAuthor": "Vật Lý Xuân Trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ],
+      "mediaAssets": [
+        {
+          "assetId": "IMG_STEM_01",
+          "questionBinding": "STEM",
+          "sha256": "4a5e6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a"
+        }
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "status": "QA_PASSED",
+      "rawTier": "THO"
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "parentContext": "",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "essentialMediaHashes": [
+        "STEM:4a5e6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a"
+      ]
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "MULTIPLE_CHOICE_4",
+        "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+        "parentContext": "",
+        "options": [
+          {
+            "key": "A",
+            "content": "tăng gấp đôi."
+          },
+          {
+            "key": "B",
+            "content": "tăng gấp bốn lần."
+          },
+          {
+            "key": "C",
+            "content": "giảm một nửa."
+          },
+          {
+            "key": "D",
+            "content": "không đổi."
+          }
+        ],
+        "correctAnswer": "A",
+        "essentialMediaHashes": [
+          "STEM:4a5e6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a"
+        ]
+      },
+      "explanation": "động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "mô hình đhpt",
+        "topic": "động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề tổng hợp",
+        "sourceAuthor": "vật lý xuân trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[\"STEM:4a5e6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a\"],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":2,\"difficultyName\":\"THONG_HIEU\",\"explanation\":\"động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.\",\"identity\":{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[\"STEM:4a5e6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a\"],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"},\"qualityFlags\":[\"MATH_CHECKED\",\"VERIFIED_ANSWER\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 1\",\"sourceAuthor\":\"vật lý xuân trường\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề tổng hợp\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B01\",\"lessonTitle\":\"mô hình đhpt\",\"topic\":\"động năng\"}}",
+    "expectedContentIdentityHash": "4257f84b63e218f6f4b4752b713af1907e98c2ff118aab4fe8932696bf00275e",
+    "expectedRevisionHash": "0839a154295027ce00f18a526e3ac3b25339a4aa4d61d4a23de373c246c06187"
+  },
+  {
+    "vectorId": "GV_17_DIFF_ESSENTIAL_MEDIA",
+    "description": "Cùng câu hỏi nhưng hình ảnh thiết yếu có SHA-256 khác",
+    "inputQuestion": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "Khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối T.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "Mô hình ĐHPT",
+        "topic": "Động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề tổng hợp",
+        "sourceAuthor": "Vật Lý Xuân Trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ],
+      "mediaAssets": [
+        {
+          "assetId": "IMG_STEM_02",
+          "questionBinding": "STEM",
+          "sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        }
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "status": "QA_PASSED",
+      "rawTier": "THO"
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "parentContext": "",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "essentialMediaHashes": [
+        "STEM:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      ]
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "MULTIPLE_CHOICE_4",
+        "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+        "parentContext": "",
+        "options": [
+          {
+            "key": "A",
+            "content": "tăng gấp đôi."
+          },
+          {
+            "key": "B",
+            "content": "tăng gấp bốn lần."
+          },
+          {
+            "key": "C",
+            "content": "giảm một nửa."
+          },
+          {
+            "key": "D",
+            "content": "không đổi."
+          }
+        ],
+        "correctAnswer": "A",
+        "essentialMediaHashes": [
+          "STEM:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        ]
+      },
+      "explanation": "động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "mô hình đhpt",
+        "topic": "động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề tổng hợp",
+        "sourceAuthor": "vật lý xuân trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[\"STEM:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":2,\"difficultyName\":\"THONG_HIEU\",\"explanation\":\"động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.\",\"identity\":{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[\"STEM:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"},\"qualityFlags\":[\"MATH_CHECKED\",\"VERIFIED_ANSWER\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 1\",\"sourceAuthor\":\"vật lý xuân trường\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề tổng hợp\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B01\",\"lessonTitle\":\"mô hình đhpt\",\"topic\":\"động năng\"}}",
+    "expectedContentIdentityHash": "a0731545d689ad0533d04374ef7a0660c440348ba0b0c5526de79fd70be8e8a3",
+    "expectedRevisionHash": "75e0d8c9b654585d30382a0fa412e9335887e8997201f6bea061616d3333f8bd"
+  },
+  {
+    "vectorId": "GV_18_UNBOUND_MEDIA_IGNORED",
+    "description": "Ảnh trang trí/Unbound bị loại trừ khỏi Identity hash",
+    "inputQuestion": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "Khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối T.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "Mô hình ĐHPT",
+        "topic": "Động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề tổng hợp",
+        "sourceAuthor": "Vật Lý Xuân Trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ],
+      "mediaAssets": [
+        {
+          "assetId": "IMG_UNBOUND_01",
+          "questionBinding": "UNBOUND",
+          "sha256": "4a5e6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a"
+        }
+      ],
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "status": "QA_PASSED",
+      "rawTier": "THO"
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "parentContext": "",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "MULTIPLE_CHOICE_4",
+        "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+        "parentContext": "",
+        "options": [
+          {
+            "key": "A",
+            "content": "tăng gấp đôi."
+          },
+          {
+            "key": "B",
+            "content": "tăng gấp bốn lần."
+          },
+          {
+            "key": "C",
+            "content": "giảm một nửa."
+          },
+          {
+            "key": "D",
+            "content": "không đổi."
+          }
+        ],
+        "correctAnswer": "A",
+        "essentialMediaHashes": []
+      },
+      "explanation": "động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "mô hình đhpt",
+        "topic": "động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề tổng hợp",
+        "sourceAuthor": "vật lý xuân trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":2,\"difficultyName\":\"THONG_HIEU\",\"explanation\":\"động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.\",\"identity\":{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"},\"qualityFlags\":[\"MATH_CHECKED\",\"VERIFIED_ANSWER\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 1\",\"sourceAuthor\":\"vật lý xuân trường\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề tổng hợp\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B01\",\"lessonTitle\":\"mô hình đhpt\",\"topic\":\"động năng\"}}",
+    "expectedContentIdentityHash": "d6dccaf170ee84dc80cab964aa6e041969e04f63b309f6749ff6e03a6443db4a",
+    "expectedRevisionHash": "e122cec7de2a4b7b507671a9f7c7635772f578b0af7cc69902dd0db5632dbdf0"
+  },
+  {
+    "vectorId": "GV_19_LIFECYCLE_MUTATION_INVARIANT",
+    "description": "Chỉ đổi reviewer/status/rawTier -> Identity & Revision hash bất biến",
+    "inputQuestion": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "Khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối T.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "Mô hình ĐHPT",
+        "topic": "Động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề tổng hợp",
+        "sourceAuthor": "Vật Lý Xuân Trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ],
+      "mediaAssets": [],
+      "reviewedBy": "ARBITRARY_TEST_APPROVER",
+      "reviewedAt": "2026-12-31T23:59:59Z",
+      "status": "TEACHER_APPROVED",
+      "rawTier": "TINH",
+      "usageScopes": [
+        "THEORY_BANK",
+        "MOCK_EXAM_THPTQG"
+      ]
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "parentContext": "",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "MULTIPLE_CHOICE_4",
+        "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+        "parentContext": "",
+        "options": [
+          {
+            "key": "A",
+            "content": "tăng gấp đôi."
+          },
+          {
+            "key": "B",
+            "content": "tăng gấp bốn lần."
+          },
+          {
+            "key": "C",
+            "content": "giảm một nửa."
+          },
+          {
+            "key": "D",
+            "content": "không đổi."
+          }
+        ],
+        "correctAnswer": "A",
+        "essentialMediaHashes": []
+      },
+      "explanation": "động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "mô hình đhpt",
+        "topic": "động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề tổng hợp",
+        "sourceAuthor": "vật lý xuân trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":2,\"difficultyName\":\"THONG_HIEU\",\"explanation\":\"động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.\",\"identity\":{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"},\"qualityFlags\":[\"MATH_CHECKED\",\"VERIFIED_ANSWER\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 1\",\"sourceAuthor\":\"vật lý xuân trường\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề tổng hợp\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B01\",\"lessonTitle\":\"mô hình đhpt\",\"topic\":\"động năng\"}}",
+    "expectedContentIdentityHash": "d6dccaf170ee84dc80cab964aa6e041969e04f63b309f6749ff6e03a6443db4a",
+    "expectedRevisionHash": "e122cec7de2a4b7b507671a9f7c7635772f578b0af7cc69902dd0db5632dbdf0"
+  },
+  {
+    "vectorId": "GV_20_EXPLANATION_MUTATION",
+    "description": "Chỉ đổi lời giải chi tiết -> Identity hash giữ nguyên, Revision hash thay đổi",
+    "inputQuestion": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "Khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Lời giải chi tiết phương pháp mới: Sử dụng phương trình Clapeyron-Mendeleev để lập luận.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "Mô hình ĐHPT",
+        "topic": "Động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề tổng hợp",
+        "sourceAuthor": "Vật Lý Xuân Trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ],
+      "mediaAssets": [],
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "status": "QA_PASSED",
+      "rawTier": "THO"
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "parentContext": "",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "MULTIPLE_CHOICE_4",
+        "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+        "parentContext": "",
+        "options": [
+          {
+            "key": "A",
+            "content": "tăng gấp đôi."
+          },
+          {
+            "key": "B",
+            "content": "tăng gấp bốn lần."
+          },
+          {
+            "key": "C",
+            "content": "giảm một nửa."
+          },
+          {
+            "key": "D",
+            "content": "không đổi."
+          }
+        ],
+        "correctAnswer": "A",
+        "essentialMediaHashes": []
+      },
+      "explanation": "lời giải chi tiết phương pháp mới: sử dụng phương trình clapeyron-mendeleev để lập luận.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "mô hình đhpt",
+        "topic": "động năng"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề tổng hợp",
+        "sourceAuthor": "vật lý xuân trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":2,\"difficultyName\":\"THONG_HIEU\",\"explanation\":\"lời giải chi tiết phương pháp mới: sử dụng phương trình clapeyron-mendeleev để lập luận.\",\"identity\":{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"},\"qualityFlags\":[\"MATH_CHECKED\",\"VERIFIED_ANSWER\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 1\",\"sourceAuthor\":\"vật lý xuân trường\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề tổng hợp\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B01\",\"lessonTitle\":\"mô hình đhpt\",\"topic\":\"động năng\"}}",
+    "expectedContentIdentityHash": "d6dccaf170ee84dc80cab964aa6e041969e04f63b309f6749ff6e03a6443db4a",
+    "expectedRevisionHash": "823a4e746ec8b3268b61ccfac78c64108c30ec4d54ce576b44a06d315e76d222"
+  },
+  {
+    "vectorId": "GV_21_TAXONOMY_SOURCE_MUTATION",
+    "description": "Chỉ đổi topic và nguồn tài liệu -> Identity hash giữ nguyên, Revision hash thay đổi",
+    "inputQuestion": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "Khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "explanation": "Động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối T.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "Mô hình ĐHPT",
+        "topic": "Năng lượng phân tử nâng cao"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Tài liệu Chuyên sâu 2027",
+        "sourceAuthor": "Vật Lý Xuân Trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ],
+      "mediaAssets": [],
+      "reviewedBy": null,
+      "reviewedAt": null,
+      "status": "QA_PASSED",
+      "rawTier": "THO"
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "MULTIPLE_CHOICE_4",
+      "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+      "parentContext": "",
+      "options": [
+        {
+          "key": "A",
+          "content": "tăng gấp đôi."
+        },
+        {
+          "key": "B",
+          "content": "tăng gấp bốn lần."
+        },
+        {
+          "key": "C",
+          "content": "giảm một nửa."
+        },
+        {
+          "key": "D",
+          "content": "không đổi."
+        }
+      ],
+      "correctAnswer": "A",
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "MULTIPLE_CHOICE_4",
+        "stem": "khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.",
+        "parentContext": "",
+        "options": [
+          {
+            "key": "A",
+            "content": "tăng gấp đôi."
+          },
+          {
+            "key": "B",
+            "content": "tăng gấp bốn lần."
+          },
+          {
+            "key": "C",
+            "content": "giảm một nửa."
+          },
+          {
+            "key": "D",
+            "content": "không đổi."
+          }
+        ],
+        "correctAnswer": "A",
+        "essentialMediaHashes": []
+      },
+      "explanation": "động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "mô hình đhpt",
+        "topic": "năng lượng phân tử nâng cao"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "tài liệu chuyên sâu 2027",
+        "sourceAuthor": "vật lý xuân trường",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 1"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED",
+        "VERIFIED_ANSWER"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":2,\"difficultyName\":\"THONG_HIEU\",\"explanation\":\"động năng tịnh tiến tỉ lệ với nhiệt độ tuyệt đối t.\",\"identity\":{\"correctAnswer\":\"A\",\"essentialMediaHashes\":[],\"options\":[{\"content\":\"tăng gấp đôi.\",\"key\":\"A\"},{\"content\":\"tăng gấp bốn lần.\",\"key\":\"B\"},{\"content\":\"giảm một nửa.\",\"key\":\"C\"},{\"content\":\"không đổi.\",\"key\":\"D\"}],\"parentContext\":\"\",\"stem\":\"khi nhiệt độ tuyệt đối của khối khí tăng 2 lần thì động năng tịnh tiến trung bình tăng 2 lần.\",\"type\":\"MULTIPLE_CHOICE_4\"},\"qualityFlags\":[\"MATH_CHECKED\",\"VERIFIED_ANSWER\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 1\",\"sourceAuthor\":\"vật lý xuân trường\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"tài liệu chuyên sâu 2027\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B01\",\"lessonTitle\":\"mô hình đhpt\",\"topic\":\"năng lượng phân tử nâng cao\"}}",
+    "expectedContentIdentityHash": "d6dccaf170ee84dc80cab964aa6e041969e04f63b309f6749ff6e03a6443db4a",
+    "expectedRevisionHash": "1274ddb6620f85701f14a23db72e9e7bb5bad0355cf319f3a7faf873d3b08176"
+  },
+  {
+    "vectorId": "GV_22_SHORT_ZERO_TOLERANCE",
+    "description": "Trả lời ngắn với tolerance = 0.0 và đơn vị Pa",
+    "inputQuestion": {
+      "type": "SHORT_ANSWER",
+      "stem": "Áp suất của lượng khí trong bình kín là bao nhiêu Pa?",
+      "numericValue": 100000.0,
+      "tolerance": 0.0,
+      "unit": "\\text{Pa}",
+      "acceptedAnswers": [
+        "100000",
+        "10^5",
+        "100000.0"
+      ],
+      "explanation": "Áp suất đẳng tích.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "Vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "Chất khí",
+        "topic": "Áp suất"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "Bộ đề",
+        "sourceAuthor": "VLXT",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 22"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ],
+      "mediaAssets": []
+    },
+    "parentContext": null,
+    "canonicalIdentityPayload": {
+      "type": "SHORT_ANSWER",
+      "stem": "áp suất của lượng khí trong bình kín là bao nhiêu pa?",
+      "parentContext": "",
+      "shortAnswer": {
+        "numericValue": 100000.0,
+        "tolerance": 0.0,
+        "unit": "\\text{pa}",
+        "acceptedAnswers": [
+          "100000",
+          "100000.0",
+          "10^5"
+        ]
+      },
+      "essentialMediaHashes": []
+    },
+    "canonicalRevisionPayload": {
+      "identity": {
+        "type": "SHORT_ANSWER",
+        "stem": "áp suất của lượng khí trong bình kín là bao nhiêu pa?",
+        "parentContext": "",
+        "shortAnswer": {
+          "numericValue": 100000.0,
+          "tolerance": 0.0,
+          "unit": "\\text{pa}",
+          "acceptedAnswers": [
+            "100000",
+            "100000.0",
+            "10^5"
+          ]
+        },
+        "essentialMediaHashes": []
+      },
+      "explanation": "áp suất đẳng tích.",
+      "difficultyLevel": 2,
+      "difficultyName": "THONG_HIEU",
+      "taxonomy": {
+        "grade": 12,
+        "chapterNumber": 1,
+        "chapterTitle": "vật lí nhiệt",
+        "lessonCode": "G12_C1_B01",
+        "lessonTitle": "chất khí",
+        "topic": "áp suất"
+      },
+      "sourceProvenance": {
+        "sourceDocumentId": "SYNTH_DOC_01",
+        "sourceTitle": "bộ đề",
+        "sourceAuthor": "vlxt",
+        "sourceLicense": "ORIGINAL_COPYRIGHT",
+        "originalQuestionNumber": "Câu 22"
+      },
+      "qualityFlags": [
+        "MATH_CHECKED"
+      ]
+    },
+    "canonicalSerializedIdentityString": "{\"essentialMediaHashes\":[],\"parentContext\":\"\",\"shortAnswer\":{\"acceptedAnswers\":[\"100000\",\"100000.0\",\"10^5\"],\"numericValue\":100000.0,\"tolerance\":0.0,\"unit\":\"\\\\text{pa}\"},\"stem\":\"áp suất của lượng khí trong bình kín là bao nhiêu pa?\",\"type\":\"SHORT_ANSWER\"}",
+    "canonicalSerializedRevisionString": "{\"difficultyLevel\":2,\"difficultyName\":\"THONG_HIEU\",\"explanation\":\"áp suất đẳng tích.\",\"identity\":{\"essentialMediaHashes\":[],\"parentContext\":\"\",\"shortAnswer\":{\"acceptedAnswers\":[\"100000\",\"100000.0\",\"10^5\"],\"numericValue\":100000.0,\"tolerance\":0.0,\"unit\":\"\\\\text{pa}\"},\"stem\":\"áp suất của lượng khí trong bình kín là bao nhiêu pa?\",\"type\":\"SHORT_ANSWER\"},\"qualityFlags\":[\"MATH_CHECKED\"],\"sourceProvenance\":{\"originalQuestionNumber\":\"Câu 22\",\"sourceAuthor\":\"vlxt\",\"sourceDocumentId\":\"SYNTH_DOC_01\",\"sourceLicense\":\"ORIGINAL_COPYRIGHT\",\"sourceTitle\":\"bộ đề\"},\"taxonomy\":{\"chapterNumber\":1,\"chapterTitle\":\"vật lí nhiệt\",\"grade\":12,\"lessonCode\":\"G12_C1_B01\",\"lessonTitle\":\"chất khí\",\"topic\":\"áp suất\"}}",
+    "expectedContentIdentityHash": "2fe36d9577d64bf1b3ba74b0ce7fb4a976102acc0db8e526724ac516ed4c6d03",
+    "expectedRevisionHash": "d851d4f5ed921bd103253a32f5de281238655ca02d436076a1930c8791bc5fe0"
+  }
+]
