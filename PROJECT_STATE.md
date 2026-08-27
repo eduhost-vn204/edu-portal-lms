@@ -235,4 +235,21 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
   - **Kiểm thử Backend hiện tại (Live Apps Script chưa deploy code mới)**: Request POST text/plain được định tuyến 302 Redirect và trả `Access-Control-Allow-Origin: *`; action chưa có trong backend cũ rơi vào fallback `{ok: true}`.
   - **Kiểm thử Backend mới (Sau khi thầy deploy)**: Action `pingadmin` sẽ trả `{ok: true, ping: 'pong', ts: ...}` khi đúng key hoặc `{ok: false, msg: 'Unauthorized'}` khi sai key; action lạ trả `{ok: false, msg: 'Unknown action'}`.
 
-- Bước tiếp theo: Thầy cập nhật phiên bản Apps Script mới từ `apps-script-CAPNHAT.txt` lên Google Apps Script deployment theo hướng dẫn khi sẵn sàng triển khai.
+### 27/08/2026 — Sắp xếp lại thứ tự Tab Navbar & Bổ sung Phòng Thi Thử trên Web Học Sinh
+
+- **Người thực hiện**: Antigravity
+- **Phạm vi thay đổi**:
+  - `index.html`, `danhsach-ly12.html`, `hoso.html`, `baihoc.html`, `auth.js`, `phong-thi-thu.html`.
+- **Chi tiết thay đổi**:
+  1. **Đổi tên & Sắp xếp thứ tự các Tab Navbar**:
+     - Cấu trúc mới: `Khóa Học` (`baihoc.html`) $\rightarrow$ `Phòng Thi Thử` (`phong-thi-thu.html`) $\rightarrow$ `Phòng Kiểm Tra` (`danhsach-ly12.html`) $\rightarrow$ `Đua Top` (`dua-top.html`) $\rightarrow$ `⚔️ Solo` (`solo.html`) $\rightarrow$ `Live` (`live.html`) $\rightarrow$ `Hướng Dẫn` (`huongdan.html`).
+     - Bỏ các tab trực tiếp trên thanh điều hướng chính (`Bảng Vàng`, `Lịch Live`, `Hồ Sơ`) vì học sinh có thể cuộn xuống cuối trang hoặc truy cập qua widget người dùng/menu.
+  2. **Thêm trang chờ `phong-thi-thu.html`**:
+     - Trang placeholder cho tính năng Phòng Thi Thử chuẩn cấu trúc THPT Quốc Gia (thời gian thực, bảng xếp hạng).
+  3. **Đồng bộ Mobile Nav Drawer & Auth Widget Dropdown**:
+     - Cập nhật đồng bộ drawer mobile kiểu YouTube trên `index.html`, `danhsach-ly12.html`, `hoso.html` và menu `auth.js`.
+  4. **Kiểm thử**:
+     - Cú pháp HTML/JS & thẻ `</html>` trên toàn bộ 5 trang HTML: **PASS**.
+     - Unit test quiz: `test-quiz-merge.mjs` (6/6 PASS), `test-quiz-publish.mjs` (12/12 PASS).
+     - Rollback tag: `pre-navbar-update-20260827`.
+
