@@ -75,13 +75,17 @@ function doPost(e) {
     if (action === 'resetdevice')        return resetDevice(data);
     if (action === 'savelivesession')    return saveLiveSession(data);
     if (action === 'deletelivesession')  return deleteLiveSession(data.id);
-    return saveScore(data);
+    return jsonOut({ ok: false, msg: 'Unknown action' });
   } catch(err) {
-    return jsonOut({ error: err.message });
+    return jsonOut({ ok: false, error: err.message });
   }
 }
 
 // ── Tiện ích ──────────────────────────────────────────────────
+
+function getAdminKey() {
+  return PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || '';
+}
 
 function getOrCreate(name, headers) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -883,8 +887,8 @@ function saveKhoaConfig(data) {
 // ── POST Admin: Ping kiểm tra kết nối, CORS và quyền Admin (không đụng Sheets) ──
 function pingAdmin(data) {
   const key = String(data.adminKey || '').trim();
-  const ADMIN_KEY = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || 'vlxt_admin_2025';
-  if (key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
+  const ADMIN_KEY = getAdminKey();
+  if (!ADMIN_KEY || key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
   return jsonOut({ ok: true, ping: 'pong', ts: Date.now() });
 }
 
@@ -892,8 +896,8 @@ function pingAdmin(data) {
 function setVipStatus(data) {
   // Dùng qua admin: { action:'setvipstatus', adminKey:..., sdt:..., loaiTK:'vip'|'free'|'premium', days:30 }
   const key = String(data.adminKey || '').trim();
-  const ADMIN_KEY = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || 'vlxt_admin_2025';
-  if (key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
+  const ADMIN_KEY = getAdminKey();
+  if (!ADMIN_KEY || key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
   const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
   const rows  = sheet.getDataRange().getValues();
   const target = String(data.sdt || '').trim();
@@ -916,8 +920,8 @@ function setVipStatus(data) {
 function getDanhSachTaiKhoan(e) {
   // Kiểm tra adminKey đơn giản
   const key = e.parameter.adminKey || '';
-  const ADMIN_KEY = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || 'vlxt_admin_2025';
-  if (key !== ADMIN_KEY) return jsonOut({ error: 'Unauthorized' });
+  const ADMIN_KEY = getAdminKey();
+  if (!ADMIN_KEY || key !== ADMIN_KEY) return jsonOut({ error: 'Unauthorized' });
 
   const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
   const rows  = sheet.getDataRange().getValues();
@@ -946,8 +950,8 @@ function dispSdt(s) {
 
 function getDanhSachThietBi(e) {
   const key = e.parameter.adminKey || '';
-  const ADMIN_KEY = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || 'vlxt_admin_2025';
-  if (key !== ADMIN_KEY) return jsonOut({ error: 'Unauthorized' });
+  const ADMIN_KEY = getAdminKey();
+  if (!ADMIN_KEY || key !== ADMIN_KEY) return jsonOut({ error: 'Unauthorized' });
   const sheet = getOrCreate('ThietBiHocThu', ['deviceId','sdt','hoten','trialStart','trialExpiry','soLanChan']);
   const rows = sheet.getDataRange().getValues();
   const result = [];
@@ -965,8 +969,8 @@ function getDanhSachThietBi(e) {
   return jsonOut({ ok: true, data: result });
 }
 
+
 // ── GET: Tìm hồ sơ công khai để kết bạn ─────────────────────
-// Chỉ trả mã tài khoản, họ tên và lớp; không trả mật khẩu, điểm hay thông tin riêng tư.
 function searchPublicProfiles(e) {
   const requester = String(e.parameter.hs || '').trim();
   const rawQuery  = String(e.parameter.q || '').trim();
@@ -974,7 +978,6 @@ function searchPublicProfiles(e) {
   const digits = rawQuery.replace(/\D/g, '');
   if (!requester || (!query && digits.length < 4)) return jsonOut({ ok: true, data: [] });
   if (query.length < 3 && digits.length < 4) return jsonOut({ ok: true, data: [] });
-
   const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
   const rows = sheet.getDataRange().getValues();
   let requesterExists = false;
@@ -982,7 +985,6 @@ function searchPublicProfiles(e) {
     if (sameTaiKhoan(rows[i][0], requester)) { requesterExists = true; break; }
   }
   if (!requesterExists) return jsonOut({ ok: false, msg: 'Tài khoản chưa đăng nhập hoặc không còn tồn tại.' });
-
   const result = [];
   for (let i = 1; i < rows.length && result.length < 20; i++) {
     const account = String(rows[i][0] || '').trim();
@@ -1004,8 +1006,8 @@ function normalizeSearchText(value) {
 // ── POST Admin: Mở khoá thiết bị (cho học thử lại) ───────────
 function resetDevice(data) {
   const key = String(data.adminKey || '').trim();
-  const ADMIN_KEY = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || 'vlxt_admin_2025';
-  if (key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
+  const ADMIN_KEY = getAdminKey();
+  if (!ADMIN_KEY || key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
   const deviceId = String(data.deviceId || '').trim();
   if (!deviceId) return jsonOut({ ok: false, msg: 'Thiếu deviceId' });
   const sheet = getOrCreate('ThietBiHocThu', ['deviceId','sdt','hoten','trialStart','trialExpiry','soLanChan']);
@@ -1022,8 +1024,8 @@ function resetDevice(data) {
 // ── POST: Xóa tài khoản học sinh ─────────────────────────────
 function deleteAccount(data) {
   const key = String(data.adminKey || '').trim();
-  const ADMIN_KEY = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || 'vlxt_admin_2025';
-  if (key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
+  const ADMIN_KEY = getAdminKey();
+  if (!ADMIN_KEY || key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
   const sdt = String(data.sdt || '').trim();
   if (!sdt) return jsonOut({ ok: false, msg: 'Thiếu sdt' });
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -1031,18 +1033,15 @@ function deleteAccount(data) {
   const rows = sheet.getDataRange().getValues();
   for (let i = 1; i < rows.length; i++) {
     if (sameTaiKhoan(rows[i][0], sdt)) {
-      // Dọn dữ liệu cá nhân liên quan để lời cảnh báo trên admin đúng với hành vi thật.
       ['TienDo','BangVang','NhiemVu','HoatDong'].forEach(function(name){
         const related = ss.getSheetByName(name);
         if (!related || related.getLastRow() < 2) return;
         const values = related.getRange(2, 1, related.getLastRow() - 1, related.getLastColumn()).getValues();
         for (let row = values.length - 1; row >= 0; row--) {
-          // BangVang lưu tài khoản ở cột 3; các bảng còn lại lưu ở cột 1.
           const accountCol = name === 'BangVang' ? 2 : 0;
           if (sameTaiKhoan(values[row][accountCol], sdt)) related.deleteRow(row + 2);
         }
       });
-      // Xóa tài khoản sau cùng; nếu dọn dữ liệu phụ lỗi thì vẫn giữ tài khoản để thử lại.
       sheet.deleteRow(i + 1);
       return jsonOut({ ok: true, msg: 'Đã xóa tài khoản và dữ liệu liên quan: ' + sdt });
     }
@@ -1199,8 +1198,8 @@ function logHoatDong(data) {
 // ── GET Admin: lịch sử hoạt động của 1 học sinh (mới nhất trước) ──
 function getHoatDong(e) {
   const key = e.parameter.adminKey || '';
-  const ADMIN_KEY = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || 'vlxt_admin_2025';
-  if (key !== ADMIN_KEY) return jsonOut({ error: 'Unauthorized' });
+  const ADMIN_KEY = getAdminKey();
+  if (!ADMIN_KEY || key !== ADMIN_KEY) return jsonOut({ error: 'Unauthorized' });
   const hs = String(e.parameter.hs || '').trim();
   if (!hs) return jsonOut({ ok: false, msg: 'Thiếu hs' });
   const sheet = getOrCreate('HoatDong', ['sdt','thoigian','hanhdong','chitiet']);
@@ -1217,8 +1216,8 @@ function getHoatDong(e) {
 // ── POST Admin: sửa thông tin tài khoản (hiện dùng cho Lớp, Họ tên) ──
 function updateAccount(data) {
   const key = String(data.adminKey || '').trim();
-  const ADMIN_KEY = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || 'vlxt_admin_2025';
-  if (key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
+  const ADMIN_KEY = getAdminKey();
+  if (!ADMIN_KEY || key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
   const sdt = String(data.sdt || '').trim();
   if (!sdt) return jsonOut({ ok: false, msg: 'Thiếu sdt' });
   const sheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
