@@ -63,6 +63,7 @@ function doPost(e) {
     if (action === 'saveexam')           return saveExam(data);
     if (action === 'deleteexam')         return deleteExam(data);
     if (action === 'incrementlam')       return incrementLam(data);
+    if (action === 'pingadmin')          return pingAdmin(data);
     if (action === 'setvipstatus')       return setVipStatus(data);
     if (action === 'deleteaccount')      return deleteAccount(data);
     if (action === 'loghoatdong')        return logHoatDong(data);
@@ -877,6 +878,14 @@ function saveKhoaConfig(data) {
   newRow[colIdx] = data.value;
   sheet.appendRow(newRow);
   return jsonOut({ ok: true, msg: 'Đã tạo cấu hình mới cho ' + target });
+}
+
+// ── POST Admin: Ping kiểm tra kết nối, CORS và quyền Admin (không đụng Sheets) ──
+function pingAdmin(data) {
+  const key = String(data.adminKey || '').trim();
+  const ADMIN_KEY = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || 'vlxt_admin_2025';
+  if (key !== ADMIN_KEY) return jsonOut({ ok: false, msg: 'Unauthorized' });
+  return jsonOut({ ok: true, ping: 'pong', ts: Date.now() });
 }
 
 // ── POST admin: Đặt VIP cho học sinh ─────────────────────────

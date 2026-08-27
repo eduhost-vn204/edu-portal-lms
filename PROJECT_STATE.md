@@ -211,3 +211,28 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
   5. **Fetch `origin/main`**: đã `git fetch origin main`, xác nhận `origin/main` hiện có commit mới `a1309bb` (data tự động). Nhánh cục bộ ĐÃ rebase sạch lên `origin/main` tại thời điểm fetch (không đụng `data/`, không force-push). Tuy nhiên do `git push` bị chặn bởi git-proxy sandbox, việc publish lên GitHub vẫn phải qua web-upload (không phải rebase thật) — **nhánh GitHub CÓ THỂ vẫn hiện "behind main"** đối với các commit chỉ đổi `data/` giống vòng 3, vì web-upload chỉ chồng commit mới lên tip hiện có trên GitHub chứ không replay lại lịch sử. Xem báo cáo gửi thầy để biết trạng thái CHÍNH XÁC đã kiểm tra trực tiếp trên GitHub (không suy đoán) tại thời điểm publish vòng này.
 - Kiểm tra đã chạy sau khi sửa: `node --check scripts/quiz-publish.mjs` và `node --check scripts/test-quiz-publish.mjs` (qua, không lỗi); `node scripts/test-quiz-publish.mjs` → **12/12 pass**; `node scripts/test-quiz-merge.mjs` (hồi quy, không đổi file này) → **6/6 pass**. Không chạy/không cần chạy lại test Admin (không đổi).
 - Bước tiếp theo: Codex tích hợp cuối trên working copy sạch từ `main`; commit/push/merge vẫn KHÔNG do trợ lý AI tự thực hiện. Cập nhật mục này sau mỗi thay đổi đáng kể, không thêm một sổ bàn giao cạnh tranh.
+
+### 27/08/2026 — Hoàn tất hotfix Quản lý tài khoản Admin & Xác nhận CORS PingAdmin
+
+- **Nhiệm vụ 1: Hotfix Quản lý tài khoản Admin (Xóa tài khoản & Nâng Premium)**:
+  - Admin `index.html`: Cập nhật `ADMIN_WRITE_ACTIONS` whitelist đầy đủ (`deleteaccount`, `setvipstatus`, `pingadmin`, `bulksetbainganhang`, `bulksetchatluongnganhang`, `updateaccount`, `savevideocauhoi`, `savebaitaptracnghiem`, `resetdevice`).
+  - Hàm `postAdminWrite` được chuẩn hóa nghiêm ngặt và đồng nhất 100% với `scripts/postAdminWrite.mjs`: chỉ coi là thành công khi `res.ok && typeof json === 'object' && json.ok === true`, có `AbortController` timeout 55s và try-finally `clearTimeout`.
+  - Loại bỏ hoàn toàn mọi `mode: 'no-cors'` và fetch trực tiếp không qua helper trong toàn bộ file `index.html` của Admin (`savehuongdan`, `savelivesession`, `deletelivesession`, `saveQuestions`, `updatenganhang`, `bulksetbainganhang`, `deleteNganHang`, `savenganhang`, `savevideocauhoi`, `savebaitaptracnghiem`, `updateaccount`, `resetdevice`).
+  - Modal `tk-modal`: hỗ trợ chọn động VIP Trial (nhập số ngày), Premium (vĩnh viễn, ẩn ô số ngày), Miễn phí (hạ cấp, ẩn ô số ngày).
+  - `confirmSetVip` & `deleteTK`: kiểm tra id/SĐT hợp lệ, gọi `postAdminWriteWithRetry`, hiển thị toast phản hồi tương ứng theo từng loại tài khoản, tự động làm mới danh sách `loadTaiKhoan(true)` khi thành công, thông báo lỗi rõ ràng khi thất bại.
+  - Backend tham chiếu `apps-script-CAPNHAT.txt` (cả 2 repo): `deleteAccount` thực hiện dọn dẹp liên hoàn ở `TienDo`, `BangVang`, `NhiemVu`, `HoatDong` trước khi xóa dòng trong `TaiKhoan`; `setVipStatus` phân biệt rõ `premium` (`trialExpiry=0`), `vip` (`trialExpiry=expiry`), `free` (`trialExpiry=0`).
+  - Unit test Admin `scripts/test-postAdminWrite.mjs`: **10/10 pass** (kiểm thử mock fetch nội bộ cho logic `postAdminWriteCore`).
+
+- **Nhiệm vụ 2: Bổ sung pingadmin & Xác nhận cấu hình CORS**:
+  - `apps-script-CAPNHAT.txt` (cả 2 repo): thêm route `action === 'pingadmin'` trong `doPost(e)` và hàm `pingAdmin(data)` chỉ kiểm tra `adminKey` rồi trả `{ ok: true, ping: 'pong', ts: Date.now() }`, không đọc/ghi Sheets.
+  - Admin `index.html`: thêm hàm `pingAdminCorsTest()` và nút "Kiểm tra CORS" trên thanh công cụ tab Tài khoản HS để chẩn đoán kết nối và phản hồi thời gian thực.
+  - Xác nhận kiến trúc CORS thực tế: Request POST dùng `Content-Type: text/plain;charset=utf-8` được trình duyệt coi là CORS Simple Request, không kích hoạt preflight `OPTIONS` bị chặn; Google Apps Script trả 302 Redirect kèm `Access-Control-Allow-Origin: *` và endpoint echo trả status 200 JSON hợp lệ.
+
+- **Phân loại kết quả kiểm thử thực tế**:
+  - **Kiểm thử Mock (Unit test trong Node, không nối mạng)**: `node scripts/test-postAdminWrite.mjs` trên repo Admin -> **10/10 pass**.
+  - **Kiểm thử Cú pháp (Static check)**: Toàn bộ 12 khối `<script>` và thẻ `</html>` trong `index.html` -> **12/12 pass**; cú pháp `apps-script-CAPNHAT.txt` (cả 2 repo) -> **pass**.
+  - **Kiểm thử Local Server (HTTP 8088)**: Phục vụ `index.html` qua HTTP server cục bộ, nạp đầy đủ DOM, script và các hàm chẩn đoán -> **pass**.
+  - **Kiểm thử Backend hiện tại (Live Apps Script chưa deploy code mới)**: Request POST text/plain được định tuyến 302 Redirect và trả `Access-Control-Allow-Origin: *`; action chưa có trong backend cũ rơi vào fallback `{ok: true}`.
+  - **Kiểm thử Backend mới (Sau khi thầy deploy)**: Action `pingadmin` sẽ trả `{ok: true, ping: 'pong', ts: ...}` khi đúng key hoặc `{ok: false, msg: 'Unauthorized'}` khi sai key.
+
+- Bước tiếp theo: Thầy cập nhật phiên bản Apps Script mới từ `apps-script-CAPNHAT.txt` lên Google Apps Script deployment theo hướng dẫn khi sẵn sàng triển khai.
