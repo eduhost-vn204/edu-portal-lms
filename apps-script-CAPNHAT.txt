@@ -1585,6 +1585,67 @@ function updateAccount(data) {
   return jsonOut({ ok: false, msg: 'Không tìm thấy học sinh.' });
 }
 
+// ── SERVER-SIDE SELF-TEST: Chạy nội bộ qua OAuth/clasp run (không in/trả secret) ──
+function runAdminSelfTest() {
+  const adminKey = getAdminKey();
+  if (!adminKey) {
+    return { ok: false, step: 'check_key', msg: 'ADMIN_KEY is not configured in Script Properties' };
+  }
+
+  const testSdt = '0999999999_selftest_' + Date.now();
+  try {
+    // 1. Tạo tài khoản test cô lập
+    const tkSheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry','mienVideo','tracNghiemVideo','mienLuyenTap']);
+    tkSheet.appendRow([testSdt, 'SelfTest User', '12', 'selftest_pass', new Date().toISOString(), 0, 0, 'free', 0, false, true, false]);
+
+    // 2. Kiểm thử pingAdmin
+    const pingRes = pingAdmin({ adminKey: adminKey });
+    if (!pingRes || pingRes.ok !== true) {
+      deleteAccount({ adminKey: adminKey, sdt: testSdt });
+      return { ok: false, step: 'ping_admin', msg: 'pingAdmin failed' };
+    }
+
+    // 3. Kiểm thử Premium (trialExpiry = 0)
+    const premRes = setVipStatus({ adminKey: adminKey, sdt: testSdt, loaiTK: 'premium' });
+    if (!premRes || premRes.ok !== true) {
+      deleteAccount({ adminKey: adminKey, sdt: testSdt });
+      return { ok: false, step: 'set_premium', msg: 'setVipStatus premium failed' };
+    }
+
+    // 4. Kiểm thử VIP với số ngày (trialExpiry > 0)
+    const vipRes = setVipStatus({ adminKey: adminKey, sdt: testSdt, loaiTK: 'vip', days: 30 });
+    if (!vipRes || vipRes.ok !== true) {
+      deleteAccount({ adminKey: adminKey, sdt: testSdt });
+      return { ok: false, step: 'set_vip', msg: 'setVipStatus vip failed' };
+    }
+
+    // 5. Kiểm thử Free (trialExpiry = 0)
+    const freeRes = setVipStatus({ adminKey: adminKey, sdt: testSdt, loaiTK: 'free' });
+    if (!freeRes || freeRes.ok !== true) {
+      deleteAccount({ adminKey: adminKey, sdt: testSdt });
+      return { ok: false, step: 'set_free', msg: 'setVipStatus free failed' };
+    }
+
+    // 6. Ghi dữ liệu mẫu vào 4 sheet liên quan để test dọn dẹp
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    getOrCreate('TienDo', ['sdt','lesson','khoa','ten','lop','ngay']).appendRow([testSdt, 'L1', 'K12', 'Bai 1', '12', new Date().toISOString()]);
+    getOrCreate('BangVang', ['name','studentClass','phone','score','timestamp']).appendRow(['SelfTest User', '12', testSdt, 10, new Date().toISOString()]);
+    getOrCreate('NhiemVu', ['sdt','nhipHoc','conTro','lastMissionDate','startDate','chuoiDung','tongDiemDuaTop']).appendRow([testSdt, 1, 1, '2026-08-27', '2026-08-27', 1, 10]);
+    getOrCreate('HoatDong', ['sdt','thoigian','hanhdong','chitiet']).appendRow([testSdt, new Date().toISOString(), 'selftest', 'running selftest']);
+
+    // 7. Kiểm thử deleteAccount và dọn dẹp liên hoàn
+    const delRes = deleteAccount({ adminKey: adminKey, sdt: testSdt });
+    if (!delRes || delRes.ok !== true) {
+      return { ok: false, step: 'delete_account', msg: 'deleteAccount failed' };
+    }
+
+    return { ok: true, passed: true };
+  } catch (err) {
+    try { deleteAccount({ adminKey: adminKey, sdt: testSdt }); } catch(e) {}
+    return { ok: false, error: err.message };
+  }
+}
+
 // ─── MIGRATION MOT LAN (5/8-6/8/2026): gan MaBai on dinh cho moi bai hoc + noi lai
 // tien do hoc sinh bi mo côi do doi ten khoa 'CHUYEN DE LY THUYET GD1' -> 'Chuyen De Li Thuyet GD1'.
 // Chay thu cong 1 lan tu trinh chinh sua (chon ham nay o dropdown roi bam Chay), AN TOAN de chay
