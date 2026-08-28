@@ -3,28 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phòng Thi Thử | Vật Lý Xuân Trường</title>
+    <title>Phòng Thi Thử Thực Chiến | Vật Lý Xuân Trường</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
             --blue: #0b84f3; --blue2: #0066cc;
             --black: #0f0f0f; --gray: #555; --gray2: #888;
             --border: #e5e5e5; --bg: #ffffff; --bg2: #f9f9f9;
+            --card-bg: #ffffff; --green: #10b981; --red: #ef4444; --amber: #f59e0b;
         }
         body {
-            background: var(--bg); color: var(--black);
+            background: var(--bg2); color: var(--black);
             font-family: 'Plus Jakarta Sans', ui-sans-serif, sans-serif;
             -webkit-font-smoothing: antialiased;
-            padding-top: 56px;
+            padding-top: 56px; min-height: 100vh;
         }
 
         /* ─── NAV ─── */
         .navbar {
             position: fixed; top: 0; left: 0; right: 0; z-index: 200; height: 56px;
             display: flex; align-items: center; justify-content: space-between; padding: 0 28px;
-            background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+            background: rgba(255,255,255,0.94); backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
         }
         .nav-left { display: flex; align-items: center; gap: 36px; }
@@ -39,34 +40,165 @@
         .nav-right a { font-size: 14px; color: var(--gray); text-decoration: none; transition: color 0.15s; }
         .nav-right a:hover { color: var(--black); }
 
-        /* ─── PAGE ─── */
-        .container { max-width: 860px; margin: 0 auto; padding: 60px 32px 100px; text-align: center; }
+        /* ─── PAGE CONTAINER ─── */
+        .container { max-width: 1080px; margin: 0 auto; padding: 48px 24px 100px; }
+        
+        .page-header { text-align: center; margin-bottom: 36px; }
         .page-eyebrow {
             font-family: 'DM Mono', monospace; font-size: 13px;
             text-transform: uppercase; letter-spacing: 2px;
-            color: var(--blue); margin-bottom: 14px; display: block; font-weight: 600;
+            color: var(--blue); margin-bottom: 12px; display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
         }
         .page-title {
-            font-size: clamp(34px, 5vw, 48px); font-weight: 900;
-            letter-spacing: -0.04em; line-height: 1.15; margin-bottom: 16px;
+            font-size: clamp(32px, 4.5vw, 44px); font-weight: 900;
+            letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 12px;
         }
-        .page-sub { font-size: 16px; color: var(--gray); line-height: 1.65; margin-bottom: 40px; font-weight: 500; }
+        .page-sub { font-size: 15.5px; color: var(--gray); line-height: 1.6; max-width: 680px; margin: 0 auto; font-weight: 500; }
 
-        .card-placeholder {
-            background: var(--bg2); border: 1.5px dashed var(--border); border-radius: 16px;
-            padding: 48px 24px; max-width: 600px; margin: 0 auto;
+        /* ─── CONTROLS & FILTER ─── */
+        .controls-card {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
+            padding: 16px 20px; margin-bottom: 28px; display: flex; flex-wrap: wrap; gap: 14px;
+            align-items: center; justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
-        .card-icon {
-            width: 64px; height: 64px; border-radius: 50%; background: rgba(11,132,243,0.1);
-            color: var(--blue); font-size: 26px; display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 20px;
+        .search-box {
+            position: relative; flex: 1; min-width: 240px;
         }
-        .btn-action {
-            display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px;
-            background: var(--blue); color: #fff; border-radius: 10px; font-weight: 700;
-            font-size: 14px; text-decoration: none; transition: opacity 0.2s; margin-top: 24px;
+        .search-box i {
+            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+            color: var(--gray2); font-size: 14px; pointer-events: none;
         }
-        .btn-action:hover { opacity: 0.9; }
+        .search-box input {
+            width: 100%; height: 42px; padding: 0 14px 0 38px;
+            border-radius: 10px; border: 1.5px solid var(--border);
+            background: var(--bg2); color: var(--black); font-size: 14px;
+            font-family: inherit; transition: border-color 0.2s, background 0.2s; outline: none;
+        }
+        .search-box input:focus {
+            border-color: var(--blue); background: var(--bg);
+        }
+        .filter-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tag-btn {
+            height: 38px; padding: 0 14px; border-radius: 9px; border: 1px solid var(--border);
+            background: var(--bg2); color: var(--gray); font-size: 13px; font-weight: 600;
+            cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px;
+        }
+        .tag-btn:hover { color: var(--black); border-color: var(--gray2); }
+        .tag-btn.active {
+            background: var(--blue); color: #fff; border-color: var(--blue);
+            box-shadow: 0 2px 10px rgba(11,132,243,0.25);
+        }
+
+        /* ─── EXAM GRID ─── */
+        .exam-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;
+        }
+        .exam-card {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
+            padding: 24px; display: flex; flex-direction: column; justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; position: relative; overflow: hidden;
+        }
+        .exam-card:hover {
+            transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); border-color: rgba(11,132,243,0.3);
+        }
+        .exam-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .exam-code {
+            font-family: 'DM Mono', monospace; font-size: 12.5px; font-weight: 700;
+            color: var(--blue); background: rgba(11,132,243,0.08); padding: 3px 9px; border-radius: 6px;
+        }
+        .status-badge {
+            font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 100px;
+            display: inline-flex; align-items: center; gap: 5px;
+        }
+        .status-badge.mo { background: rgba(16,185,129,0.1); color: var(--green); border: 1px solid rgba(16,185,129,0.25); }
+        .status-badge.khoa { background: rgba(239,68,68,0.08); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+
+        .exam-title {
+            font-size: 17px; font-weight: 800; line-height: 1.4; margin-bottom: 10px;
+            color: var(--black); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .exam-desc {
+            font-size: 13.5px; color: var(--gray); line-height: 1.5; margin-bottom: 16px; flex: 1;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+
+        .exam-meta-row {
+            display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 18px;
+            padding-top: 14px; border-top: 1px dashed var(--border);
+        }
+        .meta-item {
+            display: flex; align-items: center; gap: 5px; font-size: 12.5px; color: var(--gray); font-weight: 600;
+        }
+        .meta-item i { color: var(--blue); }
+
+        .exam-actions {
+            display: flex; gap: 10px; align-items: center;
+        }
+        .btn-exam-start {
+            flex: 1; height: 42px; background: var(--black); color: #fff; border-radius: 10px;
+            font-size: 13.5px; font-weight: 700; text-decoration: none; border: none; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: opacity 0.15s, background 0.15s;
+        }
+        .btn-exam-start:hover { opacity: 0.85; color: #fff; }
+        .btn-exam-video {
+            height: 42px; padding: 0 16px; background: rgba(245,158,11,0.1); color: var(--amber);
+            border: 1px solid rgba(245,158,11,0.3); border-radius: 10px; font-size: 13px; font-weight: 700;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s;
+        }
+        .btn-exam-video:hover {
+            background: rgba(245,158,11,0.18); border-color: var(--amber);
+        }
+        .btn-exam-locked {
+            flex: 1; height: 42px; background: var(--bg2); color: var(--gray2); border-radius: 10px;
+            font-size: 13px; font-weight: 600; border: 1px solid var(--border); cursor: not-allowed;
+            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+        }
+
+        /* ─── VIDEO MODAL ─── */
+        .video-modal-overlay {
+            position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.82); backdrop-filter: blur(8px);
+            display: flex; align-items: center; justify-content: center; padding: 20px;
+            opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+        }
+        .video-modal-overlay.show { opacity: 1; pointer-events: auto; }
+        .video-modal-card {
+            background: #111827; border: 1px solid #374151; border-radius: 18px; width: 100%; max-width: 860px;
+            overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); display: flex; flex-direction: column;
+            transform: translateY(20px); transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .video-modal-overlay.show .video-modal-card { transform: translateY(0); }
+        .video-modal-head {
+            padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid #374151; background: #1f2937; color: #fff;
+        }
+        .video-modal-title { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .video-modal-close {
+            background: none; border: none; color: #9ca3af; font-size: 18px; cursor: pointer; padding: 6px;
+            border-radius: 6px; transition: color 0.15s;
+        }
+        .video-modal-close:hover { color: #fff; }
+        .video-frame-wrap {
+            position: relative; padding-top: 56.25%; background: #000;
+        }
+        .video-frame-wrap iframe {
+            position: absolute; inset: 0; width: 100%; height: 100%; border: none;
+        }
+        .video-modal-foot {
+            padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
+            background: #1f2937; color: #9ca3af; font-size: 13px;
+        }
+
+        /* ─── EMPTY STATE ─── */
+        .empty-state {
+            grid-column: 1 / -1; background: var(--card-bg); border: 1.5px dashed var(--border);
+            border-radius: 16px; padding: 56px 24px; text-align: center;
+        }
+        .empty-icon {
+            width: 60px; height: 60px; border-radius: 50%; background: rgba(11,132,243,0.1);
+            color: var(--blue); font-size: 24px; display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 16px;
+        }
 
         /* ─── HAMBURGER & DRAWER ─── */
         .nav-hamburger {
@@ -104,11 +236,16 @@
         @media (max-width: 900px) { .nav-links { display: none; } .nav-hamburger { display: inline-flex; } }
 
         /* Dark mode */
-        body.dark { background: #0d1117; color: #e6edf3; --border: #30363d; --bg2: #161b22; }
-        body.dark .navbar { background: rgba(13,17,23,0.92); border-color: #30363d; }
+        body.dark {
+            background: #0d1117; color: #e6edf3; --border: #30363d; --bg: #0d1117; --bg2: #161b22;
+            --card-bg: #161b22; --black: #e6edf3; --gray: #8b949e; --gray2: #6e7681;
+        }
+        body.dark .navbar { background: rgba(13,17,23,0.94); border-color: #30363d; }
         body.dark .nav-logo, body.dark .nav-links a { color: #e6edf3; }
         body.dark .nav-drawer { background: #161b22; }
         body.dark .nav-drawer-links a { color: #e6edf3; }
+        body.dark .btn-exam-start { background: #e6edf3; color: #0d1117; }
+        body.dark .btn-exam-start:hover { background: #fff; }
     </style>
     <script src="auth.js?v=7"></script>
     <script src="thongbao.js?v=2"></script>
@@ -171,6 +308,54 @@
         <a href="huongdan.html"><i class="fa-solid fa-compass"></i> Hướng Dẫn</a>
     </div>
 </aside>
+
+<!-- ─── CONTENT ─── -->
+<div class="container">
+    <div class="page-header">
+        <span class="page-eyebrow"><i class="fa-solid fa-bolt"></i> Hệ thống khảo sát năng lực</span>
+        <h1 class="page-title">Phòng Thi Thử Thực Chiến.</h1>
+        <p class="page-sub">Rèn luyện áp lực phòng thi chuẩn cấu trúc đề THPT Quốc Gia với đồng hồ đếm ngược, chấm điểm tức thì và video chữa đề chi tiết từng câu.</p>
+    </div>
+
+    <!-- Controls / Filters -->
+    <div class="controls-card">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="Tìm kiếm tên đề, mã đề thi..." oninput="handleSearch()">
+        </div>
+        <div class="filter-tags">
+            <button class="tag-btn active" data-filter="all" onclick="setFilter('all')">Tất cả đề</button>
+            <button class="tag-btn" data-filter="mo" onclick="setFilter('mo')">🟢 Đang mở</button>
+            <button class="tag-btn" data-filter="video" onclick="setFilter('video')">🎬 Có video chữa</button>
+            <button class="tag-btn" data-filter="lop12" onclick="setFilter('lop12')">Lớp 12</button>
+        </div>
+    </div>
+
+    <!-- Exam Cards Grid -->
+    <div class="exam-grid" id="examGrid">
+        <div class="empty-state">
+            <div class="empty-icon"><i class="fa-solid fa-spinner fa-spin"></i></div>
+            <h3 style="font-size:16px;margin-bottom:6px">Đang tải danh sách đề thi thử...</h3>
+            <p style="font-size:13.5px;color:var(--gray)">Vui lòng đợi giây lát trong khi hệ thống nạp dữ liệu.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ─── VIDEO MODAL ─── -->
+<div class="video-modal-overlay" id="videoModal" onclick="closeVideoModal(event)">
+    <div class="video-modal-card" onclick="event.stopPropagation()">
+        <div class="video-modal-head">
+            <div class="video-modal-title" id="videoModalTitle"><i class="fa-solid fa-circle-play" style="color:#f59e0b"></i> Video Chữa Đề Chi Tiết</div>
+            <button class="video-modal-close" onclick="closeVideoModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="video-frame-wrap" id="videoFrameWrap"></div>
+        <div class="video-modal-foot">
+            <span id="videoExamMeta">Vật Lý Xuân Trường</span>
+            <a href="#" id="videoExternalLink" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600;font-size:12.5px"><i class="fa-solid fa-arrow-up-right-from-square"></i> Mở tab riêng</a>
+        </div>
+    </div>
+</div>
+
 <script>
 (function () {
     function toggleNavDrawer(show) {
@@ -181,27 +366,176 @@
     }
     window.toggleNavDrawer = toggleNavDrawer;
 })();
+
+const DB_URL = "https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec";
+
+let allExams = [];
+let currentFilter = 'all';
+let currentSearch = '';
+
+function extractVideoUrl(ex) {
+    if (ex.videoUrl && String(ex.videoUrl).trim()) return String(ex.videoUrl).trim();
+    if (ex.moTa) {
+        const m = String(ex.moTa).match(/https?:\/\/[^\s"'<>]+/i);
+        if (m && (m[0].includes('youtube') || m[0].includes('youtu.be') || m[0].includes('drive.google.com'))) {
+            return m[0];
+        }
+    }
+    return '';
+}
+
+function parseEmbedUrl(url) {
+    if (!url) return '';
+    // YouTube
+    const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    if (ytMatch && ytMatch[1]) {
+        return 'https://www.youtube.com/embed/' + ytMatch[1] + '?autoplay=1&rel=0';
+    }
+    // Google Drive
+    const driveMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (driveMatch && driveMatch[1]) {
+        return 'https://drive.google.com/file/d/' + driveMatch[1] + '/preview';
+    }
+    return url;
+}
+
+async function loadExams() {
+    const grid = document.getElementById('examGrid');
+    try {
+        const r = await cachedFetch(DB_URL + '?type=danhsachde');
+        const j = await r.json();
+        allExams = (j.ok && Array.isArray(j.data)) ? j.data : [];
+        renderExams();
+    } catch(e) {
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon" style="color:var(--red)"><i class="fa-solid fa-triangle-exclamation"></i></div><h3>Không thể kết nối đến máy chủ</h3><p>Vui lòng kiểm tra lại đường truyền mạng rồi tải lại trang.</p></div>';
+    }
+}
+
+function setFilter(filter) {
+    currentFilter = filter;
+    document.querySelectorAll('.tag-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === filter);
+    });
+    renderExams();
+}
+
+function handleSearch() {
+    currentSearch = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+    renderExams();
+}
+
+function renderExams() {
+    const grid = document.getElementById('examGrid');
+    if (!allExams.length) {
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-folder-open"></i></div><h3>Chưa có đề thi nào</h3><p>Thầy Xuân Trường đang cập nhật các bộ đề thi thử mới nhất. Quay lại sau nhé!</p></div>';
+        return;
+    }
+
+    let filtered = allExams.filter(ex => {
+        // Search
+        if (currentSearch) {
+            const ten = String(ex.tenDe || '').toLowerCase();
+            const id = String(ex.examId || '').toLowerCase();
+            const moTa = String(ex.moTa || '').toLowerCase();
+            if (!ten.includes(currentSearch) && !id.includes(currentSearch) && !moTa.includes(currentSearch)) {
+                return false;
+            }
+        }
+        // Filter
+        if (currentFilter === 'mo') {
+            return ex.trangThai === 'mo';
+        }
+        if (currentFilter === 'video') {
+            return !!extractVideoUrl(ex);
+        }
+        if (currentFilter === 'lop12') {
+            return String(ex.lop || '12') === '12';
+        }
+        return true;
+    });
+
+    if (!filtered.length) {
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-filter-circle-xmark"></i></div><h3>Không tìm thấy đề thi phù hợp</h3><p>Hãy thử thay đổi từ khóa tìm kiếm hoặc chọn bộ lọc "Tất cả đề".</p></div>';
+        return;
+    }
+
+    grid.innerHTML = filtered.map((ex, idx) => {
+        const isMo = ex.trangThai === 'mo';
+        const num = String(idx + 1).padStart(2, '0');
+        const soCau = ex.soCau || 0;
+        const thoiGian = ex.thoiGian || 50;
+        const luotLam = Number(ex.soLuotLam || 0).toLocaleString('vi-VN');
+        const videoUrl = extractVideoUrl(ex);
+        const moTa = ex.moTa ? ex.moTa.replace(/https?:\/\/[^\s"'<>]+/g, '').trim() : 'Đề thi khảo sát năng lực chuẩn cấu trúc, chấm điểm tự động tức thì.';
+
+        const statusHtml = isMo
+            ? '<span class="status-badge mo"><i class="fa-solid fa-circle-check"></i> Đang mở</span>'
+            : '<span class="status-badge khoa"><i class="fa-solid fa-lock"></i> Đang khóa</span>';
+
+        const videoBtnHtml = videoUrl
+            ? `<button class="btn-exam-video" onclick="openVideoModal('${encodeURIComponent(ex.tenDe||ex.examId)}', '${encodeURIComponent(videoUrl)}', '${ex.examId}')"><i class="fa-solid fa-play"></i> Video chữa</button>`
+            : '';
+
+        const actionBtnHtml = isMo
+            ? `<a href="thithu.html?exam=${encodeURIComponent(ex.examId)}" class="btn-exam-start">Vào thi ngay <i class="fa-solid fa-arrow-right" style="font-size:12px"></i></a>`
+            : `<button class="btn-exam-locked"><i class="fa-solid fa-lock"></i> Chưa mở thi</button>`;
+
+        return `<div class="exam-card">
+            <div>
+                <div class="exam-top">
+                    <span class="exam-code">ĐỀ #${ex.examId}</span>
+                    ${statusHtml}
+                </div>
+                <h3 class="exam-title">${ex.tenDe || '(Chưa đặt tên)'}</h3>
+                <p class="exam-desc">${moTa}</p>
+            </div>
+            <div>
+                <div class="exam-meta-row">
+                    <span class="meta-item"><i class="fa-regular fa-clock"></i> ${thoiGian} phút</span>
+                    <span class="meta-item"><i class="fa-regular fa-file-lines"></i> ${soCau ? soCau + ' câu' : 'Đầy đủ phần'}</span>
+                    <span class="meta-item"><i class="fa-regular fa-user"></i> ${luotLam} lượt</span>
+                </div>
+                <div class="exam-actions">
+                    ${actionBtnHtml}
+                    ${videoBtnHtml}
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function openVideoModal(rawTitle, rawUrl, examId) {
+    const title = decodeURIComponent(rawTitle);
+    const url = decodeURIComponent(rawUrl);
+    const embedUrl = parseEmbedUrl(url);
+
+    document.getElementById('videoModalTitle').innerHTML = '<i class="fa-solid fa-circle-play" style="color:#f59e0b"></i> ' + title;
+    document.getElementById('videoExamMeta').textContent = 'Đề thi: ' + examId + ' · Vật Lý Xuân Trường';
+    document.getElementById('videoExternalLink').href = url;
+    document.getElementById('videoFrameWrap').innerHTML = `<iframe src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+
+    document.getElementById('videoModal').classList.add('show');
+}
+
+function closeVideoModal(e) {
+    if (e && e.target && e.target.id !== 'videoModal' && !e.target.closest('.video-modal-close')) return;
+    document.getElementById('videoModal').classList.remove('show');
+    document.getElementById('videoFrameWrap').innerHTML = '';
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeVideoModal();
+});
+
+loadExams();
 </script>
 
-<!-- ─── CONTENT ─── -->
-<div class="container">
-    <span class="page-eyebrow">// tính năng mới</span>
-    <h1 class="page-title">Phòng Thi Thử Trực Tuyến</h1>
-    <p class="page-sub">Hệ thống phòng thi thử chuẩn cấu trúc đề thi THPT Quốc Gia với thời gian thực và xếp hạng tự động đang được chuẩn bị ra mắt.</p>
-
-    <div class="card-placeholder">
-        <div class="card-icon">
-            <i class="fa-solid fa-rocket"></i>
-        </div>
-        <h2 style="font-size:20px;font-weight:800;margin-bottom:8px">Đang Phát Triển</h2>
-        <p style="font-size:14px;color:var(--gray);line-height:1.6">
-            Thầy Xuân Trường đang chuẩn bị ngân hàng đề thi thử đặc biệt cho phòng thi này. Các em hãy luyện tập trước tại Phòng Kiểm Tra nhé!
-        </p>
-        <a href="danhsach-ly12.html" class="btn-action">
-            <i class="fa-solid fa-file-pen"></i> Đến Phòng Kiểm Tra
-        </a>
-    </div>
-</div>
-
+<script>
+function toggleTheme(){
+    document.body.classList.toggle('dark');
+    localStorage.setItem('vlxt_theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+}
+if (localStorage.getItem('vlxt_theme') === 'dark') document.body.classList.add('dark');
+</script>
 </body>
 </html>

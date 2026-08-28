@@ -159,6 +159,32 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 28/08/2026 — Hoàn thiện Phòng Thi Thử MVP & Nạp Đề Hàng Loạt (Machine-1 / Issue #5)
+
+- **Thực hiện**: Antigravity (Machine-1) qua GitHub Task Orchestrator (Issue #5).
+- **Các file đã chỉnh sửa & tạo mới**:
+  - **Repo Student (`edu-portal-lms`)**: `phong-thi-thu.html`, `PROJECT_STATE.md`.
+  - **Repo Admin (`edu-portal-console`)**: `index.html`.
+- **Hành vi mới & Tính năng hoàn chỉnh**:
+  1. **LMS Phòng Thi Thử (`phong-thi-thu.html`)**:
+     - Nâng cấp từ trang giữ chỗ thành Phòng Thi Thử trực tuyến hoàn chỉnh.
+     - Tích hợp tải danh sách đề từ API `danhsachde`, bộ lọc nhanh (Tất cả, Đang mở, Có video chữa, Lớp 12), tìm kiếm theo tên và mã đề.
+     - Mỗi card đề hiển thị mã đề, thời gian làm bài, số câu, lượt thi, badge trạng thái (🟢 Đang mở / 🔒 Đang khóa).
+     - Nút "Vào thi ngay" mở trực tiếp giao diện làm bài thi `thithu.html?exam=...`.
+     - Nút "Video chữa đề" mở Modal phát video chữa YouTube/Drive tích hợp ngay trên trang kèm thông tin đề.
+  2. **Admin Nạp Hàng Loạt (Bulk Import)**:
+     - Nâng cấp Form quản lý đề thi hỗ trợ thêm `videoUrl`, `loaiDe` (Thi thử / Kiểm tra / Luyện tập).
+     - Bổ sung Modal Nạp hàng loạt hỗ trợ 2 định dạng: JSON Manifest và Bảng tính Excel/TSV copy-paste.
+     - Tính năng Xem trước (Preview) phân tích, chuẩn hóa và kiểm tra tính hợp lệ của từng bản ghi trước khi nạp.
+     - Tính năng Nạp tự động chạy vòng lặp gửi an toàn qua `postAdminWriteWithRetry` kèm thanh tiến trình và nhật ký thời gian thực.
+  3. **Dữ liệu mẫu kiểm thử**:
+     - Đã nạp thành công đề mẫu `thithu_demo_01` kèm 4 câu hỏi trắc nghiệm/trả lời ngắn và link video chữa lên production GAS.
+     - Kiểm tra end-to-end: đề mẫu hiển thị trên LMS, mở làm bài thi chấm điểm chính xác và xem được video chữa đề.
+- **Kiểm thử & Xác minh**:
+  - Cú pháp JavaScript toàn bộ file HTML: PASS.
+  - Test suites: `test-quiz-publish.mjs` (12/12 PASS), `test-quiz-merge.mjs` (6/6 PASS), `test-teaching-scope.mjs` (14/14 PASS).
+  - End-to-End Live Verification: PASS.
+
 ### 28/08/2026 — Triển khai Teaching Scope & Khép Production (Machine-1 / Issue #1 & #3)
 
 - **Thực hiện**: Antigravity (Machine-1) qua GitHub Task Orchestrator (Issue #1 & Issue #3).
