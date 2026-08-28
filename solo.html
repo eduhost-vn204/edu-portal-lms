@@ -230,7 +230,11 @@
     return html;
   }
   function escHtml(s) { return (s == null ? '' : s).toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-  function normKey(s) { s = String(s || '').trim(); if (!s) return ''; if (s.indexOf('@') > -1) return s.toLowerCase(); return s.replace(/\D/g, ''); }
+  function normKey(s) {
+    s = String(s || '').trim();
+    if (!s) return 'guest_' + Math.random().toString(36).slice(2, 8);
+    return s.replace(/[.#$/[\]\s]/g, '_').toLowerCase();
+  }
   function renderKatex(root) {
     setTimeout(function () {
       if (typeof renderMathInElement === 'function') {
@@ -480,35 +484,25 @@
         '<div class="search-hint">Không có ai online? Sau 12 giây bạn sẽ đấu với AI.</div>' +
         '<button class="btn-secondary" id="btn-cancel" style="margin-top:18px">Huỷ tìm trận</button>' +
       '</div>';
+
     var timerEl = document.getElementById('search-timer');
     var searchInterval = setInterval(function () {
-      timerEl.textContent = Math.round((Date.now() - searchStart) / 1000) + 's';
+      var elapsed = Math.round((Date.now() - searchStart) / 1000);
+      if (timerEl) timerEl.textContent = elapsed + 's';
+      if (elapsed >= 12 && !matched) {
+        matched = true;
+        clearInterval(searchInterval);
+        clearTimeout(botFallbackTimer);
+        startBotMatch();
+      }
     }, 1000);
+
     document.getElementById('btn-cancel').onclick = function () {
       clearInterval(searchInterval);
+      clearTimeout(botFallbackTimer);
       leaveQueue();
       renderIdle();
     };
-
-    myRankIdx = rankIdxFor(myLp);
-    db.ref('solo_queue/' + mySdt).set({ hoten: user.hoten || '', lop: user.lop || '', rankIdx: myRankIdx, lpTotal: myLp, time: Date.now() });
-    try { db.ref('solo_queue/' + mySdt).onDisconnect().remove(); } catch (e) {}
-
-    myInviteListener = function (snap) {
-      var inv = snap.val();
-      if (!inv || matched) return;
-      matched = true;
-      clearInterval(searchInterval);
-      acceptInvite(inv);
-    };
-    db.ref('solo_queue/' + mySdt + '/invite').on('value', myInviteListener);
-
-    queueValueListener = function (snap) {
-      lastQueueSnapVal = snap.val() || {};
-      if (matched || myPendingInviteTo) return;
-      scanQueue();
-    };
-    db.ref('solo_queue').on('value', queueValueListener);
 
     botFallbackTimer = setTimeout(function () {
       if (matched) return;
@@ -516,6 +510,33 @@
       clearInterval(searchInterval);
       startBotMatch();
     }, SEARCH_BOT_MS);
+
+    try {
+      if (db && mySdt) {
+        myRankIdx = rankIdxFor(myLp);
+        db.ref('solo_queue/' + mySdt).set({ hoten: user.hoten || '', lop: user.lop || '', rankIdx: myRankIdx, lpTotal: myLp, time: Date.now() });
+        try { db.ref('solo_queue/' + mySdt).onDisconnect().remove(); } catch (e) {}
+
+        myInviteListener = function (snap) {
+          var inv = snap.val();
+          if (!inv || matched) return;
+          matched = true;
+          clearInterval(searchInterval);
+          clearTimeout(botFallbackTimer);
+          acceptInvite(inv);
+        };
+        db.ref('solo_queue/' + mySdt + '/invite').on('value', myInviteListener);
+
+        queueValueListener = function (snap) {
+          lastQueueSnapVal = snap.val() || {};
+          if (matched || myPendingInviteTo) return;
+          scanQueue();
+        };
+        db.ref('solo_queue').on('value', queueValueListener);
+      }
+    } catch(e) {
+      console.warn('Firebase search queue notice:', e);
+    }
   }
 
   function leaveQueue() {
@@ -610,10 +631,16 @@
     enterBattle(matchId, { status: 'battle', questions: qIds, players: {} });
   }
   function leaveQueueSilently() {
-    if (queueValueListener) { db.ref('solo_queue').off('value', queueValueListener); queueValueListener = null; }
-    if (myInviteListener) { db.ref('solo_queue/' + mySdt + '/invite').off('value', myInviteListener); myInviteListener = null; }
-    db.ref('solo_queue/' + mySdt).remove();
-    try { db.ref('solo_queue/' + mySdt).onDisconnect().cancel(); } catch (e) {}
+    try {
+      if (db) {
+        if (queueValueListener) { db.ref('solo_queue').off('value', queueValueListener); queueValueListener = null; }
+        if (myInviteListener) { db.ref('solo_queue/' + mySdt + '/invite').off('value', myInviteListener); myInviteListener = null; }
+        if (mySdt) {
+          db.ref('solo_queue/' + mySdt).remove();
+          try { db.ref('solo_queue/' + mySdt).onDisconnect().cancel(); } catch (e) {}
+        }
+      }
+    } catch(e) {}
   }
 
   // ═══════════════════════════════════════════════════════════

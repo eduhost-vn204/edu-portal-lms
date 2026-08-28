@@ -159,6 +159,18 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 28/08/2026 — Khắc phục Lỗi Ghép Trận Solo Quá 12s Không Đấu Với AI (Hotfix)
+
+- **Vấn đề đã khắc phục**: Khi học sinh/giáo viên bấm tìm trận Solo 1-1, đồng hồ tìm trận đếm quá 12s (28s...) mà không tự động chuyển sang đấu với AI (Bot).
+- **Nguyên nhân gốc**:
+  1. `normKey(s)` chưa chuẩn hóa các ký tự đặc biệt (`.`, `@`, `\s`) khi tài khoản đăng nhập chứa email/ký tự bị Firebase Realtime Database cấm trong path key, gây lỗi Javascript ngắt quãng trước khi `botFallbackTimer` được kích hoạt.
+  2. `botFallbackTimer` thiếu cơ chế kiểm tra trực tiếp bên trong `searchInterval`.
+- **Giải pháp**:
+  - Sửa `normKey` thay thế triệt để các ký tự `.`, `#`, `$`, `[`, `]`, `/`, khoảng trắng thành `_`.
+  - Khởi tạo `botFallbackTimer` và kiểm tra kép ngay trong `searchInterval` (khi `elapsed >= 12` lập tức chuyển vào `startBotMatch()`).
+  - Bọc toàn bộ các thao tác Firebase Realtime Database trong khối `try ... catch` an toàn để không bao giờ làm gián đoạn tiến trình vào trận.
+- **Kiểm thử**: Cú pháp JS PASS, 3 test suites PASS 100%. Xác nhận đúng 12s tự động chuyển vào trận đấu với AI khi không có người cùng tìm.
+
 ### 28/08/2026 — Khắc phục Lỗi Tải Câu Hỏi Đua Top/Solo & Nâng Cấp Phạm Vi Giảng Dạy Admin (Hotfix)
 
 - **Vấn đề đã xử lý**:
