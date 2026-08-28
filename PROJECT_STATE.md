@@ -168,18 +168,18 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 - **Nhánh thực hiện**: `implement_production_teaching_scope` trên cả hai kho mã.
 - **Các file đã chỉnh sửa & tạo mới**:
   * **Repo Admin (`edu-portal-console`)**:
-    + `apps-script-CAPNHAT.txt`: Thêm schema `TeachingScope` (`courseId`, `stageId`, `openChapterIds`, `activeLessonIds`, `validFrom`, `validTo`, `isActive`, `updatedAt`, `updatedBy`, `revision`), router GET `teachingscope` (phân quyền public vs admin), router POST `saveteachingscope` (xác thực `adminKey`, kiểm tra optimistic revision lock, cập nhật nguyên tử, tăng revision), bổ sung `bulksetbainganhang` và `bulksetchatluongnganhang`, `checkAdminKey()`.
+    + `apps-script-CAPNHAT.txt`: Thêm schema `TeachingScope` (`courseId`, `stageId`, `openChapterIds`, `activeLessonIds`, `openAllLessons`, `validFrom`, `validTo`, `isActive`, `updatedAt`, `updatedBy`, `revision`), router GET `teachingscope` (phân quyền public vs admin), router POST `saveteachingscope` (xác thực `adminKey`, kiểm tra optimistic revision lock, cập nhật nguyên tử, tăng revision), bổ sung `bulksetbainganhang`, `bulksetchatluongnganhang`, `checkAdminKey()`.
     + `index.html`: Thêm tab "Phạm vi giảng dạy" (`#tab-teachingscope`) vào navigation bar và body; thêm CSS responsive hỗ trợ đầy đủ light/dark theme; bộ chọn khóa học & giai đoạn; switch kích hoạt; bộ chọn thời gian hiệu lực; danh sách chương & bài dạng checkbox tương tác; 4 thẻ thống kê trực quan; nút Mở/Đóng tất cả; Modal Diff Trước / Sau khi Lưu; tự động nạp cấu hình khi tải lại trang; xử lý lỗi mạng / hết hạn phiên với nút Thử lại / Đăng nhập lại.
   * **Repo Student (`edu-portal-lms`)**:
-    + `teaching-scope.js`: Module chuẩn hóa và lọc câu hỏi theo phạm vi giảng dạy: kiểm tra `isActive`, `validFrom`, `validTo`, `openChapterIds`, `activeLessonIds` (kiểm tra theo từng chương cụ thể); kiểm tra nghiêm ngặt câu TINH (`chatLuong === 'tinh'`, `rawTier === 'TINH'`), `TEACHER_APPROVED`, chặn 100% câu Thô (`chatLuong === 'tho'`) và câu `QA_PASSED`.
-    + `dua-top.html`: Tích hợp `teaching-scope.js`, tải song song ngân hàng câu hỏi và `teachingscope.json`/API; lọc theo scope đang áp dụng; hiển thị thông báo rỗng thân thiện kèm link học bài khi chưa có câu Tinh trong phạm vi; bảo toàn lịch sử và điểm số cũ.
-    + `solo.html`: Tích hợp `teaching-scope.js` vào `loadBank()`, chỉ lấy câu Tinh thuộc các chương/bài đang mở; hiển thị thông báo trạng thái rõ ràng khi ngân hàng trong phạm vi chưa có câu.
+    + `teaching-scope.js`: Module chuẩn hóa và lọc câu hỏi theo phạm vi giảng dạy: kiểm tra `isActive`, `validFrom`, `validTo`, `openChapterIds`, `activeLessonIds` (kiểm tra theo từng chương cụ thể), `openAllLessons`; kiểm tra nghiêm ngặt câu TINH (`chatLuong === 'tinh'`, `rawTier === 'TINH'`), `TEACHER_APPROVED`, chặn 100% câu Thô (`chatLuong === 'tho'`) và câu `QA_PASSED`. Hỗ trợ canonical `usageScopes` (bắt buộc `DUA_TOP` cho Đua Top, `SOLO` cho Solo). Fail closed khi sai courseId hoặc stageId.
+    + `dua-top.html`: Tích hợp `teaching-scope.js` với `requiredScope: 'DUA_TOP'`, tải song song ngân hàng câu hỏi và `teachingscope.json`/API; lọc theo scope đang áp dụng; hiển thị thông báo rỗng thân thiện kèm link học bài khi chưa có câu Tinh trong phạm vi; bảo toàn lịch sử và điểm số cũ.
+    + `solo.html`: Tích hợp `teaching-scope.js` với `requiredScope: 'SOLO'` vào `loadBank()`, chỉ lấy câu Tinh thuộc các chương/bài đang mở; hiển thị thông báo trạng thái rõ ràng khi ngân hàng trong phạm vi chưa có câu.
     + `scripts/sync-public-data.mjs`: Bổ sung `fetchOptional('teachingscope')` và ghi dữ liệu ra `data/teachingscope.json`.
     + `apps-script-CAPNHAT.txt`: Đồng bộ chuẩn xác với bản Admin.
-    + `scripts/test-teaching-scope.mjs`: Bộ unit test 12 kịch bản cho module lọc scope, kiểm tra thời gian, kiểm tra chặn câu thô, chặn QA_PASSED, mở nhiều chương, chọn bài lẻ, scope hết hạn/tắt, scope rỗng (12/12 pass).
-    + `scripts/test-apps-script-scope.mjs`: Bộ test giả lập Apps Script backend (xác thực `adminKey`, tạo sheet an toàn, tăng revision nguyên tử, phát hiện và chặn xung đột ghi đè `Conflict` khi expectedRevision không khớp) (4/4 pass).
+    + `scripts/test-teaching-scope.mjs`: Bộ unit test 14 kịch bản kiểm thử toàn diện cho module lọc scope, fail closed khi sai course/stage, kiểm tra timezone biên, kiểm tra chặn câu thô, chặn câu thiếu status / APPROVED chung, canonical usageScopes, mở nhiều chương, chọn bài lẻ, openAllLessons, scope hết hạn/tắt, scope rỗng (14/14 pass).
+    + `scripts/test-apps-script-scope.mjs`: Bộ test giả lập Apps Script backend (xác thực `adminKey`, tạo sheet an toàn, tăng revision nguyên tử, phát hiện và chặn xung đột ghi đè `Conflict` khi expectedRevision không khớp, cách ly an toàn route public không tiết lộ updatedBy) (4/4 pass).
 - **Kiểm thử & Xác minh**:
-  * `node scripts/test-teaching-scope.mjs` → **12/12 PASS**.
+  * `node scripts/test-teaching-scope.mjs` → **14/14 PASS**.
   * `node scripts/test-apps-script-scope.mjs` → **4/4 PASS**.
   * `node scripts/test-quiz-merge.mjs` → **6/6 PASS**.
   * `node scripts/test-quiz-publish.mjs` → **12/12 PASS**.
@@ -192,6 +192,8 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 - **Việc cần làm tiếp theo**:
   * Thầy cập nhật code `apps-script-CAPNHAT.txt` vào Google Apps Script và triển khai New Version (nếu cần cập nhật backend trên Apps Script thật).
   * Review diff nhánh `implement_production_teaching_scope` và tiến hành commit/push/merge nhánh theo quy trình an toàn.
+
+### 26/08/2026 — Thiết lập vận hành dài hạn bằng Antigravity
 
 - Xác định hai repo chính thức: Student `eduhost-vn204/edu-portal-lms`, Admin `eduhost-vn204/edu-portal-console`; loại repository Netlify legacy khỏi phạm vi làm việc mới.
 - Tạo baseline cục bộ `codex/antigravity-baseline-20260826` tại Student `255d770` và Admin `0d491ca`.
@@ -243,3 +245,45 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
   5. **Fetch `origin/main`**: đã `git fetch origin main`, xác nhận `origin/main` hiện có commit mới `a1309bb` (data tự động). Nhánh cục bộ ĐÃ rebase sạch lên `origin/main` tại thời điểm fetch (không đụng `data/`, không force-push). Tuy nhiên do `git push` bị chặn bởi git-proxy sandbox, việc publish lên GitHub vẫn phải qua web-upload (không phải rebase thật) — **nhánh GitHub CÓ THỂ vẫn hiện "behind main"** đối với các commit chỉ đổi `data/` giống vòng 3, vì web-upload chỉ chồng commit mới lên tip hiện có trên GitHub chứ không replay lại lịch sử. Xem báo cáo gửi thầy để biết trạng thái CHÍNH XÁC đã kiểm tra trực tiếp trên GitHub (không suy đoán) tại thời điểm publish vòng này.
 - Kiểm tra đã chạy sau khi sửa: `node --check scripts/quiz-publish.mjs` và `node --check scripts/test-quiz-publish.mjs` (qua, không lỗi); `node scripts/test-quiz-publish.mjs` → **12/12 pass**; `node scripts/test-quiz-merge.mjs` (hồi quy, không đổi file này) → **6/6 pass**. Không chạy/không cần chạy lại test Admin (không đổi).
 - Bước tiếp theo: Codex tích hợp cuối trên working copy sạch từ `main`; commit/push/merge vẫn KHÔNG do trợ lý AI tự thực hiện. Cập nhật mục này sau mỗi thay đổi đáng kể, không thêm một sổ bàn giao cạnh tranh.
+
+### 27/08/2026 — Hoàn tất hotfix Quản lý tài khoản Admin & Xác nhận CORS PingAdmin
+
+- **Nhiệm vụ 1: Hotfix Quản lý tài khoản Admin (Xóa tài khoản & Nâng Premium)**:
+  - Admin `index.html`: Cập nhật `ADMIN_WRITE_ACTIONS` whitelist đầy đủ (`deleteaccount`, `setvipstatus`, `pingadmin`, `bulksetbainganhang`, `bulksetchatluongnganhang`, `updateaccount`, `savevideocauhoi`, `savebaitaptracnghiem`, `savesetting`, `resetdevice`).
+  - Hàm `postAdminWrite` được chuẩn hóa nghiêm ngặt và đồng nhất 100% với `scripts/postAdminWrite.mjs`: chỉ coi là thành công khi `res.ok && typeof json === 'object' && json.ok === true`, có `AbortController` timeout 55s và try-finally `clearTimeout`.
+  - Loại bỏ hoàn toàn mọi `mode: 'no-cors'` và fetch trực tiếp không qua helper trong toàn bộ file `index.html` của Admin (`savehuongdan`, `savelivesession`, `deletelivesession`, `saveQuestions`, `updatenganhang`, `bulksetbainganhang`, `deleteNganHang`, `savenganhang`, `savevideocauhoi`, `savebaitaptracnghiem`, `savesetting`, `updateaccount`, `resetdevice`).
+  - Modal `tk-modal`: hỗ trợ chọn động VIP Trial (nhập số ngày), Premium (vĩnh viễn, ẩn ô số ngày), Miễn phí (hạ cấp, ẩn ô số ngày).
+  - `confirmSetVip` & `deleteTK`: kiểm tra id/SĐT hợp lệ, gọi `postAdminWriteWithRetry`, hiển thị toast phản hồi tương ứng theo từng loại tài khoản, tự động làm mới danh sách `loadTaiKhoan(true)` khi thành công, thông báo lỗi rõ ràng khi thất bại.
+  - Backend tham chiếu `apps-script-CAPNHAT.txt` (cả 2 repo): `deleteAccount` thực hiện dọn dẹp liên hoàn ở `TienDo`, `BangVang`, `NhiemVu`, `HoatDong` trước khi xóa dòng trong `TaiKhoan`; `setVipStatus` phân biệt rõ `premium` (`trialExpiry=0`), `vip` (`trialExpiry=expiry`), `free` (`trialExpiry=0`).
+  - Unit test Admin `scripts/test-postAdminWrite.mjs`: **19/19 pass** (kiểm thử mock fetch nội bộ cho logic `postAdminWriteCore`, đính kèm `adminKey` qua `ADMIN_WRITE_ACTIONS` cho `savebaitaptracnghiem`, `savesetting` và mô phỏng router `doPost`).
+
+- **Nhiệm vụ 2: Bổ sung pingadmin & Xác nhận cấu hình CORS**:
+  - `apps-script-CAPNHAT.txt` (cả 2 repo): thêm route `action === 'pingadmin'` trong `doPost(e)` và hàm `pingAdmin(data)` chỉ kiểm tra `adminKey` qua `getAdminKey()` rồi trả `{ ok: true, ping: 'pong', ts: Date.now() }`, không đọc/ghi Sheets.
+  - Admin `index.html`: thêm hàm `pingAdminCorsTest()` và nút "Kiểm tra CORS" trên thanh công cụ tab Tài khoản HS để chẩn đoán kết nối và phản hồi thời gian thực.
+  - Xác nhận kiến trúc CORS thực tế: Request POST dùng `Content-Type: text/plain;charset=utf-8` được trình duyệt coi là CORS Simple Request, không kích hoạt preflight `OPTIONS` bị chặn; Google Apps Script trả 302 Redirect kèm `Access-Control-Allow-Origin: *` và endpoint echo trả status 200 JSON hợp lệ.
+
+- **Phân loại kết quả kiểm thử thực tế**:
+  - **Kiểm thử Mock (Unit test trong Node, không nối mạng)**: `node scripts/test-postAdminWrite.mjs` trên repo Admin -> **19/19 pass**; `node scripts/audit-actions.mjs` -> **17/17 write actions in index.html verified registered**.
+  - **Kiểm thử Cú pháp (Static check)**: Toàn bộ 12 khối `<script>` và thẻ `</html>` trong `index.html` -> **12/12 pass**; cú pháp `apps-script-CAPNHAT.txt` (cả 2 repo) -> **pass**.
+  - **Kiểm thử Local Server (HTTP 8088)**: Phục vụ `index.html` qua HTTP server cục bộ, nạp đầy đủ DOM, script và các hàm chẩn đoán -> **pass**.
+  - **Kiểm thử Backend hiện tại (Live Apps Script chưa deploy code mới)**: Request POST text/plain được định tuyến 302 Redirect và trả `Access-Control-Allow-Origin: *`; action chưa có trong backend cũ rơi vào fallback `{ok: true}`.
+  - **Kiểm thử Backend mới (Sau khi thầy deploy)**: Action `pingadmin` sẽ trả `{ok: true, ping: 'pong', ts: ...}` khi đúng key hoặc `{ok: false, msg: 'Unauthorized'}` khi sai key; action lạ trả `{ok: false, msg: 'Unknown action'}`.
+
+### 27/08/2026 — Sắp xếp lại thứ tự Tab Navbar & Bổ sung Phòng Thi Thử trên Web Học Sinh
+
+- **Người thực hiện**: Antigravity
+- **Phạm vi thay đổi**:
+  - `index.html`, `danhsach-ly12.html`, `hoso.html`, `baihoc.html`, `auth.js`, `phong-thi-thu.html`.
+- **Chi tiết thay đổi**:
+  1. **Đổi tên & Sắp xếp thứ tự các Tab Navbar**:
+     - Cấu trúc mới: `Khóa Học` (`baihoc.html`) $\rightarrow$ `Phòng Thi Thử` (`phong-thi-thu.html`) $\rightarrow$ `Phòng Kiểm Tra` (`danhsach-ly12.html`) $\rightarrow$ `Đua Top` (`dua-top.html`) $\rightarrow$ `⚔️ Solo` (`solo.html`) $\rightarrow$ `Live` (`live.html`) $\rightarrow$ `Hướng Dẫn` (`huongdan.html`).
+     - Bỏ các tab trực tiếp trên thanh điều hướng chính (`Bảng Vàng`, `Lịch Live`, `Hồ Sơ`) vì học sinh có thể cuộn xuống cuối trang hoặc truy cập qua widget người dùng/menu.
+  2. **Thêm trang chờ `phong-thi-thu.html`**:
+     - Trang placeholder cho tính năng Phòng Thi Thử chuẩn cấu trúc THPT Quốc Gia (thời gian thực, bảng xếp hạng).
+  3. **Đồng bộ Mobile Nav Drawer & Auth Widget Dropdown**:
+     - Cập nhật đồng bộ drawer mobile kiểu YouTube trên `index.html`, `danhsach-ly12.html`, `hoso.html` và menu `auth.js`.
+  4. **Kiểm thử**:
+     - Cú pháp HTML/JS & thẻ `</html>` trên toàn bộ 5 trang HTML: **PASS**.
+     - Unit test quiz: `test-quiz-merge.mjs` (6/6 PASS), `test-quiz-publish.mjs` (12/12 PASS).
+     - Rollback tag: `pre-navbar-update-20260827`.
+
