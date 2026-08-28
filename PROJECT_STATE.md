@@ -159,6 +159,26 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 28/08/2026 — Quy trình Tự động Video → YouTube Private → Bài học Nháp (Machine-1 / Issue #8)
+
+- **Thực hiện**: Antigravity (Machine-1) qua GitHub Task Orchestrator (Issue #8).
+- **Các file đã chỉnh sửa & tạo mới**:
+  - **Repo Admin (`edu-portal-console`)**:
+    * `scripts/youtube-lesson-pipeline.mjs`: Engine lõi xử lý manifest, upload YouTube Data API v3 (chế độ Private mặc định / Mock test), lưu checkpoint và tạo bài học DRAFT lên hệ thống.
+    * `scripts/publish-video-lesson.ps1`: One-click PowerShell Launcher thuận tiện cho giáo viên.
+    * `scripts/test-youtube-lesson-pipeline.mjs`: Bộ kiểm thử tự động toàn diện (19/19 PASS).
+    * `inbox/sample-lesson/manifest.json` & `inbox/README.md`: Cấu trúc thư mục chuẩn và tài liệu hướng dẫn sử dụng.
+    * `.gitignore`: Bỏ qua các file checkpoint `.checkpoint.json` cục bộ.
+  - **Repo Student (`edu-portal-lms`)**: `PROJECT_STATE.md`.
+- **Hành vi mới & Cơ chế an toàn**:
+  1. **Manifest chuẩn**: Cấu hình đầy đủ thông tin bài học (`title`, `course`, `chapter`, `lessonName`, `description`, `videoFile`, `privacyStatus: 'private'`, `pdfUrl`, `order`, `tags`).
+  2. **YouTube Upload Private**: Mặc định đặt `privacyStatus: 'private'` bảo vệ bản quyền bài giảng, hỗ trợ resumable upload và chế độ `--mock` cho kiểm thử.
+  3. **Tạo bài học DRAFT an toàn**: Tự động thêm tiền tố `[DRAFT]` vào tên bài, gắn video YouTube Private và tài liệu PDF, gửi qua `savebaihoc` với xác thực phản hồi nghiêm ngặt; không tự ý public cho học sinh.
+  4. **Idempotency & Checkpointing**: Cơ chế lưu `.checkpoint.json` tự động ghi nhận trạng thái upload và lưu bài học; chạy lại không bao giờ upload hay tạo bài học trùng lặp.
+- **Kiểm thử & Xác minh**:
+  - Toàn bộ 19 test cases trong `test-youtube-lesson-pipeline.mjs` đạt PASS 100%.
+  - Chạy thử nghiệm end-to-end với launcher `publish-video-lesson.ps1 -Mock`: thành công tạo bài học DRAFT trên hệ thống và xác nhận bỏ qua ở lần chạy lại.
+
 ### 28/08/2026 — Hoàn thiện Phòng Thi Thử MVP & Nạp Đề Hàng Loạt (Machine-1 / Issue #5)
 
 - **Thực hiện**: Antigravity (Machine-1) qua GitHub Task Orchestrator (Issue #5).
