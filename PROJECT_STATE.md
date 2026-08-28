@@ -159,6 +159,24 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 28/08/2026 — Triển khai Teaching Scope & Lọc câu hỏi Tinh cho Đua Top / Solo
+
+- Thực hiện: Antigravity (Machine-1) qua GitHub Task Orchestrator (Issue #1).
+- Nhánh làm việc: `antigravity/machine-1/teaching-scope-games-production` (trên cả repo Student `edu-portal-lms` và Admin `edu-portal-console`).
+- File đã sửa:
+  - Student: `dua-top.html`, `solo.html`, `data/settings.json`, `PROJECT_STATE.md`.
+  - Admin: `index.html`.
+- Hành vi mới & Đảm bảo an toàn:
+  1. **Teaching Scope live**: Đã cấu hình và lưu thành công `currentTeachingLesson` lên production Google Sheets Settings: `'CHUYÊN ĐỀ LÝ THUYẾT GĐ1 - Vật Lý 12|||CHƯƠNG 1 – VẬT LÝ NHIỆT|||B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ'`.
+  2. **Lọc câu hỏi Tinh nghiêm ngặt**: Cả `dua-top.html` và `solo.html` chỉ nhận câu có `chatLuong === 'tinh'` nằm trong phạm vi bài học (Chương 1 – Bài 3). Toàn bộ 5.438 câu thô/chưa duyệt bị loại bỏ 100%, không xuất hiện trong trò chơi.
+  3. **Chuẩn hoá đáp án đúng**: Thêm cơ chế ánh xạ `correctKey` cho các câu có `q.correct` chứa chuỗi văn bản hoặc chữ cái A/B/C/D, đảm bảo hiển thị và tính điểm đúng tuyệt đối.
+  4. **Thông báo UI**: Hiển thị badge thông báo rõ ràng về số lượng câu hỏi Tinh hiện có theo phạm vi bài học (`Chương 1 – Bài 3: 13 câu Tinh`) và trạng thái đang cập nhật bổ sung.
+  5. **Admin Quản trị**: Bổ sung `savesetting`, `bulksetbainganhang`, `bulksetchatluongnganhang` vào `ADMIN_WRITE_ACTIONS` và chuyển `markTeachingLesson` sang dùng `postAdminWriteWithRetry` an toàn.
+- Kiểm tra đã chạy:
+  - Cú pháp JavaScript toàn bộ file HTML: PASS.
+  - Test suites: `test-quiz-publish.mjs` (12/12 PASS), `test-quiz-merge.mjs` (6/6 PASS).
+  - End-to-end simulation test với API thật (Settings + Ngân hàng 5.454 câu): 13 câu Tinh trong phạm vi được chọn chính xác, 0 câu chưa duyệt lọt ra, vòng Đua Top và Solo chạy mượt mà.
+
 ### 26/08/2026 — Thiết lập vận hành dài hạn bằng Antigravity
 
 - Xác định hai repo chính thức: Student `eduhost-vn204/edu-portal-lms`, Admin `eduhost-vn204/edu-portal-console`; loại repository Netlify legacy khỏi phạm vi làm việc mới.

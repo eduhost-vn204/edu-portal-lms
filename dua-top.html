@@ -440,8 +440,10 @@
 
     var doneMap = loadDone();
     var alreadyDone = doneMap[q.id];
+    var scopeBadge = teachingScopeInfo ? ('<div style="margin-bottom:12px;padding:8px 14px;background:rgba(0,240,255,.08);border:1px solid var(--border);border-radius:10px;font-size:12px;color:var(--text);text-align:center;">🎯 Đang phát câu hỏi <strong>Tinh</strong> (đã duyệt) – Phạm vi: <strong>' + (teachingScopeInfo.chuong ? teachingScopeInfo.chuong + ' – ' : '') + teachingScopeInfo.bai + '</strong> (' + queue.length + ' câu)</div>') : '';
 
     arena.innerHTML =
+      scopeBadge +
       (alreadyDone ? '<div style="font-size:11px;color:var(--sub);text-align:right;margin-bottom:8px">Câu này đã được tính điểm trước đó</div>' : '') +
       streakDotsHtml() +
       '<div class="q-card">' +
@@ -491,7 +493,7 @@
     var seconds  = Math.round((Date.now() - qStartTime) / 1000);
     var q        = queue[qIdx];
     var chosen   = btn.dataset.key;
-    var correct  = String(q.correct || '').toUpperCase().trim();
+    var correct  = q.correctKey || getCorrectKey(q);
     var isRight  = chosen === correct;
 
     // Disable all options
@@ -526,7 +528,7 @@
       fb.className = 'q-feedback correct';
       fb.innerHTML = (seconds <= SPEED_BONUS_THRESH ? '⚡ Nhanh! ' : '✅ ') +
         'Đúng rồi!' +
-        (q.giaiThich ? '<br><span style="color:var(--sub)">' + q.giaiThich + '</span>' : '');
+        (q.giaiThich ? '<br><span style="color:var(--sub)">' + fixLatexQuirks(q.giaiThich) + '</span>' : '');
 
       var earnEl = document.getElementById('q-earn');
       if (earned > 0) {
@@ -541,9 +543,10 @@
       sessionWrong++;
       streakHistory.push(false);
 
+      var correctText = q['opt' + correct] ? (correct + '. ' + q['opt' + correct]) : correct;
       fb.className = 'q-feedback wrong';
-      fb.innerHTML = '❌ Sai rồi. Đáp án đúng là <strong>' + correct + '</strong>.' +
-        (q.giaiThich ? '<br><span style="color:var(--sub)">' + q.giaiThich + '</span>' : '');
+      fb.innerHTML = '❌ Sai rồi. Đáp án đúng là <strong>' + fixLatexQuirks(correctText) + '</strong>.' +
+        (q.giaiThich ? '<br><span style="color:var(--sub)">' + fixLatexQuirks(q.giaiThich) + '</span>' : '');
     }
 
     // Giữ tối đa 10 lịch sử streak
@@ -603,12 +606,82 @@
     }
   }
 
+  var teachingScopeInfo = null; // { raw, course, chuong, bai, normChuong, maxLessonNum }
+
+  function getLessonNumber(str) {
+    if (!str) return null;
+    var m = String(str).match(/(?:^|[\s._\-])(?:B|Bài|Bai|P)\s*0*(\d+)/i);
+    return m ? parseInt(m[1], 10) : null;
+  }
+
+  function normalizeStr(str) {
+    if (!str) return '';
+    return String(str).toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/đ/g, 'd')
+      .replace(/y/g, 'i')
+      .replace(/[^a-z0-9]/g, '');
+  }
+
+  function parseTeachingScope(key) {
+    if (!key) return null;
+    var parts = String(key).split('|||');
+    var course = parts[0] || '';
+    var chuong = parts[1] || '';
+    var bai = parts[2] || '';
+    return {
+      raw: key,
+      course: course,
+      chuong: chuong,
+      bai: bai,
+      normChuong: normalizeStr(chuong),
+      maxLessonNum: getLessonNumber(bai)
+    };
+  }
+
+  function getCorrectKey(q) {
+    if (!q) return '';
+    var c = String(q.correct || '').trim();
+    if (/^[A-D]$/i.test(c)) return c.toUpperCase();
+    var keys = ['A', 'B', 'C', 'D'];
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+      var optText = String(q['opt' + k] || q['opt' + k.toLowerCase()] || '').trim();
+      if (optText && (optText === c || optText.replace(/\s+/g, '') === c.replace(/\s+/g, ''))) {
+        return k;
+      }
+    }
+    return c.toUpperCase();
+  }
+
+  function isQuestionInScope(q, scope) {
+    // BẮT BUỘC: chỉ lấy câu Tinh (chatLuong === 'tinh'), loại bỏ câu chưa duyệt / tho
+    if (!q || q.chatLuong !== 'tinh') return false;
+    if (!q.optA || !q.optB || !q.correct) return false;
+    if (q.loai && q.loai !== 'TN' && q.loai !== 'DS') return false;
+
+    if (!scope) return true;
+
+    var normQChuong = normalizeStr(q.chuong);
+    if (normQChuong && scope.normChuong &&
+        !scope.normChuong.includes(normQChuong) &&
+        !normQChuong.includes(scope.normChuong)) {
+      return false;
+    }
+
+    if (scope.maxLessonNum !== null) {
+      var qLessonNum = getLessonNumber(q.baiHoc);
+      if (qLessonNum !== null && qLessonNum > scope.maxLessonNum) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   // ─── Shuffle + filter questions ─────────────────────────
   function buildQueue(all) {
-    // Chỉ lấy câu TN (trắc nghiệm 4 lựa chọn)
-    var tn = all.filter(function (q) {
-      return (!q.loai || q.loai === 'TN') && q.optA && q.optB && q.correct;
-    });
+    var tn = all.slice();
 
     // Shuffle Fisher-Yates
     for (var i = tn.length - 1; i > 0; i--) {
@@ -616,11 +689,11 @@
       var tmp = tn[i]; tn[i] = tn[j]; tn[j] = tmp;
     }
 
-    // Ưu tiên câu khó (VD/VDC) ở đầu → xếp theo mucDo desc rồi lấy top 20
+    // Ưu tiên câu khó (VD/VDC) ở đầu → xếp theo mucDo desc rồi lấy tối đa 20 câu
     var order = { VDC: 4, VD: 3, TH: 2, NB: 1 };
     tn.sort(function (a, b) { return (order[b.mucDo]||1) - (order[a.mucDo]||1); });
 
-    return tn.slice(0, 20); // mỗi phiên 20 câu
+    return tn.slice(0, 20); // mỗi phiên tối đa 20 câu
   }
 
   // ─── Restart session ─────────────────────────────────────
@@ -646,24 +719,54 @@
         '<p style="color:#8b949e;margin:10px 0 16px">Học thêm bài để đạt <strong>' + MIN_LP_DUATOP + ' LP</strong> ' +
         '(hiện có ' + lp + ' LP) là mở khoá được chế độ Đua Top nhé!</p>' +
         '<div style="max-width:260px;margin:0 auto 18px;height:10px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden">' +
-          '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,#0072ff,#00f0ff)"></div>' +
+        '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,#0072ff,#00f0ff)"></div>' +
         '</div>' +
         '<a href="baihoc.html" style="display:inline-block;padding:10px 22px;border-radius:10px;' +
         'background:linear-gradient(135deg,#0072ff,#00f0ff);color:#fff;font-weight:700;text-decoration:none">Học ngay →</a>' +
       '</div>';
   }
 
+  function fetchSettingsAsync() {
+    return cachedFetch('data/settings.json')
+      .then(function (r) { return r.json(); })
+      .catch(function () {
+        return cachedFetch(GAS + '?type=settings&_t=' + Date.now()).then(function (r) { return r.json(); });
+      })
+      .then(function (d) {
+        if (d && d.ok && d.data && d.data.currentTeachingLesson) {
+          teachingScopeInfo = parseTeachingScope(d.data.currentTeachingLesson);
+        }
+      })
+      .catch(function () {});
+  }
+
   function loadQuestions() {
-    cachedFetch(GAS + '?type=nganhang')
+    fetchSettingsAsync().then(function () {
+      return cachedFetch(GAS + '?type=nganhang');
+    })
       .then(function (r) { return r.json(); })
       .then(function (data) {
         var raw = Array.isArray(data) ? data : (data.data || data.rows || []);
-        if (!raw.length) {
-          arena.innerHTML = '<div class="empty-box"><h3>Chưa có câu hỏi</h3><p>Ngân hàng câu hỏi đang được bổ sung. Quay lại sau nhé!</p></div>';
+        // Lọc nghiêm ngặt: chỉ lấy câu Tinh trong phạm vi Teaching Scope
+        questions = raw.filter(function (q) {
+          return isQuestionInScope(q, teachingScopeInfo);
+        }).map(function (q) {
+          q.correctKey = getCorrectKey(q);
+          return q;
+        });
+
+        if (!questions.length) {
+          var scopeDesc = teachingScopeInfo ? ((teachingScopeInfo.chuong ? teachingScopeInfo.chuong + ' – ' : '') + teachingScopeInfo.bai) : 'hiện tại';
+          arena.innerHTML =
+            '<div class="empty-box">' +
+              '<div style="font-size:44px;margin-bottom:10px">✨</div>' +
+              '<h3>Đang cập nhật câu hỏi Tinh</h3>' +
+              '<p>Phạm vi bài học (<strong>' + scopeDesc + '</strong>) đang được thầy rà soát bổ sung câu hỏi Tinh. Quay lại sau nhé!</p>' +
+            '</div>';
           return;
         }
-        questions = raw;
-        queue     = buildQueue(questions);
+
+        queue = buildQueue(questions);
         updateScoreBar();
         renderQuestion();
       })
