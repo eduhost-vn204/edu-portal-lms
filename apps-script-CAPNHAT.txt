@@ -70,6 +70,7 @@ function doPost(e) {
     if (action === 'savehuongdan')     return saveHuongDan(data);
     if (action === 'deletenganhang')     return deleteNganHang(data);
     if (action === 'updatenganhang')     return updateNganHang(data);
+    if (action === 'importnganhang')     return importNganHang(data);
     if (action === 'bulksetbainganhang') return typeof bulkSetBaiHocNganHang === 'function' ? bulkSetBaiHocNganHang(data) : bulkSetBaiNganHang(data);
     if (action === 'bulksetchatluongnganhang') return bulkSetChatLuongNganHang(data);
     if (action === 'saveprogress')       return saveProgress(data);
@@ -1053,6 +1054,220 @@ function bulkSetChatLuongNganHang(data) {
     failedItems: failedItems,
     chatLuong: chatLuong
   });
+}
+
+// ── POST: Nhập gói câu hỏi Tinh vào ngân hàng (hỗ trợ dryRun, fail-closed và auto-rollback) ────
+function importNganHang(data) {
+  const adminKey = getAdminKey();
+  if (adminKey && String(data.adminKey || '').trim() !== adminKey) {
+    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Khóa quản trị không hợp lệ' });
+  }
+
+  const dryRun = data.dryRun === true || data.dryRun === 'true';
+  const batchId = String(data.batchId || 'BATCH_IMPORT').trim();
+  const rawQuestions = Array.isArray(data.questions) ? data.questions : [];
+
+  if (!rawQuestions.length) {
+    return jsonOut({ ok: false, msg: 'Danh sách questions rỗng' });
+  }
+  if (rawQuestions.length > 200) {
+    return jsonOut({ ok: false, msg: 'Số lượng câu vượt quá giới hạn tối đa (200 câu/lần)' });
+  }
+
+  const sheet = getOrCreate('NganHang', NH_HEADERS);
+  const rows = sheet.getDataRange().getValues();
+  const countBefore = rows.length > 1 ? rows.length - 1 : 0;
+
+  // Lấy tập ID đã tồn tại trong Sheet
+  const existingIdSet = new Set();
+  for (let i = 1; i < rows.length; i++) {
+    const rId = String(rows[i][0] || '').trim();
+    if (rId) existingIdSet.add(rId);
+  }
+
+  const seenPayloadIds = new Set();
+  const duplicates = [];
+  const invalidItems = [];
+  const normalizedRows = [];
+  const normalizedPreview = [];
+  const nowIso = new Date().toISOString();
+
+  for (let idx = 0; idx < rawQuestions.length; idx++) {
+    const q = rawQuestions[idx] || {};
+    const id = String(q.id || '').trim();
+    const itemErrors = [];
+
+    if (!id) {
+      itemErrors.push('Thiếu id');
+    } else if (seenPayloadIds.has(id)) {
+      itemErrors.push('ID bị trùng lặp trong payload');
+    } else if (existingIdSet.has(id)) {
+      duplicates.push(id);
+      itemErrors.push('ID đã tồn tại trong ngân hàng production');
+    }
+    if (id) seenPayloadIds.add(id);
+
+    const loai = String(q.loai || 'TN').trim().toUpperCase();
+    if (loai !== 'TN' && loai !== 'DS' && loai !== 'TLN') {
+      itemErrors.push('loai không hợp lệ (chỉ nhận TN, DS, TLN)');
+    }
+
+    const questionText = String(q.question || '').trim();
+    if (!questionText) {
+      itemErrors.push('Nội dung question không được để trống');
+    }
+
+    const correct = String(q.correct || '').trim().toUpperCase();
+    if (loai === 'TN') {
+      if (!['A', 'B', 'C', 'D'].includes(correct)) {
+        itemErrors.push('Đáp án đúng correct cho TN phải là A, B, C hoặc D');
+      }
+      if (!String(q.optA || '').trim() || !String(q.optB || '').trim() || 
+          !String(q.optC || '').trim() || !String(q.optD || '').trim()) {
+        itemErrors.push('Câu TN phải có đầy đủ 4 phương án optA, optB, optC, optD');
+      }
+    }
+
+    const mucDo = String(q.mucDo || '').trim().toUpperCase();
+    if (!['NB', 'TH', 'VD', 'VDC'].includes(mucDo)) {
+      itemErrors.push('Mức độ mucDo phải là NB, TH, VD hoặc VDC');
+    }
+
+    const chatLuong = String(q.chatLuong || '').trim().toLowerCase();
+    if (chatLuong !== 'tinh') {
+      itemErrors.push('chatLuong phải là "tinh" đối với gói câu duyệt');
+    }
+
+    let mon = String(q.mon || 'Vật lý').trim();
+    if (mon === 'Vật Lý 12' || mon === 'Vật lí 12') mon = 'Vật lý';
+
+    let chuong = String(q.chuong || '').trim();
+    if (/chương 1|vật l[yí] nhiệt/i.test(chuong)) chuong = 'Vật lí nhiệt';
+    if (!chuong) itemErrors.push('Chương không được để trống');
+
+    let baiHoc = String(q.baiHoc || '').trim();
+    if (/b3|thang nhiệt độ|nhiệt kế/i.test(baiHoc)) baiHoc = 'Bài 3. Nhiệt độ - Thang nhiệt độ - Nhiệt kế';
+    if (!baiHoc) itemErrors.push('Bài học không được để trống');
+
+    const optA = String(q.optA || '').trim();
+    const optB = String(q.optB || '').trim();
+    const optC = String(q.optC || '').trim();
+    const optD = String(q.optD || '').trim();
+    const giaiThich = String(q.giaiThich || q.explanation || '').trim();
+    const hinhAnh = String(q.hinhAnh || '').trim();
+    const nhomId = String(q.nhomId || '').trim();
+    const deBaiChung = String(q.deBaiChung || '').trim();
+
+    if (itemErrors.length > 0) {
+      invalidItems.push({ index: idx, id: id || `(index ${idx})`, errors: itemErrors });
+    } else {
+      const rowArr = [
+        id, mon, chuong, mucDo, loai, nhomId, deBaiChung,
+        questionText, optA, optB, optC, optD, correct,
+        hinhAnh, giaiThich, nowIso, baiHoc, chatLuong
+      ];
+      normalizedRows.push(rowArr);
+      normalizedPreview.push({
+        id, mon, chuong, baiHoc, mucDo, loai,
+        question: questionText.slice(0, 120) + (questionText.length > 120 ? '...' : ''),
+        optA, optB, optC, optD, correct, chatLuong
+      });
+    }
+  }
+
+  const requested = rawQuestions.length;
+  const insertable = normalizedRows.length;
+
+  if (invalidItems.length > 0) {
+    return jsonOut({
+      ok: false,
+      dryRun: dryRun,
+      batchId: batchId,
+      countBefore: countBefore,
+      requested: requested,
+      insertable: 0,
+      duplicates: duplicates,
+      invalidItems: invalidItems,
+      expectedCountAfter: countBefore,
+      msg: 'Có ' + invalidItems.length + ' câu không hợp lệ hoặc trùng ID. Toàn bộ batch bị từ chối (Fail-Closed).'
+    });
+  }
+
+  if (dryRun) {
+    return jsonOut({
+      ok: true,
+      dryRun: true,
+      batchId: batchId,
+      countBefore: countBefore,
+      requested: requested,
+      insertable: insertable,
+      duplicates: [],
+      invalidItems: [],
+      normalizedPreview: normalizedPreview,
+      expectedCountAfter: countBefore + insertable,
+      msg: 'Dry-run thành công: Toàn bộ ' + insertable + ' câu hợp lệ và sẵn sàng nạp.'
+    });
+  }
+
+  // Ghi thật
+  const startRow = rows.length + 1;
+  const numRows = normalizedRows.length;
+  const numCols = NH_HEADERS.length;
+
+  try {
+    sheet.getRange(startRow, 1, numRows, numCols).setValues(normalizedRows);
+
+    const verifyRows = sheet.getRange(startRow, 1, numRows, 1).getValues();
+    const insertedIds = normalizedRows.map(r => r[0]);
+    let verifyOk = true;
+    for (let i = 0; i < numRows; i++) {
+      if (String(verifyRows[i][0]).trim() !== insertedIds[i]) {
+        verifyOk = false;
+        break;
+      }
+    }
+
+    if (!verifyOk) {
+      sheet.deleteRows(startRow, numRows);
+      return jsonOut({
+        ok: false,
+        dryRun: false,
+        batchId: batchId,
+        rollbackApplied: true,
+        countBefore: countBefore,
+        requested: requested,
+        inserted: 0,
+        msg: 'Kiểm tra sau ghi thất bại. Đã tự động rollback toàn bộ ' + numRows + ' dòng.'
+      });
+    }
+
+    return jsonOut({
+      ok: true,
+      dryRun: false,
+      batchId: batchId,
+      countBefore: countBefore,
+      requested: requested,
+      inserted: insertable,
+      insertedIds: insertedIds,
+      expectedCountAfter: countBefore + insertable,
+      msg: 'Đã nạp thành công ' + insertable + ' câu Tinh vào ngân hàng.'
+    });
+  } catch (err) {
+    try {
+      const currentRows = sheet.getLastRow();
+      if (currentRows >= startRow) {
+        sheet.deleteRows(startRow, currentRows - startRow + 1);
+      }
+    } catch (eRollback) {}
+    return jsonOut({
+      ok: false,
+      dryRun: false,
+      batchId: batchId,
+      rollbackApplied: true,
+      error: err.message,
+      msg: 'Lỗi ghi Sheet: ' + err.message
+    });
+  }
 }
 
 // ── GET: Lấy link video từ Sheet nguồn (khoá luyện đề 2k8) ──
