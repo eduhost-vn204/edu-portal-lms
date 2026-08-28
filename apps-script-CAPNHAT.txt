@@ -1119,6 +1119,15 @@ function importNganHang(data) {
           !String(q.optC || '').trim() || !String(q.optD || '').trim()) {
         itemErrors.push('Câu TN phải có đầy đủ 4 phương án optA, optB, optC, optD');
       }
+    } else if (loai === 'DS') {
+      const corrClean = correct.replace(/[^ĐSds]/g, '').toUpperCase();
+      if (corrClean.length !== 4) {
+        itemErrors.push('Đáp án đúng correct cho DS phải chứa đúng 4 ký tự Đ/S (ví dụ: ĐĐSĐ)');
+      }
+      if (!String(q.optA || '').trim() || !String(q.optB || '').trim() || 
+          !String(q.optC || '').trim() || !String(q.optD || '').trim()) {
+        itemErrors.push('Câu DS phải có đầy đủ 4 mệnh đề optA, optB, optC, optD');
+      }
     }
 
     const mucDo = String(q.mucDo || '').trim().toUpperCase();
@@ -1140,6 +1149,7 @@ function importNganHang(data) {
 
     let baiHoc = String(q.baiHoc || '').trim();
     if (/b3|thang nhiệt độ|nhiệt kế/i.test(baiHoc)) baiHoc = 'Bài 3. Nhiệt độ - Thang nhiệt độ - Nhiệt kế';
+    else if (/b5|định luật i|nội năng/i.test(baiHoc)) baiHoc = 'Bài 5. Định luật I của nhiệt động lực học';
     if (!baiHoc) itemErrors.push('Bài học không được để trống');
 
     const optA = String(q.optA || '').trim();
