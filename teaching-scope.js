@@ -51,20 +51,20 @@
   }
 
   /**
-   * Kiểm tra chất lượng và trạng thái duyệt an toàn:
-   * - BẮT BUỘC: rawTier hoặc chatLuong chuẩn hóa == 'TINH' (case-insensitive)
+   * LEGACY_TINH_COMPATIBILITY_MODE:
+   * Kiểm tra chất lượng và trạng thái duyệt an toàn cho Production:
    * - TUYỆT ĐỐI CHẶN 100%: câu Thô (chatLuong === 'tho', rawTier === 'THO')
    * - Nếu CÓ trường status: BẮT BUỘC status CHÍNH XÁC == 'TEACHER_APPROVED' (chặn QA_PASSED, DRAFT, APPROVED chung...)
-   * - Nếu CHƯA CÓ trường status (dữ liệu legacy): chấp nhận nếu chatLuong === 'tinh'
    * - Nếu CÓ trường usageScopes: BẮT BUỘC chứa requiredScope (vd 'DUA_TOP', 'SOLO')
-   * - Nếu CHƯA CÓ trường usageScopes (dữ liệu legacy): mặc định phát cho Đua Top & Solo
+   * - Nếu là câu hỏi legacy (chưa có status và chatLuong != 'tho'): được coi là câu hợp lệ của ngân hàng
+   * - Yêu cầu hợp lệ cơ bản: loai === 'TN', có đủ question, optA, optB, correct
    */
   function isApprovedTinhQuestion(q, requiredScope) {
     if (!q) return false;
 
-    // 1. Kiểm tra rawTier / chatLuong: Bắt buộc TINH, chặn 100% câu Thô
-    var cl = String(q.rawTier || q.chatLuong || q.quality || '').trim().toUpperCase();
-    if (cl !== 'TINH') return false;
+    // 1. Kiểm tra rawTier / chatLuong: CHẶN 100% câu Thô
+    var cl = String(q.rawTier || q.chatLuong || q.quality || '').trim().toLowerCase();
+    if (cl === 'tho') return false;
 
     // 2. Kiểm tra status (nếu có trường status)
     if (q.status !== undefined && q.status !== null && String(q.status).trim() !== '') {
@@ -74,7 +74,7 @@
       }
     }
 
-    // 3. Kiểm tra usageScopes theo requiredScope (nếu có trường usageScopes/usageScope)
+    // 3. Kiểm tra usageScopes theo requiredScope (nếu có trường usageScopes)
     var usField = q.usageScopes || q.usageScope || q.scope;
     if (usField !== undefined && usField !== null && String(usField).trim() !== '') {
       if (requiredScope) {
