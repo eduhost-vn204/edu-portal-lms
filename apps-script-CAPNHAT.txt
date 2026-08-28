@@ -831,17 +831,20 @@ function getNganHang() {
   const sheet = getOrCreate('NganHang', NH_HEADERS);
   const data  = sheet.getDataRange().getValues();
   if (data.length < 2) return jsonOut({ ok: true, data: [] });
-  const headers = data[0].map(String);
-  const baiCol = headers.indexOf('baiHoc');
-  const clCol  = headers.indexOf('chatLuong');
+  const headers = data[0].map(h => String(h || '').trim().toLowerCase());
+  const baiCol = headers.findIndex(h => h === 'baihoc' || h === 'tenbai');
+  const clCol  = headers.findIndex(h => h === 'chatluong');
+  const qCol   = headers.findIndex(h => h === 'question' || h === 'cauhoi' || h === 'debai');
+  const actualQCol = qCol !== -1 ? qCol : 7;
+
   const rows = data.slice(1).map(r => ({
     id: r[0], mon: r[1], chuong: r[2], mucDo: r[3], loai: r[4] || 'TN',
-    nhomId: r[5], deBaiChung: r[6], question: r[7],
+    nhomId: r[5], deBaiChung: r[6], question: r[actualQCol] || r[7] || '',
     optA: r[8], optB: r[9], optC: r[10], optD: r[11],
     correct: r[12], hinhAnh: r[13], giaiThich: r[14], ngayThem: r[15],
     baiHoc: baiCol !== -1 ? r[baiCol] : (r[16] || ''),
-    chatLuong: clCol !== -1 ? r[clCol] : (r[17] || 'tho')
-  })).filter(r => r.question);
+    chatLuong: clCol !== -1 ? r[clCol] : (r[17] || '')
+  })).filter(r => r.id && String(r.id).trim().length > 0);
   return jsonOut({ ok: true, data: rows });
 }
 
@@ -1069,13 +1072,16 @@ function importNganHang(data) {
 
   const sheet = getOrCreate('NganHang', NH_HEADERS);
   const rows = sheet.getDataRange().getValues();
-  const countBefore = rows.length > 1 ? rows.length - 1 : 0;
 
-  // Lấy tập ID đã tồn tại trong Sheet
+  // Lấy tập ID đã tồn tại trong Sheet và đếm số câu thực tế
   const existingIdSet = new Set();
+  let countBefore = 0;
   for (let i = 1; i < rows.length; i++) {
     const rId = String(rows[i][0] || '').trim();
-    if (rId) existingIdSet.add(rId);
+    if (rId) {
+      existingIdSet.add(rId);
+      countBefore++;
+    }
   }
 
   const seenPayloadIds = new Set();
@@ -1101,7 +1107,7 @@ function importNganHang(data) {
     if (id) seenPayloadIds.add(id);
 
     const loai = String(q.loai || 'TN').trim().toUpperCase();
-    if (loai !== 'TN' && loai !== 'DS' && loai !== 'TLN') {
+    if (!['TN', 'DS', 'TLN'].includes(loai)) {
       itemErrors.push('loai không hợp lệ (chỉ nhận TN, DS, TLN)');
     }
 
@@ -1164,36 +1170,49 @@ function importNganHang(data) {
     if (itemErrors.length > 0) {
       invalidItems.push({ index: idx, id: id || `(index ${idx})`, errors: itemErrors });
     } else {
-      const headers = rows[0] ? rows[0].map(String) : NH_HEADERS;
+      const headers = rows[0] ? rows[0].map(h => String(h || '').trim().toLowerCase()) : NH_HEADERS.map(h => h.toLowerCase());
       const numCols = Math.max(headers.length, NH_HEADERS.length);
       const rowArr = new Array(numCols).fill('');
       
-      headers.forEach((h, colIdx) => {
-        const normH = String(h || '').trim();
-        if (normH === 'id') rowArr[colIdx] = id;
+      headers.forEach((normH, colIdx) => {
+        if (normH === 'id' || normH === 'ma') rowArr[colIdx] = id;
         else if (normH === 'mon') rowArr[colIdx] = mon;
         else if (normH === 'chuong') rowArr[colIdx] = chuong;
-        else if (normH === 'mucDo') rowArr[colIdx] = mucDo;
+        else if (normH === 'mucdo' || normH === 'muc_do') rowArr[colIdx] = mucDo;
         else if (normH === 'loai') rowArr[colIdx] = loai;
-        else if (normH === 'nhomId') rowArr[colIdx] = nhomId;
-        else if (normH === 'deBaiChung') rowArr[colIdx] = deBaiChung;
-        else if (normH === 'question') rowArr[colIdx] = questionText;
-        else if (normH === 'optA') rowArr[colIdx] = optA;
-        else if (normH === 'optB') rowArr[colIdx] = optB;
-        else if (normH === 'optC') rowArr[colIdx] = optC;
-        else if (normH === 'optD') rowArr[colIdx] = optD;
-        else if (normH === 'correct') rowArr[colIdx] = correct;
-        else if (normH === 'hinhAnh') rowArr[colIdx] = hinhAnh;
-        else if (normH === 'giaiThich') rowArr[colIdx] = giaiThich;
-        else if (normH === 'ngayThem') rowArr[colIdx] = nowIso;
-        else if (normH === 'baiHoc' || normH === 'tenBai') rowArr[colIdx] = baiHoc;
-        else if (normH === 'chatLuong') rowArr[colIdx] = chatLuong;
+        else if (normH === 'nhomid' || normH === 'nhom_id') rowArr[colIdx] = nhomId;
+        else if (normH === 'debaichung' || normH === 'de_bai_chung') rowArr[colIdx] = deBaiChung;
+        else if (normH === 'question' || normH === 'cauhoi' || normH === 'cau_hoi' || normH === 'debai' || normH === 'de_bai') rowArr[colIdx] = questionText;
+        else if (normH === 'opta' || normH === 'a') rowArr[colIdx] = optA;
+        else if (normH === 'optb' || normH === 'b') rowArr[colIdx] = optB;
+        else if (normH === 'optc' || normH === 'c') rowArr[colIdx] = optC;
+        else if (normH === 'optd' || normH === 'd') rowArr[colIdx] = optD;
+        else if (normH === 'correct' || normH === 'dapan' || normH === 'dap_an') rowArr[colIdx] = correct;
+        else if (normH === 'hinhanh' || normH === 'hinh_anh') rowArr[colIdx] = hinhAnh;
+        else if (normH === 'giaithich' || normH === 'giai_thich' || normH === 'explanation') rowArr[colIdx] = giaiThich;
+        else if (normH === 'ngaythem' || normH === 'ngay_them') rowArr[colIdx] = nowIso;
+        else if (normH === 'baihoc' || normH === 'bai_hoc' || normH === 'tenbai' || normH === 'ten_bai') rowArr[colIdx] = baiHoc;
+        else if (normH === 'chatluong' || normH === 'chat_luong') rowArr[colIdx] = chatLuong;
       });
 
-      // Fallback nếu headers thiếu cột
-      const baiCol = headers.indexOf('baiHoc');
+      // Fallback positional
+      if (!rowArr[0]) rowArr[0] = id;
+      if (!rowArr[1]) rowArr[1] = mon;
+      if (!rowArr[2]) rowArr[2] = chuong;
+      if (!rowArr[3]) rowArr[3] = mucDo;
+      if (!rowArr[4]) rowArr[4] = loai;
+      if (!rowArr[7]) rowArr[7] = questionText;
+      if (!rowArr[8]) rowArr[8] = optA;
+      if (!rowArr[9]) rowArr[9] = optB;
+      if (!rowArr[10]) rowArr[10] = optC;
+      if (!rowArr[11]) rowArr[11] = optD;
+      if (!rowArr[12]) rowArr[12] = correct;
+      if (!rowArr[14]) rowArr[14] = giaiThich;
+      if (!rowArr[15]) rowArr[15] = nowIso;
+
+      const baiCol = headers.findIndex(h => h === 'baihoc' || h === 'tenbai');
       if (baiCol !== -1) rowArr[baiCol] = baiHoc;
-      const clCol = headers.indexOf('chatLuong');
+      const clCol = headers.findIndex(h => h === 'chatluong');
       if (clCol !== -1) rowArr[clCol] = chatLuong;
 
       normalizedRows.push(rowArr);
@@ -1240,7 +1259,7 @@ function importNganHang(data) {
   }
 
   // Ghi thật
-  const startRow = rows.length + 1;
+  const startRow = lastRealRow + 1;
   const numRows = normalizedRows.length;
   const numCols = normalizedRows[0] ? normalizedRows[0].length : NH_HEADERS.length;
 
