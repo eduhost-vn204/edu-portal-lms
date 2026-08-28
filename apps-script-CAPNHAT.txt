@@ -108,12 +108,9 @@ function getAdminKey() {
 }
 
 function requireAdmin(key) {
-  const ADMIN_KEY = getAdminKey();
+  const expected = String(getAdminKey() || '').trim();
   const provided = String(key || '').trim();
-  if (!ADMIN_KEY || !provided || provided !== ADMIN_KEY) {
-    return false;
-  }
-  return true;
+  return Boolean(expected && provided && expected === provided);
 }
 
 function getOrCreate(name, headers) {
@@ -890,8 +887,7 @@ function deleteNganHang(data) {
 
 // ── POST: Sửa 1 câu trong ngân hàng theo id ──────────────────
 function updateNganHang(data) {
-  const adminKey = getAdminKey();
-  if (adminKey && String(data.adminKey || '').trim() !== adminKey) {
+  if (!requireAdmin(data.adminKey)) {
     return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Khóa quản trị không hợp lệ' });
   }
 
@@ -982,8 +978,7 @@ function bulkSetBaiNganHang(data) {
 
 // ── POST: Đánh dấu chất lượng câu hỏi ngân hàng hàng loạt ────
 function bulkSetChatLuongNganHang(data) {
-  const adminKey = getAdminKey();
-  if (adminKey && String(data.adminKey || '').trim() !== adminKey) {
+  if (!requireAdmin(data.adminKey)) {
     return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Khóa quản trị không hợp lệ' });
   }
 
@@ -1058,8 +1053,7 @@ function bulkSetChatLuongNganHang(data) {
 
 // ── POST: Nhập gói câu hỏi Tinh vào ngân hàng (hỗ trợ dryRun, fail-closed và auto-rollback) ────
 function importNganHang(data) {
-  const adminKey = getAdminKey();
-  if (adminKey && String(data.adminKey || '').trim() !== adminKey) {
+  if (!requireAdmin(data.adminKey)) {
     return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Khóa quản trị không hợp lệ' });
   }
 
