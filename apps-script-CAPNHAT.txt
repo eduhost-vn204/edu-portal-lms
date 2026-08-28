@@ -69,7 +69,9 @@ function doPost(e) {
     if (action === 'savenganhang')       return saveNganHang(data);
     if (action === 'savehuongdan')     return saveHuongDan(data);
     if (action === 'deletenganhang')     return deleteNganHang(data);
+    if (action === 'updatenganhang')     return updateNganHang(data);
     if (action === 'bulksetbainganhang') return typeof bulkSetBaiHocNganHang === 'function' ? bulkSetBaiHocNganHang(data) : bulkSetBaiNganHang(data);
+    if (action === 'bulksetchatluongnganhang') return bulkSetChatLuongNganHang(data);
     if (action === 'saveprogress')       return saveProgress(data);
     if (action === 'savescore')          return saveScore(data);
     if (action === 'updatebaihocvideo')  return updateBaiHocVideo(data);
@@ -887,33 +889,59 @@ function deleteNganHang(data) {
 
 // ── POST: Sửa 1 câu trong ngân hàng theo id ──────────────────
 function updateNganHang(data) {
+  const adminKey = getAdminKey();
+  if (adminKey && String(data.adminKey || '').trim() !== adminKey) {
+    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Khóa quản trị không hợp lệ' });
+  }
+
   const id = String(data.id || '').trim();
   if (!id) return jsonOut({ ok: false, msg: 'Thiếu id' });
+
+  const q = data.q || data;
+  let newChatLuong = undefined;
+  if (data.chatLuong !== undefined && data.chatLuong !== null) {
+    newChatLuong = String(data.chatLuong).trim().toLowerCase();
+  } else if (q.chatLuong !== undefined && q.chatLuong !== null) {
+    newChatLuong = String(q.chatLuong).trim().toLowerCase();
+  }
+
+  if (newChatLuong !== undefined) {
+    if (newChatLuong !== '' && newChatLuong !== 'tinh' && newChatLuong !== 'tho') {
+      return jsonOut({ ok: false, msg: 'Chất lượng không hợp lệ (chỉ chấp nhận rỗng, tinh, tho)' });
+    }
+  }
+
   const sheet = getOrCreate('NganHang', NH_HEADERS);
   const rows = sheet.getDataRange().getValues();
   const headers = rows[0] ? rows[0].map(String) : [];
   const baiCol = headers.indexOf('baiHoc') !== -1 ? headers.indexOf('baiHoc') : 16;
   const clCol = headers.indexOf('chatLuong') !== -1 ? headers.indexOf('chatLuong') : 17;
+  const now = new Date().toISOString();
 
   for (let i = 1; i < rows.length; i++) {
     if (String(rows[i][0]).trim() === id) {
-      const q = data.q || data;
+      const finalChatLuong = newChatLuong !== undefined ? newChatLuong : (rows[i][clCol] !== undefined ? String(rows[i][clCol]) : '');
       sheet.getRange(i + 1, 1, 1, 18).setValues([[
-        id, q.mon || rows[i][1], q.chuong || rows[i][2], q.mucDo || rows[i][3],
-        q.loai || rows[i][4], q.nhomId !== undefined ? q.nhomId : rows[i][5],
+        id,
+        q.mon !== undefined ? q.mon : rows[i][1],
+        q.chuong !== undefined ? q.chuong : rows[i][2],
+        q.mucDo !== undefined ? q.mucDo : rows[i][3],
+        q.loai !== undefined ? q.loai : (rows[i][4] || 'TN'),
+        q.nhomId !== undefined ? q.nhomId : rows[i][5],
         q.deBaiChung !== undefined ? q.deBaiChung : rows[i][6],
-        q.question || rows[i][7],
+        q.question !== undefined ? q.question : rows[i][7],
         q.optA !== undefined ? q.optA : rows[i][8],
         q.optB !== undefined ? q.optB : rows[i][9],
         q.optC !== undefined ? q.optC : rows[i][10],
         q.optD !== undefined ? q.optD : rows[i][11],
         q.correct !== undefined ? q.correct : rows[i][12],
         q.hinhAnh !== undefined ? q.hinhAnh : rows[i][13],
+        q.giaiThich !== undefined ? q.giaiThich : (rows[i][14] || ''),
         rows[i][15] || now,
         q.baiHoc !== undefined ? q.baiHoc : (rows[i][baiCol] || ''),
-        q.chatLuong !== undefined ? q.chatLuong : (rows[i][clCol] || 'tho')
+        finalChatLuong
       ]]);
-      return jsonOut({ ok: true });
+      return jsonOut({ ok: true, id: id, chatLuong: finalChatLuong });
     }
   }
   return jsonOut({ ok: false, msg: 'Không tìm thấy id ' + id });
@@ -921,6 +949,11 @@ function updateNganHang(data) {
 
 // ── POST: Gán "Bài học" cho nhiều câu cùng lúc (phân loại hàng loạt) ──
 function bulkSetBaiHocNganHang(data) {
+  const adminKey = getAdminKey();
+  if (adminKey && String(data.adminKey || '').trim() !== adminKey) {
+    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Khóa quản trị không hợp lệ' });
+  }
+
   const ids = (data.ids || []).map(x => String(x).trim()).filter(Boolean);
   if (!ids.length) return jsonOut({ ok: false, msg: 'Thiếu ids' });
   const baiHoc = (data.baiHoc || '').toString();
@@ -939,7 +972,7 @@ function bulkSetBaiHocNganHang(data) {
       updated++;
     }
   }
-  return jsonOut({ ok: true, updated });
+  return jsonOut({ ok: true, updated: updated });
 }
 
 function bulkSetBaiNganHang(data) {
@@ -948,9 +981,28 @@ function bulkSetBaiNganHang(data) {
 
 // ── POST: Đánh dấu chất lượng câu hỏi ngân hàng hàng loạt ────
 function bulkSetChatLuongNganHang(data) {
-  const ids = (data.ids || []).map(x => String(x).trim()).filter(Boolean);
-  if (!ids.length) return jsonOut({ ok: false, msg: 'Thiếu ids' });
-  const chatLuong = (data.chatLuong || 'tho').toString().toLowerCase();
+  const adminKey = getAdminKey();
+  if (adminKey && String(data.adminKey || '').trim() !== adminKey) {
+    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Khóa quản trị không hợp lệ' });
+  }
+
+  if (data.chatLuong === undefined || data.chatLuong === null) {
+    return jsonOut({ ok: false, msg: 'Thiếu trường chatLuong' });
+  }
+  const chatLuong = String(data.chatLuong).trim().toLowerCase();
+  if (chatLuong !== '' && chatLuong !== 'tinh' && chatLuong !== 'tho') {
+    return jsonOut({ ok: false, msg: 'Chất lượng không hợp lệ (chỉ chấp nhận rỗng, tinh, tho)' });
+  }
+
+  const rawIds = Array.isArray(data.ids) ? data.ids : [];
+  const uniqueIds = Array.from(new Set(rawIds.map(x => String(x).trim()).filter(Boolean)));
+  if (!uniqueIds.length) {
+    return jsonOut({ ok: false, msg: 'Thiếu danh sách ids hợp lệ' });
+  }
+  if (uniqueIds.length > 500) {
+    return jsonOut({ ok: false, msg: 'Số lượng câu cập nhật vượt quá giới hạn (tối đa 500 câu/lần)' });
+  }
+
   const sheet = getOrCreate('NganHang', NH_HEADERS);
   const rows = sheet.getDataRange().getValues();
   const headers = rows[0] ? rows[0].map(String) : [];
@@ -959,14 +1011,48 @@ function bulkSetChatLuongNganHang(data) {
     clCol = headers.length;
     sheet.getRange(1, clCol + 1).setValue('chatLuong');
   }
-  let updated = 0;
+
+  const existingIdMap = new Map();
   for (let i = 1; i < rows.length; i++) {
-    if (ids.indexOf(String(rows[i][0]).trim()) !== -1) {
-      sheet.getRange(i + 1, clCol + 1).setValue(chatLuong);
-      updated++;
-    }
+    const rId = String(rows[i][0]).trim();
+    if (rId) existingIdMap.set(rId, i + 1); // sheet rowIndex (1-based)
   }
-  return jsonOut({ ok: true, updated });
+
+  const updatedIds = [];
+  const failedItems = [];
+
+  uniqueIds.forEach(id => {
+    const rowIdx = existingIdMap.get(id);
+    if (rowIdx) {
+      sheet.getRange(rowIdx, clCol + 1).setValue(chatLuong);
+      updatedIds.push(id);
+    } else {
+      failedItems.push({ id: id, reason: 'ID không tồn tại trong ngân hàng' });
+    }
+  });
+
+  if (updatedIds.length === 0) {
+    return jsonOut({
+      ok: false,
+      requested: uniqueIds.length,
+      updated: 0,
+      failed: failedItems.length,
+      updatedIds: [],
+      failedItems: failedItems,
+      chatLuong: chatLuong,
+      msg: 'Không có câu hỏi nào được cập nhật'
+    });
+  }
+
+  return jsonOut({
+    ok: true,
+    requested: uniqueIds.length,
+    updated: updatedIds.length,
+    failed: failedItems.length,
+    updatedIds: updatedIds,
+    failedItems: failedItems,
+    chatLuong: chatLuong
+  });
 }
 
 // ── GET: Lấy link video từ Sheet nguồn (khoá luyện đề 2k8) ──
