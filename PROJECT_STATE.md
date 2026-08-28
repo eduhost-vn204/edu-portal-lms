@@ -159,7 +159,39 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
-### 26/08/2026 — Thiết lập vận hành dài hạn bằng Antigravity
+### 28/08/2026 — Hoàn thiện Teaching Scope dùng thật trên Production (MACHINE-1)
+
+- **Trạng thái**: Hoàn tất toàn bộ mã nguồn frontend, backend Apps Script tham chiếu, module tích hợp Đua Top / Solo và bộ kiểm thử tự động 100% pass.
+- **Rollback baseline tags đã tạo**:
+  * Admin repo (`edu-portal-console`): `rollback-before-teaching-scope-20260828` (commit `91e56a9`).
+  * Student repo (`edu-portal-lms`): `rollback-before-teaching-scope-20260828` (commit `19701a3`).
+- **Nhánh thực hiện**: `implement_production_teaching_scope` trên cả hai kho mã.
+- **Các file đã chỉnh sửa & tạo mới**:
+  * **Repo Admin (`edu-portal-console`)**:
+    + `apps-script-CAPNHAT.txt`: Thêm schema `TeachingScope` (`courseId`, `stageId`, `openChapterIds`, `activeLessonIds`, `validFrom`, `validTo`, `isActive`, `updatedAt`, `updatedBy`, `revision`), router GET `teachingscope` (phân quyền public vs admin), router POST `saveteachingscope` (xác thực `adminKey`, kiểm tra optimistic revision lock, cập nhật nguyên tử, tăng revision), bổ sung `bulksetbainganhang` và `bulksetchatluongnganhang`, `checkAdminKey()`.
+    + `index.html`: Thêm tab "Phạm vi giảng dạy" (`#tab-teachingscope`) vào navigation bar và body; thêm CSS responsive hỗ trợ đầy đủ light/dark theme; bộ chọn khóa học & giai đoạn; switch kích hoạt; bộ chọn thời gian hiệu lực; danh sách chương & bài dạng checkbox tương tác; 4 thẻ thống kê trực quan; nút Mở/Đóng tất cả; Modal Diff Trước / Sau khi Lưu; tự động nạp cấu hình khi tải lại trang; xử lý lỗi mạng / hết hạn phiên với nút Thử lại / Đăng nhập lại.
+  * **Repo Student (`edu-portal-lms`)**:
+    + `teaching-scope.js`: Module chuẩn hóa và lọc câu hỏi theo phạm vi giảng dạy: kiểm tra `isActive`, `validFrom`, `validTo`, `openChapterIds`, `activeLessonIds` (kiểm tra theo từng chương cụ thể); kiểm tra nghiêm ngặt câu TINH (`chatLuong === 'tinh'`, `rawTier === 'TINH'`), `TEACHER_APPROVED`, chặn 100% câu Thô (`chatLuong === 'tho'`) và câu `QA_PASSED`.
+    + `dua-top.html`: Tích hợp `teaching-scope.js`, tải song song ngân hàng câu hỏi và `teachingscope.json`/API; lọc theo scope đang áp dụng; hiển thị thông báo rỗng thân thiện kèm link học bài khi chưa có câu Tinh trong phạm vi; bảo toàn lịch sử và điểm số cũ.
+    + `solo.html`: Tích hợp `teaching-scope.js` vào `loadBank()`, chỉ lấy câu Tinh thuộc các chương/bài đang mở; hiển thị thông báo trạng thái rõ ràng khi ngân hàng trong phạm vi chưa có câu.
+    + `scripts/sync-public-data.mjs`: Bổ sung `fetchOptional('teachingscope')` và ghi dữ liệu ra `data/teachingscope.json`.
+    + `apps-script-CAPNHAT.txt`: Đồng bộ chuẩn xác với bản Admin.
+    + `scripts/test-teaching-scope.mjs`: Bộ unit test 12 kịch bản cho module lọc scope, kiểm tra thời gian, kiểm tra chặn câu thô, chặn QA_PASSED, mở nhiều chương, chọn bài lẻ, scope hết hạn/tắt, scope rỗng (12/12 pass).
+    + `scripts/test-apps-script-scope.mjs`: Bộ test giả lập Apps Script backend (xác thực `adminKey`, tạo sheet an toàn, tăng revision nguyên tử, phát hiện và chặn xung đột ghi đè `Conflict` khi expectedRevision không khớp) (4/4 pass).
+- **Kiểm thử & Xác minh**:
+  * `node scripts/test-teaching-scope.mjs` → **12/12 PASS**.
+  * `node scripts/test-apps-script-scope.mjs` → **4/4 PASS**.
+  * `node scripts/test-quiz-merge.mjs` → **6/6 PASS**.
+  * `node scripts/test-quiz-publish.mjs` → **12/12 PASS**.
+  * Cú pháp JavaScript trên toàn bộ script blocks của Admin `index.html`, `dua-top.html`, `solo.html`, `teaching-scope.js` đều PASS.
+  * Thẻ đóng `</html>` nguyên vẹn trên tất cả các trang.
+- **Điều phải giữ nguyên**:
+  * Không thay đổi giao diện ngoài những phần cần thiết cho Teaching Scope.
+  * Không làm mất điểm LP, chuỗi thắng, lịch sử làm bài cũ của học sinh trong Đua Top và Solo.
+  * Không hardcode token, mật khẩu hay adminKey vào mã nguồn.
+- **Việc cần làm tiếp theo**:
+  * Thầy cập nhật code `apps-script-CAPNHAT.txt` vào Google Apps Script và triển khai New Version (nếu cần cập nhật backend trên Apps Script thật).
+  * Review diff nhánh `implement_production_teaching_scope` và tiến hành commit/push/merge nhánh theo quy trình an toàn.
 
 - Xác định hai repo chính thức: Student `eduhost-vn204/edu-portal-lms`, Admin `eduhost-vn204/edu-portal-console`; loại repository Netlify legacy khỏi phạm vi làm việc mới.
 - Tạo baseline cục bộ `codex/antigravity-baseline-20260826` tại Student `255d770` và Admin `0d491ca`.

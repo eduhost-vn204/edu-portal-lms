@@ -286,16 +286,27 @@
     return rank.name + (sub ? ' ' + sub : '');
   }
 
-  // ─── Load ngân hàng câu hỏi TN ──────────────────────────────
+  // ─── Load ngân hàng câu hỏi TN theo Teaching Scope ─────────
+  var teachingScopes = null;
   function loadBank(cb) {
-    cachedFetch(GAS + '?type=nganhang')
-      .then(function (r) { return r.json(); })
-      .then(function (data) {
-        var raw = Array.isArray(data) ? data : (data.data || data.rows || []);
-        bank = raw.filter(function (q) { return (!q.loai || q.loai === 'TN') && q.optA && q.optB && q.correct; });
-        cb();
+    Promise.all([
+      cachedFetch(GAS + '?type=nganhang').then(function (r) { return r.json(); }).catch(function () { return []; }),
+      cachedFetch('data/teachingscope.json').then(function (r) { return r.json(); }).catch(function () {
+        return cachedFetch(GAS + '?type=teachingscope').then(function (r) { return r.json(); }).catch(function () { return []; });
       })
-      .catch(function () { cb(); });
+    ]).then(function (results) {
+      var raw = Array.isArray(results[0]) ? results[0] : (results[0].data || results[0].rows || []);
+      teachingScopes = results[1];
+      if (window.VLXT_TeachingScope && typeof window.VLXT_TeachingScope.filterQuestionsByScope === 'function') {
+        bank = window.VLXT_TeachingScope.filterQuestionsByScope(raw, teachingScopes, { requiredScope: 'SOLO' });
+      } else {
+        bank = [];
+      }
+      cb();
+    }).catch(function () {
+      bank = [];
+      cb();
+    });
   }
 
   function pickQuestionIds() {
@@ -784,7 +795,15 @@
         myLp = (profile && profile.ok && profile.user) ? (Number(profile.user.lpTotal) || 0) : (Number(user.lpTotal) || 0);
         loadBank(function () {
           if (!bank.length) {
-            arena.innerHTML = '<div class="empty-box"><h3>Chưa có câu hỏi</h3><p>Ngân hàng câu hỏi đang được bổ sung. Quay lại sau nhé!</p></div>';
+            arena.innerHTML = 
+              '<div class="empty-box" style="text-align:center;padding:48px 20px">' +
+                '<div style="font-size:44px;margin-bottom:12px">⚔️</div>' +
+                '<h3>Chưa có câu hỏi trong phạm vi bài học đang mở</h3>' +
+                '<p style="color:#8b949e;margin:8px auto 20px;max-width:440px;line-height:1.6">' +
+                  'Solo 1-1 chỉ lấy các câu hỏi <strong>đã qua kiểm duyệt (Tinh)</strong> thuộc các chương và bài đang được Thầy mở dạy.' +
+                '</p>' +
+                '<a href="baihoc.html" class="btn-primary" style="display:inline-block;text-decoration:none;padding:12px 24px;border-radius:10px;background:linear-gradient(135deg,#0072ff,#00f0ff);color:#fff;font-weight:700">Vào học bài giảng →</a>' +
+              '</div>';
             return;
           }
           renderIdle();
@@ -797,6 +816,7 @@
   });
 })();
 </script>
+<script src="teaching-scope.js?v=1"></script>
 <script src="hoat-dong.js?v=1"></script>
 </body>
 </html>

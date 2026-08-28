@@ -45,14 +45,15 @@ async function writeJson(file, value) {
   await writeFile(file, `${JSON.stringify(value)}\n`, 'utf8');
 }
 
-const [lessonData, configData, quizData, liveData, examData, settingsData, guideData] = await Promise.all([
+const [lessonData, configData, quizData, liveData, examData, settingsData, guideData, teachingScopeData] = await Promise.all([
   fetchJson('baihoc'),
   fetchJson('khoaconfig'),
   fetchOptional('baitaptracnghiem'),
   fetchJson('lichlive'),
   fetchJson('danhsachde'),
   fetchOptional('settings'),
-  fetchOptional('huongdan')
+  fetchOptional('huongdan'),
+  fetchOptional('teachingscope')
 ]);
 
 const lessons = rowsOf(lessonData, ['baihoc', 'data']);
@@ -79,6 +80,7 @@ await writeJson(path.join(dataDir, 'lichlive.json'), liveRows);
 await writeJson(path.join(dataDir, 'danhsachde.json'), exams);
 if (settingsData) await writeJson(path.join(dataDir, 'settings.json'), settingsData);
 if (guideData) await writeJson(path.join(dataDir, 'huongdan.json'), guideData);
+if (teachingScopeData) await writeJson(path.join(dataDir, 'teachingscope.json'), teachingScopeData);
 
 const examRows = rowsOf(examData, ['data', 'danhsachde']);
 

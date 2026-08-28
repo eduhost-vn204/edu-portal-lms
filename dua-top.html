@@ -355,7 +355,8 @@
 
   // ─── State ───────────────────────────────────────────────
   var user      = null;
-  var questions = [];    // all available TN questions
+  var questions = [];    // all available questions
+  var teachingScopes = null; // active teaching scopes
   var queue     = [];    // shuffled play queue
   var qIdx      = 0;     // current index in queue
   var answered  = {};    // { id: true } — already answered this session
@@ -603,24 +604,26 @@
     }
   }
 
-  // ─── Shuffle + filter questions ─────────────────────────
-  function buildQueue(all) {
-    // Chỉ lấy câu TN (trắc nghiệm 4 lựa chọn)
-    var tn = all.filter(function (q) {
-      return (!q.loai || q.loai === 'TN') && q.optA && q.optB && q.correct;
-    });
+  // ─── Shuffle + filter questions theo Teaching Scope ──────
+  function buildQueue(all, scopes) {
+    var filtered = [];
+    if (window.VLXT_TeachingScope && typeof window.VLXT_TeachingScope.filterQuestionsByScope === 'function') {
+      filtered = window.VLXT_TeachingScope.filterQuestionsByScope(all, scopes, { requiredScope: 'DUA_TOP' });
+    }
+
+    if (!filtered.length) return [];
 
     // Shuffle Fisher-Yates
-    for (var i = tn.length - 1; i > 0; i--) {
+    for (var i = filtered.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
-      var tmp = tn[i]; tn[i] = tn[j]; tn[j] = tmp;
+      var tmp = filtered[i]; filtered[i] = filtered[j]; filtered[j] = tmp;
     }
 
     // Ưu tiên câu khó (VD/VDC) ở đầu → xếp theo mucDo desc rồi lấy top 20
     var order = { VDC: 4, VD: 3, TH: 2, NB: 1 };
-    tn.sort(function (a, b) { return (order[b.mucDo]||1) - (order[a.mucDo]||1); });
+    filtered.sort(function (a, b) { return (order[b.mucDo]||1) - (order[a.mucDo]||1); });
 
-    return tn.slice(0, 20); // mỗi phiên 20 câu
+    return filtered.slice(0, 20); // mỗi phiên 20 câu
   }
 
   // ─── Restart session ─────────────────────────────────────
@@ -628,13 +631,12 @@
     sessionLP = sessionCorrect = sessionWrong = streak = qIdx = 0;
     streakHistory = [];
     answered = {};
-    queue = buildQueue(questions);
+    queue = buildQueue(questions, teachingScopes);
     updateScoreBar();
     renderQuestion();
   };
 
   // Mốc LP tối thiểu để mở khoá Đua Top = mốc bậc "Đồng" trong hoso.html/xephang-fx.js
-  // (không import cả VLXT_RANKS ở đây cho nhẹ trang, chỉ cần đúng 1 con số này khớp).
   var MIN_LP_DUATOP = 50;
 
   function showLockedScreen(lp) {
@@ -654,22 +656,40 @@
   }
 
   function loadQuestions() {
-    cachedFetch(GAS + '?type=nganhang')
-      .then(function (r) { return r.json(); })
-      .then(function (data) {
-        var raw = Array.isArray(data) ? data : (data.data || data.rows || []);
-        if (!raw.length) {
-          arena.innerHTML = '<div class="empty-box"><h3>Chưa có câu hỏi</h3><p>Ngân hàng câu hỏi đang được bổ sung. Quay lại sau nhé!</p></div>';
-          return;
-        }
-        questions = raw;
-        queue     = buildQueue(questions);
-        updateScoreBar();
-        renderQuestion();
+    arena.innerHTML = '<div class="loading-box"><div class="spinner"></div><div style="color:var(--sub);font-size:14px">Đang chuẩn bị câu hỏi theo phạm vi bài học…</div></div>';
+
+    Promise.all([
+      cachedFetch(GAS + '?type=nganhang').then(function(r){ return r.json(); }).catch(function(){ return []; }),
+      cachedFetch('data/teachingscope.json').then(function(r){ return r.json(); }).catch(function(){
+        return cachedFetch(GAS + '?type=teachingscope').then(function(r){ return r.json(); }).catch(function(){ return []; });
       })
-      .catch(function () {
-        arena.innerHTML = '<div class="empty-box"><h3>Không thể tải câu hỏi</h3><p>Kiểm tra kết nối mạng rồi thử lại.</p></div>';
-      });
+    ]).then(function (results) {
+      var data = results[0];
+      var scopeData = results[1];
+      var raw = Array.isArray(data) ? data : (data.data || data.rows || []);
+      
+      questions = raw;
+      teachingScopes = scopeData;
+      queue = buildQueue(questions, teachingScopes);
+
+      if (!queue.length) {
+        arena.innerHTML = 
+          '<div class="empty-box" style="text-align:center;padding:48px 20px">' +
+            '<div style="font-size:44px;margin-bottom:12px">📚</div>' +
+            '<h3>Chưa có câu hỏi trong phạm vi bài học đang mở</h3>' +
+            '<p style="color:var(--sub);margin:8px auto 20px;max-width:440px;line-height:1.6">' +
+              'Đua Top chỉ phát các câu hỏi <strong>đã qua kiểm duyệt (Tinh)</strong> thuộc các chương và bài đang được Thầy mở dạy. Thầy đang liên tục cập nhật ngân hàng câu hỏi nhé!' +
+            '</p>' +
+            '<a href="baihoc.html" class="btn-primary" style="display:inline-block;text-decoration:none;padding:12px 24px;border-radius:10px;background:linear-gradient(135deg,#0072ff,#00f0ff);color:#fff;font-weight:700">Vào học bài giảng →</a>' +
+          '</div>';
+        return;
+      }
+
+      updateScoreBar();
+      renderQuestion();
+    }).catch(function () {
+      arena.innerHTML = '<div class="empty-box"><h3>Không thể tải câu hỏi</h3><p>Kiểm tra kết nối mạng rồi thử lại.</p></div>';
+    });
   }
 
   // ─── Boot ─────────────────────────────────────────────────
@@ -681,8 +701,7 @@
     // Render widget
     if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(user);
 
-    // Kiểm tra đủ LP mới cho vào — lấy LP MỚI NHẤT từ server (localStorage có thể cũ),
-    // lỗi mạng thì không chặn oan, cứ cho vào luôn.
+    // Kiểm tra đủ LP mới cho vào — lấy LP MỚI NHẤT từ server
     cachedFetch(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt))
       .then(function (r) { return r.json(); })
       .then(function (profile) {
@@ -694,6 +713,7 @@
   });
 })();
 </script>
+<script src="teaching-scope.js?v=1"></script>
 <script src="hoat-dong.js?v=1"></script>
 </body>
 </html>
