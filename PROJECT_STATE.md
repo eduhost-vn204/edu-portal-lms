@@ -159,6 +159,22 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 28/08/2026 — Khắc phục Lỗi Tải Câu Hỏi Đua Top/Solo & Nâng Cấp Phạm Vi Giảng Dạy Admin (Hotfix)
+
+- **Vấn đề đã xử lý**:
+  1. *Đua Top & Solo xoay vòng tròn vô hạn ("Đang tải ngân hàng câu hỏi...")*: Do thiếu import `cache.js` và `teaching-scope.js` trước khi các script nội bộ thực thi, dẫn đến lỗi `ReferenceError: cachedFetch is not defined` làm dừng quá trình khởi tạo câu hỏi.
+  2. *Admin Phạm vi giảng dạy xuất hiện quá nhiều khóa học thừa/rác*: Do `getTeachingScopeCourseList()` nạp toàn bộ các cấu hình legacy cũ từ nhiều phiên bản trước.
+  3. *Admin chọn Giai đoạn chuyển thành chọn Chương*: Chuyển mục 2 từ "Chọn Giai đoạn" thành "2. Chọn Chương", nạp danh sách chương động theo khóa học đã chọn (`Tất cả các chương (Toàn khóa học)` hoặc từng chương cụ thể), giúp Thầy quản lý và tick chọn bài học trực quan, chính xác theo cấu trúc `Khóa học` -> `Chương` -> `Bài học`.
+- **Chi tiết sửa đổi**:
+  - **LMS (`dua-top.html`, `solo.html`)**:
+    * Đưa `<script src="cache.js?v=1"></script>` và `<script src="teaching-scope.js?v=1"></script>` lên đầu danh sách nạp trước khối script chính.
+    * Bổ sung cơ chế `fetcher` an toàn (`cachedFetch` fallback `fetch`) và timeout bảo vệ khi nạp profile học sinh để trò chơi luôn nạp câu hỏi trơn tru.
+  - **Console (`index.html`)**:
+    * Chuyển mục 2 sang `<select id="ts-select-chapter">` và cập nhật hàm `renderTeachingScopeChapterOptions()`, `onTeachingScopeChapterChange()`.
+    * Chuẩn hóa `getTeachingScopeCourseList()` chỉ lấy các khóa học thực tế đang có bài giảng trong hệ thống.
+    * Tự động lọc danh sách chương và bài học bên dưới tương ứng theo chương được chọn.
+- **Kiểm thử**: Toàn bộ cú pháp JS/HTML PASS, các bộ test suite đạt 100%. Xác nhận Đua Top / Solo nạp đúng tập câu hỏi Tinh và Admin hiển thị đúng 2 khóa học chuẩn cùng danh sách chương trực quan.
+
 ### 28/08/2026 — Sửa lỗi Phân tách Đề Phòng Kiểm Tra / Phòng Thi Thử & Đồng bộ Cache (Hotfix)
 
 - **Vấn đề đã khắc phục**:

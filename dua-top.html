@@ -324,17 +324,20 @@
 </div>
 
 <script src="auth.js?v=7"></script>
+<script src="cache.js?v=1"></script>
+<script src="teaching-scope.js?v=1"></script>
 <script src="xephang-fx.js?v=1"></script>
-  <script src="thongbao.js?v=2"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-  <script src="device-id.js?v=1"></script>
-  <script src="ho-tro-chat.js?v=1"></script>
+<script src="thongbao.js?v=2"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="device-id.js?v=1"></script>
+<script src="ho-tro-chat.js?v=1"></script>
 <script>
 (function () {
   'use strict';
 
   var GAS = 'https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec';
+  var fetcher = (typeof cachedFetch === 'function') ? cachedFetch : fetch;
 
   // ─── Scoring formula ──────────────────────────────────────
   var BASE_PTS  = { NB: 10, TH: 20, VD: 35, VDC: 50 };
@@ -739,10 +742,10 @@
   }
 
   function fetchSettingsAsync() {
-    return cachedFetch('data/settings.json')
+    return fetcher('data/settings.json')
       .then(function (r) { return r.json(); })
       .catch(function () {
-        return cachedFetch(GAS + '?type=settings&_t=' + Date.now()).then(function (r) { return r.json(); });
+        return fetcher(GAS + '?type=settings&_t=' + Date.now()).then(function (r) { return r.json(); });
       })
       .then(function (d) {
         if (d && d.ok && d.data && d.data.currentTeachingLesson) {
@@ -756,9 +759,9 @@
     arena.innerHTML = '<div class="loading-box"><div class="spinner"></div><div style="color:var(--sub);font-size:14px">Đang chuẩn bị câu hỏi theo phạm vi bài học…</div></div>';
 
     Promise.all([
-      cachedFetch(GAS + '?type=nganhang').then(function(r){ return r.json(); }).catch(function(){ return []; }),
-      cachedFetch('data/teachingscope.json').then(function(r){ return r.json(); }).catch(function(){
-        return cachedFetch(GAS + '?type=teachingscope').then(function(r){ return r.json(); }).catch(function(){ return []; });
+      fetcher(GAS + '?type=nganhang').then(function(r){ return r.json(); }).catch(function(){ return []; }),
+      fetcher('data/teachingscope.json').then(function(r){ return r.json(); }).catch(function(){
+        return fetcher(GAS + '?type=teachingscope').then(function(r){ return r.json(); }).catch(function(){ return []; });
       }),
       fetchSettingsAsync()
     ]).then(function (results) {
@@ -777,7 +780,7 @@
             '<div style="font-size:44px;margin-bottom:12px">📚</div>' +
             '<h3>Chưa có câu hỏi trong phạm vi bài học đang mở</h3>' +
             '<p style="color:var(--sub);margin:8px auto 20px;max-width:440px;line-height:1.6">' +
-              'Đua Top chỉ phát các câu hỏi <strong>đã qua kiểm duyệt (Tinh)</strong> thuộc phạm vi bài học (<strong>' + scopeDesc + '</strong>). Thầy đang liên tục cập nhật ngân hàng câu hỏi nhé!' +
+            'Đua Top chỉ phát các câu hỏi <strong>đã qua kiểm duyệt (Tinh)</strong> thuộc phạm vi bài học (<strong>' + scopeDesc + '</strong>). Thầy đang liên tục cập nhật ngân hàng câu hỏi nhé!' +
             '</p>' +
             '<a href="baihoc.html" class="btn-primary" style="display:inline-block;text-decoration:none;padding:12px 24px;border-radius:10px;background:linear-gradient(135deg,#0072ff,#00f0ff);color:#fff;font-weight:700">Vào học bài giảng →</a>' +
           '</div>';
@@ -801,7 +804,7 @@
     if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(user);
 
     // Kiểm tra đủ LP mới cho vào — lấy LP MỚI NHẤT từ server
-    cachedFetch(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt))
+    fetcher(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt))
       .then(function (r) { return r.json(); })
       .then(function (profile) {
         var lp = (profile && profile.ok && profile.user) ? (Number(profile.user.lpTotal) || 0) : (Number(user.lpTotal) || 0);
@@ -812,7 +815,6 @@
   });
 })();
 </script>
-<script src="teaching-scope.js?v=1"></script>
 <script src="hoat-dong.js?v=1"></script>
 </body>
 </html>

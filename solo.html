@@ -184,6 +184,8 @@
 </div>
 
 <script src="auth.js?v=7"></script>
+<script src="cache.js?v=1"></script>
+<script src="teaching-scope.js?v=1"></script>
 <script src="xephang-fx.js?v=1"></script>
 <script src="thongbao.js?v=2"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -195,6 +197,7 @@
   'use strict';
 
   var GAS = 'https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec';
+  var fetcher = (typeof cachedFetch === 'function') ? cachedFetch : fetch;
   var FIREBASE_CONFIG = {
     apiKey: "AIzaSyBCwxhKlvJXrms7AdKfI1NyzOXQ3onbdH0",
     authDomain: "edu-portal-live.firebaseapp.com",
@@ -359,10 +362,10 @@
   }
 
   function fetchSettingsAsync() {
-    return cachedFetch('data/settings.json')
+    return fetcher('data/settings.json')
       .then(function (r) { return r.json(); })
       .catch(function () {
-        return cachedFetch(GAS + '?type=settings&_t=' + Date.now()).then(function (r) { return r.json(); });
+        return fetcher(GAS + '?type=settings&_t=' + Date.now()).then(function (r) { return r.json(); });
       })
       .then(function (d) {
         if (d && d.ok && d.data && d.data.currentTeachingLesson) {
@@ -374,9 +377,9 @@
 
   function loadBank(cb) {
     Promise.all([
-      cachedFetch(GAS + '?type=nganhang').then(function (r) { return r.json(); }).catch(function () { return []; }),
-      cachedFetch('data/teachingscope.json').then(function (r) { return r.json(); }).catch(function () {
-        return cachedFetch(GAS + '?type=teachingscope').then(function (r) { return r.json(); }).catch(function () { return []; });
+      fetcher(GAS + '?type=nganhang').then(function (r) { return r.json(); }).catch(function () { return []; }),
+      fetcher('data/teachingscope.json').then(function (r) { return r.json(); }).catch(function () {
+        return fetcher(GAS + '?type=teachingscope').then(function (r) { return r.json(); }).catch(function () { return []; });
       }),
       fetchSettingsAsync()
     ]).then(function (results) {
@@ -895,7 +898,7 @@
       arena.innerHTML = '<div class="empty-box"><h3>Không kết nối được máy chủ realtime</h3><p>Thử tải lại trang nhé.</p></div>';
       return;
     }
-    cachedFetch(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt))
+    fetcher(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt))
       .then(function (r) { return r.json(); })
       .then(function (profile) {
         myLp = (profile && profile.ok && profile.user) ? (Number(profile.user.lpTotal) || 0) : (Number(user.lpTotal) || 0);
@@ -922,7 +925,6 @@
   });
 })();
 </script>
-<script src="teaching-scope.js?v=1"></script>
 <script src="hoat-dong.js?v=1"></script>
 </body>
 </html>
