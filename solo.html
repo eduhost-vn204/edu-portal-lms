@@ -288,20 +288,113 @@
 
   // ─── Load ngân hàng câu hỏi TN theo Teaching Scope ─────────
   var teachingScopes = null;
+  var teachingScopeInfo = null; // { raw, course, chuong, bai, normChuong, maxLessonNum }
+
+  function getLessonNumber(str) {
+    if (!str) return null;
+    var m = String(str).match(/(?:^|[\s._\-])(?:B|Bài|Bai|P)\s*0*(\d+)/i);
+    return m ? parseInt(m[1], 10) : null;
+  }
+
+  function normalizeStr(str) {
+    if (!str) return '';
+    return String(str).toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/đ/g, 'd')
+      .replace(/y/g, 'i')
+      .replace(/[^a-z0-9]/g, '');
+  }
+
+  function parseTeachingScope(key) {
+    if (!key) return null;
+    var parts = String(key).split('|||');
+    var course = parts[0] || '';
+    var chuong = parts[1] || '';
+    var bai = parts[2] || '';
+    return {
+      raw: key,
+      course: course,
+      chuong: chuong,
+      bai: bai,
+      normChuong: normalizeStr(chuong),
+      maxLessonNum: getLessonNumber(bai)
+    };
+  }
+
+  function getCorrectKey(q) {
+    if (!q) return '';
+    var c = String(q.correct || '').trim();
+    if (/^[A-D]$/i.test(c)) return c.toUpperCase();
+    var keys = ['A', 'B', 'C', 'D'];
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+      var optText = String(q['opt' + k] || q['opt' + k.toLowerCase()] || '').trim();
+      if (optText && (optText === c || optText.replace(/\s+/g, '') === c.replace(/\s+/g, ''))) {
+        return k;
+      }
+    }
+    return c.toUpperCase();
+  }
+
+  function isQuestionInScope(q, scope) {
+    if (!q || q.chatLuong !== 'tinh') return false;
+    if (!q.optA || !q.optB || !q.correct) return false;
+    if (q.loai && q.loai !== 'TN' && q.loai !== 'DS') return false;
+    if (!scope) return true;
+
+    var normQChuong = normalizeStr(q.chuong);
+    if (normQChuong && scope.normChuong &&
+        !scope.normChuong.includes(normQChuong) &&
+        !normQChuong.includes(scope.normChuong)) {
+      return false;
+    }
+
+    if (scope.maxLessonNum !== null) {
+      var qLessonNum = getLessonNumber(q.baiHoc);
+      if (qLessonNum !== null && qLessonNum > scope.maxLessonNum) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function fetchSettingsAsync() {
+    return cachedFetch('data/settings.json')
+      .then(function (r) { return r.json(); })
+      .catch(function () {
+        return cachedFetch(GAS + '?type=settings&_t=' + Date.now()).then(function (r) { return r.json(); });
+      })
+      .then(function (d) {
+        if (d && d.ok && d.data && d.data.currentTeachingLesson) {
+          teachingScopeInfo = parseTeachingScope(d.data.currentTeachingLesson);
+        }
+      })
+      .catch(function () {});
+  }
+
   function loadBank(cb) {
     Promise.all([
       cachedFetch(GAS + '?type=nganhang').then(function (r) { return r.json(); }).catch(function () { return []; }),
       cachedFetch('data/teachingscope.json').then(function (r) { return r.json(); }).catch(function () {
         return cachedFetch(GAS + '?type=teachingscope').then(function (r) { return r.json(); }).catch(function () { return []; });
-      })
+      }),
+      fetchSettingsAsync()
     ]).then(function (results) {
       var raw = Array.isArray(results[0]) ? results[0] : (results[0].data || results[0].rows || []);
       teachingScopes = results[1];
+      var filtered = [];
       if (window.VLXT_TeachingScope && typeof window.VLXT_TeachingScope.filterQuestionsByScope === 'function') {
-        bank = window.VLXT_TeachingScope.filterQuestionsByScope(raw, teachingScopes, { requiredScope: 'SOLO' });
-      } else {
-        bank = [];
+        filtered = window.VLXT_TeachingScope.filterQuestionsByScope(raw, teachingScopes, { requiredScope: 'SOLO' });
       }
+      if (!filtered.length && teachingScopeInfo) {
+        filtered = raw.filter(function (q) {
+          return isQuestionInScope(q, teachingScopeInfo);
+        });
+      }
+      bank = filtered.map(function (q) {
+        q.correctKey = getCorrectKey(q);
+        return q;
+      });
       cb();
     }).catch(function () {
       bank = [];
@@ -310,13 +403,19 @@
   }
 
   function pickQuestionIds() {
-    var byDiff = { NB: [], TH: [], VD: [], VDC: [] };
-    bank.forEach(function (q) { (byDiff[q.mucDo || 'NB'] || byDiff.NB).push(q); });
+    if (!bank || !bank.length) return [];
     function shuffle(arr) {
       arr = arr.slice();
       for (var i = arr.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = arr[i]; arr[i] = arr[j]; arr[j] = t; }
       return arr;
     }
+
+    if (bank.length <= Q_PER_MATCH) {
+      return shuffle(bank).map(function (q) { return String(q.id); });
+    }
+
+    var byDiff = { NB: [], TH: [], VD: [], VDC: [] };
+    bank.forEach(function (q) { (byDiff[q.mucDo || 'NB'] || byDiff.NB).push(q); });
     var quota = { NB: 3, TH: 3, VD: 1, VDC: 1 };
     var picked = [];
     Object.keys(quota).forEach(function (k) {
@@ -341,8 +440,14 @@
   // ═══════════════════════════════════════════════════════════
   function renderIdle() {
     resetMatchState();
+    var scopeText = teachingScopeInfo ? ((teachingScopeInfo.chuong ? teachingScopeInfo.chuong + ' – ' : '') + teachingScopeInfo.bai) : 'hiện tại';
+    var scopeNoticeHtml = bank.length
+      ? '<div style="margin:0 auto 18px;max-width:480px;padding:8px 14px;background:rgba(219,39,119,.08);border:1px solid rgba(219,39,119,.2);border-radius:10px;font-size:12.5px;color:var(--text);text-align:center;">🎯 Đấu Solo với <strong>' + bank.length + ' câu hỏi Tinh</strong> (đã duyệt) – Phạm vi: <strong>' + scopeText + '</strong></div>'
+      : '';
+
     arena.innerHTML =
       '<div style="text-align:center">' +
+        scopeNoticeHtml +
         '<div class="rank-chip">🎖️ Hạng hiện tại: ' + rankBadgeHtml(myLp) + '</div>' +
         '<div><button class="btn-primary" id="btn-find">🔍 Tìm trận</button></div>' +
       '</div>';
@@ -645,7 +750,7 @@
   function submitAnswer(chosenKey) {
     var q = matchQuestions[qIdx];
     var seconds = Math.round((Date.now() - qStartTime) / 1000);
-    var correct = String(q.correct || '').toUpperCase().trim();
+    var correct = q.correctKey || getCorrectKey(q);
     var isRight = chosenKey === correct;
     lockOptions(correct);
     if (chosenKey) {
@@ -659,10 +764,11 @@
       var earned = calcScore(q.mucDo || 'NB', seconds);
       myProgress.score += earned;
       fb.className = 'q-feedback correct';
-      fb.innerHTML = '✅ Đúng rồi! +' + earned + 'đ' + (q.giaiThich ? '<br><span style="color:var(--sub)">' + q.giaiThich + '</span>' : '');
+      fb.innerHTML = '✅ Đúng rồi! +' + earned + 'đ' + (q.giaiThich ? '<br><span style="color:var(--sub)">' + fixLatexQuirks(q.giaiThich) + '</span>' : '');
     } else {
+      var correctText = q['opt' + correct] ? (correct + '. ' + q['opt' + correct]) : correct;
       fb.className = 'q-feedback wrong';
-      fb.innerHTML = (chosenKey ? '❌ Sai rồi.' : '⏱️ Hết giờ.') + ' Đáp án đúng là <strong>' + correct + '</strong>.' + (q.giaiThich ? '<br><span style="color:var(--sub)">' + q.giaiThich + '</span>' : '');
+      fb.innerHTML = (chosenKey ? '❌ Sai rồi.' : '⏱️ Hết giờ.') + ' Đáp án đúng là <strong>' + fixLatexQuirks(correctText) + '</strong>.' + (q.giaiThich ? '<br><span style="color:var(--sub)">' + fixLatexQuirks(q.giaiThich) + '</span>' : '');
     }
     qIdx++;
     myProgress.idx = qIdx;

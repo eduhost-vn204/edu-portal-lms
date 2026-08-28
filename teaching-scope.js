@@ -88,8 +88,8 @@
       }
     }
 
-    // 4. Kiểm tra hợp lệ cơ bản cho câu trắc nghiệm
-    if (q.loai && q.loai !== 'TN') return false;
+    // 4. Kiểm tra hợp lệ cơ bản cho câu trắc nghiệm (TN hoặc DS 4 lựa chọn)
+    if (q.loai && q.loai !== 'TN' && q.loai !== 'DS') return false;
     if (!q.question || !q.optA || !q.optB || !q.correct) return false;
 
     return true;
