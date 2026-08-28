@@ -51,33 +51,38 @@
   }
 
   /**
-   * Kiểm tra chất lượng và trạng thái duyệt nghiêm ngặt:
+   * Kiểm tra chất lượng và trạng thái duyệt an toàn:
    * - BẮT BUỘC: rawTier hoặc chatLuong chuẩn hóa == 'TINH' (case-insensitive)
-   * - BẮT BUỘC: status CHÍNH XÁC == 'TEACHER_APPROVED' (thiếu status hoặc APPROVED chung -> CHẶN)
-   * - BẮT BUỘC: usageScopes phải chứa requiredScope (nếu có yêu cầu, vd 'DUA_TOP', 'SOLO')
-   * - TUYỆT ĐỐI KHÔNG LẤY: câu Thô, QA_PASSED, DRAFT, PENDING
+   * - TUYỆT ĐỐI CHẶN 100%: câu Thô (chatLuong === 'tho', rawTier === 'THO')
+   * - Nếu CÓ trường status: BẮT BUỘC status CHÍNH XÁC == 'TEACHER_APPROVED' (chặn QA_PASSED, DRAFT, APPROVED chung...)
+   * - Nếu CHƯA CÓ trường status (dữ liệu legacy): chấp nhận nếu chatLuong === 'tinh'
+   * - Nếu CÓ trường usageScopes: BẮT BUỘC chứa requiredScope (vd 'DUA_TOP', 'SOLO')
+   * - Nếu CHƯA CÓ trường usageScopes (dữ liệu legacy): mặc định phát cho Đua Top & Solo
    */
   function isApprovedTinhQuestion(q, requiredScope) {
     if (!q) return false;
 
-    // 1. Kiểm tra rawTier / chatLuong: Bắt buộc TINH
+    // 1. Kiểm tra rawTier / chatLuong: Bắt buộc TINH, chặn 100% câu Thô
     var cl = String(q.rawTier || q.chatLuong || q.quality || '').trim().toUpperCase();
     if (cl !== 'TINH') return false;
 
-    // 2. Bắt buộc status chính xác == 'TEACHER_APPROVED'
-    // Thiếu status hoặc mang giá trị khác (kể cả 'APPROVED' chung chung) đều bị CHẶN
-    var st = String(q.status || '').trim().toUpperCase();
-    if (st !== 'TEACHER_APPROVED') {
-      return false;
+    // 2. Kiểm tra status (nếu có trường status)
+    if (q.status !== undefined && q.status !== null && String(q.status).trim() !== '') {
+      var st = String(q.status).trim().toUpperCase();
+      if (st !== 'TEACHER_APPROVED') {
+        return false;
+      }
     }
 
-    // 3. Kiểm tra usageScopes theo requiredScope
-    if (requiredScope) {
-      var reqScopeUpper = String(requiredScope).trim().toUpperCase();
-      var canonicalScopes = normalizeUsageScopes(q.usageScopes || q.usageScope || q.scope);
-      // Nếu câu hỏi không khai báo usageScopes hoặc không chứa requiredScope -> CHẶN
-      if (!canonicalScopes.includes(reqScopeUpper)) {
-        return false;
+    // 3. Kiểm tra usageScopes theo requiredScope (nếu có trường usageScopes/usageScope)
+    var usField = q.usageScopes || q.usageScope || q.scope;
+    if (usField !== undefined && usField !== null && String(usField).trim() !== '') {
+      if (requiredScope) {
+        var reqScopeUpper = String(requiredScope).trim().toUpperCase();
+        var canonicalScopes = normalizeUsageScopes(usField);
+        if (!canonicalScopes.includes(reqScopeUpper)) {
+          return false;
+        }
       }
     }
 

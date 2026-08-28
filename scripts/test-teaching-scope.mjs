@@ -53,28 +53,32 @@ check('3. isScopeActive: kiểm tra timezone biên validFrom/validTo chính xác
   assert.equal(isScopeActive(gmt7Scope, nowUtc), true);
 });
 
-// 2. Kiểm tra chất lượng và bắt buộc trạng thái duyệt (isApprovedTinhQuestion)
-check('4. isApprovedTinhQuestion: câu Thô bị CHẶN 100%', () => {
+// 2. Kiểm tra chất lượng và trạng thái duyệt (isApprovedTinhQuestion)
+check('4. isApprovedTinhQuestion: câu Thô bị CHẶN 100% (cả có status và không có status)', () => {
   const qTho1 = { id: '1', question: 'Q1', optA: 'A', optB: 'B', correct: 'A', chatLuong: 'tho', status: 'TEACHER_APPROVED', usageScopes: ['DUA_TOP'] };
-  const qTho2 = { id: '2', question: 'Q2', optA: 'A', optB: 'B', correct: 'A', rawTier: 'THO', status: 'TEACHER_APPROVED', usageScopes: ['DUA_TOP'] };
+  const qTho2 = { id: '2', question: 'Q2', optA: 'A', optB: 'B', correct: 'A', rawTier: 'THO' };
+  const qThoLegacy = { id: '3', question: 'Q3', optA: 'A', optB: 'B', correct: 'A', chatLuong: 'tho' };
   assert.equal(isApprovedTinhQuestion(qTho1), false);
   assert.equal(isApprovedTinhQuestion(qTho2), false);
+  assert.equal(isApprovedTinhQuestion(qThoLegacy), false);
 });
 
-check('5. isApprovedTinhQuestion: câu TINH nhưng thiếu status -> BỊ CHẶN', () => {
-  const qNoStatus = { id: '3', question: 'Q3', optA: 'A', optB: 'B', correct: 'A', chatLuong: 'tinh', usageScopes: ['DUA_TOP'] };
-  assert.equal(isApprovedTinhQuestion(qNoStatus), false);
+check('5. isApprovedTinhQuestion: câu TINH legacy (chưa có status và usageScopes) -> ĐƯỢC CHẤP NHẬN', () => {
+  const qTinhLegacy = { id: '4', question: 'Q4', optA: 'A', optB: 'B', correct: 'A', chatLuong: 'tinh' };
+  assert.equal(isApprovedTinhQuestion(qTinhLegacy), true);
+  assert.equal(isApprovedTinhQuestion(qTinhLegacy, 'DUA_TOP'), true);
+  assert.equal(isApprovedTinhQuestion(qTinhLegacy, 'SOLO'), true);
 });
 
-check('6. isApprovedTinhQuestion: câu TINH + APPROVED chung (không phải TEACHER_APPROVED) -> BỊ CHẶN', () => {
-  const qApproved = { id: '4', question: 'Q4', optA: 'A', optB: 'B', correct: 'A', chatLuong: 'tinh', status: 'APPROVED', usageScopes: ['DUA_TOP'] };
-  const qQaPassed = { id: '5', question: 'Q5', optA: 'A', optB: 'B', correct: 'A', chatLuong: 'tinh', status: 'QA_PASSED', usageScopes: ['DUA_TOP'] };
+check('6. isApprovedTinhQuestion: câu TINH có status nhưng không phải TEACHER_APPROVED -> BỊ CHẶN', () => {
+  const qApproved = { id: '5', question: 'Q5', optA: 'A', optB: 'B', correct: 'A', chatLuong: 'tinh', status: 'APPROVED', usageScopes: ['DUA_TOP'] };
+  const qQaPassed = { id: '6', question: 'Q6', optA: 'A', optB: 'B', correct: 'A', chatLuong: 'tinh', status: 'QA_PASSED', usageScopes: ['DUA_TOP'] };
   assert.equal(isApprovedTinhQuestion(qApproved), false);
   assert.equal(isApprovedTinhQuestion(qQaPassed), false);
 });
 
 check('7. isApprovedTinhQuestion: câu TINH + TEACHER_APPROVED -> ĐẠT YÊU CẦU', () => {
-  const qOk = { id: '6', question: 'Q6', optA: 'A', optB: 'B', correct: 'A', chatLuong: 'tinh', status: 'TEACHER_APPROVED', usageScopes: ['DUA_TOP', 'SOLO'] };
+  const qOk = { id: '7', question: 'Q7', optA: 'A', optB: 'B', correct: 'A', chatLuong: 'tinh', status: 'TEACHER_APPROVED', usageScopes: ['DUA_TOP', 'SOLO'] };
   assert.equal(isApprovedTinhQuestion(qOk), true);
   assert.equal(isApprovedTinhQuestion(qOk, 'DUA_TOP'), true);
   assert.equal(isApprovedTinhQuestion(qOk, 'SOLO'), true);
