@@ -404,12 +404,22 @@ async function loadExams() {
     try {
         const r = await cachedFetch(DB_URL + '?type=danhsachde');
         const j = await r.json();
-        allExams = (j.ok && Array.isArray(j.data)) ? j.data : [];
+        const rawData = (j.ok && Array.isArray(j.data)) ? j.data : [];
+        // Chỉ nhận các đề thuộc Phòng Thi Thử
+        allExams = rawData.filter(ex => {
+            return ex.loaiDe === 'thithu' || String(ex.examId || '').startsWith('thithu') || String(ex.tenDe || '').toLowerCase().includes('thi thử');
+        });
         renderExams();
     } catch(e) {
         grid.innerHTML = '<div class="empty-state"><div class="empty-icon" style="color:var(--red)"><i class="fa-solid fa-triangle-exclamation"></i></div><h3>Không thể kết nối đến máy chủ</h3><p>Vui lòng kiểm tra lại đường truyền mạng rồi tải lại trang.</p></div>';
     }
 }
+
+window.addEventListener('vlxt:data-updated', function(e) {
+    if (e.detail && (e.detail.type === 'danhsachde' || (e.detail.url && e.detail.url.includes('danhsachde')))) {
+        loadExams();
+    }
+});
 
 function setFilter(filter) {
     currentFilter = filter;
@@ -427,7 +437,7 @@ function handleSearch() {
 function renderExams() {
     const grid = document.getElementById('examGrid');
     if (!allExams.length) {
-        grid.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-folder-open"></i></div><h3>Chưa có đề thi nào</h3><p>Thầy Xuân Trường đang cập nhật các bộ đề thi thử mới nhất. Quay lại sau nhé!</p></div>';
+        grid.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-folder-open"></i></div><h3 style="font-size:16px;margin-bottom:6px">Chưa có đề thi thử nào</h3><p style="font-size:13.5px;color:var(--gray)">Thầy Xuân Trường đang chuẩn bị các bộ đề thi thử thực chiến mới nhất. Các em có thể luyện tập trước tại <a href="danhsach-ly12.html" style="color:var(--blue);font-weight:700;text-decoration:none">Phòng Kiểm Tra</a> nhé!</p></div>';
         return;
     }
 

@@ -159,6 +159,17 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 28/08/2026 — Sửa lỗi Phân tách Đề Phòng Kiểm Tra / Phòng Thi Thử & Đồng bộ Cache (Hotfix)
+
+- **Vấn đề đã khắc phục**:
+  1. *Lẫn lộn đề giữa 2 phòng*: Trước đó `phong-thi-thu.html` và `danhsach-ly12.html` đều nạp chung toàn bộ đề từ `?type=danhsachde` mà không lọc phân loại `loaiDe`, khiến các đề kiểm tra xuất hiện ở phòng thi thử và ngược lại.
+  2. *Cache tĩnh `data/danhsachde.json` cũ*: `cache.js` ưu tiên nạp `data/danhsachde.json` cũ còn chứa các đề đã bị xóa trên Admin (`dc1s1`, `thithu_demo_01`), khiến giao diện học sinh vẫn hiển thị đề đã xóa.
+- **Giải pháp triển khai**:
+  - **`danhsach-ly12.html` (Phòng Kiểm Tra)**: Chỉ lọc và hiển thị các đề kiểm tra định kỳ (loại trừ các đề có `loaiDe === 'thithu'`, bắt đầu bằng `thithu_` hoặc có tiêu đề "Thi Thử"). Lắng nghe sự kiện `vlxt:data-updated` để cập nhật tức thì.
+  - **`phong-thi-thu.html` (Phòng Thi Thử)**: Chỉ lọc và hiển thị đúng các đề thi thử (`loaiDe === 'thithu'` / `examId.startsWith('thithu')` / "Thi Thử"). Khi chưa có đề thi thử nào (như hiện tại), hiển thị empty state thông báo rõ ràng cho học sinh. Lắng nghe `vlxt:data-updated`.
+  - **`data/danhsachde.json`**: Đồng bộ chính xác theo database Google Sheets trực tiếp (chỉ còn 1 đề duy nhất `kt-vlnhiet-gd1` ở trạng thái khóa).
+- **Kiểm thử**: Cú pháp JS/HTML PASS, 3 test suites PASS 100%. Xác nhận dọn sạch đề rác/đã xóa trên toàn bộ giao diện học sinh.
+
 ### 28/08/2026 — Quy trình Tự động Video → YouTube Private → Bài học Nháp (Machine-1 / Issue #8)
 
 - **Thực hiện**: Antigravity (Machine-1) qua GitHub Task Orchestrator (Issue #8).
