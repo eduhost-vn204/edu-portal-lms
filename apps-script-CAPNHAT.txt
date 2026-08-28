@@ -1076,11 +1076,13 @@ function importNganHang(data) {
   // Lấy tập ID đã tồn tại trong Sheet và đếm số câu thực tế
   const existingIdSet = new Set();
   let countBefore = 0;
+  let lastRealRow = 1;
   for (let i = 1; i < rows.length; i++) {
     const rId = String(rows[i][0] || '').trim();
     if (rId) {
       existingIdSet.add(rId);
       countBefore++;
+      lastRealRow = i + 1;
     }
   }
 
