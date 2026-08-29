@@ -167,8 +167,9 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 - **Giải pháp**:
   - Gỡ bỏ hoàn toàn `scopeBadge` trong [`dua-top.html`](file:///C:/Users/Xuan%20Truong/.gemini/antigravity/worktrees/_codex_friend_profile/implement_issue_twelve_coordinator/dua-top.html).
   - Thêm cơ chế `body.in-game`: tự động ẩn banner tiêu đề `.hero` lớn khi bước vào làm bài, thu gọn thanh điểm `.score-bar` thành thanh ngang trạng thái mỏng nhẹ (44px).
-  - Tối ưu khoảng cách và kích thước thẻ `.q-card`, `.q-text`, `.q-opt` để toàn bộ 4 đáp án vừa khít trong khung nhìn màn hình laptop (1366×768, 1536×864, 1920×1080) và zoom 125%–150%.
-  - Tự động cuộn `window.scrollTo({ top: 0, behavior: 'instant' })` tại mỗi lần chuyển câu để màn hình luôn cố định ở đầu bài làm.
+  - Tối ưu kích thước và padding siêu gọn cho `.nav` (44px), `.score-bar` (32px), `.arena`, `.q-card`, `.q-text`, `.q-opt` và nút `.q-next`, giúp toàn bộ card câu hỏi, 4 đáp án và nút "Câu tiếp theo" hiển thị vừa khít 100% trong một khung nhìn màn hình duy nhất (kể cả zoom 125%–150% hay laptop 1366×768) mà không cần cuộn chuột.
+  - Tự động cuộn `window.scrollTo({ top: 0, behavior: 'instant' })` tại mỗi lần chuyển câu và `nextBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' })` khi hiện nút chuyển câu.
+  - Thêm phím tắt bàn phím: bấm phím `1`-`4` hoặc `A`-`D` để chọn nhanh đáp án, phím `Enter` / `Space` / `Mũi tên phải` để sang câu tiếp theo ngay tức thì.
 - **Kiểm thử**: Cú pháp HTML/JS PASS, kiểm tra live endpoint `https://vatlyxuantruong.io.vn/dua-top.html` (HTTP 200) $\rightarrow$ Đã hiển thị bản mới.
 
 ### 29/08/2026 — Sửa Popup "Nhiệm vụ hôm nay" Tràn & Scrollbar Lồng khi Zoom 125%–150% (Issue #12)
