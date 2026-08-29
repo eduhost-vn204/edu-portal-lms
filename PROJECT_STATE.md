@@ -408,8 +408,31 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
   - **Office Math $\rightarrow$ LaTeX**: Toàn bộ công thức OMML chuyển đổi sang LaTeX inline `$..$` render KaTeX sắc nét, chuẩn baseline. Cân bằng ký tự delimiter `$` 100%.
   - **Độ bao phủ lời giải chi tiết**: 159/392 câu có HD (40.6% — phản ánh trung thực toàn bộ lời giải có trong tài liệu Word nguồn của Thầy).
   - **Tài nguyên hình ảnh**: 100% liên kết ảnh đều tồn tại thật trên đĩa, không rác screenshot desktop.
-  - **Trạng thái**: Toàn bộ 14 đề đều ở trạng thái `khoa` chờ Thầy nghiệm thu mở cho học sinh.
+### 29/08/2026 — Hoàn tất Dashboard Quản Lý Phòng Thi Thử & Modal Xem Chi Tiết Trên Admin
 
-
-
-
+- **Người thực hiện**: Antigravity
+- **Phạm vi thay đổi**:
+  - Repo Admin (`edu-portal-console`): `index.html`, `scripts/test-admin-phongthithu.mjs`.
+- **Chi tiết thay đổi**:
+  1. **Tab Phòng Thi Thử (`tab-phongthithu`) trên Admin Console**:
+     - Xây dựng dashboard hoàn chỉnh thay thế placeholder tạm:
+       - Banner thống kê thời gian thực: Tổng số đề thi thử, Đang mở, Đang khóa, Có video chữa.
+       - Thanh công cụ điều khiển: Ô tìm kiếm đa năng (mã đề, tên đề, mô tả), bộ lọc tags (`Tất cả`, `✅ Đang mở`, `🔒 Đang khóa`, `🎬 Có Video chữa`), nút `Nạp hàng loạt` (Bulk Import), `+ Tạo đề mới`, nút làm mới dữ liệu.
+       - Lưới thẻ đề thi thử (`#thithu-list-panel`): Hiển thị đầy đủ thông tin mã đề, tên đề, thời gian (50 phút), số câu (28 câu), lượt làm, khối lớp, huy hiệu Mở/Khóa, huy hiệu Video chữa kèm link.
+       - Thao tác nhanh trên từng thẻ: `Sửa đề`, `Mở đề / Khóa đề` (gửi action `saveExam` qua `postAdminWriteWithRetry` an toàn), `Xem đề` (mở modal chi tiết 28 câu hỏi), `Xóa đề`.
+  2. **Modal Xem Chi Tiết Đề Thi (`#exam-detail-overlay`)**:
+     - Tải câu hỏi từ CDN tĩnh (`data/exams/{examId}.json`) hoặc fallback GAS.
+     - Bộ lọc phân loại câu hỏi trong đề: `Tất cả (28)` | `Phần I: TN (18)` | `Phần II: Đúng/Sai (4)` | `Phần III: Ngắn (6)` | `Có lời giải`.
+     - Hiển thị đáp án đúng nổi bật, lời giải chi tiết (nếu có), chuẩn hóa đường dẫn hình ảnh sang CDN, render KaTeX toán học trực tiếp.
+  3. **Tách biệt rõ ràng giữa Phòng Thi Thử và Phòng Kiểm Tra**:
+     - Tab `soande` ("Phòng kiểm tra") tập trung quản lý các đề kiểm tra định kỳ (`loaiDe !== 'thithu'`).
+     - Tab `phongthithu` ("Phòng thi thử") chuyên biệt cho các bộ đề thi thử thực chiến THPT Quốc Gia khóa 2k9.
+  4. **Ràng buộc an toàn & Giữ khóa**:
+     - Giữ nguyên toàn bộ 14 đề `vedich2k9_de02..de15` ở trạng thái `"trangThai": "khoa"` trên cả hai repo cho đến khi Thầy chủ động bấm Mở nghiệm thu.
+  5. **Kiểm thử tự động**:
+     - Unit test `scripts/test-admin-phongthithu.mjs` (Admin): **5/5 PASS**.
+     - `scripts/test-postAdminWrite.mjs` (Admin): **19/19 PASS**.
+     - `scripts/test-apps-script-logic.mjs` (Admin): **12/12 PASS**.
+     - `scripts/test-1click-tinh-scanner.mjs` (Admin): **4/4 PASS**.
+     - `scripts/test-quiz-merge.mjs` (Student): **6/6 PASS**.
+     - `scripts/test-quiz-publish.mjs` (Student): **12/12 PASS**.
