@@ -1,0 +1,366 @@
+[
+  {
+    "id": 1,
+    "type": "mc",
+    "question": "Gọi N0, N lần lượt là số hạt nhân ban đầu và số hạt nhân ở thời điểm t, T là chu kỳ bán rã thì biểu thức của định luật phóng xạ là",
+    "options": {
+      "A": "$N = {N}_{0}.{2}^{\\frac{T}{t}}$.",
+      "B": "$N = {N}_{0}.{2}^{-\\frac{T}{t}}$.",
+      "C": "$N = {N}_{0}{2}^{\\frac{t}{T}}$.",
+      "D": "$N = {N}_{0}{2}^{-\\frac{t}{T}}$."
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 2,
+    "type": "mc",
+    "question": "Ở Việt Nam, mạng điện xoay chiều dân dụng có tần số góc là",
+    "options": {
+      "A": "$100π$ Hz.",
+      "B": "$50π$ Hz.",
+      "C": "50 Hz.",
+      "D": "100 Hz."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 3,
+    "type": "mc",
+    "question": "Gọi $Δt$ và $ΔT$ lần lượt là độ lớn một độ chia trên thang đo nhiệt độ Celsius và thang nhiệt độ Kelvin. Hệ thức nào sau đây là đúng?",
+    "options": {
+      "A": "$Δt=\\frac{1}{273}ΔT$.",
+      "B": "$ΔT=\\frac{1}{100}Δt$.",
+      "C": "$Δt=273ΔT$.",
+      "D": "$Δt=ΔT$."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 4,
+    "type": "mc",
+    "question": "Theo định luật I của nhiệt động lực học ΔU = Q + A; trong quá trình chất khí nhận nhiệt lượng và thực hiện công thì",
+    "options": {
+      "A": "Q > 0, A < 0.",
+      "B": "Q < 0, A > 0.",
+      "C": "Q > 0, A > 0.",
+      "D": "Q < 0, A < 0."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 5,
+    "type": "mc",
+    "question": "Lực tương tác giữa các phân tử chất rắn... (1)... nên giữ được các phân tử ở các vị trí cân bằng và mỗi phân tử...(2). Điền vào chỗ trống các cụm từ thích hợp?",
+    "options": {
+      "A": "(1) là lực hút; (2) dao động xung quanh vị trí cân bằng có thể di chuyển được.",
+      "B": "(1) rất mạnh; (2) đứng yên tại vị trí cân bằng này.",
+      "C": "(1) là lực hút; (2) chỉ có thể dao động xung quanh vị trí cân bằng xác định này.",
+      "D": "(1) rất mạnh; (2) chỉ có thể dao động xung quanh vị trí cân bằng xác định này."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 6,
+    "type": "mc",
+    "question": "Một lượng khí lí tưởng thực hiện một quá trình biến đổi trạng thái theo đồ thị như hình vẽ bên. Quá trình biến đổi trạng thái này là quá trình nào sau đây?",
+    "options": {
+      "A": "Đẳng nhiệt.",
+      "B": "Đẳng áp.",
+      "C": "Áp suất tỉ lệ thuận với thể tích.",
+      "D": "Đẳng tích."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 7,
+    "type": "mc",
+    "question": "Cảm ứng từ tại một điểm trong từ trường có hướng",
+    "options": {
+      "A": "vuông góc với đường sức từ.",
+      "B": "trùng với hướng của đường sức từ.",
+      "C": "trùng với hướng của lực từ.",
+      "D": "ngược với hướng của lực từ."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 8,
+    "type": "mc",
+    "question": "Rotato của máy phát điện xoay chiều một pha là một khung dây phẳng quay xung quanh một trục nằm trong mặt phẳng của khung trong từ trường của stato, suất điện động cảm ứng đổi chiều một lần trong mấy vòng quay?",
+    "options": {
+      "A": "Một vòng quay.",
+      "B": "Hai vòng quay.",
+      "C": "Một nửa vòng quay.",
+      "D": "Một phần tư vòng quay."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 9,
+    "type": "mc",
+    "question": "Một khung dây dẫn phẳng có diện tích S, điện trở khung dây là R, gồm N vòng dây quay đều với tốc độ góc <img src=\"assets/exams/vedich2k9_de05/image2.png\" alt=\"công thức\" class=\"q-formula-img\" /> quanh trục cố định vuông góc với cảm ứng từ B của từ trường đều .Từ thông cực đại gửi qua khung dây nói trên là",
+    "options": {
+      "A": "$Φ=\\frac{NBS}{R}$.",
+      "B": "$Φ=\\frac{NBSω}{R}$.",
+      "C": "$Φ=NBS$.",
+      "D": "$Φ=NBSω$."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 10,
+    "type": "mc",
+    "question": "Vật liệu nào sau đây là hiệu quả nhất khi được sử dụng để che chắn phóng xạ $γ?$",
+    "options": {
+      "A": "Giấy.",
+      "B": "Gỗ.",
+      "C": "Nhôm.",
+      "D": "Chì."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 11,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k9_de05/image3.png\" alt=\"hình vẽ\" class=\"q-img\" />Bộ dụng cụ thí nghiệm thực hành phần nhiệt vật lí 12 gồm: Biến thế nguồn (1), bộ đo công suất nguồn điện (2) có tích hợp chức năng đo thời gian, nhiệt kế điện tử (3), nhiệt lượng kế (4) bằng nhựa có vỏ xốp kèm que khuấy và dây điện trở, cân điện tử (5). Khi sử dụng bộ thí nghiệm trên để đo nhiệt dung riêng của nước thì nguyên nhân nào sau đây không làm cho kết quả phép đo kém chính xác?",
+    "options": {
+      "A": "Giá trị các số liệu thời gian, nhiệt độ được đọc chưa đồng thời.",
+      "B": "Dây điện trở ngập chìm hoàn toàn trong nước.",
+      "C": "Nước bay hơi trong quá trình thí nghiệm.",
+      "D": "Sự tỏa nhiệt từ bình nhiệt lượng kế ra môi trường."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 12,
+    "type": "mc",
+    "question": "Trong quá trình lan truyền sóng điện từ, vectơ $\\vec{B}$ và vectơ $\\vec{E}$ luôn luôn",
+    "options": {
+      "A": "trùng phương với nhau và vuông góc với phương truyền sóng.",
+      "B": "dao động cùng tần số.",
+      "C": "dao động ngược pha.",
+      "D": "cùng phương, cùng chiều."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 13,
+    "type": "mc",
+    "question": "Nucleon là tên gọi chung của proton và",
+    "options": {
+      "A": "electron.",
+      "B": "neutrino.",
+      "C": "neutron.",
+      "D": "positron."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 14,
+    "type": "mc",
+    "question": "Hạt nhân X chứa 2 proton và 1 notron, hạt nhân Y chứa 3 proton và 5 notron. Kí hiệu 2 hạt nhân trên là",
+    "options": {
+      "A": "$23X$ và $35Y$.",
+      "B": "$23X$ và $38Y$.",
+      "C": "$21X$ và $35Y$.",
+      "D": "$32X$ và $83Y$."
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 15,
+    "type": "mc",
+    "question": "Phát biểu nào sao đây là sai khi nói về độ phóng xạ?",
+    "options": {
+      "A": "Độ phóng xạ là đại lượng đặc trưng cho tính phóng xạ mạnh hay yếu của một lượng chất phóng xạ.",
+      "B": "Đơn vị đo độ phóng xạ là becơren.",
+      "C": "Với mỗi lượng chất phóng xạ xác định thì độ phóng xạ tỉ lệ với số nguyên tử của lượng chất đó.",
+      "D": "Độ phóng xạ của một lượng chất phóng xạ phụ thuộc vào nhiệt độ của lượng chất đó."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 16,
+    "type": "mc",
+    "question": "Một lượng khí gồm N phân tử chứa trong một bình kín. Gọi V là thể tích của bình, ${v}^{2}=\\frac{{v}_{1}^{2}+{v}_{2}^{2}+....+{v}_{N}^{2}}{N}$ được gọi là trung bình của các bình phương tốc độ của các phân tử khí, m là khối lượng phân tử chất khí. Tổng áp suất các phân tử khí tác dụng lên thành bình là",
+    "options": {
+      "A": "$p=\\frac{1}{3}×\\frac{m}{V}×N×{v}^{2}$.",
+      "B": "$p=\\frac{m}{V}×N×{v}^{2}$.",
+      "C": "$p=\\frac{1}{2}×\\frac{m}{V}×N×{v}^{2}$.",
+      "D": "$p=\\frac{1}{4}×\\frac{m}{V}×N×{v}^{2}$."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 17,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k9_de05/image4.png\" alt=\"hình vẽ\" class=\"q-img\" />Việc phân loại chất thải rắn sinh hoạt (lon nước ngọt, kim loại nói chung) nhằm thúc đẩy tăng cường tái sử dụng, tái chế chất thải, sản phẩm thải bỏ, tận dụng tối đa giá trị, kéo dài vòng đời sản phẩm, vật liệu. Hình bên là dây chuyển xử lí rác thải bằng từ tính (bên trong có nam châm). Hãy cho biết những chất thải rắn ở trên dây chuyển khi rơi xuống vị trí 1 thuộc loại chất thải rắn của kim loại nào?",
+    "options": {
+      "A": "Sắt.",
+      "B": "Nhôm.",
+      "C": "Chì.",
+      "D": "Đồng."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 18,
+    "type": "mc",
+    "question": "Người ta thường dùng nước trong bộ tản nhiệt (làm mát) của động cơ nhiệt vì",
+    "options": {
+      "A": "nước có nhiệt độ lớn.",
+      "B": "nước có nhiệt nóng chảy riêng lớn.",
+      "C": "nước có nhiệt dung riêng lớn.",
+      "D": "nước có nhiệt hóa hơi riêng lớn."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 19,
+    "type": "tf",
+    "question": "Câu 1. Cường độ dòng điện chạy trong một đoạn mạch có biểu thức:<br>$i=5\\mathrm{cos} {\\left(100πt-\\frac{π}{3}\\right)}\\left(A\\right)$.",
+    "options": {
+      "A": "Dòng điện chạy trong đoạn mạch nói trên là dòng điện không đổi.",
+      "B": "Tần số của dòng điện là 100 Hz.",
+      "C": "Nếu dùng ampe kế lí tưởng để đo dòng điện chạy trong đoạn mạch nói trên thì số chỉ ampe kế là 5,0 A.",
+      "D": "Trong 1 giây đòng điện chạy trong đoạn mạch đổi chiều 50 lần."
+    },
+    "correct": "SSSS",
+    "giaiThich": "a) Dòng điện chạy trong đoạn mạch nói trên là dòng điện xoay chiều: $i={I}_{0}\\mathrm{cos} {\\left(ωt+{φ}_{i}\\right)}$<br>b) Tần số của dòng điện: $f=\\frac{ω}{2π}=\\frac{100π}{2π}=50Hz$<br>c) Ampe kế đo giá trị hiệu dụng: $I=\\frac{{I}_{0}}{\\sqrt{2}}=\\frac{5}{\\sqrt{2}}=3,5A$<br>d) Chu kì $T=\\frac{1}{f}=\\frac{1}{50}=0,02s$; $Δt=1s=\\frac{1}{0,02}T=50T$<br>1 chu kì dòng điện có 2 lần đổi dấu (đổi chiều), suy ra 50 T thì dòng điện có 100 lần đổi chiều."
+  },
+  {
+    "id": 20,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k9_de05/image5.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 2. Trong giờ thực hành, một nhóm học sinh thực hiện thí nghiệm xác định nhiệt nóng chảy riêng của nước đá. Các bạn bố trí thí nghiệm như hình bên và tiến hành thí nghiệm qua các bước sau:<br>Bước 1<br>- Cho nước đá vào nhiệt lượng kế và hứng nước chảy ra bằng một chiếc cốc, bật đồng hồ đo thời gian, sau khoảng thời gian t, xác định khối lượng m của nước trong cốc này.<br>Bước 2<br>- Bật biến áp nguồn.<br>- Đọc số chỉ $P$ của oát kế.<br>- Cho nước chảy thêm vào cốc trong thời gian t. Xác định khối lượng M của nước trong cốc lúc này.<br>Kết quả thí nghiệm được nhóm ghi lại ở bảng sau:<br>Đại lượng<br>Kết quả đo<br>Khối lượng m (g) của nước trong cốc (chưa bật biến áp nguồn)<br>2,0<br>Khối lượng M (g) của nước trong cốc (đã bật biến áp nguồn)<br>17,5<br>Thời gian đun t (s)<br>180<br>Công suất $P\\left(W\\right)$<br>24<br>Xem điều kiện môi trường (nhiệt độ, áp suất, …) không đổi trong suốt thời gian làm thí nghiệm và điện năng tiêu thụ chuyển hóa hoàn toàn thành nhiệt lượng cung cấp cho nước đá. Bỏ qua sự bay hơi của nước.",
+    "options": {
+      "A": "Nhiệt lượng mà dây điện trở đã cung cấp cho nước đá trong thí nghiệm trên bằng $4320 J$.",
+      "B": "Khối lượng nước đá đã nóng chảy do nhận nhiệt lượng từ dây điện trở bằng $15,5 g$.",
+      "C": "Nhiệt nóng chảy riêng của nước đá trong thí nghiệm này đo được là $3,2.1{0}^{5}J/kg$.",
+      "D": "Nhiệt lượng mà môi trường cung cấp cho nước đá trong khoảng thời gian t là $640 J$."
+    },
+    "correct": "ĐSĐĐ",
+    "giaiThich": "a) ${Q}_{cc}=P.t=24.180=4320J$<br>b) Công suất tỏa nhiệt của môi trường luôn không đổi, trong khoảng thời gian t, môi trường làm nóng chảy m (g) nước đá nên trong khoảng thời 2t thì môi trường làm nóng 2m (g) nước đá. Khối lượng nước đá đã nóng chảy do nhận nhiệt lượng từ dây điện trở: $M-2m=13,5 g$<br>c) Gọi ${P}^{'}$ là công suất tỏa nhiệt (không đổi) của môi trường bên ngoài (môi trường không khí).<br>Ta có:$\\left\\{m.λ={P}^{'}.t                 \\left(M-m\\right)λ={P}^{'}.t+P.t\\right)⇒λ=\\frac{P.t}{M-2m}=\\frac{24.180}{\\left(17,5-2.2\\right).1{0}^{-3}}=3,2.1{0}^{5} J/kg$<br>d)${Q}^{'}={P}^{'}.t=m.λ=2.1{0}^{-3}.3,2.1{0}^{5}=640 J$"
+  },
+  {
+    "id": 21,
+    "type": "tf",
+    "question": "Câu 3. Một ngôi nhà có thể tích phần không gian bên trong là $40 {m}^{3}$. Vào một ngày mùa đông, nhiệt độ trong ngôi nhà vào buổi sáng sớm là 200C và đến giữa trưa là 250C. Cho biết áp suất khí quyển không đổi trong ngày là $1atm=1,013.1{0}^{5}Pa$ và khối lượng mol của không khí là $29 g/mol$.",
+    "options": {
+      "A": "Từ buổi sáng sớm đến giữa trưa, nhiệt độ trong ngôi nhà tăng 278 K.",
+      "B": "Ở buổi trưa các phân tử khí trong ngôi nhà chuyển động nhanh hơn so với buổi sáng.",
+      "C": "Số phân tử khí có trong ngôi nhà vào buổi sáng sớm là 7,51.1026  phân tử.",
+      "D": "Khối lượng không khí thoát ra khỏi căn phòng từ buổi sáng sớm đến giữa trưa là $0,81 kg$."
+    },
+    "correct": "SĐSĐ",
+    "giaiThich": "a)$Δt=ΔT=25-20=5 K$<br>b) Nhiệt độ càng cao thì các phân tử khí chuyển động càng nhanh.<br>c)$pV=\\frac{N}{{N}_{A}}.RT⇒1.1,013.1{0}^{5}.40=\\frac{N}{6,02.1{0}^{23}}.8,31.\\left(20+273\\right)⇒N=10,12.1{0}^{26}$ phân tử<br>d)$\\left\\{pV=\\frac{{m}_{1}}{M}R{T}_{1}pV=\\frac{{m}_{2}}{M}R{T}_{2}\\right)⇒{m}_{1}-{m}_{2}=\\frac{pV.M}{R}\\left(\\frac{1}{{T}_{1}}-\\frac{1}{{T}_{2}}\\right)=\\frac{1,013.1{0}^{5}.40.29.1{0}^{-3}}{8,31}\\left(\\frac{1}{293}-\\frac{1}{298}\\right)=0,81 kg$"
+  },
+  {
+    "id": 22,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k9_de05/image6.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Trong hình bên, N là một mẫu phóng xạ được đặt trong một điện trường đều do hai bản kim loại phẳng song song và tích điện trái dấu tạo ra. Các tia phóng xạ phát ra từ N đập vào màn huỳnh quang F gây ra các chấm sáng. Hệ thống được đặt trong chân không.",
+    "options": {
+      "A": "Chấm sáng tại S do tia ${β}^{-}$ gây ra.",
+      "B": "Hầu hết các tia γ gây ra chấm sáng tại T.",
+      "C": "Chấm sáng tại Q có thể do tia $α$ gây ra.",
+      "D": "Hầu hết các tia ${β}^{+}$ bị chắn bởi tờ giấy G."
+    },
+    "correct": "SSĐS",
+    "giaiThich": ""
+  },
+  {
+    "id": 23,
+    "type": "short",
+    "question": "<img src=\"assets/exams/vedich2k9_de05/image7.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 1. Một nhóm học sinh THPT dùng một ấm điện đun sôi 1 kg nước ở áp suất khí quyển 105 Pa, dùng nhiệt kế đo nhiệt độ của nước theo thời gian thì thu được đồ thị như hình bên. Nhiệt dung riêng của nước là 4180 J/kgK. Cho rằng có 18,4% nhiệt lượng của ấm tỏa ra môi trường. Coi sự bay hơi ở nhiệt độ thường của nước trong ấm là không đáng kể. Công suất của ấm là bao nhiêu kW? (làm tròn kết quả đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "1,6",
+    "giaiThich": "$100%-18,4%=\\frac{1.4180.\\left(100-25\\right)}{P.4.60}⇒P=1600,8W≈1,6 kW$"
+  },
+  {
+    "id": 24,
+    "type": "short",
+    "question": "<img src=\"assets/exams/vedich2k9_de05/image8.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 2. Một bàn chải đánh răng điện sử dụng thiết bị sạc pin không dây được thiết kế dùng dock sạc. Trong dock sạc có cuộn dây 1 với số vòng N1 = 80 vòng, được nối vào mạng điện dân dụng có điện áp hiệu dụng 220 V. Trong tay cầm của bàn chải có cuộn dây 2 với số vòng N2 = 4 vòng. Khi sạc pin cho bàn chải, dòng điện trong cuộn dây 1 tạo ra dòng điện cảm ứng trong cuộn dây 2. Điện áp cực đại giữa hai đầu cuộn dây 2 bằng bao nhiêu Vôn?(làm tròn kết quả đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "15,6",
+    "giaiThich": "${U}_{2}={U}_{1}.\\frac{{N}_{2}}{{N}_{1}}=220.\\frac{4}{80}=11 V⇒{U}_{02}={U}_{2}\\sqrt{2}=11\\sqrt{2} V=15,6 V$<br>Sử dụng thông tin sau cho câu 3 và câu 4: Nhà máy điện hạt nhân Diablo Canyon ở California, Mỹ có công suất phát điện là 1120 MW với hiệu suất 32%. Năng lượng phân hạch trung bình của một hạt nhân <img src=\"assets/exams/vedich2k9_de05/image9.png\" alt=\"công thức\" class=\"q-formula-img\" /> tỏa ra là 200 MeV . Khối lượng mol của <img src=\"assets/exams/vedich2k9_de05/image10.png\" alt=\"công thức\" class=\"q-formula-img\" /> là <img src=\"assets/exams/vedich2k9_de05/image11.png\" alt=\"công thức\" class=\"q-formula-img\" />, biết $1 eV=1,60.1{0}^{-19} J$"
+  },
+  {
+    "id": 25,
+    "type": "short",
+    "question": "Câu 3. Năng lượng phân hạch trung bình của một hạt nhân <img src=\"assets/exams/vedich2k9_de05/image12.png\" alt=\"công thức\" class=\"q-formula-img\" /> tỏa ra là $x.1{0}^{-11} J$. Tính x (làm tròn kết quả đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "3,2",
+    "giaiThich": "$ΔE=200.1,6.1{0}^{-13}=3,2.1{0}^{-11} J$"
+  },
+  {
+    "id": 26,
+    "type": "short",
+    "question": "Câu 4. Nhiên liệu là các thanh <img src=\"assets/exams/vedich2k9_de05/image13.png\" alt=\"công thức\" class=\"q-formula-img\" /> đã làm giàu <img src=\"assets/exams/vedich2k9_de05/image14.png\" alt=\"công thức\" class=\"q-formula-img\" /> (tỉ lệ phần trăm khối lượng của <img src=\"assets/exams/vedich2k9_de05/image15.png\" alt=\"công thức\" class=\"q-formula-img\" /> và khối lượng thanh là 25%). Khối lượng nhiên liệu cần cho nhà máy Diablo Canyon hoạt động liên tục trong 1 năm (365 ngày) là bao nhiêu tấn? (làm tròn kết quả đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "5,4",
+    "giaiThich": "$H=\\frac{P.t}{\\frac{m}{A}{N}_{A}.ΔE}⇒0,32=\\frac{1120.1{0}^{6}.365.24.3600}{\\frac{0,25{m}_{nl}}{235.1{0}^{-3}}.6,02.1{0}^{23}.3,2.1{0}^{-11}}⇒{m}_{nl}=5386 kg=5,4$ tấn<br><img src=\"assets/exams/vedich2k9_de05/image16.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng thông tin sau cho câu 5 và câu 6: Một quả bóng thám không hình cầu, có tổng khối lượng vỏ bóng và thiết bị đo là 1 kg. Bóng được bơm khí helium ở áp suất bằng áp suất khí quyển tại mặt đất ${p}_{0}=1,013.1{0}^{5}Pa$ và nhiệt độ 270C (bằng nhiệt độ khí quyển). Biết khối lượng mol của không khí là ${M}_{kk}=29 g/mol$ của He là ${M}_{He}=4 g/mol,$ lấy $g=10 m/{s}^{2}$"
+  },
+  {
+    "id": 27,
+    "type": "short",
+    "question": "Câu 5. Xác định khối lượng riêng của khí helium theo đơn vị gam/lít (kết quả làm tròn đến chữ số hàng phần trăm)",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "0,16",
+    "giaiThich": "$pV=\\frac{m}{M}RT⇒p=\\frac{ρ}{M}RT⇒1,013.1{0}^{5}=\\frac{ρ}{4.1{0}^{-3}}.8,31.\\left(27+273\\right)⇒ρ=0,16 kg/{m}^{3}$<br>Chú ý: Đơn vị kg/m3 tương đương với đơn vị gam/lít."
+  },
+  {
+    "id": 28,
+    "type": "short",
+    "question": "Câu 6. Tìm bán kính bóng nhỏ nhất Rmin (khi vừa bơm xong) theo đơn vị mét để quả bóng rời khỏi mặt đất. Xem vỏ bóng có bề dày không đáng kể (kết quả làm tròn đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "0,6",
+    "giaiThich": "${p}_{0}.V=\\frac{{m}_{He}}{{M}_{He}}RT=\\frac{{m}_{kk}}{{M}_{kk}}RT ρ=\\frac{m}{V} \\left\\{{ρ}_{He}=\\frac{{p}_{0}.{M}_{He}}{RT}=0,1625{ρ}_{kk}=\\frac{{p}_{0}.{M}_{kk}}{RT}=1,1784\\right)$ (đơn vị kg/m3).<br>Khi bóng bắt đầu bay lên, lực đẩy Ác-si-mét cân bằng với tổng trọng lượng của vỏ bóng và khí bên trong  bóng: ${ρ}_{kk}Vg={ρ}_{He}Vg+mg⇒V\\left({ρ}_{kk}-{ρ}_{He}\\right)=m⇒\\frac{4}{3}π{R}^{3}.\\left({ρ}_{kk}-{ρ}_{He}\\right)=m$<br>$⇒R≈0,617​ m$"
+  }
+]

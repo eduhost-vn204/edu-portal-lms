@@ -1,0 +1,366 @@
+[
+  {
+    "id": 1,
+    "type": "mc",
+    "question": "Một đoạn dây dẫn thẳng có độ dài L mang dòng điện cường độ I chạy qua. Đoạn dây dẫn được đặt trong từ trường đều và hợp với vectơ cảm ứng từ $\\vec{B}$ góc α. Độ lớn lực từ tác dụng lên đoạn đây dẫn được tính bằng công thức nào sau đây?",
+    "options": {
+      "A": "$F={B}^{2}IL\\mathrm{sin} {α}$.",
+      "B": "$F=BI{L}^{2}\\mathrm{sin} {α}$.",
+      "C": "$F=B{I}^{2}L\\mathrm{sin} {α}$.",
+      "D": "$F=BIL\\mathrm{sin} {α}$."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 2,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k9_de03/image1.png\" alt=\"hình vẽ\" class=\"q-img\" />Khi đặt một ống dây đồng hình trụ có các vòng dây được nối thành mạch kín lên một cân điện tử thì số chỉ của cân có giá trị X như hình vẽ. Sau đó, thả rơi một thanh nam châm từ độ cao nhất định theo phương thẳng đứng hướng về phía ống dây. Ngay khi nam châm vừa tiến vào đầu trên của ống dây, số đọc của cân điện tử là",
+    "options": {
+      "A": "vẫn bằng $X$.",
+      "B": "chưa thể so sánh được với X vì chưa biết độ cao lúc thả rơi.",
+      "C": "nhỏ hơn X.",
+      "D": "lớn hơn X."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 3,
+    "type": "mc",
+    "question": "Số nucleon của hạt nhân $90230Th$ là",
+    "options": {
+      "A": "320.",
+      "B": "90.",
+      "C": "140.",
+      "D": "230."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 4,
+    "type": "mc",
+    "question": "Vật liệu chứa chất thải hạt nhân cần có đặc điểm là",
+    "options": {
+      "A": "có tính đàn hồi.",
+      "B": "có độ bền rất cao.",
+      "C": "có thể thấm nước.",
+      "D": "chịu được nhiệt độ cao."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 5,
+    "type": "mc",
+    "question": "Một mol khí lí tưởng, có nhiệt độ tuyệt đối T, có thể tích V. Hằng số $R=8,31J/mol.K$. Áp suất khí tác dụng lên thành bình là",
+    "options": {
+      "A": "$p=\\frac{V}{RT}$.",
+      "B": "$p=\\frac{VR}{T}$.",
+      "C": "$p=\\frac{RT}{V}$.",
+      "D": "$p=\\frac{VT}{R}$."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 6,
+    "type": "mc",
+    "question": "Tại sao không nên sử dụng thiết bị điện khi đang sạc pin?",
+    "options": {
+      "A": "Vì tiêu thụ điện năng nhiều hơn.",
+      "B": "Vì có thể làm tăng tuổi thọ của thiết bị.",
+      "C": "Vì thiết bị sẽ hoạt động không ổn định.",
+      "D": "Vì có thể gây ra nguy cơ chập điện, cháy nổ."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 7,
+    "type": "mc",
+    "question": "Trong quá trình đẳng nhiệt của một lượng khí nhất định, mật độ phân tử khí trong một đơn vị thể tích",
+    "options": {
+      "A": "chưa đủ dữ kiện để kết luận.",
+      "B": "tăng tỉ lệ thuận với áp suất.",
+      "C": "giảm tỉ lệ nghịch với áp suất.",
+      "D": "luôn không đổi."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 8,
+    "type": "mc",
+    "question": "Cho 4 tia phóng xạ: tia ; tia +; tia - và tia  đi vào miền có điện trường đều theo phương vuông góc với đường sức điện. Tia phóng xạ không bị lệch khỏi phương truyền ban đầu là",
+    "options": {
+      "A": "tia ${β}^{-}$.",
+      "B": "tia +.",
+      "C": "tia .",
+      "D": "tia ."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 9,
+    "type": "mc",
+    "question": "Trường hợp làm biến đổi nội năng không do thực hiện công là",
+    "options": {
+      "A": "nén khí trong xilanh.",
+      "B": "một viên bi bằng thép rơi xuống đất mềm.",
+      "C": "cọ xát hai vật vào nhau.",
+      "D": "đun nóng nước bằng bếp."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 10,
+    "type": "mc",
+    "question": "Cho ba bình kín chứa ba khối khí lí tưởng có thể tích và áp suất khác nhau. Bình (1) có chứa khí hydrogen, bình (2) chứa khí oxygen và bình (3) có chứa khí helium. Các bình được nung nóng ở cùng một nhiệt độ. Động năng tịnh tiến trung bình của các phân tử khí trong các bình này là",
+    "options": {
+      "A": "lớn nhất với bình (1).",
+      "B": "lớn nhất với bình (2).",
+      "C": "lớn nhất với bình (3).",
+      "D": "bằng nhau."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 11,
+    "type": "mc",
+    "question": "Một trong những ứng dụng của hiện tượng phóng xạ trong ngành nông nghiệp là",
+    "options": {
+      "A": "phát hiện các khiếm khuyết trong vật liệu.",
+      "B": "tạo đột biến cải thiện giống cây trồng.",
+      "C": "chuẩn đoán hình ảnh và điều trị ung thư.",
+      "D": "xác định tuổi của các mẫu vật."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 12,
+    "type": "mc",
+    "question": "Gọi ${n}_{R},$ ${n}_{L},$ ${n}_{K}$ lần lượt là mật độ phân tử của một chất (không phải là nước) ở thể rắn, thể lỏng và thể khí. Thứ tự đúng là",
+    "options": {
+      "A": "${n}_{R}>{n}_{K}>{n}_{L}$.",
+      "B": "${n}_{R}<{n}_{K}<{n}_{L}$.",
+      "C": "${n}_{R}>{n}_{L}>{n}_{K}$.",
+      "D": "${n}_{R}<{n}_{L}<{n}_{K}$."
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 13,
+    "type": "mc",
+    "question": "Các đường sức từ trong lòng một ống dây hình trụ có dòng điện không đổi chạy qua là",
+    "options": {
+      "A": "những đường cong, có chiều từ cực Nam sang cực Bắc.",
+      "B": "những đường thẳng song song, cùng chiều và cách đều nhau.",
+      "C": "những đường cong, có chiều từ cực Bắc sang cực Nam.",
+      "D": "những đường thẳng, từng đôi một ngược chiều nhau."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 14,
+    "type": "mc",
+    "question": "Sử dụng thông tin sau cho câu 14 và câu 15: Hình vẽ bên biểu diễn sự phụ thuộc của nhiệt độ vào thời gian của 400 g nước khi được đun nóng.<br>Trong thời gian từ thời điểm T1 đến thời điểm T2 ứng với quá trình chuyển thể nào sau đây?",
+    "options": {
+      "A": "Đông đặc.",
+      "B": "Hóa hơi.",
+      "C": "Nóng chảy.",
+      "D": "Ngưng tụ."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 15,
+    "type": "mc",
+    "question": "Biết nhiệt dung riêng của nước là 4180 J/kg.K. Trong thời gian từ t0 = 0 đến thời đ iểm T1, nhiệt lượng cần cungc ấp cho nước là",
+    "options": {
+      "A": "108,68 kJ.",
+      "B": "16720 kJ.",
+      "C": "10868 kJ.",
+      "D": "167,2 kJ."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 16,
+    "type": "mc",
+    "question": "Có một lượng khí (coi là khí lí tưởng) đựng trong bình. Hỏi áp suất của khí sẽ biến đổi thế nào nếu thể tích của bình tăng gấp ba lần, còn nhiệt độ thì giảm đi một nửa ?",
+    "options": {
+      "A": "Áp suất không đổi.",
+      "B": "Áp suất tăng gấp đôi.",
+      "C": "Áp suất tăng gấp bốn lần.",
+      "D": "Áp suất giảm đi sáu lần."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 17,
+    "type": "mc",
+    "question": "Biết k là hằng số Boltzmann, động năng trung bình của phân tử khí lí tưởng phụ thuộc vào nhiệt độ tuyệt đối T được xác định bằng công thức nào sau đây?",
+    "options": {
+      "A": "${E}_{d}=\\frac{3}{2kT}$.",
+      "B": "${E}_{d}=\\frac{3}{2}kT$.",
+      "C": "${E}_{d}=\\frac{2}{3}kT$.",
+      "D": "${E}_{d}=\\frac{2}{3kT}$."
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 18,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k9_de03/image3.png\" alt=\"hình vẽ\" class=\"q-img\" />Tàu đệm từ là một phương tiện giao thông chạy trên đệm từ trường.Ưu điểm chính của tàu đệm từ so với tàu hỏa là",
+    "options": {
+      "A": "hoạt động được trên mọi địa hình.",
+      "B": "không cần cung cấp điện năng để hoạt động.",
+      "C": "khả năng chịu tải trọng lớn hơn.",
+      "D": "loại bỏ hoàn toàn ma sát giữa xe và đường ray khi chạy."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 19,
+    "type": "tf",
+    "question": "Câu 1. Hình sau mô tả một phản ứng hạt nhân. Cho biết năng lượng toả ra trong phản ứng trên là $17,3MeV$.<br><img src=\"assets/exams/vedich2k9_de03/image4.png\" alt=\"hình vẽ\" class=\"q-img\" />",
+    "options": {
+      "A": "Phương trình của phản ứng là $11H+12H→24He+01n$.",
+      "B": "Phản ứng trên là phản ứng tổng hợp hạt nhân.",
+      "C": "Nếu có 1 gam helium được tạo ra thì năng lượng toả ra là $31,5.1{0}^{19} J$.",
+      "D": "Hai hạt nhân tương tác trước phản ứng là đồng vị của hydrogen."
+    },
+    "correct": "SĐĐS",
+    "giaiThich": "a) Sai. ${}_{1}^{2}H{+}_{1}^{3}H{→}_{2}^{4}He{+}_{0}^{1}n$.<br>c) Cứ 1 phản ứng sinh ra 1 hạt nhân He; đồng thời phản ứng toả ra năng lượng E.<br>W = N.E = $\\frac{m}{M}.{N}_{A}.ΔE=\\frac{1}{4}×6,02.1{0}^{23}×17,3×1,6.1{0}^{-13}$= 4,17.1011 J."
+  },
+  {
+    "id": 20,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k9_de03/image5.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 2. Hai dây dẫn thẳng, nhẹ được mắc song song gần nhau vào một giá treo. Sau khi cho dòng điện đi qua, hai dây dẫn ở trạng thái như hình vẽ.",
+    "options": {
+      "A": "Tương tác của hai dòng điện là tương tác từ",
+      "B": "Hai dây dẫn hút nhau chứng tỏ hai dòng điện chạy trong hai dây dẫn này cùng chiều",
+      "C": "Nếu chiều dòng điện chạy trong hai dây dẫn ngược chiều nhau thì chúng vẫn hút nhau như trạng thái cũ.",
+      "D": "Sau khi ngắt dòng điện, hai dây dẫn vẫn hút nhau."
+    },
+    "correct": "ĐĐSS",
+    "giaiThich": "a) Tương tác từ là tương tác giữa: dòng điện và dòng điện, dòng điện và nam châm, nam châm và nam châm.<br>b) & c) Hai dòng điện cùng chiều thì hút nhau, ngược chiều thì đẩy nhau (có thể vận dụng quy tắc nắm tay và và bàn tay trái để chứng minh).<br>d) Nếu ngắt dòng điện, hai dây dẫn không còn tương tác từ với nhau."
+  },
+  {
+    "id": 21,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k9_de03/image6.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 3. Cho 200 g nước đá ở <img src=\"assets/exams/vedich2k9_de03/image7.png\" alt=\"công thức\" class=\"q-formula-img\" /> vào một cốc cách nhiệt đựng nước ở $3{5}^{0}C$.Sự thay đổi nhiệt độ của nước đá và nước trong cốc theo thời gian được biểu diễn theo đồ thị hình bên. Biết nhiệt dung riêng của nước đá là $2100J/kg$, nhiệt nóng chảy riêng của nước đá là $3,4.1{0}^{5} J/kg$, nhiệt dung riêng của nước là $4200J/kg.K$., bỏ qua nhiệt dung của cốc. Trong các phát biểu sau đây, phát biểu nào đúng, phát biểu nào sai?",
+    "options": {
+      "A": "Nước đá tan trong khoảng thời gian <img src=\"assets/exams/vedich2k9_de03/image8.png\" alt=\"công thức\" class=\"q-formula-img\" /> giây.",
+      "B": "Trong khoảng thời gian từ <img src=\"assets/exams/vedich2k9_de03/image9.png\" alt=\"công thức\" class=\"q-formula-img\" /> đến <img src=\"assets/exams/vedich2k9_de03/image10.png\" alt=\"công thức\" class=\"q-formula-img\" />, nước đá không thu nhiệt từ nước trong cốc.",
+      "C": "Trong khoảng thời gian <img src=\"assets/exams/vedich2k9_de03/image11.png\" alt=\"công thức\" class=\"q-formula-img\" /> giây đầu tiên, nước trong cốc toả ra một lượng nhiệt bằng $761,3kJ$.",
+      "D": "Khối lượng nước trong cốc bằng 0,6 kg."
+    },
+    "correct": "SSSĐ",
+    "giaiThich": "a) Nước đá tan trong khoảng thời gian <img src=\"assets/exams/vedich2k9_de03/image12.png\" alt=\"công thức\" class=\"q-formula-img\" /> giây.<br>b) Trong khoảng thời gian từ <img src=\"assets/exams/vedich2k9_de03/image13.png\" alt=\"công thức\" class=\"q-formula-img\" /> đến <img src=\"assets/exams/vedich2k9_de03/image14.png\" alt=\"công thức\" class=\"q-formula-img\" />, nước đá có thu nhiệt từ nước trong cốc.<br>c) ${Q}_{2}={m}_{d}{c}_{d}Δ{t}_{d}+{m}_{d}λ=0,2.2100.8+0,2.3.4.1{0}^{5}=71360J$<br>d) ${Q}_{2}+{m}_{d}{c}_{n}t={m}_{n}{c}_{n}\\left({t}_{n}-t\\right)⇒71360+0,2.4200.5={m}_{n}.4200.(35-5)⇒{m}_{n}≈0,6  kg$"
+  },
+  {
+    "id": 22,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k9_de03/image15.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Bóng thám không được sử dụng để thu thập thông tin về môi trường, không khí và thời tiết. Vỏ bóng được làm bằng chất liệu đàn hồi, phía dưới có gắn dù và thiết bị đo (hình bên). Bóng thường được bơm khí hiếm nhẹ hơn không khí, nhờ đó có thể bay lên các tầng không khi khác nhau để thu thập thông tin về nhiệt độ, độ ẩm, áp suất, tốc độ gió,... Một quả bóng thám không khi bắt đầu thả có đường kính 3 m. Vỏ bóng, dù và thiết bị đo có khối lượng 4 kg. Bóng được bơm khí hydrogen, ở áp suất bằng áp suất khí quyển tại mặt đất p0 = 1,013.105 Pa và nhiệt độ 27°C. Bỏng lên đến độ cao h thi dừng lại, khi đó đường kính của bỏng đã tăng gấp 3 lần so với khi bắt đầu thả, tại đó nhiệt độ của khí quyển là –55°C và lơ lửng trên đó khoảng 2 giờ trước khi vỡ. Biết khối lượng mol của không khí và của hydrogen lần lượt là 29 g/mol và 2 g/mol.",
+    "options": {
+      "A": "Để bóng bay lên được thì lực đẩy Archimedes của không khí tác dụng vào bóng phải lớn hơn tổng trọng lượng của vỏ bóng, dù, thiết bị đo, do đó bóng cần được bơm khí hiếm nhẹ.",
+      "B": "Khi càng lên cao thì áp suất khí quyển càng giảm nên chênh lệch áp suất giữa khí bên trong bỏng với áp suất khí quyển bên ngoài ngày càng lớn, thể tích bóng sẽ tăng, vỏ bóng mỏng dần đến một độ cao nhất định thì bóng sẽ bị vỡ.",
+      "C": "Khối lượng khí hydrogen được bơm vào bóng là 1,51 kg.",
+      "D": "Áp suất của khí quyển tại độ cao h là 8,4.102 Pa."
+    },
+    "correct": "ĐSĐĐ",
+    "giaiThich": "a)${F}_{A}≥\\sum {P}$<br>b) Ở một độ cao nhất định, do chênh lệch áp suất thì bóng sẽ vỡ.<br>c) Tại mặt đất: ${p}_{0}V=\\frac{{m}_{H}}{M}.R.T⇒1,013.1{0}^{5}.\\frac{4}{3}.3,14.1,{5}^{3}=\\frac{{m}_{H}}{2.1{0}^{-3}}.8,31.300⇒{m}_{H}=1,15 kg$<br>d) Từ điều kiện cân bằng lực: ${ρ}_{kq}Vg={m}_{vo}.g+{m}_{H}g⇒{ρ}_{kq}=\\frac{{m}_{H}+{m}_{vo}}{V}$<br>${p}_{kq}V=\\frac{{m}_{kq}}{{M}_{kq}}RT⇒{p}_{kq}={ρ}_{kq}.\\frac{RT}{{M}_{kq}}=\\frac{{m}_{H}+{m}_{vo}}{V}.\\frac{RT}{{M}_{kq}}=\\frac{4+1,15}{\\frac{4}{3}.3,14.{\\left(3.1,5\\right)}^{3}}.\\frac{8,31.\\left(-55+273\\right)}{29.1{0}^{-3}}$<br>$⇒{p}_{kq}≈843,26Pa≈8,4.1{0}^{2}Pa$"
+  },
+  {
+    "id": 23,
+    "type": "short",
+    "question": "Câu 1. Một đoạn dây dẫn dài 20 cm đặt trong từ trường đều và vuông góc với vectơ cảm ứng từ. Dòng điện qua dây có cường độ 5A. Độ lớn cảm ứng từ 0,02 T. Lực từ tác dụng lên đoạn dây đó có độ lớn bằng bao nhiêu N(làm tròn kết quả đến chữ số hàng phần trăm).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "0,02",
+    "giaiThich": "$F=IBL=5.0,02.0,2=0,02 N$"
+  },
+  {
+    "id": 24,
+    "type": "short",
+    "question": "<img src=\"assets/exams/vedich2k9_de03/image16.png\" alt=\"hình vẽ\" class=\"q-img\" /><img src=\"assets/exams/vedich2k9_de03/image17.png\" alt=\"hình vẽ\" class=\"q-img\" /><img src=\"assets/exams/vedich2k9_de03/image64.png\" alt=\"công thức\" class=\"q-formula-img\" /><img src=\"assets/exams/vedich2k9_de03/image65.png\" alt=\"công thức\" class=\"q-formula-img\" />Câu 2. Máy biến áp là thiết bị điện dùng để biến đổi điện áp xoay chiều. Cấu tạo gồm 2 cuộn dây sơ cấp (${N}_{1}$ vòng) và thứ cấp (${N}_{2}$ vòng), hoạt động dựa vào hiện tượng cảm ứng điện từ. Biết điện áp hiệu dụng ở hai đầu mỗi cuộn dây tỉ lệ thuận với số vòng dây của cuộn dây đó. Đặt một điện áp xoay chiều có giá trị hiệu dụng $160\\sqrt{2}V$ vào hai đầu cuộn sơ cấp thì đồ thị điện áp ${u}_{2}$ giữa hai đầu cuộn thứ cấp khi để hở có dạng như hình bên. Biết tổng số vòng dây ở cả hai cuộn sơ cấp và cuộn thứ cấp của máy biến áp là 850 vòng. Số vòng dây cuộn sơ cấp là bao nhiêu vòng?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "800",
+    "giaiThich": "Áp dụng: $\\frac{{U}_{2}}{{U}_{1}}=\\frac{{N}_{2}}{{N}_{1}}⇒\\frac{10\\sqrt{2}}{160\\sqrt{2}}=\\frac{850-{N}_{1}}{{N}_{1}}⇒{N}_{1}=800$<br>Sử dụng các thông tin sau cho câu 3 và câu 4: Hai học sinh chở nhau đi học bằng xe đạp thì thấy săm xe đạp non hơi. Biết săm xe có thể tích 5 lít chứa không khí ở áp suất <img src=\"assets/exams/vedich2k9_de03/image18.png\" alt=\"công thức\" class=\"q-formula-img\" />. Khi đó một học sinh đã dùng một bơm tay, mỗi lần bơm vào săm 0,4 lít không khí ở áp suất khí quyển 1 atm. Coi quá trình bơm là đẳng nhiệt và thể tích của săm xe là không đổi."
+  },
+  {
+    "id": 25,
+    "type": "short",
+    "question": "Câu 3. Hỏi sau bao nhiêu lần bơm thì áp suất của không khí trong săm tăng đến <img src=\"assets/exams/vedich2k9_de03/image19.png\" alt=\"công thức\" class=\"q-formula-img\" />? (kết quả làm tròn đến chữ số hàng đơn vị).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "5",
+    "giaiThich": "Đẳng nhiệt: $n={n}_{1}+{n}_{2}⇒\\frac{pV}{RT}=\\frac{{p}_{1}{V}_{1}}{RT}+\\frac{{p}_{2}{V}_{2}}{RT}⇒1,5.5 = 1,1.5 + 1.0,4N⇒N=5$"
+  },
+  {
+    "id": 26,
+    "type": "short",
+    "question": "Câu 4. Biết khối lượng mol của oxygen là $32 \\frac{g}{mol}$. Một bình khí chứa 48 g oxygen có số phân tử là <img src=\"assets/exams/vedich2k9_de03/image20.png\" alt=\"công thức\" class=\"q-formula-img\" />. Giá trị của x là bao nhiêu. (kết quả làm tròn đến chữ số hàng phần trăm).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "9,03",
+    "giaiThich": "$N=n.{N}_{A}=\\frac{m}{M}.{N}_{A}=\\frac{48}{32}×6,02.1{0}^{23}=9,03.1{0}^{23}$<br><img src=\"assets/exams/vedich2k9_de03/image21.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho câu 5 và câu 6: Dùng máy đo phóng xạ của một mẫu gỗ của một cổ vật phát hiện được 240 phóng xạ mỗi phút. Biết rằng thành phần của mẫu gỗ có chứa 25 g $614C$ và $612C$, chu kì bán rã của $614C$ là 5730 năm và tỉ lệ nguyên tử $612C$ và $614C$ khi một sinh vật còn sống 1012:1."
+  },
+  {
+    "id": 27,
+    "type": "short",
+    "question": "Câu 5. Số nguyên tử $614C$ có trong mẫu gỗ trên bằng X.1012. Xác định giá trị của X (Kết quả làm tròn đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "1,0",
+    "giaiThich": "a)$H=λN=\\frac{\\mathrm{ln} {2}}{T}.N⇒\\frac{240}{60}=\\frac{\\mathrm{ln} {2}}{5730.365.24.3600}.N⇒{N}_{C14}=1,043.1{0}^{12}$ (nguyên tử)"
+  },
+  {
+    "id": 28,
+    "type": "short",
+    "question": "Câu 6. Xác định tuổi của mẫu gỗ này theo đơn vị năm?(kết quả làm tròn đến chữ số hàng đơn vị)",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "1523",
+    "giaiThich": "Khối lượng mẫu gỗ có chứa 25 g $614C$ và $612C$:<br>$25={m}_{C14}+{m}_{C12}=\\frac{{N}_{C14}}{{N}_{A}}.14+\\frac{{N}_{C12}}{{N}_{A}}.12 {N}_{C14}=1,043.1{0}^{12} {N}_{C12}=1,254.1{0}^{24}$ (nguyên tử)<br>Áp dụng: $\\frac{1,043.1{0}^{12}}{1,254.1{0}^{24}}=\\frac{1}{1{0}^{12}}.{2}^{-\\frac{t}{5730}}⇒t=1523$ năm"
+  }
+]

@@ -1,0 +1,366 @@
+[
+  {
+    "id": 1,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k9_de04/image1.png\" alt=\"hình vẽ\" class=\"q-img\" />Tại vị trí O, người ta bắn ra một proton chuyển động với vận tốc $\\vec{v}$ vào vùng không gian có từ trường đều MNPQ, theo hướng vuông góc với cảm ứng từ $\\vec{B}$. Quỹ đạo của proton sau đó là đường nào trong hình bên?",
+    "options": {
+      "A": "(3).",
+      "B": "(1).",
+      "C": "(4).",
+      "D": "(2)."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 2,
+    "type": "mc",
+    "question": "Khi thực hành đo nhiệt hóa hơi riêng của nước, một học sinh viết được kết quả là $L=\\left(2,3±0,1\\right)MJ/kg$. Sai số tỉ đối (tương đối) của phép đo này bằng",
+    "options": {
+      "A": "2,3%.",
+      "B": "4,3%.",
+      "C": "1,0%.",
+      "D": "1,2%."
+    },
+    "correct": "D",
+    "giaiThich": "<img src=\"assets/exams/vedich2k9_de04/image2.png\" alt=\"hình vẽ\" class=\"q-img\" />HD: $δL=\\frac{ΔL}{L}.100%=\\frac{0,1}{2,3}.100%=4,3%$"
+  },
+  {
+    "id": 3,
+    "type": "mc",
+    "question": "Một lượng khí đã thực hiện liên tiếp bốn quá trình được biểu diễn trên trong hệ tọa độ (p – T) như hình vẽ dưới đây. Quá trình đẳng áp là",
+    "options": {
+      "A": "Quá trình 1 – 2.",
+      "B": "Quá trình 2 – 3 và 4 – 1.",
+      "C": "Quá trình 4 – 1.",
+      "D": "Quá trình 3 – 4 và 1 – 2."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 4,
+    "type": "mc",
+    "question": "Hạt nhân $1123Na$ có",
+    "options": {
+      "A": "11 prôtôn và 12 nơtron.",
+      "B": "2 prôtôn và 11 nơtron.",
+      "C": "23 prôtôn và 11 nơtron.",
+      "D": "11 prôtôn và 23 nơtron."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 5,
+    "type": "mc",
+    "question": "Khi nhiệt độ trong bình chứa khí tăng, áp suất của khối khí trong bình cũng tăng lên đó là vì",
+    "options": {
+      "A": "khoảng cách giữa các phân tử tăng.",
+      "B": "mật độ phân tử khí giảm.",
+      "C": "phân tử khí chuyển động nhanh hơn.",
+      "D": "số lượng phân tử khí tăng."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 6,
+    "type": "mc",
+    "question": "Đặc điểm nào sau đây là đúng với cấu trúc của chất ở thể lỏng?",
+    "options": {
+      "A": "Giữa các phân tử không có khoảng cách.",
+      "B": "Các phân tử chuyển động hỗn loạn và có khoảng cách rất lớn.",
+      "C": "Các phân tử có lực tương tác rất yếu.",
+      "D": "Các phân tử dao động quanh vị trí cân bằng, vị trí cân bằng có thể dịch chuyển."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 7,
+    "type": "mc",
+    "question": "Các tương tác sau đây, tương tác không phải tương tác từ là tương tác giữa",
+    "options": {
+      "A": "nam châm và dòng điện.",
+      "B": "hai nam châm.",
+      "C": "các điện tích đứng yên.",
+      "D": "hai dây dẫn mang dòng điện."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 8,
+    "type": "mc",
+    "question": "Với $Φ$ là từ thông, $B$ là độ lớn cảm ứng từ, $S$ là diện tích mạch kín và $α$ là góc hợp bởi mặt S và vectơ cảm ứng từ. Từ thông qua một mạch kín được xác định bằng công thức",
+    "options": {
+      "A": "$Φ=BS\\mathrm{tan} {α}$.",
+      "B": "$Φ=BS\\mathrm{sin} {α}$.",
+      "C": "$Φ=BS\\mathrm{cos} {α}$.",
+      "D": "$Φ=BS\\mathrm{cot} {α}$."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 9,
+    "type": "mc",
+    "question": "Một quả cầu kim loại (chưa nhiễm từ) được treo bằng một sợi dây. Khi đưa cực bắc của một thanh nam châm lại gần, quả cầu bị nam châm hút rất mạnh. Sau đó, đảo ngược nam châm và cực nam của nó được đưa lại gần quá cầu. Quả cầu sẽ bị",
+    "options": {
+      "A": "nam châm đẩy mạnh.",
+      "B": "nam châm hút yếu.",
+      "C": "nam châm đẩy yếu.",
+      "D": "nam châm hút mạnh."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 10,
+    "type": "mc",
+    "question": "Nhiệt động lực học là lĩnh vực nghiên cứu về năng lượng nhiệt và sự truyền nhiệt. Nhiệt động lực học ra đời vào giữa thế kỉ XIX trong quá trình con người tìm hiểu về sự chuyển hóa năng lượng dự trữ trong các nhiên liệu thành",
+    "options": {
+      "A": "năng lượng điện để chế tạo các động cơ nhiệt.",
+      "B": "cơ năng để chế tạo các máy lạnh.",
+      "C": "cơ năng để chế tạo các động cơ nhiệt.",
+      "D": "năng lượng ánh sáng để chế tạo các động cơ nhiệt."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 11,
+    "type": "mc",
+    "question": "Một nhiệt kế bị hỏng có hai nhiệt độ làm mốc là điểm đóng băng của nước tinh khiết và điểm sôi của nước tinh khiết ở áp suất tiêu chuẩn lần lượt là –2 0C và 102 0C. Nếu số chỉ nhiệt độ đo bởi nhiệt kế này là 55,20C thì nhiệt độ đúng trong thang Celsius bằng<br>Gọi khối lượng của hạt nhân $ZAX$, proton và neutron lần lượt là ${m}_{X}$, ${m}_{p}$ và ${m}_{n}$. Công thức tính độ hụt khối của hạt nhân $ZAX$ là",
+    "options": {
+      "A": "50 0C.B . 55 0C.",
+      "B": "$N={N}_{0}{e}^{-λt}.$",
+      "C": "$N={N}_{0}\\left(1-{e}^{-λt}\\right).$",
+      "D": "480C."
+    },
+    "correct": "D",
+    "giaiThich": "$\\frac{55,2-\\left(-2\\right)}{102-\\left(-2\\right)}=\\frac{t-0}{100-0}⇒t=5{5}^{0}C$"
+  },
+  {
+    "id": 12,
+    "type": "mc",
+    "question": "",
+    "options": {
+      "A": "$Δm=Z.{m}_{n}+\\left(A-Z\\right).{m}_{p}+{m}_{X}$.",
+      "B": "$Δm=Z.{m}_{n}+\\left(A-Z\\right).{m}_{p}-{m}_{X}$.",
+      "C": "$Δm=Z.{m}_{p}+\\left(A-Z\\right).{m}_{n}-{m}_{X}$.",
+      "D": "$Δm={m}_{X}-Z.{m}_{p}-\\left(A-Z\\right).{m}_{n}$."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 13,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k9_de04/image3.png\" alt=\"hình vẽ\" class=\"q-img\" />Một chiếc ghế văn phòng có thể nâng hạ độ cao như hình vẽ. Một khối khí xác định bị giam giữa hai ống M và N; M có thể trượt lên xuống dọc theo thành trong của N. Coi khối khí là khí lí tưởng và không trao đổi nhiệt với bên ngoài. Khi M trượt xuống dưới thì khối khí bên trong ống",
+    "options": {
+      "A": "nhận công và nội năng tăng.",
+      "B": "thực hiện công và nội năng tăng.",
+      "C": "thực hiện công và nội năng giảm.",
+      "D": "nhận công và nội năng giảm."
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 14,
+    "type": "mc",
+    "question": "Phát biểu nào sau đây là sai?",
+    "options": {
+      "A": "Tương tác giữa dòng điện với dòng điện là tương tác từ.",
+      "B": "Cảm ứng từ đặc trưng cho từ trường tại một điểm trong từ trường về mặt tác dụng lực.",
+      "C": "Xung quanh một điện tích đứng yên có điện trường và từ trường.",
+      "D": "Hiện tượng xuất hiện suất điện động cảm ứng là hiện tượng cảm ứng điện từ."
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 15,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k9_de04/image4.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng thông tin cho ở bảng bên cho các câu 15 và câu 16: Thầy Hoàng Sư Điểu sử dụng cảm biến điện thế để đo điện áp xoay chiều đặt vào hai đầu một phần tử tiêu thụ điện và vẽ được đồ thị điện áp như hình vẽ bên dưới:<br>Tần số của điện áp xoay chiều đặt vào hai đầu phần tử là",
+    "options": {
+      "A": "50 Hz.",
+      "B": "100 Hz.",
+      "C": "12,5 Hz.",
+      "D": "25 Hz."
+    },
+    "correct": "B",
+    "giaiThich": "Từ mốc lúc t = 0 đến lúc t = 8Ô đúng bằng một chu kì T.<br>$T=8.0,5.1{0}^{-2}=0,04 s⇒f=\\frac{1}{T}=\\frac{1}{0,04}=25 Hz$"
+  },
+  {
+    "id": 16,
+    "type": "mc",
+    "question": "Điện áp hiệu dụng hai đầu phần tử R có giá trị là",
+    "options": {
+      "A": "2,1 V.",
+      "B": "1,5 V.",
+      "C": "4,2 V.",
+      "D": "3,0 V."
+    },
+    "correct": "B",
+    "giaiThich": "$U=\\frac{{U}_{0}}{\\sqrt{2}}=\\frac{3}{\\sqrt{2}}=2,1 V$"
+  },
+  {
+    "id": 17,
+    "type": "mc",
+    "question": "Phát biểu nào sau đây nói về nhiệt lượng là không đúng?",
+    "options": {
+      "A": "Nhiệt lượng là số đo độ biến thiên nội năng của vật trong quá trình truyền nhiệt.",
+      "B": "Một vật lúc nào cũng có nội năng, do đó lúc nào cũng có nhiệt lượng.",
+      "C": "Đơn vị của nhiệt lượng cũng là đơn vị của nội năng.",
+      "D": "Nhiệt lượng không phải là nội năng."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 18,
+    "type": "mc",
+    "question": "Nếu nhiệt độ của khí lí tưởng chứa trong bình tăng,",
+    "options": {
+      "A": "tốc độ của từng phân tử trong bình sẽ tăng lên.",
+      "B": "căn bậc hai của trung bình bình phương tốc độ chuyển động nhiệt của các phân tử trong hộp sẽ tăng lên.",
+      "C": "khoảng cách giữa các phân từ trong hộp sẽ tăng lên.",
+      "D": "kích thước của mỗi phân tử tăng lên."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 19,
+    "type": "tf",
+    "question": "Câu 1. Phản ứng hạt nhân có nhiều ứng dụng trong công nghiệp hạt nhân.",
+    "options": {
+      "A": "Trong phản ứng hạt nhân, tổng đại số các điện tích của các hạt tương tác bằng tổng đại số các điện tích của các hạt sản phẩm.",
+      "B": "Trong phản ứng hạt nhân, tổng số nucleon (số khối) của các hạt tương tác bằng tổng số nucleon (số khối) của các hạt sản phẩm.",
+      "C": "Trong phản ứng hạt nhân luôn có sự bảo toàn khối lượng nghỉ.",
+      "D": "Trong phản ứng hạt nhân có sự biến đổi nguyên tố (biến đổi hạt nhân), trong phản ứng hoá học không có sự biến đổi nguyên tố (chỉ biến đổi phân tử)."
+    },
+    "correct": "ĐĐSS",
+    "giaiThich": ""
+  },
+  {
+    "id": 20,
+    "type": "tf",
+    "question": "Câu 2. Một nhóm học sinh làm thí nghiệm khảo sát khả năng làm nguội nước nhờ gió ở điều kiện nhiệt độ phòng 250C. Nhóm sử dụng 2 kg nước có nhiệt độ ban đầu là 500C. Dùng quạt thổi qua chậu nước ở các chế độ khác nhau và đo nhiệt độ của nước sau mỗi phút. Biết nhiệt dung riêng của nước là ${c}_{n}=4200J/kg.K$. Kết quả đo được ghi vào bảng như sau:<br><img src=\"assets/exams/vedich2k9_de04/image5.png\" alt=\"hình vẽ\" class=\"q-img\" />",
+    "options": {
+      "A": "Tốc độ gió càng mạnh thì nhiệt độ nước giảm càng chậm.",
+      "B": "Trong cùng một điều kiện về tốc độ gió, khi nhiệt độ nước càng giảm thì tốc độ tỏa nhiệt của nước ra môi trường càng giảm.",
+      "C": "Trong 5 phút, nhiệt lượng 2 kg nước mất đi khi tốc độ gió lớn nhiều hơn 31,08 kJ so với khi không có gió.",
+      "D": "Trong 5 phút, tốc độ giảm nhiệt độ trung bình của nước khi tốc độ gió lớn gấp 1,61 lần so với khi không có gió."
+    },
+    "correct": "SĐSĐ",
+    "giaiThich": "a) Tốc độ gió càng mạnh thì nhiệt độ nước giảm càng nhanh.<br>b) Tốc độ tỏa nhiệt của nước: $\\frac{\\left|mc.ΔT\\right|}{t}$<br>c) Không có gió: ${Q}_{1}=mcΔT=2.4200.\\left(50-39\\right)=92400J$<br>Tốc độ gió lớn: ${Q}_{2}=mcΔ{T}^{'}=2.4200.\\left(50-32,3\\right)=148680J$<br>${Q}_{2}-{Q}_{1}=148680-92400=56280J$<br>d)$\\frac{{Q}_{2}}{{Q}_{1}}=\\frac{148680}{92400}=1,61$"
+  },
+  {
+    "id": 21,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k9_de04/image6.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 3. Hình vẽ thể hiện một mô hình. Hai thanh kim loại dẫn điện và con lăn kim loại chạm vào cả hai thanh và hoàn thành mạch điện. Con lăn nằm trong từ trường do nam châm tạo ra.",
+    "options": {
+      "A": "Các đường sức từ trong vùng giữa hai thanh kim loại có chiều vuông góc và hướng lên trên với mặt phẳng do hai thanh tạo ra.",
+      "B": "Biết cảm ứng từ B = 1,2 T; chiều dài con lăn $L=6  cm$; cường độ dòng điện $I=2,5 A$. Lực từ tác dụng lên con lăn là 1,8 N.",
+      "C": "Con lăn sẽ di chuyển sang trái nhờ lực từ.",
+      "D": "Trong khung sẽ xuất hiện dòng điện cảm ứng."
+    },
+    "correct": "ĐSSĐ",
+    "giaiThich": "a) Các đường sức từ có hướng ra bắc vào nam (ra N vào S).<br>b) $F=IBL=2,5.1,2.0,06=0,18N$<br>c) Chiều dòng điện đi ra cực dương và đi vào cực âm.<br>Áp dụng quy tắc bàn tay trái <img src=\"assets/exams/vedich2k9_de04/image7.png\" alt=\"công thức\" class=\"q-formula-img\" /> lực từ hướng sang phải.<br>d) Con lăn di chuyển sẽ xuất hiện dòng điện cảm ứng."
+  },
+  {
+    "id": 22,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k9_de04/image8.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Đua xe đạp rèn luyện thân thể đang là một xu hướng thể thao được nhiều người ưa thích. Một chiếc xe đạp thể thao có giá từ vài triệu đến vài chục triệu VNĐ. Líp xe gắn với trục của bánh xe sau là loại líp nhiều tầng để có thể thay đổi tốc độ xe tùy thuộc vào địa hình đường chạy.",
+    "options": {
+      "A": "Khi xe chạy trên đường (bánh xe lăn không trượt) thì lực ma sát nghỉ giữa bánh xe và mặt đường đóng vai trò lực phát động.",
+      "B": "Người đạp xe làm quay đĩa, nhờ dây xích truyền động cho líp làm bánh xe quay. Sự chuyển hóa năng lượng ở đây là từ năng lượng cơ bắp của người phần lớn thành động năng của hệ “xe + người“.",
+      "C": "Bán kính của đĩa gấp 3 lần bán kính nhỏ nhất của líp. Bánh xe có bán kính 30 cm. Vận động viên có thể đạp vào pê - đan làm đĩa quay tới 2,5 vòng/s. Tốc độ tối đa của xe là 50,9 km/h.",
+      "D": "<img src=\"assets/exams/vedich2k9_de04/image9.png\" alt=\"hình vẽ\" class=\"q-img\" />d) Một hôm, vừa dắt xe ra để tập luyện thì vận động viên thấy bánh xe vẫn căng nhưng hơi non, sử dụng áp kế để đo áp suất khí trong lốp xe, áp kế chỉ 1,8 atm. Thể tích của xăm khi căng là V. Vận động viên này dùng bơm tay để bơm không khí vào xăm, mỗi lần bơm đưa vào xăm một thể tích 0,15V không khí có áp suất $1 atm$.Coi nhiệt độ không khí trong và ngoài xe như nhau và không đổi. Để áp suất khí trong lốp xe đạt chuẩn là 2,4 atm thì vẫn phải bơm đến 8 lần."
+    },
+    "correct": "ĐĐĐS",
+    "giaiThich": "a) Khi xe chạy trên đường (bánh xe lăn không trượt) thì lực ma sát nghỉ giữa bánh xe và mặt đường đóng vai trò lực phát động (hình vẽ).<br>b) Khi đạp xe, năng lượng cơ bắp chuyển sang động năng.<br>c)Tốc độ của đĩa bằng tốc độ của líp:<br>${v}_{d}={v}_{l}⇒{R}_{d}.{ω}_{d}={R}_{l}.{ω}_{l}⇒{ω}_{l}=3.2,5.2.3,14=47,1 \\left(rad/s\\right)$<br>Tốc độ góc của líp bằng tốc độ góc của bánh xe: ${v}_{xe}=R.{ω}_{xe}=0,3.47,1=14,13 m/s=50,9km/h$<br>d)${p}^{'}={p}_{bandau}+\\frac{{p}_{bom}{V}_{bom}}{V}⇒2,4=1,8+\\frac{n.1.0,15.V}{V}⇒n=4$ lần."
+  },
+  {
+    "id": 23,
+    "type": "short",
+    "question": "Sử dụng các thông tin sau cho câu 1 và câu 2: Cho khối lượng của hạt nhân ${}_{2}^{4}He$ ; proton và neutron lần lượt là 4,0015 amu; 1,0073 amu và 1,0087 amu. Cho $1 amu=931,5 MeV/{c}^{2}$.<br>Câu 1. Năng lượng liên kết riêng của hạt nhân Heli bằng bao nhiêu MeV/nucleon?(Kết quả làm tròn đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "7,1",
+    "giaiThich": "${E}_{lk}=\\left[Z.{m}_{p}+\\left(A-Z\\right){m}_{n}-{m}_{X}\\right]{c}^{2}=\\left(2.1,0073+2.1,0087-4,0015\\right)amu.{c}^{2}931,5=28,41MeV$<br>${E}_{lkr}=\\frac{{E}_{lk}}{A}=\\frac{28,41}{4}=7,10\\left(MeV/nucleon\\right)$"
+  },
+  {
+    "id": 24,
+    "type": "short",
+    "question": "Câu 2. Năng lượng tỏa ra khi tạo thành 0,5 mol ${}_{2}^{4}He$ từ các nucleon là X.1024 MeV. Tìm giá trị của X(Kết quả làm tròn đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "8,6",
+    "giaiThich": "$Q=N.{E}_{lk}=n.{N}_{A}.{E}_{lk}=0,5.6,02.1{0}^{23}.28,41=8,55.1{0}^{24}MeV$"
+  },
+  {
+    "id": 25,
+    "type": "short",
+    "question": "Câu 3. Để đo từ trường của Trái Đất người ta dùng phương pháp “cuộn dây lật”. Cuộn dây phẳng này gồm 100 vòng, mỗi vòng có diện tích $0,010{m}^{2}$. Đầu tiên, cuộn dây được đặt sao cho mặt phẳng của nó vuông góc với từ trường của Trái Đất, sau đó quay cuộn dây này $18{0}^{0}$ để từ trường đi qua cuộn dây theo hướng ngược lại. Biết rằng thời gian để cuộn dây quay như trên là $0,50s$ và độ lớn của suất điện động cảm ứng sinh ra trong cuộn dây là $0,2mV$. Tìm độ lớn cảm ứng từ của từ trường Trái Đất theo đơn vị $μT$ (micro - tesla)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "50",
+    "giaiThich": "$e=NB.S.\\left|\\frac{\\mathrm{cos} {{α}_{2}}-\\mathrm{cos} {{α}_{1}}}{Δt}\\right|⇒0,2.1{0}^{-3}=100.B.0,01.\\left|\\frac{\\mathrm{cos} {1}80-\\mathrm{cos} {0}}{0,5}\\right|⇒B=50.1{0}^{-6}T$<br>Sử dụng các thông tin sau cho câu 4 và câu 5: Trong dây chuyền sản xuất đúc các chi tiết máy, sau khi thành phẩm các chi tiết máy được làm nguội bằng cách nhúng ngập hoàn toàn vào bể chất lỏng có nhiệt độ sôi lớn hơn 1000C. Giả sử các chi tiết máy đều giống nhau và đạt cùng nhiệt độ ${t}_{1}=13{5}^{0}C$ thì nhúng ngập vào bể chất lỏng. Biết rằng nhiệt độ ban đầu của chất lỏng trong bể là 25°C và nếu chỉ nhúng một chi tiết máy thì khi cân bằng nhiệt, chất lỏng trong bể có nhiệt độ ${t}_{cb}=3{0}^{0}C$. Coi rằng quá trình nhúng chi tiết máy vào bể chất lỏng chỉ có sự trao đổi nhiệt giữa các chi tiết máy và chất lỏng trong bể, sự hóa hơi của chất lỏng là không đáng kể."
+  },
+  {
+    "id": 26,
+    "type": "short",
+    "question": "Câu 4. Sau khi nhúng một chi tiết máy vào bể chất lỏng, nhiệt độ của chi tiết máy giảm đi bao nhiêu K khi đạt trạng thái cân bằng nhiệt?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "105",
+    "giaiThich": "$ΔT=Δt=135-30=105 K$"
+  },
+  {
+    "id": 27,
+    "type": "short",
+    "question": "Câu 5. Phải nhúng đồng thời bao nhiêu chi tiết máy để khi cân bằng nhiệt, nhiệt độ của chất lỏng trong bể tăng lên đến 1000C?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "45",
+    "giaiThich": "Khi nhúng một chi tiết máy: ${m}_{1}{c}_{1}.\\left(135-30\\right)={m}_{2}{c}_{2}\\left(30-25\\right)⇒{m}_{2}{c}_{2}=21{m}_{1}{c}_{1}$<br><img src=\"assets/exams/vedich2k9_de04/image10.png\" alt=\"hình vẽ\" class=\"q-img\" />   Thả N chi tiết máy: $N.{m}_{1}{c}_{1}.\\left(135-100\\right)=21{m}_{1}{c}_{1}.\\left(100-25\\right)⇒N=45$"
+  },
+  {
+    "id": 28,
+    "type": "short",
+    "question": "Câu 6. Một xilanh kín hình trụ chiều cao h, tiết diện S đặt thẳng đứng. Xilanh được chia thành hai phần nhờ một pit-tông cách nhiệt khối lượng m. Khí trong hai phần là cùng loại ở cùng nhiệt độ 27 0C và có khối lượng là m1, m2 với ${m}_{2}=2{m}_{1}$. Pit-tông cân bằng khi ở cách đáy dưới đoạn${h}_{2}=\\frac{3h}{5}$. Để pit-tông cách đều hai đáyxilanh thì người ta phải rút bớt $Δm$ khí ở phần hai đồng thời nung nóng phần này lên đến 35 0C (phần một giữ ở nhiệt độ không đổi). Tỉ số $\\frac{Δm}{{m}_{1}}$ bằng bao nhiêu?(làm tròn kết quả đến chữ số hàng phần trăm).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "0,62",
+    "giaiThich": "Lúc đầu $\\left\\{p.2=\\frac{{m}_{1}}{M}R.300         \\left(p+{p}^{'}\\right).3=\\frac{{m}_{2}}{M}R.300\\right)⇒{p}^{'}=\\frac{p}{3}$<br>Lúc sau: $\\left\\{{p}_{s}.\\frac{2+3}{2}=\\frac{{m}_{1}}{M}R.300=2p           \\left({p}_{s}+\\frac{p}{3}\\right).\\frac{2+3}{2}=\\frac{{m}_{2}-Δm}{M}.R.308\\right)⇒\\frac{0,8+\\frac{1}{3}}{0,8}=\\frac{2{m}_{1}-Δm}{{m}_{1}}.\\frac{308}{300}⇒\\frac{Δm}{{m}_{1}}≈0,62$"
+  }
+]

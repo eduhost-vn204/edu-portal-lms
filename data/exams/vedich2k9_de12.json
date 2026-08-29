@@ -1,0 +1,366 @@
+[
+  {
+    "id": 1,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k9_de12/image1.png\" alt=\"hình vẽ\" class=\"q-img\" />Cốc bia lạnh để trong không khí, ta thấy mặt ngoài của cốc có nước bám vào là vì",
+    "options": {
+      "A": "hơi nước trong không khí ngưng tụ bám vào thành cốc.",
+      "B": "hơi nước trong không khí đông đặc bám vào thành cốc.",
+      "C": "nước trong cốc thấm qua thành cốc.",
+      "D": "hơi của cốc bia toả ra bám vào thành cốc."
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 2,
+    "type": "mc",
+    "question": "Người ta cung cấp nhiệt lượng 500 J cho một lượng khí trong xi lanh, khí thực hiện một công 200 J để đẩy pit-tông lên. Nội năng của khí",
+    "options": {
+      "A": "giảm 300 J.",
+      "B": "tăng 700 J.",
+      "C": "giảm 700 J.",
+      "D": "tăng 300 J."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 3,
+    "type": "mc",
+    "question": "Biết nhiệt dung riêng của sắt là 460 J/kg.K. Tính nhiệt lượng tỏa ra khi một miếng sắt có khối lượng 2 kg ở nhiệt độ 4000C hạ xuống còn 250C bằng",
+    "options": {
+      "A": "230,6 kJ.",
+      "B": "345 kJ.",
+      "C": "391 kJ.",
+      "D": "172,5 kJ."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 4,
+    "type": "mc",
+    "question": "Trong hệ tọa độ (pOT), đường biểu diễn nào sau đây là đường đẳng nhiệt?",
+    "options": {
+      "A": "Đường hypebol.",
+      "B": "Đoạn thẳng kéo dài qua gốc tọa độ.",
+      "C": "Đoạn thẳng song song với trục Op.",
+      "D": "Đoạn thẳng song song với trục OT."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 5,
+    "type": "mc",
+    "question": "Một khối lượng khí lí tưởng xác định biến đổi trạng thái sao cho áp suất không đổi. Gọi ${p}_{1},{V}_{1},{T}_{1}$ lần lượt là áp suất, thể tích, nhiệt độ ở trạng thái 1; ${p}_{2},{V}_{2},{T}_{2}$ lần lượt là áp suất, thể tích, nhiệt độ ở trạng thái 2. Hệ thức đúng là",
+    "options": {
+      "A": "$\\frac{{V}_{1}}{{T}_{1}}=\\frac{{V}_{2}}{{T}_{2}}$.",
+      "B": "${p}_{1}{V}_{2}={p}_{2}{V}_{1}$.",
+      "C": "$\\frac{{T}_{2}}{{T}_{1}}=\\frac{{V}_{1}}{{V}_{2}}$.",
+      "D": "${p}_{1}{V}_{1}={p}_{2}{V}_{2}$."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 6,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k9_de12/image2.png\" alt=\"hình vẽ\" class=\"q-img\" />Rải đều các mạt sắt lên mặt trên của đáy hộp. Đặt hộp lên một thanh nam châm rồi gõ nhẹ vào thành hộp. Hình ảnh các đường mạt sắt xung quanh nam châm như hình bên được gọi là",
+    "options": {
+      "A": "từ trường.",
+      "B": "từ phổ.",
+      "C": "điện phổ.",
+      "D": "điện trường."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 7,
+    "type": "mc",
+    "question": "Một vật được làm lạnh từ 350C xuống 50C. Nhiệt độ của vật theo thang Kelvin giảm đi bao nhiêu độ?",
+    "options": {
+      "A": "30 Κ.",
+      "B": "25 Κ.",
+      "C": "278 Κ.",
+      "D": "298 K."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 8,
+    "type": "mc",
+    "question": "Tìm hạt nhân X trong phản ứng hạt nhân sau: $510Bo+ZAX→α+48Be$",
+    "options": {
+      "A": "$01n$.",
+      "B": "$12D$.",
+      "C": "$11p$.",
+      "D": "$13T$."
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 9,
+    "type": "mc",
+    "question": "Cho hai dây dây dẫn đặt gần nhau và song song với nhau. Khi có hai dòng điện cùng chiều chạy qua thì 2 dây dẫn",
+    "options": {
+      "A": "đẩy nhau.",
+      "B": "hút nhau.",
+      "C": "không tương tác.",
+      "D": "đều dao động."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 10,
+    "type": "mc",
+    "question": "Số hạt nhân nguyên tử có trong 100 g Iốt $52131I$ là",
+    "options": {
+      "A": "5,925.1023 hạt.",
+      "B": "4,595.1023 hạt.",
+      "C": "3,952.1023 hạt.",
+      "D": "4.952.1023 hạt."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 11,
+    "type": "mc",
+    "question": "Hạt nhân X có tổng số hạt là 56, số hạt mang điện ít hơn số hạt không mang điện 4 hạt. Hạt nhân X có số prôton và nơtron lần lượt là",
+    "options": {
+      "A": "26; 56.",
+      "B": "30; 56.",
+      "C": "26; 30.",
+      "D": "13; 30."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 12,
+    "type": "mc",
+    "question": "Một khung dây quay đều quanh trục $Δ$ trong một từ trường đều $\\vec{B}$ vuông góc với trục quay $Δ$ với tốc độ góc $ω$.Từ thông cực đại gởi qua khung và suất điện động cực đại trong khung liên hệ với nhau bởi công thức",
+    "options": {
+      "A": "${E}_{0}=\\frac{{Φ}_{0}}{ω\\sqrt{2}}$.  <img src=\"assets/exams/vedich2k9_de12/image3.png\" alt=\"hình vẽ\" class=\"q-img\" />",
+      "B": "${E}_{0}=\\frac{ω.{Φ}_{0}}{\\sqrt{2}}$.<img src=\"assets/exams/vedich2k9_de12/image4.png\" alt=\"hình vẽ\" class=\"q-img\" />",
+      "C": "${E}_{0}=\\frac{{Φ}_{0}}{ω}$.",
+      "D": "${E}_{0}=ω.{Φ}_{0}$ ."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 13,
+    "type": "mc",
+    "question": "Nhiệt nóng chảy riêng của đồng là $1,8.1{0}^{5}J/kg$ có ý nghĩa gì?",
+    "options": {
+      "A": "Khối đồng cần thu nhiệt lượng $1,8.1{0}^{5}J$ để hoá lỏng.",
+      "B": "1 kg đồng cần thu nhiệt lượng $1,8.1{0}^{5}J$ để hoá lỏng hoàn toàn ở nhiệt độ nóng chảy.",
+      "C": "1 kg đồng toả ra nhiệt lượng $1,8.1{0}^{5}J$ khi hoá lỏng hoàn toàn.",
+      "D": "Khối đồng sẽ toả ra nhiệt lượng $1,8.1{0}^{5}J$ khi nóng chảy hoàn toàn."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 14,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k9_de12/image5.png\" alt=\"hình vẽ\" class=\"q-img\" />Từ thông $Φ$ qua một khung dây biến đổi theo thời gian được diễn tả bằng đồ thị trên hình vẽ bên cạnh. Chọn chiều dương của dòng điện thuận chiều với pháp tuyến khung dây (tuân theo quy tắc nắm tay phải). Khung dây có điện trở $0,5 Ω$. Đồ thị biểu diễn sự biến đổi của dòng điện cảm ứng trong khung theo thời gian là hình<br><img src=\"assets/exams/vedich2k9_de12/image6.png\" alt=\"hình vẽ\" class=\"q-img\" />",
+    "options": {
+      "A": "Hình 1.",
+      "B": "Hình 2.",
+      "C": "Hình 3.",
+      "D": "Hình 4."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 15,
+    "type": "mc",
+    "question": "Chọn câu sai?",
+    "options": {
+      "A": "Khí lí tưởng là khí mà khối lượng của các phân tử khí có thể bỏ qua.",
+      "B": "Khí lí tưởng là khí mà các phân tử chỉ tương tác khi va chạm.",
+      "C": "Khí lí tưởng là khí có thể gây áp suất lên thành bình.",
+      "D": "Khí lí tưởng là khí mà thể tích của các phân tử có thể bỏ qua."
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 16,
+    "type": "mc",
+    "question": "Xone FM là kênh   và giải trí hướng tới đối tượng chủ yếu là giới trẻ của nước ta. Kênh được phát sóng vào tất cả các ngày trong tuần ở tần số 96 MHz. Biết tốc độ ánh sáng trong chân không $c=3.1{0}^{8}m/s$. Bước sóng của kênh này có giá trị",
+    "options": {
+      "A": "0,32 m.",
+      "B": "32 m.",
+      "C": "3,125 km.",
+      "D": "3,125 m."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 17,
+    "type": "mc",
+    "question": "Một khối khí lí tưởng nhốt trong bình kín. Tăng nhiệt độ của khối khí từ 1000C lên 200)C thì áp suất trong bình sẽ",
+    "options": {
+      "A": "có thể tăng hoặc giảm.",
+      "B": "tăng lên hơn 2 lần áp suất cũ.",
+      "C": "tăng lên ít hơn 2 lần áp suất cũ.",
+      "D": "tăng lên đúng bằng 2 lần áp suất cũ."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 18,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k9_de12/image7.png\" alt=\"hình vẽ\" class=\"q-img\" />Bố trí nam châm và mạch kín $\\left(C\\right)$ như hình vẽ. Từ thông qua vòng dây dẫn $\\left(C\\right)$ biến thiên khi",
+    "options": {
+      "A": "$\\left(C\\right)$ và nam châm cùng chuyển động đều lên trên với vận tốc v.",
+      "B": "$\\left(C\\right)$ và nam châm cùng chuyển động đều xuống dưới với vận tốc $v$.",
+      "C": "$\\left(C\\right)$ và nam châm cùng đứng yên.",
+      "D": "$\\left(C\\right)$ đứng yên, nam châm chuyển động xuống dưới."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 19,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k9_de12/image8.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 1. Một trong những ứng dụng quan trọng của lực từ tác dụng lên khung dây có dòng điện là động cơ điện. Xét khung dây hình chữ nhật ABCD với $AB=CD=10 cm$, $BC=DA=20 cm$ có thể quay quanh trục OO’ trong từ trường đều của nam châm có độ lớn cảm ứng từ $B=2.1{0}^{-4}T$. Cho  dòng điện $I=4A$  chạy qua khung dây ABCD thì động cơ hoạt động. Tại thời điểm $t=0$, vectơ cảm ứng từ $\\vec{B}$ song song với cạnh CD.",
+    "options": {
+      "A": "Khi có dòng điện chạy qua khung dây ABCD, ngẫu lực từ tác dụng làm khung quay xung quanh OO’.",
+      "B": "Tại thời điểm t = 0, lực từ tác dụng lên cạnh AB, CD đều bằng $8.1{0}^{-5}N$.",
+      "C": "Tại thời điểm t = 0, lực từ tác dụng lên cạnh AD, BC cùng phương, cùng chiều và cùng độ lớn $1,6.1{0}^{-4}N$.",
+      "D": "Nếu một động cơ điện tiêu thụ công suất điện 110 W, sinh ra công suất cơ học bằng 88 W thì tỉ số của công suất cơ học với công suất hao phí ở động cơ bằng 4."
+    },
+    "correct": "ĐSSĐ",
+    "giaiThich": "a) Vận dụng quy tắc bàn tay trái ta xác định được lực từ tác dụng lên cạnh BC và cạnh DA song song, ngược chiều và có độ lớn bằng nhau (ngẫu lực này làm quay khung dây).<br>b) Lực từ tác dụng lên cạnh CD và AB bằng 0 do hai đoạn dây dẫn này song song với $\\vec{B}$.<br>c)${F}_{AD}={F}_{BC}=IBL=4.2.1{0}^{-4}.0,2=1,6.1{0}^{-4}N$<br>d) Động cơ điện chuyển hóa điện năng (năng lượng toàn phần) thành cơ năng (năng lượng có ích) và năng lượng hao phí (năng lượng không có ích).<br>$\\frac{{P}_{i}}{P-{P}_{i}}=\\frac{88}{110-88}=4$"
+  },
+  {
+    "id": 20,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k9_de12/image9.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 2. Khi hơ nóng chậm khối khí lí tưởng trong một xilanh kín đặt nằm ngang (pít-tông nằm bên phải xi lanh, bỏ qua ma sát giữa pit-tông và xi lanh) thì thấy pít-tông chuyển động từ từ sang phải.",
+    "options": {
+      "A": "Quá trình dãn nở của khối khí trong xilanh là quá trình đẳng áp.",
+      "B": "Động năng chuyển động tịnh tiến trung bình của các phân tử khí tăng trong quá trình dãn nở của khối khí.",
+      "C": "Nếu nhiệt độ tuyệt đối của khối khí trong xilanh tăng lên ba lần thì áp suất của nó giảm đi ba lần.",
+      "D": "Nội năng của khí giảm trong quá trình giãn nở của khối khí."
+    },
+    "correct": "ĐĐSS",
+    "giaiThich": "a) Do pít-tông chuyển động từ từ sang phải nên quá trình này được coi là đẳng áp.<br>b) Đẳng áp nên khi thể tích tăng thì nhiệt độ cũng tăng dẫn đến động năng cũng tăng.<br>c) Nhiệt độ tuyệt đối tăng 3 lần thì thể tích tăng 3 lần.<br>d) Nội năng của khí lí tưởng chỉ phụ thuộc vào động năng, khi nhiệt độ tăng thì động năng  tăng tăng theo, suy ra nội năng của khí cũng tăng."
+  },
+  {
+    "id": 21,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k9_de12/image10.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 3. Người ta dùng một lò hồ quang điện công suất 1,1.104 W để nấu chảy một khối kim loại khối lượng 13,2 kg. Sự thay đổi nhiệt độ của khối kim loại theo thời gian được ghi lại như hình vẽ",
+    "options": {
+      "A": "Giai đoạn AB trên đồ thị tương ứng với quá trình nóng chảy của kim loại.",
+      "B": "Trong giai đoạn BC, khối kim loại không nhận thêm nhiệt lượng từ lò hồ quang.",
+      "C": "Nhiệt dung riêng của kim loại đó là 440 J/(kg.K).",
+      "D": "Nhiệt nóng chảy riêng của kim loại đó là 4.105 J/kg."
+    },
+    "correct": "SSSĐ",
+    "giaiThich": "a) Giai đoạn AB trên đồ thị ứng với quá trình tăng nhiệt độ từ 340C lên 6590C của kim loại.<br>b) Giai đoạn BC ứng với quá trình nóng chảy nên khối kim loại có nhật nhiệt .<br>c)  Q = mcΔt → P.ΔT = mcΔt → c = 880 J/(kg.K)<br>d) Qnc = λm → P.ΔT = λm → λ = 4.105 J/kg"
+  },
+  {
+    "id": 22,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k9_de12/image11.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Silicon (Si) là vật liệu bán dẫn được sử dụng phổ biến trong ngành công nghiệp điện tử. Biết khối lượng của hạt nhân <img src=\"assets/exams/vedich2k9_de12/image12.png\" alt=\"công thức\" class=\"q-formula-img\" />là 27,9769 amu, khối lượng của proton và neutron lần lượt là 1,0073 amu và 1,0087 amu. Lấy $1amu=931,5 MeV/{c}^{2}$.",
+    "options": {
+      "A": "Độ hụt khối của hạt nhân <img src=\"assets/exams/vedich2k9_de12/image12.png\" alt=\"công thức\" class=\"q-formula-img\" /> là 0,2471 amu.",
+      "B": "Hạt nhân <img src=\"assets/exams/vedich2k9_de12/image12.png\" alt=\"công thức\" class=\"q-formula-img\" /> mang điện tích dương.",
+      "C": "Trong hạt nhân <img src=\"assets/exams/vedich2k9_de12/image12.png\" alt=\"công thức\" class=\"q-formula-img\" /> có 28 neutron.",
+      "D": "Năng lượng liên kết riêng của hạt nhân <img src=\"assets/exams/vedich2k9_de12/image12.png\" alt=\"công thức\" class=\"q-formula-img\" /> là 8,22 MeV/nucleon."
+    },
+    "correct": "ĐĐSĐ",
+    "giaiThich": "a)$Δm=Z{m}_{p}+\\left(A-Z\\right){m}_{n}-{m}_{X}=14.1,0073+14.1,0087-27,9769=0,2471 amu$<br>b) Hạt nhân mang điện dương (proton mang điện, neutron không mang điện).<br>c) Hạt nhân <img src=\"assets/exams/vedich2k9_de12/image13.png\" alt=\"công thức\" class=\"q-formula-img\" /> có 14 neutron<br>d) ${W}_{lkr}=\\frac{Δm.{c}^{2}}{A}=\\frac{0,2471.931,5}{28}=8,22$ (MeV/nucleon)."
+  },
+  {
+    "id": 23,
+    "type": "short",
+    "question": "Sử dụng thông tin sau cho câu 1 và câu 2: Một khung dây dẫn phẳng, kín có diện tích $2,67.1{0}^{-4}{m}^{2}$, gồm 27 vòng dây được đặt trong từ trường đều sao cho cảm ứng từ $\\vec{B}$ vuông góc với mặt phẳng khung dây. Trong 0,620 s, độ lớn cảm ứng từ của từ trường đều tăng từ 0,100 T đến 0,500 T.<br>Độ lớn suất điện động cảm ứng trong khung dây là x.10-3. Tìm x (làm tròn kết quả đến chữ số hàng phần trăm).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "4,65",
+    "giaiThich": "$e=NS\\left|\\frac{ΔB}{Δt}\\right|=27.2,67.1{0}^{-4}.\\left|\\frac{0,5-0,1}{0,62}\\right|=4,65.1{0}^{-3} V$"
+  },
+  {
+    "id": 24,
+    "type": "short",
+    "question": "Biết điện trở của khung dây là $0,230 Ω$. Nhiệt lượng tỏa ra trên khung dây dẫn trong khoảng thời gian từ trường biến thiên là x.10-5J. Tìm x (làm tròn kết quả đến chữ số hàng phần trăm).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "5,83",
+    "giaiThich": "$Q=\\frac{{e}^{2}}{R}t={\\left(NS\\left|\\frac{ΔB}{Δt}\\right|\\right)}^{2}.\\frac{1}{R}.t={\\left(27.2,67.1{0}^{-4}.\\left|\\frac{0,5-0,1}{0,62}\\right|\\right)}^{2}.\\frac{1}{0,23}.0,62=5,83.1{0}^{-5}J$<br><img src=\"assets/exams/vedich2k9_de12/image14.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng thông tin sau cho câu 3 và câu 4: Hình bên là sơ đồ nguyên lí làm mát bằng dầu của một máy biến áp. Lõi thép và các cuộn dây quấn của máy biến áp được ngâm trong bể dầu. Khi lõi thép và các cuộn dây quấn nóng lên thì nhiệt độ của dầu tăng lên. Dầu được lưu thông qua bộ trao đổi nhiệt để làm mát. Biết rằng nhiệt độ của dầu khi bắt đầu đi vào bộ trao đổi nhiệt là 850C và sau khi làm mát là 450C ; dầu làm mát có nhiệt dung riêng là $c=2000  J/kg.K$ và khối lượng riêng là  $850 kg/{m}^{3}$; công suất tỏa nhiệt của máy biến áp khi vận hành là 500 kW."
+  },
+  {
+    "id": 25,
+    "type": "short",
+    "question": "Câu 3. Nhiệt lượng tỏa ra khi có 2 lít dầu được làm mát qua bộ trao đổi nhiệt bằng bao nhiêu kJ?(làm tròn kết quả đến chữ số hàng đơn vị).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "136",
+    "giaiThich": "$m=VD=2.1{0}^{-3}.850=1,7 kg$;  $Q=mcΔt=1,7.2000.\\left(85-45\\right)=136000 J=136  kJ$"
+  },
+  {
+    "id": 26,
+    "type": "short",
+    "question": "Câu 4. Giả sử toàn bộ nhiệt lượng tỏa ra trên máy biến áp đều tản ra khi dầu đi qua bộ trao đổi nhiệt. Khối lượng dầu lưu thông qua bộ trao đổi nhiệt trong một phút là bao nhiêu kg? (làm tròn kết quả đến chữ số hàng đơn vị).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "375",
+    "giaiThich": "$Q=P.t=500.1{0}^{3}.60=30.1{0}^{6} J$; $Q=mcΔt⇒30.1{0}^{6}=m.2000.\\left(85-45\\right)⇒m=375  kg$"
+  },
+  {
+    "id": 27,
+    "type": "short",
+    "question": "Sử dụng thông tin sau cho câu 5 và câu 6: Pôlôni $84210Po$ là chất phóng xạ a có chu kì bán rã 138 ngày và biến đổi thành hạt nhân chì $82206Pb$. Giả sử toàn bộ các hạt $α$ sinh ra trong quá trình phóng xạ đều thoát ra khỏi mẫu. Lấy khối lượng của các hạt nhân bằng số khối của chúng tính theo đơn vị amu<br>Câu 5. Hằng số phóng xạ của $84210Po$ bằng X.10-8 s-1. Giá trị của X bằng bao nhiêu?(làm tròn kết quả đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "5,8",
+    "giaiThich": "$λ=\\frac{\\mathrm{ln} {2}}{T}=\\frac{\\mathrm{ln} {2}}{138.24.3600}=5,8.1{0}^{-8}{s}^{-1}$"
+  },
+  {
+    "id": 28,
+    "type": "short",
+    "question": "Câu 6. Ban đầu (t = 0), một mẫu trong đó 80% khối lượng của mẫu là chất phóng xạ pôlôni $84210Po$, phần còn lại không có tính phóng xạ. Tại thời điểm $t=414$ ngày, tỉ lệ phần trăm khối lượng pôlôni còn lại trong mẫu bằng bao nhiêu phần trăm?(làm tròn kết quả đến chữ số hàng đơn vị).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "10",
+    "giaiThich": "Gọi ${m}_{0}$ là khối lượng ban đầu của chất phóng xạ $84210Po$, khối lượng mẫu chất ${m}_{mau}=0,8{m}_{0}$<br>$\\frac{{m}_{Po}}{{m}_{mau}-{m}_{α}}=\\frac{{m}_{0}.{2}^{-\\frac{t}{T}}}{\\frac{{m}_{0}}{0,8}-{m}_{0}\\frac{{A}_{α}}{{A}_{me}}\\left(1-{2}^{-\\frac{t}{T}}\\right)}=\\frac{{2}^{-\\frac{414}{138}}}{\\frac{1}{0,8}-\\frac{4}{210}\\left(1-{2}^{-\\frac{414}{138}}\\right)}≈0,1014=10,14%$"
+  }
+]

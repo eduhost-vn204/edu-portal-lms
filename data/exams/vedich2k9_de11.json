@@ -1,0 +1,366 @@
+[
+  {
+    "id": 1,
+    "type": "mc",
+    "question": "Câu 1. Quan sát chuyển động của các hạt khói trong ống thủy tinh bằng kính hiển vi. Kết luận nào sau đây về chuyển động của các phân tử khí là không phù hợp?",
+    "options": {
+      "A": "Các phân tử khí dao động quanh vị trí nhất định.",
+      "B": "Khi chuyển động, các phân tử khí va chạm vào nhau.",
+      "C": "Các phân tử khí chuyển động hỗn loạn, không ngừng.",
+      "D": "Nhiệt độ càng cao thì tốc độ chuyển động càng lớn."
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 2,
+    "type": "mc",
+    "question": "Câu 2. Tương tác nào sau đây là tương tác từ?",
+    "options": {
+      "A": "Tương tác giữa dòng điện với dòng điện.",
+      "B": "Tương tác giữa nam châm với điện tích đứng yên.",
+      "C": "Tương tác giữa hai điện tích đứng yên.",
+      "D": "Tương tác giữa dòng điện với điện tích đứng yên."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 3,
+    "type": "mc",
+    "question": "Câu 3. Khinh khí cầu có một lỗ hở ở phía dưới để trao đổi khí với môi trường xung quanh, thể tích không đổi. Để khí cầu bay lên, người ta cần đốt nóng không khí trong khí cầu. Khi nhiệt độ của không khí trong khí cầu tăng đến một giá trị nhất định thì khí cầu bắt đầu bay lên. Khi đó khí trong khí cầu có",
+    "options": {
+      "A": "áp suất lớn hơn khí quyển bên ngoài.",
+      "B": "khối lượng riêng lớn hơn khí quyển bên ngoài.",
+      "C": "áp suất nhỏ hơn khí quyển bên ngoài.",
+      "D": "khối lượng riêng nhỏ hơn khí quyển bên ngoài."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 4,
+    "type": "mc",
+    "question": "Câu 4. Vào buổi sáng, nhiệt độ không khí trong một phòng học là 20 0C và tăng dần khi về trưa. Trong quá trình đó, không khí trong phòng học có",
+    "options": {
+      "A": "áp suất tăng dần.",
+      "B": "mật độ phân tử không đổi.",
+      "C": "mật độ phân tử tăng dần.",
+      "D": "áp suất không đổi."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 5,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k9_de11/image1.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 5. Trong sơ đồ như hình vẽ bên, nếu đặt một kim châm thử tại điểm O thì cực Nam của kim nam châm chỉ về phía",
+    "options": {
+      "A": "điểm Đ.",
+      "B": "Đông đặc.",
+      "C": "điểm N.",
+      "D": "điểm T."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 6,
+    "type": "mc",
+    "question": "Câu 6. Vào mùa đông, khi hà hơi vào gương thì thấy gương bị mờ đi. Nguyên nhân được giải thích bằng sự chuyển thể nào sau đây?",
+    "options": {
+      "A": "Nóng chảy.",
+      "B": "Bay hơi.",
+      "C": "Đông đặc.",
+      "D": "Ngưng tụ."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 7,
+    "type": "mc",
+    "question": "Câu 7. Thiết bị nào sau đây hoạt động không phải là ứng dụng của tương tác từ?",
+    "options": {
+      "A": "La bàn.",
+      "B": "Tàu đệm từ.",
+      "C": "Quạt điện.",
+      "D": "Bóng đèn."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 8,
+    "type": "mc",
+    "question": "Câu 8. Khi cọ xát một đồng xu lên mặt bàn nhám, đồng xu nóng lên. Kết luận nào sau đây về sự thay đổi nội năng của đồng xu là đúng?",
+    "options": {
+      "A": "Nội năng của đồng xu giảm đi do thực hiện công.",
+      "B": "Nội năng của đồng xu tăng lên do nhận công.",
+      "C": "Nội năng của đồng xu tăng lên do nhận nhiệt từ mặt bàn.",
+      "D": "Nội năng của đồng xu giảm đi do tỏa nhiệt ra môi trường."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 9,
+    "type": "mc",
+    "question": "Câu 9. Động năng trung bình của phân tử khí được xác định bằng hệ thức",
+    "options": {
+      "A": "${E}_{đ}=3kT$.",
+      "B": "${E}_{đ}=\\frac{1}{3}kT$.",
+      "C": "${E}_{đ}=\\frac{2}{3}kT$.",
+      "D": "${E}_{đ}=\\frac{3}{2}kT$."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 10,
+    "type": "mc",
+    "question": "Câu 10. Đối với một khối khí lí tưởng xác định, trong quá trình đẳng nhiệt, tích của áp suất và thể tích là một hằng số. Giá trị của hằng số này không phụ thuộc vào",
+    "options": {
+      "A": "áp suất của khối khí.",
+      "B": "số mol của khối khí.",
+      "C": "khối lượng của khối khí.",
+      "D": "nhiệt độ của khối khí."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 11,
+    "type": "mc",
+    "question": "Câu 11. Một đoạn dây dẫn mang dòng điện đặt nằm ngang trong một từ trường đều. Biết dòng điện có chiều hướng Bắc - Nam, cảm ứng từ có phương thẳng đứng, chiều trên xuống dưới. Lực từ tác dụng lên đoạn dây có hướng về phía",
+    "options": {
+      "A": "Tây.",
+      "B": "Bắc.",
+      "C": "Đông.",
+      "D": "Nam."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 12,
+    "type": "mc",
+    "question": "Câu 12. Khi nhiệt độ của một vật giảm 70C thì theo thang nhiệt độ Kelvin, nhiệt độ vật này giảm",
+    "options": {
+      "A": "7 K.",
+      "B": "268 K.",
+      "C": "273 K.",
+      "D": "280 K."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 13,
+    "type": "mc",
+    "question": "Câu 13. Trong các nhà máy nhiệt điện, hơi nước được sử dụng để làm quay tuabin. Nhiệt lượng cần thiết để làm cho 1 kg nước chuyển hoàn toàn từ thể lỏng sang thể hơi ở nhiệt độ sôi được gọi là",
+    "options": {
+      "A": "nhiệt dung riêng của nước.",
+      "B": "nhiệt hóa hơi riêng của nước.",
+      "C": "nhiệt nóng chảy riêng của nước đá.",
+      "D": "nội năng của 1 kg nước."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 14,
+    "type": "mc",
+    "question": "Câu 14. Trong thí nghiệm xác định nhiệt dung riêng của nước, thao tác nào sau đây có tác dụng giúp nhiệt độ của nước trong bình đồng đều và làm tăng độ chính xác của phép đo?",
+    "options": {
+      "A": "Khuấy nước liên tục trong quá trình đun.",
+      "B": "Đặt dây điện trở ở sát mặt nước.",
+      "C": "Mở nắp bình trong quá trình tiến hành thí nghiệm.",
+      "D": "Nhấc nhiệt kế ra khỏi nước khi đọc giá trị nhiệt độ."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 15,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k9_de11/image2.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 15. Một khối khí lí tưởng thực hiện chu trình như hình vẽ. Trạng thái có nhiệt độ nhỏ nhất là",
+    "options": {
+      "A": "(1).",
+      "B": "(2).",
+      "C": "(4).",
+      "D": "(3)."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 16,
+    "type": "mc",
+    "question": "Câu 16. Trong hệ SI, đơn vị của cảm ứng từ là",
+    "options": {
+      "A": "vôn (V).",
+      "B": "tesla (T).",
+      "C": "vêbe (Wb).",
+      "D": "niutơn (N)."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 17,
+    "type": "mc",
+    "question": "Câu 17. Một xilanh chứa lượng khí lí tưởng xác định ở nhiệt độ không đổi.<br>Nếu thể tích của khối khí giảm đi một nửa thì áp suất của khối khí sẽ",
+    "options": {
+      "A": "không thay đổi.",
+      "B": "tăng bốn lần.",
+      "C": "giảm một nửa.",
+      "D": "tăng gấp đôi."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 18,
+    "type": "mc",
+    "question": "Câu 18. Trong thí nghiệm tạo từ phổ của nam châm thẳng, một học sinh thực hiện các thao tác sau: đặt nam châm dưới tấm bìa nằm ngang, rắc mạt sắt lên trên và gõ nhẹ lên tấm bìa. Nhận định nào sau đây không đúng?",
+    "options": {
+      "A": "Việc gõ nhẹ lên tấm bìa để giảm ma sát giữa mạt sắt và tấm bìa.",
+      "B": "Từ phổ cho ta thấy hình ảnh trực quan của từ trường.",
+      "C": "Càng gần các cực của nam châm, các đường mạt sắt càng dày.",
+      "D": "Trong từ trường, các mạt sắt bị nhiễm điện trở thành điện tích thử."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 19,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k9_de11/image3.png\" alt=\"hình vẽ\" class=\"q-img\" /><img src=\"assets/exams/vedich2k9_de11/image4.png\" alt=\"hình vẽ\" class=\"q-img\" /><img src=\"assets/exams/vedich2k9_de11/image9.png\" alt=\"công thức\" class=\"q-formula-img\" /><img src=\"assets/exams/vedich2k9_de11/image10.png\" alt=\"công thức\" class=\"q-formula-img\" />Câu 1. Khi lấy nước từ một bình đang nút kín, ta chỉ lấy được một ít dù trong bình vẫn còn nhiều nước. Từ hiện tượng đó, một học sinh đã nảy ra ý tưởng thực hiện thí nghiệm xác định áp suất khí quyển bằng các dụng cụ đơn giản sau: Một ống thủy tinh hình trụ trong suốt có nút kín ở trên (N) và vòi nhỏ có khóa (k) ở đáy, thước đo chiều dài. Học sinh này tiến hành thí nghiệm theo các bước sau:<br>Bước 1: Đo chiều dài của ống là L0, mở nút đổ nước vào ống đến chiều dài là L1 rồi nút kín ống (L1 < L0).<br>Bước 2: Mở khóa k để nước chảy ra ngoài cho đến khi nước không chảy ra dù vẫn còn nước trong ống, đo chiều dài cột nước được L2.<br>Bước 3: Thực hiện các thao tác tính toán và đưa ra kết quả về áp suất khí quyển.<br>Coi khối lượng riêng của nước và gia tốc trọng trường là D và g đã biết, nhiệt độ không đổi trong quá trình thao tác.",
+    "options": {
+      "A": "Trong quá trình nước chảy ra ở vòi, lượng không khí trong ống thực hiện quá trình đẳng nhiệt.",
+      "B": "Khi nước đang chảy ra, áp suất khí trong ống không đổi.",
+      "C": "Khi nước trong ống không chảy ra nữa dù vẫn mở khóa k thì áp suất ở đáy ống bằng áp suất khí quyển.",
+      "D": "Áp suất khí quyển tính theo công thức: $p=\\frac{Dg{L}_{2}({L}_{0}-{L}_{1})}{{L}_{1}- {L}_{2}}$."
+    },
+    "correct": "ĐSĐS",
+    "giaiThich": "a) Trong quá trình nước chảy ra ở vòi, nhiệt độ lượng khí không đổi nên xem đây là quá trình đẳng nhiệt.<br>b) Khi nước chảy ra, nhiệt độ lượng khí bên trong ống không thay đổi, thể tích khí tăng lên, áp suất khí giảm xuống.<br>c) Khi nước trong ống không chảy ra nữa dù vẫn mở khóa k thì áp suất ở đáy ống bằng áp suất khí quyển, lúc này áp suất khí trong ống bằng $\\left({p}_{0}-Dg{L}_{2}\\right)$.<br>d) Áp dụng ĐL Bôi lơ cho lượng khí trong ống thủy tinh ở hai trạng thái:<br>${p}_{0}.\\left({L}_{0}-{L}_{1}\\right)=\\left({p}_{0}-Dg{L}_{2}\\right)\\left({L}_{0}-{L}_{2}\\right)⇒\\frac{{p}_{0}-Dg{L}_{1}}{{p}_{0}}=\\frac{{L}_{0}-{L}_{1}}{{L}_{0}-{L}_{2}}$<br>Thực hiện biến đổi, ta thu được: ${p}_{0}=Dg{L}_{2}.\\frac{{L}_{0}-{L}_{2}}{{L}_{1}-{L}_{2}}$"
+  },
+  {
+    "id": 20,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k9_de11/image5.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 2. Một nhóm học sinh thực hiện thí nghiệm kiểm chứng định luật Charles. Bộ thí nghiệm gồm các dụng cụ lắp đặt như hình vẽ. Ống thuỷ tinh đầu dưới bịt kín, đầu trên hở, bên trong có giọt acid sulfuric ngăn khí trong ống không thoát ra ngoài. Nhóm tiến hành đo chiều cao của cột khí trong ống ở các nhiệt độ khác nhau và ghi lại kết quả như sau:<br><img src=\"assets/exams/vedich2k9_de11/image6.png\" alt=\"hình vẽ\" class=\"q-img\" />",
+    "options": {
+      "A": "Khi giọt acid sulfuric đứng yên ở các vị trí khác nhau, áp suất cột khí trong các trường hợp bằng nhau.",
+      "B": "Trong phạm vi sai số cho phép, kết quả thu được phù hợp với định luật Charles.",
+      "C": "Khi nhiệt độ tăng, ứng với mỗi độ celsius (°C) thì chiều cao cột khí tăng thêm các khoảng không bằng nhau.",
+      "D": "Khi chiều cao cột khí tăng gấp đôi thì tốc độ căn quân phương của các phân tử khí trong đó tăng $\\sqrt{2}$ lần."
+    },
+    "correct": "ĐĐSĐ",
+    "giaiThich": "a) Khi giọt acid sulfuric đứng yên ở các vị trí khác nhau, áp suất cột khí trong các trường hợp bằng nhau.<br>b) Ta kiểm chứng: $\\frac{V}{T}=\\frac{S.h}{T}=$ hằng số $⇒\\frac{h}{T}=$ C               (C là hằng số)<br>Lần 1: $\\frac{9,5}{25+273}≈0,032$; Lần 2: $\\frac{9,6}{30+273}≈0,032$; Lần 3: $\\frac{9,8}{35+273}≈0,032$; …<br>Trong phạm vi sai số cho phép, kết quả thu được phù hợp với định luật Charles.<br>c) $\\frac{h}{T}=\\frac{h}{t+273}=C⇒h=C.t+C.273$ (h tăng đều theo t, do h là hàm bậc nhất theo t).<br>Như vậy ứng với mỗi độ celsius (0C) thì chiều cao cột khí tăng thêm các khoảng bằng nhau.<br>d) Ta xét động năng trung bình của các phân tử khí: ${E}_{d}=\\frac{1}{2}m{v}^{2}=\\frac{3}{2}kT⇒\\sqrt{{v}^{2}}∼\\sqrt{T}∼\\sqrt{h}$<br>Vậy khi chiều cao cột khí tăng gấp đôi thì nhiệt độ tuyệt đối tăng gấp đôi."
+  },
+  {
+    "id": 21,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k9_de11/image7.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 3. Đông trùng hạ thảo tươi có hàm lượng nước chiếm từ 85% đến 90% khối lượng. Sau quy trình chế biến, độ ẩm thành phẩm được đưa về mức 5% đến 8%. Để giữ dược tính của đông trùng hạ thảo thì có hai phương pháp phổ biến được áp dụng là sấy lạnh và sấy thăng hoa. Phương pháp sấy lạnh dựa trên nguyên lý tách ẩm bằng không khí khô, giảm áp suất để nước hóa hơi ở nhiệt độ thấp (200C đến 300C). Phương pháp sấy thăng hoa thực hiện trong điều kiện áp suất rất thấp, khiến nước đá chuyển trực tiếp sang dạng hơi ở nhiệt độ âm (-20 °C đến -50C) mà không qua thể lỏng. Quy trình sấy chung gồm 3 bước:<br>Bước 1: Xử lý nhiệt độ phù hợp cho sản phẩm và đưa vào buồng sấy kín.<br>Bước 2: Hệ thống bơm chân không thiết lập áp suất phù hợp, đồng thời bộ gia nhiệt cung cấp năng lượng cần thiết cho quá trình chuyển pha của nước.<br>Bước 3: Hơi nước thoát ra được thu hồi tại bộ ngưng tụ để chuyển lại thành thể lỏng, phần khí còn lại được bơm chân không loại bỏ ra ngoài môi trường.",
+    "options": {
+      "A": "Trong phương pháp sấy thăng hoa, nước ở thể rắn chuyển thành dạng hơi (khí).",
+      "B": "Nếu giữ nhiệt độ buồng sấy không đổi thì nhiệt lượng của bộ gia nhiệt cung cấp cho buồng sấy bằng 0.",
+      "C": "Nhiệt lượng cần cung cấp cho 1 kg nước hóa hơi lớn hơn nhiệt lượng cần cung cấp cho 1 kg nước đá thăng hoa.",
+      "D": "Nếu áp suất được giữ không đổi và nhiệt độ tăng thì số phân tử nước bị hút khỏi buồng sấy (bao gồm số phân tử hút qua bơm hút và số phân tử đi vào bộ ngưng tụ) lớn hơn số phân tử nước thoát ra khỏi sản phẩm."
+    },
+    "correct": "ĐSSĐ",
+    "giaiThich": "a) Thăng hoa là quá trình chất chuyển tử thể rắn chuyển thành thể khí.<br>b) Để quá trình chuyển pha của nước (nhiệt độ không đổi) thì bộ gia nhiệt cần cung cấp cho buồng sấy một nhiệt lượng.<br>c) Ta có thể giải thích dựa trên thuyết cấu tạo chất, theo đó lực tương tác giữa các phân tử của thể rắn lớn hơn các phân tử thể lỏng và lực tương tác các phân tử thể lỏng lớn hơn các phân tử thể khí.<br>d) Khi nhiệt độ tăng, động năng các phân tử nước tăng, để duy trì áp suất không đổi thì số phân tử nước bị hút ra khỏi buồng sấy phải lớn hơn số phân tử nước thoát ra khỏi sản phẩm."
+  },
+  {
+    "id": 22,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k9_de11/image8.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Một nhóm học sinh thực hiện thí nghiệm khảo sát lực từ tác dụng lên đoạn dây dẫn thẳng mang dòng điện có sơ đồ như hình vẽ. Khung dây hình chữ nhật được treo vào lực kế và đặt sao cho chỉ có cạnh PQ nằm trong từ trường đều giữa hai cực của nam châm, các đường sức từ có phương ngang, dây dẫn đưa dòng điện vào khung dây mềm, không tác dụng lực lên khung dây khi thao tác. Ban đầu đặt sao cho PQ nằm ngang vuông góc với các đường sức từ và lọt hoàn toàn trong từ trường. Khi chưa có dòng điện, lực kế chỉ giá trị F0. Khi có dòng điện không đổi chạy qua khung dây thì lực kế chỉ giá trị F1 với F1 > F0.",
+    "options": {
+      "A": "Đường sức từ giữa hai cực của nam châm có chiều từ cực S đến cực N.",
+      "B": "Dòng điện qua đoạn PQ có chiều từ Q đến P.",
+      "C": "Chiều dài và cường độ dòng điện qua PQ là L và I. Cảm ứng từ tính theo công thức: $B=\\frac{{F}_{1}-{F}_{0}}{I.L}$.",
+      "D": "Từ trạng thái ban đầu, quay khung dây quanh trục chứa dây treo góc $α$ có $cosα=0,6$ thì số chỉ của lực kế là $F=0,4{F}_{0}​+​​0,6{F}_{1}$."
+    },
+    "correct": "ĐĐSS",
+    "giaiThich": "a) Đường sức từ giữa hai cực của nam châm có chiều từ cực N đến cực S (vào nam ra bắc).<br>b) Do ${F}_{1}>{F}_{0}$ nên lực từ hướng từ trên xuống, vận dụng quy tắc bàn tay trái ra suy ra dòng điện có chiều từ P đến Q.<br>c) Khi chưa có dòng điện: ${F}_{0}=P$<br>Khi có dòng điện: ${F}_{1}=P+IBL$<br>Từ đó suy ra: $B=\\frac{{F}_{1}-{F}_{0}}{IL}$<br>d)$F=IBL\\mathrm{sin} {\\left(90-α\\right)}+P⇒F=\\left({F}_{1}-{F}_{0}\\right).0,6+{F}_{0}=0,4{F}_{0}+0,6{F}_{1}$"
+  },
+  {
+    "id": 23,
+    "type": "short",
+    "question": "Sử dụng các thông tin sau cho Câu 1 và Câu 2<br>Một nhóm học sinh thực hiện thí nghiệm xác định nhiệt nóng chảy riêng của nước đá. Nhóm cung cấp nhiệt năng cho một lượng nước đá với công suất không đổi, theo dõi nhiệt độ (t) theo thời gian $(θ)$ thu được đồ thị như hình vẽ.<br><img src=\"assets/exams/vedich2k9_de11/image11.png\" alt=\"hình vẽ\" class=\"q-img\" /><br>Câu 1. Nhiệt độ ban đầu của nước đá tính theo thang độ K là bao nhiêu? (kết quả lấy đến hàng đơn vị)",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "233",
+    "giaiThich": "$T\\left(K\\right)=t\\left(0C\\right)+273=-40+273=233K$"
+  },
+  {
+    "id": 24,
+    "type": "short",
+    "question": "Câu 2. Biết rằng nhiệt dung riêng của nước đá là $2,10.1{0}^{3}\\frac{J}{kg.K},$ thí nghiệm cho thấy ${θ}_{2}=5.{θ}_{1}$, nhiệt nóng chảy riêng của nước đá mà nhóm đo được bằng $x.1{0}^{5}\\frac{J}{kg}$. Giá trị của $x$ là bao nhiêu (kết quả lấy đến hàng phần trăm)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "334",
+    "giaiThich": "$\\left\\{P.{θ}_{1}=m.2,1.1{0}^{3}.\\left(0+40\\right)P.\\left({θ}_{2}-{θ}_{1}\\right)=m.λ           \\right) {θ}_{2}=5{θ}_{1} 4=\\frac{λ}{2,1.1{0}^{3}.40}⇒λ=3,36.1{0}^{5}J/kg$<br>Sử dụng các thông tin sau cho Câu 3 và Câu 4<br>Trong nuôi trồng thủy sản, việc sục khí để hòa tan oxygen vào nước là công đoạn cần thiết. Tại một bể nuôi cá giống, không khí được sục từ độ sâu h = 4,0 m. Các bọt khí khi bắt đầu rời đầu sục có bán kính 3,80 mm. Giả thiết nhiệt độ nước trong bể ổn định và đồng đều, áp suất khí quyển tương đương với áp suất của cột nước có độ cao h = 10,0 m."
+  },
+  {
+    "id": 25,
+    "type": "short",
+    "question": "Câu 3. Nếu lượng khí trong bọt khí không đổi, khi thoát khỏi mặt nước, bán kính bọt khí là bao nhiêu mm (kết quả lấy đến hàng phần trăm)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "4,25",
+    "giaiThich": "Đẳng nhiệt: $\\frac{{V}_{2}}{{V}_{1}}=\\frac{{R}_{2}^{3}}{{R}_{1}^{3}}=\\frac{{p}_{1}}{{p}_{2}}⇒{R}_{2}={R}_{1}.\\sqrt[3]{\\frac{{p}_{1}}{{p}_{2}}}=3,80.\\sqrt[3]{\\frac{10+4}{10}}=4,25 mm$"
+  },
+  {
+    "id": 26,
+    "type": "short",
+    "question": "4 m4 mCâu 4. Trên thực tế, một lượng không khí đã hòa tan vào nước. Biết rằng trong không khí ban đầu khí N2 chiếm 80,0% và khí O2 chiếm 20,0% về số mol. Khi hòa tan, khí N2 tan với số mol gấp 2,00 lần khí O2. Bọt khí khi thoát khỏi mặt nước có bán kính là 4,10 mm. Lượng khí O2 trong bọt khí hòa tan vào nước chiếm mấy phần trăm (%) so với lượng O2 ban đầu (kết quả lấy đến hàng đơn vị)?<br>4 m<br>4 m",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "17",
+    "giaiThich": "Khi bọt khí bắt đầu tời đầu sục: ${p}_{1}{V}_{1}={n}_{1}RT$<br>Khi bọt khí thoát khỏi mặt nước: ${p}_{2}V={n}_{2}RT$<br>$⇒\\frac{{p}_{2}{V}_{2}}{{p}_{1}{V}_{1}}=\\frac{{n}_{2}}{{n}_{1}}⇒\\frac{10}{10+4}.\\frac{4,{1}^{3}}{3,{8}^{3}}=\\frac{{n}_{2}}{{n}_{1}}$<br>Giả sử ban đầu có 0,2 mol khí O2 và 0,8 mol khí N2. Số mol khí trong bọt khí khi rời đầu sục là ${n}_{1}=1,0 mol$.Khi thoát khỏi mặt nước, số mol khí trong bọt khí là ${n}_{2}≈0,9 mol$<br>Số mol khí trong bọt khí bị hòa tan vào nước: $Δn={n}_{1}-{n}_{2}=0,1​ mol$<br>Số mol khí O2 bị hòa tan: $0,1={n}_{O}+2{n}_{O}⇒{n}_{O}=3{0}^{-1} mol$<br>Phần trăm (%)  lượng khí O2 trong bọt khí hòa tan vào nước so với lượng O2 ban đầu là:  $\\frac{3{0}^{-1}}{0,2}.100%≈17%$<br>Chú ý: Để không làm tròn phép tính trung gian, các em học sinh có thể sử dụng chức năng lưu biến trên máy tính cầm tay. Ở bài giải trên để giúp các em dễ hiểu hơn, tôi đã làm tròn bước tính trung gian, tuy nhiên không làm thay đổi kết quả bài toán.<br><img src=\"assets/exams/vedich2k9_de11/image12.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho Câu 5 và Câu 6<br>Một thanh dẫn đồng chất, tiết diện đều, trọng lượng P được uốn thành khung dây gấp khúc gồm ba đoạn bằng nhau MN = NP = PQ = 16,0 cm. Khung dây được treo sao cho có thể quay quanh trục nằm ngang đi qua hai đầu M và Q. Hai đoạn MN và PQ song song với nhau và cùng vuông góc với đoạn NP. Đặt hệ thống vào một từ trường đều có vectơ cảm ứng từ hướng thẳng đứng lên trên, độ lớn B = 0,50 T. Khi có dòng điện cường độ I = 4,00 A chạy qua khung dây thì khung dây lệch khỏi mặt phẳng thẳng đứng sao cho các đoạn MN, PQ hợp với phương thẳng đứng một góc  với $cosα=0,80$. Bỏ qua lực ma sát ở trục quay."
+  },
+  {
+    "id": 27,
+    "type": "short",
+    "question": "<img src=\"assets/exams/vedich2k9_de11/image13.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 5. Độ lớn lực từ tác dụng lên đoạn dây MN là x.10-3 N. Giá trị của x là bao nhiêu?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "320",
+    "giaiThich": "$F=IBL=4.0,5.0,16=0,32 N=320.1{0}^{-3}N$"
+  },
+  {
+    "id": 28,
+    "type": "short",
+    "question": "Câu 6. Giá trị của P là y.10-3 N. Giá trị của y là bao nhiêu?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "640",
+    "giaiThich": "Áp dụng quy tắc bàn tay trái, lực từ tác dụng lên hai cạnh MN và PQ triệt tiêu lẫn nhau, lực từ tác dụng lên cạnh NP có tác dụng làm quay khung (biểu diễn các lực tác dụng lên khung được thu gọn trong một mặt phẳng như hình vẽ bên).<br>Áp dụng quy tắc Momen với trục quay MQ:<br>$2.\\frac{P}{3}.8.\\mathrm{sin} {α}+\\frac{P}{3}.16.\\mathrm{sin} {α}=0,32.16.\\mathrm{cos} {α}$<br>$\\mathrm{cos} {α}=0,8\\mathrm{sin} {α}=0,6 P=0,64N=640.1{0}^{-3}N$<br>-------- HẾT--------"
+  }
+]

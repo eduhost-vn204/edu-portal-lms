@@ -1,0 +1,366 @@
+[
+  {
+    "id": 1,
+    "type": "mc",
+    "question": "Ứng dụng nào sau đây không dựa trên hiện tượng cảm ứng điện từ?",
+    "options": {
+      "A": "Máy phát điện xoay chiều.",
+      "B": "Máy biến áp.",
+      "C": "Bếp từ.",
+      "D": "Bình khí nén."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 2,
+    "type": "mc",
+    "question": "Mối liên hệ giữa nhiệt độ đo theo thang nhiệt độ Celsius và nhiệt độ đo theo thang nhiệt độ Kelvin là",
+    "options": {
+      "A": "$T\\left(K\\right)=\\frac{t\\left(0C\\right)}{273,15}$.",
+      "B": "$t\\left(0C\\right)=\\frac{T\\left(K\\right)}{273,15}$.",
+      "C": "$t\\left(0C\\right)=273,15-T\\left(K\\right)$.",
+      "D": "$t\\left(0C\\right)=T\\left(K\\right)-273,15$."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 3,
+    "type": "mc",
+    "question": "Gọi ${p}_{1},{V}_{1},{T}_{1}$ và ${p}_{2},{V}_{2},{T}_{2}$ lần lượt là áp suất, thể tích và nhiệt độ tuyệt đối của một lượng khí nhất định ở hai trạng thái (1) và (2). Công thức nào sau đây phù hợp với định luật Boyle?",
+    "options": {
+      "A": "${p}_{1}{V}_{1}={p}_{2}{V}_{2}$.",
+      "B": "$\\frac{{p}_{1}}{{T}_{1}}=\\frac{{p}_{2}}{{T}_{2}}$.",
+      "C": "$\\frac{{V}_{1}}{{T}_{1}}=\\frac{{V}_{2}}{{T}_{2}}$.",
+      "D": "${p}_{1}{V}_{2}={p}_{2}{V}_{1}$."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 4,
+    "type": "mc",
+    "question": "Mô hình động học phân tử về cấu tạo chất không đề cập đến nội dung nào sau đây?",
+    "options": {
+      "A": "Các chất được cấu tạo từ các hạt riêng biệt là phân tử.",
+      "B": "Nhiệt độ của vật càng cao thì tốc độ chuyển động của các phân tử cấu tạo nên vật càng lớn.",
+      "C": "Các phân tử chuyển động không ngừng.",
+      "D": "Các phân tử không tương tác với nhau."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 5,
+    "type": "mc",
+    "question": "Biểu thức Định luật I nhiệt động lực học áp dụng cho quá trình nung nóng đẳng tích là",
+    "options": {
+      "A": "U = Q + A với A > 0.",
+      "B": "U = Q với Q > 0.",
+      "C": "U = Q + A với A < 0.",
+      "D": "U = Q với Q < 0."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 6,
+    "type": "mc",
+    "question": "Hạt nhân càng bền vững nếu nó có",
+    "options": {
+      "A": "khối lượng càng lớn.",
+      "B": "độ hụt khối càng lớn.",
+      "C": "năng lượng liên kết càng lớn.",
+      "D": "năng lượng liên kết riêng càng lớn."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 7,
+    "type": "mc",
+    "question": "Xét một khối khí chứa trong bình kín. Khi nhiệt độ tăng, áp suất khối khí trong bình tăng lên là do",
+    "options": {
+      "A": "số lượng phân tử tăng nên số va chạm vào thành bình tăng lên, làm áp suất tăng.",
+      "B": "khối lượng phân tử khí tăng nên va chạm với thành bình mạnh hơn, làm áp suất tăng.",
+      "C": "các phân tử khí chuyển động nhanh hơn, va chạm vào thành bình mạnh hơn, làm áp suất tăng.",
+      "D": "các phân tử khí chuyển động chậm hơn, va chạm vào thành bình yếu hơn, làm áp suất tăng."
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 8,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k9_de10/image1.png\" alt=\"hình vẽ\" class=\"q-img\" />Mạng điện sinh hoạt ở Nhật Bản có hiệu điện thế hiệu dụng là 110 V trong khi ở Việt Nam ta là 220 V. Chiếc đài Sony xách tay từ Nhật Bản về nước ta phải được gắn thêm một máy biến áp nhỏ có tổng số 2400 vòng dây. Cuộn sơ cấp của máy biến áp này có số vòng dây là",
+    "options": {
+      "A": "1600 vòng.",
+      "B": "1200 vòng.",
+      "C": "800 vòng.",
+      "D": "1800 vòng."
+    },
+    "correct": "B",
+    "giaiThich": "$\\frac{{U}_{2}}{{U}_{1}}=\\frac{{N}_{2}}{{N}_{1}}⇒\\frac{110}{220}=\\frac{2400-{N}_{1}}{{N}_{1}}⇒{N}_{1}=1600$"
+  },
+  {
+    "id": 9,
+    "type": "mc",
+    "question": "Trong một phản ứng phân hạch, gọi tổng khối lượng nghỉ của các hạt trước phản ứng là mt và tổng khối lượng nghỉ của các hạt sau phản ứng là ms. Hệ thức nào sau đây đúng?",
+    "options": {
+      "A": "mt < ms.",
+      "B": "mt ≥ ms.",
+      "C": "mt > ms.",
+      "D": "mt ≤ ms."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 10,
+    "type": "mc",
+    "question": "Phát biểu nào sau đây là nội dung của Định luật Charles của một khối khí lí tưởng xác định?",
+    "options": {
+      "A": "Thể tích tỉ lệ thuận với nhiệt độ tuyệt đối khi áp suất không đổi.",
+      "B": "Áp suất tỉ lệ thuận với nhiệt độ tuyệt đối khi thể tích không đổi.",
+      "C": "Thể tích tỉ lệ nghịch với áp suất khi nhiệt độ không đổi.",
+      "D": "Áp suất tỉ lệ nghịch với nhiệt độ tuyệt đối khi thể tích không đổi."
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 11,
+    "type": "mc",
+    "question": "Điều nào sau đây không đúng?",
+    "options": {
+      "A": "Sự nóng chảy là quá trình chuyển từ thể rắn sang thể lỏng.",
+      "B": "Sự bay hơi là quá trình chuyển từ thể lỏng sang thể khí (hơi) ở bề mặt chất lỏng.",
+      "C": "Sự sôi là quá trình chuyển từ thể lỏng sang thể khí xảy ra ở cả bên trong và trên bề mặt chất lỏng.",
+      "D": "Sự ngưng tụ là quá trình chuyển từ thể lỏng sang thể rắn."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 12,
+    "type": "mc",
+    "question": "Sử dụng các thông tin sau cho Câu 12 và Câu 13. Một bọt khí nổi lên từ một đáy hồi sâu h (m) có thể tích gấp 1,2 lần khi đến mặt nước. Biết trọng lượng riêng của nước là $d=1{0}^{4}N/{m}^{3}$, áp suất khí quyển tại mặt hồ là ${p}_{0}=1{0}^{5}Pa$, nhiệt độ từ đáy hồ đến mặt hồ coi như không đổi.",
+    "options": {
+      "A": "${p}_{0}=d.h$.",
+      "B": "${p}_{0}+\\frac{d}{h}$.",
+      "C": "${p}_{0}+d.h$.",
+      "D": "${p}_{0}+2dh$."
+    },
+    "correct": "D",
+    "giaiThich": "$p={p}_{0}+ρgh={p}_{0}+d.h$"
+  },
+  {
+    "id": 13,
+    "type": "mc",
+    "question": "Độ sâu của đáy hồ là",
+    "options": {
+      "A": "4 m.",
+      "B": "3 m.",
+      "C": "2 m.",
+      "D": "1 m."
+    },
+    "correct": "D",
+    "giaiThich": "$p={p}_{0}+ρgh={p}_{0}+d.h=1,2{p}_{0}⇒1{0}^{5}+1{0}^{4}.h=1,2.1{0}^{5}⇒h=2 m$"
+  },
+  {
+    "id": 14,
+    "type": "mc",
+    "question": "Nhiều thí nghiệm đã chứng tỏ rằng hạt nhân (được giả thiết là hình cầu) có bán kính cho bởi công thức $R={R}_{0}.{A}^{\\frac{1}{3}}$ (với A là số khối của hạt nhân và ${R}_{0}=1,2.1{0}^{-15}\\left(m\\right)$. Do đó thể tích của hạt nhân được tính bằng công thức nào dưới đây?",
+    "options": {
+      "A": "$V=\\frac{4}{3}π{R}_{0}{A}^{3}$.",
+      "B": "$V=\\frac{4}{3}π{R}_{0}^{3}A$.",
+      "C": "$V=\\frac{4}{3}π{\\left({R}_{0}A\\right)}^{3}$.",
+      "D": "$V=\\frac{4}{3}π{R}_{0}^{3}{A}^{\\frac{1}{3}}$."
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 15,
+    "type": "mc",
+    "question": "Phát biểu nào sau đây không đúng khi nói về từ thông?",
+    "options": {
+      "A": "Biểu thức định nghĩa của từ thông là $Φ=BS\\mathrm{cos} {α}$.",
+      "B": "Đơn vị của từ thông là Wb (weber).",
+      "C": "Từ thông là một đại lượng có hướng.",
+      "D": "Từ thông là một đại lượng đại số."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 16,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k9_de10/image2.png\" alt=\"hình vẽ\" class=\"q-img\" />Ống dây điện trên hình vẽ bị hút về phía thanh nam châm (Quan sát hình vẽ). Hãy chỉ rõ cực của thanh nam châm?",
+    "options": {
+      "A": "Đầu P là cực dương, đầu Q là cực âm.",
+      "B": "Đầu P là cực nam, đầu Q là cực bắc.",
+      "C": "Đầu P là cực bắc, đầu Q là cực nam.",
+      "D": "Đầu P là cực âm, đầu Q là cực dương."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 17,
+    "type": "mc",
+    "question": "Người ta coi nhiệt độ là đại lượng đặc trưng cho động năng trung bình của chuyển động nhiệt của phân tử. Động năng trung bình của các phân tử cấu tạo nên vật càng lớn thì",
+    "options": {
+      "A": "thể tích của vật càng bé.",
+      "B": "nhiệt độ của vật càng thấp.",
+      "C": "nhiệt độ của vật càng cao.",
+      "D": "thể tích của vật càng lớn."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 18,
+    "type": "mc",
+    "question": "Tỉ số hạt nhân C14 và C12 trong một mẫu gỗ cổ đại tìm thấy bằng một nửa tỉ số hạt nhân C14 và C12 có trong không khí hiện tại. Biết C14 phóng xạ ${β}^{-}$ có chu kì bán rã 5730 năm. Tuổi của mẫu gỗ cổ đại là",
+    "options": {
+      "A": "5730 năm.",
+      "B": "11640 năm.",
+      "C": "2865 năm.",
+      "D": "8595 năm."
+    },
+    "correct": "D",
+    "giaiThich": "Áp dụng pp C14: $\\frac{{N}_{C14}}{{N}_{C12}}=\\frac{{N}_{0C14}}{{N}_{0C12}}.{2}^{-\\frac{t}{T}}⇒\\frac{1}{2}={2}^{-\\frac{t}{5730}}⇒t=5730$ năm"
+  },
+  {
+    "id": 19,
+    "type": "tf",
+    "question": "Câu 1. Để đảm bảo an toàn khi điện lực khôi phục điện sau khi các hộ gia đình bị ngập lụt, người dân cần tuân thủ các quy tắc an toàn về điện.",
+    "options": {
+      "A": "Ngắt toàn bộ cầu dao, aptomat trước khi có điện trở lại.",
+      "B": "Kiểm tra và lau khô các thiết bị điện, đặc biệt là ổ cắm, công tắc, dây dẫn… nếu bị ngập nước.",
+      "C": "Không sử dụng các thiết bị điện có dấu hiệu hư hỏng, rò rỉ hoặc phát nhiệt bất thường.",
+      "D": "Chạm tay vào thiết bị điện khi còn ẩm ướt hoặc đứng trên nền ướt."
+    },
+    "correct": "ĐĐĐS",
+    "giaiThich": ""
+  },
+  {
+    "id": 20,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k9_de10/image4.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 2. Một nhóm học sinh đã chuẩn bị các dụng cụ: Ống nghiệm (1), nút bấc có kích thước vừa khít với miệng ống nghiệm (2), đèn cồn (3), giá đỡ thí nghiệm (4) và các điều kiện cần thiết khác để làm thí nghiệm tìm hiểu về mối liên hệ giữa nội năng của một khối khí với năng lượng của các phân tử khí. Bố trí thí nghiệm như hình bên, sau đó dùng đèn cồn hơ nóng ống nghiệm cho đến khi nút bấc bật ra khỏi miệng ống nghiệm.",
+    "options": {
+      "A": "Khi nút bấc chưa bật ra, nội năng của không khí trong ống nghiệm tăng.",
+      "B": "Nhiệt lượng không khí trong ống nghiệm nhận được từ ngọn lửa đèn cồn chuyển hoàn toàn thành công mà khí thực hiện để làm nút bấc bật ra ngoài.",
+      "C": "Khi nút bấc chưa bật ra, nhiệt độ không khí trong bình không thay đổi.",
+      "D": "Nút bấc bật ra chứng tỏ động năng của các phân tử không khí trong ống nghiệm tăng lên khi được hơ nóng."
+    },
+    "correct": "ĐSSĐ",
+    "giaiThich": "a)$ΔU=Q>0$<br>b) $ΔU=A+Q⇒Q=ΔU+\\left(-A\\right)$ (khí nhận nhiệt sinh công và tăng nội năng).<br>c) Khi nút bấc chưa bật ra, nhiệt độ tăng và áp suất của khí cũng tăng (đẳng tích).<br>d) Khi hơ nóng ống nghiệm, nhiệt độ tăng, áp suất tăng dẫn đến động năng các phân tử tăng lên làm nút bấc bật ra."
+  },
+  {
+    "id": 21,
+    "type": "tf",
+    "question": "Câu 3. Dưới đây là bảng thông tin của 3 hạt nhân gồm: Uranium (U); Calcium (Ca) và Iron (Fe).<br>Tên hạt nhân<br>Số hạt mang điện<br>Số hạt trung hòa về điện<br>Năng lượng liên kết (MeV)<br>Uranium (U)<br>92<br>143<br>1786<br>Calcium (Ca)<br>20<br>20<br>234<br>Iron (Fe)<br>26<br>30<br>493",
+    "options": {
+      "A": "Mỗi nguyên tử Uranium (U) gồm có 92 proton, 143 neutron và 92 electron.",
+      "B": "Hạt nhân Iron (Fe) có kí hiệu là $3056Fe$.",
+      "C": "Năng lượng liên kết tính cho 1 hạt nucleon của hạt nhân Calcium (Ca) là 234 (MeV/nucleon).",
+      "D": "Sắp xếp theo thứ tự giảm dần độ bền vững của hạt nhân là (Fe), (U), (Ca)."
+    },
+    "correct": "ĐSSĐ",
+    "giaiThich": "a) Dựa vào bảng thông tin trên ta có mỗi nguyên tử Uranium (U) gồm có 92 proton, 143 neutron và 92 electron.<br>b) Hạt nhân Iron (Fe) có kí hiệu là $2656Fe$.<br>c)${E}_{lkr}=\\frac{{E}_{lk}}{A}=\\frac{234}{40}=5,85 MeV/nucleon$<br>d) Năng lượng liên kết riêng đặc trưng cho mức độ bền vững của hạt nhân.<br>Hạt nhân Uranium: ${E}_{lkr}=\\frac{1786}{92+143}=7,6 MeV/nucleon$<br>Hạt nhân Iron: ${E}_{lkr}=\\frac{493}{26+30}=8,8 MeV/nucleon$"
+  },
+  {
+    "id": 22,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k9_de10/image5.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Hình vẽ bên cho thấy đồ thị biểu diễn sự biến thiên của nhiệt độ $t$ theo thời gian $τ$ trong quá trình nung nóng một thỏi chì có khối lượng 1 kg. Biết nhiệt dung riêng của chì là 130 J/(kg.K).",
+    "options": {
+      "A": "Khi chì chuyển từ trạng thái B sang trạng thái C, nội năng của chì không thay đổi.",
+      "B": "Nội năng của chì tăng 20800 J trong 8 phút đầu nung nóng.",
+      "C": "Nhiệt độ nóng chảy của chì là 270C .",
+      "D": "Tại điểm B trên đồ thị chì ở trạng thái lỏng."
+    },
+    "correct": "SĐSS",
+    "giaiThich": "a) Khi chì nóng nảy, $Q>0⇒ΔU>0$ (nội năng tăng).<br>b)$\\left\\{P.{t}_{15}=mcΔTP.{t}_{8}=ΔU   \\right)⇒ΔU=mc.ΔT.\\frac{{t}_{8}}{{t}_{15}}=1.130.\\left(327-27\\right).\\frac{8}{15}=20800 J$<br>c) Nhiệt độ nóng chảy của chì là 3270C .<br>d) Tại điểm B trên đồ thị chì ở trạng thái rắn và bắt đầu nóng chảy."
+  },
+  {
+    "id": 23,
+    "type": "short",
+    "question": "<img src=\"assets/exams/vedich2k9_de10/image6.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 1. Chất phóng xạ chứa đồng vị của $1123Na$ được sử dụng làm chất đánh dấu điện giải (Chất điện giải là những chất dịch khoáng có thể hòa tan trong các dịch cơ thể tạo ra các ion tích điện, một số ion sẽ tích điện dương và một số ion tích điện âm. Chúng giữ các vai trò rất quan trọng trong quá trình trao đổi chất, thúc đẩy hoạt động và giúp cơ thể hoạt động một cách bình thường). Số hạt nhân nguyên tử trong 10 mg $1123Na$ bằng X.1020. Tìm giá trị của X(làm tròn kết quả đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "2,6",
+    "giaiThich": "$N=n.{N}_{A}=\\frac{m}{A}{N}_{A}=\\frac{10.1{0}^{-3}}{23}.6,02.1{0}^{23}=2,6.1{0}^{20}$"
+  },
+  {
+    "id": 24,
+    "type": "short",
+    "question": "Câu 2. Truyền nhiệt lượng 6.106 J cho khí trong một xilanh hình trụ, khí nở ra đẩy pittông chuyển động làm thể tích của khí tăng thêm 0,5 m3. Biết áp suất của khí là 8.106 N/m2 và coi áp suất này không đổi trong quá trình khí thực hiện công. Độ biến thiên nội năng của khí là X.106 J. Giá trị của X bằng bao nhiêu? (làm tròn kết quả đến chữ số hàng đơn vị).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "2",
+    "giaiThich": "$ΔU=Q+A=Q-p\\left({V}_{2}-{V}_{1}\\right)=6.1{0}^{6}-8.1{0}^{6}.0,5=2.1{0}^{6}J$"
+  },
+  {
+    "id": 25,
+    "type": "short",
+    "question": "Câu 3. Một học sinh tự làm một nhiệt kế gồm một cái ống thủy tinh thành mỏng nối với một cái bình nhỏ chứa chất lỏng. Dọc theo ống có gắn một thang đo có các vạch chia đều nhau. Khi bạn này nhúng nhiệt kế vào cốc nước đá đang tan thì nhiệt kế chỉ ${t}_{0}={5}^{0}C$, còn khi nhúng vào một nồi nước đang sôi thì nhiệt kế chỉ ${t}_{1}=9{5}^{0}C$. Khi đặt nhiệt kế này trong phòng thì nó chỉ $t=2{5}^{0}C$. Nhiệt độ đúng trong phòng lúc đó là bao nhiêu độ 0C? (kết quả lấy đến một con số sau dấu phẩy).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "22,2",
+    "giaiThich": "$\\frac{25-5}{95-5}=\\frac{t-0}{100-0}⇒t=22,{2}^{0}C$"
+  },
+  {
+    "id": 26,
+    "type": "short",
+    "question": "Câu 4. Áp suất trong lốp xe ô tô được tăng lên bằng cách bơm thêm không khí vào lốp. Người ta thấy rằng số mol không khí trong lốp đã tăng 5%, nhiệt độ tăng 1% và thể tích bên trong của lốp tăng 0,2%. Áp suất không khí trong lốp tăng lên bao nhiêu phần trăm (làm tròn kết quả đến chữ số hàng phần mười)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "5,8",
+    "giaiThich": "Lúc đầu: $p.V=nRT$<br>Lúc sau: $\\left(p+x.p\\right)\\left(V+0,002V\\right)=\\left(n+0,05n\\right)R\\left(T+0,01T\\right)$<br>$⇒\\left(1+x\\right).1,002=1,05.1,01⇒x=0,05838=5,838%$"
+  },
+  {
+    "id": 27,
+    "type": "short",
+    "question": "Câu 5. Mỗi phản ứng nhiệt hạch $12D+12D→23He+01n$ tỏa ta 17,6 MeV. Nước biển có chứa 0,0150% nước nặng ${D}_{2}O$ là nhiên liệu cho phản ứng nhiệt hạch trên. Khi tổng hợp $23He$ từ 2,00 kg nước biển bằng phản ứng trên thì năng lượng tỏa ra tương đương đốt cháy hoàn toàn a (kg) than đá. Biết mỗi kg than đá đốt cháy hoàn toàn tỏa ra năng lượng $27,0.1{0}^{6}J$. Lấy $e=1,6.1{0}^{-19}C$ và khối lượng mol của ${D}_{2}O$ là 20,0 g/mol. Giá trị của a là bao nhiêu? (làm tròn kết quả đến chữ số hàng đơn vị).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "942",
+    "giaiThich": "Khối lượng nước nặng có trong 2 kg nước biển: ${m}_{{D}_{2}O}=2000.0,015%=0,3 g$<br>Mỗi phản ứng cần 2 hạt nhân $12D$, tức là chỉ cần một phân tử nước nặng ${D}_{2}O$.<br>Số phản ứng bằng số hạt nước nặng ${D}_{2}O$: $N=\\frac{{m}_{{D}_{2}O}}{{A}_{{D}_{2}O}}.{N}_{A}$<br>Năng lượng toàn phần:  $Q=N.ΔE=\\frac{{m}_{{D}_{2}O}}{{A}_{{D}_{2}O}}.{N}_{A}=m.{q}_{t}$<br>$⇒\\frac{0,3}{20}.6,02.1{0}^{23}.17,6.1,6.1{0}^{-13}=a.27.1{0}^{6}⇒a=941,8⇒a=942 kg$"
+  },
+  {
+    "id": 28,
+    "type": "short",
+    "question": "<img src=\"assets/exams/vedich2k9_de10/image7.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 6. Hai thanh ray dẫn điện, song song cách nhau một khoảng $d=20 cm$, nằm trong mặt phẳng thẳng đứng. Một thanh dây dẫn điện MN có khối lượng m = 2 g tựa vào 2 đường ray và có thể trượt không ma sát dọc theo các đường B ray. Hệ thống được đặt trong từ trường đều nằm ngang vuông góc với mặt phẳng của hai đường ray như hình vẽ, $B=2 T$. Mắc vào giữa hai điểm P và Q một tụ điện có điện dung $C=1 mF$ ban đầu không tích điện. Tại thời điểm ban đầu thanh MN được giữ yên. Bỏ qua mọi ma sát và điện trở của các thanh, coi chiều dài 2 thanh ray đủ lớn. Thả thanh MN tự do thì nó sẽ trượt với gia tốc bằng bao nhiêu m/s2? coi trong quá trình trượt thanh MN luôn nằm ngang và tì vào 2 thanh ray, lấy $g=10 m/{s}^{2}$. ( kết quả làm tròn đến 2 chữ số thập phân).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "9,26",
+    "giaiThich": "Theo ĐL 2 Niu-tơn: $a=\\frac{P-{F}_{t}}{m}=g-\\frac{BL}{m}.I=g-\\frac{BL}{m}.\\frac{dq}{dt}=g-\\frac{BL}{m}.\\frac{d\\left(C.Bv.L\\right)}{dt}$<br>$⇒a=g-\\frac{BL}{m}.CBL.\\frac{dv}{dt}⇒a=g-\\frac{{B}^{2}{L}^{2}.C}{m}.a$<br>$⇒a=\\frac{g}{1+\\frac{{B}^{2}{L}^{2}.C}{m}}=\\frac{10}{1+\\frac{{2}^{2}.0,{2}^{2}.1{0}^{-3}}{2.1{0}^{-3}}}=9,259.....m/{s}^{2}$"
+  }
+]

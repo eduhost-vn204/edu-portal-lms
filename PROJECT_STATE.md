@@ -393,19 +393,23 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
      - Cập nhật đồng bộ drawer mobile kiểu YouTube trên `index.html`, `danhsach-ly12.html`, `hoso.html` và menu `auth.js`.
   4. **Kiểm thử**:
      - Cú pháp HTML/JS & thẻ `</html>` trên toàn bộ 5 trang HTML: **PASS**.
-### 29/08/2026 — Hoàn tất Tái sinh Pilot Đề 02 (Office Math & Sửa Option Splitting)
+### 29/08/2026 — Hoàn tất Tái sinh Toàn bộ Batch 14 Đề sang 2k9 (Office Math, Sửa Option Splitting, Khóa An Toàn)
 
 - **Người thực hiện**: Antigravity
 - **Phạm vi thay đổi**:
-  - `data/exams/vedich2k8_de02.json`: Tái sinh hoàn toàn từ file Word mới (`869 Office Math / OMML`).
-  - `assets/exams/vedich2k8_de02/`: Lọc bỏ ảnh chụp màn hình desktop/kích thước rác, chỉ giữ sơ đồ thí nghiệm thực tế.
-  - `data/danhsachde.json`: Chuyển `trangThai: 'khoa'` cho toàn bộ 14 đề `vedich2k8_de02..de15` (giữ ẩn an toàn).
-- **Kết quả nghiệm thu Pilot Đề 02**:
-  - **Tách phương án**: Đã giải quyết triệt để lỗi dính nhãn B/C/D vào A (đối soát Q3: A='Khối lượng.', B='Năng lượng.', C='Động lượng.', D='Hiệu điện thế.'). 0 phương án rỗng, 0 dính nhãn trên toàn bộ 18 câu MC.
-  - **Office Math $\rightarrow$ LaTeX**: Toàn bộ công thức chuyển đổi sang LaTeX inline `$..$` render KaTeX sắc nét, chuẩn baseline (đối soát Q4, Q8, Q9, Q12, Q13, Q14, Q15, Q23, Q24, Q25, Q26, Q27, Q28).
-  - **Lọc rác**: Q6 loại bỏ ảnh screenshot 1366x768 gắn nhầm ở option D.
-  - **Độ bao phủ lời giải**: Báo cáo chính xác 10/28 câu có HD (35.7% theo đúng file Word gốc: 4 câu Phần II + 6 câu Phần III).
-  - **Commit**: `ef1e599`, đã deploy thành công lên GitHub Pages và xác nhận live.
+  - `data/exams/vedich2k9_de02.json` ... `data/exams/vedich2k9_de15.json` (14 file đề thi 2k9 chuẩn hóa).
+  - `assets/exams/vedich2k9_de02/` ... `assets/exams/vedich2k9_de15/` (toàn bộ sơ đồ thí nghiệm thật, công thức OLE fallback chuẩn). Đã dọn dẹp sạch toàn bộ artifact cũ `vedich2k8_*`.
+  - `data/danhsachde.json`: Chuyển 14 bộ đề sang định danh `vedich2k9_de02..de15`, tiêu đề `Đề về đích 2k9 – Đề số XX`, giữ trạng thái `trangThai: 'khoa'` (giữ ẩn an toàn).
+  - `data/exams_manifest.json`: Đồng bộ metadata 14 đề 2k9.
+  - `phong-thi-thu.html`: Cập nhật bộ lọc hỗ trợ `vedich2k9`.
+- **Kết quả nghiệm thu Kỹ thuật & Quality Gates (100% PASS)**:
+  - **14/14 Đề thi**: Đủ 14 bộ đề từ Đề 02 đến Đề 15, mỗi đề đúng 28 câu (18 MC + 4 TF + 6 Short), tổng cộng **392 câu hỏi**.
+  - **252/252 Câu trắc nghiệm (MC)**: 0 phương án rỗng, 0 dính nhãn kế tiếp vào phương án trước.
+  - **Office Math $\rightarrow$ LaTeX**: Toàn bộ công thức OMML chuyển đổi sang LaTeX inline `$..$` render KaTeX sắc nét, chuẩn baseline. Cân bằng ký tự delimiter `$` 100%.
+  - **Độ bao phủ lời giải chi tiết**: 159/392 câu có HD (40.6% — phản ánh trung thực toàn bộ lời giải có trong tài liệu Word nguồn của Thầy).
+  - **Tài nguyên hình ảnh**: 100% liên kết ảnh đều tồn tại thật trên đĩa, không rác screenshot desktop.
+  - **Trạng thái**: Toàn bộ 14 đề đều ở trạng thái `khoa` chờ Thầy nghiệm thu mở cho học sinh.
+
 
 
 
