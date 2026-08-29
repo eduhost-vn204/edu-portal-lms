@@ -159,18 +159,18 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
-### 29/08/2026 — Tối ưu Giao diện Đua Top & Đưa Câu Hỏi Vào Tầm Nhìn Không Cần Cuộn Trang
+### 29/08/2026 — Tối ưu Giao diện Đua Top & Solo 1-1: Hiển Thị Vừa Khít 1 Màn Hình Không Cuộn Trang
 
 - **Vấn đề & Yêu cầu của Thầy**:
   1. Loại bỏ dòng thông báo phạm vi nội bộ (`🎯 Đang phát câu hỏi Tinh (đã duyệt)...`).
-  2. Khi câu hỏi xuất hiện, toàn bộ câu hỏi và 4 lựa chọn A, B, C, D phải nằm trọn trong tầm mắt học sinh, không bắt học sinh phải cuộn chuột xuống mới đọc hết đáp án.
+  2. Khi câu hỏi xuất hiện (cả Đua Top lẫn Solo), toàn bộ câu hỏi, 4 lựa chọn A, B, C, D và nút "Câu tiếp theo" phải nằm trọn trong tầm mắt học sinh, không bắt học sinh phải cuộn chuột xuống mới đọc hết đáp án hoặc bấm chuyển câu.
 - **Giải pháp**:
-  - Gỡ bỏ hoàn toàn `scopeBadge` trong [`dua-top.html`](file:///C:/Users/Xuan%20Truong/.gemini/antigravity/worktrees/_codex_friend_profile/implement_issue_twelve_coordinator/dua-top.html).
-  - Thêm cơ chế `body.in-game`: tự động ẩn banner tiêu đề `.hero` lớn khi bước vào làm bài, thu gọn thanh điểm `.score-bar` thành thanh ngang trạng thái mỏng nhẹ (44px).
-  - Tối ưu kích thước và padding siêu gọn cho `.nav` (44px), `.score-bar` (32px), `.arena`, `.q-card`, `.q-text`, `.q-opt` và nút `.q-next`, giúp toàn bộ card câu hỏi, 4 đáp án và nút "Câu tiếp theo" hiển thị vừa khít 100% trong một khung nhìn màn hình duy nhất (kể cả zoom 125%–150% hay laptop 1366×768) mà không cần cuộn chuột.
+  - Gỡ bỏ hoàn toàn `scopeBadge` trong [`dua-top.html`](file:///C:/Users/Xuan%20Truong/.gemini/antigravity/worktrees/_codex_friend_profile/implement_issue_twelve_coordinator/dua-top.html) và `scopeNoticeHtml` trong [`solo.html`](file:///C:/Users/Xuan%20Truong/.gemini/antigravity/worktrees/_codex_friend_profile/implement_issue_twelve_coordinator/solo.html).
+  - Thêm cơ chế `body.in-game`: tự động ẩn banner tiêu đề `.hero` lớn khi bước vào làm bài, thu gọn thanh điểm `.score-bar` / thanh đối thủ `.opp-bar` thành thanh ngang trạng thái mỏng nhẹ (44px / 32px).
+  - Tối ưu kích thước và padding siêu gọn cho `.nav` (44px), `.score-bar` / `.opp-bar` (32px), `.arena`, `.q-card`, `.q-text`, `.q-opt` và nút `.q-next`, giúp toàn bộ card câu hỏi, 4 đáp án và nút "Câu tiếp theo" hiển thị vừa khít 100% trong một khung nhìn màn hình duy nhất (kể cả zoom 125%–150% hay laptop 1366×768) mà không cần cuộn chuột.
   - Tự động cuộn `window.scrollTo({ top: 0, behavior: 'instant' })` tại mỗi lần chuyển câu và `nextBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' })` khi hiện nút chuyển câu.
-  - Thêm phím tắt bàn phím: bấm phím `1`-`4` hoặc `A`-`D` để chọn nhanh đáp án, phím `Enter` / `Space` / `Mũi tên phải` để sang câu tiếp theo ngay tức thì.
-- **Kiểm thử**: Cú pháp HTML/JS PASS, kiểm tra live endpoint `https://vatlyxuantruong.io.vn/dua-top.html` (HTTP 200) $\rightarrow$ Đã hiển thị bản mới.
+  - Thêm phím tắt bàn phím trên cả Đua Top và Solo: bấm phím `1`-`4` hoặc `A`-`D` để chọn nhanh đáp án, phím `Enter` / `Space` / `Mũi tên phải` để sang câu tiếp theo ngay tức thì.
+- **Kiểm thử**: Cú pháp HTML/JS PASS, kiểm tra live endpoint `https://vatlyxuantruong.io.vn/dua-top.html` và `https://vatlyxuantruong.io.vn/solo.html` (HTTP 200) $\rightarrow$ Đã hiển thị bản mới.
 
 ### 29/08/2026 — Sửa Popup "Nhiệm vụ hôm nay" Tràn & Scrollbar Lồng khi Zoom 125%–150% (Issue #12)
 

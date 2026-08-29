@@ -151,6 +151,73 @@
     body.dark .opp-progress-track { background: rgba(255,255,255,.1); }
     body.dark .btn-secondary { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.1); }
     body.dark .btn-secondary:hover { background: rgba(255,255,255,.1); }
+
+    /* Khi đang thi đấu Solo: tối ưu toàn bộ layout để vừa khít 1 màn hình mà không cần cuộn */
+    body.in-game .nav {
+      height: 44px;
+      padding: 0 16px;
+    }
+    body.in-game .hero { display: none; }
+    body.in-game .arena {
+      padding: 8px 12px 18px;
+      max-width: 760px;
+    }
+    body.in-game .battle-wrap {
+      gap: 6px;
+    }
+    body.in-game .opp-bar {
+      padding: 5px 12px;
+      gap: 8px;
+      border-radius: 8px;
+    }
+    body.in-game .opp-bar .vs-avatar {
+      width: 24px;
+      height: 24px;
+      font-size: 11px;
+    }
+    body.in-game .opp-score {
+      font-size: 11px;
+    }
+    body.in-game .q-card {
+      padding: 12px 16px;
+      border-radius: 14px;
+    }
+    body.in-game .q-meta {
+      margin-bottom: 6px;
+      gap: 6px;
+    }
+    body.in-game .q-num { font-size: 11px; }
+    body.in-game .q-badge { font-size: 9.5px; padding: 1px 6px; }
+    body.in-game .q-text {
+      margin-bottom: 8px;
+      font-size: 14px;
+      line-height: 1.42;
+    }
+    body.in-game .q-options { gap: 6px; }
+    body.in-game .q-opt {
+      padding: 7px 11px;
+      font-size: 13.5px;
+      line-height: 1.35;
+      border-radius: 8px;
+      gap: 8px;
+    }
+    body.in-game .q-opt .opt-key {
+      width: 20px;
+      height: 20px;
+      font-size: 10.5px;
+    }
+    body.in-game .q-feedback {
+      margin-top: 6px;
+      padding: 6px 10px;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    body.in-game .q-next {
+      margin-top: 6px;
+      padding: 9px;
+      font-size: 13.5px;
+      border-radius: 9px;
+    }
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -446,15 +513,11 @@
   // MATCHMAKING
   // ═══════════════════════════════════════════════════════════
   function renderIdle() {
+    document.body.classList.remove('in-game');
     resetMatchState();
-    var scopeText = teachingScopeInfo ? ((teachingScopeInfo.chuong ? teachingScopeInfo.chuong + ' – ' : '') + teachingScopeInfo.bai) : 'hiện tại';
-    var scopeNoticeHtml = bank.length
-      ? '<div style="margin:0 auto 18px;max-width:480px;padding:8px 14px;background:rgba(219,39,119,.08);border:1px solid rgba(219,39,119,.2);border-radius:10px;font-size:12.5px;color:var(--text);text-align:center;">🎯 Đấu Solo với <strong>' + bank.length + ' câu hỏi Tinh</strong> (đã duyệt) – Phạm vi: <strong>' + scopeText + '</strong></div>'
-      : '';
 
     arena.innerHTML =
       '<div style="text-align:center">' +
-        scopeNoticeHtml +
         '<div class="rank-chip">🎖️ Hạng hiện tại: ' + rankBadgeHtml(myLp) + '</div>' +
         '<div><button class="btn-primary" id="btn-find">🔍 Tìm trận</button></div>' +
       '</div>';
@@ -739,6 +802,9 @@
 
   function renderBattleQuestion() {
     if (qIdx >= matchQuestions.length) { finishMyProgress(); return; }
+    document.body.classList.add('in-game');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+
     var q = matchQuestions[qIdx];
     var optKeys = ['A', 'B', 'C', 'D'];
     var opts = optKeys.map(function (k) { return { key: k, text: fixLatexQuirks(q['opt' + k] || q['opt' + k.toLowerCase()] || '') }; }).filter(function (o) { return o.text; });
@@ -803,12 +869,38 @@
     qIdx++;
     myProgress.idx = qIdx;
     if (!isBotMatch) db.ref('solo_matches/' + matchId + '/progress/' + mySdt).set(myProgress);
-    document.getElementById('q-next').style.display = 'block';
+    var nextBtn = document.getElementById('q-next');
+    if (nextBtn) {
+      nextBtn.style.display = 'block';
+      nextBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
   }
 
   window.vlxtSoloAnswer = function (btn) { submitAnswer(btn.dataset.key); };
   window.vlxtSoloNext = function () { renderBattleQuestion(); };
   function autoFailQuestion() { submitAnswer(''); }
+
+  // ─── Keyboard Controls (1-4 / A-D để chọn đáp án, Enter/Space/Phím phải để sang câu tiếp) ───
+  document.addEventListener('keydown', function (e) {
+    if (!document.body.classList.contains('in-game')) return;
+    var nextBtn = document.getElementById('q-next');
+    if (nextBtn && nextBtn.style.display === 'block') {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        window.vlxtSoloNext();
+        return;
+      }
+    }
+    var keyMap = { '1': 'A', '2': 'B', '3': 'C', '4': 'D', 'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D', 'A': 'A', 'B': 'B', 'C': 'C', 'D': 'D' };
+    var k = keyMap[e.key];
+    if (k) {
+      var btn = document.querySelector('.q-opt[data-key="' + k + '"]');
+      if (btn && !btn.disabled) {
+        e.preventDefault();
+        window.vlxtSoloAnswer(btn);
+      }
+    }
+  });
 
   // ─── BOT simulation ─────────────────────────────────────────
   function botAccuracy(tier, mucDo) {
@@ -866,6 +958,7 @@
   }
 
   function finalizeResult() {
+    document.body.classList.remove('in-game');
     state_isBattleScreen = false;
     clearTimeout(forfeitTimer);
     if (oppProgressListener && oppProgressRef) { oppProgressRef.off('value', oppProgressListener); oppProgressListener = null; }
