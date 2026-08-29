@@ -177,12 +177,14 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
     - Thêm nút đóng nhanh `✕` góc trên bên phải của card (`.nv-close-btn`).
     - Thêm lắng nghe phím `Escape` để đóng popup tiện lợi.
     - Xuất hàm chuẩn `window.vlxtOpenNhiemVu()` hỗ trợ mở popup an toàn có body lock từ trang chủ và các script khác.
-    - Nâng cache-buster `nhiem-vu.js?v=4` trong `index.html` và `baihoc.html`.
+    - Nâng cache-buster `nhiem-vu.js?v=5` trong `index.html` và `baihoc.html`.
+    - Loại bỏ icon `📋` lặp thừa trong tiêu đề banner sticky (`#vlxt-mission-banner`), chỉ giữ 1 icon đại diện duy nhất.
 - **Kiểm thử**:
   - `node --check nhiem-vu.js`: PASS.
   - `node scripts/test-quiz-merge.mjs` (6/6 PASS) & `node scripts/test-quiz-publish.mjs` (12/12 PASS): PASS.
   - Kiểm tra thẻ đóng `</html>` và cú pháp toàn bộ script HTML: PASS.
   - `git diff --check`: Không có lỗi whitespace hay trailing spaces.
+  - Deploy & Live verification HTTP 200 trên `https://vatlyxuantruong.io.vn/`: PASS.
 
 ### 28/08/2026 — Khắc phục Lỗi Ghép Trận Solo Quá 12s Không Đấu Với AI (Hotfix)
 
