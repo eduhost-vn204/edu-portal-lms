@@ -68,6 +68,12 @@
     var isTinh = rawTier ? (rawTier === 'tinh') : (chatLuong === 'tinh');
     if (!isTinh) return false;
 
+    // 1.1. Kiểm tra trạng thái kỹ thuật (kyThuat / trangThaiKyThuat) - Cách ly fail-closed:
+    var kyThuat = q.kyThuat !== undefined && q.kyThuat !== null ? String(q.kyThuat).trim().toLowerCase() : '';
+    if (kyThuat && kyThuat !== 'dat') {
+      return false; // Chặn các câu có trạng thái 'CachLy', 'DangKiemTra' khỏi pool phát cho học sinh
+    }
+
     // 2. Kiểm tra status (nếu có trường status)
     if (q.status !== undefined && q.status !== null && String(q.status).trim() !== '') {
       var st = String(q.status).trim().toUpperCase();
