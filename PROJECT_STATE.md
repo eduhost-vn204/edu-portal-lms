@@ -159,6 +159,31 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 29/08/2026 — Sửa Popup "Nhiệm vụ hôm nay" Tràn & Scrollbar Lồng khi Zoom 125%–150% (Issue #12)
+
+- **Vấn đề đã khắc phục (Issue #12)**:
+  - Khi người dùng phóng to trình duyệt 125%–150% (hoặc trên màn hình laptop độ phân giải 1366×768, 1536×864), popup "Nhiệm vụ hôm nay" tràn chiều cao, chạm mép viewport và tạo thanh cuộn dọc nội bộ bên trong thẻ card (`#vlxt-nv-card`), trong khi trang nền (`index.html`) vẫn giữ thanh cuộn ngoài → tạo lỗi nested scrolling (hai scrollbar dọc song song), gây mất thẩm mỹ và khó thao tác.
+- **Nguyên nhân gốc**:
+  1. `#vlxt-nv-card` có `max-height: 90vh; overflow-y: auto;` kết hợp padding cố định quá lớn (`48px 52px 40px`), khiến nội dung cao vượt giới hạn viewport khi bị zoom.
+  2. `#vlxt-nv-overlay` khi mở (`.open`) không khóa cuộn nền trên `document.body` (`overflow: hidden`), dẫn đến trang nền vẫn cuộn độc lập với popup.
+  3. Khi popup cao hơn viewport, `align-items: center` trên overlay flexbox không có cơ chế cuộn an toàn toàn trang cho overlay.
+- **Giải pháp xử lý**:
+  - **Khóa cuộn nền**: Thêm class `body.vlxt-nv-open { overflow: hidden !important; }` khi mở popup và gỡ bỏ khi đóng, triệt tiêu hoàn toàn thanh cuộn nền khi popup đang hiển thị.
+  - **Một luồng cuộn duy nhất (Single-Stream Scrolling)**: Chuyển vùng cuộn lên container cha `#vlxt-nv-overlay` (`overflow-y: auto; -webkit-overflow-scrolling: touch; padding: clamp(...)`), bỏ `max-height: 90vh` và `overflow-y: auto` trên `#vlxt-nv-card`; dùng `margin: auto; flex-shrink: 0;` để card căn giữa hoàn hảo khi ngắn hơn viewport và cuộn mượt mà không bao giờ bị cắt xén đỉnh khi dài hơn viewport.
+  - **Responsive thích ứng kích thước & zoom**:
+    - Áp dụng `clamp()` và `@media (max-height: 600px)` cho padding, font size, margins của title, cards, chips, progress wrap và action buttons.
+    - Cấu trúc lại các class ngữ nghĩa gọn gàng: `.nv-teacher-card`, `.nv-teacher-tag`, `.nv-teacher-name`, `.nv-teacher-strategy`, `.nv-lesson-card`, `.nv-lesson-tag`, `.nv-lesson-name`.
+  - **Nâng cao trải nghiệm & khả năng truy cập**:
+    - Thêm nút đóng nhanh `✕` góc trên bên phải của card (`.nv-close-btn`).
+    - Thêm lắng nghe phím `Escape` để đóng popup tiện lợi.
+    - Xuất hàm chuẩn `window.vlxtOpenNhiemVu()` hỗ trợ mở popup an toàn có body lock từ trang chủ và các script khác.
+    - Nâng cache-buster `nhiem-vu.js?v=4` trong `index.html` và `baihoc.html`.
+- **Kiểm thử**:
+  - `node --check nhiem-vu.js`: PASS.
+  - `node scripts/test-quiz-merge.mjs` (6/6 PASS) & `node scripts/test-quiz-publish.mjs` (12/12 PASS): PASS.
+  - Kiểm tra thẻ đóng `</html>` và cú pháp toàn bộ script HTML: PASS.
+  - `git diff --check`: Không có lỗi whitespace hay trailing spaces.
+
 ### 28/08/2026 — Khắc phục Lỗi Ghép Trận Solo Quá 12s Không Đấu Với AI (Hotfix)
 
 - **Vấn đề đã khắc phục**: Khi học sinh/giáo viên bấm tìm trận Solo 1-1, đồng hồ tìm trận đếm quá 12s (28s...) mà không tự động chuyển sang đấu với AI (Bot).

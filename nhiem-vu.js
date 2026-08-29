@@ -117,56 +117,94 @@
   }
 
   // ─── CSS một lần ─────────────────────────────────────────
+  // ─── CSS một lần ─────────────────────────────────────────
   function injectCSS() {
     if (document.getElementById('vlxt-nv-css')) return;
     var s = document.createElement('style');
     s.id = 'vlxt-nv-css';
     s.textContent = [
-      /* Overlay / popup */
+      /* Khóa cuộn trang nền khi mở popup */
+      'body.vlxt-nv-open{overflow:hidden!important;}',
+
+      /* Overlay / popup container — vùng cuộn duy nhất */
       '#vlxt-nv-overlay{display:none;position:fixed;inset:0;z-index:999990;',
-      'background:rgba(0,0,20,.85);backdrop-filter:blur(6px);',
-      'align-items:center;justify-content:center;}',
-      '#vlxt-nv-overlay.open{display:flex;}',
-      '#vlxt-nv-card{background:linear-gradient(135deg,#0d1117,#0d1b2a);',
+      'background:rgba(0,0,20,.85);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);',
+      'overflow-y:auto;-webkit-overflow-scrolling:touch;',
+      'padding:clamp(12px,3vh,32px) clamp(12px,3vw,24px);box-sizing:border-box;}',
+      '#vlxt-nv-overlay.open{display:flex;align-items:center;justify-content:center;}',
+
+      /* Thẻ nội dung popup */
+      '#vlxt-nv-card{position:relative;background:linear-gradient(135deg,#0d1117,#0d1b2a);',
       'border:1.5px solid rgba(0,240,255,.3);border-radius:20px;',
-      'padding:48px 52px 40px;max-width:820px;width:96%;',
-      'box-shadow:0 20px 60px rgba(0,114,255,.3);',
-      'animation:nvCardIn .2s ease-out;max-height:90vh;overflow-y:auto;}',
-      '@keyframes nvCardIn{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}',
-      '.nv-title{font-size:28px;font-weight:800;color:#00f0ff;margin-bottom:5px;}',
-      '.nv-sub{font-size:16px;color:#8b949e;margin-bottom:22px;line-height:1.5;}',
-      '.nv-lesson-card{background:rgba(0,240,255,.06);border:1px solid rgba(0,240,255,.18);',
-      'border-radius:14px;padding:20px 24px;margin-bottom:16px;}',
-      '.nv-lesson-name{font-size:20px;font-weight:700;color:#e6edf3;margin-bottom:3px;}',
-      '.nv-lesson-meta{font-size:15px;color:#8b949e;}',
-      '.nv-chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;}',
-      '.nv-chip{padding:7px 16px;border-radius:20px;font-size:15px;font-weight:700;',
-      'background:rgba(0,240,255,.1);color:#00f0ff;border:1px solid rgba(0,240,255,.2);}',
+      'padding:clamp(22px,3.6vh,36px) clamp(20px,3.2vw,40px);max-width:760px;width:100%;',
+      'box-sizing:border-box;box-shadow:0 20px 60px rgba(0,114,255,.3);',
+      'animation:nvCardIn .22s cubic-bezier(.16,1,.3,1);margin:auto;flex-shrink:0;}',
+      '@keyframes nvCardIn{from{opacity:0;transform:translateY(-12px) scale(.98)}to{opacity:1;transform:none}}',
+
+      /* Nút đóng góc phải */
+      '.nv-close-btn{position:absolute;top:clamp(12px,2vh,18px);right:clamp(12px,2vw,18px);',
+      'width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.08);color:#8b949e;',
+      'border:1px solid rgba(255,255,255,.12);cursor:pointer;display:inline-flex;',
+      'align-items:center;justify-content:center;font-size:15px;line-height:1;',
+      'transition:all .15s ease;z-index:2;}',
+      '.nv-close-btn:hover{background:rgba(255,255,255,.16);color:#fff;border-color:rgba(0,240,255,.4);transform:scale(1.05);}',
+
+      /* Tiêu đề & phụ đề */
+      '.nv-title{font-size:clamp(20px,2.2vw,26px);font-weight:800;color:#00f0ff;margin-bottom:4px;padding-right:36px;line-height:1.3;}',
+      '.nv-sub{font-size:clamp(13px,1.15vw,15px);color:#8b949e;margin-bottom:clamp(12px,2vh,18px);line-height:1.45;}',
+
+      /* Khối bài học thầy đang dạy & bài em đang học */
+      '.nv-teacher-card{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);',
+      'border-radius:12px;padding:clamp(10px,1.6vh,14px) clamp(12px,1.8vw,18px);margin-bottom:clamp(8px,1.4vh,12px);}',
+      '.nv-teacher-tag{font-size:11px;color:#f59e0b;font-weight:700;letter-spacing:.05em;margin-bottom:4px;}',
+      '.nv-teacher-name{font-size:clamp(15px,1.3vw,17px);font-weight:700;color:#e6edf3;margin-bottom:2px;line-height:1.35;}',
+      '.nv-teacher-meta{font-size:clamp(12px,1.05vw,13px);color:#8b949e;margin-bottom:8px;}',
+      '.nv-teacher-strategy{font-size:clamp(12.5px,1.1vw,13.5px);color:#e6edf3;line-height:1.45;}',
+
+      '.nv-lesson-card{background:rgba(0,240,255,.06);border:1px solid rgba(0,240,255,.22);',
+      'border-radius:12px;padding:clamp(10px,1.6vh,14px) clamp(12px,1.8vw,18px);margin-bottom:clamp(8px,1.4vh,12px);}',
+      '.nv-lesson-tag{font-size:11px;color:#22d3ee;font-weight:700;letter-spacing:.05em;margin-bottom:4px;}',
+      '.nv-lesson-name{font-size:clamp(15px,1.3vw,17px);font-weight:700;color:#e6edf3;margin-bottom:2px;line-height:1.35;}',
+      '.nv-lesson-meta{font-size:clamp(12px,1.05vw,13px);color:#8b949e;}',
+
+      /* Huy hiệu / Chips */
+      '.nv-chips{display:flex;gap:6px;flex-wrap:wrap;margin:clamp(6px,1.2vh,10px) 0;}',
+      '.nv-chip{padding:clamp(4px,.8vh,6px) clamp(10px,1.4vw,14px);border-radius:20px;',
+      'font-size:clamp(12px,1.05vw,13.5px);font-weight:700;background:rgba(0,240,255,.1);',
+      'color:#00f0ff;border:1px solid rgba(0,240,255,.2);line-height:1.3;}',
       '.nv-chip.warn{background:rgba(251,191,36,.1);color:#fbbf24;border-color:rgba(251,191,36,.3);}',
       '.nv-chip.ok{background:rgba(52,211,153,.1);color:#34d399;border-color:rgba(52,211,153,.3);}',
-      '.nv-progress-wrap{margin:10px 0;}',
-      '.nv-progress-label{font-size:14px;color:#8b949e;margin-bottom:7px;',
+
+      /* Thanh tiến độ */
+      '.nv-progress-wrap{margin:clamp(6px,1.2vh,10px) 0;}',
+      '.nv-progress-label{font-size:clamp(12px,1.05vw,13.5px);color:#8b949e;margin-bottom:6px;',
       'display:flex;justify-content:space-between;}',
-      '.nv-progress-bar{height:10px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;}',
+      '.nv-progress-bar{height:8px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden;}',
       '.nv-progress-fill{height:100%;background:linear-gradient(90deg,#0072ff,#00f0ff);',
       'border-radius:99px;transition:width .6s ease;}',
-      '.nv-btn-row{display:flex;gap:8px;margin-top:16px;}',
-      '.nv-btn{flex:1;padding:18px;border:none;border-radius:14px;font-size:18px;',
-      'font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;}',
+
+      /* Hàng nút bấm */
+      '.nv-btn-row{display:flex;gap:10px;margin-top:clamp(10px,2vh,16px);}',
+      '.nv-btn{flex:1;padding:clamp(10px,1.6vh,14px) clamp(14px,1.8vw,20px);border:none;border-radius:12px;',
+      'font-size:clamp(14px,1.25vw,16px);font-weight:700;cursor:pointer;font-family:inherit;',
+      'transition:all .15s;display:inline-flex;align-items:center;justify-content:center;text-align:center;}',
       '.nv-btn-primary{background:linear-gradient(135deg,#0072ff,#00c6ff);color:#fff;}',
       '.nv-btn-primary:hover{opacity:.88;transform:translateY(-1px);}',
       '.nv-btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;}',
       '.nv-btn-secondary{background:rgba(255,255,255,.06);color:#8b949e;',
       'border:1px solid rgba(255,255,255,.1);}',
       '.nv-btn-secondary:hover{background:rgba(255,255,255,.1);color:#e6edf3;}',
-      '.nv-nhip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}',
-      '.nv-nhip-btn{padding:22px 14px;border:1.5px solid rgba(0,240,255,.2);',
+
+      /* Lưới chọn nhịp học */
+      '.nv-nhip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:clamp(10px,1.8vh,14px) 0;}',
+      '.nv-nhip-btn{padding:clamp(12px,2vh,18px) clamp(8px,1.2vw,12px);border:1.5px solid rgba(0,240,255,.2);',
       'border-radius:12px;background:rgba(0,240,255,.05);color:#e6edf3;',
-      'font-size:14px;font-weight:700;cursor:pointer;text-align:center;',
+      'font-size:clamp(13px,1.15vw,14.5px);font-weight:700;cursor:pointer;text-align:center;',
       'font-family:inherit;transition:all .15s;line-height:1.4;}',
       '.nv-nhip-btn:hover,.nv-nhip-btn.sel{border-color:#00f0ff;',
       'background:rgba(0,240,255,.15);color:#00f0ff;}',
-      '.nv-nhip-sub{font-size:14px;font-weight:400;color:#8b949e;display:block;}',
+      '.nv-nhip-sub{font-size:clamp(11.5px,1vw,13px);font-weight:400;color:#8b949e;display:block;}',
+
       /* Banner sticky */
       '#vlxt-mission-banner{position:fixed;bottom:16px;right:16px;z-index:99980;',
       'background:linear-gradient(135deg,#0d1b2a,#0d1117);',
@@ -185,10 +223,20 @@
       'color:#8b949e;border:none;cursor:pointer;font-size:10px;line-height:16px;',
       'flex-shrink:0;font-family:inherit;padding:0;display:inline-flex;',
       'align-items:center;justify-content:center;}',
+
+      /* Responsive Media Queries */
       '@media(max-width:480px){',
-      '#vlxt-nv-card{padding:28px 22px 22px;}',
-      '.nv-title{font-size:22px;}',
-      '#vlxt-mission-banner{bottom:10px;right:10px;left:10px;max-width:none;}}'
+      '#vlxt-nv-overlay{padding:12px 10px;}',
+      '#vlxt-nv-card{padding:20px 16px;}',
+      '.nv-title{font-size:19px;}',
+      '.nv-btn-row{flex-direction:column;}',
+      '.nv-btn{width:100%;}',
+      '#vlxt-mission-banner{bottom:10px;right:10px;left:10px;max-width:none;}}',
+      '@media(max-height:600px){',
+      '#vlxt-nv-overlay{padding:8px;}',
+      '#vlxt-nv-card{padding:16px 20px;}',
+      '.nv-title{font-size:18px;margin-bottom:2px;}',
+      '.nv-sub{font-size:12px;margin-bottom:8px;}}'
     ].join('');
     document.head.appendChild(s);
   }
@@ -206,6 +254,8 @@
     if (!o) {
       o = document.createElement('div');
       o.id = 'vlxt-nv-overlay';
+      o.setAttribute('role', 'dialog');
+      o.setAttribute('aria-modal', 'true');
       o.addEventListener('click', function (e) {
         if (e.target === o) window.vlxtCloseNhiemVu();
       });
@@ -216,14 +266,30 @@
 
   function openOverlay(html) {
     var o = getOrCreateOverlay();
-    o.innerHTML = '<div id="vlxt-nv-card">' + html + '</div>';
+    o.innerHTML =
+      '<div id="vlxt-nv-card">' +
+        '<button class="nv-close-btn" onclick="vlxtCloseNhiemVu()" aria-label="Đóng popup">✕</button>' +
+        html +
+      '</div>';
     o.classList.add('open');
+    document.body.classList.add('vlxt-nv-open');
   }
 
   function closeOverlay() {
     var o = document.getElementById('vlxt-nv-overlay');
     if (o) o.classList.remove('open');
+    document.body.classList.remove('vlxt-nv-open');
   }
+
+  // Lắng nghe phím Escape để đóng popup tiện lợi
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' || e.key === 'Esc') {
+      var o = document.getElementById('vlxt-nv-overlay');
+      if (o && o.classList.contains('open')) {
+        window.vlxtCloseNhiemVu();
+      }
+    }
+  });
 
   // ─── 1. Chọn nhịp học (lần đầu) ─────────────────────────
   function showNhipHocSelector(user) {
@@ -237,7 +303,7 @@
         '<button class="nv-nhip-btn" onclick="vlxtSelectNhip(this,5)">5 ngày<span class="nv-nhip-sub">Thứ 2–6</span></button>' +
         '<button class="nv-nhip-btn" onclick="vlxtSelectNhip(this,7)">7 ngày<span class="nv-nhip-sub">Mỗi ngày</span></button>' +
       '</div>' +
-      '<div id="nv-nhip-hint" style="font-size:11px;color:#8b949e;text-align:center;min-height:16px;margin-bottom:12px"></div>' +
+      '<div id="nv-nhip-hint" style="font-size:12px;color:#8b949e;text-align:center;min-height:16px;margin-bottom:12px"></div>' +
       '<div class="nv-btn-row">' +
         '<button class="nv-btn nv-btn-secondary" onclick="vlxtCloseNhiemVu()">Để sau</button>' +
         '<button class="nv-btn nv-btn-primary" id="nv-btn-confirm" disabled onclick="vlxtConfirmNhip()">Bắt đầu →</button>' +
@@ -297,22 +363,20 @@
         strategyText = '⚡ Em chậm hơn thầy <strong>' + (-diff) + ' buổi</strong> — cần tăng tốc ngay, học bù nhiều buổi/ngày!';
       }
       teacherHtml =
-        '<div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);' +
-        'border-radius:12px;padding:14px 18px;margin-bottom:14px;">' +
-          '<div style="font-size:11px;color:#f59e0b;font-weight:700;letter-spacing:.05em;margin-bottom:6px;">📍 THẦY ĐANG DẠY ĐẾN</div>' +
-          '<div style="font-size:17px;font-weight:700;color:#e6edf3;margin-bottom:2px;">' + (tLesson.TenBai || '') + '</div>' +
-          '<div style="font-size:13px;color:#8b949e;margin-bottom:10px;">' +
+        '<div class="nv-teacher-card">' +
+          '<div class="nv-teacher-tag">📍 THẦY ĐANG DẠY ĐẾN</div>' +
+          '<div class="nv-teacher-name">' + (tLesson.TenBai || '') + '</div>' +
+          '<div class="nv-teacher-meta">' +
             (tLesson.KhoaHoc || '') + ' · Chương ' + (tLesson.Chuong || '?') + ' · Buổi ' + (teacherIdx + 1) + '/' + total +
           '</div>' +
-          '<div style="font-size:13px;color:#e6edf3;line-height:1.5;">' + strategyText + '</div>' +
+          '<div class="nv-teacher-strategy">' + strategyText + '</div>' +
         '</div>';
     }
 
     var lessonHtml = lesson
-      ? ('<div style="background:rgba(0,240,255,.06);border:1px solid rgba(0,240,255,.25);' +
-        'border-radius:12px;padding:14px 18px;margin-bottom:14px;">' +
-          '<div style="font-size:11px;color:#22d3ee;font-weight:700;letter-spacing:.05em;margin-bottom:6px;">📌 EM HỌC ĐẾN BÀI NÀY</div>' +
-          '<div class="nv-lesson-name" style="margin:0 0 2px">📖 ' + (lesson.TenBai || 'Buổi học') + '</div>' +
+      ? ('<div class="nv-lesson-card">' +
+          '<div class="nv-lesson-tag">📌 EM HỌC ĐẾN BÀI NÀY</div>' +
+          '<div class="nv-lesson-name">📖 ' + (lesson.TenBai || 'Buổi học') + '</div>' +
           '<div class="nv-lesson-meta">Chương ' + (lesson.Chuong || '?') + ' · ' + (lesson.KhoaHoc || '') + '</div>' +
           (lesson.MoTaBai ? '<div class="nv-lesson-meta" style="margin-top:3px">' + lesson.MoTaBai + '</div>' : '') +
          '</div>')
@@ -338,7 +402,7 @@
         '<div class="nv-progress-label"><span>Tiến độ XPS 2k9</span><span>' + pct + '%</span></div>' +
         '<div class="nv-progress-bar"><div class="nv-progress-fill" style="width:' + pct + '%"></div></div>' +
       '</div>' +
-      (cham > 0 ? '<div style="font-size:11px;color:#fbbf24;margin-bottom:4px">💡 Có thể làm bù nhiều buổi/ngày để đuổi kịp.</div>' : '') +
+      (cham > 0 ? '<div style="font-size:12px;color:#fbbf24;margin-bottom:6px">💡 Có thể làm bù nhiều buổi/ngày để đuổi kịp.</div>' : '') +
       '<div class="nv-btn-row">' +
         '<button class="nv-btn nv-btn-secondary" onclick="vlxtCloseNhiemVu()">Tắt</button>' +
         actionBtn +
@@ -351,14 +415,14 @@
     injectCSS();
     openOverlay(
       '<div style="text-align:center">' +
-        '<div style="font-size:48px;margin-bottom:10px">🏆</div>' +
-        '<div class="nv-title" style="justify-content:center">Đua Top đã mở khoá!</div>' +
+        '<div style="font-size:clamp(36px,5vh,48px);margin-bottom:8px">🏆</div>' +
+        '<div class="nv-title" style="justify-content:center;padding-right:0">Đua Top đã mở khoá!</div>' +
         '<div class="nv-sub" style="text-align:center">Em đã hoàn thành tốt nhiệm vụ hôm nay,<br>giờ là lúc leo Bảng Vàng!</div>' +
         '<div class="nv-chips" style="justify-content:center">' +
           '<span class="nv-chip ok">Tổng điểm Đua Top: ' + (nv.tongDiemDuaTop || 0) + ' LP</span>' +
           (nv.chuoiDung ? '<span class="nv-chip">' + (typeof vlxtStreakFireHTML === 'function' ? vlxtStreakFireHTML(Number(nv.chuoiDung)) : ('🔥 Chuỗi ' + Number(nv.chuoiDung) + ' ngày')) + '</span>' : '') +
         '</div>' +
-        '<div class="nv-btn-row" style="margin-top:18px">' +
+        '<div class="nv-btn-row" style="margin-top:16px">' +
           '<button class="nv-btn nv-btn-secondary" onclick="vlxtCloseNhiemVu()">Để sau</button>' +
           '<button class="nv-btn nv-btn-primary" onclick="window.location.href=\'dua-top.html\'">Vào Đua Top 🚀</button>' +
         '</div>' +
@@ -403,7 +467,10 @@
         }
       } else {
         var o = document.getElementById('vlxt-nv-overlay');
-        if (o) o.classList.add('open');
+        if (o) {
+          o.classList.add('open');
+          document.body.classList.add('vlxt-nv-open');
+        }
       }
     });
     document.body.appendChild(ban);
@@ -633,6 +700,28 @@
     closeOverlay();
     if (_state && !document.getElementById('vlxt-mission-banner')) {
       showMissionBanner(_state.nv, _state.xps);
+    }
+  };
+
+  window.vlxtOpenNhiemVu = function () {
+    if (_state) {
+      var _realConTro = Number(_state.nv.conTro) || 0;
+      var _total = _state.xps ? _state.xps.length : 0;
+      if (!_state.nv.nhipHoc) {
+        showNhipHocSelector(_state.user);
+      } else if (_total > 0 && _realConTro >= _total) {
+        showDuaTopUnlocked(_state.nv, _state.user);
+      } else {
+        showMissionPopup(_state.nv, _state.xps, _state.user, _state.teachingKey, _state.streakToday);
+      }
+    } else {
+      var o = document.getElementById('vlxt-nv-overlay');
+      if (o) {
+        o.classList.add('open');
+        document.body.classList.add('vlxt-nv-open');
+      } else if (typeof init === 'function') {
+        init();
+      }
     }
   };
 
