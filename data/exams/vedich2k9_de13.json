@@ -197,28 +197,28 @@
   {
     "id": 16,
     "type": "mc",
-    "question": "Hình a<br>Hình b<br>B<br>B0<br>O    1    2   3    t(ms)<br>$\\vec{B}$<br>Hình a<br>Hình b<br>B<br>B0<br>O    1    2   3    t(ms)<br>$\\vec{B}$<br>Một khung dây cứng, phẳng, diện tích S, được đặt trong từ trường đều có vectơ cảm ứng từ $\\vec{B}$ như Hình a. Cho độ lớn cảm ứng từ B biến thiên theo thời gian như đồ thị Hình b. Đồ thị suất điện động cảm ứng e theo thời gian trên khung dây có dạng nào sau đây",
+    "question": "Một khung dây cứng, phẳng, diện tích S, được đặt trong từ trường đều có vectơ cảm ứng từ $\\vec{B}$ như Hình a. Cho độ lớn cảm ứng từ B biến thiên theo thời gian như đồ thị Hình b. Đồ thị suất điện động cảm ứng e theo thời gian trên khung dây có dạng nào sau đây?",
     "options": {
       "A": "Hình 1",
       "B": "Hình 2",
       "C": "Hình 3",
       "D": "Hình 4"
     },
-    "correct": "",
-    "giaiThich": ""
+    "correct": "A",
+    "giaiThich": "Giai đoạn (0 ; 1s) từ trường tăng đều nên $e < 0$ và không đổi.<br>Giai đoạn (1s ; 2s) từ trường không đổi nên $e = 0$.<br>Giai đoạn (2s ; 3s) từ trường giảm đều nên $e > 0$ và không đổi.<br>Công thức: $e = -\\frac{d\\Phi}{dt} = -S\\frac{dB}{dt}$."
   },
   {
     "id": 17,
     "type": "mc",
-    "question": "e<br>e0<br>-e0<br>O<br>1<br>2<br>3<br>t(ms)<br>e<br>e0<br>-e0<br>O<br>1<br>2<br>t(ms)<br>e<br>e0<br>-e0<br>O<br>1<br>2<br>t(ms)<br>e<br>e0<br>-e0<br>O<br>1<br>2<br>t(ms)<br>3<br>3<br>3<br>e<br>e0<br>-e0<br>O<br>1<br>2<br>3<br>t(ms)<br>e<br>e0<br>-e0<br>O<br>1<br>2<br>t(ms)<br>e<br>e0<br>-e0<br>O<br>1<br>2<br>t(ms)<br>e<br>e0<br>-e0<br>O<br>1<br>2<br>t(ms)<br>3<br>3<br>3<br>Giai đoạn (0 ;1s) từ trường tăng đều nên e < 0 và không đổi.<br>Giai đoạn (1s ; 2s) từ trường không đổi nên e = 0.<br>Giai đoạn (2s ; 3s) từ trường giảm đều nên e > 0 và không đổi.<br>Sử dụng các thông tin sau cho câu 16 và câu 17: Tại một trạm khí tượng, một nhân viên bơm khí Helium vào trong bóng thám không. Khi bóng có bán kính 3,8 m thì người này ngừng bơm và thả bóng để thu thập dữ liệu khí quyển. Biết khi bóng bắt đầu được thả thì khí trong bóng có nhiệt độ 270C và áp suất 1 atm (bằng áp suất khí quyển tại điểm thả bóng), trong quá trình bay vào khí quyển bóng dãn nở nhưng không bị vỡ.<br>Lực nào sau đây nâng bóng thám không bay lên?",
+    "question": "Sử dụng các thông tin sau cho câu 17 và câu 18: Tại một trạm khí tượng, một nhân viên bơm khí Helium vào trong bóng thám không. Khi bóng có bán kính 3,8 m thì người này ngừng bơm và thả bóng để thu thập dữ liệu khí quyển. Biết khi bóng bắt đầu được thả thì khí trong bóng có nhiệt độ 27°C và áp suất 1 atm (bằng áp suất khí quyển tại điểm thả bóng), trong quá trình bay vào khí quyển bóng dãn nở nhưng không bị vỡ.<br>Lực nào sau đây nâng bóng thám không bay lên?",
     "options": {
       "A": "Lực cản của không khí.",
       "B": "Lực đẩy Acsimet.",
       "C": "Trọng lực của Helium.",
       "D": "Trọng lực của vỏ bóng."
     },
-    "correct": "D",
-    "giaiThich": "$e=-\\frac{dΦ}{dt}=-S\\frac{dB}{dt}$."
+    "correct": "B",
+    "giaiThich": "Bóng thám không bay lên được trong không khí là nhờ lực đẩy Ác-si-mét của không khí tác dụng lên bóng lớn hơn tổng trọng lượng khí Helium và vỏ bóng."
   },
   {
     "id": 18,
