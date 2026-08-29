@@ -441,7 +441,7 @@
     var total   = xps ? xps.length : 0;
     var isDone  = total > 0 && conTro >= total;
     var lesson  = (xps && !isDone) ? xps[conTro] : null;
-    var title   = isDone ? 'Chế độ Đua Top' : '📋 Nhiệm vụ hôm nay';
+    var title   = isDone ? 'Chế độ Đua Top' : 'Nhiệm vụ hôm nay';
     var sub     = isDone ? 'Leo Bảng Vàng ngay!' : (lesson ? lesson.TenBai : 'Buổi ' + (conTro + 1) + '/' + total);
 
     var ban = document.createElement('div');
