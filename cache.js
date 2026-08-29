@@ -20,11 +20,10 @@
   // FIX 19/8: leaderboard tung la 5000 (5s) - qua day, vuot yeu cau toi da 1 request/phut/tab.
   // Doi sang 90s; dong bo tuc thi giua cac trang van dam bao qua event 'vlxt:data-updated'
   // duoi day (khong can revalidate ngam nhanh nua).
-  var FRESH_MS_OVERRIDE = { lichlive: 8000, leaderboard: 90000 };
+  var FRESH_MS_OVERRIDE = { danhsachde: 8000, lichlive: 8000, leaderboard: 90000 };
 
   var REQUEST_TIMEOUT_MS = 15000;
-  var STATIC_TYPES = { danhsachde: 1, baihoc: 1, khoaconfig: 1, lichlive: 1,
-    settings: 1, huongdan: 1 };
+  var STATIC_TYPES = { baihoc: 1, khoaconfig: 1, settings: 1, huongdan: 1 };
 
   function keyOf(url) {
     return 'vlxt_cache_' + url.replace(/([?&])t=\d+/g, '').replace(/[?&]$/, '');

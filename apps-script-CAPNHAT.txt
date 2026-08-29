@@ -424,7 +424,42 @@ function getBaiHoc() {
 
 function getDanhSachDe() {
   const sheet = getOrCreate('DanhSachDe', ['examId','tenDe','moTa','thoiGian','trangThai','lop','soLuotLam','hienThi','videoUrl','loaiDe','soCau','updatedAt']);
-  const rows  = sheetToJson(sheet);
+  let rows  = sheetToJson(sheet);
+
+  // Auto-seed / ensure all 14 vedich2k9 simulation exams exist in sheet
+  const existingMap = {};
+  rows.forEach(r => {
+    const eid = String(r.examId || '').trim().toLowerCase();
+    if (eid) existingMap[eid] = true;
+  });
+
+  const nowStr = new Date().toISOString();
+  let needReRead = false;
+  for (let i = 2; i <= 15; i++) {
+    const num = String(i).padStart(2, '0');
+    const examId = 'vedich2k9_de' + num;
+    if (!existingMap[examId]) {
+      sheet.appendRow([
+        examId,
+        'Đề về đích 2k9 – Đề số ' + num,
+        'Đề thi thử THPT Quốc Gia môn Vật Lý chuẩn cấu trúc BGD khóa XPS 2k9. Đầy đủ 3 phần: Trắc nghiệm 4 lựa chọn, Đúng/Sai và Trả lời ngắn kèm lời giải chi tiết.',
+        50,
+        'khoa',
+        '12',
+        0,
+        'an',
+        '',
+        'thithu',
+        28,
+        nowStr
+      ]);
+      needReRead = true;
+    }
+  }
+
+  if (needReRead) {
+    rows = sheetToJson(sheet);
+  }
 
   // Đếm số câu từ NganHangDe cho mỗi đề (nếu có)
   const ngh    = getOrCreate('NganHangDe', ['id','type','question','optA','optB','optC','optD','correct','examId']);
@@ -2276,6 +2311,78 @@ function runAdminSelfTest() {
   } catch (err) {
     try { deleteAccount({ adminKey: adminKey, sdt: testSdt }); } catch(e) {}
     return { ok: false, error: err.message };
+  }
+}
+
+// ── SERVER-SIDE SELF-TEST: Kiểm thử Live Controls 14 đề 2k9 & hoàn nguyên an toàn ──
+function runExamControlsSelfTest() {
+  const adminKey = getAdminKey();
+  if (!adminKey) {
+    return { ok: false, step: 'check_key', msg: 'ADMIN_KEY is not configured in Script Properties' };
+  }
+  
+  const testExamId = 'vedich2k9_de02';
+  try {
+    // 1. Check initial state
+    const dsRes1 = getDanhSachDe();
+    const ex1 = dsRes1.data.find(e => e.examId === testExamId);
+    if (!ex1) return { ok: false, step: 'initial_fetch', msg: 'Exam not found in getDanhSachDe' };
+
+    // 2. Test saveExam: hien + khoa
+    const saveRes1 = saveExam({ adminKey, examId: testExamId, hienThi: 'hien', trangThai: 'khoa' });
+    if (!saveRes1 || saveRes1.ok !== true) return { ok: false, step: 'save_hien_khoa', msg: 'saveExam hien+khoa failed' };
+
+    // Verify GET reflects hien + khoa
+    const dsRes2 = getDanhSachDe();
+    const ex2 = dsRes2.data.find(e => e.examId === testExamId);
+    if (ex2.hienThi !== 'hien' || ex2.trangThai !== 'khoa') return { ok: false, step: 'verify_hien_khoa', msg: 'GET did not reflect hien+khoa' };
+
+    // 3. Test saveExam: hien + mo
+    const saveRes2 = saveExam({ adminKey, examId: testExamId, hienThi: 'hien', trangThai: 'mo' });
+    if (!saveRes2 || saveRes2.ok !== true) return { ok: false, step: 'save_hien_mo', msg: 'saveExam hien+mo failed' };
+
+    // Verify GET reflects hien + mo
+    const dsRes3 = getDanhSachDe();
+    const ex3 = dsRes3.data.find(e => e.examId === testExamId);
+    if (ex3.hienThi !== 'hien' || ex3.trangThai !== 'mo') return { ok: false, step: 'verify_hien_mo', msg: 'GET did not reflect hien+mo' };
+
+    // 4. Test revert: an + khoa
+    const saveRes3 = saveExam({ adminKey, examId: testExamId, hienThi: 'an', trangThai: 'khoa' });
+    if (!saveRes3 || saveRes3.ok !== true) return { ok: false, step: 'revert_an_khoa', msg: 'revert to an+khoa failed' };
+
+    // Verify GET reflects an + khoa
+    const dsRes4 = getDanhSachDe();
+    const ex4 = dsRes4.data.find(e => e.examId === testExamId);
+    if (ex4.hienThi !== 'an' || ex4.trangThai !== 'khoa') return { ok: false, step: 'verify_an_khoa', msg: 'GET did not reflect an+khoa' };
+
+    // 5. Test bulkUpdateExams for all 14 2k9 exams
+    const all14 = [];
+    for (let i = 2; i <= 15; i++) {
+      all14.push('vedich2k9_de' + String(i).padStart(2, '0'));
+    }
+    const bulkRes = bulkUpdateExams({ adminKey, examIds: all14, hienThi: 'an', trangThai: 'khoa' });
+    if (!bulkRes || bulkRes.ok !== true) return { ok: false, step: 'bulk_update', msg: 'bulkUpdateExams failed' };
+
+    // Verify all 14 are an + khoa
+    const dsRes5 = getDanhSachDe();
+    const notHiddenLocked = dsRes5.data.filter(e => all14.includes(e.examId) && (e.hienThi !== 'an' || e.trangThai !== 'khoa'));
+    if (notHiddenLocked.length > 0) return { ok: false, step: 'verify_bulk', msg: notHiddenLocked.length + ' exams not an+khoa' };
+
+    return {
+      ok: true,
+      passed: true,
+      totalExams: dsRes5.data.length,
+      all14Status: '14/14 exams safely an+khoa',
+      testedExamId: testExamId
+    };
+  } catch(e) {
+    // Revert safeguard
+    try {
+      const all14 = [];
+      for (let i = 2; i <= 15; i++) all14.push('vedich2k9_de' + String(i).padStart(2, '0'));
+      bulkUpdateExams({ adminKey, examIds: all14, hienThi: 'an', trangThai: 'khoa' });
+    } catch(err) {}
+    return { ok: false, error: e.message };
   }
 }
 
