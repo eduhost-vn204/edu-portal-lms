@@ -267,6 +267,34 @@
     body.dark .streak-dot { background: rgba(255,255,255,.1); }
     body.dark .btn-secondary { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.1); }
     body.dark .btn-secondary:hover { background: rgba(255,255,255,.1); }
+
+    /* Khi đang làm bài: ẩn hero và thu gọn thanh điểm để câu hỏi nằm ngay trong tầm nhìn */
+    body.in-game .hero { display: none; }
+    body.in-game .score-bar {
+      padding: 8px 16px;
+      gap: 8px;
+    }
+    body.in-game .score-chip {
+      flex-direction: row;
+      gap: 6px;
+      padding: 5px 12px;
+      min-width: auto;
+      border-radius: 8px;
+    }
+    body.in-game .sc-val { font-size: 15px; }
+    body.in-game .sc-lbl { font-size: 11px; margin-top: 0; }
+    body.in-game .arena {
+      padding: 12px 16px 28px;
+      max-width: 800px;
+    }
+    body.in-game .q-card {
+      padding: 18px 20px;
+      border-radius: 16px;
+    }
+    body.in-game .q-meta { margin-bottom: 8px; }
+    body.in-game .q-text { margin-bottom: 12px; font-size: 15.5px; }
+    body.in-game .q-options { gap: 8px; }
+    body.in-game .q-opt { padding: 9px 14px; font-size: 14px; border-radius: 10px; }
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -437,6 +465,9 @@
       return;
     }
 
+    document.body.classList.add('in-game');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+
     var q       = queue[qIdx];
     var optKeys = ['A', 'B', 'C', 'D'];
     var opts    = optKeys.map(function (k) { return { key: k, text: fixLatexQuirks(q['opt' + k] || q['opt' + k.toLowerCase()] || '') }; })
@@ -444,11 +475,9 @@
 
     var doneMap = loadDone();
     var alreadyDone = doneMap[q.id];
-    var scopeBadge = teachingScopeInfo ? ('<div style="margin-bottom:12px;padding:8px 14px;background:rgba(0,240,255,.08);border:1px solid var(--border);border-radius:10px;font-size:12px;color:var(--text);text-align:center;">🎯 Đang phát câu hỏi <strong>Tinh</strong> (đã duyệt) – Phạm vi: <strong>' + (teachingScopeInfo.chuong ? teachingScopeInfo.chuong + ' – ' : '') + teachingScopeInfo.bai + '</strong> (' + queue.length + ' câu)</div>') : '';
 
     arena.innerHTML =
-      scopeBadge +
-      (alreadyDone ? '<div style="font-size:11px;color:var(--sub);text-align:right;margin-bottom:8px">Câu này đã được tính điểm trước đó</div>' : '') +
+      (alreadyDone ? '<div style="font-size:11px;color:var(--sub);text-align:right;margin-bottom:6px">Câu này đã được tính điểm trước đó</div>' : '') +
       streakDotsHtml() +
       '<div class="q-card">' +
         '<div class="q-meta">' +
@@ -568,6 +597,7 @@
 
   // ─── Result screen ───────────────────────────────────────
   function renderResult() {
+    document.body.classList.remove('in-game');
     var maxStreak = streakHistory.filter(Boolean).length; // tổng số câu đúng
     var emoji = sessionLP >= 200 ? '🔥' : sessionLP >= 100 ? '⭐' : '💪';
 
