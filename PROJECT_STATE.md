@@ -393,19 +393,19 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
      - Cập nhật đồng bộ drawer mobile kiểu YouTube trên `index.html`, `danhsach-ly12.html`, `hoso.html` và menu `auth.js`.
   4. **Kiểm thử**:
      - Cú pháp HTML/JS & thẻ `</html>` trên toàn bộ 5 trang HTML: **PASS**.
-### 29/08/2026 — Hoàn tất Issue #14: Batch nạp 14 đề Word "Đề về đích 2k8" vào Phòng Thi Thử
+### 29/08/2026 — Hoàn tất Tái sinh Pilot Đề 02 (Office Math & Sửa Option Splitting)
 
 - **Người thực hiện**: Antigravity
 - **Phạm vi thay đổi**:
-  - `data/exams/vedich2k8_de02.json` ... `data/exams/vedich2k8_de15.json` (14 file đề thi hoàn chỉnh).
-  - `assets/exams/vedich2k8_de02/` ... `assets/exams/vedich2k8_de15/` (tất cả hình vẽ, công thức và sơ đồ thí nghiệm chuyển đổi sang PNG sắc nét).
-  - `data/danhsachde.json`: Cập nhật 14 bộ đề thi thử kèm metadata (`thoiGian: 50`, `soCau: 28`, `loaiDe: 'thithu'`, `trangThai: 'mo'`).
-  - `phong-thi-thu.html`: Hỗ trợ filter và sắp xếp tự nhiên (`02` $\rightarrow$ `15`) cho các bộ đề Về Đích 2k8.
-  - `cache.js`: Mở rộng `staticUrlFor` hỗ trợ tự động ánh xạ `examquestions` & `examsolutions` sang `data/exams/{examId}.json` với tốc độ tải tức thì 0 latency.
-- **Kết quả nghiệm thu kỹ thuật**:
-  - **14/14 Đề thi**: Mỗi đề có đúng 28 câu chuẩn cấu trúc Bộ GD&ĐT (18 trắc nghiệm nhiều phương án + 4 đúng/sai với 4 ý a,b,c,d + 6 trả lời ngắn). Tổng cộng **392 câu hỏi**.
-  - **100% Khóa đáp án**: Toàn bộ 392 câu hỏi có đáp án chuẩn xác (MC: A/B/C/D, TF: chuỗi 4 ký tự Đ/S, Short: giá trị số chính xác).
-  - **979 Tài nguyên hình ảnh**: Tất cả hình vẽ sơ đồ, đồ thị và công thức OLE MathType được giải mã & trích xuất sạch sẽ, 0 liên kết ảnh hỏng.
-  - **Kiểm thử nghiệm thu (`test_suite_all_14_exams.py`)**: **100% PASS** toàn diện.
+  - `data/exams/vedich2k8_de02.json`: Tái sinh hoàn toàn từ file Word mới (`869 Office Math / OMML`).
+  - `assets/exams/vedich2k8_de02/`: Lọc bỏ ảnh chụp màn hình desktop/kích thước rác, chỉ giữ sơ đồ thí nghiệm thực tế.
+  - `data/danhsachde.json`: Chuyển `trangThai: 'khoa'` cho toàn bộ 14 đề `vedich2k8_de02..de15` (giữ ẩn an toàn).
+- **Kết quả nghiệm thu Pilot Đề 02**:
+  - **Tách phương án**: Đã giải quyết triệt để lỗi dính nhãn B/C/D vào A (đối soát Q3: A='Khối lượng.', B='Năng lượng.', C='Động lượng.', D='Hiệu điện thế.'). 0 phương án rỗng, 0 dính nhãn trên toàn bộ 18 câu MC.
+  - **Office Math $\rightarrow$ LaTeX**: Toàn bộ công thức chuyển đổi sang LaTeX inline `$..$` render KaTeX sắc nét, chuẩn baseline (đối soát Q4, Q8, Q9, Q12, Q13, Q14, Q15, Q23, Q24, Q25, Q26, Q27, Q28).
+  - **Lọc rác**: Q6 loại bỏ ảnh screenshot 1366x768 gắn nhầm ở option D.
+  - **Độ bao phủ lời giải**: Báo cáo chính xác 10/28 câu có HD (35.7% theo đúng file Word gốc: 4 câu Phần II + 6 câu Phần III).
+  - **Commit**: `ef1e599`, đã deploy thành công lên GitHub Pages và xác nhận live.
+
 
 
