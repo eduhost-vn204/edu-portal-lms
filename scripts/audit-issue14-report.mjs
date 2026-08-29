@@ -38,9 +38,11 @@ assert(danhsachde.ok === true && Array.isArray(danhsachde.data), 'data/danhsachd
 const exams2k9 = danhsachde.data.filter(ex => String(ex.examId || '').startsWith('vedich2k9_de'));
 assert(exams2k9.length === 14, `Danh sách đề có đúng 14 bộ đề 2k9 (thực tế: ${exams2k9.length})`);
 
-// Kiểm tra toàn bộ 14 đề đều bị KHÓA an toàn
+// Kiểm tra toàn bộ 14 đề đều bị ẨN và KHÓA an toàn
 const allLocked = exams2k9.every(ex => ex.trangThai === 'khoa');
 assert(allLocked, 'Toàn bộ 14 đề 2k9 đều ở trạng thái "khoa" (Khóa an toàn chờ nghiệm thu)');
+const allHidden = exams2k9.every(ex => ex.hienThi === 'an' || ex.hienThi === false);
+assert(allHidden, 'Toàn bộ 14 đề 2k9 đều ở trạng thái "an" (Ẩn an toàn chờ nghiệm thu)');
 
 let totalQuestions = 0;
 let totalMc = 0;
@@ -144,6 +146,8 @@ assert(adminHtml.includes('id="tab-phongthithu"'), 'Admin có Tab Phòng Thi Th�
 assert(adminHtml.includes('id="tab-phongthithu-btn"'), 'Admin có nút điều hướng Tab Phòng Thi Thử');
 assert(adminHtml.includes('id="thithu-list-panel"'), 'Admin có bảng danh sách thẻ đề thi thử (#thithu-list-panel)');
 assert(adminHtml.includes('id="ptt-stat-total"'), 'Admin có chỉ số thống kê Tổng số đề');
+assert(adminHtml.includes('id="ptt-stat-hien"'), 'Admin có chỉ số thống kê Đang hiện');
+assert(adminHtml.includes('id="ptt-stat-an"'), 'Admin có chỉ số thống kê Đang ẩn');
 assert(adminHtml.includes('id="ptt-stat-open"'), 'Admin có chỉ số thống kê Đang mở');
 assert(adminHtml.includes('id="ptt-stat-locked"'), 'Admin có chỉ số thống kê Đang khóa');
 assert(adminHtml.includes('id="ptt-stat-video"'), 'Admin có chỉ số thống kê Có video chữa');
@@ -152,14 +156,34 @@ assert(adminHtml.includes('id="exam-detail-overlay"'), 'Admin có Modal Xem chi 
 assert(adminHtml.includes('id="ed-modal-questions"'), 'Admin có khu vực hiển thị câu hỏi đề thi (#ed-modal-questions)');
 assert(adminHtml.includes('openExamDetailModal'), 'Admin có hàm openExamDetailModal tải câu hỏi từ CDN/GAS');
 assert(adminHtml.includes('filterExamDetailSec'), 'Admin có hàm lọc phân loại Phần I, II, III, Lời giải');
+assert(adminHtml.includes('toggleExamVisibility'), 'Admin có hàm toggleExamVisibility chuyển trạng thái Hiện/Ẩn');
 assert(adminHtml.includes('toggleExamStatus'), 'Admin có hàm toggleExamStatus chuyển trạng thái Mở/Khóa');
+assert(adminHtml.includes('bulkUpdateBatch2k9'), 'Admin có hàm bulkUpdateBatch2k9 điều khiển hàng loạt 14 đề');
 assert(adminHtml.includes('showBulkExamModal'), 'Admin có modal Nạp hàng loạt (Bulk Import)');
 
 // Kiểm tra whitelist ghi
-assert(adminHtml.includes("'saveexam'") && adminHtml.includes("'deleteexam'"), 'Whitelist ADMIN_WRITE_ACTIONS đã bao gồm saveexam và deleteexam');
+assert(adminHtml.includes("'saveexam'") && adminHtml.includes("'bulkupdateexams'") && adminHtml.includes("'deleteexam'"), 'Whitelist ADMIN_WRITE_ACTIONS đã bao gồm saveexam, bulkupdateexams và deleteexam');
 
 // -------------------------------------------------------------
-// PHẦN 3: TỔNG KẾT
+// PHẦN 3: KIỂM ĐỊNH MA TRẬN 3 TRẠNG THÁI (STUDENT LMS WEB)
+// -------------------------------------------------------------
+console.log('\n--- [PHẦN 3] KIỂM ĐỊNH MA TRẬN 3 TRẠNG THÁI (LMS WEB) ---');
+
+const phongThiThuHtml = fs.readFileSync(path.join(studentRoot, 'phong-thi-thu.html'), 'utf8');
+const thithuHtml = fs.readFileSync(path.join(studentRoot, 'thithu.html'), 'utf8');
+
+// 1. Ma trận State 1: Ẩn + Khóa (hienThi: 'an', trangThai: 'khoa')
+assert(phongThiThuHtml.includes("ex.hienThi === 'an'") || phongThiThuHtml.includes("ex.hienThi === undefined || ex.hienThi === true || String(ex.hienThi).toLowerCase() === 'hien'"), 'phong-thi-thu.html lọc bỏ đề bị Ẩn');
+assert(thithuHtml.includes('Đề thi chưa được phát hành'), 'thithu.html chặn direct URL khi đề bị Ẩn');
+
+// 2. Ma trận State 2: Hiện + Khóa (hienThi: 'hien', trangThai: 'khoa')
+assert(thithuHtml.includes('Đề thi đang tạm khóa'), 'thithu.html chặn direct URL khi đề bị Khóa');
+
+// 3. Ma trận State 3: Hiện + Mở (hienThi: 'hien', trangThai: 'mo')
+assert(thithuHtml.includes('loadQuiz()'), 'thithu.html nạp bài thi khi đề Hiện + Mở');
+
+// -------------------------------------------------------------
+// PHẦN 4: TỔNG KẾT
 // -------------------------------------------------------------
 console.log('\n===============================================================');
 console.log(`  KẾT QUẢ KIỂM ĐỊNH: ${passedChecks}/${totalChecks} TIÊU CHÍ ĐẠT 100%`);

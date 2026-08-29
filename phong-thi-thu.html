@@ -405,9 +405,12 @@ async function loadExams() {
         const r = await cachedFetch(DB_URL + '?type=danhsachde');
         const j = await r.json();
         const rawData = (j.ok && Array.isArray(j.data)) ? j.data : [];
-        // Chỉ nhận các đề thuộc Phòng Thi Thử
+        // Chỉ nhận các đề thuộc Phòng Thi Thử và ĐƯỢC PHÉP HIỆN (hienThi !== 'an')
         allExams = rawData.filter(ex => {
-            return ex.loaiDe === 'thithu' || String(ex.examId || '').startsWith('thithu') || String(ex.examId || '').startsWith('vedich2k9') || String(ex.tenDe || '').toLowerCase().includes('thi thử') || String(ex.tenDe || '').toLowerCase().includes('về đích');
+            const isThiThu = ex.loaiDe === 'thithu' || String(ex.examId || '').startsWith('thithu') || String(ex.examId || '').startsWith('vedich2k9') || String(ex.tenDe || '').toLowerCase().includes('thi thử') || String(ex.tenDe || '').toLowerCase().includes('về đích');
+            if (!isThiThu) return false;
+            const isHien = (ex.hienThi === undefined || ex.hienThi === true || String(ex.hienThi).toLowerCase() === 'hien' || String(ex.hienThi).toLowerCase() === 'true');
+            return isHien;
         });
         // Sắp xếp tự nhiên theo thứ tự đề (02 -> 03 -> ... -> 15)
         allExams.sort((a, b) => (a.examId || '').localeCompare(b.examId || '', undefined, { numeric: true, sensitivity: 'base' }));
