@@ -652,7 +652,7 @@
   <script src="device-id.js?v=1"></script>
   <script src="ho-tro-chat.js?v=1"></script>
   <script src="cache.js?v=1"></script>
-  <script src="nhiem-vu.js?v=3"></script>
+  <script src="nhiem-vu.js?v=4"></script>
 </head>
 <body>
 
@@ -1086,8 +1086,13 @@ if(localStorage.getItem('vlxt_theme') === 'dark') document.body.classList.add('d
 function vlxtOpenNhiemVuFromHome(){
     var u = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
     if (!u) { window.location.href = 'login.html?from=' + encodeURIComponent('index.html'); return; }
+    if (typeof window.vlxtOpenNhiemVu === 'function') { window.vlxtOpenNhiemVu(); return; }
     var overlay = document.getElementById('vlxt-nv-overlay');
-    if (overlay) { overlay.classList.add('open'); return; }
+    if (overlay) {
+        overlay.classList.add('open');
+        document.body.classList.add('vlxt-nv-open');
+        return;
+    }
     if (typeof vlxtNhiemVuInit === 'function') { vlxtNhiemVuInit(); return; }
     window.location.href = 'baihoc.html';
 }
