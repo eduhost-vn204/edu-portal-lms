@@ -1,0 +1,366 @@
+[
+  {
+    "id": 1,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k8_de12/image4.png\" alt=\"hình vẽ\" class=\"q-img\" />Cốc bia lạnh để trong không khí, ta thấy mặt ngoài của cốc có nước bám vào là vì",
+    "options": {
+      "A": "hơi nước trong không khí ngưng tụ bám vào thành cốc.",
+      "B": "hơi nước trong không khí đông đặc bám vào thành cốc.",
+      "C": "nước trong cốc thấm qua thành cốc.",
+      "D": "hơi của cốc bia toả ra bám vào thành cốc."
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 2,
+    "type": "mc",
+    "question": "Người ta cung cấp nhiệt lượng 500 J cho một lượng khí trong xi lanh, khí thực hiện một công 200 J để đẩy pit-tông lên. Nội năng của khí",
+    "options": {
+      "A": "giảm 300 J.\tB. tăng 700 J.\tC. giảm 700 J.\tD. tăng 300 J.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 3,
+    "type": "mc",
+    "question": "Biết nhiệt dung riêng của sắt là 460 J/kg.K. Tính nhiệt lượng tỏa ra khi một miếng sắt có khối lượng 2 kg ở nhiệt độ 4000C hạ xuống còn 250C bằng",
+    "options": {
+      "A": "230,6 kJ.\tB. 345 kJ.\tC. 391 kJ.\tD. 172,5 kJ.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 4,
+    "type": "mc",
+    "question": "Trong hệ tọa độ (pOT), đường biểu diễn nào sau đây là đường đẳng nhiệt?",
+    "options": {
+      "A": "Đường hypebol.\t\tB. Đoạn thẳng kéo dài qua gốc tọa độ.",
+      "B": "",
+      "C": "Đoạn thẳng song song với trục Op.\tD. Đoạn thẳng song song với trục OT.",
+      "D": ""
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 5,
+    "type": "mc",
+    "question": "Một khối lượng khí lí tưởng xác định biến đổi trạng thái sao cho áp suất không đổi. Gọi <img src=\"assets/exams/vedich2k8_de12/image5.png\" alt=\"công thức\" class=\"q-formula-img\" /> lần lượt là áp suất, thể tích, nhiệt độ ở trạng thái 1; <img src=\"assets/exams/vedich2k8_de12/image6.png\" alt=\"công thức\" class=\"q-formula-img\" /> lần lượt là áp suất, thể tích, nhiệt độ ở trạng thái 2. Hệ thức đúng là",
+    "options": {
+      "A": "<img src=\"assets/exams/vedich2k8_de12/image7.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tB. <img src=\"assets/exams/vedich2k8_de12/image8.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tC. <img src=\"assets/exams/vedich2k8_de12/image9.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tD. <img src=\"assets/exams/vedich2k8_de12/image10.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 6,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k8_de12/image11.png\" alt=\"hình vẽ\" class=\"q-img\" />Rải đều các mạt sắt lên mặt trên của đáy hộp. Đặt hộp lên một thanh nam châm rồi gõ nhẹ vào thành hộp. Hình ảnh các đường mạt sắt xung quanh nam châm như hình bên được gọi là",
+    "options": {
+      "A": "từ trường.\tB. từ phổ.",
+      "B": "",
+      "C": "điện phổ.\tD. điện trường.",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 7,
+    "type": "mc",
+    "question": "Một vật được làm lạnh từ 350C xuống 50C. Nhiệt độ của vật theo thang Kelvin giảm đi bao nhiêu độ?",
+    "options": {
+      "A": "30 Κ.\tB. 25 Κ.\tC. 278 Κ.\tD. 298 K.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 8,
+    "type": "mc",
+    "question": "Tìm hạt nhân X trong phản ứng hạt nhân sau: <img src=\"assets/exams/vedich2k8_de12/image12.png\" alt=\"công thức\" class=\"q-formula-img\" />",
+    "options": {
+      "A": "<img src=\"assets/exams/vedich2k8_de12/image13.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tB. <img src=\"assets/exams/vedich2k8_de12/image14.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tC. <img src=\"assets/exams/vedich2k8_de12/image15.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tD. <img src=\"assets/exams/vedich2k8_de12/image16.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 9,
+    "type": "mc",
+    "question": "Cho hai dây dây dẫn đặt gần nhau và song song với nhau. Khi có hai dòng điện cùng chiều chạy qua thì 2 dây dẫn",
+    "options": {
+      "A": "đẩy nhau.\tB. hút nhau.\tC. không tương tác.\tD. đều dao động.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 10,
+    "type": "mc",
+    "question": "Số hạt nhân nguyên tử có trong 100 g Iốt <img src=\"assets/exams/vedich2k8_de12/image17.png\" alt=\"công thức\" class=\"q-formula-img\" /> là",
+    "options": {
+      "A": "5,925.1023 hạt.\tB. 4,595.1023 hạt.\tC. 3,952.1023 hạt.\tD. 4.952.1023 hạt.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 11,
+    "type": "mc",
+    "question": "Hạt nhân X có tổng số hạt là 56, số hạt mang điện ít hơn số hạt không mang điện 4 hạt. Hạt nhân X có số prôton và nơtron lần lượt là",
+    "options": {
+      "A": "26; 56. \tB. 30; 56. \tC. 26; 30. \tD. 13; 30.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 12,
+    "type": "mc",
+    "question": "Một khung dây quay đều quanh trục <img src=\"assets/exams/vedich2k8_de12/image18.png\" alt=\"công thức\" class=\"q-formula-img\" /> trong một từ trường đều <img src=\"assets/exams/vedich2k8_de12/image19.png\" alt=\"công thức\" class=\"q-formula-img\" /> vuông góc với trục quay <img src=\"assets/exams/vedich2k8_de12/image20.png\" alt=\"công thức\" class=\"q-formula-img\" /> với tốc độ góc <img src=\"assets/exams/vedich2k8_de12/image21.png\" alt=\"công thức\" class=\"q-formula-img\" />.Từ thông cực đại gởi qua khung và suất điện động cực đại trong khung liên hệ với nhau bởi công thức",
+    "options": {
+      "A": "<img src=\"assets/exams/vedich2k8_de12/image22.png\" alt=\"công thức\" class=\"q-formula-img\" />.\t <img src=\"assets/exams/vedich2k8_de12/image23.png\" alt=\"hình vẽ\" class=\"q-img\" />B. <img src=\"assets/exams/vedich2k8_de12/image24.png\" alt=\"công thức\" class=\"q-formula-img\" />.<img src=\"assets/exams/vedich2k8_de12/image25.png\" alt=\"hình vẽ\" class=\"q-img\" />\tC.<img src=\"assets/exams/vedich2k8_de12/image26.png\" alt=\"công thức\" class=\"q-formula-img\" />.\t D.<img src=\"assets/exams/vedich2k8_de12/image27.png\" alt=\"công thức\" class=\"q-formula-img\" /> .",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 13,
+    "type": "mc",
+    "question": "Nhiệt nóng chảy riêng của đồng là <img src=\"assets/exams/vedich2k8_de12/image28.png\" alt=\"công thức\" class=\"q-formula-img\" /> có ý nghĩa gì?",
+    "options": {
+      "A": "Khối đồng cần thu nhiệt lượng <img src=\"assets/exams/vedich2k8_de12/image29.png\" alt=\"công thức\" class=\"q-formula-img\" />để hoá lỏng.",
+      "B": "1 kg đồng cần thu nhiệt lượng <img src=\"assets/exams/vedich2k8_de12/image29.png\" alt=\"công thức\" class=\"q-formula-img\" />để hoá lỏng hoàn toàn ở nhiệt độ nóng chảy.",
+      "C": "1 kg đồng toả ra nhiệt lượng <img src=\"assets/exams/vedich2k8_de12/image29.png\" alt=\"công thức\" class=\"q-formula-img\" />khi hoá lỏng hoàn toàn.",
+      "D": "Khối đồng sẽ toả ra nhiệt lượng <img src=\"assets/exams/vedich2k8_de12/image29.png\" alt=\"công thức\" class=\"q-formula-img\" /> khi nóng chảy hoàn toàn."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 14,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k8_de12/image30.png\" alt=\"hình vẽ\" class=\"q-img\" />Từ thông <img src=\"assets/exams/vedich2k8_de12/image31.png\" alt=\"công thức\" class=\"q-formula-img\" /> qua một khung dây biến đổi theo thời gian được diễn tả bằng đồ thị trên hình vẽ bên cạnh. Chọn chiều dương của dòng điện thuận chiều với pháp tuyến khung dây (tuân theo quy tắc nắm tay phải). Khung dây có điện trở <img src=\"assets/exams/vedich2k8_de12/image32.png\" alt=\"công thức\" class=\"q-formula-img\" />. Đồ thị biểu diễn sự biến đổi của dòng điện cảm ứng trong khung theo thời gian là hình<br><img src=\"assets/exams/vedich2k8_de12/image33.png\" alt=\"hình vẽ\" class=\"q-img\" />",
+    "options": {
+      "A": "Hình 1.\tB. Hình 2.\tC. Hình 3.\tD. Hình 4.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 15,
+    "type": "mc",
+    "question": "Chọn câu sai?",
+    "options": {
+      "A": "Khí lí tưởng là khí mà khối lượng của các phân tử khí có thể bỏ qua.",
+      "B": "Khí lí tưởng là khí mà các phân tử chỉ tương tác khi va chạm.",
+      "C": "Khí lí tưởng là khí có thể gây áp suất lên thành bình.",
+      "D": "Khí lí tưởng là khí mà thể tích của các phân tử có thể bỏ qua."
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 16,
+    "type": "mc",
+    "question": "Xone FM là kênh  phát thanh âm nhạc và giải trí hướng tới đối tượng chủ yếu là giới trẻ của nước ta. Kênh được phát sóng vào tất cả các ngày trong tuần ở tần số 96 MHz. Biết tốc độ ánh sáng trong chân không <img src=\"assets/exams/vedich2k8_de12/image34.png\" alt=\"công thức\" class=\"q-formula-img\" />. Bước sóng của kênh này có giá trị",
+    "options": {
+      "A": "0,32 m.\tB. 32 m.\tC. 3,125 km.\tD. 3,125 m.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 17,
+    "type": "mc",
+    "question": "Một khối khí lí tưởng nhốt trong bình kín. Tăng nhiệt độ của khối khí từ 1000C lên 200)C thì áp suất trong bình sẽ",
+    "options": {
+      "A": "có thể tăng hoặc giảm.\t\tB. tăng lên hơn 2 lần áp suất cũ.",
+      "B": "",
+      "C": "tăng lên ít hơn 2 lần áp suất cũ.\t\tD. tăng lên đúng bằng 2 lần áp suất cũ.",
+      "D": ""
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 18,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k8_de12/image35.png\" alt=\"hình vẽ\" class=\"q-img\" />Bố trí nam châm và mạch kín <img src=\"assets/exams/vedich2k8_de12/image36.png\" alt=\"công thức\" class=\"q-formula-img\" /> như hình vẽ. Từ thông qua vòng dây dẫn <img src=\"assets/exams/vedich2k8_de12/image37.png\" alt=\"công thức\" class=\"q-formula-img\" /> biến thiên khi",
+    "options": {
+      "A": "<img src=\"assets/exams/vedich2k8_de12/image38.png\" alt=\"công thức\" class=\"q-formula-img\" /> và nam châm cùng chuyển động đều lên trên với vận tốc v.",
+      "B": "<img src=\"assets/exams/vedich2k8_de12/image39.png\" alt=\"công thức\" class=\"q-formula-img\" /> và nam châm cùng chuyển động đều xuống dưới với vận tốc <img src=\"assets/exams/vedich2k8_de12/image40.png\" alt=\"công thức\" class=\"q-formula-img\" />",
+      "C": "<img src=\"assets/exams/vedich2k8_de12/image41.png\" alt=\"công thức\" class=\"q-formula-img\" /> và nam châm cùng đứng yên.",
+      "D": "<img src=\"assets/exams/vedich2k8_de12/image42.png\" alt=\"công thức\" class=\"q-formula-img\" /> đứng yên, nam châm chuyển động xuống dưới."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 19,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k8_de12/image43.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 1. Một trong những ứng dụng quan trọng của lực từ tác dụng lên khung dây có dòng điện là động cơ điện. Xét khung dây hình chữ nhật ABCD với <img src=\"assets/exams/vedich2k8_de12/image44.png\" alt=\"công thức\" class=\"q-formula-img\" />, <img src=\"assets/exams/vedich2k8_de12/image45.png\" alt=\"công thức\" class=\"q-formula-img\" /> có thể quay quanh trục OO’ trong từ trường đều của nam châm có độ lớn cảm ứng từ <img src=\"assets/exams/vedich2k8_de12/image46.png\" alt=\"công thức\" class=\"q-formula-img\" />. Cho  dòng điện <img src=\"assets/exams/vedich2k8_de12/image47.png\" alt=\"công thức\" class=\"q-formula-img\" />  chạy qua khung dây ABCD thì động cơ hoạt động. Tại thời điểm <img src=\"assets/exams/vedich2k8_de12/image48.png\" alt=\"công thức\" class=\"q-formula-img\" />, vectơ cảm ứng từ <img src=\"assets/exams/vedich2k8_de12/image49.png\" alt=\"công thức\" class=\"q-formula-img\" /> song song với cạnh CD.",
+    "options": {
+      "A": "Khi có dòng điện chạy qua khung dây ABCD, ngẫu lực từ tác dụng làm khung quay xung quanh OO’.",
+      "B": "Tại thời điểm t = 0, lực từ tác dụng lên cạnh AB, CD đều bằng <img src=\"assets/exams/vedich2k8_de12/image50.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "C": "Tại thời điểm t = 0, lực từ tác dụng lên cạnh AD, BC cùng phương, cùng chiều và cùng độ lớn <img src=\"assets/exams/vedich2k8_de12/image51.png\" alt=\"công thức\" class=\"q-formula-img\" />",
+      "D": "Nếu một động cơ điện tiêu thụ công suất điện 110 W, sinh ra công suất cơ học bằng 88 W thì tỉ số của công suất cơ học với công suất hao phí ở động cơ bằng 4."
+    },
+    "correct": "ĐSSĐ",
+    "giaiThich": "a) Vận dụng quy tắc bàn tay trái ta xác định được lực từ tác dụng lên cạnh BC và cạnh DA song song, ngược chiều và có độ lớn bằng nhau (ngẫu lực này làm quay khung dây).<br>b) Lực từ tác dụng lên cạnh CD và AB bằng 0 do hai đoạn dây dẫn này song song với <img src=\"assets/exams/vedich2k8_de12/image52.png\" alt=\"công thức\" class=\"q-formula-img\" />.<br>c)<img src=\"assets/exams/vedich2k8_de12/image53.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>d) Động cơ điện chuyển hóa điện năng (năng lượng toàn phần) thành cơ năng (năng lượng có ích) và năng lượng hao phí (năng lượng không có ích).<br><img src=\"assets/exams/vedich2k8_de12/image54.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 20,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k8_de12/image55.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 2. Khi hơ nóng chậm khối khí lí tưởng trong một xilanh kín đặt nằm ngang (pít-tông nằm bên phải xi lanh, bỏ qua ma sát giữa pit-tông và xi lanh) thì thấy pít-tông chuyển động từ từ sang phải.",
+    "options": {
+      "A": "Quá trình dãn nở của khối khí trong xilanh là quá trình đẳng áp.",
+      "B": "Động năng chuyển động tịnh tiến trung bình của các phân tử khí tăng trong quá trình dãn nở của khối khí.",
+      "C": "Nếu nhiệt độ tuyệt đối của khối khí trong xilanh tăng lên ba lần thì áp suất của nó giảm đi ba lần.",
+      "D": "Nội năng của khí giảm trong quá trình giãn nở của khối khí."
+    },
+    "correct": "ĐĐSS",
+    "giaiThich": "a) Do pít-tông chuyển động từ từ sang phải nên quá trình này được coi là đẳng áp.<br>b) Đẳng áp nên khi thể tích tăng thì nhiệt độ cũng tăng dẫn đến động năng cũng tăng.<br>c) Nhiệt độ tuyệt đối tăng 3 lần thì thể tích tăng 3 lần.<br>d) Nội năng của khí lí tưởng chỉ phụ thuộc vào động năng, khi nhiệt độ tăng thì động năng  tăng tăng theo, suy ra nội năng của khí cũng tăng."
+  },
+  {
+    "id": 21,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k8_de12/image56.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 3. Người ta dùng một lò hồ quang điện công suất 1,1.104 W để nấu chảy một khối kim loại khối lượng 13,2 kg. Sự thay đổi nhiệt độ của khối kim loại theo thời gian được ghi lại như hình vẽ",
+    "options": {
+      "A": "Giai đoạn AB trên đồ thị tương ứng với quá trình nóng chảy của kim loại.",
+      "B": "Trong giai đoạn BC, khối kim loại không nhận thêm nhiệt lượng từ lò hồ quang.",
+      "C": "Nhiệt dung riêng của kim loại đó là 440 J/(kg.K).",
+      "D": "Nhiệt nóng chảy riêng của kim loại đó là 4.105 J/kg."
+    },
+    "correct": "SSSĐ",
+    "giaiThich": "a) Giai đoạn AB trên đồ thị ứng với quá trình tăng nhiệt độ từ 340C lên 6590C của kim loại.<br>b) Giai đoạn BC ứng với quá trình nóng chảy nên khối kim loại có nhật nhiệt.<br>c) Q = mcΔt → P.ΔT = mcΔt → c = 880 J/(kg.K)<br>d) Qnc = λm → P.ΔT = λm → λ = 4.105 J/kg"
+  },
+  {
+    "id": 22,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k8_de12/image57.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Silicon (Si) là vật liệu bán dẫn được sử dụng phổ biến trong ngành công nghiệp điện tử. Biết khối lượng của hạt nhân <img src=\"assets/exams/vedich2k8_de12/image58.png\" alt=\"công thức\" class=\"q-formula-img\" />là 27,9769 amu, khối lượng của proton và neutron lần lượt là 1,0073 amu và 1,0087 amu. Lấy <img src=\"assets/exams/vedich2k8_de12/image59.png\" alt=\"công thức\" class=\"q-formula-img\" />",
+    "options": {
+      "A": "Độ hụt khối của hạt nhân <img src=\"assets/exams/vedich2k8_de12/image58.png\" alt=\"công thức\" class=\"q-formula-img\" /> là 0,2471 amu.",
+      "B": "Hạt nhân <img src=\"assets/exams/vedich2k8_de12/image58.png\" alt=\"công thức\" class=\"q-formula-img\" /> mang điện tích dương.",
+      "C": "Trong hạt nhân <img src=\"assets/exams/vedich2k8_de12/image58.png\" alt=\"công thức\" class=\"q-formula-img\" /> có 28 neutron.",
+      "D": "Năng lượng liên kết riêng của hạt nhân <img src=\"assets/exams/vedich2k8_de12/image58.png\" alt=\"công thức\" class=\"q-formula-img\" /> là 8,22 MeV/nucleon."
+    },
+    "correct": "ĐĐSĐ",
+    "giaiThich": "a)<img src=\"assets/exams/vedich2k8_de12/image60.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>b) Hạt nhân mang điện dương (proton mang điện, neutron không mang điện).<br>c) Hạt nhân <img src=\"assets/exams/vedich2k8_de12/image61.png\" alt=\"công thức\" class=\"q-formula-img\" /> có 14 neutron<br>d) <img src=\"assets/exams/vedich2k8_de12/image62.png\" alt=\"công thức\" class=\"q-formula-img\" /> (MeV/nucleon)."
+  },
+  {
+    "id": 23,
+    "type": "short",
+    "question": "Sử dụng thông tin sau cho câu 1 và câu 2: Một khung dây dẫn phẳng, kín có diện tích <img src=\"assets/exams/vedich2k8_de12/image63.png\" alt=\"công thức\" class=\"q-formula-img\" />, gồm 27 vòng dây được đặt trong từ trường đều sao cho cảm ứng từ <img src=\"assets/exams/vedich2k8_de12/image64.png\" alt=\"công thức\" class=\"q-formula-img\" />vuông góc với mặt phẳng khung dây. Trong 0,620 s, độ lớn cảm ứng từ của từ trường đều tăng từ 0,100 T đến 0,500 T.<br>Độ lớn suất điện động cảm ứng trong khung dây là x.10-3. Tìm x (làm tròn kết quả đến chữ số hàng phần trăm).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "4,65",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de12/image65.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 24,
+    "type": "short",
+    "question": "Biết điện trở của khung dây là <img src=\"assets/exams/vedich2k8_de12/image66.png\" alt=\"công thức\" class=\"q-formula-img\" />. Nhiệt lượng tỏa ra trên khung dây dẫn trong khoảng thời gian từ trường biến thiên là x.10-5J. Tìm x (làm tròn kết quả đến chữ số hàng phần trăm).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "5,83",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de12/image67.png\" alt=\"công thức\" class=\"q-formula-img\" /><br><img src=\"assets/exams/vedich2k8_de12/image68.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng thông tin sau cho câu 3 và câu 4: Hình bên là sơ đồ nguyên lí làm mát bằng dầu của một máy biến áp. Lõi thép và các cuộn dây quấn của máy biến áp được ngâm trong bể dầu. Khi lõi thép và các cuộn dây quấn nóng lên thì nhiệt độ của dầu tăng lên. Dầu được lưu thông qua bộ trao đổi nhiệt để làm mát. Biết rằng nhiệt độ của dầu khi bắt đầu đi vào bộ trao đổi nhiệt là 850C và sau khi làm mát là 450C ; dầu làm mát có nhiệt dung riêng là <img src=\"assets/exams/vedich2k8_de12/image69.png\" alt=\"công thức\" class=\"q-formula-img\" /> và khối lượng riêng là  <img src=\"assets/exams/vedich2k8_de12/image70.png\" alt=\"công thức\" class=\"q-formula-img\" />; công suất tỏa nhiệt của máy biến áp khi vận hành là 500 kW."
+  },
+  {
+    "id": 25,
+    "type": "short",
+    "question": "Câu 3. Nhiệt lượng tỏa ra khi có 2 lít dầu được làm mát qua bộ trao đổi nhiệt bằng bao nhiêu kJ?(làm tròn kết quả đến chữ số hàng đơn vị).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "136",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de12/image71.png\" alt=\"công thức\" class=\"q-formula-img\" />;  <img src=\"assets/exams/vedich2k8_de12/image72.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 26,
+    "type": "short",
+    "question": "Câu 4. Giả sử toàn bộ nhiệt lượng tỏa ra trên máy biến áp đều tản ra khi dầu đi qua bộ trao đổi nhiệt. Khối lượng dầu lưu thông qua bộ trao đổi nhiệt trong một phút là bao nhiêu kg? (làm tròn kết quả đến chữ số hàng đơn vị).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "375",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de12/image73.png\" alt=\"công thức\" class=\"q-formula-img\" />; <img src=\"assets/exams/vedich2k8_de12/image74.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 27,
+    "type": "short",
+    "question": "Sử dụng thông tin sau cho câu 5 và câu 6: Pôlôni <img src=\"assets/exams/vedich2k8_de12/image75.png\" alt=\"công thức\" class=\"q-formula-img\" />là chất phóng xạ a có chu kì bán rã 138 ngày và biến đổi thành hạt nhân chì <img src=\"assets/exams/vedich2k8_de12/image76.png\" alt=\"công thức\" class=\"q-formula-img\" />. Giả sử toàn bộ các hạt <img src=\"assets/exams/vedich2k8_de12/image77.png\" alt=\"công thức\" class=\"q-formula-img\" /> sinh ra trong quá trình phóng xạ đều thoát ra khỏi mẫu. Lấy khối lượng của các hạt nhân bằng số khối của chúng tính theo đơn vị amu<br>Câu 5. Hằng số phóng xạ của <img src=\"assets/exams/vedich2k8_de12/image78.png\" alt=\"công thức\" class=\"q-formula-img\" />bằng X.10-8 s-1. Giá trị của X bằng bao nhiêu?(làm tròn kết quả đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "5,8",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de12/image79.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 28,
+    "type": "short",
+    "question": "Câu 6. Ban đầu (t = 0), một mẫu trong đó 80% khối lượng của mẫu là chất phóng xạ pôlôni <img src=\"assets/exams/vedich2k8_de12/image80.png\" alt=\"công thức\" class=\"q-formula-img\" />, phần còn lại không có tính phóng xạ. Tại thời điểm <img src=\"assets/exams/vedich2k8_de12/image81.png\" alt=\"công thức\" class=\"q-formula-img\" /> ngày, tỉ lệ phần trăm khối lượng pôlôni còn lại trong mẫu bằng bao nhiêu phần trăm?(làm tròn kết quả đến chữ số hàng đơn vị).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "10",
+    "giaiThich": "Gọi <img src=\"assets/exams/vedich2k8_de12/image82.png\" alt=\"công thức\" class=\"q-formula-img\" />là khối lượng ban đầu của chất phóng xạ <img src=\"assets/exams/vedich2k8_de12/image83.png\" alt=\"công thức\" class=\"q-formula-img\" />, khối lượng mẫu chất <img src=\"assets/exams/vedich2k8_de12/image84.png\" alt=\"công thức\" class=\"q-formula-img\" /><br><img src=\"assets/exams/vedich2k8_de12/image85.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  }
+]

@@ -407,8 +407,10 @@ async function loadExams() {
         const rawData = (j.ok && Array.isArray(j.data)) ? j.data : [];
         // Chỉ nhận các đề thuộc Phòng Thi Thử
         allExams = rawData.filter(ex => {
-            return ex.loaiDe === 'thithu' || String(ex.examId || '').startsWith('thithu') || String(ex.tenDe || '').toLowerCase().includes('thi thử');
+            return ex.loaiDe === 'thithu' || String(ex.examId || '').startsWith('thithu') || String(ex.examId || '').startsWith('vedich2k8') || String(ex.tenDe || '').toLowerCase().includes('thi thử') || String(ex.tenDe || '').toLowerCase().includes('về đích');
         });
+        // Sắp xếp tự nhiên theo thứ tự đề (02 -> 03 -> ... -> 15)
+        allExams.sort((a, b) => (a.examId || '').localeCompare(b.examId || '', undefined, { numeric: true, sensitivity: 'base' }));
         renderExams();
     } catch(e) {
         grid.innerHTML = '<div class="empty-state"><div class="empty-icon" style="color:var(--red)"><i class="fa-solid fa-triangle-exclamation"></i></div><h3>Không thể kết nối đến máy chủ</h3><p>Vui lòng kiểm tra lại đường truyền mạng rồi tải lại trang.</p></div>';

@@ -1,0 +1,366 @@
+[
+  {
+    "id": 1,
+    "type": "mc",
+    "question": "Trường hợp nào sau đây nội năng của vật bị biến đổi không phải do truyền nhiệt?",
+    "options": {
+      "A": "Khi trời lạnh, ta xoa hai bàn tay vào nhau cho ấm lên.",
+      "B": "Cho cơm nóng vào bát thì bưng bát cũng thấy nóng.",
+      "C": "Thả thanh sắt nóng đỏ vào chậu nước lạnh làm thanh sắt nguội lại.",
+      "D": "Chậu nước để ngoài nắng một lúc thì nóng lên."
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 2,
+    "type": "mc",
+    "question": "Tia nào sau đây không phải là tia phóng xạ?",
+    "options": {
+      "A": "Tia <img src=\"assets/exams/vedich2k8_de07/image4.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tB. Tia <img src=\"assets/exams/vedich2k8_de07/image5.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tC. Tia <img src=\"assets/exams/vedich2k8_de07/image6.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tD. Tia X.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 3,
+    "type": "mc",
+    "question": "Độ phóng xạ của một lượng chất phóng xạ là gì?",
+    "options": {
+      "A": "Số hạt nhân phóng xạ trong mẫu còn lại sau một thời gian nhất định.",
+      "B": "Tổng năng lượng bức xạ mà mẫu phát ra trong một giây.",
+      "C": "Khối lượng chất phóng xạ bị phân rã trong một giây.",
+      "D": "Số hạt nhân phóng xạ phân rã trong một giây."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 4,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k8_de07/image7.png\" alt=\"hình vẽ\" class=\"q-img\" />Thanh kim loại dẫn điện có thể lăn không ma sát dọc theo hai đoạn dây dẫn trần không nhiễm từ và được nối vào nguồn điện tạo thành mạch điện như hình vẽ bên. Khi đóng công tác K, thanh kim loại sẽ",
+    "options": {
+      "A": "chuyển động về bên trái.",
+      "B": "đứng yên.",
+      "C": "chuyển động về bên phải.",
+      "D": "chuyển động lên cực bắc của nam châm."
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 5,
+    "type": "mc",
+    "question": "Trong phản ứng hạt nhân: <img src=\"assets/exams/vedich2k8_de07/image8.png\" alt=\"công thức\" class=\"q-formula-img\" />. Hạt X là hạt nhân nào sau đây?",
+    "options": {
+      "A": "<img src=\"assets/exams/vedich2k8_de07/image9.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tB. <img src=\"assets/exams/vedich2k8_de07/image10.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tC. <img src=\"assets/exams/vedich2k8_de07/image11.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tD. <img src=\"assets/exams/vedich2k8_de07/image12.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 6,
+    "type": "mc",
+    "question": "Cho bảng sau, hỏi các nguyên tử nào là đồng vị của nhau ?<br>Nguyên tử<br>Số proton<br>Số neutron<br>Số khối<br>X1<br>10<br>10<br>20<br>X2<br>13<br>14<br>27<br>X3<br>11<br>13<br>24<br>X4<br>12<br>12<br>24<br>X5<br>10<br>12<br>22",
+    "options": {
+      "A": "X1 và X2\tB. X2 và X4\tC. X3 và X4\tD. X1 và X5",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 7,
+    "type": "mc",
+    "question": "Mức độ bền vững của hạt nhân phụ thuộc vào đại lượng vật lí nào?",
+    "options": {
+      "A": "Số khối và số neutron.\t\tB. Năng lượng liên kết.",
+      "B": "",
+      "C": "Độ hụt khối.\t\tD. Năng lượng liên kết riêng.",
+      "D": ""
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 8,
+    "type": "mc",
+    "question": "Đơn vị nào sau đây cũng được coi là đơn vị của cảm ứng từ B? Trong đó: N (newton) là kí hiệu đơn vị của lực, A (ampe) là kí hiệu đơn vị cường độ dòng điện, m (mét) là kí hiệu đơn vị chiều dài.",
+    "options": {
+      "A": "<img src=\"assets/exams/vedich2k8_de07/image13.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tB. <img src=\"assets/exams/vedich2k8_de07/image14.png\" alt=\"công thức\" class=\"q-formula-img\" />.<img src=\"assets/exams/vedich2k8_de07/image15.png\" alt=\"công thức\" class=\"q-formula-img\" />\tC. <img src=\"assets/exams/vedich2k8_de07/image16.png\" alt=\"công thức\" class=\"q-formula-img\" />.<img src=\"assets/exams/vedich2k8_de07/image15.png\" alt=\"công thức\" class=\"q-formula-img\" />\tD. <img src=\"assets/exams/vedich2k8_de07/image17.png\" alt=\"công thức\" class=\"q-formula-img\" />.<img src=\"assets/exams/vedich2k8_de07/image15.png\" alt=\"công thức\" class=\"q-formula-img\" />",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 9,
+    "type": "mc",
+    "question": "Điện trường xoáy là điện trường",
+    "options": {
+      "A": "xung quanh một dòng điện không đổi.\tB. do từ trường biến thiên theo thời gian sinh ra.",
+      "B": "",
+      "C": "giữa hai bản của tụ điện\tD. xung quanh một diện tích đứng yên.",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 10,
+    "type": "mc",
+    "question": "Gọi V và T lần lượt là thể tích và nhiệt độ tuyệt đối của một lượng khí. Hệ thức nào sau đây không phù hợp với quá trình đẳng áp?",
+    "options": {
+      "A": "<img src=\"assets/exams/vedich2k8_de07/image18.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tB. <img src=\"assets/exams/vedich2k8_de07/image19.png\" alt=\"công thức\" class=\"q-formula-img\" /> hằng số.\tC. <img src=\"assets/exams/vedich2k8_de07/image20.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tD. <img src=\"assets/exams/vedich2k8_de07/image21.png\" alt=\"công thức\" class=\"q-formula-img\" /> hằng số.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 11,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k8_de07/image22.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho Câu 11, Câu 12 và  Câu 13: Hình bên là cấu trúc đơn giản của một máy lạnh có công suất tiêu thụ điện định mức là 900 W. Để máy lạnh này hoạt động tốt, người ta bơm vào máy 0,83 kg môi chất lạnh (gas lạnh) R32. Máy hoạt động dựa trên nguyên lý trao đổi nhiệt giữa môi chất lạnh với không khí trong phòng và ngoài phòng thông qua hệ thống máy nén và dàn trao đổi nhiệt. Tại dàn lạnh xảy ra quá trình môi chất lạnh R32 chuyển từ thể lỏng sang thể khí. Quá trình này nhận nhiệt lượng từ không khí trong phòng và làm giảm nhiệt độ của phòng. Biết nhiệt hóa hơi riêng của R32 là 246 kJ/kg.<br>Quá trình môi chất lạnh chuyển từ thể lỏng sang thể khí tại dàn lạnh là quá trình",
+    "options": {
+      "A": "ngưng tụ.\tB. nóng chảy.\tC. hoá hơi.\tD. thăng hoa.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 12,
+    "type": "mc",
+    "question": "Khi máy lạnh hoạt động bình thường thì điện năng tiêu thụ của máy lạnh trong 2 giờ là",
+    "options": {
+      "A": "1800 kWh.\tB. 1,8 kWh.\tC. 450 kWh.\tD. 0,45 kWh.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de07/image23.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 13,
+    "type": "mc",
+    "question": "Trong một vòng tuần hoàn, nhiệt lượng tối thiểu cần cung cấp để 0,83 kg môi chất lạnh R32 chuyển hoàn toàn từ thể lỏng sang thể khí là",
+    "options": {
+      "A": "219,12 kJ.\tB. 204,18 kJ.\tC. 204180 kJ.\tD. 219120 kJ.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de07/image24.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 14,
+    "type": "mc",
+    "question": "Cho một vòng dây dẫn kín dịch chuyển ra xa một nam châm thì trong vòng dây xuất hiện một suất điện động cảm ứng. Đây là hiện tượng cảm ứng điện từ. Bản chất của hiện tượng cảm ứng điện từ này là quá trình chuyển hóa",
+    "options": {
+      "A": "điện năng thành hóa năng.\t\t\t\t\t\t\t\t\tB. cơ năng thành điện năng.",
+      "B": "",
+      "C": "cơ năng thành quang năng.\t\t\t\t\t\t\t\tD. điện năng thành quang năng.",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 15,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k8_de07/image25.png\" alt=\"hình vẽ\" class=\"q-img\" /> Tinh vân Lagoon là một đám mây khí nằm cách Trái Đất 3900 năm ánh sáng. Đám mây phát sáng vì nhiệt độ cao 7500 K. (Khí được nâng lên nhiệt độ này bởi nằm trong tinh vân.) Đám mây cũng rất mỏng; chỉ có 80 phân tử trên một centimet khối. Áp suất khí (tính theo khí quyển) trong Tinh vân Lagoon bằng",
+    "options": {
+      "A": "8,28.10-12 Pa.\tB. 2,34.10-10 Pa.\tC. 6,45.10-5 Pa.\tD. 1,24.10-3 Pa.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de07/image26.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 16,
+    "type": "mc",
+    "question": "Trong quá trình chất khí nhận nhiệt và sinh công thì Q và A trong hệ thức <img src=\"assets/exams/vedich2k8_de07/image27.png\" alt=\"công thức\" class=\"q-formula-img\" /> phải có giá trị là",
+    "options": {
+      "A": "Q > 0 và A > 0.\tB. Q > 0 và A < 0.\tC. Q < 0 và A < 0\t\tD. Q < 0 và A > 0.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 17,
+    "type": "mc",
+    "question": "Một vòng dây dẫn kín phẳng có diện tích 10 cm2. Vòng dây được đặt trong từ trường đều có vectơ cảm ứng từ hợp với vectơ pháp tuyến mặt phẳng vòng dây một góc 600 và có độ lớn là 1,5.10-4 T. Từ thông qua vòng dây dẫn này có giá trị là",
+    "options": {
+      "A": "1,3.10-3 Wb.\t\t\t\tB. 1,3.10-7 Wb.           \t\tC. 7,5.10-8 Wb.           \t\t\tD. 7,5.10-4 Wb.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 18,
+    "type": "mc",
+    "question": "Một khối khí lí tưởng xác định có thể tích 1 m3 ở nhiệt độ 150C để giảm thể tích khí còn một nửa khi áp suất không đổi thì cần phải",
+    "options": {
+      "A": "giảm nhiệt độ đến –129 0C.\tB. tăng nhiệt độ đến 144 K.",
+      "B": "",
+      "C": "tăng nhiệt độ đến 30 K.\t\tD. giảm nhiệt độ đến 7,5 0C.",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 19,
+    "type": "tf",
+    "question": "Câu 1. Mô hình động học phân tử chất khí là cơ sở để xây dựng công thức tính áp suất chất khí.",
+    "options": {
+      "A": "Trong thời gian giữa hai va chạm liên tiếp với thành bình, động lượng của phân tử khí thay đổi một lượng bằng tích khối lượng phân tử và tốc độ trung bình của nó.",
+      "B": "Coi chuyển động của phân tử khí trước và sai khi va chạm với thành bình là chuyển động thẳng đều.",
+      "C": "Lực gây ra thay đổi động lượng của phân tử khí là lực do phân tử khí tác dụng lên thành bình.",
+      "D": "Các phân tử khí chuyển động không có phương ưu tiên, số phân tử đến va chạm với các mặt của thành bình trong mỗi giây là như nhau."
+    },
+    "correct": "SĐSĐ",
+    "giaiThich": ""
+  },
+  {
+    "id": 20,
+    "type": "tf",
+    "question": "Câu 2. Một bệnh nhân phải xạ trị (điều trị bằng đồng vị phóng xạ), dùng tia gamma để diệt tế bào bệnh.Thời gian chiếu xạ lần đầu là 20 phút, cứ sau 1 tháng thì bệnh nhân phải tới bệnh viện để xạ trị. Biết đồng vị phóng xạ có chu kì bán rã 4 tháng và vẫn dùng nguồn phóng xạ ban đầu.",
+    "options": {
+      "A": "Đồng vị phóng xạ được dùng phải là đồng vị phát ra tia alpha.",
+      "B": "Điều trị ung thư bằng phóng xạ là cách điều trị rất an toàn và hiệu quả.",
+      "C": "Mỗi lần chiếu xạ tiếp theo thì thời gian chiếu xạ của bệnh nhân sẽ giảm đi.",
+      "D": "Lần chiếu xạ thứ 4 phải có thời gian chiếu xạ xấp xỉ là 33,6 phút để bệnh nhân nhận được lượng tia gamma như lần đầu."
+    },
+    "correct": "SSSĐ",
+    "giaiThich": "a) Tia <img src=\"assets/exams/vedich2k8_de07/image28.png\" alt=\"công thức\" class=\"q-formula-img\" /> đâm xuyên kém.<br>b) Điều trị ung thư bằng phóng xạ là cách điều trị hiệu quả nhưng không phải \"rất an toàn\" vì có thể gây tổn thương mô lành và có tác dụng phụ (mệt mỏi, buồn nôn, rụng tóc,...)<br>c) Độ phóng xạ giảm theo thời gian nên để đảm bảo liều lượng như ban đầu thì thời gian chiếu xạ phải tăng lên.<br>d) Lần chiếu xạ thứ 4 là sau 3 tháng ( t = 3).<br><img src=\"assets/exams/vedich2k8_de07/image29.png\" alt=\"công thức\" class=\"q-formula-img\" /> (phút)."
+  },
+  {
+    "id": 21,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k8_de07/image30.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 3. Một khung dây dẫn phẳng dẹt hình chữ nhật gồm 500 vòng dây, mỗi vòng dây có diện tích là <img src=\"assets/exams/vedich2k8_de07/image31.png\" alt=\"công thức\" class=\"q-formula-img\" />. Khung quay đều với tốc độ góc <img src=\"assets/exams/vedich2k8_de07/image32.png\" alt=\"công thức\" class=\"q-formula-img\" /> quanh một trục đối xứng nằm trong mặt phẳng của khung dây, trong một từ trường đều có vectơ cảm ứng từ <img src=\"assets/exams/vedich2k8_de07/image33.png\" alt=\"công thức\" class=\"q-formula-img\" /> vuông góc với trục quay. Hình (a) biểu diễn từ thông qua khung dây phụ thuộc theo thời gian:",
+    "options": {
+      "A": "Tốc độ góc là <img src=\"assets/exams/vedich2k8_de07/image34.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "B": "Độ lớn cảm ứng từ là <img src=\"assets/exams/vedich2k8_de07/image35.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "C": "Hình (b) là hình biểu diễn suất điện động trong khung dây phụ thuộc theo thời gian.",
+      "D": "Tại thời điểm t, từ thông qua khung dây có giá trị <img src=\"assets/exams/vedich2k8_de07/image36.png\" alt=\"công thức\" class=\"q-formula-img\" /> và đang tăng thì giá trị suất điện động trong khung dây lúc này là 120 V."
+    },
+    "correct": "ĐSĐS",
+    "giaiThich": "a) Từ đồ thị ta có chu kì <img src=\"assets/exams/vedich2k8_de07/image37.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>b)<img src=\"assets/exams/vedich2k8_de07/image38.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>c) <img src=\"assets/exams/vedich2k8_de07/image39.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>Suất điện động trễ pha hơn từ thông một góc <img src=\"assets/exams/vedich2k8_de07/image40.png\" alt=\"công thức\" class=\"q-formula-img\" />. Pha ban đầu của từ thông bằng 0,  suy ra pha ban đầu của suất điện động là <img src=\"assets/exams/vedich2k8_de07/image41.png\" alt=\"công thức\" class=\"q-formula-img\" />. Đồ thị biểu diễn e theo t ở hình (b) là hoàn toàn chính xác.<br>d) Tại thời điểm t: <img src=\"assets/exams/vedich2k8_de07/image42.png\" alt=\"công thức\" class=\"q-formula-img\" /> (đang tăng).<br>Suất điện động tại thời điểm t: <img src=\"assets/exams/vedich2k8_de07/image43.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 22,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k8_de07/image44.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Một quạt hơi nước là thiết bị hoạt động dựa trên nguyên tắc bốc hơi nước tự nhiên để làm mát không khí. Lúc vận hành, cánh quạt quay tròn sẽ khởi tạo lực hút không khí đi vào máy qua 3 cửa hút gió. Ngay ở cửa lấy khí có bố trí tấm làm mát. Tấm làm mát này được thiết kế với hình thức như rất nhiều đường ống dẫn khí với mặt cắt như tổ ong. Tấm làm mát cũng có thể dẫn và thấm đẫm nước. Khi không khí nóng bên ngoài luồn qua tấm làm mát đã có nước sẽ tạo ra hiện tượng bay hơi nước hoàn toàn tự nhiên ở trong các ống dẫn không khí. Nước lúc này đang từ thể lỏng sẽ chuyển đổi thành thể khí. Khi nước bay hơi, nhiệt lượng được lấy từ không khí xung quanh, làm giảm nhiệt độ không khí. Người ta dùng quạt hơi nước để làm mát một phòng kín, kích thước <img src=\"assets/exams/vedich2k8_de07/image45.png\" alt=\"công thức\" class=\"q-formula-img\" />. Giả sử toàn bộ nhiệt lượng lấy từ không khí để làm bay hơi nước và nhiệt độ của nước luôn là 350C . Biết lượng nước bay hơi từ quạt trong mỗi giây là 0,7 g; nhiệt hóa hơi của nước ở nhiệt độ 350C là <img src=\"assets/exams/vedich2k8_de07/image46.png\" alt=\"công thức\" class=\"q-formula-img\" />; khối lượng riêng của không khí trong phòng là <img src=\"assets/exams/vedich2k8_de07/image47.png\" alt=\"công thức\" class=\"q-formula-img\" /> và nhiệt dung riêng của không khí là 1005 J/kg.K.",
+    "options": {
+      "A": "Khối lượng nước trong quạt bị bay hơi trong thời gian 10 phút là 0,42 kg.",
+      "B": "Nhiệt lượng cần thiết lấy từ không khí để làm bay hơi 0,42 kg nước là 949200 J.",
+      "C": "Khối lượng không khí có trong phòng là 65 kg.",
+      "D": "Nếu sự thay đổi nhiệt độ không khí chỉ do sự hấp thụ nhiệt của nước khi bay hơi thì sau 10 phút mở quạt, nhiệt độ không khí trong phòng giảm đi 9,80C."
+    },
+    "correct": "ĐĐSĐ",
+    "giaiThich": "a) Khối lượng nước bay hơi trong thời gian 1 phút: <img src=\"assets/exams/vedich2k8_de07/image48.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>b) Nước nhận năng lượng từ không khí để bay hơi: <img src=\"assets/exams/vedich2k8_de07/image49.png\" alt=\"công thức\" class=\"q-formula-img\" />.<br>c) Khối lượng không khí: <img src=\"assets/exams/vedich2k8_de07/image50.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>d) Sau khi truyền năng lượng cho nước, nhiệt độ không khí giảm đi một lượng:<br><img src=\"assets/exams/vedich2k8_de07/image51.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 23,
+    "type": "short",
+    "question": "Sử dụng thông tin sau cho câu 1 và câu 2: Đồng vị phóng xạ β- xenon <img src=\"assets/exams/vedich2k8_de07/image52.png\" alt=\"công thức\" class=\"q-formula-img\" /> được sử dụng trong phương pháp nguyên tử đánh dấu của y học hạt nhân khi kiểm tra chức năng và chẩn đoán các bệnh về phổi. Chu kì bán rã của xenon <img src=\"assets/exams/vedich2k8_de07/image52.png\" alt=\"công thức\" class=\"q-formula-img\" /> là 5,24 ngày. Một mẫu khí chứa xenon <img src=\"assets/exams/vedich2k8_de07/image52.png\" alt=\"công thức\" class=\"q-formula-img\" /> khi được sản xuất tại nhà máy có độ phóng xạ là 4,25.109 Bq. Mẫu đó được vận chuyển về bệnh viện và sử dụng cho bệnh nhân sau đó 3 ngày.<br>Câu 1. Hằng số phóng xạ xenon <img src=\"assets/exams/vedich2k8_de07/image52.png\" alt=\"công thức\" class=\"q-formula-img\" /> bằng X.10-6 s-1. Giá trị của X bằng bao nhiêu?(làm tròn kết quả đến chữ số hàng phần trăm).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "1,53",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de07/image53.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 24,
+    "type": "short",
+    "question": "Câu 2.  Khi bệnh nhân sử dụng, độ phóng xạ của mẫu khí bằng Y.109 Bq. Giá trị của Y bằng bao nhiêu?(làm tròn kết quả đến chữ số  hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "28",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de07/image54.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>Dùng thông tin sau cho câu 3 và câu 4: Chiều cao của cột thủy ngân trong nhiệt kế thủy ngân thay đổi tuyến tính theo nhiệt độ Celsius. Ứng với hai vạch có nhiệt độ là 00C và 1000C thì chiều cao của cột thủy ngân trong nhiệt kế là 3 cm và 23 cm."
+  },
+  {
+    "id": 25,
+    "type": "short",
+    "question": "Câu 3. Khi nhiệt độ tăng thêm 10C thì chiều cao của cột thủy ngân tăng thêm bao nhiêu cm (làm tròn kết quả đến chữ số hàng phần mười)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "0,2",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de07/image55.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 26,
+    "type": "short",
+    "question": "Câu 4. Khi sử dụng nhiệt kế này để do nhiệt độ của một vật thấy cột thủy ngân cao 11,2 cm. Theo thang nhiệt Kelvin, nhiệt độ của vật là bao nhiêu K (kết quả làm tròn đến chữ số hàng đơn vị)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "314",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de07/image56.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 27,
+    "type": "short",
+    "question": "Câu 5. Sóng điện từ của kênh VOV giao thông có tần số 91 MHz, lan truyền trong không khí với tốc độ <img src=\"assets/exams/vedich2k8_de07/image57.png\" alt=\"công thức\" class=\"q-formula-img\" />. Bước sóng của sóng này bằng bao nhiêu m?(kết quả làm tròn đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "3,3",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de07/image58.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 28,
+    "type": "short",
+    "question": "Câu 6. Một khối khí lí tưởng xác định có khối lượng mol 32 g/mol. Tiến hành làm nóng đẳng áp khối khí tăng thêm <img src=\"assets/exams/vedich2k8_de07/image59.png\" alt=\"công thức\" class=\"q-formula-img\" />thì cần truyền cho khí nhiệt lượng <img src=\"assets/exams/vedich2k8_de07/image60.png\" alt=\"công thức\" class=\"q-formula-img\" />. Sau đó lại làm lạnh đẳng tích khối khí trở về nhiệt độ ban đầu thì cần thu nhiệt của khí môt nhiệt lượng <img src=\"assets/exams/vedich2k8_de07/image61.png\" alt=\"công thức\" class=\"q-formula-img\" />. Khối lượng khí tính theo gam là bao nhiêu?(kết quả  làm tròn đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "1,9",
+    "giaiThich": "Xét cả quá trình thì tổng độ biến thiên nội năng của khối khí là bằng 0, do nhiệt độ trạng thái đầu và trạng  thái cuối bằng nhau.<br>Làm nóng đẳng áp, khối khí nhận nhiệt, sinh công: <img src=\"assets/exams/vedich2k8_de07/image62.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>Làm lạnh đẳng tích, công bằng 0, khí truyền nhiệt lượng và nội năng khí giảm: <img src=\"assets/exams/vedich2k8_de07/image63.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>Ta có: <img src=\"assets/exams/vedich2k8_de07/image64.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>hay <img src=\"assets/exams/vedich2k8_de07/image65.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  }
+]

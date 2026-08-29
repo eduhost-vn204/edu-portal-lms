@@ -35,6 +35,10 @@
   }
   function staticUrlFor(url) {
     var t = typeOf(url);
+    if (t === 'examquestions' || t === 'examsolutions') {
+      var m = url.match(/[?&]examId=([a-z0-9_]+)/i);
+      if (m) return 'data/exams/' + m[1] + '.json';
+    }
     return STATIC_TYPES[t] ? ('data/' + t + '.json') : null;
   }
 

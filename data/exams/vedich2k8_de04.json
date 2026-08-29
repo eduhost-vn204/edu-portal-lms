@@ -1,0 +1,366 @@
+[
+  {
+    "id": 1,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k8_de04/image5.png\" alt=\"hình vẽ\" class=\"q-img\" />Tại vị trí O, người ta bắn ra một proton chuyển động với vận tốc <img src=\"assets/exams/vedich2k8_de04/image6.png\" alt=\"công thức\" class=\"q-formula-img\" /> vào vùng không gian có từ trường đều MNPQ, theo hướng vuông góc với cảm ứng từ <img src=\"assets/exams/vedich2k8_de04/image7.png\" alt=\"công thức\" class=\"q-formula-img\" />. Quỹ đạo của proton sau đó là đường nào trong hình bên?",
+    "options": {
+      "A": "(3).\tB.(1).",
+      "B": "",
+      "C": "(4).\tD. (2).",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 2,
+    "type": "mc",
+    "question": "Khi thực hành đo nhiệt hóa hơi riêng của nước, một học sinh viết được kết quả là <img src=\"assets/exams/vedich2k8_de04/image8.png\" alt=\"công thức\" class=\"q-formula-img\" />. Sai số tỉ đối (tương đối) của phép đo này bằng",
+    "options": {
+      "A": "2,3%.\tB. 4,3%.\tC. 1,0%.\tD. 1,2%.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de04/image9.png\" alt=\"hình vẽ\" class=\"q-img\" />HD: <img src=\"assets/exams/vedich2k8_de04/image10.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 3,
+    "type": "mc",
+    "question": "Một lượng khí đã thực hiện liên tiếp bốn quá trình được biểu diễn trên trong hệ tọa độ (p – T) như hình vẽ dưới đây. Quá trình đẳng áp là",
+    "options": {
+      "A": "Quá trình 1 – 2.",
+      "B": "Quá trình 2 – 3 và 4 – 1.",
+      "C": "Quá trình 4 – 1.",
+      "D": "Quá trình 3 – 4 và 1 – 2."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 4,
+    "type": "mc",
+    "question": "Hạt nhân <img src=\"assets/exams/vedich2k8_de04/image11.png\" alt=\"công thức\" class=\"q-formula-img\" /> có",
+    "options": {
+      "A": "11 prôtôn và 12 nơtron.\tB. 2 prôtôn và 11 nơtron.",
+      "B": "",
+      "C": "23 prôtôn và 11 nơtron.\tD. 11 prôtôn và 23 nơtron.",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 5,
+    "type": "mc",
+    "question": "Khi nhiệt độ trong bình chứa khí tăng, áp suất của khối khí trong bình cũng tăng lên đó là vì",
+    "options": {
+      "A": "khoảng cách giữa các phân tử tăng.\tB. mật độ phân tử khí giảm.",
+      "B": "",
+      "C": "phân tử khí chuyển động nhanh hơn. \tD. số lượng phân tử khí tăng.",
+      "D": ""
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 6,
+    "type": "mc",
+    "question": "Đặc điểm nào sau đây là đúng với cấu trúc của chất ở thể lỏng?",
+    "options": {
+      "A": "Giữa các phân tử không có khoảng cách.",
+      "B": "Các phân tử chuyển động hỗn loạn và có khoảng cách rất lớn.",
+      "C": "Các phân tử có lực tương tác rất yếu.",
+      "D": "Các phân tử dao động quanh vị trí cân bằng, vị trí cân bằng có thể dịch chuyển."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 7,
+    "type": "mc",
+    "question": "Các tương tác sau đây, tương tác không phải tương tác từ là tương tác giữa",
+    "options": {
+      "A": "nam châm và dòng điện.\tB. hai nam châm.",
+      "B": "",
+      "C": "các điện tích đứng yên.\t\tD. hai dây dẫn mang dòng điện.",
+      "D": ""
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 8,
+    "type": "mc",
+    "question": "Với <img src=\"assets/exams/vedich2k8_de04/image12.png\" alt=\"công thức\" class=\"q-formula-img\" /> là từ thông, <img src=\"assets/exams/vedich2k8_de04/image13.png\" alt=\"công thức\" class=\"q-formula-img\" /> là độ lớn cảm ứng từ, <img src=\"assets/exams/vedich2k8_de04/image14.png\" alt=\"công thức\" class=\"q-formula-img\" />là diện tích mạch kín và <img src=\"assets/exams/vedich2k8_de04/image15.png\" alt=\"công thức\" class=\"q-formula-img\" /> là góc hợp bởi mặt S và vectơ cảm ứng từ. Từ thông qua một mạch kín được xác định bằng công thức",
+    "options": {
+      "A": "<img src=\"assets/exams/vedich2k8_de04/image16.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tB. <img src=\"assets/exams/vedich2k8_de04/image17.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tC. <img src=\"assets/exams/vedich2k8_de04/image18.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tD. <img src=\"assets/exams/vedich2k8_de04/image19.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 9,
+    "type": "mc",
+    "question": "Một quả cầu kim loại (chưa nhiễm từ) được treo bằng một sợi dây. Khi đưa cực bắc của một thanh nam châm lại gần, quả cầu bị nam châm hút rất mạnh. Sau đó, đảo ngược nam châm và cực nam của nó được đưa lại gần quá cầu. Quả cầu sẽ bị",
+    "options": {
+      "A": "nam châm đẩy mạnh.\tB. nam châm hút yếu.\tC. nam châm đẩy yếu.\tD. nam châm hút mạnh.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 10,
+    "type": "mc",
+    "question": "Nhiệt động lực học là lĩnh vực nghiên cứu về năng lượng nhiệt và sự truyền nhiệt. Nhiệt động lực học ra đời vào giữa thế kỉ XIX trong quá trình con người tìm hiểu về sự chuyển hóa năng lượng dự trữ trong các nhiên liệu thành",
+    "options": {
+      "A": "năng lượng điện để chế tạo các động cơ nhiệt.\tB. cơ năng để chế tạo các máy lạnh.",
+      "B": "",
+      "C": "cơ năng để chế tạo các động cơ nhiệt.\tD. năng lượng ánh sáng để chế tạo các động cơ nhiệt.",
+      "D": ""
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 11,
+    "type": "mc",
+    "question": "Một nhiệt kế bị hỏng có hai nhiệt độ làm mốc là điểm đóng băng của nước tinh khiết và điểm sôi của nước tinh khiết ở áp suất tiêu chuẩn lần lượt là –2 0C và 102 0C. Nếu số chỉ nhiệt độ đo bởi nhiệt kế này là 55,20C thì nhiệt độ đúng trong thang Celsius bằng",
+    "options": {
+      "A": "50 0C.\tB. 55 0C.\tC. 57 0C.\tD. 480C.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de04/image20.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 12,
+    "type": "mc",
+    "question": "Gọi khối lượng của hạt nhân <img src=\"assets/exams/vedich2k8_de04/image21.png\" alt=\"công thức\" class=\"q-formula-img\" />, proton và neutron lần lượt là <img src=\"assets/exams/vedich2k8_de04/image22.png\" alt=\"công thức\" class=\"q-formula-img\" />, <img src=\"assets/exams/vedich2k8_de04/image23.png\" alt=\"công thức\" class=\"q-formula-img\" /> và <img src=\"assets/exams/vedich2k8_de04/image24.png\" alt=\"công thức\" class=\"q-formula-img\" />. Công thức tính độ hụt khối của hạt nhân <img src=\"assets/exams/vedich2k8_de04/image25.png\" alt=\"công thức\" class=\"q-formula-img\" /> là",
+    "options": {
+      "A": "<img src=\"assets/exams/vedich2k8_de04/image26.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tB. <img src=\"assets/exams/vedich2k8_de04/image27.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "B": "",
+      "C": "<img src=\"assets/exams/vedich2k8_de04/image28.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tD. <img src=\"assets/exams/vedich2k8_de04/image29.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "D": ""
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 13,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k8_de04/image30.png\" alt=\"hình vẽ\" class=\"q-img\" />Một chiếc ghế văn phòng có thể nâng hạ độ cao như hình vẽ. Một khối khí xác định bị giam giữa hai ống M và N; M có thể trượt lên xuống dọc theo thành trong của N. Coi khối khí là khí lí tưởng và không trao đổi nhiệt với bên ngoài. Khi M trượt xuống dưới thì khối khí bên trong ống",
+    "options": {
+      "A": "nhận công và nội năng tăng.",
+      "B": "thực hiện công và nội năng tăng.",
+      "C": "thực hiện công và nội năng giảm.",
+      "D": "nhận công và nội năng giảm."
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 14,
+    "type": "mc",
+    "question": "Phát biểu nào sau đây là sai?",
+    "options": {
+      "A": "Tương tác giữa dòng điện với dòng điện là tương tác từ.",
+      "B": "Cảm ứng từ đặc trưng cho từ trường tại một điểm trong từ trường về mặt tác dụng lực.",
+      "C": "Xung quanh một điện tích đứng yên có điện trường và từ trường.",
+      "D": "Hiện tượng xuất hiện suất điện động cảm ứng là hiện tượng cảm ứng điện từ."
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 15,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k8_de04/image31.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng thông tin cho ở bảng bên cho các câu 15 và câu 16: Thầy Hoàng Sư Điểu sử dụng cảm biến điện thế để đo điện áp xoay chiều đặt vào hai đầu một phần tử tiêu thụ điện và vẽ được đồ thị điện áp như hình vẽ bên dưới:<br>Tần số của điện áp xoay chiều đặt vào hai đầu phần tử là",
+    "options": {
+      "A": "50 Hz. \tB. 100 Hz. \tC. 12,5 Hz. \tD. 25 Hz.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "B",
+    "giaiThich": "Từ mốc lúc t = 0 đến lúc t = 8Ô đúng bằng một chu kì T.<br><img src=\"assets/exams/vedich2k8_de04/image32.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 16,
+    "type": "mc",
+    "question": "Điện áp hiệu dụng hai đầu phần tử R có giá trị là",
+    "options": {
+      "A": "2,1 V.",
+      "B": "1,5 V.",
+      "C": "4,2 V.",
+      "D": "3,0 V."
+    },
+    "correct": "B",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de04/image33.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 17,
+    "type": "mc",
+    "question": "Phát biểu nào sau đây nói về nhiệt lượng là không đúng?",
+    "options": {
+      "A": "Nhiệt lượng là số đo độ biến thiên nội năng của vật trong quá trình truyền nhiệt.",
+      "B": "Một vật lúc nào cũng có nội năng, do đó lúc nào cũng có nhiệt lượng.",
+      "C": "Đơn vị của nhiệt lượng cũng là đơn vị của nội năng.",
+      "D": "Nhiệt lượng không phải là nội năng."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 18,
+    "type": "mc",
+    "question": "Nếu nhiệt độ của khí lí tưởng chứa trong bình tăng,",
+    "options": {
+      "A": "tốc độ của từng phân tử trong bình sẽ tăng lên.",
+      "B": "căn bậc hai của trung bình bình phương tốc độ chuyển động nhiệt của các phân tử trong hộp sẽ tăng lên.",
+      "C": "khoảng cách giữa các phân từ trong hộp sẽ tăng lên.",
+      "D": "kích thước của mỗi phân tử tăng lên."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 19,
+    "type": "tf",
+    "question": "Câu 1. Phản ứng hạt nhân có nhiều ứng dụng trong công nghiệp hạt nhân.",
+    "options": {
+      "A": "Trong phản ứng hạt nhân, tổng đại số các điện tích của các hạt tương tác bằng tổng đại số các điện tích của các hạt sản phẩm.",
+      "B": "Trong phản ứng hạt nhân, tổng số nucleon (số khối) của các hạt tương tác bằng tổng số nucleon (số khối) của các hạt sản phẩm.",
+      "C": "Trong phản ứng hạt nhân luôn có sự bảo toàn khối lượng nghỉ.",
+      "D": "Trong phản ứng hạt nhân có sự biến đổi nguyên tố (biến đổi hạt nhân), trong phản ứng hoá học không có sự biến đổi nguyên tố (chỉ biến đổi phân tử)."
+    },
+    "correct": "ĐĐSĐ",
+    "giaiThich": ""
+  },
+  {
+    "id": 20,
+    "type": "tf",
+    "question": "Câu 2. Một nhóm học sinh làm thí nghiệm khảo sát khả năng làm nguội nước nhờ gió ở điều kiện nhiệt độ phòng 250C. Nhóm sử dụng 2 kg nước có nhiệt độ ban đầu là 500C. Dùng quạt thổi qua chậu nước ở các chế độ khác nhau và đo nhiệt độ của nước sau mỗi phút. Biết nhiệt dung riêng của nước là <img src=\"assets/exams/vedich2k8_de04/image34.png\" alt=\"công thức\" class=\"q-formula-img\" />. Kết quả đo được ghi vào bảng như sau:<br><img src=\"assets/exams/vedich2k8_de04/image35.png\" alt=\"hình vẽ\" class=\"q-img\" />",
+    "options": {
+      "A": "Tốc độ gió càng mạnh thì nhiệt độ nước giảm càng chậm.",
+      "B": "Trong cùng một điều kiện về tốc độ gió, khi nhiệt độ nước càng giảm thì tốc độ tỏa nhiệt của nước ra môi trường càng giảm.",
+      "C": "Trong 5 phút, nhiệt lượng 2 kg nước mất đi khi tốc độ gió lớn nhiều hơn 31,08 kJ so với khi không có gió.",
+      "D": "Trong 5 phút, tốc độ giảm nhiệt độ trung bình của nước khi tốc độ gió lớn gấp 1,61 lần so với khi không có gió."
+    },
+    "correct": "SĐSĐ",
+    "giaiThich": "a) Tốc độ gió càng mạnh thì nhiệt độ nước giảm càng nhanh.<br>b) Tốc độ tỏa nhiệt của nước: <img src=\"assets/exams/vedich2k8_de04/image36.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>c) Không có gió: <img src=\"assets/exams/vedich2k8_de04/image37.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>Tốc độ gió lớn: <img src=\"assets/exams/vedich2k8_de04/image38.png\" alt=\"công thức\" class=\"q-formula-img\" /><br><img src=\"assets/exams/vedich2k8_de04/image39.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>d)<img src=\"assets/exams/vedich2k8_de04/image40.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 21,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k8_de04/image41.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 3. Hình vẽ thể hiện một mô hình. Hai thanh kim loại dẫn điện và con lăn kim loại chạm vào cả hai thanh và hoàn thành mạch điện. Con lăn nằm trong từ trường do nam châm tạo ra.",
+    "options": {
+      "A": "Các đường sức từ trong vùng giữa hai thanh kim loại có chiều vuông góc và hướng lên trên với mặt phẳng do hai thanh tạo ra.",
+      "B": "Biết cảm ứng từ B = 1,2 T; chiều dài con lăn <img src=\"assets/exams/vedich2k8_de04/image42.png\" alt=\"công thức\" class=\"q-formula-img\" />; cường độ dòng điện <img src=\"assets/exams/vedich2k8_de04/image43.png\" alt=\"công thức\" class=\"q-formula-img\" />. Lực từ tác dụng lên con lăn là 1,8 N.",
+      "C": "Con lăn sẽ di chuyển sang trái nhờ lực từ.",
+      "D": "Trong khung sẽ xuất hiện dòng điện cảm ứng."
+    },
+    "correct": "ĐSSĐ",
+    "giaiThich": "a) Các đường sức từ có hướng ra bắc vào nam (ra N vào S).<br>b) <img src=\"assets/exams/vedich2k8_de04/image44.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>c) Chiều dòng điện đi ra cực dương và đi vào cực âm.<br>Áp dụng quy tắc bàn tay trái <img src=\"assets/exams/vedich2k8_de04/image45.png\" alt=\"công thức\" class=\"q-formula-img\" /> lực từ hướng sang phải.<br>d) Con lăn di chuyển sẽ xuất hiện dòng điện cảm ứng."
+  },
+  {
+    "id": 22,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k8_de04/image46.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Đua xe đạp rèn luyện thân thể đang là một xu hướng thể thao được nhiều người ưa thích. Một chiếc xe đạp thể thao có giá từ vài triệu đến vài chục triệu VNĐ. Líp xe gắn với trục của bánh xe sau là loại líp nhiều tầng để có thể thay đổi tốc độ xe tùy thuộc vào địa hình đường chạy.",
+    "options": {
+      "A": "Khi xe chạy trên đường (bánh xe lăn không trượt) thì lực ma sát nghỉ giữa bánh xe và mặt đường đóng vai trò lực phát động.",
+      "B": "Người đạp xe làm quay đĩa, nhờ dây xích truyền động cho líp làm bánh xe quay. Sự chuyển hóa năng lượng ở đây là từ năng lượng cơ bắp của người phần lớn thành động năng của hệ “xe + người“.",
+      "C": "Bán kính của đĩa gấp 3 lần bán kính nhỏ nhất của líp. Bánh xe có bán kính 30 cm. Vận động viên có thể đạp vào pê - đan làm đĩa quay tới 2,5 vòng/s. Tốc độ tối đa của xe là 50,9 km/h.",
+      "D": "<img src=\"assets/exams/vedich2k8_de04/image47.png\" alt=\"hình vẽ\" class=\"q-img\" />d) Một hôm, vừa dắt xe ra để tập luyện thì vận động viên thấy bánh xe vẫn căng nhưng hơi non, sử dụng áp kế để đo áp suất khí trong lốp xe, áp kế chỉ 1,8 atm. Thể tích của xăm khi căng là V. Vận động viên này dùng bơm tay để bơm không khí vào xăm, mỗi lần bơm đưa vào xăm một thể tích 0,15V không khí có áp suất <img src=\"assets/exams/vedich2k8_de04/image48.png\" alt=\"công thức\" class=\"q-formula-img\" />.Coi nhiệt độ không khí trong và ngoài xe như nhau và không đổi. Để áp suất khí trong lốp xe đạt chuẩn là 2,4 atm thì vẫn phải bơm đến 8 lần."
+    },
+    "correct": "ĐĐĐS",
+    "giaiThich": "a) Khi xe chạy trên đường (bánh xe lăn không trượt) thì lực ma sát nghỉ giữa bánh xe và mặt đường đóng vai trò lực phát động (hình vẽ).<br>b) Khi đạp xe, năng lượng cơ bắp chuyển sang động năng.<br>c)Tốc độ của đĩa bằng tốc độ của líp:<br><img src=\"assets/exams/vedich2k8_de04/image49.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>Tốc độ góc của líp bằng tốc độ góc của bánh xe: <img src=\"assets/exams/vedich2k8_de04/image50.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>d)<img src=\"assets/exams/vedich2k8_de04/image51.png\" alt=\"công thức\" class=\"q-formula-img\" /> lần."
+  },
+  {
+    "id": 23,
+    "type": "short",
+    "question": "Sử dụng các thông tin sau cho câu 1 và câu 2: Cho khối lượng của hạt nhân <img src=\"assets/exams/vedich2k8_de04/image52.png\" alt=\"công thức\" class=\"q-formula-img\" /> ; proton và neutron lần lượt là 4,0015 amu; 1,0073 amu và 1,0087 amu. Cho <img src=\"assets/exams/vedich2k8_de04/image53.png\" alt=\"công thức\" class=\"q-formula-img\" />.<br>Câu 1. Năng lượng liên kết riêng của hạt nhân Heli bằng bao nhiêu MeV/nucleon?(Kết quả làm tròn đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "7,1",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de04/image54.png\" alt=\"công thức\" class=\"q-formula-img\" /><br><img src=\"assets/exams/vedich2k8_de04/image55.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 24,
+    "type": "short",
+    "question": "Câu 2. Năng lượng tỏa ra khi tạo thành 0,5 mol <img src=\"assets/exams/vedich2k8_de04/image56.png\" alt=\"công thức\" class=\"q-formula-img\" /> từ các nucleon là X.1024 MeV. Tìm giá trị của X(Kết quả làm tròn đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "8,6",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de04/image57.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 25,
+    "type": "short",
+    "question": "Câu 3. Để đo từ trường của Trái Đất người ta dùng phương pháp “cuộn dây lật”. Cuộn dây phẳng này gồm 100 vòng, mỗi vòng có diện tích <img src=\"assets/exams/vedich2k8_de04/image58.png\" alt=\"công thức\" class=\"q-formula-img\" />. Đầu tiên, cuộn dây được đặt sao cho mặt phẳng của nó vuông góc với từ trường của Trái Đất, sau đó quay cuộn dây này <img src=\"assets/exams/vedich2k8_de04/image59.png\" alt=\"công thức\" class=\"q-formula-img\" />để từ trường đi qua cuộn dây theo hướng ngược lại. Biết rằng thời gian để cuộn dây quay như trên là <img src=\"assets/exams/vedich2k8_de04/image60.png\" alt=\"công thức\" class=\"q-formula-img\" /> và độ lớn của suất điện động cảm ứng sinh ra trong cuộn dây là <img src=\"assets/exams/vedich2k8_de04/image61.png\" alt=\"công thức\" class=\"q-formula-img\" />. Tìm độ lớn cảm ứng từ của từ trường Trái Đất theo đơn vị <img src=\"assets/exams/vedich2k8_de04/image62.png\" alt=\"công thức\" class=\"q-formula-img\" /> (micro - tesla)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "50",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de04/image63.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>Sử dụng các thông tin sau cho câu 4 và câu 5: Trong dây chuyền sản xuất đúc các chi tiết máy, sau khi thành phẩm các chi tiết máy được làm nguội bằng cách nhúng ngập hoàn toàn vào bể chất lỏng có nhiệt độ sôi lớn hơn 1000C. Giả sử các chi tiết máy đều giống nhau và đạt cùng nhiệt độ <img src=\"assets/exams/vedich2k8_de04/image64.png\" alt=\"công thức\" class=\"q-formula-img\" /> thì nhúng ngập vào bể chất lỏng. Biết rằng nhiệt độ ban đầu của chất lỏng trong bể là 25°C và nếu chỉ nhúng một chi tiết máy thì khi cân bằng nhiệt, chất lỏng trong bể có nhiệt độ <img src=\"assets/exams/vedich2k8_de04/image65.png\" alt=\"công thức\" class=\"q-formula-img\" />. Coi rằng quá trình nhúng chi tiết máy vào bể chất lỏng chỉ có sự trao đổi nhiệt giữa các chi tiết máy và chất lỏng trong bể, sự hóa hơi của chất lỏng là không đáng kể."
+  },
+  {
+    "id": 26,
+    "type": "short",
+    "question": "Câu 4. Sau khi nhúng một chi tiết máy vào bể chất lỏng, nhiệt độ của chi tiết máy giảm đi bao nhiêu K khi đạt trạng thái cân bằng nhiệt?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "105",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de04/image66.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 27,
+    "type": "short",
+    "question": "Câu 5. Phải nhúng đồng thời bao nhiêu chi tiết máy để khi cân bằng nhiệt, nhiệt độ của chất lỏng trong bể tăng lên đến 1000C?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "45",
+    "giaiThich": "Khi nhúng một chi tiết máy: <img src=\"assets/exams/vedich2k8_de04/image67.png\" alt=\"công thức\" class=\"q-formula-img\" /><br><img src=\"assets/exams/vedich2k8_de04/image68.png\" alt=\"hình vẽ\" class=\"q-img\" />   Thả N chi tiết máy: <img src=\"assets/exams/vedich2k8_de04/image69.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 28,
+    "type": "short",
+    "question": "Câu 6. Một xilanh kín hình trụ chiều cao h, tiết diện S đặt thẳng đứng. Xilanh được chia thành hai phần nhờ một pit-tông cách nhiệt khối lượng m. Khí trong hai phần là cùng loại ở cùng nhiệt độ 27 0C và có khối lượng là m1, m2 với <img src=\"assets/exams/vedich2k8_de04/image70.png\" alt=\"công thức\" class=\"q-formula-img\" />. Pit-tông cân bằng khi ở cách đáy dưới đoạn<img src=\"assets/exams/vedich2k8_de04/image71.png\" alt=\"công thức\" class=\"q-formula-img\" />. Để pit-tông cách đều hai đáyxilanh thì người ta phải rút bớt <img src=\"assets/exams/vedich2k8_de04/image72.png\" alt=\"công thức\" class=\"q-formula-img\" /> khí ở phần hai đồng thời nung nóng phần này lên đến 35 0C (phần một giữ ở nhiệt độ không đổi). Tỉ số <img src=\"assets/exams/vedich2k8_de04/image73.png\" alt=\"công thức\" class=\"q-formula-img\" /> bằng bao nhiêu?(làm tròn kết quả đến chữ số hàng phần trăm).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "0,62",
+    "giaiThich": "Lúc đầu <img src=\"assets/exams/vedich2k8_de04/image74.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>Lúc sau: <img src=\"assets/exams/vedich2k8_de04/image75.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  }
+]

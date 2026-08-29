@@ -1,0 +1,366 @@
+[
+  {
+    "id": 1,
+    "type": "mc",
+    "question": "Hãy tìm ý không đúng với mô hình động học phân tử trong các ý sau đây?",
+    "options": {
+      "A": "Các phân tử luôn chuyển động không ngừng.",
+      "B": "Các chất được cấu tạo từ các hạt riêng biệt gọi là phân tử.",
+      "C": "Giữa các phân tử chỉ tồn tại lực hút gọi là lực liên kết phân tử.",
+      "D": "Tốc độ chuyển động của các phân tử phụ thuộc vào nhiệt độ."
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 2,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k8_de02/image5.png\" alt=\"hình vẽ\" class=\"q-img\" />Người ta thường dùng sáp thơm để khử mùi trong xe hơi, nhà vệ sinh, … Các phân tử của sáp thơm có thể bay lên, khuếch tán trong không gian là nhờ sự chuyển thể nào sau đây?",
+    "options": {
+      "A": "Sự thăng hoa.",
+      "B": "Sự ngưng kết.",
+      "C": "Sự nóng chảy.",
+      "D": "Sự bay hơi."
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 3,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k8_de02/image6.png\" alt=\"công thức\" class=\"q-formula-img\" /> là đơn vị của đại lượng vật lí nào sau đây?",
+    "options": {
+      "A": "Khối lượng.\tB. Năng lượng.\tC. Động lượng.\tD. Hiệu điện thế.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 4,
+    "type": "mc",
+    "question": "Gọi <img src=\"assets/exams/vedich2k8_de02/image7.png\" alt=\"công thức\" class=\"q-formula-img\" /> lần lượt là khối lượng của proton, neutron và hạt nhân <img src=\"assets/exams/vedich2k8_de02/image8.png\" alt=\"công thức\" class=\"q-formula-img\" /> Năng lượng liên kết của một hạt nhân <img src=\"assets/exams/vedich2k8_de02/image9.png\" alt=\"công thức\" class=\"q-formula-img\" /> được xác định bởi công thức",
+    "options": {
+      "A": "<img src=\"assets/exams/vedich2k8_de02/image10.png\" alt=\"công thức\" class=\"q-formula-img\" />\tB. <img src=\"assets/exams/vedich2k8_de02/image11.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "B": "",
+      "C": "<img src=\"assets/exams/vedich2k8_de02/image12.png\" alt=\"công thức\" class=\"q-formula-img\" />\tD. <img src=\"assets/exams/vedich2k8_de02/image13.png\" alt=\"công thức\" class=\"q-formula-img\" />",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 5,
+    "type": "mc",
+    "question": "Phân hạch hạt nhân là quá trình",
+    "options": {
+      "A": "hai hạt nhân nhẹ kết hợp thành một hạt nhân nặng hơn.",
+      "B": "một hạt nhân nặng vỡ ra thành hai hạt nhân nhỏ hơn kèm theo giải phóng năng lượng.",
+      "C": "một nguyên tử phát ra electron và biến thành nguyên tố mới.",
+      "D": "một hạt nhân hấp thụ electron và trở thành hạt nhân khác."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 6,
+    "type": "mc",
+    "question": "Khi nói về từ trường, phát biểu nào sau đây sai?",
+    "options": {
+      "A": "Từ trường là trường lực gây ra bởi dòng điện hoặc nam châm.",
+      "B": "Từ trường tác dụng lực từ lên một dòng điện hay một nam châm đặt trong nó.",
+      "C": "Phương của lực từ tại một điểm trùng với phương tiếp tuyến của đường sức từ tại điểm đó.",
+      "D": "<img src=\"assets/exams/vedich2k8_de02/image14.png\" alt=\"hình vẽ\" class=\"q-img\" />D. Cảm ứng từ tại một điểm đặc trưng cho từ trường về mặt tác dụng lực tại điểm đó."
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 7,
+    "type": "mc",
+    "question": "Rửa tay dưới vòi nước, cảm thấy tay mát lạnh,nguyên nhân là do nhiệt lượng đã truyền từ",
+    "options": {
+      "A": "không khí vào tay.\tB. tay ra không khí.",
+      "B": "",
+      "C": "tay sang nước.\tD. nước sang tay.",
+      "D": ""
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 8,
+    "type": "mc",
+    "question": "Một dòng điện xoay chiều có cường độ <img src=\"assets/exams/vedich2k8_de02/image15.png\" alt=\"công thức\" class=\"q-formula-img\" /> với <img src=\"assets/exams/vedich2k8_de02/image16.png\" alt=\"công thức\" class=\"q-formula-img\" />. Đại lượng <img src=\"assets/exams/vedich2k8_de02/image17.png\" alt=\"công thức\" class=\"q-formula-img\" /> được gọi là",
+    "options": {
+      "A": "pha ban đầu của dòng điện.\tB. cường độ dòng điện cực đại.",
+      "B": "",
+      "C": "tần số của dòng điện.\t\tD. tần số góc của dòng điện.",
+      "D": ""
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 9,
+    "type": "mc",
+    "question": "Trong hệ SI, cảm ứng từ có đơn vị là tesla (T). Đơn vị tesla là đơn vị dẫn xuất, có mối liên hệ với các đơn vị cơ bản theo công thức",
+    "options": {
+      "A": "<img src=\"assets/exams/vedich2k8_de02/image18.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tB. <img src=\"assets/exams/vedich2k8_de02/image19.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tC. <img src=\"assets/exams/vedich2k8_de02/image20.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tD. <img src=\"assets/exams/vedich2k8_de02/image21.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 10,
+    "type": "mc",
+    "question": "Đoạn dây dẫn có dòng điện được đặt trong từ trường đều <img src=\"assets/exams/vedich2k8_de02/image22.png\" alt=\"công thức\" class=\"q-formula-img\" />. Để lực từ tác dụng lên dây cực đại thì góc hợp bởi đoạn dây và vectơ cảm ứng từ <img src=\"assets/exams/vedich2k8_de02/image23.png\" alt=\"công thức\" class=\"q-formula-img\" /> là",
+    "options": {
+      "A": "450.\tB. 900.\tC. 00.\tD. 600.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 11,
+    "type": "mc",
+    "question": "Trong các phát biểu sau, phát biểu nào là đúng?<br>(1) Độ lớn từ thông qua một mạch kín càng lớn khi số lượng đường sức từ xuyên qua mạch kín này càng nhỏ.<br>(2) Đơn vị của từ thông là tesla (T).<br>(3) Khi từ thông qua mặt giới hạn bởi một khung dây dẫn kín biến thiên theo thời gian thì trong khung dây xuất hiện dòng điện cảm ứng.<br>(4) Trong hiện tượng cảm ứng điện từ, dòng điện cảm ứng sinh ra trong một khung dây dẫn kín có tác dụng chống lại sự biến thiên từ thông qua chính khung dây đó.",
+    "options": {
+      "A": "(2), (3).\tB. (3), (4).\tC. (1), (2).\tD. (1), (4).",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 12,
+    "type": "mc",
+    "question": "Trong động học phân tử chất khí, gọi R là hằng số của chất khí lí tưởng, NA là số Avogadro, k là hằng số Boltzmann. Hệ thức đúng là",
+    "options": {
+      "A": "<img src=\"assets/exams/vedich2k8_de02/image24.png\" alt=\"công thức\" class=\"q-formula-img\" />\t  B. <img src=\"assets/exams/vedich2k8_de02/image25.png\" alt=\"công thức\" class=\"q-formula-img\" />\t   C. <img src=\"assets/exams/vedich2k8_de02/image26.png\" alt=\"công thức\" class=\"q-formula-img\" />.\t    D. <img src=\"assets/exams/vedich2k8_de02/image27.png\" alt=\"công thức\" class=\"q-formula-img\" />",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 13,
+    "type": "mc",
+    "question": "Nhiệt nóng chảy riêng của một chất là nhiệt lượng cần để làm cho 1 kg chất đó nóng chảy hoàn toàn ở",
+    "options": {
+      "A": "<img src=\"assets/exams/vedich2k8_de02/image28.png\" alt=\"hình vẽ\" class=\"q-img\" />A. 0 oC.\t\tB. 0 K.",
+      "B": "",
+      "C": "nhiệt độ nóng chảy.\t\tD. nhiệt độ bất kì.",
+      "D": ""
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 14,
+    "type": "mc",
+    "question": "Ở hình bên, (1) và (2) lần lượt là 2 đường đẳng nhiệt của một khối lượng khí lí tưởng ở hai nhiệt độ tương ứng là T1 và T2. Biểu thức nào sau đây đúng?",
+    "options": {
+      "A": "T1 < T2.\tB. T1 = T2.",
+      "B": "",
+      "C": "T1 ≤ T2.\tD. T1 > T2.",
+      "D": ""
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 15,
+    "type": "mc",
+    "question": "Biết khối lượng của hạt proton, hạt neutron, hạt nhân neon <img src=\"assets/exams/vedich2k8_de02/image29.png\" alt=\"công thức\" class=\"q-formula-img\" /> và hạt nhân helium <img src=\"assets/exams/vedich2k8_de02/image30.png\" alt=\"công thức\" class=\"q-formula-img\" /> lần lượt là<img src=\"assets/exams/vedich2k8_de02/image31.png\" alt=\"công thức\" class=\"q-formula-img\" /> <img src=\"assets/exams/vedich2k8_de02/image32.png\" alt=\"công thức\" class=\"q-formula-img\" /> <img src=\"assets/exams/vedich2k8_de02/image33.png\" alt=\"công thức\" class=\"q-formula-img\" /> <img src=\"assets/exams/vedich2k8_de02/image34.png\" alt=\"công thức\" class=\"q-formula-img\" />; <img src=\"assets/exams/vedich2k8_de02/image35.png\" alt=\"công thức\" class=\"q-formula-img\" />Phát biểu nào sau đây là đúng?",
+    "options": {
+      "A": "Hạt nhân helium <img src=\"assets/exams/vedich2k8_de02/image36.png\" alt=\"công thức\" class=\"q-formula-img\" /> bền vững hơn hạt nhân neon <img src=\"assets/exams/vedich2k8_de02/image37.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "B": "Hạt nhân <img src=\"assets/exams/vedich2k8_de02/image38.png\" alt=\"công thức\" class=\"q-formula-img\" /> có nhiều hơn hạt nhân <img src=\"assets/exams/vedich2k8_de02/image39.png\" alt=\"công thức\" class=\"q-formula-img\" /> là 16 neutron.",
+      "C": "Điện tích của hạt nhân <img src=\"assets/exams/vedich2k8_de02/image40.png\" alt=\"công thức\" class=\"q-formula-img\" /> lớn hơn điện tích của hạt nhân <img src=\"assets/exams/vedich2k8_de02/image41.png\" alt=\"công thức\" class=\"q-formula-img\" /> là <img src=\"assets/exams/vedich2k8_de02/image42.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "D": "Tỉ số giữa bán kính của hạt nhân <img src=\"assets/exams/vedich2k8_de02/image43.png\" alt=\"công thức\" class=\"q-formula-img\" /> với bán kính của hạt nhân <img src=\"assets/exams/vedich2k8_de02/image44.png\" alt=\"công thức\" class=\"q-formula-img\" /> là 1,71."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 16,
+    "type": "mc",
+    "question": "Đơn vị nào sau đây là đơn vị của nhiệt nóng chảy riêng?",
+    "options": {
+      "A": "J.\tB. J/kg.\tC. J.kg.\tD. J/kg.K.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 17,
+    "type": "mc",
+    "question": "Nội năng của một vật",
+    "options": {
+      "A": "không phụ thuộc vào thể tích của vật, chỉ phụ thuộc vào nhiệt độ của vật.",
+      "B": "là tổng động năng của các phân tử cấu tạo nên vật.",
+      "C": "không phụ thuộc vào nhiệt độ của vật, chỉ phụ thuộc vào thể tích của vật.",
+      "D": "phụ thuộc cả thể tích và nhiệt độ của vật."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 18,
+    "type": "mc",
+    "question": "Tại sao săm xe đạp sau khi được bơm căng, mặc dù đã vặn van thật chặt, nhưng để lâu ngày vẫn bị xẹp?",
+    "options": {
+      "A": "Vì cao su dùng làm săm đẩy các phân tử không khí lại gần nhau nên săm bị xẹp.",
+      "B": "Vì săm xe làm bằng cao su là chất đàn hồi, nên sau khi giãn ra thì tự động co lại làm cho săm để lâu ngày bị xẹp.",
+      "C": "Vì giữa các phân tử cao su dùng làm săm có khoảng cách nên các phân tử không khí có thể thoát ra ngoài làm săm xẹp dần.",
+      "D": "Vì lúc bơm, không khí vào săm còn nóng, sau đó không khí nguội dần, co lại, làm săm xe bị xẹp."
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 19,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k8_de02/image45.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 1. Xét trong khoảng thời gian mà nam châm dịch chuyển cực Bắc của một thanh nam châm đến gần một cuộn dây (hình vẽ).",
+    "options": {
+      "A": "Trong cuộn dây xuất hiện suất điện động cảm ứng và sinh ra dòng điện đi qua điện kế làm kim điện kế bị lệch.",
+      "B": "Kim điện kế lệch càng nhiều nếu ta đưa thanh nam châm lại gần cuộn dây càng nhanh.",
+      "C": "Bản chất của hiện tượng cảm ứng điện từ là điện năng biến đổi thành cơ năng.",
+      "D": "Cuộn dây có xu hướng dịch chuyển sang phải, do dòng điện cảm ứng khiến mặt X của cuộn dây thành cực Nam và chịu lực hút của cực Bắc của nam châm."
+    },
+    "correct": "ĐĐSS",
+    "giaiThich": "a) Khi đưa thanh nam châm lại gần hoặc ra xa thì từ thông qua cuộn dây biến thiên, từ đó trong cuộn dây xuất hiện dòng điện cảm ứng làm lệch kim điện kế.<br>b) Suất điện động cảm ứng có độ lớn phụ thuộc vào tốc độ biến thiên từ thông: <img src=\"assets/exams/vedich2k8_de02/image46.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>c) Bản chất của hiện tượng cảm ứng điện từ là cơ năng biến đổi thành điện năng.<br>d) Theo định luật Lenz, từ thông biến thiên qua mạch do một chuyển động nào đó thì từ trường cảm ứng chống lại chuyển động nói trên. Do vậy khi nam châm lại gần cuộn dây thì cuộn dây sẽ đẩy nam châm."
+  },
+  {
+    "id": 20,
+    "type": "tf",
+    "question": "Câu 2. Đồ thị ở hình bên cho biết sự thay đổi nhiệt độ của một chất lỏng khi bị đun nóng đến khi sôi.<br><img src=\"assets/exams/vedich2k8_de02/image47.png\" alt=\"hình vẽ\" class=\"q-img\" />",
+    "options": {
+      "A": "Nhiệt độ sôi của chất lỏng là 80℃.",
+      "B": "Nếu chất lỏng được đun nóng mạnh hơn (bởi nguồn nhiệt có công suất cấp nhiệt lớn hơn) thì nhiệt độ sôi của chất lỏng có thể lớn hơn 800C.",
+      "C": "Trong quá trình sôi, nhiệt độ của chất lỏng không tăng.",
+      "D": "Nếu chất lỏng được đun nóng mạnh hơn (bởi nguồn nhiệt có công suất cấp nhiệt lớn hơn) thì đồ thị nhiệt độ của chất lỏng đó theo thời gian có độ dốc ban đầu tăng lên (nghĩa là chất lỏng sôi nhanh hơn)."
+    },
+    "correct": "ĐSĐĐ",
+    "giaiThich": "a) Từ đồ thị, khi sôi nhiệt độ không đổi và bằng 800C.<br>b) Nhiệt độ sôi của chất lỏng phụ thuộc vào bản chất của chất lỏng ở một áp suất cho trước, không phụ thuộc vào nhiệt lượng cung cấp.<br>c) Trong quá trình sôi, nhiệt độ của chất lỏng không thay đổi.<br>d)<img src=\"assets/exams/vedich2k8_de02/image48.png\" alt=\"công thức\" class=\"q-formula-img\" /> (dạng <img src=\"assets/exams/vedich2k8_de02/image49.png\" alt=\"công thức\" class=\"q-formula-img\" />)"
+  },
+  {
+    "id": 21,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k8_de02/image50.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 3. Để hàn các linh kiện trong mạch điện tử, người thợ sửa chữa thường sử dụng máy hàn điện có mỏ hàn để làm nóng chảy dây thiếc hàn như hình vẽ. Biết rằng loại thiếc hàn sử dụng là hỗn hợp của thiếc và chì với ti lệ khối lượng là 63:37, khối lượng một cuộn dây thiếc hàn là 100 g. Biết thiếc và chì có nhiệt nóng chảy riêng lần lượt là <img src=\"assets/exams/vedich2k8_de02/image51.png\" alt=\"công thức\" class=\"q-formula-img\" /> và <img src=\"assets/exams/vedich2k8_de02/image52.png\" alt=\"công thức\" class=\"q-formula-img\" />. Mỏ hàn làm việc ở hiệu điện thế 12 V, điện trở của mối hàn là <img src=\"assets/exams/vedich2k8_de02/image53.png\" alt=\"công thức\" class=\"q-formula-img\" />. Xét tính đúng/sai trong các nhận định sau:",
+    "options": {
+      "A": "Khi hàn, mỏ hàn sẽ phóng ra tia lửa để làm nóng chảy thiếc hàn.",
+      "B": "Trong máy hàn điện, có sử dụng một máy biến áp là máy hạ áp.",
+      "C": "Nhiệt lượng mỏ hàn cần cung cấp để làm nóng chảy hết một cuộn dây thiếc hàn ở nhiệt độ nóng chảy là 4768 J.",
+      "D": "Cho rằng hiệu suất của mỏ hàn là <img src=\"assets/exams/vedich2k8_de02/image54.png\" alt=\"công thức\" class=\"q-formula-img\" />. Ở nhiệt độ nóng chảy, để hàn hết 100 g thiếc hàn thì cần thời gian là 1192 s."
+    },
+    "correct": "SĐĐS",
+    "giaiThich": "a) Thông qua nhiệt lượng tỏa ra từ điện trở, không phải tia lửa<br>b) <img src=\"assets/exams/vedich2k8_de02/image55.png\" alt=\"công thức\" class=\"q-formula-img\" /> mà cần <img src=\"assets/exams/vedich2k8_de02/image56.png\" alt=\"công thức\" class=\"q-formula-img\" /> lớn <img src=\"assets/exams/vedich2k8_de02/image57.png\" alt=\"công thức\" class=\"q-formula-img\" /> nhỏ <img src=\"assets/exams/vedich2k8_de02/image58.png\" alt=\"công thức\" class=\"q-formula-img\" /> máy hạ áp<br>c) <img src=\"assets/exams/vedich2k8_de02/image59.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>d) <img src=\"assets/exams/vedich2k8_de02/image60.png\" alt=\"công thức\" class=\"q-formula-img\" />; <img src=\"assets/exams/vedich2k8_de02/image61.png\" alt=\"công thức\" class=\"q-formula-img\" />; <img src=\"assets/exams/vedich2k8_de02/image62.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 22,
+    "type": "tf",
+    "question": "Câu 4. Một học sinh sử dụng thiết bị được hiển thị trong hình vẽ để nghiên cứu mối liên hệ giữa áp suất và thể tích của một chất khí. Bộ dụng cụ: bình chứa dầu, áp kế, ống thủy tinh cứng, bình chứa khí, bơm.",
+    "options": {
+      "A": "Để nghiên cứu mối liên hệ giữa áp suất và thể tích của một chất khí thì nhóm học sinh cần giữ nhiệt độ không thay đổi.",
+      "B": "Lí thuyết cho rằng, đối với một lượng khí xác định, áp suất p tỉ lệ nghịch với thể tích V. Sử dụng đồ thị để chỉ ra mối liên hệ đó là chính xác.",
+      "C": "Nhiệt độ trong phòng thí nghiệm là 200C. Biết diện tích tiết diện của ống hình trụ là 7,5.10–5 m2. Số phân tử khí trong ống bằng 8,34.1020.",
+      "D": "Thí nghiệm trên đã chứng  minh được định luật Boyle."
+    },
+    "correct": "ĐĐSĐ",
+    "giaiThich": "a) Để nghiên cứu sự phụ thuộc p theo V của một chất khí thì nhóm học sinh cần giữ nhiệt độ không thay đổi bằng cách bơm chậm.<br>b) Vẽ đồ thị p theo V, ta thấy nó có dạng đường hypebol. Ta có:<img src=\"assets/exams/vedich2k8_de02/image65.png\" alt=\"công thức\" class=\"q-formula-img\" /> hằng số<br>c)<img src=\"assets/exams/vedich2k8_de02/image66.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>d) Thí nghiệm trên đã kiểm chứng được định luật Boyle."
+  },
+  {
+    "id": 23,
+    "type": "short",
+    "question": "Sử dụng thông tin sau đây cho câu 1 và câu 2. Để điều trị ung thư tuyến giáp, một bệnh nhân đã nhận một liều dược chất phóng xạ chứa 25,0.10-3 g<img src=\"assets/exams/vedich2k8_de02/image67.png\" alt=\"công thức\" class=\"q-formula-img\" />. Biết rằng <img src=\"assets/exams/vedich2k8_de02/image67.png\" alt=\"công thức\" class=\"q-formula-img\" /> là chất phóng xạ <img src=\"assets/exams/vedich2k8_de02/image68.png\" alt=\"công thức\" class=\"q-formula-img\" />có chu kì bán rã là 8,02 ngày; khối lượng mol của <img src=\"assets/exams/vedich2k8_de02/image67.png\" alt=\"công thức\" class=\"q-formula-img\" /> là 131 g/mol.<br>Câu 1. Độ phóng xạ của liều thuốc tại thời điểm bệnh nhân bắt đầu nhận và sử dụng là x.1014 Bq. Tìm x (làm tròn kết quả đến chữ số hàng phần trăm).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "1,15",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de02/image69.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 24,
+    "type": "short",
+    "question": "Câu 2. Số hạt electron phát ra từ liều thuốc trong 7,00 ngày kể từ khi bệnh nhân sử dụng là x.1019 hạt. Tìm x (làm tròn kết quả đến chữ số hàng phần trăm).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "5,21",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de02/image70.png\" alt=\"công thức\" class=\"q-formula-img\" /> (hạt)."
+  },
+  {
+    "id": 25,
+    "type": "short",
+    "question": "Câu 3. Một bình chứa khí nitrogen ở nhiệt độ 270C. Động năng tịnh tiến trung bình của một phân tử khí nitrogen là x.10-21 J. Giá trị của x là bao nhiêu? (làm tròn kết quả đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "6,2",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de02/image71.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 26,
+    "type": "short",
+    "question": "Câu 4. Có hai quả cầu bằng chì giống hệt nhau, mỗi quả có khối lượng 1 kg có nhiệt dung riêng là 380 J/kg.K, chuyển động ngược chiều đến va chạm mềm với tốc độ lần lượt là 10 m/s và 5 m/s. Cho rằng, toàn bộ phần cơ năng của hệ bị giảm khi va chạm chuyển thành nội năng của hai quả cầu. Độ tăng nhiệt độ Δt của hai quả cầu bằng bao nhiêu độ Celsius?(làm tròn kết quả đến chữ số hàng phần trăm).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "0,07",
+    "giaiThich": "Tốc độ của hai quả cầu sau khi va chạm: <img src=\"assets/exams/vedich2k8_de02/image72.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>Độ giảm cơ năng bằng độ tăng nội năng: <img src=\"assets/exams/vedich2k8_de02/image73.png\" alt=\"công thức\" class=\"q-formula-img\" /><br><img src=\"assets/exams/vedich2k8_de02/image74.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 27,
+    "type": "short",
+    "question": "Câu 5. Do hiệu ứng nhà kính, nhiệt độ bên trong xe có thể tăng lên rất nhanh, có thể cao hơn nhiệt độ bên ngoài đến <img src=\"assets/exams/vedich2k8_de02/image75.png\" alt=\"công thức\" class=\"q-formula-img\" /> chỉ trong vòng 10  – 15 phút. Điều này khiến không khí trong xe trở nên cực kỳ nóng và không thể chịu đựng được. Giả sử một chiếc xe hơi có thể tích không gian bên trong là kín khi đóng cửa xe. Ban đầu, nhiệt độ bên trong xe là <img src=\"assets/exams/vedich2k8_de02/image76.png\" alt=\"công thức\" class=\"q-formula-img\" />. Sau vài giờ để xe dưới ánh nắng mặt trời, nhiệt độ bên trong xe tăng lên đến <img src=\"assets/exams/vedich2k8_de02/image77.png\" alt=\"công thức\" class=\"q-formula-img\" />. Áp suất ban đầu của xe bằng áp suất khí quyển là 1 atm. Áp suất của xe lúc này là bao nhiêu atm? (làm tròn kết quả đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "1,1",
+    "giaiThich": "Đẳng tích: <img src=\"assets/exams/vedich2k8_de02/image78.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 28,
+    "type": "short",
+    "question": "Câu 6. Từ một trạm điện, điện năng được truyền tải đến nơi tiêu thụ bằng đường dây tải điện một pha. Biết công suất truyền đến nơi tiêu thụ luôn không đổi. Ban đầu, nếu ở trạm điện chưa sử dụng máy biến áp biến áp thì điện áp hiệu dụng ở trạm điện bằng 1,2375 lần điện áp hiệu dụng ở nơi tiêu thụ. Để công suất hao phí trên đường dây truyền tải giảm 100 lần so với lúc ban đầu thì ở trạm điện cần sử dụng máy biến áp có tỉ lệ số vòng dây của cuộn thứ cấp và cuộn sơ cấp bằng bao nhiêu?(làm tròn kết quả đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "8,1",
+    "giaiThich": "Lúc đầu: <img src=\"assets/exams/vedich2k8_de02/image79.png\" alt=\"công thức\" class=\"q-formula-img\" /><br><img src=\"assets/exams/vedich2k8_de02/image80.png\" alt=\"công thức\" class=\"q-formula-img\" /> (nếu công suất hao phí giảm đi 100 lần thì <img src=\"assets/exams/vedich2k8_de02/image81.png\" alt=\"công thức\" class=\"q-formula-img\" /> giảm đi 10 lần và cường độ hiệu dụng giảm đi 10 lần). Ta có: <img src=\"assets/exams/vedich2k8_de02/image82.png\" alt=\"công thức\" class=\"q-formula-img\" />; <img src=\"assets/exams/vedich2k8_de02/image83.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>Điện áp tại tải tiêu thụ lúc sau: <img src=\"assets/exams/vedich2k8_de02/image84.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>Công suất tại tải tiêu thụ không đổi: <img src=\"assets/exams/vedich2k8_de02/image85.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  }
+]

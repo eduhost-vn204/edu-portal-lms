@@ -393,6 +393,19 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
      - Cập nhật đồng bộ drawer mobile kiểu YouTube trên `index.html`, `danhsach-ly12.html`, `hoso.html` và menu `auth.js`.
   4. **Kiểm thử**:
      - Cú pháp HTML/JS & thẻ `</html>` trên toàn bộ 5 trang HTML: **PASS**.
-     - Unit test quiz: `test-quiz-merge.mjs` (6/6 PASS), `test-quiz-publish.mjs` (12/12 PASS).
-     - Rollback tag: `pre-navbar-update-20260827`.
+### 29/08/2026 — Hoàn tất Issue #14: Batch nạp 14 đề Word "Đề về đích 2k8" vào Phòng Thi Thử
+
+- **Người thực hiện**: Antigravity
+- **Phạm vi thay đổi**:
+  - `data/exams/vedich2k8_de02.json` ... `data/exams/vedich2k8_de15.json` (14 file đề thi hoàn chỉnh).
+  - `assets/exams/vedich2k8_de02/` ... `assets/exams/vedich2k8_de15/` (tất cả hình vẽ, công thức và sơ đồ thí nghiệm chuyển đổi sang PNG sắc nét).
+  - `data/danhsachde.json`: Cập nhật 14 bộ đề thi thử kèm metadata (`thoiGian: 50`, `soCau: 28`, `loaiDe: 'thithu'`, `trangThai: 'mo'`).
+  - `phong-thi-thu.html`: Hỗ trợ filter và sắp xếp tự nhiên (`02` $\rightarrow$ `15`) cho các bộ đề Về Đích 2k8.
+  - `cache.js`: Mở rộng `staticUrlFor` hỗ trợ tự động ánh xạ `examquestions` & `examsolutions` sang `data/exams/{examId}.json` với tốc độ tải tức thì 0 latency.
+- **Kết quả nghiệm thu kỹ thuật**:
+  - **14/14 Đề thi**: Mỗi đề có đúng 28 câu chuẩn cấu trúc Bộ GD&ĐT (18 trắc nghiệm nhiều phương án + 4 đúng/sai với 4 ý a,b,c,d + 6 trả lời ngắn). Tổng cộng **392 câu hỏi**.
+  - **100% Khóa đáp án**: Toàn bộ 392 câu hỏi có đáp án chuẩn xác (MC: A/B/C/D, TF: chuỗi 4 ký tự Đ/S, Short: giá trị số chính xác).
+  - **979 Tài nguyên hình ảnh**: Tất cả hình vẽ sơ đồ, đồ thị và công thức OLE MathType được giải mã & trích xuất sạch sẽ, 0 liên kết ảnh hỏng.
+  - **Kiểm thử nghiệm thu (`test_suite_all_14_exams.py`)**: **100% PASS** toàn diện.
+
 

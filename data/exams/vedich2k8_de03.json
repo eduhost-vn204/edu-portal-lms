@@ -1,0 +1,366 @@
+[
+  {
+    "id": 1,
+    "type": "mc",
+    "question": "Một đoạn dây dẫn thẳng có độ dài L mang dòng điện cường độ I chạy qua. Đoạn dây dẫn được đặt trong từ trường đều và hợp với vectơ cảm ứng từ <img src=\"assets/exams/vedich2k8_de03/image5.png\" alt=\"công thức\" class=\"q-formula-img\" /> góc α. Độ lớn lực từ tác dụng lên đoạn đây dẫn được tính bằng công thức nào sau đây?",
+    "options": {
+      "A": "<img src=\"assets/exams/vedich2k8_de03/image6.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tB. <img src=\"assets/exams/vedich2k8_de03/image7.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tC. <img src=\"assets/exams/vedich2k8_de03/image8.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tD. <img src=\"assets/exams/vedich2k8_de03/image9.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 2,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k8_de03/image10.png\" alt=\"hình vẽ\" class=\"q-img\" />Khi đặt một ống dây đồng hình trụ có các vòng dây được nối thành mạch kín lên một cân điện tử thì số chỉ của cân có giá trị X như hình vẽ. Sau đó, thả rơi một thanh nam châm từ độ cao nhất định theo phương thẳng đứng hướng về phía ống dây. Ngay khi nam châm vừa tiến vào đầu trên của ống dây, số đọc của cân điện tử là",
+    "options": {
+      "A": "vẫn bằng <img src=\"assets/exams/vedich2k8_de03/image11.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "B": "chưa thể so sánh được với X vì chưa biết độ cao lúc thả rơi.",
+      "C": "nhỏ hơn X.",
+      "D": "lớn hơn X."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 3,
+    "type": "mc",
+    "question": "Số nucleon của hạt nhân <img src=\"assets/exams/vedich2k8_de03/image12.png\" alt=\"công thức\" class=\"q-formula-img\" /> là",
+    "options": {
+      "A": "320.\tB. 90.\tC. 140.\tD. 230.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 4,
+    "type": "mc",
+    "question": "Vật liệu chứa chất thải hạt nhân cần có đặc điểm là",
+    "options": {
+      "A": "có tính đàn hồi.\tB. có độ bền rất cao.\tC. có thể thấm nước.\tD. chịu được nhiệt độ cao.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 5,
+    "type": "mc",
+    "question": "Một mol khí lí tưởng, có nhiệt độ tuyệt đối T, có thể tích V. Hằng số <img src=\"assets/exams/vedich2k8_de03/image13.png\" alt=\"công thức\" class=\"q-formula-img\" />. Áp suất khí tác dụng lên thành bình là",
+    "options": {
+      "A": "<img src=\"assets/exams/vedich2k8_de03/image14.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tB.<img src=\"assets/exams/vedich2k8_de03/image15.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tC.<img src=\"assets/exams/vedich2k8_de03/image16.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tD. <img src=\"assets/exams/vedich2k8_de03/image17.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 6,
+    "type": "mc",
+    "question": "Tại sao không nên sử dụng thiết bị điện khi đang sạc pin?",
+    "options": {
+      "A": "Vì tiêu thụ điện năng nhiều hơn.\tB. Vì có thể làm tăng tuổi thọ của thiết bị.",
+      "B": "",
+      "C": "Vì thiết bị sẽ hoạt động không ổn định.\tD. Vì có thể gây ra nguy cơ chập điện, cháy nổ.",
+      "D": ""
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 7,
+    "type": "mc",
+    "question": "Trong quá trình đẳng nhiệt của một lượng khí nhất định, mật độ phân tử khí trong một đơn vị thể tích",
+    "options": {
+      "A": "chưa đủ dữ kiện để kết luận.\tB. tăng tỉ lệ thuận với áp suất.",
+      "B": "",
+      "C": "giảm tỉ lệ nghịch với áp suất.\tD. luôn không đổi.",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 8,
+    "type": "mc",
+    "question": "Cho 4 tia phóng xạ: tia ; tia +; tia - và tia  đi vào miền có điện trường đều theo phương vuông góc với đường sức điện. Tia phóng xạ không bị lệch khỏi phương truyền ban đầu là",
+    "options": {
+      "A": "tia <img src=\"assets/exams/vedich2k8_de03/image18.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tB. tia +.\tC. tia .\tD. tia .",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 9,
+    "type": "mc",
+    "question": "Trường hợp làm biến đổi nội năng không do thực hiện công là",
+    "options": {
+      "A": "nén khí trong xilanh.\t\tB. một viên bi bằng thép rơi xuống đất mềm.",
+      "B": "",
+      "C": "cọ xát hai vật vào nhau.\t\tD. đun nóng nước bằng bếp.",
+      "D": ""
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 10,
+    "type": "mc",
+    "question": "Cho ba bình kín chứa ba khối khí lí tưởng có thể tích và áp suất khác nhau. Bình (1) có chứa khí hydrogen, bình (2) chứa khí oxygen và bình (3) có chứa khí helium. Các bình được nung nóng ở cùng một nhiệt độ. Động năng tịnh tiến trung bình của các phân tử khí trong các bình này là",
+    "options": {
+      "A": "lớn nhất với bình (1).\tB. lớn nhất với bình (2).\tC. lớn nhất với bình (3).\tD. bằng nhau.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 11,
+    "type": "mc",
+    "question": "Một trong những ứng dụng của hiện tượng phóng xạ trong ngành nông nghiệp là",
+    "options": {
+      "A": "phát hiện các khiếm khuyết trong vật liệu.\tB. tạo đột biến cải thiện giống cây trồng.",
+      "B": "",
+      "C": "chuẩn đoán hình ảnh và điều trị ung thư.\tD. xác định tuổi của các mẫu vật.",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 12,
+    "type": "mc",
+    "question": "Gọi <img src=\"assets/exams/vedich2k8_de03/image19.png\" alt=\"công thức\" class=\"q-formula-img\" /> <img src=\"assets/exams/vedich2k8_de03/image20.png\" alt=\"công thức\" class=\"q-formula-img\" /> <img src=\"assets/exams/vedich2k8_de03/image21.png\" alt=\"công thức\" class=\"q-formula-img\" /> lần lượt là mật độ phân tử của một chất (không phải là nước) ở thể rắn, thể lỏng và thể khí. Thứ tự đúng là",
+    "options": {
+      "A": "<img src=\"assets/exams/vedich2k8_de03/image22.png\" alt=\"công thức\" class=\"q-formula-img\" />\tB. <img src=\"assets/exams/vedich2k8_de03/image23.png\" alt=\"công thức\" class=\"q-formula-img\" />\tC. <img src=\"assets/exams/vedich2k8_de03/image24.png\" alt=\"công thức\" class=\"q-formula-img\" />\tD. <img src=\"assets/exams/vedich2k8_de03/image25.png\" alt=\"công thức\" class=\"q-formula-img\" />",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 13,
+    "type": "mc",
+    "question": "Các đường sức từ trong lòng một ống dây hình trụ có dòng điện không đổi chạy qua là",
+    "options": {
+      "A": "những đường cong, có chiều từ cực Nam sang cực Bắc.",
+      "B": "những đường thẳng song song, cùng chiều và cách đều nhau.",
+      "C": "những đường cong, có chiều từ cực Bắc sang cực Nam.",
+      "D": "<img src=\"assets/exams/vedich2k8_de03/image26.png\" alt=\"hình vẽ\" class=\"q-img\" />D. những đường thẳng, từng đôi một ngược chiều nhau."
+    },
+    "correct": "B",
+    "giaiThich": ""
+  },
+  {
+    "id": 14,
+    "type": "mc",
+    "question": "Sử dụng thông tin sau cho câu 14 và câu 15: Hình vẽ bên biểu diễn sự phụ thuộc của nhiệt độ vào thời gian của 400 g nước khi được đun nóng.<br>Trong thời gian từ thời điểm T1 đến thời điểm T2 ứng với quá trình chuyển thể nào sau đây?",
+    "options": {
+      "A": "Đông đặc.\tB. Hóa hơi.",
+      "B": "",
+      "C": "Nóng chảy.\tD. Ngưng tụ.",
+      "D": ""
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 15,
+    "type": "mc",
+    "question": "Biết nhiệt dung riêng của nước là 4180 J/kg.K. Trong thời gian từ t0 = 0 đến thời đ iểm T1, nhiệt lượng cần cungc ấp cho nước là",
+    "options": {
+      "A": "108,68 kJ.\tB. 16720 kJ.\tC. 10868 kJ.\tD. 167,2 kJ.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 16,
+    "type": "mc",
+    "question": "Có một lượng khí (coi là khí lí tưởng) đựng trong bình. Hỏi áp suất của khí sẽ biến đổi thế nào nếu thể tích của bình tăng gấp ba lần, còn nhiệt độ thì giảm đi một nửa ?",
+    "options": {
+      "A": "Áp suất không đổi.\t\tB. Áp suất tăng gấp đôi.",
+      "B": "",
+      "C": "Áp suất tăng gấp bốn lần.\tD. Áp suất giảm đi sáu lần.",
+      "D": ""
+    },
+    "correct": "C",
+    "giaiThich": ""
+  },
+  {
+    "id": 17,
+    "type": "mc",
+    "question": "Biết k là hằng số Boltzmann, động năng trung bình của phân tử khí lí tưởng phụ thuộc vào nhiệt độ tuyệt đối T được xác định bằng công thức nào sau đây?",
+    "options": {
+      "A": "<img src=\"assets/exams/vedich2k8_de03/image27.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tB. <img src=\"assets/exams/vedich2k8_de03/image28.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tC.<img src=\"assets/exams/vedich2k8_de03/image29.png\" alt=\"công thức\" class=\"q-formula-img\" />.\tD.<img src=\"assets/exams/vedich2k8_de03/image30.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "A",
+    "giaiThich": ""
+  },
+  {
+    "id": 18,
+    "type": "mc",
+    "question": "<img src=\"assets/exams/vedich2k8_de03/image31.png\" alt=\"hình vẽ\" class=\"q-img\" />Tàu đệm từ là một phương tiện giao thông chạy trên đệm từ trường.Ưu điểm chính của tàu đệm từ so với tàu hỏa là",
+    "options": {
+      "A": "hoạt động được trên mọi địa hình.",
+      "B": "không cần cung cấp điện năng để hoạt động.",
+      "C": "khả năng chịu tải trọng lớn hơn.",
+      "D": "loại bỏ hoàn toàn ma sát giữa xe và đường ray khi chạy."
+    },
+    "correct": "D",
+    "giaiThich": ""
+  },
+  {
+    "id": 19,
+    "type": "tf",
+    "question": "Câu 1. Hình sau mô tả một phản ứng hạt nhân. Cho biết năng lượng toả ra trong phản ứng trên là <img src=\"assets/exams/vedich2k8_de03/image32.png\" alt=\"công thức\" class=\"q-formula-img\" /><br><img src=\"assets/exams/vedich2k8_de03/image33.png\" alt=\"hình vẽ\" class=\"q-img\" />",
+    "options": {
+      "A": "Phương trình của phản ứng là <img src=\"assets/exams/vedich2k8_de03/image34.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "B": "Phản ứng trên là phản ứng tổng hợp hạt nhân.",
+      "C": "Nếu có 1 gam helium được tạo ra thì năng lượng toả ra là <img src=\"assets/exams/vedich2k8_de03/image35.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
+      "D": "Hai hạt nhân tương tác trước phản ứng là đồng vị của hydrogen."
+    },
+    "correct": "SĐĐS",
+    "giaiThich": "a) Sai. <img src=\"assets/exams/vedich2k8_de03/image36.png\" alt=\"công thức\" class=\"q-formula-img\" />.<br>c) Cứ 1 phản ứng sinh ra 1 hạt nhân He; đồng thời phản ứng toả ra năng lượng E.<br>W = N.E = <img src=\"assets/exams/vedich2k8_de03/image37.png\" alt=\"công thức\" class=\"q-formula-img\" />= 4,17.1011 J."
+  },
+  {
+    "id": 20,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k8_de03/image38.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 2. Hai dây dẫn thẳng, nhẹ được mắc song song gần nhau vào một giá treo. Sau khi cho dòng điện đi qua, hai dây dẫn ở trạng thái như hình vẽ.",
+    "options": {
+      "A": "Tương tác của hai dòng điện là tương tác từ",
+      "B": "Hai dây dẫn hút nhau chứng tỏ hai dòng điện chạy trong hai dây dẫn này cùng chiều",
+      "C": "Nếu chiều dòng điện chạy trong hai dây dẫn ngược chiều nhau thì chúng vẫn hút nhau như trạng thái cũ.",
+      "D": "Sau khi ngắt dòng điện, hai dây dẫn vẫn hút nhau."
+    },
+    "correct": "ĐĐSS",
+    "giaiThich": "a) Tương tác từ là tương tác giữa: dòng điện và dòng điện, dòng điện và nam châm, nam châm và nam châm.<br>b) & c) Hai dòng điện cùng chiều thì hút nhau, ngược chiều thì đẩy nhau (có thể vận dụng quy tắc nắm tay và và bàn tay trái để chứng minh).<br>d) Nếu ngắt dòng điện, hai dây dẫn không còn tương tác từ với nhau."
+  },
+  {
+    "id": 21,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k8_de03/image39.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 3. Cho 200 g nước đá ở <img src=\"assets/exams/vedich2k8_de03/image40.png\" alt=\"công thức\" class=\"q-formula-img\" /> vào một cốc cách nhiệt đựng nước ở <img src=\"assets/exams/vedich2k8_de03/image41.png\" alt=\"công thức\" class=\"q-formula-img\" />.Sự thay đổi nhiệt độ của nước đá và nước trong cốc theo thời gian được biểu diễn theo đồ thị hình bên. Biết nhiệt dung riêng của nước đá là <img src=\"assets/exams/vedich2k8_de03/image42.png\" alt=\"công thức\" class=\"q-formula-img\" />, nhiệt nóng chảy riêng của nước đá là <img src=\"assets/exams/vedich2k8_de03/image43.png\" alt=\"công thức\" class=\"q-formula-img\" />, nhiệt dung riêng của nước là <img src=\"assets/exams/vedich2k8_de03/image44.png\" alt=\"công thức\" class=\"q-formula-img\" />., bỏ qua nhiệt dung của cốc. Trong các phát biểu sau đây, phát biểu nào đúng, phát biểu nào sai?",
+    "options": {
+      "A": "Nước đá tan trong khoảng thời gian <img src=\"assets/exams/vedich2k8_de03/image45.png\" alt=\"công thức\" class=\"q-formula-img\" /> giây.",
+      "B": "Trong khoảng thời gian từ <img src=\"assets/exams/vedich2k8_de03/image46.png\" alt=\"công thức\" class=\"q-formula-img\" /> đến <img src=\"assets/exams/vedich2k8_de03/image47.png\" alt=\"công thức\" class=\"q-formula-img\" />, nước đá không thu nhiệt từ nước trong cốc.",
+      "C": "Trong khoảng thời gian <img src=\"assets/exams/vedich2k8_de03/image48.png\" alt=\"công thức\" class=\"q-formula-img\" /> giây đầu tiên, nước trong cốc toả ra một lượng nhiệt bằng <img src=\"assets/exams/vedich2k8_de03/image49.png\" alt=\"công thức\" class=\"q-formula-img\" />",
+      "D": "Khối lượng nước trong cốc bằng 0,6 kg."
+    },
+    "correct": "SSSĐ",
+    "giaiThich": "a) Nước đá tan trong khoảng thời gian <img src=\"assets/exams/vedich2k8_de03/image50.png\" alt=\"công thức\" class=\"q-formula-img\" /> giây.<br>b) Trong khoảng thời gian từ <img src=\"assets/exams/vedich2k8_de03/image51.png\" alt=\"công thức\" class=\"q-formula-img\" /> đến <img src=\"assets/exams/vedich2k8_de03/image52.png\" alt=\"công thức\" class=\"q-formula-img\" />, nước đá có thu nhiệt từ nước trong cốc.<br>c) <img src=\"assets/exams/vedich2k8_de03/image53.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>d) <img src=\"assets/exams/vedich2k8_de03/image54.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 22,
+    "type": "tf",
+    "question": "<img src=\"assets/exams/vedich2k8_de03/image55.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Bóng thám không được sử dụng để thu thập thông tin về môi trường, không khí và thời tiết. Vỏ bóng được làm bằng chất liệu đàn hồi, phía dưới có gắn dù và thiết bị đo (hình bên). Bóng thường được bơm khí hiếm nhẹ hơn không khí, nhờ đó có thể bay lên các tầng không khi khác nhau để thu thập thông tin về nhiệt độ, độ ẩm, áp suất, tốc độ gió,... Một quả bóng thám không khi bắt đầu thả có đường kính 3 m. Vỏ bóng, dù và thiết bị đo có khối lượng 4 kg. Bóng được bơm khí hydrogen, ở áp suất bằng áp suất khí quyển tại mặt đất p0 = 1,013.105 Pa và nhiệt độ 27°C. Bỏng lên đến độ cao h thi dừng lại, khi đó đường kính của bỏng đã tăng gấp 3 lần so với khi bắt đầu thả, tại đó nhiệt độ của khí quyển là –55°C và lơ lửng trên đó khoảng 2 giờ trước khi vỡ. Biết khối lượng mol của không khí và của hydrogen lần lượt là 29 g/mol và 2 g/mol.",
+    "options": {
+      "A": "Để bóng bay lên được thì lực đẩy Archimedes của không khí tác dụng vào bóng phải lớn hơn tổng trọng lượng của vỏ bóng, dù, thiết bị đo, do đó bóng cần được bơm khí hiếm nhẹ.",
+      "B": "Khi càng lên cao thì áp suất khí quyển càng giảm nên chênh lệch áp suất giữa khí bên trong bỏng với áp suất khí quyển bên ngoài ngày càng lớn, thể tích bóng sẽ tăng, vỏ bóng mỏng dần đến một độ cao nhất định thì bóng sẽ bị vỡ.",
+      "C": "Khối lượng khí hydrogen được bơm vào bóng là 1,51 kg.",
+      "D": "Áp suất của khí quyển tại độ cao h là 8,4.102 Pa."
+    },
+    "correct": "SĐSĐ",
+    "giaiThich": "a)<img src=\"assets/exams/vedich2k8_de03/image56.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>b) Ở một độ cao nhất định, do chênh lệch áp suất thì bóng sẽ vỡ.<br>c) Tại mặt đất: <img src=\"assets/exams/vedich2k8_de03/image57.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>d) Từ điều kiện cân bằng lực: <img src=\"assets/exams/vedich2k8_de03/image58.png\" alt=\"công thức\" class=\"q-formula-img\" /><br><img src=\"assets/exams/vedich2k8_de03/image59.png\" alt=\"công thức\" class=\"q-formula-img\" /><br><img src=\"assets/exams/vedich2k8_de03/image60.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 23,
+    "type": "short",
+    "question": "Câu 1. Một đoạn dây dẫn dài 20 cm đặt trong từ trường đều và vuông góc với vectơ cảm ứng từ. Dòng điện qua dây có cường độ 5A. Độ lớn cảm ứng từ 0,02 T. Lực từ tác dụng lên đoạn dây đó có độ lớn bằng bao nhiêu N(làm tròn kết quả đến chữ số hàng phần trăm).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "0,02",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de03/image61.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 24,
+    "type": "short",
+    "question": "Câu 2. Máy biến áp là thiết bị điện dùng để biến đổi điện áp xoay chiều. Cấu tạo gồm 2 cuộn dây sơ cấp (<img src=\"assets/exams/vedich2k8_de03/image66.png\" alt=\"công thức\" class=\"q-formula-img\" /> vòng) và thứ cấp (<img src=\"assets/exams/vedich2k8_de03/image67.png\" alt=\"công thức\" class=\"q-formula-img\" /> vòng), hoạt động dựa vào hiện tượng cảm ứng điện từ. Biết điện áp hiệu dụng ở hai đầu mỗi cuộn dây tỉ lệ thuận với số vòng dây của cuộn dây đó. Đặt một điện áp xoay chiều có giá trị hiệu dụng <img src=\"assets/exams/vedich2k8_de03/image68.png\" alt=\"công thức\" class=\"q-formula-img\" /> vào hai đầu cuộn sơ cấp thì đồ thị điện áp <img src=\"assets/exams/vedich2k8_de03/image69.png\" alt=\"công thức\" class=\"q-formula-img\" /> giữa hai đầu cuộn thứ cấp khi để hở có dạng như hình bên. Biết tổng số vòng dây ở cả hai cuộn sơ cấp và cuộn thứ cấp của máy biến áp là 850 vòng. Số vòng dây cuộn sơ cấp là bao nhiêu vòng?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "800",
+    "giaiThich": "Áp dụng: <img src=\"assets/exams/vedich2k8_de03/image70.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>Sử dụng các thông tin sau cho câu 3 và câu 4: Hai học sinh chở nhau đi học bằng xe đạp thì thấy săm xe đạp non hơi. Biết săm xe có thể tích 5 lít chứa không khí ở áp suất <img src=\"assets/exams/vedich2k8_de03/image71.png\" alt=\"công thức\" class=\"q-formula-img\" />. Khi đó một học sinh đã dùng một bơm tay, mỗi lần bơm vào săm 0,4 lít không khí ở áp suất khí quyển 1 atm. Coi quá trình bơm là đẳng nhiệt và thể tích của săm xe là không đổi."
+  },
+  {
+    "id": 25,
+    "type": "short",
+    "question": "Câu 3. Hỏi sau bao nhiêu lần bơm thì áp suất của không khí trong săm tăng đến <img src=\"assets/exams/vedich2k8_de03/image72.png\" alt=\"công thức\" class=\"q-formula-img\" />? (kết quả làm tròn đến chữ số hàng đơn vị).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "5",
+    "giaiThich": "Đẳng nhiệt: <img src=\"assets/exams/vedich2k8_de03/image73.png\" alt=\"công thức\" class=\"q-formula-img\" />"
+  },
+  {
+    "id": 26,
+    "type": "short",
+    "question": "Câu 4. Biết khối lượng mol của oxygen là <img src=\"assets/exams/vedich2k8_de03/image74.png\" alt=\"công thức\" class=\"q-formula-img\" />. Một bình khí chứa 48 g oxygen có số phân tử là <img src=\"assets/exams/vedich2k8_de03/image75.png\" alt=\"công thức\" class=\"q-formula-img\" />. Giá trị của x là bao nhiêu. (kết quả làm tròn đến chữ số hàng phần trăm).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "9,03",
+    "giaiThich": "<img src=\"assets/exams/vedich2k8_de03/image76.png\" alt=\"công thức\" class=\"q-formula-img\" /><br><img src=\"assets/exams/vedich2k8_de03/image77.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho câu 5 và câu 6: Dùng máy đo phóng xạ của một mẫu gỗ của một cổ vật phát hiện được 240 phóng xạ mỗi phút. Biết rằng thành phần của mẫu gỗ có chứa 25 g <img src=\"assets/exams/vedich2k8_de03/image78.png\" alt=\"công thức\" class=\"q-formula-img\" /> và <img src=\"assets/exams/vedich2k8_de03/image79.png\" alt=\"công thức\" class=\"q-formula-img\" />, chu kì bán rã của <img src=\"assets/exams/vedich2k8_de03/image80.png\" alt=\"công thức\" class=\"q-formula-img\" /> là 5730 năm và tỉ lệ nguyên tử <img src=\"assets/exams/vedich2k8_de03/image81.png\" alt=\"công thức\" class=\"q-formula-img\" /> và <img src=\"assets/exams/vedich2k8_de03/image82.png\" alt=\"công thức\" class=\"q-formula-img\" /> khi một sinh vật còn sống 1012:1."
+  },
+  {
+    "id": 27,
+    "type": "short",
+    "question": "Câu 5. Số nguyên tử <img src=\"assets/exams/vedich2k8_de03/image83.png\" alt=\"công thức\" class=\"q-formula-img\" /> có trong mẫu gỗ trên bằng X.1012. Xác định giá trị của X (Kết quả làm tròn đến chữ số hàng phần mười).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "1,0",
+    "giaiThich": "a)<img src=\"assets/exams/vedich2k8_de03/image84.png\" alt=\"công thức\" class=\"q-formula-img\" /> (nguyên tử)"
+  },
+  {
+    "id": 28,
+    "type": "short",
+    "question": "Câu 6. Xác định tuổi của mẫu gỗ này theo đơn vị năm?(kết quả làm tròn đến chữ số hàng đơn vị)",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "1523",
+    "giaiThich": "Khối lượng mẫu gỗ có chứa 25 g <img src=\"assets/exams/vedich2k8_de03/image78.png\" alt=\"công thức\" class=\"q-formula-img\" /> và <img src=\"assets/exams/vedich2k8_de03/image79.png\" alt=\"công thức\" class=\"q-formula-img\" />:<br><img src=\"assets/exams/vedich2k8_de03/image85.png\" alt=\"công thức\" class=\"q-formula-img\" />(nguyên tử)<br>Áp dụng: <img src=\"assets/exams/vedich2k8_de03/image86.png\" alt=\"công thức\" class=\"q-formula-img\" /> năm"
+  }
+]
