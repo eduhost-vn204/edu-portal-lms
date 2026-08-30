@@ -283,7 +283,7 @@
       "D": "Kể từ thời điểm ban đầu, tỉ số giữa khối lượng ${}_{27}^{60}Co$ và khối lượng ${}_{28}^{60}Ni$ có trong mẫu tại thời điểm 2,56 năm là 0,400."
     },
     "correct": "ĐĐSS",
-    "giaiThich": "a) Phương trình phân rã: $${}^{60}_{27}\\mathrm{Co}$→${}^{60}_{28}\\mathrm{Ni}$+-${}^{0}_{1}\\mathrm{e}$$<br>b) ${H}_{0}={N}_{0}λ=\\frac{{m}_{0}}{A}{N}_{A}.λ=\\frac{15}{60}.6,02.1{0}^{23}.\\frac{\\mathrm{ln} {2}}{5,27.365.86400}=6,28.1{0}^{24}Bq$<br>c) ${m}_{con}={m}_{0}\\frac{{A}_{con}}{{A}_{me}}\\left(1-{2}^{-\\frac{t}{T}}\\right)=15.\\frac{60}{60}\\left(1-{2}^{-\\frac{7,25}{5,27}}\\right)=9,22 g$<br>d) $\\left\\{{m}_{me}={m}_{0}.{2}^{-\\frac{t}{T}}               {m}_{con}={{m}_{​}}_{0}\\frac{{A}_{con}}{{A}_{me}}\\left(1-{2}^{-\\frac{t}{T}}\\right)\\right)⇒\\frac{{m}_{me}}{{m}_{con}}=\\frac{{2}^{-\\frac{t}{T}}}{\\frac{{A}_{con}}{{A}_{me}}\\left(1-{2}^{-\\frac{t}{T}}\\right)}=\\frac{{2}^{-\\frac{2,56}{5,27}}}{\\frac{60}{60}\\left(1-{2}^{-\\frac{2,56}{5,27}}\\right)}=2,498$"
+    "giaiThich": "a) Phương trình phân rã: $${}^{60}_{27}\\mathrm{Co}$→${}^{60}_{28}\\mathrm{Ni}$+-${}^{0}_{-1}\\mathrm{e}$$<br>b) ${H}_{0}={N}_{0}λ=\\frac{{m}_{0}}{A}{N}_{A}.λ=\\frac{15}{60}.6,02.1{0}^{23}.\\frac{\\mathrm{ln} {2}}{5,27.365.86400}=6,28.1{0}^{24}Bq$<br>c) ${m}_{con}={m}_{0}\\frac{{A}_{con}}{{A}_{me}}\\left(1-{2}^{-\\frac{t}{T}}\\right)=15.\\frac{60}{60}\\left(1-{2}^{-\\frac{7,25}{5,27}}\\right)=9,22 g$<br>d) $\\left\\{{m}_{me}={m}_{0}.{2}^{-\\frac{t}{T}}               {m}_{con}={{m}_{​}}_{0}\\frac{{A}_{con}}{{A}_{me}}\\left(1-{2}^{-\\frac{t}{T}}\\right)\\right)⇒\\frac{{m}_{me}}{{m}_{con}}=\\frac{{2}^{-\\frac{t}{T}}}{\\frac{{A}_{con}}{{A}_{me}}\\left(1-{2}^{-\\frac{t}{T}}\\right)}=\\frac{{2}^{-\\frac{2,56}{5,27}}}{\\frac{60}{60}\\left(1-{2}^{-\\frac{2,56}{5,27}}\\right)}=2,498$"
   },
   {
     "id": 23,
@@ -314,7 +314,7 @@
   {
     "id": 25,
     "type": "short",
-    "question": "<div class=\"q-text-body\">Câu 3. PSI (là từ viết tắt của Pound-force per Square Inch) là đơn vị được dùng để đo áp suất lốp. Thông số PSI ghi trên lốp xe là áp suất tối đa mà lốp xe có thể chịu được. Trên một lốp xe có ghi $350 kPa \\left(51 PSI\\right)$ như hình bên. Lúc đầu trong lốp xe chưa có khí, người ta bơm đẳng nhiệt khí ở áp suất ${}^{0}_{10}\\mathrm{kPa}$ vào lốp xe sao cho áp suất đạt đến giá trị ghi trên lốp, lúc đó thể tích lốp là 30 lít. Thể tích khí được bơm vào xe là bao nhiêu lít?</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de09/image11.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
+    "question": "<div class=\"q-text-body\">Câu 3. PSI (là từ viết tắt của Pound-force per Square Inch) là đơn vị được dùng để đo áp suất lốp. Thông số PSI ghi trên lốp xe là áp suất tối đa mà lốp xe có thể chịu được. Trên một lốp xe có ghi $350 kPa \\left(51 PSI\\right)$ như hình bên. Lúc đầu trong lốp xe chưa có khí, người ta bơm đẳng nhiệt khí ở áp suất $100\\text{ kPa}$ vào lốp xe sao cho áp suất đạt đến giá trị ghi trên lốp, lúc đó thể tích lốp là 30 lít. Thể tích khí được bơm vào xe là bao nhiêu lít?</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de09/image11.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "",
       "B": "",

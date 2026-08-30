@@ -265,12 +265,12 @@
     "question": "Câu 3. Dưới đây là bảng thông tin của 3 hạt nhân gồm: Uranium (U); Calcium (Ca) và Iron (Fe).<br>Tên hạt nhân<br>Số hạt mang điện<br>Số hạt trung hòa về điện<br>Năng lượng liên kết (MeV)<br>Uranium (U)<br>92<br>143<br>1786<br>Calcium (Ca)<br>20<br>20<br>234<br>Iron (Fe)<br>26<br>30<br>493",
     "options": {
       "A": "Mỗi nguyên tử Uranium (U) gồm có 92 proton, 143 neutron và 92 electron.",
-      "B": "Hạt nhân Iron (Fe) có kí hiệu là ${}^{6}_{305}\\mathrm{Fe}$.",
+      "B": "Hạt nhân Iron (Fe) có kí hiệu là ${}^{56}_{26}\\mathrm{Fe}$.",
       "C": "Năng lượng liên kết tính cho 1 hạt nucleon của hạt nhân Calcium (Ca) là 234 (MeV/nucleon).",
       "D": "Sắp xếp theo thứ tự giảm dần độ bền vững của hạt nhân là (Fe), (U), (Ca)."
     },
     "correct": "ĐSSĐ",
-    "giaiThich": "a) Dựa vào bảng thông tin trên ta có mỗi nguyên tử Uranium (U) gồm có 92 proton, 143 neutron và 92 electron.<br>b) Hạt nhân Iron (Fe) có kí hiệu là ${}^{6}_{265}\\mathrm{Fe}$.<br>c)${E}_{lkr}=\\frac{{E}_{lk}}{A}=\\frac{234}{40}=5,85 MeV/nucleon$<br>d) Năng lượng liên kết riêng đặc trưng cho mức độ bền vững của hạt nhân.<br>Hạt nhân Uranium: ${E}_{lkr}=\\frac{1786}{92+143}=7,6 MeV/nucleon$<br>Hạt nhân Iron: ${E}_{lkr}=\\frac{493}{26+30}=8,8 MeV/nucleon$"
+    "giaiThich": "a) Dựa vào bảng thông tin trên ta có mỗi nguyên tử Uranium (U) gồm có 92 proton, 143 neutron và 92 electron.<br>b) Hạt nhân Iron (Fe) có kí hiệu là ${}^{56}_{26}\\mathrm{Fe}$.<br>c)${E}_{lkr}=\\frac{{E}_{lk}}{A}=\\frac{234}{40}=5,85 MeV/nucleon$<br>d) Năng lượng liên kết riêng đặc trưng cho mức độ bền vững của hạt nhân.<br>Hạt nhân Uranium: ${E}_{lkr}=\\frac{1786}{92+143}=7,6 MeV/nucleon$<br>Hạt nhân Iron: ${E}_{lkr}=\\frac{493}{26+30}=8,8 MeV/nucleon$"
   },
   {
     "id": 22,
@@ -288,7 +288,7 @@
   {
     "id": 23,
     "type": "short",
-    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 1. Chất phóng xạ chứa đồng vị của ${}^{3}_{112}\\mathrm{Na}$ được sử dụng làm chất đánh dấu điện giải (Chất điện giải là những chất dịch khoáng có thể hòa tan trong các dịch cơ thể tạo ra các ion tích điện, một số ion sẽ tích điện dương và một số ion tích điện âm. Chúng giữ các vai trò rất quan trọng trong quá trình trao đổi chất, thúc đẩy hoạt động và giúp cơ thể hoạt động một cách bình thường). Số hạt nhân nguyên tử trong 10 mg ${}^{3}_{112}\\mathrm{Na}$ bằng X.1020. Tìm giá trị của X(làm tròn kết quả đến chữ số hàng phần mười).</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de10/image6.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 1. Chất phóng xạ chứa đồng vị của ${}^{23}_{11}\\mathrm{Na}$ được sử dụng làm chất đánh dấu điện giải (Chất điện giải là những chất dịch khoáng có thể hòa tan trong các dịch cơ thể tạo ra các ion tích điện, một số ion sẽ tích điện dương và một số ion tích điện âm. Chúng giữ các vai trò rất quan trọng trong quá trình trao đổi chất, thúc đẩy hoạt động và giúp cơ thể hoạt động một cách bình thường). Số hạt nhân nguyên tử trong 10 mg ${}^{23}_{11}\\mathrm{Na}$ bằng X.1020. Tìm giá trị của X(làm tròn kết quả đến chữ số hàng phần mười).</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de10/image6.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "",
       "B": "",

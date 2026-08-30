@@ -4,10 +4,10 @@
     "type": "mc",
     "question": "Hạt nhân nguyên tử chì có 82 prôtôn và 124 nơtron. Hạt nhân nguyên tử này có kí hiệu là",
     "options": {
-      "A": "${}^{24}_{821}\\mathrm{Pb}$.",
-      "B": "${}^{06}_{822}\\mathrm{Pb}$.",
-      "C": "${}^{82}_{124}\\mathrm{Pb}$.",
-      "D": "${}^{82}_{206}\\mathrm{Pb}$."
+      "A": "${}^{124}_{82}\\mathrm{Pb}$.",
+      "B": "${}^{206}_{82}\\mathrm{Pb}$.",
+      "C": "${}^{124}_{82}\\mathrm{Pb}$.",
+      "D": "${}^{206}_{82}\\mathrm{Pb}$."
     },
     "correct": "C",
     "giaiThich": ""
@@ -80,12 +80,12 @@
   {
     "id": 7,
     "type": "mc",
-    "question": "Các hạt nhân ${}^{4}_{2}\\mathrm{He}$; ${}^{6}_{3}\\mathrm{Li}$ ; ${}^{9}_{4}\\mathrm{Be}$ ; ${}^{0}_{51}\\mathrm{B}$ có năng lượng liên kết theo thứ tự là EHe = 28,296 MeV ;<br>ELi = 31,965 MeV ; EBe = 58,167 MeV ; EB = 64,752 MeV. Hạt nhân có độ bền vững kém nhất là",
+    "question": "Các hạt nhân ${}^{4}_{2}\\mathrm{He}$; ${}^{6}_{3}\\mathrm{Li}$ ; ${}^{9}_{4}\\mathrm{Be}$ ; ${}^{10}_{5}\\mathrm{B}$ có năng lượng liên kết theo thứ tự là EHe = 28,296 MeV ;<br>ELi = 31,965 MeV ; EBe = 58,167 MeV ; EB = 64,752 MeV. Hạt nhân có độ bền vững kém nhất là",
     "options": {
       "A": "${}^{6}_{3}\\mathrm{Li}$.",
       "B": "${}^{9}_{4}\\mathrm{Be}$.",
       "C": "${}^{4}_{2}\\mathrm{He}$.",
-      "D": "${}^{0}_{51}\\mathrm{B}$."
+      "D": "${}^{10}_{5}\\mathrm{B}$."
     },
     "correct": "B",
     "giaiThich": "$\\frac{{E}_{He}}{4}=7,074MeV$ ; $\\frac{{E}_{Li}}{6}=5,3275MeV$ ; $\\frac{{E}_{Be}}{9}=6,463MeV$ ; $\\frac{{E}_{B}}{10}=6,4752MeV$"
@@ -262,12 +262,12 @@
   {
     "id": 21,
     "type": "tf",
-    "question": "Câu 3. Trong y học, đồng vị phóng xạ ${}^{31}_{531}\\mathrm{I}$ có chu kỳ bán rã 8 ngày (tạo ra hạt nhân con là ${}^{31}_{541}\\mathrm{Xe}$) được sử dụng rộng rãi trong điều trị ung thư tuyến giáp. Giả sử trong liệu trình điều trị của mình, một bệnh nhân nhận được một liều thuốc chứa 50 mg ${}^{31}_{531}\\mathrm{I}$.",
+    "question": "Câu 3. Trong y học, đồng vị phóng xạ ${}^{131}_{53}\\mathrm{I}$ có chu kỳ bán rã 8 ngày (tạo ra hạt nhân con là ${}^{131}_{54}\\mathrm{Xe}$) được sử dụng rộng rãi trong điều trị ung thư tuyến giáp. Giả sử trong liệu trình điều trị của mình, một bệnh nhân nhận được một liều thuốc chứa 50 mg ${}^{131}_{53}\\mathrm{I}$.",
     "options": {
-      "A": "Tia phóng xạ sinh ra trong quá trình phóng xạ của ${}^{31}_{531}\\mathrm{I}$ là tia β+.",
-      "B": "Hằng số phóng xạ của ${}^{31}_{531}\\mathrm{I}$ xấp xỉ là $1{0}^{-6}({s}^{-1})$.",
-      "C": "Sau 10 ngày kể từ khi bệnh nhân nhận liều thuốc trên thì tỉ lệ phần trăm giữa số hạt nhân ${}^{31}_{531}\\mathrm{I}$ đã phân rã và số hạt nhân ban đầu xấp xỉ là 57,96%.",
-      "D": "Độ phóng xạ của lượng ${}^{31}_{531}\\mathrm{I}$ tại thời điểm ban đầu ngay khi bệnh nhân nhận liều thuốc xấp xỉ là 2,5.1011 Bq."
+      "A": "Tia phóng xạ sinh ra trong quá trình phóng xạ của ${}^{131}_{53}\\mathrm{I}$ là tia β+.",
+      "B": "Hằng số phóng xạ của ${}^{131}_{53}\\mathrm{I}$ xấp xỉ là $1{0}^{-6}({s}^{-1})$.",
+      "C": "Sau 10 ngày kể từ khi bệnh nhân nhận liều thuốc trên thì tỉ lệ phần trăm giữa số hạt nhân ${}^{131}_{53}\\mathrm{I}$ đã phân rã và số hạt nhân ban đầu xấp xỉ là 57,96%.",
+      "D": "Độ phóng xạ của lượng ${}^{131}_{53}\\mathrm{I}$ tại thời điểm ban đầu ngay khi bệnh nhân nhận liều thuốc xấp xỉ là 2,5.1011 Bq."
     },
     "correct": "SĐĐS",
     "giaiThich": "a) Dấu hiệu hạt nhân con tăng 1 ô trên bảng tuần hoàn  phóng xạ β-<br>b) $λ=\\frac{\\mathrm{ln} {2}}{T}=\\frac{\\mathrm{ln} {2}}{8.86400}≈1{0}^{-6}\\left({s}^{-1}\\right)$<br>c) Sau 10 ngày: $\\frac{ΔN}{{N}_{0}}=\\frac{{N}_{0}-N}{{N}_{0}}=1-{2}^{-\\frac{t}{T}}≈57,955%$<br>d) ${H}_{0}=λ{N}_{0}=\\frac{{m}_{0}}{A}λ{N}_{A}=\\frac{50.1{0}^{-3}}{131}.1{0}^{-6}.6,02.1{0}^{23}≈2,3.1{0}^{14}Bq$"
@@ -309,12 +309,12 @@
       "D": ""
     },
     "correct": "1,53",
-    "giaiThich": "$E=\\frac{{Φ}_{0}ω}{\\sqrt{2}}=\\frac{{Φ}_{0}.\\frac{v}{r}}{\\sqrt{2}}⇒E∼v⇒\\frac{{E}_{2}}{{E}_{1}}=\\frac{{v}_{2}}{{v}_{1}}⇒{E}_{2}=3.\\frac{4}{5}=2,4 V⇒{E}_{02}=3,4 V$<br>Dùng các thông tin sau cho câu 3 và câu 4: Một nhà máy điện hạt nhân sử dụng nguyên liệu là ${}^{35}_{922}\\mathrm{U}$ Biết rằng mỗi phân hạch sẽ tỏa ra năng lượng 205 MeV; $1 MeV=1,6.1{0}^{-13}J$. Hiệu suất và công suất phát điện của nhà máy lần lượt là 35% và 1600 MW."
+    "giaiThich": "$E=\\frac{{Φ}_{0}ω}{\\sqrt{2}}=\\frac{{Φ}_{0}.\\frac{v}{r}}{\\sqrt{2}}⇒E∼v⇒\\frac{{E}_{2}}{{E}_{1}}=\\frac{{v}_{2}}{{v}_{1}}⇒{E}_{2}=3.\\frac{4}{5}=2,4 V⇒{E}_{02}=3,4 V$<br>Dùng các thông tin sau cho câu 3 và câu 4: Một nhà máy điện hạt nhân sử dụng nguyên liệu là ${}^{235}_{92}\\mathrm{U}$ Biết rằng mỗi phân hạch sẽ tỏa ra năng lượng 205 MeV; $1 MeV=1,6.1{0}^{-13}J$. Hiệu suất và công suất phát điện của nhà máy lần lượt là 35% và 1600 MW."
   },
   {
     "id": 25,
     "type": "short",
-    "question": "Câu 3. Trong lò phản ứng, mỗi giây có $x.1{0}^{19}$ hạt ${}^{35}_{922}\\mathrm{U}$ phân hạch. Giá trị của x là bao nhiêu (làm tròn kết quả đến hàng đơn vị)?",
+    "question": "Câu 3. Trong lò phản ứng, mỗi giây có $x.1{0}^{19}$ hạt ${}^{235}_{92}\\mathrm{U}$ phân hạch. Giá trị của x là bao nhiêu (làm tròn kết quả đến hàng đơn vị)?",
     "options": {
       "A": "",
       "B": "",

@@ -119,7 +119,7 @@
   {
     "id": 10,
     "type": "mc",
-    "question": "Số hạt nhân nguyên tử có trong 100 g Iốt ${}^{31}_{521}\\mathrm{I}$ là",
+    "question": "Số hạt nhân nguyên tử có trong 100 g Iốt ${}^{131}_{53}\\mathrm{I}$ là",
     "options": {
       "A": "5,925.1023 hạt.",
       "B": "4,595.1023 hạt.",
@@ -340,7 +340,7 @@
   {
     "id": 27,
     "type": "short",
-    "question": "Sử dụng thông tin sau cho câu 5 và câu 6: Pôlôni ${}^{10}_{842}\\mathrm{Po}$ là chất phóng xạ a có chu kì bán rã 138 ngày và biến đổi thành hạt nhân chì ${}^{06}_{822}\\mathrm{Pb}$. Giả sử toàn bộ các hạt $α$ sinh ra trong quá trình phóng xạ đều thoát ra khỏi mẫu. Lấy khối lượng của các hạt nhân bằng số khối của chúng tính theo đơn vị amu<br>Câu 5. Hằng số phóng xạ của ${}^{10}_{842}\\mathrm{Po}$ bằng X.10-8 s-1. Giá trị của X bằng bao nhiêu?(làm tròn kết quả đến chữ số hàng phần mười).",
+    "question": "Sử dụng thông tin sau cho câu 5 và câu 6: Pôlôni ${}^{210}_{84}\\mathrm{Po}$ là chất phóng xạ a có chu kì bán rã 138 ngày và biến đổi thành hạt nhân chì ${}^{206}_{82}\\mathrm{Pb}$. Giả sử toàn bộ các hạt $α$ sinh ra trong quá trình phóng xạ đều thoát ra khỏi mẫu. Lấy khối lượng của các hạt nhân bằng số khối của chúng tính theo đơn vị amu<br>Câu 5. Hằng số phóng xạ của ${}^{210}_{84}\\mathrm{Po}$ bằng X.10-8 s-1. Giá trị của X bằng bao nhiêu?(làm tròn kết quả đến chữ số hàng phần mười).",
     "options": {
       "A": "",
       "B": "",
@@ -353,7 +353,7 @@
   {
     "id": 28,
     "type": "short",
-    "question": "Câu 6. Ban đầu (t = 0), một mẫu trong đó 80% khối lượng của mẫu là chất phóng xạ pôlôni ${}^{10}_{842}\\mathrm{Po}$, phần còn lại không có tính phóng xạ. Tại thời điểm $t=414$ ngày, tỉ lệ phần trăm khối lượng pôlôni còn lại trong mẫu bằng bao nhiêu phần trăm?(làm tròn kết quả đến chữ số hàng đơn vị).",
+    "question": "Câu 6. Ban đầu (t = 0), một mẫu trong đó 80% khối lượng của mẫu là chất phóng xạ pôlôni ${}^{210}_{84}\\mathrm{Po}$, phần còn lại không có tính phóng xạ. Tại thời điểm $t=414$ ngày, tỉ lệ phần trăm khối lượng pôlôni còn lại trong mẫu bằng bao nhiêu phần trăm?(làm tròn kết quả đến chữ số hàng đơn vị).",
     "options": {
       "A": "",
       "B": "",
@@ -361,6 +361,6 @@
       "D": ""
     },
     "correct": "10",
-    "giaiThich": "Gọi ${m}_{0}$ là khối lượng ban đầu của chất phóng xạ ${}^{10}_{842}\\mathrm{Po}$, khối lượng mẫu chất ${m}_{mau}=0,8{m}_{0}$<br>$\\frac{{m}_{Po}}{{m}_{mau}-{m}_{α}}=\\frac{{m}_{0}.{2}^{-\\frac{t}{T}}}{\\frac{{m}_{0}}{0,8}-{m}_{0}\\frac{{A}_{α}}{{A}_{me}}\\left(1-{2}^{-\\frac{t}{T}}\\right)}=\\frac{{2}^{-\\frac{414}{138}}}{\\frac{1}{0,8}-\\frac{4}{210}\\left(1-{2}^{-\\frac{414}{138}}\\right)}≈0,1014=10,14%$"
+    "giaiThich": "Gọi ${m}_{0}$ là khối lượng ban đầu của chất phóng xạ ${}^{210}_{84}\\mathrm{Po}$, khối lượng mẫu chất ${m}_{mau}=0,8{m}_{0}$<br>$\\frac{{m}_{Po}}{{m}_{mau}-{m}_{α}}=\\frac{{m}_{0}.{2}^{-\\frac{t}{T}}}{\\frac{{m}_{0}}{0,8}-{m}_{0}\\frac{{A}_{α}}{{A}_{me}}\\left(1-{2}^{-\\frac{t}{T}}\\right)}=\\frac{{2}^{-\\frac{414}{138}}}{\\frac{1}{0,8}-\\frac{4}{210}\\left(1-{2}^{-\\frac{414}{138}}\\right)}≈0,1014=10,14%$"
   }
 ]

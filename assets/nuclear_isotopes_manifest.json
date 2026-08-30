@@ -1,0 +1,1172 @@
+[
+  {
+    "examId": "vedich2k9_de02",
+    "questionNumber": 15,
+    "field": "question",
+    "massNumber_A": "20",
+    "atomicNumber_Z": "10",
+    "element_X": "Ne",
+    "renderedKaTeX": "${}^{20}_{10}\\mathrm{Ne}$"
+  },
+  {
+    "examId": "vedich2k9_de02",
+    "questionNumber": 15,
+    "field": "question",
+    "massNumber_A": "4",
+    "atomicNumber_Z": "2",
+    "element_X": "He",
+    "renderedKaTeX": "${}^{4}_{2}\\mathrm{He}$"
+  },
+  {
+    "examId": "vedich2k9_de02",
+    "questionNumber": 15,
+    "field": "optA",
+    "massNumber_A": "4",
+    "atomicNumber_Z": "2",
+    "element_X": "He",
+    "renderedKaTeX": "${}^{4}_{2}\\mathrm{He}$"
+  },
+  {
+    "examId": "vedich2k9_de02",
+    "questionNumber": 15,
+    "field": "optA",
+    "massNumber_A": "20",
+    "atomicNumber_Z": "10",
+    "element_X": "Ne",
+    "renderedKaTeX": "${}^{20}_{10}\\mathrm{Ne}$"
+  },
+  {
+    "examId": "vedich2k9_de02",
+    "questionNumber": 15,
+    "field": "optB",
+    "massNumber_A": "20",
+    "atomicNumber_Z": "10",
+    "element_X": "Ne",
+    "renderedKaTeX": "${}^{20}_{10}\\mathrm{Ne}$"
+  },
+  {
+    "examId": "vedich2k9_de02",
+    "questionNumber": 15,
+    "field": "optB",
+    "massNumber_A": "4",
+    "atomicNumber_Z": "2",
+    "element_X": "He",
+    "renderedKaTeX": "${}^{4}_{2}\\mathrm{He}$"
+  },
+  {
+    "examId": "vedich2k9_de02",
+    "questionNumber": 15,
+    "field": "optC",
+    "massNumber_A": "20",
+    "atomicNumber_Z": "10",
+    "element_X": "Ne",
+    "renderedKaTeX": "${}^{20}_{10}\\mathrm{Ne}$"
+  },
+  {
+    "examId": "vedich2k9_de02",
+    "questionNumber": 15,
+    "field": "optC",
+    "massNumber_A": "4",
+    "atomicNumber_Z": "2",
+    "element_X": "He",
+    "renderedKaTeX": "${}^{4}_{2}\\mathrm{He}$"
+  },
+  {
+    "examId": "vedich2k9_de02",
+    "questionNumber": 15,
+    "field": "optD",
+    "massNumber_A": "20",
+    "atomicNumber_Z": "10",
+    "element_X": "Ne",
+    "renderedKaTeX": "${}^{20}_{10}\\mathrm{Ne}$"
+  },
+  {
+    "examId": "vedich2k9_de02",
+    "questionNumber": 15,
+    "field": "optD",
+    "massNumber_A": "4",
+    "atomicNumber_Z": "2",
+    "element_X": "He",
+    "renderedKaTeX": "${}^{4}_{2}\\mathrm{He}$"
+  },
+  {
+    "examId": "vedich2k9_de02",
+    "questionNumber": 23,
+    "field": "question",
+    "massNumber_A": "131",
+    "atomicNumber_Z": "53",
+    "element_X": "I",
+    "renderedKaTeX": "${}^{131}_{53}\\mathrm{I}$"
+  },
+  {
+    "examId": "vedich2k9_de02",
+    "questionNumber": 23,
+    "field": "question",
+    "massNumber_A": "131",
+    "atomicNumber_Z": "53",
+    "element_X": "I",
+    "renderedKaTeX": "${}^{131}_{53}\\mathrm{I}$"
+  },
+  {
+    "examId": "vedich2k9_de02",
+    "questionNumber": 23,
+    "field": "question",
+    "massNumber_A": "131",
+    "atomicNumber_Z": "53",
+    "element_X": "I",
+    "renderedKaTeX": "${}^{131}_{53}\\mathrm{I}$"
+  },
+  {
+    "examId": "vedich2k9_de03",
+    "questionNumber": 3,
+    "field": "question",
+    "massNumber_A": "230",
+    "atomicNumber_Z": "90",
+    "element_X": "Th",
+    "renderedKaTeX": "${}^{230}_{90}\\mathrm{Th}$"
+  },
+  {
+    "examId": "vedich2k9_de03",
+    "questionNumber": 19,
+    "field": "optA",
+    "massNumber_A": "1",
+    "atomicNumber_Z": "1",
+    "element_X": "H",
+    "renderedKaTeX": "${}^{1}_{1}\\mathrm{H}$"
+  },
+  {
+    "examId": "vedich2k9_de03",
+    "questionNumber": 19,
+    "field": "optA",
+    "massNumber_A": "2",
+    "atomicNumber_Z": "1",
+    "element_X": "H",
+    "renderedKaTeX": "${}^{2}_{1}\\mathrm{H}$"
+  },
+  {
+    "examId": "vedich2k9_de03",
+    "questionNumber": 19,
+    "field": "optA",
+    "massNumber_A": "4",
+    "atomicNumber_Z": "2",
+    "element_X": "He",
+    "renderedKaTeX": "${}^{4}_{2}\\mathrm{He}$"
+  },
+  {
+    "examId": "vedich2k9_de03",
+    "questionNumber": 19,
+    "field": "optA",
+    "massNumber_A": "1",
+    "atomicNumber_Z": "0",
+    "element_X": "n",
+    "renderedKaTeX": "${}^{1}_{0}\\mathrm{n}$"
+  },
+  {
+    "examId": "vedich2k9_de03",
+    "questionNumber": 22,
+    "field": "giaiThich",
+    "massNumber_A": "6",
+    "atomicNumber_Z": "2",
+    "element_X": "Pa",
+    "renderedKaTeX": "${}^{6}_{2}\\mathrm{Pa}$"
+  },
+  {
+    "examId": "vedich2k9_de03",
+    "questionNumber": 26,
+    "field": "giaiThich",
+    "massNumber_A": "14",
+    "atomicNumber_Z": "6",
+    "element_X": "C",
+    "renderedKaTeX": "${}^{14}_{6}\\mathrm{C}$"
+  },
+  {
+    "examId": "vedich2k9_de03",
+    "questionNumber": 26,
+    "field": "giaiThich",
+    "massNumber_A": "12",
+    "atomicNumber_Z": "6",
+    "element_X": "C",
+    "renderedKaTeX": "${}^{12}_{6}\\mathrm{C}$"
+  },
+  {
+    "examId": "vedich2k9_de03",
+    "questionNumber": 26,
+    "field": "giaiThich",
+    "massNumber_A": "14",
+    "atomicNumber_Z": "6",
+    "element_X": "C",
+    "renderedKaTeX": "${}^{14}_{6}\\mathrm{C}$"
+  },
+  {
+    "examId": "vedich2k9_de03",
+    "questionNumber": 26,
+    "field": "giaiThich",
+    "massNumber_A": "12",
+    "atomicNumber_Z": "6",
+    "element_X": "C",
+    "renderedKaTeX": "${}^{12}_{6}\\mathrm{C}$"
+  },
+  {
+    "examId": "vedich2k9_de03",
+    "questionNumber": 26,
+    "field": "giaiThich",
+    "massNumber_A": "14",
+    "atomicNumber_Z": "6",
+    "element_X": "C",
+    "renderedKaTeX": "${}^{14}_{6}\\mathrm{C}$"
+  },
+  {
+    "examId": "vedich2k9_de03",
+    "questionNumber": 27,
+    "field": "question",
+    "massNumber_A": "14",
+    "atomicNumber_Z": "6",
+    "element_X": "C",
+    "renderedKaTeX": "${}^{14}_{6}\\mathrm{C}$"
+  },
+  {
+    "examId": "vedich2k9_de03",
+    "questionNumber": 28,
+    "field": "giaiThich",
+    "massNumber_A": "14",
+    "atomicNumber_Z": "6",
+    "element_X": "C",
+    "renderedKaTeX": "${}^{14}_{6}\\mathrm{C}$"
+  },
+  {
+    "examId": "vedich2k9_de03",
+    "questionNumber": 28,
+    "field": "giaiThich",
+    "massNumber_A": "12",
+    "atomicNumber_Z": "6",
+    "element_X": "C",
+    "renderedKaTeX": "${}^{12}_{6}\\mathrm{C}$"
+  },
+  {
+    "examId": "vedich2k9_de04",
+    "questionNumber": 4,
+    "field": "question",
+    "massNumber_A": "23",
+    "atomicNumber_Z": "11",
+    "element_X": "Na",
+    "renderedKaTeX": "${}^{23}_{11}\\mathrm{Na}$"
+  },
+  {
+    "examId": "vedich2k9_de05",
+    "questionNumber": 14,
+    "field": "optA",
+    "massNumber_A": "3",
+    "atomicNumber_Z": "2",
+    "element_X": "X",
+    "renderedKaTeX": "${}^{3}_{2}\\mathrm{X}$"
+  },
+  {
+    "examId": "vedich2k9_de05",
+    "questionNumber": 14,
+    "field": "optA",
+    "massNumber_A": "5",
+    "atomicNumber_Z": "3",
+    "element_X": "Y",
+    "renderedKaTeX": "${}^{5}_{3}\\mathrm{Y}$"
+  },
+  {
+    "examId": "vedich2k9_de05",
+    "questionNumber": 14,
+    "field": "optB",
+    "massNumber_A": "3",
+    "atomicNumber_Z": "2",
+    "element_X": "X",
+    "renderedKaTeX": "${}^{3}_{2}\\mathrm{X}$"
+  },
+  {
+    "examId": "vedich2k9_de05",
+    "questionNumber": 14,
+    "field": "optB",
+    "massNumber_A": "8",
+    "atomicNumber_Z": "3",
+    "element_X": "Y",
+    "renderedKaTeX": "${}^{8}_{3}\\mathrm{Y}$"
+  },
+  {
+    "examId": "vedich2k9_de05",
+    "questionNumber": 14,
+    "field": "optC",
+    "massNumber_A": "1",
+    "atomicNumber_Z": "2",
+    "element_X": "X",
+    "renderedKaTeX": "${}^{1}_{2}\\mathrm{X}$"
+  },
+  {
+    "examId": "vedich2k9_de05",
+    "questionNumber": 14,
+    "field": "optC",
+    "massNumber_A": "5",
+    "atomicNumber_Z": "3",
+    "element_X": "Y",
+    "renderedKaTeX": "${}^{5}_{3}\\mathrm{Y}$"
+  },
+  {
+    "examId": "vedich2k9_de05",
+    "questionNumber": 14,
+    "field": "optD",
+    "massNumber_A": "2",
+    "atomicNumber_Z": "3",
+    "element_X": "X",
+    "renderedKaTeX": "${}^{2}_{3}\\mathrm{X}$"
+  },
+  {
+    "examId": "vedich2k9_de05",
+    "questionNumber": 14,
+    "field": "optD",
+    "massNumber_A": "3",
+    "atomicNumber_Z": "8",
+    "element_X": "Y",
+    "renderedKaTeX": "${}^{3}_{8}\\mathrm{Y}$"
+  },
+  {
+    "examId": "vedich2k9_de06",
+    "questionNumber": 20,
+    "field": "question",
+    "massNumber_A": "235",
+    "atomicNumber_Z": "92",
+    "element_X": "U",
+    "renderedKaTeX": "${}^{235}_{92}\\mathrm{U}$"
+  },
+  {
+    "examId": "vedich2k9_de06",
+    "questionNumber": 20,
+    "field": "question",
+    "massNumber_A": "95",
+    "atomicNumber_Z": "39",
+    "element_X": "Y",
+    "renderedKaTeX": "${}^{95}_{39}\\mathrm{Y}$"
+  },
+  {
+    "examId": "vedich2k9_de06",
+    "questionNumber": 20,
+    "field": "question",
+    "massNumber_A": "138",
+    "atomicNumber_Z": "53",
+    "element_X": "I",
+    "renderedKaTeX": "${}^{138}_{53}\\mathrm{I}$"
+  },
+  {
+    "examId": "vedich2k9_de06",
+    "questionNumber": 20,
+    "field": "optC",
+    "massNumber_A": "235",
+    "atomicNumber_Z": "92",
+    "element_X": "U",
+    "renderedKaTeX": "${}^{235}_{92}\\mathrm{U}$"
+  },
+  {
+    "examId": "vedich2k9_de06",
+    "questionNumber": 20,
+    "field": "optD",
+    "massNumber_A": "235",
+    "atomicNumber_Z": "92",
+    "element_X": "U",
+    "renderedKaTeX": "${}^{235}_{92}\\mathrm{U}$"
+  },
+  {
+    "examId": "vedich2k9_de06",
+    "questionNumber": 20,
+    "field": "giaiThich",
+    "massNumber_A": "1",
+    "atomicNumber_Z": "0",
+    "element_X": "n",
+    "renderedKaTeX": "${}^{1}_{0}\\mathrm{n}$"
+  },
+  {
+    "examId": "vedich2k9_de06",
+    "questionNumber": 20,
+    "field": "giaiThich",
+    "massNumber_A": "235",
+    "atomicNumber_Z": "92",
+    "element_X": "U",
+    "renderedKaTeX": "${}^{235}_{92}\\mathrm{U}$"
+  },
+  {
+    "examId": "vedich2k9_de06",
+    "questionNumber": 20,
+    "field": "giaiThich",
+    "massNumber_A": "95",
+    "atomicNumber_Z": "39",
+    "element_X": "Y",
+    "renderedKaTeX": "${}^{95}_{39}\\mathrm{Y}$"
+  },
+  {
+    "examId": "vedich2k9_de06",
+    "questionNumber": 20,
+    "field": "giaiThich",
+    "massNumber_A": "138",
+    "atomicNumber_Z": "53",
+    "element_X": "I",
+    "renderedKaTeX": "${}^{138}_{53}\\mathrm{I}$"
+  },
+  {
+    "examId": "vedich2k9_de06",
+    "questionNumber": 26,
+    "field": "giaiThich",
+    "massNumber_A": "226",
+    "atomicNumber_Z": "88",
+    "element_X": "Ra",
+    "renderedKaTeX": "${}^{226}_{88}\\mathrm{Ra}$"
+  },
+  {
+    "examId": "vedich2k9_de06",
+    "questionNumber": 26,
+    "field": "giaiThich",
+    "massNumber_A": "226",
+    "atomicNumber_Z": "88",
+    "element_X": "Ra",
+    "renderedKaTeX": "${}^{226}_{88}\\mathrm{Ra}$"
+  },
+  {
+    "examId": "vedich2k9_de06",
+    "questionNumber": 26,
+    "field": "giaiThich",
+    "massNumber_A": "226",
+    "atomicNumber_Z": "88",
+    "element_X": "Ra",
+    "renderedKaTeX": "${}^{226}_{88}\\mathrm{Ra}$"
+  },
+  {
+    "examId": "vedich2k9_de06",
+    "questionNumber": 27,
+    "field": "question",
+    "massNumber_A": "226",
+    "atomicNumber_Z": "88",
+    "element_X": "Ra",
+    "renderedKaTeX": "${}^{226}_{88}\\mathrm{Ra}$"
+  },
+  {
+    "examId": "vedich2k9_de06",
+    "questionNumber": 28,
+    "field": "question",
+    "massNumber_A": "226",
+    "atomicNumber_Z": "88",
+    "element_X": "Ra",
+    "renderedKaTeX": "${}^{226}_{88}\\mathrm{Ra}$"
+  },
+  {
+    "examId": "vedich2k9_de07",
+    "questionNumber": 5,
+    "field": "question",
+    "massNumber_A": "7",
+    "atomicNumber_Z": "3",
+    "element_X": "Li",
+    "renderedKaTeX": "${}^{7}_{3}\\mathrm{Li}$"
+  },
+  {
+    "examId": "vedich2k9_de07",
+    "questionNumber": 5,
+    "field": "optA",
+    "massNumber_A": "1",
+    "atomicNumber_Z": "0",
+    "element_X": "n",
+    "renderedKaTeX": "${}^{1}_{0}\\mathrm{n}$"
+  },
+  {
+    "examId": "vedich2k9_de07",
+    "questionNumber": 5,
+    "field": "optB",
+    "massNumber_A": "1",
+    "atomicNumber_Z": "1",
+    "element_X": "H",
+    "renderedKaTeX": "${}^{1}_{1}\\mathrm{H}$"
+  },
+  {
+    "examId": "vedich2k9_de07",
+    "questionNumber": 5,
+    "field": "optC",
+    "massNumber_A": "0",
+    "atomicNumber_Z": "-1",
+    "element_X": "e",
+    "renderedKaTeX": "${}^{0}_{-1}\\mathrm{e}$"
+  },
+  {
+    "examId": "vedich2k9_de07",
+    "questionNumber": 5,
+    "field": "optD",
+    "massNumber_A": "3",
+    "atomicNumber_Z": "1",
+    "element_X": "T",
+    "renderedKaTeX": "${}^{3}_{1}\\mathrm{T}$"
+  },
+  {
+    "examId": "vedich2k9_de07",
+    "questionNumber": 23,
+    "field": "question",
+    "massNumber_A": "133",
+    "atomicNumber_Z": "54",
+    "element_X": "Xe",
+    "renderedKaTeX": "${}^{133}_{54}\\mathrm{Xe}$"
+  },
+  {
+    "examId": "vedich2k9_de07",
+    "questionNumber": 23,
+    "field": "question",
+    "massNumber_A": "133",
+    "atomicNumber_Z": "54",
+    "element_X": "Xe",
+    "renderedKaTeX": "${}^{133}_{54}\\mathrm{Xe}$"
+  },
+  {
+    "examId": "vedich2k9_de07",
+    "questionNumber": 23,
+    "field": "question",
+    "massNumber_A": "133",
+    "atomicNumber_Z": "54",
+    "element_X": "Xe",
+    "renderedKaTeX": "${}^{133}_{54}\\mathrm{Xe}$"
+  },
+  {
+    "examId": "vedich2k9_de07",
+    "questionNumber": 23,
+    "field": "question",
+    "massNumber_A": "133",
+    "atomicNumber_Z": "54",
+    "element_X": "Xe",
+    "renderedKaTeX": "${}^{133}_{54}\\mathrm{Xe}$"
+  },
+  {
+    "examId": "vedich2k9_de07",
+    "questionNumber": 26,
+    "field": "giaiThich",
+    "massNumber_A": "14",
+    "atomicNumber_Z": "3",
+    "element_X": "K",
+    "renderedKaTeX": "${}^{14}_{3}\\mathrm{K}$"
+  },
+  {
+    "examId": "vedich2k9_de08",
+    "questionNumber": 5,
+    "field": "question",
+    "massNumber_A": "1",
+    "atomicNumber_Z": "0",
+    "element_X": "n",
+    "renderedKaTeX": "${}^{1}_{0}\\mathrm{n}$"
+  },
+  {
+    "examId": "vedich2k9_de08",
+    "questionNumber": 5,
+    "field": "question",
+    "massNumber_A": "239",
+    "atomicNumber_Z": "94",
+    "element_X": "Pu",
+    "renderedKaTeX": "${}^{239}_{94}\\mathrm{Pu}$"
+  },
+  {
+    "examId": "vedich2k9_de08",
+    "questionNumber": 5,
+    "field": "question",
+    "massNumber_A": "134",
+    "atomicNumber_Z": "54",
+    "element_X": "Xe",
+    "renderedKaTeX": "${}^{134}_{54}\\mathrm{Xe}$"
+  },
+  {
+    "examId": "vedich2k9_de08",
+    "questionNumber": 5,
+    "field": "question",
+    "massNumber_A": "103",
+    "atomicNumber_Z": "40",
+    "element_X": "Zr",
+    "renderedKaTeX": "${}^{103}_{40}\\mathrm{Zr}$"
+  },
+  {
+    "examId": "vedich2k9_de08",
+    "questionNumber": 9,
+    "field": "optB",
+    "massNumber_A": "4",
+    "atomicNumber_Z": "2",
+    "element_X": "He",
+    "renderedKaTeX": "${}^{4}_{2}\\mathrm{He}$"
+  },
+  {
+    "examId": "vedich2k9_de09",
+    "questionNumber": 14,
+    "field": "question",
+    "massNumber_A": "138",
+    "atomicNumber_Z": "52",
+    "element_X": "Te",
+    "renderedKaTeX": "${}^{138}_{52}\\mathrm{Te}$"
+  },
+  {
+    "examId": "vedich2k9_de09",
+    "questionNumber": 14,
+    "field": "giaiThich",
+    "massNumber_A": "1",
+    "atomicNumber_Z": "1",
+    "element_X": "p",
+    "renderedKaTeX": "${}^{1}_{1}\\mathrm{p}$"
+  },
+  {
+    "examId": "vedich2k9_de09",
+    "questionNumber": 14,
+    "field": "giaiThich",
+    "massNumber_A": "138",
+    "atomicNumber_Z": "52",
+    "element_X": "Te",
+    "renderedKaTeX": "${}^{138}_{52}\\mathrm{Te}$"
+  },
+  {
+    "examId": "vedich2k9_de09",
+    "questionNumber": 22,
+    "field": "giaiThich",
+    "massNumber_A": "60",
+    "atomicNumber_Z": "27",
+    "element_X": "Co",
+    "renderedKaTeX": "${}^{60}_{27}\\mathrm{Co}$"
+  },
+  {
+    "examId": "vedich2k9_de09",
+    "questionNumber": 22,
+    "field": "giaiThich",
+    "massNumber_A": "60",
+    "atomicNumber_Z": "28",
+    "element_X": "Ni",
+    "renderedKaTeX": "${}^{60}_{28}\\mathrm{Ni}$"
+  },
+  {
+    "examId": "vedich2k9_de09",
+    "questionNumber": 22,
+    "field": "giaiThich",
+    "massNumber_A": "0",
+    "atomicNumber_Z": "-1",
+    "element_X": "e",
+    "renderedKaTeX": "${}^{0}_{-1}\\mathrm{e}$"
+  },
+  {
+    "examId": "vedich2k9_de09",
+    "questionNumber": 27,
+    "field": "question",
+    "massNumber_A": "6",
+    "atomicNumber_Z": "1",
+    "element_X": "Ω",
+    "renderedKaTeX": "${}^{6}_{1}\\mathrm{Ω}$"
+  },
+  {
+    "examId": "vedich2k9_de10",
+    "questionNumber": 21,
+    "field": "optB",
+    "massNumber_A": "56",
+    "atomicNumber_Z": "26",
+    "element_X": "Fe",
+    "renderedKaTeX": "${}^{56}_{26}\\mathrm{Fe}$"
+  },
+  {
+    "examId": "vedich2k9_de10",
+    "questionNumber": 21,
+    "field": "giaiThich",
+    "massNumber_A": "56",
+    "atomicNumber_Z": "26",
+    "element_X": "Fe",
+    "renderedKaTeX": "${}^{56}_{26}\\mathrm{Fe}$"
+  },
+  {
+    "examId": "vedich2k9_de10",
+    "questionNumber": 23,
+    "field": "question",
+    "massNumber_A": "23",
+    "atomicNumber_Z": "11",
+    "element_X": "Na",
+    "renderedKaTeX": "${}^{23}_{11}\\mathrm{Na}$"
+  },
+  {
+    "examId": "vedich2k9_de10",
+    "questionNumber": 23,
+    "field": "question",
+    "massNumber_A": "23",
+    "atomicNumber_Z": "11",
+    "element_X": "Na",
+    "renderedKaTeX": "${}^{23}_{11}\\mathrm{Na}$"
+  },
+  {
+    "examId": "vedich2k9_de10",
+    "questionNumber": 27,
+    "field": "question",
+    "massNumber_A": "3",
+    "atomicNumber_Z": "2",
+    "element_X": "He",
+    "renderedKaTeX": "${}^{3}_{2}\\mathrm{He}$"
+  },
+  {
+    "examId": "vedich2k9_de10",
+    "questionNumber": 27,
+    "field": "question",
+    "massNumber_A": "1",
+    "atomicNumber_Z": "0",
+    "element_X": "n",
+    "renderedKaTeX": "${}^{1}_{0}\\mathrm{n}$"
+  },
+  {
+    "examId": "vedich2k9_de10",
+    "questionNumber": 27,
+    "field": "question",
+    "massNumber_A": "3",
+    "atomicNumber_Z": "2",
+    "element_X": "He",
+    "renderedKaTeX": "${}^{3}_{2}\\mathrm{He}$"
+  },
+  {
+    "examId": "vedich2k9_de10",
+    "questionNumber": 27,
+    "field": "giaiThich",
+    "massNumber_A": "2",
+    "atomicNumber_Z": "1",
+    "element_X": "D",
+    "renderedKaTeX": "${}^{2}_{1}\\mathrm{D}$"
+  },
+  {
+    "examId": "vedich2k9_de11",
+    "questionNumber": 23,
+    "field": "giaiThich",
+    "massNumber_A": "3",
+    "atomicNumber_Z": "2",
+    "element_X": "K",
+    "renderedKaTeX": "${}^{3}_{2}\\mathrm{K}$"
+  },
+  {
+    "examId": "vedich2k9_de11",
+    "questionNumber": 28,
+    "field": "giaiThich",
+    "massNumber_A": "14",
+    "atomicNumber_Z": "7",
+    "element_X": "N",
+    "renderedKaTeX": "${}^{14}_{7}\\mathrm{N}$"
+  },
+  {
+    "examId": "vedich2k9_de12",
+    "questionNumber": 8,
+    "field": "question",
+    "massNumber_A": "8",
+    "atomicNumber_Z": "4",
+    "element_X": "Be",
+    "renderedKaTeX": "${}^{8}_{4}\\mathrm{Be}$"
+  },
+  {
+    "examId": "vedich2k9_de12",
+    "questionNumber": 8,
+    "field": "optA",
+    "massNumber_A": "1",
+    "atomicNumber_Z": "0",
+    "element_X": "n",
+    "renderedKaTeX": "${}^{1}_{0}\\mathrm{n}$"
+  },
+  {
+    "examId": "vedich2k9_de12",
+    "questionNumber": 8,
+    "field": "optB",
+    "massNumber_A": "2",
+    "atomicNumber_Z": "1",
+    "element_X": "D",
+    "renderedKaTeX": "${}^{2}_{1}\\mathrm{D}$"
+  },
+  {
+    "examId": "vedich2k9_de12",
+    "questionNumber": 8,
+    "field": "optC",
+    "massNumber_A": "1",
+    "atomicNumber_Z": "1",
+    "element_X": "p",
+    "renderedKaTeX": "${}^{1}_{1}\\mathrm{p}$"
+  },
+  {
+    "examId": "vedich2k9_de12",
+    "questionNumber": 8,
+    "field": "optD",
+    "massNumber_A": "3",
+    "atomicNumber_Z": "1",
+    "element_X": "T",
+    "renderedKaTeX": "${}^{3}_{1}\\mathrm{T}$"
+  },
+  {
+    "examId": "vedich2k9_de12",
+    "questionNumber": 10,
+    "field": "question",
+    "massNumber_A": "131",
+    "atomicNumber_Z": "53",
+    "element_X": "I",
+    "renderedKaTeX": "${}^{131}_{53}\\mathrm{I}$"
+  },
+  {
+    "examId": "vedich2k9_de12",
+    "questionNumber": 22,
+    "field": "question",
+    "massNumber_A": "28",
+    "atomicNumber_Z": "14",
+    "element_X": "Si",
+    "renderedKaTeX": "${}^{28}_{14}\\mathrm{Si}$"
+  },
+  {
+    "examId": "vedich2k9_de12",
+    "questionNumber": 22,
+    "field": "optA",
+    "massNumber_A": "28",
+    "atomicNumber_Z": "14",
+    "element_X": "Si",
+    "renderedKaTeX": "${}^{28}_{14}\\mathrm{Si}$"
+  },
+  {
+    "examId": "vedich2k9_de12",
+    "questionNumber": 22,
+    "field": "optB",
+    "massNumber_A": "28",
+    "atomicNumber_Z": "14",
+    "element_X": "Si",
+    "renderedKaTeX": "${}^{28}_{14}\\mathrm{Si}$"
+  },
+  {
+    "examId": "vedich2k9_de12",
+    "questionNumber": 22,
+    "field": "optC",
+    "massNumber_A": "28",
+    "atomicNumber_Z": "14",
+    "element_X": "Si",
+    "renderedKaTeX": "${}^{28}_{14}\\mathrm{Si}$"
+  },
+  {
+    "examId": "vedich2k9_de12",
+    "questionNumber": 22,
+    "field": "optD",
+    "massNumber_A": "28",
+    "atomicNumber_Z": "14",
+    "element_X": "Si",
+    "renderedKaTeX": "${}^{28}_{14}\\mathrm{Si}$"
+  },
+  {
+    "examId": "vedich2k9_de12",
+    "questionNumber": 22,
+    "field": "giaiThich",
+    "massNumber_A": "28",
+    "atomicNumber_Z": "14",
+    "element_X": "Si",
+    "renderedKaTeX": "${}^{28}_{14}\\mathrm{Si}$"
+  },
+  {
+    "examId": "vedich2k9_de12",
+    "questionNumber": 27,
+    "field": "question",
+    "massNumber_A": "210",
+    "atomicNumber_Z": "84",
+    "element_X": "Po",
+    "renderedKaTeX": "${}^{210}_{84}\\mathrm{Po}$"
+  },
+  {
+    "examId": "vedich2k9_de12",
+    "questionNumber": 27,
+    "field": "question",
+    "massNumber_A": "206",
+    "atomicNumber_Z": "82",
+    "element_X": "Pb",
+    "renderedKaTeX": "${}^{206}_{82}\\mathrm{Pb}$"
+  },
+  {
+    "examId": "vedich2k9_de12",
+    "questionNumber": 27,
+    "field": "question",
+    "massNumber_A": "210",
+    "atomicNumber_Z": "84",
+    "element_X": "Po",
+    "renderedKaTeX": "${}^{210}_{84}\\mathrm{Po}$"
+  },
+  {
+    "examId": "vedich2k9_de12",
+    "questionNumber": 28,
+    "field": "question",
+    "massNumber_A": "210",
+    "atomicNumber_Z": "84",
+    "element_X": "Po",
+    "renderedKaTeX": "${}^{210}_{84}\\mathrm{Po}$"
+  },
+  {
+    "examId": "vedich2k9_de12",
+    "questionNumber": 28,
+    "field": "giaiThich",
+    "massNumber_A": "210",
+    "atomicNumber_Z": "84",
+    "element_X": "Po",
+    "renderedKaTeX": "${}^{210}_{84}\\mathrm{Po}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 1,
+    "field": "optA",
+    "massNumber_A": "124",
+    "atomicNumber_Z": "82",
+    "element_X": "Pb",
+    "renderedKaTeX": "${}^{124}_{82}\\mathrm{Pb}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 1,
+    "field": "optB",
+    "massNumber_A": "206",
+    "atomicNumber_Z": "82",
+    "element_X": "Pb",
+    "renderedKaTeX": "${}^{206}_{82}\\mathrm{Pb}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 1,
+    "field": "optC",
+    "massNumber_A": "124",
+    "atomicNumber_Z": "82",
+    "element_X": "Pb",
+    "renderedKaTeX": "${}^{124}_{82}\\mathrm{Pb}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 1,
+    "field": "optD",
+    "massNumber_A": "206",
+    "atomicNumber_Z": "82",
+    "element_X": "Pb",
+    "renderedKaTeX": "${}^{206}_{82}\\mathrm{Pb}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 7,
+    "field": "question",
+    "massNumber_A": "4",
+    "atomicNumber_Z": "2",
+    "element_X": "He",
+    "renderedKaTeX": "${}^{4}_{2}\\mathrm{He}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 7,
+    "field": "question",
+    "massNumber_A": "6",
+    "atomicNumber_Z": "3",
+    "element_X": "Li",
+    "renderedKaTeX": "${}^{6}_{3}\\mathrm{Li}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 7,
+    "field": "question",
+    "massNumber_A": "9",
+    "atomicNumber_Z": "4",
+    "element_X": "Be",
+    "renderedKaTeX": "${}^{9}_{4}\\mathrm{Be}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 7,
+    "field": "question",
+    "massNumber_A": "10",
+    "atomicNumber_Z": "5",
+    "element_X": "B",
+    "renderedKaTeX": "${}^{10}_{5}\\mathrm{B}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 7,
+    "field": "optA",
+    "massNumber_A": "6",
+    "atomicNumber_Z": "3",
+    "element_X": "Li",
+    "renderedKaTeX": "${}^{6}_{3}\\mathrm{Li}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 7,
+    "field": "optB",
+    "massNumber_A": "9",
+    "atomicNumber_Z": "4",
+    "element_X": "Be",
+    "renderedKaTeX": "${}^{9}_{4}\\mathrm{Be}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 7,
+    "field": "optC",
+    "massNumber_A": "4",
+    "atomicNumber_Z": "2",
+    "element_X": "He",
+    "renderedKaTeX": "${}^{4}_{2}\\mathrm{He}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 7,
+    "field": "optD",
+    "massNumber_A": "10",
+    "atomicNumber_Z": "5",
+    "element_X": "B",
+    "renderedKaTeX": "${}^{10}_{5}\\mathrm{B}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 8,
+    "field": "question",
+    "massNumber_A": "6",
+    "atomicNumber_Z": "3",
+    "element_X": "Li",
+    "renderedKaTeX": "${}^{6}_{3}\\mathrm{Li}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 14,
+    "field": "optB",
+    "massNumber_A": "4",
+    "atomicNumber_Z": "2",
+    "element_X": "He",
+    "renderedKaTeX": "${}^{4}_{2}\\mathrm{He}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 21,
+    "field": "question",
+    "massNumber_A": "131",
+    "atomicNumber_Z": "53",
+    "element_X": "I",
+    "renderedKaTeX": "${}^{131}_{53}\\mathrm{I}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 21,
+    "field": "question",
+    "massNumber_A": "131",
+    "atomicNumber_Z": "54",
+    "element_X": "Xe",
+    "renderedKaTeX": "${}^{131}_{54}\\mathrm{Xe}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 21,
+    "field": "question",
+    "massNumber_A": "131",
+    "atomicNumber_Z": "53",
+    "element_X": "I",
+    "renderedKaTeX": "${}^{131}_{53}\\mathrm{I}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 21,
+    "field": "optA",
+    "massNumber_A": "131",
+    "atomicNumber_Z": "53",
+    "element_X": "I",
+    "renderedKaTeX": "${}^{131}_{53}\\mathrm{I}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 21,
+    "field": "optB",
+    "massNumber_A": "131",
+    "atomicNumber_Z": "53",
+    "element_X": "I",
+    "renderedKaTeX": "${}^{131}_{53}\\mathrm{I}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 21,
+    "field": "optC",
+    "massNumber_A": "131",
+    "atomicNumber_Z": "53",
+    "element_X": "I",
+    "renderedKaTeX": "${}^{131}_{53}\\mathrm{I}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 21,
+    "field": "optD",
+    "massNumber_A": "131",
+    "atomicNumber_Z": "53",
+    "element_X": "I",
+    "renderedKaTeX": "${}^{131}_{53}\\mathrm{I}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 24,
+    "field": "giaiThich",
+    "massNumber_A": "235",
+    "atomicNumber_Z": "92",
+    "element_X": "U",
+    "renderedKaTeX": "${}^{235}_{92}\\mathrm{U}$"
+  },
+  {
+    "examId": "vedich2k9_de13",
+    "questionNumber": 25,
+    "field": "question",
+    "massNumber_A": "235",
+    "atomicNumber_Z": "92",
+    "element_X": "U",
+    "renderedKaTeX": "${}^{235}_{92}\\mathrm{U}$"
+  },
+  {
+    "examId": "vedich2k9_de14",
+    "questionNumber": 13,
+    "field": "question",
+    "massNumber_A": "7",
+    "atomicNumber_Z": "3",
+    "element_X": "Li",
+    "renderedKaTeX": "${}^{7}_{3}\\mathrm{Li}$"
+  },
+  {
+    "examId": "vedich2k9_de14",
+    "questionNumber": 22,
+    "field": "question",
+    "massNumber_A": "24",
+    "atomicNumber_Z": "11",
+    "element_X": "Na",
+    "renderedKaTeX": "${}^{24}_{11}\\mathrm{Na}$"
+  },
+  {
+    "examId": "vedich2k9_de14",
+    "questionNumber": 22,
+    "field": "optB",
+    "massNumber_A": "24",
+    "atomicNumber_Z": "11",
+    "element_X": "Na",
+    "renderedKaTeX": "${}^{24}_{11}\\mathrm{Na}$"
+  },
+  {
+    "examId": "vedich2k9_de14",
+    "questionNumber": 22,
+    "field": "optB",
+    "massNumber_A": "24",
+    "atomicNumber_Z": "12",
+    "element_X": "Mg",
+    "renderedKaTeX": "${}^{24}_{12}\\mathrm{Mg}$"
+  },
+  {
+    "examId": "vedich2k9_de14",
+    "questionNumber": 22,
+    "field": "giaiThich",
+    "massNumber_A": "24",
+    "atomicNumber_Z": "11",
+    "element_X": "Na",
+    "renderedKaTeX": "${}^{24}_{11}\\mathrm{Na}$"
+  },
+  {
+    "examId": "vedich2k9_de14",
+    "questionNumber": 22,
+    "field": "giaiThich",
+    "massNumber_A": "0",
+    "atomicNumber_Z": "-1",
+    "element_X": "e",
+    "renderedKaTeX": "${}^{0}_{-1}\\mathrm{e}$"
+  },
+  {
+    "examId": "vedich2k9_de14",
+    "questionNumber": 22,
+    "field": "giaiThich",
+    "massNumber_A": "24",
+    "atomicNumber_Z": "12",
+    "element_X": "Mg",
+    "renderedKaTeX": "${}^{24}_{12}\\mathrm{Mg}$"
+  },
+  {
+    "examId": "vedich2k9_de15",
+    "questionNumber": 13,
+    "field": "question",
+    "massNumber_A": "3",
+    "atomicNumber_Z": "1",
+    "element_X": "T",
+    "renderedKaTeX": "${}^{3}_{1}\\mathrm{T}$"
+  }
+]

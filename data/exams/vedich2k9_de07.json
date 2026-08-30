@@ -58,7 +58,7 @@
     "options": {
       "A": "${}^{1}_{0}\\mathrm{n}$.",
       "B": "${}^{1}_{1}\\mathrm{H}$.",
-      "C": "$-${}^{0}_{1}\\mathrm{e}$$.",
+      "C": "$-${}^{0}_{-1}\\mathrm{e}$$.",
       "D": "${}^{3}_{1}\\mathrm{T}$."
     },
     "correct": "B",
@@ -288,7 +288,7 @@
   {
     "id": 23,
     "type": "short",
-    "question": "Sử dụng thông tin sau cho câu 1 và câu 2: Đồng vị phóng xạ β- xenon ${}^{33}_{541}\\mathrm{Xe}$ được sử dụng trong phương pháp nguyên tử đánh dấu của y học hạt nhân khi kiểm tra chức năng và chẩn đoán các bệnh về phổi. Chu kì bán rã của xenon ${}^{33}_{541}\\mathrm{Xe}$ là 5,24 ngày. Một mẫu khí chứa xenon ${}^{33}_{541}\\mathrm{Xe}$ khi được sản xuất tại nhà máy có độ phóng xạ là 4,25.109 Bq. Mẫu đó được vận chuyển về bệnh viện và sử dụng cho bệnh nhân sau đó 3 ngày.<br>Câu 1. Hằng số phóng xạ xenon ${}^{33}_{541}\\mathrm{Xe}$ bằng X.10-6 s-1. Giá trị của X bằng bao nhiêu?(làm tròn kết quả đến chữ số hàng phần trăm).",
+    "question": "Sử dụng thông tin sau cho câu 1 và câu 2: Đồng vị phóng xạ β- xenon ${}^{133}_{54}\\mathrm{Xe}$ được sử dụng trong phương pháp nguyên tử đánh dấu của y học hạt nhân khi kiểm tra chức năng và chẩn đoán các bệnh về phổi. Chu kì bán rã của xenon ${}^{133}_{54}\\mathrm{Xe}$ là 5,24 ngày. Một mẫu khí chứa xenon ${}^{133}_{54}\\mathrm{Xe}$ khi được sản xuất tại nhà máy có độ phóng xạ là 4,25.109 Bq. Mẫu đó được vận chuyển về bệnh viện và sử dụng cho bệnh nhân sau đó 3 ngày.<br>Câu 1. Hằng số phóng xạ xenon ${}^{133}_{54}\\mathrm{Xe}$ bằng X.10-6 s-1. Giá trị của X bằng bao nhiêu?(làm tròn kết quả đến chữ số hàng phần trăm).",
     "options": {
       "A": "",
       "B": "",

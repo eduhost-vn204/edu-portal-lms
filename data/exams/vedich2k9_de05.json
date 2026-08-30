@@ -17,8 +17,8 @@
     "type": "mc",
     "question": "Ở Việt Nam, mạng điện xoay chiều dân dụng có tần số góc là",
     "options": {
-      "A": "${}^{0}_{10}\\mathrm{π}$ Hz.",
-      "B": "${}^{0}_{5}\\mathrm{π}$ Hz.",
+      "A": "$100\\pi$ Hz.",
+      "B": "$50\\pi$ Hz.",
       "C": "50 Hz.",
       "D": "100 Hz."
     },
@@ -251,10 +251,10 @@
     "type": "tf",
     "question": "<div class=\"q-text-body\">Câu 2. Trong giờ thực hành, một nhóm học sinh thực hiện thí nghiệm xác định nhiệt nóng chảy riêng của nước đá. Các bạn bố trí thí nghiệm như hình bên và tiến hành thí nghiệm qua các bước sau:<br>Bước 1<br>- Cho nước đá vào nhiệt lượng kế và hứng nước chảy ra bằng một chiếc cốc, bật đồng hồ đo thời gian, sau khoảng thời gian t, xác định khối lượng m của nước trong cốc này.<br>Bước 2<br>- Bật biến áp nguồn.<br>- Đọc số chỉ $P$ của oát kế.<br>- Cho nước chảy thêm vào cốc trong thời gian t. Xác định khối lượng M của nước trong cốc lúc này.<br>Kết quả thí nghiệm được nhóm ghi lại ở bảng sau:<br>Đại lượng<br>Kết quả đo<br>Khối lượng m (g) của nước trong cốc (chưa bật biến áp nguồn)<br>2,0<br>Khối lượng M (g) của nước trong cốc (đã bật biến áp nguồn)<br>17,5<br>Thời gian đun t (s)<br>180<br>Công suất $P\\left(W\\right)$<br>24<br>Xem điều kiện môi trường (nhiệt độ, áp suất, …) không đổi trong suốt thời gian làm thí nghiệm và điện năng tiêu thụ chuyển hóa hoàn toàn thành nhiệt lượng cung cấp cho nước đá. Bỏ qua sự bay hơi của nước.</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de05/image5.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
-      "A": "Nhiệt lượng mà dây điện trở đã cung cấp cho nước đá trong thí nghiệm trên bằng ${}^{0}_{432}\\mathrm{J}$.",
+      "A": "Nhiệt lượng mà dây điện trở đã cung cấp cho nước đá trong thí nghiệm trên bằng $4320\\text{ J}$.",
       "B": "Khối lượng nước đá đã nóng chảy do nhận nhiệt lượng từ dây điện trở bằng $15,5 g$.",
       "C": "Nhiệt nóng chảy riêng của nước đá trong thí nghiệm này đo được là $3,2.1{0}^{5}J/kg$.",
-      "D": "Nhiệt lượng mà môi trường cung cấp cho nước đá trong khoảng thời gian t là ${}^{0}_{64}\\mathrm{J}$."
+      "D": "Nhiệt lượng mà môi trường cung cấp cho nước đá trong khoảng thời gian t là $640\\text{ J}$."
     },
     "correct": "ĐSĐĐ",
     "giaiThich": "a) ${Q}_{cc}=P.t=24.180=4320J$<br>b) Công suất tỏa nhiệt của môi trường luôn không đổi, trong khoảng thời gian t, môi trường làm nóng chảy m (g) nước đá nên trong khoảng thời 2t thì môi trường làm nóng 2m (g) nước đá. Khối lượng nước đá đã nóng chảy do nhận nhiệt lượng từ dây điện trở: $M-2m=13,5 g$<br>c) Gọi ${P}^{'}$ là công suất tỏa nhiệt (không đổi) của môi trường bên ngoài (môi trường không khí).<br>Ta có:$\\left\\{m.λ={P}^{'}.t                 \\left(M-m\\right)λ={P}^{'}.t+P.t\\right)⇒λ=\\frac{P.t}{M-2m}=\\frac{24.180}{\\left(17,5-2.2\\right).1{0}^{-3}}=3,2.1{0}^{5} J/kg$<br>d)${Q}^{'}={P}^{'}.t=m.λ=2.1{0}^{-3}.3,2.1{0}^{5}=640 J$"

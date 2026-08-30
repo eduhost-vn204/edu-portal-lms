@@ -28,7 +28,7 @@
   {
     "id": 3,
     "type": "mc",
-    "question": "Số nucleon của hạt nhân ${}^{30}_{902}\\mathrm{Th}$ là",
+    "question": "Số nucleon của hạt nhân ${}^{230}_{90}\\mathrm{Th}$ là",
     "options": {
       "A": "320.",
       "B": "90.",
@@ -335,12 +335,12 @@
       "D": ""
     },
     "correct": "9,03",
-    "giaiThich": "$N=n.{N}_{A}=\\frac{m}{M}.{N}_{A}=\\frac{48}{32}×6,02.1{0}^{23}=9,03.1{0}^{23}$<br><img src=\"assets/exams/vedich2k9_de03/image21.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho câu 5 và câu 6: Dùng máy đo phóng xạ của một mẫu gỗ của một cổ vật phát hiện được 240 phóng xạ mỗi phút. Biết rằng thành phần của mẫu gỗ có chứa 25 g ${}^{4}_{61}\\mathrm{C}$ và ${}^{2}_{61}\\mathrm{C}$, chu kì bán rã của ${}^{4}_{61}\\mathrm{C}$ là 5730 năm và tỉ lệ nguyên tử ${}^{2}_{61}\\mathrm{C}$ và ${}^{4}_{61}\\mathrm{C}$ khi một sinh vật còn sống 1012:1."
+    "giaiThich": "$N=n.{N}_{A}=\\frac{m}{M}.{N}_{A}=\\frac{48}{32}×6,02.1{0}^{23}=9,03.1{0}^{23}$<br><img src=\"assets/exams/vedich2k9_de03/image21.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho câu 5 và câu 6: Dùng máy đo phóng xạ của một mẫu gỗ của một cổ vật phát hiện được 240 phóng xạ mỗi phút. Biết rằng thành phần của mẫu gỗ có chứa 25 g ${}^{14}_{6}\\mathrm{C}$ và ${}^{12}_{6}\\mathrm{C}$, chu kì bán rã của ${}^{14}_{6}\\mathrm{C}$ là 5730 năm và tỉ lệ nguyên tử ${}^{12}_{6}\\mathrm{C}$ và ${}^{14}_{6}\\mathrm{C}$ khi một sinh vật còn sống 1012:1."
   },
   {
     "id": 27,
     "type": "short",
-    "question": "Câu 5. Số nguyên tử ${}^{4}_{61}\\mathrm{C}$ có trong mẫu gỗ trên bằng X.1012. Xác định giá trị của X (Kết quả làm tròn đến chữ số hàng phần mười).",
+    "question": "Câu 5. Số nguyên tử ${}^{14}_{6}\\mathrm{C}$ có trong mẫu gỗ trên bằng X.1012. Xác định giá trị của X (Kết quả làm tròn đến chữ số hàng phần mười).",
     "options": {
       "A": "",
       "B": "",
@@ -361,6 +361,6 @@
       "D": ""
     },
     "correct": "1523",
-    "giaiThich": "Khối lượng mẫu gỗ có chứa 25 g ${}^{4}_{61}\\mathrm{C}$ và ${}^{2}_{61}\\mathrm{C}$:<br>$25={m}_{C14}+{m}_{C12}=\\frac{{N}_{C14}}{{N}_{A}}.14+\\frac{{N}_{C12}}{{N}_{A}}.12 {N}_{C14}=1,043.1{0}^{12} {N}_{C12}=1,254.1{0}^{24}$ (nguyên tử)<br>Áp dụng: $\\frac{1,043.1{0}^{12}}{1,254.1{0}^{24}}=\\frac{1}{1{0}^{12}}.{2}^{-\\frac{t}{5730}}⇒t=1523$ năm"
+    "giaiThich": "Khối lượng mẫu gỗ có chứa 25 g ${}^{14}_{6}\\mathrm{C}$ và ${}^{12}_{6}\\mathrm{C}$:<br>$25={m}_{C14}+{m}_{C12}=\\frac{{N}_{C14}}{{N}_{A}}.14+\\frac{{N}_{C12}}{{N}_{A}}.12 {N}_{C14}=1,043.1{0}^{12} {N}_{C12}=1,254.1{0}^{24}$ (nguyên tử)<br>Áp dụng: $\\frac{1,043.1{0}^{12}}{1,254.1{0}^{24}}=\\frac{1}{1{0}^{12}}.{2}^{-\\frac{t}{5730}}⇒t=1523$ năm"
   }
 ]

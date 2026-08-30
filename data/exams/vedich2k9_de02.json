@@ -184,12 +184,12 @@
   {
     "id": 15,
     "type": "mc",
-    "question": "Biết khối lượng của hạt proton, hạt neutron, hạt nhân neon ${}^{0}_{102}\\mathrm{Ne}$ và hạt nhân helium ${}^{4}_{2}\\mathrm{He}$ lần lượt là${m}_{p}=1,007276 amu;$ ${m}_{n}=1,008665 amu;$ ${m}_{Ne}=19,98695 amu;$ ${m}_{He}=4,001506 amu$; $e=1,6\\cdot 10^{-19}\\text{ C}$. Phát biểu nào sau đây là đúng?",
+    "question": "Biết khối lượng của hạt proton, hạt neutron, hạt nhân neon ${}^{20}_{10}\\mathrm{Ne}$ và hạt nhân helium ${}^{4}_{2}\\mathrm{He}$ lần lượt là${m}_{p}=1,007276 amu;$ ${m}_{n}=1,008665 amu;$ ${m}_{Ne}=19,98695 amu;$ ${m}_{He}=4,001506 amu$; $e=1,6\\cdot 10^{-19}\\text{ C}$. Phát biểu nào sau đây là đúng?",
     "options": {
-      "A": "Hạt nhân helium ${}^{4}_{2}\\mathrm{He}$ bền vững hơn hạt nhân neon ${}^{0}_{102}\\mathrm{Ne}$.",
-      "B": "Hạt nhân ${}^{0}_{102}\\mathrm{Ne}$ có nhiều hơn hạt nhân ${}^{4}_{2}\\mathrm{He}$ là 16 neutron.",
-      "C": "Điện tích của hạt nhân ${}^{0}_{102}\\mathrm{Ne}$ lớn hơn điện tích của hạt nhân ${}^{4}_{2}\\mathrm{He}$ là $2,56\\cdot 10^{-18}\\text{ C}$.",
-      "D": "Tỉ số giữa bán kính của hạt nhân ${}^{0}_{102}\\mathrm{Ne}$ với bán kính của hạt nhân ${}^{4}_{2}\\mathrm{He}$ là 1,71."
+      "A": "Hạt nhân helium ${}^{4}_{2}\\mathrm{He}$ bền vững hơn hạt nhân neon ${}^{20}_{10}\\mathrm{Ne}$.",
+      "B": "Hạt nhân ${}^{20}_{10}\\mathrm{Ne}$ có nhiều hơn hạt nhân ${}^{4}_{2}\\mathrm{He}$ là 16 neutron.",
+      "C": "Điện tích của hạt nhân ${}^{20}_{10}\\mathrm{Ne}$ lớn hơn điện tích của hạt nhân ${}^{4}_{2}\\mathrm{He}$ là $2,56\\cdot 10^{-18}\\text{ C}$.",
+      "D": "Tỉ số giữa bán kính của hạt nhân ${}^{20}_{10}\\mathrm{Ne}$ với bán kính của hạt nhân ${}^{4}_{2}\\mathrm{He}$ là 1,71."
     },
     "correct": "D",
     "giaiThich": ""
@@ -288,7 +288,7 @@
   {
     "id": 23,
     "type": "short",
-    "question": "Sử dụng thông tin sau đây cho câu 1 và câu 2. Để điều trị ung thư tuyến giáp, một bệnh nhân đã nhận một liều dược chất phóng xạ chứa 25,0.10-3 g${}^{31}_{531}\\mathrm{I}$. Biết rằng ${}^{31}_{531}\\mathrm{I}$ là chất phóng xạ ${β}^{-}$ có chu kì bán rã là 8,02 ngày; khối lượng mol của ${}^{31}_{531}\\mathrm{I}$ là 131 g/mol.<br>Câu 1. Độ phóng xạ của liều thuốc tại thời điểm bệnh nhân bắt đầu nhận và sử dụng là x.1014 Bq. Tìm x (làm tròn kết quả đến chữ số hàng phần trăm).",
+    "question": "Sử dụng thông tin sau đây cho câu 1 và câu 2. Để điều trị ung thư tuyến giáp, một bệnh nhân đã nhận một liều dược chất phóng xạ chứa 25,0.10-3 g${}^{131}_{53}\\mathrm{I}$. Biết rằng ${}^{131}_{53}\\mathrm{I}$ là chất phóng xạ ${β}^{-}$ có chu kì bán rã là 8,02 ngày; khối lượng mol của ${}^{131}_{53}\\mathrm{I}$ là 131 g/mol.<br>Câu 1. Độ phóng xạ của liều thuốc tại thời điểm bệnh nhân bắt đầu nhận và sử dụng là x.1014 Bq. Tìm x (làm tròn kết quả đến chữ số hàng phần trăm).",
     "options": {
       "A": "",
       "B": "",
