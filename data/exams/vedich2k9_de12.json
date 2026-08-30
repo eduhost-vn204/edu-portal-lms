@@ -145,15 +145,15 @@
   {
     "id": 12,
     "type": "mc",
-    "question": "Một khung dây quay đều quanh trục $Δ$ trong một từ trường đều $\\vec{B}$ vuông góc với trục quay $Δ$ với tốc độ góc $ω$.Từ thông cực đại gởi qua khung và suất điện động cực đại trong khung liên hệ với nhau bởi công thức",
+    "question": "Biết nhiệt dung riêng của nước là $c = 4200\\text{ J/kg.K}$ và nhiệt hóa hơi riêng của nước là $L = 2,3\\cdot 10^6\\text{ J/kg}$. Nhiệt lượng cần cung cấp cho 5 kg nước ở 20°C để chuyển thành hơi nước ở 100°C là:",
     "options": {
-      "A": "${E}_{0}=\\frac{{Φ}_{0}}{ω\\sqrt{2}}$.  <img src=\"assets/exams/vedich2k9_de12/image3.png\" alt=\"hình vẽ\" class=\"q-img\" />",
-      "B": "${E}_{0}=\\frac{ω.{Φ}_{0}}{\\sqrt{2}}$.<img src=\"assets/exams/vedich2k9_de12/image4.png\" alt=\"hình vẽ\" class=\"q-img\" />",
-      "C": "${E}_{0}=\\frac{{Φ}_{0}}{ω}$.",
-      "D": "${E}_{0}=ω.{Φ}_{0}$ ."
+      "A": "$4,2\\cdot 10^5\\text{ J}$",
+      "B": "$1,15\\cdot 10^7\\text{ J}$",
+      "C": "$1,318\\cdot 10^7\\text{ J}$",
+      "D": "$1,68\\cdot 10^6\\text{ J}$"
     },
     "correct": "D",
-    "giaiThich": ""
+    "giaiThich": "$Q=mc\\Delta t + mL = 5\\cdot 4200\\cdot (100-20) + 5\\cdot 2,3\\cdot 10^6 = 1,318\\cdot 10^7\\text{ J}$"
   },
   {
     "id": 13,
@@ -309,12 +309,12 @@
       "D": ""
     },
     "correct": "5,83",
-    "giaiThich": "$Q=\\frac{{e}^{2}}{R}t={\\left(NS\\left|\\frac{ΔB}{Δt}\\right|\\right)}^{2}.\\frac{1}{R}.t={\\left(27.2,67.1{0}^{-4}.\\left|\\frac{0,5-0,1}{0,62}\\right|\\right)}^{2}.\\frac{1}{0,23}.0,62=5,83.1{0}^{-5}J$<br><img src=\"assets/exams/vedich2k9_de12/image14.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng thông tin sau cho câu 3 và câu 4: Hình bên là sơ đồ nguyên lí làm mát bằng dầu của một máy biến áp. Lõi thép và các cuộn dây quấn của máy biến áp được ngâm trong bể dầu. Khi lõi thép và các cuộn dây quấn nóng lên thì nhiệt độ của dầu tăng lên. Dầu được lưu thông qua bộ trao đổi nhiệt để làm mát. Biết rằng nhiệt độ của dầu khi bắt đầu đi vào bộ trao đổi nhiệt là 85°C và sau khi làm mát là 45°C ; dầu làm mát có nhiệt dung riêng là $c=2000  J/kg.K$ và khối lượng riêng là  $850 kg/{m}^{3}$; công suất tỏa nhiệt của máy biến áp khi vận hành là 500 kW."
+    "giaiThich": "$Q=\\frac{e^2}{R}t={\\left(NS\\left|\\frac{\\Delta B}{\\Delta t}\\right|\\right)}^2\\cdot\\frac{1}{R}\\cdot t={\\left(27\\cdot 2,67\\cdot 10^{-4}\\cdot\\left|\\frac{0,5-0,1}{0,62}\\right|\\right)}^2\\cdot\\frac{1}{0,25}\\cdot 0,62=5,39\\cdot 10^{-5}\\text{ J}$"
   },
   {
     "id": 25,
     "type": "short",
-    "question": "Câu 3. Nhiệt lượng tỏa ra khi có 2 lít dầu được làm mát qua bộ trao đổi nhiệt bằng bao nhiêu kJ?(làm tròn kết quả đến chữ số hàng đơn vị).",
+    "question": "<div class=\"q-context\">Sử dụng thông tin sau cho câu 3 và câu 4: Hình bên là sơ đồ nguyên lí làm mát bằng dầu của một máy biến áp. Lõi thép và các cuộn dây quấn của máy biến áp được ngâm trong bể dầu. Khi lõi thép và các cuộn dây quấn nóng lên thì nhiệt độ của dầu tăng lên. Dầu được lưu thông qua bộ trao đổi nhiệt để làm mát. Biết rằng nhiệt độ của dầu khi bắt đầu đi vào bộ trao đổi nhiệt là 85°C và sau khi làm mát là 45°C; dầu làm mát có nhiệt dung riêng là $c=2000\\text{ J/kg.K}$ và khối lượng riêng là $850\\text{ kg/m}^3$; công suất tỏa nhiệt của máy biến áp khi vận hành là 500 kW.</div><div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 3. Nhiệt lượng tỏa ra khi có 2 lít dầu được làm mát qua bộ trao đổi nhiệt bằng bao nhiêu kJ? (làm tròn kết quả đến chữ số hàng đơn vị).</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de12/image14.png\" alt=\"sơ đồ làm mát dầu\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "",
       "B": "",

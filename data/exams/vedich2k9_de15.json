@@ -145,7 +145,7 @@
   {
     "id": 12,
     "type": "mc",
-    "question": "ABCDABCDKhung dây dẫn kín ABCD được đặt trong một từ trường đều sao cho mặt phẳng khung dây vuông góc với các đường cảm ứng từ như hình vẽ. Cho từ trường giảm dần đều thì trong khung dây sẽ<br>A<br>B<br>C<br>D<br>$⊗$<br>A<br>B<br>C<br>D<br>$⊗$",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Khung dây dẫn kín ABCD được đặt trong một từ trường đều sao cho mặt phẳng khung dây vuông góc với các đường cảm ứng từ như hình vẽ. Khi từ thông qua diện tích giới hạn bởi khung dây biến thiên tăng dần thì dòng điện cảm ứng trong khung dây có chiều:</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de15/image1.png\" alt=\"khung dây ABCD\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "xuất hiện một dòng điện cảm ứng có chiều thay đổi liên tục.",
       "B": "xuất hiện một dòng điện cảm ứng có chiều ABCD.",
@@ -309,12 +309,12 @@
       "D": ""
     },
     "correct": "450",
-    "giaiThich": "Độ tăng nội năng của hệ bằng độ giảm cơ năng của đạn:<br>$ΔU={W}_{1}-{W}_{2}=\\frac{1}{2}.50.1{0}^{-3}.{\\left(\\frac{360}{3,6}\\right)}^{2}-\\frac{1}{2}.50.1{0}^{-3}.{\\left(\\frac{54}{3,6}\\right)}^{2}=244,4≈0,24 kJ$<br>Sử dụng thông tin sau cho câu 3 và câu 4: Một thanh đồng dài 5 cm, có khối lượng 5 g được treo cân bằng nằm ngang bằng hai sợi dây mảnh, nhẹ có phương thẳng đứng và có cùng chiều dài 40 cm. Đưa hệ thống vào trong từ trường đều có độ lớn cảm ứng từ là 0,5 T, các đường sức từ hướng thẳng đứng từ dưới lên. Cho dòng điện không đổi có cường độ 2 A chạy qua thanh đồng thì các dây treo bị lệch khỏi phương thẳng đứng. Bỏ qua lực cản của không khí và lấy $g=10\\text{ m/s}^2$."
+    "giaiThich": "Độ tăng nội năng của hệ bằng độ giảm cơ năng của đạn:<br>$\\Delta U=W_1-W_2=\\frac{1}{2}\\cdot 50\\cdot 10^{-3}\\cdot{\\left(\\frac{360}{3,6}\\right)}^2-\\frac{1}{2}\\cdot 50\\cdot 10^{-3}\\cdot{\\left(\\frac{180}{3,6}\\right)}^2=187,5\\text{ J}$"
   },
   {
     "id": 25,
     "type": "short",
-    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 3. Tính góc lệch (theo đơn vị độ) của các dây treo so với phương thẳng đứng và lực căng của mỗi dây treo (làm tròn kết quả đến chữ số hàng đơn vị).</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de15/image12.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
+    "question": "<div class=\"q-context\">Sử dụng thông tin sau cho câu 3 và câu 4: Một thanh đồng dài 5 cm, có khối lượng 5 g được treo cân bằng nằm ngang bằng hai sợi dây mảnh, nhẹ có phương thẳng đứng và có cùng chiều dài 40 cm. Đưa hệ thống vào trong từ trường đều có độ lớn cảm ứng từ là 0,5 T, các đường sức từ hướng thẳng đứng từ dưới lên. Cho dòng điện không đổi có cường độ 2 A chạy qua thanh đồng thì các dây treo bị lệch khỏi phương thẳng đứng. Bỏ qua lực cản của không khí và lấy $g=10\\text{ m/s}^2$.</div><div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 3. Tính góc lệch (theo đơn vị độ) của các dây treo so với phương thẳng đứng? (làm tròn kết quả đến chữ số hàng phần mười).</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de15/image12.png\" alt=\"thanh đồng trong từ trường\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "",
       "B": "",
@@ -335,12 +335,12 @@
       "D": ""
     },
     "correct": "1,53",
-    "giaiThich": "Bảo toàn cơ năng:<br>$\\frac{1}{2}m{v}_{O}^{2}=mgl\\left(1-\\mathrm{cos} {θ}\\right)⇒{v}_{O}=\\sqrt{2gl\\left(1-\\mathrm{cos} {θ}\\right)}=\\sqrt{2.10.0,4.\\left(1-\\mathrm{cos} {4}5\\right)}=1,53 m/s$<br><img src=\"assets/exams/vedich2k9_de15/image13.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho câu 5 và câu 6. Hình dưới là quy định của liên đoàn bóng chuyền thế giới về quả bóng chuyền thi đấu (nguồn Wiki). Cho áp suất khí quyển là 1 atm = 105 Pa, nhiệt độ khí trong bóng là 27°C."
+    "giaiThich": "Bảo toàn cơ năng:<br>$\\frac{1}{2}m v_O^2=mgl(1-\\cos \\theta)⇒v_O=\\sqrt{2gl(1-\\cos \\theta)}=\\sqrt{2\\cdot 10\\cdot 0,4\\cdot (1-\\cos 45^\\circ)}=1,53\\text{ m/s}$"
   },
   {
     "id": 27,
     "type": "short",
-    "question": "Câu 5. Động năng tịnh tiến trung bình của các phân tử khí là x.10-21 J. Giá trị của x là bao nhiêu?",
+    "question": "<div class=\"q-context\">Sử dụng các thông tin sau cho câu 5 và câu 6: Hình dưới là quy định của liên đoàn bóng chuyền thế giới về quả bóng chuyền thi đấu (nguồn Wiki). Cho áp suất khí quyển là $1\\text{ atm} = 10^5\\text{ Pa}$, nhiệt độ khí trong bóng là 27°C.</div><div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 5. Động năng tịnh tiến trung bình của các phân tử khí là $x\\cdot 10^{-21}\text{ J}$. Giá trị của x là bao nhiêu? (làm tròn kết quả đến chữ số hàng phần mười).</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de15/image13.png\" alt=\"quy định bóng chuyền\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "",
       "B": "",

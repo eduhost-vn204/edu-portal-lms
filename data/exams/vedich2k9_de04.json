@@ -264,13 +264,13 @@
     "type": "tf",
     "question": "<div class=\"q-text-body\">Câu 3. Hình vẽ thể hiện một mô hình. Hai thanh kim loại dẫn điện và con lăn kim loại chạm vào cả hai thanh và hoàn thành mạch điện. Con lăn nằm trong từ trường do nam châm tạo ra.</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de04/image6.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
-      "A": "Các đường sức từ trong vùng giữa hai thanh kim loại có chiều vuông góc và hướng lên trên với mặt phẳng do hai thanh tạo ra.",
+      "A": "Cảm ứng từ $\\vec{B}$ đổi chiều $\\Rightarrow$ dòng điện đổi chiều",
       "B": "Biết cảm ứng từ B = 1,2 T; chiều dài con lăn $L=6  cm$; cường độ dòng điện $I=2,5 A$. Lực từ tác dụng lên con lăn là 1,8 N.",
       "C": "Con lăn sẽ di chuyển sang trái nhờ lực từ.",
       "D": "Trong khung sẽ xuất hiện dòng điện cảm ứng."
     },
     "correct": "ĐSSĐ",
-    "giaiThich": "a) Các đường sức từ có hướng ra bắc vào nam (ra N vào S).<br>b) $F=IBL=2,5.1,2.0,06=0,18N$<br>c) Chiều dòng điện đi ra cực dương và đi vào cực âm.<br>Áp dụng quy tắc bàn tay trái <img src=\"assets/exams/vedich2k9_de04/image7.png\" alt=\"công thức\" class=\"q-formula-img\" /> lực từ hướng sang phải.<br>d) Con lăn di chuyển sẽ xuất hiện dòng điện cảm ứng."
+    "giaiThich": "a) Các đường sức từ có hướng ra bắc vào nam (ra N vào S).<br>b) $F=IBL=2,5.1,2.0,06=0,18N$<br>c) Chiều dòng điện đi ra cực dương và đi vào cực âm.<br>Áp dụng quy tắc bàn tay trái $\\Rightarrow$ lực từ hướng sang phải.<br>d) Con lăn di chuyển sẽ xuất hiện dòng điện cảm ứng."
   },
   {
     "id": 22,
@@ -322,12 +322,12 @@
       "D": ""
     },
     "correct": "50",
-    "giaiThich": "$e=NB.S.\\left|\\frac{\\mathrm{cos} {{α}_{2}}-\\mathrm{cos} {{α}_{1}}}{Δt}\\right|⇒0,2.1{0}^{-3}=100.B.0,01.\\left|\\frac{\\mathrm{cos} {1}80-\\mathrm{cos} {0}}{0,5}\\right|⇒B=50.1{0}^{-6}T$<br>Sử dụng các thông tin sau cho câu 4 và câu 5: Trong dây chuyền sản xuất đúc các chi tiết máy, sau khi thành phẩm các chi tiết máy được làm nguội bằng cách nhúng ngập hoàn toàn vào bể chất lỏng có nhiệt độ sôi lớn hơn 100°C. Giả sử các chi tiết máy đều giống nhau và đạt cùng nhiệt độ ${t}_{1}=13{5}^{0}C$ thì nhúng ngập vào bể chất lỏng. Biết rằng nhiệt độ ban đầu của chất lỏng trong bể là 25°C và nếu chỉ nhúng một chi tiết máy thì khi cân bằng nhiệt, chất lỏng trong bể có nhiệt độ ${t}_{cb}=3{0}^{0}C$. Coi rằng quá trình nhúng chi tiết máy vào bể chất lỏng chỉ có sự trao đổi nhiệt giữa các chi tiết máy và chất lỏng trong bể, sự hóa hơi của chất lỏng là không đáng kể."
+    "giaiThich": "$e=NB\\cdot S\\cdot\\left|\\frac{\\cos \\alpha_2 - \\cos \\alpha_1}{\\Delta t}\\right|⇒0,2\\cdot 10^{-3}=100\\cdot B\\cdot 0,01\\cdot\\left|\\frac{\\cos 180^\\circ - \\cos 0^\\circ}{0,05}\\right|⇒B=5\\cdot 10^{-6}\\text{ T}$"
   },
   {
     "id": 26,
     "type": "short",
-    "question": "Câu 4. Sau khi nhúng một chi tiết máy vào bể chất lỏng, nhiệt độ của chi tiết máy giảm đi bao nhiêu K khi đạt trạng thái cân bằng nhiệt?",
+    "question": "<div class=\"q-context\">Sử dụng các thông tin sau cho câu 4 và câu 5: Trong dây chuyền sản xuất đúc các chi tiết máy, sau khi thành phẩm các chi tiết máy được làm nguội bằng cách nhúng ngập hoàn toàn vào bể chất lỏng có nhiệt độ sôi lớn hơn 100°C. Giả sử các chi tiết máy đều giống nhau và đạt cùng nhiệt độ $t_1 = 135^\\circ\\text{C}$ thì nhúng ngập vào bể chất lỏng. Biết rằng nhiệt độ ban đầu của chất lỏng trong bể là 25°C và nếu chỉ nhúng một chi tiết máy thì khi cân bằng nhiệt, chất lỏng trong bể có nhiệt độ $t_{cb} = 30^\\circ\\text{C}$. Coi rằng quá trình nhúng chi tiết máy vào bể chất lỏng chỉ có sự trao đổi nhiệt giữa các chi tiết máy và chất lỏng trong bể, sự hóa hơi của chất lỏng là không đáng kể.</div><div class=\"q-text-body\">Câu 4. Sau khi nhúng một chi tiết máy vào bể chất lỏng, nhiệt độ của chi tiết máy giảm đi bao nhiêu °C? (kết quả là số nguyên).</div>",
     "options": {
       "A": "",
       "B": "",

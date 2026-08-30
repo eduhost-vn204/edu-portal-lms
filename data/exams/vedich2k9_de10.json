@@ -262,7 +262,7 @@
   {
     "id": 21,
     "type": "tf",
-    "question": "Câu 3. Dưới đây là bảng thông tin của 3 hạt nhân gồm: Uranium (U); Calcium (Ca) và Iron (Fe).<br>Tên hạt nhân<br>Số hạt mang điện<br>Số hạt trung hòa về điện<br>Năng lượng liên kết (MeV)<br>Uranium (U)<br>92<br>143<br>1786<br>Calcium (Ca)<br>20<br>20<br>234<br>Iron (Fe)<br>26<br>30<br>493",
+    "question": "<div class=\"q-text-body\">Câu 3. Dưới đây là bảng thông tin của 3 hạt nhân gồm: Uranium (U), Calcium (Ca) và Iron (Fe):</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de10/table_q21.png\" alt=\"Bảng thông tin 3 hạt nhân\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Mỗi nguyên tử Uranium (U) gồm có 92 proton, 143 neutron và 92 electron.",
       "B": "Hạt nhân Iron (Fe) có kí hiệu là ${}^{56}_{26}\\mathrm{Fe}$.",

@@ -106,7 +106,7 @@
   {
     "id": 9,
     "type": "mc",
-    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Một khung dây dẫn phẳng có diện tích S, điện trở khung dây là R, gồm N vòng dây quay đều với tốc độ góc  quanh trục cố định vuông góc với cảm ứng từ B của từ trường đều .Từ thông cực đại gửi qua khung dây nói trên là</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de05/image2.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Một khung dây dẫn phẳng có diện tích S, điện trở khung dây là R, gồm N vòng dây quay đều với tốc độ góc  quanh trục cố định vuông góc với cảm ứng từ B của từ trường đều .Từ thông cực đại gửi qua khung dây nói trên là</div><div class=\"q-img-col\">$\\omega$</div></div>",
     "options": {
       "A": "$Φ=\\frac{NBS}{R}$.",
       "B": "$Φ=\\frac{NBSω}{R}$.",
@@ -249,7 +249,7 @@
   {
     "id": 20,
     "type": "tf",
-    "question": "<div class=\"q-text-body\">Câu 2. Trong giờ thực hành, một nhóm học sinh thực hiện thí nghiệm xác định nhiệt nóng chảy riêng của nước đá. Các bạn bố trí thí nghiệm như hình bên và tiến hành thí nghiệm qua các bước sau:<br>Bước 1<br>- Cho nước đá vào nhiệt lượng kế và hứng nước chảy ra bằng một chiếc cốc, bật đồng hồ đo thời gian, sau khoảng thời gian t, xác định khối lượng m của nước trong cốc này.<br>Bước 2<br>- Bật biến áp nguồn.<br>- Đọc số chỉ $P$ của oát kế.<br>- Cho nước chảy thêm vào cốc trong thời gian t. Xác định khối lượng M của nước trong cốc lúc này.<br>Kết quả thí nghiệm được nhóm ghi lại ở bảng sau:<br>Đại lượng<br>Kết quả đo<br>Khối lượng m (g) của nước trong cốc (chưa bật biến áp nguồn)<br>2,0<br>Khối lượng M (g) của nước trong cốc (đã bật biến áp nguồn)<br>17,5<br>Thời gian đun t (s)<br>180<br>Công suất $P\\left(W\\right)$<br>24<br>Xem điều kiện môi trường (nhiệt độ, áp suất, …) không đổi trong suốt thời gian làm thí nghiệm và điện năng tiêu thụ chuyển hóa hoàn toàn thành nhiệt lượng cung cấp cho nước đá. Bỏ qua sự bay hơi của nước.</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de05/image5.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
+    "question": "<div class=\"q-text-body\">Câu 2. Trong giờ thực hành, một nhóm học sinh thực hiện thí nghiệm xác định nhiệt nóng chảy riêng của nước đá. Các bạn bố trí thí nghiệm như hình bên và tiến hành thí nghiệm qua các bước sau:<br><b>Bước 1:</b> Cho nước đá vào nhiệt lượng kế và hứng nước chảy ra bằng một chiếc cốc, bật đồng hồ đo thời gian, sau khoảng thời gian t, xác định khối lượng m của nước trong cốc này.<br><b>Bước 2:</b> Bật biến áp nguồn. Đọc số chỉ P của oát kế. Cho nước chảy thêm vào cốc trong thời gian t. Xác định khối lượng M của nước trong cốc lúc này.<br>Kết quả thí nghiệm được nhóm ghi lại ở bảng sau:<br>Xem điều kiện môi trường (nhiệt độ, áp suất, …) không đổi trong suốt thời gian làm thí nghiệm và điện năng tiêu thụ chuyển hóa hoàn toàn thành nhiệt lượng cung cấp cho nước đá. Bỏ qua sự bay hơi của nước.</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de05/table_q20.png\" alt=\"Bảng kết quả thí nghiệm\" class=\"q-block-img\" /></div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de05/image5.png\" alt=\"sơ đồ thí nghiệm\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Nhiệt lượng mà dây điện trở đã cung cấp cho nước đá trong thí nghiệm trên bằng $4320\\text{ J}$.",
       "B": "Khối lượng nước đá đã nóng chảy do nhận nhiệt lượng từ dây điện trở bằng $15,5 g$.",
@@ -309,12 +309,12 @@
       "D": ""
     },
     "correct": "15,6",
-    "giaiThich": "${U}_{2}={U}_{1}.\\frac{{N}_{2}}{{N}_{1}}=220.\\frac{4}{80}=11 V⇒{U}_{02}={U}_{2}\\sqrt{2}=11\\sqrt{2} V=15,6 V$<br>Sử dụng thông tin sau cho câu 3 và câu 4: Nhà máy điện hạt nhân Diablo Canyon ở California, Mỹ có công suất phát điện là 1120 MW với hiệu suất 32%. Năng lượng phân hạch trung bình của một hạt nhân <img src=\"assets/exams/vedich2k9_de05/image9.png\" alt=\"công thức\" class=\"q-formula-img\" /> tỏa ra là 200 MeV . Khối lượng mol của <img src=\"assets/exams/vedich2k9_de05/image10.png\" alt=\"công thức\" class=\"q-formula-img\" /> là <img src=\"assets/exams/vedich2k9_de05/image11.png\" alt=\"công thức\" class=\"q-formula-img\" />, biết $1 eV=1,60.1{0}^{-19} J$"
+    "giaiThich": "${U}_{2}={U}_{1}\\cdot\\frac{{N}_{2}}{{N}_{1}}=220\\cdot\\frac{4}{80}=11\\text{ V}⇒{U}_{02}={U}_{2}\\sqrt{2}=11\\sqrt{2}\\text{ V}\\approx 15,6\\text{ V}$"
   },
   {
     "id": 25,
     "type": "short",
-    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 3. Năng lượng phân hạch trung bình của một hạt nhân  tỏa ra là $x.1{0}^{-11} J$. Tính x (làm tròn kết quả đến chữ số hàng phần mười).</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de05/image12.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
+    "question": "<div class=\"q-context\">Sử dụng thông tin sau cho câu 3 và câu 4: Nhà máy điện hạt nhân Diablo Canyon ở California, Mỹ có công suất phát điện là 1120 MW với hiệu suất 32%. Năng lượng phân hạch trung bình của một hạt nhân ${}^{235}_{92}\\mathrm{U}$ là 200 MeV. Cho khối lượng mol của ${}^{235}_{92}\\mathrm{U}$ là $235\\text{ g/mol}$. Nhiên liệu được làm giàu chứa $25\\%$ ${}^{235}_{92}\\mathrm{U}$. Lấy $N_A = 6,02\\cdot 10^{23}\\text{ hạt/mol}$, $1\\text{ eV} = 1,6\\cdot 10^{-19}\\text{ J}$.</div><div class=\"q-text-body\">Câu 3. Năng lượng phân hạch trung bình của một hạt nhân ${}^{235}_{92}\\mathrm{U}$ bằng bao nhiêu pJ? (làm tròn kết quả đến chữ số hàng phần mười).</div>",
     "options": {
       "A": "",
       "B": "",
@@ -327,7 +327,7 @@
   {
     "id": 26,
     "type": "short",
-    "question": "<div class=\"q-text-body\">Câu 4. Nhiên liệu là các thanh  đã làm giàu  (tỉ lệ phần trăm khối lượng của  và khối lượng thanh là 25%). Khối lượng nhiên liệu cần cho nhà máy Diablo Canyon hoạt động liên tục trong 1 năm (365 ngày) là bao nhiêu tấn? (làm tròn kết quả đến chữ số hàng phần mười).</div><div class=\"q-multi-img-grid\"><img src=\"assets/exams/vedich2k9_de05/image13.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de05/image14.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de05/image15.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /></div>",
+    "question": "<div class=\"q-text-body\">Câu 4. Nhiên liệu là các thanh  đã làm giàu  (tỉ lệ phần trăm khối lượng của  và khối lượng thanh là 25%). Khối lượng nhiên liệu cần cho nhà máy Diablo Canyon hoạt động liên tục trong 1 năm (365 ngày) là bao nhiêu tấn? (làm tròn kết quả đến chữ số hàng phần mười).</div><div class=\"q-multi-img-grid\">${}^{235}_{92}\\mathrm{U}$$25\\%$${}^{235}_{92}\\mathrm{U}$</div>",
     "options": {
       "A": "",
       "B": "",
@@ -335,12 +335,12 @@
       "D": ""
     },
     "correct": "5,4",
-    "giaiThich": "$H=\\frac{P.t}{\\frac{m}{A}{N}_{A}.ΔE}⇒0,32=\\frac{1120.1{0}^{6}.365.24.3600}{\\frac{0,25{m}_{nl}}{235.1{0}^{-3}}.6,02.1{0}^{23}.3,2.1{0}^{-11}}⇒{m}_{nl}=5386 kg=5,4$ tấn<br><img src=\"assets/exams/vedich2k9_de05/image16.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng thông tin sau cho câu 5 và câu 6: Một quả bóng thám không hình cầu, có tổng khối lượng vỏ bóng và thiết bị đo là 1 kg. Bóng được bơm khí helium ở áp suất bằng áp suất khí quyển tại mặt đất ${p}_{0}=1,013.1{0}^{5}Pa$ và nhiệt độ 27°C (bằng nhiệt độ khí quyển). Biết khối lượng mol của không khí là ${M}_{kk}=29 g/mol$ của He là ${M}_{He}=4 g/mol,$ lấy $g=10 m/{s}^{2}$"
+    "giaiThich": "$H=\\frac{P\\cdot t}{\\frac{m}{A}{N}_{A}\\cdot\\Delta E}⇒0,32=\\frac{1120\\cdot 10^{6}\\cdot 365\\cdot 24\\cdot 3600}{\\frac{0,25 m_{nl}}{235\\cdot 10^{-3}}\\cdot 6,02\\cdot 10^{23}\\cdot 3,2\\cdot 10^{-11}}⇒m_{nl}=45,6\\cdot 10^3\\text{ kg} = 45,6\\text{ tấn}$"
   },
   {
     "id": 27,
     "type": "short",
-    "question": "Câu 5. Xác định khối lượng riêng của khí helium theo đơn vị gam/lít (kết quả làm tròn đến chữ số hàng phần trăm)",
+    "question": "<div class=\"q-context\">Sử dụng thông tin sau cho câu 5 và câu 6: Một quả bóng thám không hình cầu, có tổng khối lượng vỏ bóng và thiết bị đo là 1 kg. Bóng được bơm khí helium ở áp suất bằng áp suất khí quyển tại mặt đất $p_0 = 1,013\\cdot 10^5\\text{ Pa}$ và nhiệt độ 27°C (bằng nhiệt độ khí quyển). Biết khối lượng mol của không khí là $M_{kk}=29\\text{ g/mol}$, của He là $M_{He}=4\\text{ g/mol}$, lấy $g=10\\text{ m/s}^2$.</div><div class=\"q-text-body\">Câu 5. Xác định khối lượng riêng của khí helium theo đơn vị gam/lít? (kết quả làm tròn đến chữ số hàng phần mười).</div>",
     "options": {
       "A": "",
       "B": "",

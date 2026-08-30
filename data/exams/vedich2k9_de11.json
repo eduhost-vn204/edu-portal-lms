@@ -309,12 +309,12 @@
       "D": ""
     },
     "correct": "334",
-    "giaiThich": "$\\left\\{P.{θ}_{1}=m.2,1.1{0}^{3}.\\left(0+40\\right)P.\\left({θ}_{2}-{θ}_{1}\\right)=m.λ           \\right) {θ}_{2}=5{θ}_{1} 4=\\frac{λ}{2,1.1{0}^{3}.40}⇒λ=3,36.1{0}^{5}J/kg$<br>Sử dụng các thông tin sau cho Câu 3 và Câu 4<br>Trong nuôi trồng thủy sản, việc sục khí để hòa tan oxygen vào nước là công đoạn cần thiết. Tại một bể nuôi cá giống, không khí được sục từ độ sâu h = 4,0 m. Các bọt khí khi bắt đầu rời đầu sục có bán kính 3,80 mm. Giả thiết nhiệt độ nước trong bể ổn định và đồng đều, áp suất khí quyển tương đương với áp suất của cột nước có độ cao h = 10,0 m."
+    "giaiThich": "$\\begin{cases} P\\cdot\\theta_1 = m\\cdot 2,1\\cdot 10^3\\cdot (0+40) \\\\ P\\cdot(\\theta_2-\\theta_1) = m\\cdot\\lambda \\end{cases} \\quad \\theta_2 = 5\\theta_1 \\Rightarrow 4 = \\frac{\\lambda}{2,1\\cdot 10^3\\cdot 40} \\Rightarrow \\lambda = 336\\cdot 10^3\\text{ J/kg} = 336\\text{ kJ/kg}$"
   },
   {
     "id": 25,
     "type": "short",
-    "question": "Câu 3. Nếu lượng khí trong bọt khí không đổi, khi thoát khỏi mặt nước, bán kính bọt khí là bao nhiêu mm (kết quả lấy đến hàng phần trăm)?",
+    "question": "<div class=\"q-context\">Sử dụng các thông tin sau cho Câu 3 và Câu 4: Một bọt khí được giải phóng ở đáy một hồ nước có độ sâu $h = 10\\text{ m}$ và nhiệt độ 7°C, nổi lên mặt nước nơi nhiệt độ là 27°C. Cho áp suất khí quyển $p_0 = 10^5\\text{ Pa}$, khối lượng riêng của nước là $1000\\text{ kg/m}^3$ và $g=9,8\\text{ m/s}^2$.</div><div class=\"q-text-body\">Câu 3. Nếu lượng khí trong bọt khí không đổi, khi thoát khỏi mặt nước, bán kính bọt khí là bao nhiêu milimét? Biết ban đầu bán kính của bọt khí ở đáy hồ là 1 mm (làm tròn kết quả đến chữ số hàng phần trăm).</div>",
     "options": {
       "A": "",
       "B": "",
@@ -335,12 +335,12 @@
       "D": ""
     },
     "correct": "17",
-    "giaiThich": "Khi bọt khí bắt đầu tời đầu sục: ${p}_{1}{V}_{1}={n}_{1}RT$<br>Khi bọt khí thoát khỏi mặt nước: ${p}_{2}V={n}_{2}RT$<br>$⇒\\frac{{p}_{2}{V}_{2}}{{p}_{1}{V}_{1}}=\\frac{{n}_{2}}{{n}_{1}}⇒\\frac{10}{10+4}.\\frac{4,{1}^{3}}{3,{8}^{3}}=\\frac{{n}_{2}}{{n}_{1}}$<br>Giả sử ban đầu có 0,2 mol khí O2 và 0,8 mol khí N2. Số mol khí trong bọt khí khi rời đầu sục là ${n}_{1}=1,0 mol$.Khi thoát khỏi mặt nước, số mol khí trong bọt khí là ${n}_{2}≈0,9 mol$<br>Số mol khí trong bọt khí bị hòa tan vào nước: $Δn={n}_{1}-{n}_{2}=0,1​ mol$<br>Số mol khí O2 bị hòa tan: $0,1={n}_{O}+2{n}_{O}⇒{n}_{O}=3{0}^{-1} mol$<br>Phần trăm (%)  lượng khí O2 trong bọt khí hòa tan vào nước so với lượng O2 ban đầu là:  $\\frac{3{0}^{-1}}{0,2}.100%≈17%$<br>Chú ý: Để không làm tròn phép tính trung gian, các em học sinh có thể sử dụng chức năng lưu biến trên máy tính cầm tay. Ở bài giải trên để giúp các em dễ hiểu hơn, tôi đã làm tròn bước tính trung gian, tuy nhiên không làm thay đổi kết quả bài toán.<br><img src=\"assets/exams/vedich2k9_de11/image12.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho Câu 5 và Câu 6<br>Một thanh dẫn đồng chất, tiết diện đều, trọng lượng P được uốn thành khung dây gấp khúc gồm ba đoạn bằng nhau MN = NP = PQ = 16,0 cm. Khung dây được treo sao cho có thể quay quanh trục nằm ngang đi qua hai đầu M và Q. Hai đoạn MN và PQ song song với nhau và cùng vuông góc với đoạn NP. Đặt hệ thống vào một từ trường đều có vectơ cảm ứng từ hướng thẳng đứng lên trên, độ lớn B = 0,50 T. Khi có dòng điện cường độ I = 4,00 A chạy qua khung dây thì khung dây lệch khỏi mặt phẳng thẳng đứng sao cho các đoạn MN, PQ hợp với phương thẳng đứng một góc  với $cosα=0,80$. Bỏ qua lực ma sát ở trục quay."
+    "giaiThich": "Khi bọt khí bắt đầu rời đầu sục: $p_1 V_1 = n_1 RT$<br>Khi bọt khí thoát khỏi mặt nước: $p_2 V_2 = n_2 RT$<br>$\\Rightarrow \\frac{p_2 V_2}{p_1 V_1} = \\frac{n_2}{n_1} = \\frac{10^5\\cdot \\frac{4}{3}\\pi\\cdot 1,3^3}{(10^5 + 1000\\cdot 9,8\\cdot 10)\\cdot \\frac{4}{3}\\pi\\cdot 1^3} = 1,11$"
   },
   {
     "id": 27,
     "type": "short",
-    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 5. Độ lớn lực từ tác dụng lên đoạn dây MN là x.10-3 N. Giá trị của x là bao nhiêu?</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de11/image13.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
+    "question": "<div class=\"q-context\">Sử dụng các thông tin sau cho Câu 5 và Câu 6: Một đoạn dây dẫn thẳng MN dài 20 cm, có khối lượng 10 g được treo nằm ngang bằng hai dây dẫn nhẹ, không dãn, có cùng chiều dài trong một từ trường đều có cảm ứng từ $B = 0,1\\text{ T}$ hướng thẳng đứng lên trên. Cho dòng điện không đổi có cường độ 5 A chạy qua đoạn dây dẫn MN theo chiều từ M đến N. Lấy $g=10\\text{ m/s}^2$.</div><div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 5. Độ lớn lực từ tác dụng lên đoạn dây MN là bao nhiêu N? (làm tròn kết quả đến chữ số hàng phần trăm).</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de11/image10.png\" alt=\"dây dẫn MN\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "",
       "B": "",

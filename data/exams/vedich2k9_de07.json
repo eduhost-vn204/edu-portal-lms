@@ -17,10 +17,10 @@
     "type": "mc",
     "question": "Tia nào sau đây không phải là tia phóng xạ?",
     "options": {
-      "A": "Tia <img src=\"assets/exams/vedich2k9_de07/image1.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
-      "B": "Tia <img src=\"assets/exams/vedich2k9_de07/image2.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
-      "C": "Tia <img src=\"assets/exams/vedich2k9_de07/image3.png\" alt=\"công thức\" class=\"q-formula-img\" />.",
-      "D": "Tia X."
+      "A": "Tia $\\alpha$",
+      "B": "Tia $\\beta$",
+      "C": "Tia $\\gamma$",
+      "D": "Tia X"
     },
     "correct": "D",
     "giaiThich": ""
@@ -67,7 +67,7 @@
   {
     "id": 6,
     "type": "mc",
-    "question": "Cho bảng sau, hỏi các nguyên tử nào là đồng vị của nhau ?<br>Nguyên tử<br>Số proton<br>Số neutron<br>Số khối<br>X1<br>10<br>10<br>20<br>X2<br>13<br>14<br>27<br>X3<br>11<br>13<br>24<br>X4<br>12<br>12<br>24<br>X5<br>10<br>12<br>22",
+    "question": "<div class=\"q-text-body\">Cho bảng sau, hỏi các nguyên tử nào là đồng vị của nhau?</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de07/table_q06.png\" alt=\"Bảng thành phần các nguyên tử\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "X1 và X2",
       "B": "X2 và X4",

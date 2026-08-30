@@ -28,7 +28,7 @@
   {
     "id": 3,
     "type": "mc",
-    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Theo Định luật I nhiệt động lực học, độ biến thiên nội năng  của một vật, công A và nhiệt lượng Q liên hệ với nhau bởi biểu thức</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de09/image1.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Theo Định luật I nhiệt động lực học, độ biến thiên nội năng  của một vật, công A và nhiệt lượng Q liên hệ với nhau bởi biểu thức</div><div class=\"q-img-col\">$m$</div></div>",
     "options": {
       "A": "$ΔU=A+Q$.",
       "B": "$Q=ΔU+A$.",
@@ -251,10 +251,10 @@
     "type": "tf",
     "question": "<div class=\"q-text-body\">Câu 2. Hình bên mô tả cấu tạo của thiết bị cân dùng từ trường. Một cuộn dây hình chữ nhật chứa 50 vòng và có chiều rộng $d=5 cm$. Từ trường đều vuông góc với cuộn dây và có độ lớn $B=0,2 T$. Chỉ cạnh dưới của khung dây và một phần cạnh dài nằm trong từ trường $\\vec{B}$. Khi khóa K mở và chưa đặt vật nặng lên đĩa cân thì cân thăng bằng (thanh đòn nằm ngang). Lấy $g=10  m/{s}^{2}$, chiều dài đòn cân hai bên bằng nhau.</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de09/image7.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
-      "A": "Lực từ tác dụng lên cuộn dây khi dòng điện chạy qua là kết quả của sự tương tác giữa dòng điện và từ trường",
+      "A": "Lực từ tác dụng lên cuộn dây khi dòng điện chạy qua là kết quả của sự tương tác giữa dòng điện và từ trường.",
       "B": "Lực từ tác dụng lên phần cạnh dài của khung dây trong từ trường không ảnh hưởng đến độ thăng bằng của cân.",
       "C": "Để cân có thể cân bằng khi đặt thêm vật nặng thì trọng lượng của vật nặng phải bằng lực từ tác dụng lên cuộn dây.",
-      "D": "Đặt thêm vật nặng <img src=\"assets/exams/vedich2k9_de09/image8.png\" alt=\"công thức\" class=\"q-formula-img\" /> lên đĩa cân, đóng khóa <img src=\"assets/exams/vedich2k9_de09/image9.png\" alt=\"công thức\" class=\"q-formula-img\" />. Điều chỉnh dòng điện qua cuộn dây đến 4 A thì cân nằm thăng bằng, khi đó khối lượng của vật là 20 gam."
+      "D": "Đặt thêm vật nặng $ lên đĩa cân, đóng khóa $. Điều chỉnh dòng điện qua cuộn dây đến 4 A thì cân nằm thăng bằng, khi đó khối lượng của vật là 20 gam."
     },
     "correct": "ĐĐĐS",
     "giaiThich": "a) Lực từ tác dụng vào 2 cạnh bên thì có cùng độ lớn và ngược hướng nhau (theo phương ngang) nên tổng hợp lại thì không ảnh hưởng đến độ thăng bằng của cân<br>d) $F=P⇒NIdB=mg⇒m=\\frac{NIdB}{g}=\\frac{50.4.0,05.0,2}{10}=0,2 kg=200 g$"

@@ -335,12 +335,12 @@
       "D": ""
     },
     "correct": "2,07",
-    "giaiThich": "$pV=nRT=\\left({n}_{1}+{n}_{2}\\right)RT⇒p.1=\\left(\\frac{1,89}{44.1{0}^{-3}}+\\frac{2,53}{58.1{0}^{-3}}\\right).8,31.\\left(15+273\\right)⇒p=2,07.1{0}^{5}Pa$<br>Sử dụng thông tin sau cho câu 5 và câu 6: Một máy phát điện có công suất 10 kW, điện áp ở hai đầu cực máy phát là 1 kV. Để truyền đến nơi tiêu thụ, cần dùng một đường dây tải điện có điện trở tổng cộng là $6 Ω$."
+    "giaiThich": "$pV=nRT=(n_1+n_2)RT⇒p\\cdot 1=\\left(\\frac{1,89}{44\\cdot 10^{-3}}+\\frac{2,53}{58\\cdot 10^{-3}}\\right)\\cdot 8,31\\cdot (15+273)⇒p=2,07\\cdot 10^{5}\\text{ Pa}$"
   },
   {
     "id": 27,
     "type": "short",
-    "question": "Câu 5. Hiệu suất truyền tải điện năng bằng bao nhiêu phần trăm?(làm tròn kết quả đến chữ số hàng đơn vị).",
+    "question": "<div class=\"q-context\">Sử dụng thông tin sau cho câu 5 và câu 6: Một máy phát điện có công suất 10 kW, điện áp ở hai đầu cực máy phát là 1 kV. Để truyền đến nơi tiêu thụ, cần dùng một đường dây tải điện có điện trở tổng cộng là $6\\ \\Omega$.</div><div class=\"q-text-body\">Câu 5. Hiệu suất truyền tải điện năng bằng bao nhiêu phần trăm? (làm tròn kết quả đến chữ số hàng đơn vị).</div>",
     "options": {
       "A": "",
       "B": "",

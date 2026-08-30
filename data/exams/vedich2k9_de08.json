@@ -249,15 +249,15 @@
   {
     "id": 20,
     "type": "tf",
-    "question": "<div class=\"q-text-body\">13,5 m13,5 mCâu 2. Bình áp chứa nước gia dụng thường được sử dụng làm nguồn cung cấp nước thứ cấp. Cấu trúc đơn giản của nó được thể hiện như hình bên. Tổng thể tích của bình áp là 360 lít. Ban đầu, trong bình không có nước, vòi nước đóng, thể tích đường ống nước không đáng kể, áp suất khí trong bình là . Đầu tiên, bật máy bơm nước để bơm nước vào bình, khi áp suất khí tăng đến  thì máy bơm nước tự động ngắt, ngừng cấp nước và độ cao của vòi nước so với đáy bình áp suất là ${h}_{1}=13,5 m$. Sử dụng nước đến khi không có nước chảy ra khỏi vòi thì độ sâu nước còn lại trong bình là ${h}_{2}=1 m$, và máy bơm nước sẽ bật lại để bổ sung nước. Biết áp suất khí quyển là  và  là áp suất do cột nước cao 10 m tạo ra. Coi nhiệt độ của khí trong bình không đổi.<br>13,5 m<br>13,5 m</div><div class=\"q-multi-img-grid\"><img src=\"assets/exams/vedich2k9_de08/image10.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de08/image11.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de08/image12.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de08/image13.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de08/image14.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de08/image15.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /></div>",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 2. Bình áp chứa nước gia dụng thường được sử dụng làm nguồn cung cấp nước thứ cấp trong các gia đình. Ban đầu, van xả nước được mở, van dẫn nước được đóng lại, phần bình chứa nước không có nước, áp suất không khí trong túi cao su là $p_0$. Sau đó đóng van xả nước và mở van dẫn nước để dẫn nước vào bình. Khi áp suất không khí trong túi cao su tăng lên $6p_0$ thì ngừng dẫn nước vào bình, thể tích nước trong bình lúc này là 13,5 lít. Coi nhiệt độ của không khí trong túi cao su là không đổi và áp suất khí quyển là $p_0$.</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de08/image11.png\" alt=\"bình áp\" class=\"q-side-img\" /></div></div>",
     "options": {
-      "A": "Thể tích nước được bơm vào trong lần vận hành đầu tiên là 300 lít.",
-      "B": "Áp suất khí trong bình khi không có nước chảy ra khỏi vòi là $2,25{p}_{0}$.",
-      "C": "Thể tích của nước trong bình khi không có nước chảy ra khỏi vòi là 200 lít.",
-      "D": "Thể tích nước chảy ra khỏi vòi mỗi lần sử dụng là 125 lít."
+      "A": "Quá trình biến đổi trạng thái của không khí trong túi cao su là quá trình đẳng áp.",
+      "B": "Dung tích của bình áp là 16,2 lít.",
+      "C": "Khi mở van xả để nước chảy ra khỏi bình đến khi áp suất không khí trong túi cao su giảm xuống $1,25p_0$ thì ngừng xả nước. Thể tích nước còn lại trong bình là 2,7 lít.",
+      "D": "Khi áp suất của không khí trong túi cao su là $6p_0$, nếu mở van xả để nước chảy ra ngoài thì áp lực của không khí tác dụng lên thành trong của bình áp là $F = 2,25p_0\\cdot S$."
     },
     "correct": "ĐĐĐS",
-    "giaiThich": "a) Đẳng nhiệt: ${p}_{0}{V}_{0}=6{p}_{0}{V}_{1}⇒{V}_{1}=\\frac{{V}_{0}}{6}=\\frac{360}{6}=60 l$<br>Thể tích nước được bơm vào trong lần vận hành đầu tiên là ${V}_{0}-{V}_{1}=360-60=300 l$<br>b) ${h}_{1}-{h}_{2}=13,5-1=12,5 m$ ứng với áp suất <img src=\"assets/exams/vedich2k9_de08/image16.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>Áp suất khí trong bình khi không có nước chảy ra khỏi vòi là <img src=\"assets/exams/vedich2k9_de08/image17.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>c) Đẳng nhiệt $⇒{p}_{0}{V}_{0}=2,25{p}_{0}{V}_{2}⇒{V}_{2}=\\frac{{V}_{0}}{2,25}=\\frac{360}{2,25}=160 l$<br>Thể tích của nước trong bình khi không có nước chảy ra khỏi vòi là:${V}_{2}-{V}_{0}=360-160=200 l$<br>d) Thể tích nước chảy ra khỏi vòi mỗi lần sử dụng là $300-200=100 l$"
+    "giaiThich": "a) Đẳng nhiệt: ${p}_{0}{V}_{0}=6{p}_{0}{V}_{1}⇒{V}_{1}=\\frac{{V}_{0}}{6}=\\frac{360}{6}=60 l$<br>Thể tích nước được bơm vào trong lần vận hành đầu tiên là ${V}_{0}-{V}_{1}=360-60=300 l$<br>b) ${h}_{1}-{h}_{2}=13,5-1=12,5 m$ ứng với áp suất $p_0 + 1,25p_0 = 2,25p_0$<br>Áp suất khí trong bình khi không có nước chảy ra khỏi vòi là <img src=\"assets/exams/vedich2k9_de08/image17.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>c) Đẳng nhiệt $⇒{p}_{0}{V}_{0}=2,25{p}_{0}{V}_{2}⇒{V}_{2}=\\frac{{V}_{0}}{2,25}=\\frac{360}{2,25}=160 l$<br>Thể tích của nước trong bình khi không có nước chảy ra khỏi vòi là:${V}_{2}-{V}_{0}=360-160=200 l$<br>d) Thể tích nước chảy ra khỏi vòi mỗi lần sử dụng là $300-200=100 l$"
   },
   {
     "id": 21,
@@ -309,12 +309,12 @@
       "D": ""
     },
     "correct": "16,1",
-    "giaiThich": "$Q=mcΔT+mL=10.4180.\\left(100-25\\right)+10.2,3.1{0}^{6}=16,135.1{0}^{6}J$<br><img src=\"assets/exams/vedich2k9_de08/image19.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho Câu 3 và Câu 4: Hình bên mô tả cấu tạo của một loa điện gồm: một cuộn dây hình tròn đặt trong lòng một nam châm hình tròn cố định. Khi dòng điện biến thiên chạy qua các vòng dây dẫn của cuộn dây sẽ làm xuất hiện lực từ tác dụng lên cuộn dây, lực từ này có chiều thay đổi làm nón loa nối với cuộn dây dao động theo, từ đó tạo ra âm thanh phát ra. Giả sử từ trường của nam châm là 0,08 T, đường sức từ của nam châm tròn nằm dọc theo đường kính nam châm. Cuộn dây có đường kính 6,4 cm, gồm 18 vòng dây. Dòng điện xoay chiều chạy trong cuộn dây là: $i=3\\mathrm{cos} {\\left(2πft\\right)}$ (A)."
+    "giaiThich": "$Q=mc\\Delta T+mL=10\\cdot 4180\\cdot (100-25)+10\\cdot 2,3\\cdot 10^{6}=16,135\\cdot 10^{6}\\text{ J}$"
   },
   {
     "id": 25,
     "type": "short",
-    "question": "Câu 3. Dòng điện qua cuộn dây có cường độ hiệu dụng bằng bao nhiêu ampe?(làm tròn kết quả",
+    "question": "<div class=\"q-context\">Sử dụng các thông tin sau cho Câu 3 và Câu 4: Hình bên mô tả cấu tạo của một loa điện gồm: một cuộn dây hình tròn đặt trong lòng một nam châm hình tròn cố định. Khi dòng điện biến thiên chạy qua các vòng dây dẫn của cuộn dây sẽ làm xuất hiện lực từ tác dụng lên cuộn dây, lực từ này có chiều thay đổi làm nón loa nối với cuộn dây dao động theo, từ đó tạo ra âm thanh phát ra. Giả sử từ trường của nam châm là 0,08 T, đường sức từ của nam châm tròn nằm dọc theo đường kính nam châm. Cuộn dây có đường kính 6,4 cm, gồm 18 vòng dây. Dòng điện xoay chiều chạy trong cuộn dây là: $i=3\\cos(2\\pi ft)$ (A).</div><div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 3. Dòng điện qua cuộn dây có cường độ hiệu dụng bằng bao nhiêu ampe? (làm tròn kết quả đến chữ số hàng phần trăm).</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de08/image19.png\" alt=\"loa điện\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "",
       "B": "",

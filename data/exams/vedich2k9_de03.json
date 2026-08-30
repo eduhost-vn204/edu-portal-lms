@@ -262,15 +262,15 @@
   {
     "id": 21,
     "type": "tf",
-    "question": "<div class=\"q-text-body\">Câu 3. Cho 200 g nước đá ở  vào một cốc cách nhiệt đựng nước ở $3{5}^{0}C$.Sự thay đổi nhiệt độ của nước đá và nước trong cốc theo thời gian được biểu diễn theo đồ thị hình bên. Biết nhiệt dung riêng của nước đá là $2100J/kg$, nhiệt nóng chảy riêng của nước đá là $3,4.1{0}^{5} J/kg$, nhiệt dung riêng của nước là $4200J/kg.K$., bỏ qua nhiệt dung của cốc. Trong các phát biểu sau đây, phát biểu nào đúng, phát biểu nào sai?</div><div class=\"q-multi-img-grid\"><img src=\"assets/exams/vedich2k9_de03/image6.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de03/image7.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /></div>",
+    "question": "<div class=\"q-text-body\">Câu 3. Cho 200 g nước đá ở  vào một cốc cách nhiệt đựng nước ở $3{5}^{0}C$.Sự thay đổi nhiệt độ của nước đá và nước trong cốc theo thời gian được biểu diễn theo đồ thị hình bên. Biết nhiệt dung riêng của nước đá là $2100J/kg$, nhiệt nóng chảy riêng của nước đá là $3,4.1{0}^{5} J/kg$, nhiệt dung riêng của nước là $4200J/kg.K$., bỏ qua nhiệt dung của cốc. Trong các phát biểu sau đây, phát biểu nào đúng, phát biểu nào sai?</div><div class=\"q-multi-img-grid\"><img src=\"assets/exams/vedich2k9_de03/image6.png\" alt=\"hình vẽ\" class=\"q-grid-img\" />$-8^\\circ\\text{C}$</div>",
     "options": {
-      "A": "Nước đá tan trong khoảng thời gian <img src=\"assets/exams/vedich2k9_de03/image8.png\" alt=\"công thức\" class=\"q-formula-img\" /> giây.",
-      "B": "Trong khoảng thời gian từ <img src=\"assets/exams/vedich2k9_de03/image9.png\" alt=\"công thức\" class=\"q-formula-img\" /> đến <img src=\"assets/exams/vedich2k9_de03/image10.png\" alt=\"công thức\" class=\"q-formula-img\" />, nước đá không thu nhiệt từ nước trong cốc.",
-      "C": "Trong khoảng thời gian <img src=\"assets/exams/vedich2k9_de03/image11.png\" alt=\"công thức\" class=\"q-formula-img\" /> giây đầu tiên, nước trong cốc toả ra một lượng nhiệt bằng $761,3kJ$.",
+      "A": "Nước đá tan trong khoảng thời gian $\\tau_2$ giây.",
+      "B": "Trong khoảng thời gian từ $\\tau_1$ đến $\\tau_2$, nước đá không thu nhiệt từ nước trong cốc.",
+      "C": "Trong khoảng thời gian $\\tau_2$ giây đầu tiên, nước trong cốc toả ra một lượng nhiệt bằng $761,3kJ$.",
       "D": "Khối lượng nước trong cốc bằng 0,6 kg."
     },
     "correct": "SSSĐ",
-    "giaiThich": "a) Nước đá tan trong khoảng thời gian <img src=\"assets/exams/vedich2k9_de03/image12.png\" alt=\"công thức\" class=\"q-formula-img\" /> giây.<br>b) Trong khoảng thời gian từ <img src=\"assets/exams/vedich2k9_de03/image13.png\" alt=\"công thức\" class=\"q-formula-img\" /> đến <img src=\"assets/exams/vedich2k9_de03/image14.png\" alt=\"công thức\" class=\"q-formula-img\" />, nước đá có thu nhiệt từ nước trong cốc.<br>c) ${Q}_{2}={m}_{d}{c}_{d}Δ{t}_{d}+{m}_{d}λ=0,2.2100.8+0,2.3.4.1{0}^{5}=71360J$<br>d) ${Q}_{2}+{m}_{d}{c}_{n}t={m}_{n}{c}_{n}\\left({t}_{n}-t\\right)⇒71360+0,2.4200.5={m}_{n}.4200.(35-5)⇒{m}_{n}≈0,6  kg$"
+    "giaiThich": "a) Nước đá tan trong khoảng thời gian $\\tau_2$ giây.<br>b) Trong khoảng thời gian từ $\\tau_1$ đến $\\tau_2$, nước đá có thu nhiệt từ nước trong cốc.<br>c) ${Q}_{2}={m}_{d}{c}_{d}Δ{t}_{d}+{m}_{d}λ=0,2.2100.8+0,2.3.4.1{0}^{5}=71360J$<br>d) ${Q}_{2}+{m}_{d}{c}_{n}t={m}_{n}{c}_{n}\\left({t}_{n}-t\\right)⇒71360+0,2.4200.5={m}_{n}.4200.(35-5)⇒{m}_{n}≈0,6  kg$"
   },
   {
     "id": 22,
@@ -301,7 +301,7 @@
   {
     "id": 24,
     "type": "short",
-    "question": "<div class=\"q-text-body\">Câu 2. Máy biến áp là thiết bị điện dùng để biến đổi điện áp xoay chiều. Cấu tạo gồm 2 cuộn dây sơ cấp (${N}_{1}$ vòng) và thứ cấp (${N}_{2}$ vòng), hoạt động dựa vào hiện tượng cảm ứng điện từ. Biết điện áp hiệu dụng ở hai đầu mỗi cuộn dây tỉ lệ thuận với số vòng dây của cuộn dây đó. Đặt một điện áp xoay chiều có giá trị hiệu dụng $160\\sqrt{2}V$ vào hai đầu cuộn sơ cấp thì đồ thị điện áp ${u}_{2}$ giữa hai đầu cuộn thứ cấp khi để hở có dạng như hình bên. Biết tổng số vòng dây ở cả hai cuộn sơ cấp và cuộn thứ cấp của máy biến áp là 850 vòng. Số vòng dây cuộn sơ cấp là bao nhiêu vòng?</div><div class=\"q-multi-img-grid\"><img src=\"assets/exams/vedich2k9_de03/image16.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de03/image17.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de03/image64.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de03/image65.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /></div>",
+    "question": "<div class=\"q-text-body\">Câu 2. Máy biến áp là thiết bị điện dùng để biến đổi điện áp xoay chiều. Cấu tạo gồm 2 cuộn dây sơ cấp (${N}_{1}$ vòng) và thứ cấp (${N}_{2}$ vòng), hoạt động dựa vào hiện tượng cảm ứng điện từ. Biết điện áp hiệu dụng ở hai đầu mỗi cuộn dây tỉ lệ thuận với số vòng dây của cuộn dây đó. Đặt một điện áp xoay chiều có giá trị hiệu dụng $160\\sqrt{2}\\text{ V}$ vào hai đầu cuộn sơ cấp thì đồ thị điện áp ${u}_{2}$ giữa hai đầu cuộn thứ cấp khi để hở có dạng như hình bên. Biết tổng số vòng dây ở cả hai cuộn sơ cấp và cuộn thứ cấp của máy biến áp là 850 vòng. Số vòng dây cuộn sơ cấp là bao nhiêu vòng?</div><div class=\"q-multi-img-grid\"><img src=\"assets/exams/vedich2k9_de03/image16.png\" alt=\"đồ thị điện áp\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de03/image17.png\" alt=\"máy biến áp\" class=\"q-grid-img\" /></div>",
     "options": {
       "A": "",
       "B": "",
@@ -309,12 +309,12 @@
       "D": ""
     },
     "correct": "800",
-    "giaiThich": "Áp dụng: $\\frac{{U}_{2}}{{U}_{1}}=\\frac{{N}_{2}}{{N}_{1}}⇒\\frac{10\\sqrt{2}}{160\\sqrt{2}}=\\frac{850-{N}_{1}}{{N}_{1}}⇒{N}_{1}=800$<br>Sử dụng các thông tin sau cho câu 3 và câu 4: Hai học sinh chở nhau đi học bằng xe đạp thì thấy săm xe đạp non hơi. Biết săm xe có thể tích 5 lít chứa không khí ở áp suất <img src=\"assets/exams/vedich2k9_de03/image18.png\" alt=\"công thức\" class=\"q-formula-img\" />. Khi đó một học sinh đã dùng một bơm tay, mỗi lần bơm vào săm 0,4 lít không khí ở áp suất khí quyển 1 atm. Coi quá trình bơm là đẳng nhiệt và thể tích của săm xe là không đổi."
+    "giaiThich": "Áp dụng: $\\frac{{U}_{2}}{{U}_{1}}=\\frac{{N}_{2}}{{N}_{1}}⇒\\frac{10\\sqrt{2}}{160\\sqrt{2}}=\\frac{850-{N}_{1}}{{N}_{1}}⇒{N}_{1}=800$"
   },
   {
     "id": 25,
     "type": "short",
-    "question": "<div class=\"q-text-body\">Câu 3. Hỏi sau bao nhiêu lần bơm thì áp suất của không khí trong săm tăng đến ? (kết quả làm tròn đến chữ số hàng đơn vị).</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de03/image19.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
+    "question": "<div class=\"q-context\">Sử dụng các thông tin sau cho câu 3 và câu 4: Hai học sinh chở nhau đi học bằng xe đạp thì thấy săm xe đạp non hơi. Biết săm xe có thể tích 5 lít chứa không khí ở áp suất $1,1\\text{ atm}$. Khi đó một học sinh đã dùng một bơm tay, mỗi lần bơm vào săm 0,4 lít không khí ở áp suất khí quyển $1\\text{ atm}$. Coi quá trình bơm là đẳng nhiệt và thể tích của săm xe là không đổi.</div><div class=\"q-text-body\">Câu 3. Hỏi sau bao nhiêu lần bơm thì áp suất của không khí trong săm tăng đến $1,5\\text{ atm}$? (kết quả làm tròn đến chữ số hàng đơn vị).</div>",
     "options": {
       "A": "",
       "B": "",
@@ -327,7 +327,7 @@
   {
     "id": 26,
     "type": "short",
-    "question": "<div class=\"q-text-body\">Câu 4. Biết khối lượng mol của oxygen là $32 \\frac{g}{mol}$. Một bình khí chứa 48 g oxygen có số phân tử là . Giá trị của x là bao nhiêu. (kết quả làm tròn đến chữ số hàng phần trăm).</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de03/image20.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
+    "question": "Câu 4. Biết khối lượng mol của oxygen là $32\\text{ g/mol}$. Một bình khí chứa 48 g oxygen có số phân tử là $x\\cdot 10^{23}$. Giá trị của x là bao nhiêu? (kết quả làm tròn đến chữ số hàng phần trăm).",
     "options": {
       "A": "",
       "B": "",
@@ -335,12 +335,12 @@
       "D": ""
     },
     "correct": "9,03",
-    "giaiThich": "$N=n.{N}_{A}=\\frac{m}{M}.{N}_{A}=\\frac{48}{32}×6,02.1{0}^{23}=9,03.1{0}^{23}$<br><img src=\"assets/exams/vedich2k9_de03/image21.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho câu 5 và câu 6: Dùng máy đo phóng xạ của một mẫu gỗ của một cổ vật phát hiện được 240 phóng xạ mỗi phút. Biết rằng thành phần của mẫu gỗ có chứa 25 g ${}^{14}_{6}\\mathrm{C}$ và ${}^{12}_{6}\\mathrm{C}$, chu kì bán rã của ${}^{14}_{6}\\mathrm{C}$ là 5730 năm và tỉ lệ nguyên tử ${}^{12}_{6}\\mathrm{C}$ và ${}^{14}_{6}\\mathrm{C}$ khi một sinh vật còn sống 1012:1."
+    "giaiThich": "$N=n\\cdot {N}_{A}=\\frac{m}{M}\\cdot {N}_{A}=\\frac{48}{32}\\cdot 6,02\\cdot 10^{23}=9,03\\cdot 10^{23}$"
   },
   {
     "id": 27,
     "type": "short",
-    "question": "Câu 5. Số nguyên tử ${}^{14}_{6}\\mathrm{C}$ có trong mẫu gỗ trên bằng X.1012. Xác định giá trị của X (Kết quả làm tròn đến chữ số hàng phần mười).",
+    "question": "<div class=\"q-context\">Sử dụng các thông tin sau cho câu 5 và câu 6: Dùng máy đo phóng xạ của một mẫu gỗ của một cổ vật phát hiện được 240 phóng xạ mỗi phút. Biết rằng thành phần của mẫu gỗ có chứa 25 g ${}^{14}_{6}\\mathrm{C}$ và ${}^{12}_{6}\\mathrm{C}$, chu kì bán rã của ${}^{14}_{6}\\mathrm{C}$ là 5730 năm và tỉ lệ nguyên tử ${}^{12}_{6}\\mathrm{C}$ và ${}^{14}_{6}\\mathrm{C}$ khi một sinh vật còn sống $10^{12}:1$.</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de03/image21.png\" alt=\"mẫu gỗ\" class=\"q-block-img\" /></div><div class=\"q-text-body\">Câu 5. Số nguyên tử ${}^{14}_{6}\\mathrm{C}$ có trong mẫu gỗ trên bằng $X\\cdot 10^{12}$. Xác định giá trị của X? (Kết quả làm tròn đến chữ số hàng phần mười).</div>",
     "options": {
       "A": "",
       "B": "",

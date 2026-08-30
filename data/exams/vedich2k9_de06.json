@@ -41,7 +41,7 @@
   {
     "id": 4,
     "type": "mc",
-    "question": "(1)<br>T<br>p<br>0<br>(2)<br>(1)<br>T<br>p<br>0<br>(2)<br>Một khối khí lí tưởng biến đổi từ trạng thái (1) có thể tích V1 sang trạng thái (2) có thể tích V2. Đồ thị biểu diễn mối liên hệ giữa áp suất p và nhiệt độ tuyệt đối T được thể hiện trong hình vẽ bên. Biểu thức nào sau đây là đúng khi so sánh giá trị của V1 và V2?",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Một khối khí lí tưởng biến đổi từ trạng thái (1) có thể tích $V_1$ sang trạng thái (2) có thể tích $V_2$. Đồ thị biểu diễn mối liên hệ giữa áp suất $p$ và nhiệt độ tuyệt đối $T$ được thể hiện trong hình vẽ bên. Biểu thức nào sau đây là đúng khi so sánh giá trị của $V_1$ và $V_2$?</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de06/image2.png\" alt=\"đồ thị p-T\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "V1 < V2.",
       "B": "V1 = 10V2.",
@@ -275,7 +275,7 @@
   {
     "id": 22,
     "type": "tf",
-    "question": "<div class=\"q-text-body\">Câu 4. Dùng đèn cồn đun nước và theo dõi nhiệt độ của băng phiến. Khi nhiệt độ của băng phiến lên tới 60°C thì cứ sau 1 phút lại ghi nhiệt độ và nhận xét về thể (rắn hay lỏng) của băng phiến vào bảng theo dõi. Ghi cho tới khi băng phiến đạt đến nhiệt độ 86°C, ta được bảng<br>Thời gian đun (phút)<br>Nhiệt độ (oC)<br>Thể<br>Thời gian đun (phút)<br>Nhiệt độ (oC)<br>Thể<br>0<br>60<br>Rắn<br>8<br>80<br>Rắn và lỏng<br>1<br>63<br>Rắn<br>9<br>80<br>Rắn và lỏng<br>2<br>66<br>Rắn<br>10<br>80<br>Rắn và lỏng<br>3<br>69<br>Rắn<br>11<br>80<br>Rắn và lỏng<br>4<br>72<br>Rắn<br>12<br>81<br>Lỏng<br>5<br>75<br>Rắn<br>13<br>82<br>Lỏng<br>6<br>77<br>Rắn<br>14<br>84<br>Lỏng<br>7<br>79<br>Rắn<br>15<br>86<br>Lỏng</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de06/image9.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
+    "question": "<div class=\"q-text-body\">Câu 4. Dùng đèn cồn đun nước và theo dõi nhiệt độ của băng phiến. Khi nhiệt độ của băng phiến lên tới 60°C thì cứ sau 1 phút lại ghi nhiệt độ và nhận xét về thể (rắn hay lỏng) của băng phiến vào bảng theo dõi. Ghi cho tới khi băng phiến đạt đến nhiệt độ 86°C, ta được bảng sau:</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de06/table_q22.png\" alt=\"Bảng theo dõi nhiệt độ của băng phiến\" class=\"q-block-img\" /></div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de06/image9.png\" alt=\"thí nghiệm băng phiến\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Nhiệt độ nóng chảy của băng phiến là 80 K.",
       "B": "Trong thời gian nóng chảy nhiệt độ của băng phiến không thay đổi.",

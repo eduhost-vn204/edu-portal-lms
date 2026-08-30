@@ -28,7 +28,7 @@
   {
     "id": 3,
     "type": "mc",
-    "question": "NM NM Một thanh thẳng, cứng, dẫn điện MN có chiều dài $l$, khối lượng $m$ mang dòng điện có chiều từ M đến N. Thanh được treo nằm ngang bằng hai sợi dây dẫn thẳng, nhẹ, trong từ trường đều, véc tơ cảm ứng từ có phương vuông góc với mặt phẳng chứa thanh MN và các dây treo (hình vẽ bên). Lực từ tác dụng lên thanh MN có chiều<br>N<br>M<br>$\\vec{B}⊗$<br>N<br>M<br>$\\vec{B}⊗$",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Một thanh thẳng, cứng, dẫn điện MN có chiều dài $l$, khối lượng $m$ mang dòng điện có chiều từ M đến N. Thanh được treo nằm ngang bằng hai sợi dây dẫn thẳng, nhẹ, trong từ trường đều, véc tơ cảm ứng từ có phương vuông góc với mặt phẳng chứa thanh MN và các dây treo (hình vẽ bên). Lực từ tác dụng lên thanh MN có chiều:</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de13/image1.png\" alt=\"thanh treo MN\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "hướng lên.",
       "B": "hướng xuống.",
@@ -335,12 +335,12 @@
       "D": ""
     },
     "correct": "15",
-    "giaiThich": "Để đảm bảo công suất phát điện không đổi, hệ số nhân neutron tương ứng $k=1$, khi đó các thanh điều khiển hấp thụ 1,6 neutron dư thừa.<br>Mỗi giây có 14.1019 hạt Urani phân hạch, mỗi hạt Urani phân hạch tạo ra 2,6 hạt neutron, trong đó các thanh điều khiển cần hấp thụ 1,6 hạt neutron (nhằm đảm bảo mật độ hạt neutron không tăng theo thời gian).<br>Mỗi giây có: $1,6.N=1,6.14.1{0}^{19}=2,24.1{0}^{20}$ hạt neutron dư thừa bị hấp thụ<br>Thời gian hấp thụ: $t=\\frac{289.1{0}^{24}}{2,24.1{0}^{20}}.\\left(\\frac{1}{24.3600}\\right)≈15$ (ngày).<br><img src=\"assets/exams/vedich2k9_de13/image10.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho câu 5 và câu 6: Xi lanh kim loại có thể tích 0,012 m3 chứa khí nén dưới áp suất 8,5 atm ban đầu ở mực nưởc biển, áp suất là 1,0 atm và nhiệt độ là 27°C. Sau đó, người thợ lặn đưa xi lanh xuống đáy biển nơi có áp suất 4,0 atm và nhiệt độ là 20°C. Giả sử thể tích của xi lanh không đổi."
+    "giaiThich": "Để đảm bảo công suất phát điện không đổi, hệ số nhân neutron tương ứng $k=1$, khi đó các thanh điều khiển hấp thụ 1,6 neutron dư thừa.<br>Mỗi giây có $N=1,09375\\cdot 10^{20}$ phân hạch $\\Rightarrow$ Số neutron các thanh điều khiển hấp thụ trong 1 giây là: $1,6\\cdot 1,09375\\cdot 10^{20}=1,75\\cdot 10^{20}\\text{ neutron}$"
   },
   {
     "id": 27,
     "type": "short",
-    "question": "Câu 5. Ở đáy biển áp suất trong xi lanh trở thành bao nhiêu atm (làm tròn kết quả đến chữ số hàng phần mười)?",
+    "question": "<div class=\"q-context\">Sử dụng các thông tin sau cho câu 5 và câu 6: Xi lanh kim loại có thể tích $0,012\\text{ m}^3$ chứa khí nén dưới áp suất $8,5\\text{ atm}$ ban đầu ở mực nước biển, áp suất là $1,0\\text{ atm}$ và nhiệt độ là 27°C. Sau đó, người thợ lặn đưa xi lanh xuống đáy biển nơi có áp suất $4,0\\text{ atm}$ và nhiệt độ là 20°C. Giả sử thể tích của xi lanh không đổi.</div><div class=\"q-text-body\">Câu 5. Ở đáy biển áp suất trong xi lanh trở thành bao nhiêu atm? (làm tròn kết quả đến chữ số hàng phần mười).</div>",
     "options": {
       "A": "",
       "B": "",
