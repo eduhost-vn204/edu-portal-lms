@@ -41,7 +41,7 @@
   {
     "id": 4,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de07/image4.png\" alt=\"hình vẽ\" class=\"q-img\" />Thanh kim loại dẫn điện có thể lăn không ma sát dọc theo hai đoạn dây dẫn trần không nhiễm từ và được nối vào nguồn điện tạo thành mạch điện như hình vẽ bên. Khi đóng công tác K, thanh kim loại sẽ",
+    "question": "<div class=\"q-text-body\">Thanh kim loại dẫn điện có thể lăn không ma sát dọc theo hai đoạn dây dẫn trần không nhiễm từ và được nối vào nguồn điện tạo thành mạch điện như hình vẽ bên. Khi đóng công tác K, thanh kim loại sẽ</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de07/image4.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "chuyển động về bên trái.",
       "B": "đứng yên.",
@@ -54,12 +54,12 @@
   {
     "id": 5,
     "type": "mc",
-    "question": "Trong phản ứng hạt nhân: $37Li+X→224He$. Hạt X là hạt nhân nào sau đây?",
+    "question": "Trong phản ứng hạt nhân: $${}^{7}_{3}\\mathrm{Li}$+X→2\\cdot {}^{4}_{2}\\mathrm{He}$$. Hạt X là hạt nhân nào sau đây?",
     "options": {
-      "A": "$01n$.",
-      "B": "$11H$.",
-      "C": "$-10e$.",
-      "D": "$13T$."
+      "A": "${}^{1}_{0}\\mathrm{n}$.",
+      "B": "${}^{1}_{1}\\mathrm{H}$.",
+      "C": "$-${}^{0}_{1}\\mathrm{e}$$.",
+      "D": "${}^{3}_{1}\\mathrm{T}$."
     },
     "correct": "B",
     "giaiThich": ""
@@ -132,7 +132,7 @@
   {
     "id": 11,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de07/image5.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho Câu 11, Câu 12 và  Câu 13: Hình bên là cấu trúc đơn giản của một máy lạnh có công suất tiêu thụ điện định mức là 900 W. Để máy lạnh này hoạt động tốt, người ta bơm vào máy 0,83 kg môi chất lạnh (gas lạnh) R32. Máy hoạt động dựa trên nguyên lý trao đổi nhiệt giữa môi chất lạnh với không khí trong phòng và ngoài phòng thông qua hệ thống máy nén và dàn trao đổi nhiệt. Tại dàn lạnh xảy ra quá trình môi chất lạnh R32 chuyển từ thể lỏng sang thể khí. Quá trình này nhận nhiệt lượng từ không khí trong phòng và làm giảm nhiệt độ của phòng. Biết nhiệt hóa hơi riêng của R32 là 246 kJ/kg.<br>Quá trình môi chất lạnh chuyển từ thể lỏng sang thể khí tại dàn lạnh là quá trình",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Sử dụng các thông tin sau cho Câu 11, Câu 12 và  Câu 13: Hình bên là cấu trúc đơn giản của một máy lạnh có công suất tiêu thụ điện định mức là 900 W. Để máy lạnh này hoạt động tốt, người ta bơm vào máy 0,83 kg môi chất lạnh (gas lạnh) R32. Máy hoạt động dựa trên nguyên lý trao đổi nhiệt giữa môi chất lạnh với không khí trong phòng và ngoài phòng thông qua hệ thống máy nén và dàn trao đổi nhiệt. Tại dàn lạnh xảy ra quá trình môi chất lạnh R32 chuyển từ thể lỏng sang thể khí. Quá trình này nhận nhiệt lượng từ không khí trong phòng và làm giảm nhiệt độ của phòng. Biết nhiệt hóa hơi riêng của R32 là 246 kJ/kg.<br>Quá trình môi chất lạnh chuyển từ thể lỏng sang thể khí tại dàn lạnh là quá trình</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de07/image5.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "ngưng tụ.",
       "B": "nóng chảy.",
@@ -184,7 +184,7 @@
   {
     "id": 15,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de07/image6.png\" alt=\"hình vẽ\" class=\"q-img\" /> Tinh vân Lagoon là một đám mây khí nằm cách Trái Đất 3900 năm ánh sáng. Đám mây phát sáng vì nhiệt độ cao 7500 K. (Khí được nâng lên nhiệt độ này bởi nằm trong tinh vân.) Đám mây cũng rất mỏng; chỉ có 80 phân tử trên một centimet khối. Áp suất khí (tính theo khí quyển) trong Tinh vân Lagoon bằng",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Tinh vân Lagoon là một đám mây khí nằm cách Trái Đất 3900 năm ánh sáng. Đám mây phát sáng vì nhiệt độ cao 7500 K. (Khí được nâng lên nhiệt độ này bởi nằm trong tinh vân.) Đám mây cũng rất mỏng; chỉ có 80 phân tử trên một centimet khối. Áp suất khí (tính theo khí quyển) trong Tinh vân Lagoon bằng</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de07/image6.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "8,28.10-12 Pa.",
       "B": "2,34.10-10 Pa.",
@@ -223,7 +223,7 @@
   {
     "id": 18,
     "type": "mc",
-    "question": "Một khối khí lí tưởng xác định có thể tích 1 m3 ở nhiệt độ 150C để giảm thể tích khí còn một nửa khi áp suất không đổi thì cần phải",
+    "question": "Một khối khí lí tưởng xác định có thể tích 1 m3 ở nhiệt độ 15°C để giảm thể tích khí còn một nửa khi áp suất không đổi thì cần phải",
     "options": {
       "A": "giảm nhiệt độ đến –129 0C.",
       "B": "tăng nhiệt độ đến 144 K.",
@@ -262,7 +262,7 @@
   {
     "id": 21,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de07/image7.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 3. Một khung dây dẫn phẳng dẹt hình chữ nhật gồm 500 vòng dây, mỗi vòng dây có diện tích là $S=50 c{m}^{2}$. Khung quay đều với tốc độ góc $ω$ quanh một trục đối xứng nằm trong mặt phẳng của khung dây, trong một từ trường đều có vectơ cảm ứng từ $\\vec{B}$ vuông góc với trục quay. Hình (a) biểu diễn từ thông qua khung dây phụ thuộc theo thời gian:",
+    "question": "<div class=\"q-text-body\">Câu 3. Một khung dây dẫn phẳng dẹt hình chữ nhật gồm 500 vòng dây, mỗi vòng dây có diện tích là $S=50 c{m}^{2}$. Khung quay đều với tốc độ góc $ω$ quanh một trục đối xứng nằm trong mặt phẳng của khung dây, trong một từ trường đều có vectơ cảm ứng từ $\\vec{B}$ vuông góc với trục quay. Hình (a) biểu diễn từ thông qua khung dây phụ thuộc theo thời gian:</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de07/image7.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Tốc độ góc là $ω=200π rad/s$.",
       "B": "Độ lớn cảm ứng từ là $B=\\frac{0,68}{π} T$.",
@@ -275,12 +275,12 @@
   {
     "id": 22,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de07/image8.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Một quạt hơi nước là thiết bị hoạt động dựa trên nguyên tắc bốc hơi nước tự nhiên để làm mát không khí. Lúc vận hành, cánh quạt quay tròn sẽ khởi tạo lực hút không khí đi vào máy qua 3 cửa hút gió. Ngay ở cửa lấy khí có bố trí tấm làm mát. Tấm làm mát này được thiết kế với hình thức như rất nhiều đường ống dẫn khí với mặt cắt như tổ ong. Tấm làm mát cũng có thể dẫn và thấm đẫm nước. Khi không khí nóng bên ngoài luồn qua tấm làm mát đã có nước sẽ tạo ra hiện tượng bay hơi nước hoàn toàn tự nhiên ở trong các ống dẫn không khí. Nước lúc này đang từ thể lỏng sẽ chuyển đổi thành thể khí. Khi nước bay hơi, nhiệt lượng được lấy từ không khí xung quanh, làm giảm nhiệt độ không khí. Người ta dùng quạt hơi nước để làm mát một phòng kín, kích thước <img src=\"assets/exams/vedich2k9_de07/image9.png\" alt=\"công thức\" class=\"q-formula-img\" />. Giả sử toàn bộ nhiệt lượng lấy từ không khí để làm bay hơi nước và nhiệt độ của nước luôn là 350C . Biết lượng nước bay hơi từ quạt trong mỗi giây là 0,7 g; nhiệt hóa hơi của nước ở nhiệt độ 350C là <img src=\"assets/exams/vedich2k9_de07/image10.png\" alt=\"công thức\" class=\"q-formula-img\" />; khối lượng riêng của không khí trong phòng là $1,2  kg/{m}^{3}$ và nhiệt dung riêng của không khí là 1005 J/kg.K.",
+    "question": "<div class=\"q-text-body\">Câu 4. Một quạt hơi nước là thiết bị hoạt động dựa trên nguyên tắc bốc hơi nước tự nhiên để làm mát không khí. Lúc vận hành, cánh quạt quay tròn sẽ khởi tạo lực hút không khí đi vào máy qua 3 cửa hút gió. Ngay ở cửa lấy khí có bố trí tấm làm mát. Tấm làm mát này được thiết kế với hình thức như rất nhiều đường ống dẫn khí với mặt cắt như tổ ong. Tấm làm mát cũng có thể dẫn và thấm đẫm nước. Khi không khí nóng bên ngoài luồn qua tấm làm mát đã có nước sẽ tạo ra hiện tượng bay hơi nước hoàn toàn tự nhiên ở trong các ống dẫn không khí. Nước lúc này đang từ thể lỏng sẽ chuyển đổi thành thể khí. Khi nước bay hơi, nhiệt lượng được lấy từ không khí xung quanh, làm giảm nhiệt độ không khí. Người ta dùng quạt hơi nước để làm mát một phòng kín, kích thước . Giả sử toàn bộ nhiệt lượng lấy từ không khí để làm bay hơi nước và nhiệt độ của nước luôn là 35°C . Biết lượng nước bay hơi từ quạt trong mỗi giây là 0,7 g; nhiệt hóa hơi của nước ở nhiệt độ 35°C là ; khối lượng riêng của không khí trong phòng là $1,2  kg/{m}^{3}$ và nhiệt dung riêng của không khí là 1005 J/kg.K.</div><div class=\"q-multi-img-grid\"><img src=\"assets/exams/vedich2k9_de07/image8.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de07/image9.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de07/image10.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /></div>",
     "options": {
       "A": "Khối lượng nước trong quạt bị bay hơi trong thời gian 10 phút là 0,42 kg.",
       "B": "Nhiệt lượng cần thiết lấy từ không khí để làm bay hơi 0,42 kg nước là  J.",
       "C": "Khối lượng không khí có trong phòng là 65 kg.",
-      "D": "Nếu sự thay đổi nhiệt độ không khí chỉ do sự hấp thụ nhiệt của nước khi bay hơi thì sau 10 phút mở quạt, nhiệt độ không khí trong phòng giảm đi 9,80C."
+      "D": "Nếu sự thay đổi nhiệt độ không khí chỉ do sự hấp thụ nhiệt của nước khi bay hơi thì sau 10 phút mở quạt, nhiệt độ không khí trong phòng giảm đi 9,8°C."
     },
     "correct": "ĐĐSĐ",
     "giaiThich": "a) Khối lượng nước bay hơi trong thời gian 1 phút: $0,7.10.60=42g=0,42 kg$<br>b) Nước nhận năng lượng từ không khí để bay hơi: $Q=mL=0,42.2,26.1{0}^{6}=949200 J$.<br>c) Khối lượng không khí: ${m}_{kk}={D}_{kk}V=1,2.4.5.4=96 kg$<br>d) Sau khi truyền năng lượng cho nước, nhiệt độ không khí giảm đi một lượng:<br>$ΔT=\\frac{Q}{{m}_{kk}.c}=\\frac{949200 }{96.1005}=9,{8}^{0}C$"
@@ -288,7 +288,7 @@
   {
     "id": 23,
     "type": "short",
-    "question": "Sử dụng thông tin sau cho câu 1 và câu 2: Đồng vị phóng xạ β- xenon $54133Xe$ được sử dụng trong phương pháp nguyên tử đánh dấu của y học hạt nhân khi kiểm tra chức năng và chẩn đoán các bệnh về phổi. Chu kì bán rã của xenon $54133Xe$ là 5,24 ngày. Một mẫu khí chứa xenon $54133Xe$ khi được sản xuất tại nhà máy có độ phóng xạ là 4,25.109 Bq. Mẫu đó được vận chuyển về bệnh viện và sử dụng cho bệnh nhân sau đó 3 ngày.<br>Câu 1. Hằng số phóng xạ xenon $54133Xe$ bằng X.10-6 s-1. Giá trị của X bằng bao nhiêu?(làm tròn kết quả đến chữ số hàng phần trăm).",
+    "question": "Sử dụng thông tin sau cho câu 1 và câu 2: Đồng vị phóng xạ β- xenon ${}^{33}_{541}\\mathrm{Xe}$ được sử dụng trong phương pháp nguyên tử đánh dấu của y học hạt nhân khi kiểm tra chức năng và chẩn đoán các bệnh về phổi. Chu kì bán rã của xenon ${}^{33}_{541}\\mathrm{Xe}$ là 5,24 ngày. Một mẫu khí chứa xenon ${}^{33}_{541}\\mathrm{Xe}$ khi được sản xuất tại nhà máy có độ phóng xạ là 4,25.109 Bq. Mẫu đó được vận chuyển về bệnh viện và sử dụng cho bệnh nhân sau đó 3 ngày.<br>Câu 1. Hằng số phóng xạ xenon ${}^{33}_{541}\\mathrm{Xe}$ bằng X.10-6 s-1. Giá trị của X bằng bao nhiêu?(làm tròn kết quả đến chữ số hàng phần trăm).",
     "options": {
       "A": "",
       "B": "",
@@ -309,12 +309,12 @@
       "D": ""
     },
     "correct": "28",
-    "giaiThich": "$H={H}_{0}.{2}^{-\\frac{t}{T}}=\\left(4,25.1{0}^{9}\\right).{2}^{-\\frac{3,00}{5,24}}=2,86.1{0}^{9}Bq$<br>Dùng thông tin sau cho câu 3 và câu 4: Chiều cao của cột thủy ngân trong nhiệt kế thủy ngân thay đổi tuyến tính theo nhiệt độ Celsius. Ứng với hai vạch có nhiệt độ là 00C và 1000C thì chiều cao của cột thủy ngân trong nhiệt kế là 3 cm và 23 cm."
+    "giaiThich": "$H={H}_{0}.{2}^{-\\frac{t}{T}}=\\left(4,25.1{0}^{9}\\right).{2}^{-\\frac{3,00}{5,24}}=2,86.1{0}^{9}Bq$<br>Dùng thông tin sau cho câu 3 và câu 4: Chiều cao của cột thủy ngân trong nhiệt kế thủy ngân thay đổi tuyến tính theo nhiệt độ Celsius. Ứng với hai vạch có nhiệt độ là 0°C và 100°C thì chiều cao của cột thủy ngân trong nhiệt kế là 3 cm và 23 cm."
   },
   {
     "id": 25,
     "type": "short",
-    "question": "Câu 3. Khi nhiệt độ tăng thêm 10C thì chiều cao của cột thủy ngân tăng thêm bao nhiêu cm (làm tròn kết quả đến chữ số hàng phần mười)?",
+    "question": "Câu 3. Khi nhiệt độ tăng thêm 1°C thì chiều cao của cột thủy ngân tăng thêm bao nhiêu cm (làm tròn kết quả đến chữ số hàng phần mười)?",
     "options": {
       "A": "",
       "B": "",
@@ -335,7 +335,7 @@
       "D": ""
     },
     "correct": "314",
-    "giaiThich": "$\\frac{t-0}{100-0}=\\frac{11,2-3}{23-3}⇒t=4{1}^{0}C⇒T=314K$"
+    "giaiThich": "$\\frac{t-0}{100-0}=\\frac{11,2-3}{23-3}⇒t=4{1}^{0}C⇒T=${}^{14}_{3}\\mathrm{K}$$"
   },
   {
     "id": 27,

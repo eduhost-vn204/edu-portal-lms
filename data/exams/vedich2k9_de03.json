@@ -15,7 +15,7 @@
   {
     "id": 2,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de03/image1.png\" alt=\"hình vẽ\" class=\"q-img\" />Khi đặt một ống dây đồng hình trụ có các vòng dây được nối thành mạch kín lên một cân điện tử thì số chỉ của cân có giá trị X như hình vẽ. Sau đó, thả rơi một thanh nam châm từ độ cao nhất định theo phương thẳng đứng hướng về phía ống dây. Ngay khi nam châm vừa tiến vào đầu trên của ống dây, số đọc của cân điện tử là",
+    "question": "<div class=\"q-text-body\">Khi đặt một ống dây đồng hình trụ có các vòng dây được nối thành mạch kín lên một cân điện tử thì số chỉ của cân có giá trị X như hình vẽ. Sau đó, thả rơi một thanh nam châm từ độ cao nhất định theo phương thẳng đứng hướng về phía ống dây. Ngay khi nam châm vừa tiến vào đầu trên của ống dây, số đọc của cân điện tử là</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de03/image1.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "vẫn bằng $X$.",
       "B": "chưa thể so sánh được với X vì chưa biết độ cao lúc thả rơi.",
@@ -28,7 +28,7 @@
   {
     "id": 3,
     "type": "mc",
-    "question": "Số nucleon của hạt nhân $90230Th$ là",
+    "question": "Số nucleon của hạt nhân ${}^{30}_{902}\\mathrm{Th}$ là",
     "options": {
       "A": "320.",
       "B": "90.",
@@ -223,7 +223,7 @@
   {
     "id": 18,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de03/image3.png\" alt=\"hình vẽ\" class=\"q-img\" />Tàu đệm từ là một phương tiện giao thông chạy trên đệm từ trường.Ưu điểm chính của tàu đệm từ so với tàu hỏa là",
+    "question": "<div class=\"q-text-body\">Tàu đệm từ là một phương tiện giao thông chạy trên đệm từ trường.Ưu điểm chính của tàu đệm từ so với tàu hỏa là</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de03/image3.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "hoạt động được trên mọi địa hình.",
       "B": "không cần cung cấp điện năng để hoạt động.",
@@ -236,9 +236,9 @@
   {
     "id": 19,
     "type": "tf",
-    "question": "Câu 1. Hình sau mô tả một phản ứng hạt nhân. Cho biết năng lượng toả ra trong phản ứng trên là $17,3MeV$.<br><img src=\"assets/exams/vedich2k9_de03/image4.png\" alt=\"hình vẽ\" class=\"q-img\" />",
+    "question": "<div class=\"q-text-body\">Câu 1. Hình sau mô tả một phản ứng hạt nhân. Cho biết năng lượng toả ra trong phản ứng trên là $17,3MeV$.<br></div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de03/image4.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
-      "A": "Phương trình của phản ứng là $11H+12H→24He+01n$.",
+      "A": "Phương trình của phản ứng là $${}^{1}_{1}\\mathrm{H}$+${}^{2}_{1}\\mathrm{H}$→${}^{4}_{2}\\mathrm{He}$+${}^{1}_{0}\\mathrm{n}$$.",
       "B": "Phản ứng trên là phản ứng tổng hợp hạt nhân.",
       "C": "Nếu có 1 gam helium được tạo ra thì năng lượng toả ra là $31,5.1{0}^{19} J$.",
       "D": "Hai hạt nhân tương tác trước phản ứng là đồng vị của hydrogen."
@@ -249,7 +249,7 @@
   {
     "id": 20,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de03/image5.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 2. Hai dây dẫn thẳng, nhẹ được mắc song song gần nhau vào một giá treo. Sau khi cho dòng điện đi qua, hai dây dẫn ở trạng thái như hình vẽ.",
+    "question": "<div class=\"q-text-body\">Câu 2. Hai dây dẫn thẳng, nhẹ được mắc song song gần nhau vào một giá treo. Sau khi cho dòng điện đi qua, hai dây dẫn ở trạng thái như hình vẽ.</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de03/image5.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Tương tác của hai dòng điện là tương tác từ",
       "B": "Hai dây dẫn hút nhau chứng tỏ hai dòng điện chạy trong hai dây dẫn này cùng chiều",
@@ -262,7 +262,7 @@
   {
     "id": 21,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de03/image6.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 3. Cho 200 g nước đá ở <img src=\"assets/exams/vedich2k9_de03/image7.png\" alt=\"công thức\" class=\"q-formula-img\" /> vào một cốc cách nhiệt đựng nước ở $3{5}^{0}C$.Sự thay đổi nhiệt độ của nước đá và nước trong cốc theo thời gian được biểu diễn theo đồ thị hình bên. Biết nhiệt dung riêng của nước đá là $2100J/kg$, nhiệt nóng chảy riêng của nước đá là $3,4.1{0}^{5} J/kg$, nhiệt dung riêng của nước là $4200J/kg.K$., bỏ qua nhiệt dung của cốc. Trong các phát biểu sau đây, phát biểu nào đúng, phát biểu nào sai?",
+    "question": "<div class=\"q-text-body\">Câu 3. Cho 200 g nước đá ở  vào một cốc cách nhiệt đựng nước ở $3{5}^{0}C$.Sự thay đổi nhiệt độ của nước đá và nước trong cốc theo thời gian được biểu diễn theo đồ thị hình bên. Biết nhiệt dung riêng của nước đá là $2100J/kg$, nhiệt nóng chảy riêng của nước đá là $3,4.1{0}^{5} J/kg$, nhiệt dung riêng của nước là $4200J/kg.K$., bỏ qua nhiệt dung của cốc. Trong các phát biểu sau đây, phát biểu nào đúng, phát biểu nào sai?</div><div class=\"q-multi-img-grid\"><img src=\"assets/exams/vedich2k9_de03/image6.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de03/image7.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /></div>",
     "options": {
       "A": "Nước đá tan trong khoảng thời gian <img src=\"assets/exams/vedich2k9_de03/image8.png\" alt=\"công thức\" class=\"q-formula-img\" /> giây.",
       "B": "Trong khoảng thời gian từ <img src=\"assets/exams/vedich2k9_de03/image9.png\" alt=\"công thức\" class=\"q-formula-img\" /> đến <img src=\"assets/exams/vedich2k9_de03/image10.png\" alt=\"công thức\" class=\"q-formula-img\" />, nước đá không thu nhiệt từ nước trong cốc.",
@@ -275,7 +275,7 @@
   {
     "id": 22,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de03/image15.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Bóng thám không được sử dụng để thu thập thông tin về môi trường, không khí và thời tiết. Vỏ bóng được làm bằng chất liệu đàn hồi, phía dưới có gắn dù và thiết bị đo (hình bên). Bóng thường được bơm khí hiếm nhẹ hơn không khí, nhờ đó có thể bay lên các tầng không khi khác nhau để thu thập thông tin về nhiệt độ, độ ẩm, áp suất, tốc độ gió,... Một quả bóng thám không khi bắt đầu thả có đường kính 3 m. Vỏ bóng, dù và thiết bị đo có khối lượng 4 kg. Bóng được bơm khí hydrogen, ở áp suất bằng áp suất khí quyển tại mặt đất p0 = 1,013.105 Pa và nhiệt độ 27°C. Bỏng lên đến độ cao h thi dừng lại, khi đó đường kính của bỏng đã tăng gấp 3 lần so với khi bắt đầu thả, tại đó nhiệt độ của khí quyển là –55°C và lơ lửng trên đó khoảng 2 giờ trước khi vỡ. Biết khối lượng mol của không khí và của hydrogen lần lượt là 29 g/mol và 2 g/mol.",
+    "question": "<div class=\"q-text-body\">Câu 4. Bóng thám không được sử dụng để thu thập thông tin về môi trường, không khí và thời tiết. Vỏ bóng được làm bằng chất liệu đàn hồi, phía dưới có gắn dù và thiết bị đo (hình bên). Bóng thường được bơm khí hiếm nhẹ hơn không khí, nhờ đó có thể bay lên các tầng không khi khác nhau để thu thập thông tin về nhiệt độ, độ ẩm, áp suất, tốc độ gió,... Một quả bóng thám không khi bắt đầu thả có đường kính 3 m. Vỏ bóng, dù và thiết bị đo có khối lượng 4 kg. Bóng được bơm khí hydrogen, ở áp suất bằng áp suất khí quyển tại mặt đất p0 = 1,013.105 Pa và nhiệt độ 27°C. Bỏng lên đến độ cao h thi dừng lại, khi đó đường kính của bỏng đã tăng gấp 3 lần so với khi bắt đầu thả, tại đó nhiệt độ của khí quyển là –55°C và lơ lửng trên đó khoảng 2 giờ trước khi vỡ. Biết khối lượng mol của không khí và của hydrogen lần lượt là 29 g/mol và 2 g/mol.</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de03/image15.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Để bóng bay lên được thì lực đẩy Archimedes của không khí tác dụng vào bóng phải lớn hơn tổng trọng lượng của vỏ bóng, dù, thiết bị đo, do đó bóng cần được bơm khí hiếm nhẹ.",
       "B": "Khi càng lên cao thì áp suất khí quyển càng giảm nên chênh lệch áp suất giữa khí bên trong bỏng với áp suất khí quyển bên ngoài ngày càng lớn, thể tích bóng sẽ tăng, vỏ bóng mỏng dần đến một độ cao nhất định thì bóng sẽ bị vỡ.",
@@ -283,7 +283,7 @@
       "D": "Áp suất của khí quyển tại độ cao h là 8,4.102 Pa."
     },
     "correct": "ĐSĐĐ",
-    "giaiThich": "a)${F}_{A}≥\\sum {P}$<br>b) Ở một độ cao nhất định, do chênh lệch áp suất thì bóng sẽ vỡ.<br>c) Tại mặt đất: ${p}_{0}V=\\frac{{m}_{H}}{M}.R.T⇒1,013.1{0}^{5}.\\frac{4}{3}.3,14.1,{5}^{3}=\\frac{{m}_{H}}{2.1{0}^{-3}}.8,31.300⇒{m}_{H}=1,15 kg$<br>d) Từ điều kiện cân bằng lực: ${ρ}_{kq}Vg={m}_{vo}.g+{m}_{H}g⇒{ρ}_{kq}=\\frac{{m}_{H}+{m}_{vo}}{V}$<br>${p}_{kq}V=\\frac{{m}_{kq}}{{M}_{kq}}RT⇒{p}_{kq}={ρ}_{kq}.\\frac{RT}{{M}_{kq}}=\\frac{{m}_{H}+{m}_{vo}}{V}.\\frac{RT}{{M}_{kq}}=\\frac{4+1,15}{\\frac{4}{3}.3,14.{\\left(3.1,5\\right)}^{3}}.\\frac{8,31.\\left(-55+273\\right)}{29.1{0}^{-3}}$<br>$⇒{p}_{kq}≈843,26Pa≈8,4.1{0}^{2}Pa$"
+    "giaiThich": "a)${F}_{A}≥\\sum {P}$<br>b) Ở một độ cao nhất định, do chênh lệch áp suất thì bóng sẽ vỡ.<br>c) Tại mặt đất: ${p}_{0}V=\\frac{{m}_{H}}{M}.R.T⇒1,013.1{0}^{5}.\\frac{4}{3}.3,14.1,{5}^{3}=\\frac{{m}_{H}}{2.1{0}^{-3}}.8,31.300⇒{m}_{H}=1,15 kg$<br>d) Từ điều kiện cân bằng lực: ${ρ}_{kq}Vg={m}_{vo}.g+{m}_{H}g⇒{ρ}_{kq}=\\frac{{m}_{H}+{m}_{vo}}{V}$<br>${p}_{kq}V=\\frac{{m}_{kq}}{{M}_{kq}}RT⇒{p}_{kq}={ρ}_{kq}.\\frac{RT}{{M}_{kq}}=\\frac{{m}_{H}+{m}_{vo}}{V}.\\frac{RT}{{M}_{kq}}=\\frac{4+1,15}{\\frac{4}{3}.3,14.{\\left(3.1,5\\right)}^{3}}.\\frac{8,31.\\left(-55+273\\right)}{29.1{0}^{-3}}$<br>$⇒{p}_{kq}≈843,${}^{6}_{2}\\mathrm{Pa}$≈8,4.1{0}^{2}Pa$"
   },
   {
     "id": 23,
@@ -301,7 +301,7 @@
   {
     "id": 24,
     "type": "short",
-    "question": "<img src=\"assets/exams/vedich2k9_de03/image16.png\" alt=\"hình vẽ\" class=\"q-img\" /><img src=\"assets/exams/vedich2k9_de03/image17.png\" alt=\"hình vẽ\" class=\"q-img\" /><img src=\"assets/exams/vedich2k9_de03/image64.png\" alt=\"công thức\" class=\"q-formula-img\" /><img src=\"assets/exams/vedich2k9_de03/image65.png\" alt=\"công thức\" class=\"q-formula-img\" />Câu 2. Máy biến áp là thiết bị điện dùng để biến đổi điện áp xoay chiều. Cấu tạo gồm 2 cuộn dây sơ cấp (${N}_{1}$ vòng) và thứ cấp (${N}_{2}$ vòng), hoạt động dựa vào hiện tượng cảm ứng điện từ. Biết điện áp hiệu dụng ở hai đầu mỗi cuộn dây tỉ lệ thuận với số vòng dây của cuộn dây đó. Đặt một điện áp xoay chiều có giá trị hiệu dụng $160\\sqrt{2}V$ vào hai đầu cuộn sơ cấp thì đồ thị điện áp ${u}_{2}$ giữa hai đầu cuộn thứ cấp khi để hở có dạng như hình bên. Biết tổng số vòng dây ở cả hai cuộn sơ cấp và cuộn thứ cấp của máy biến áp là 850 vòng. Số vòng dây cuộn sơ cấp là bao nhiêu vòng?",
+    "question": "<div class=\"q-text-body\">Câu 2. Máy biến áp là thiết bị điện dùng để biến đổi điện áp xoay chiều. Cấu tạo gồm 2 cuộn dây sơ cấp (${N}_{1}$ vòng) và thứ cấp (${N}_{2}$ vòng), hoạt động dựa vào hiện tượng cảm ứng điện từ. Biết điện áp hiệu dụng ở hai đầu mỗi cuộn dây tỉ lệ thuận với số vòng dây của cuộn dây đó. Đặt một điện áp xoay chiều có giá trị hiệu dụng $160\\sqrt{2}V$ vào hai đầu cuộn sơ cấp thì đồ thị điện áp ${u}_{2}$ giữa hai đầu cuộn thứ cấp khi để hở có dạng như hình bên. Biết tổng số vòng dây ở cả hai cuộn sơ cấp và cuộn thứ cấp của máy biến áp là 850 vòng. Số vòng dây cuộn sơ cấp là bao nhiêu vòng?</div><div class=\"q-multi-img-grid\"><img src=\"assets/exams/vedich2k9_de03/image16.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de03/image17.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de03/image64.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de03/image65.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /></div>",
     "options": {
       "A": "",
       "B": "",
@@ -314,7 +314,7 @@
   {
     "id": 25,
     "type": "short",
-    "question": "Câu 3. Hỏi sau bao nhiêu lần bơm thì áp suất của không khí trong săm tăng đến <img src=\"assets/exams/vedich2k9_de03/image19.png\" alt=\"công thức\" class=\"q-formula-img\" />? (kết quả làm tròn đến chữ số hàng đơn vị).",
+    "question": "<div class=\"q-text-body\">Câu 3. Hỏi sau bao nhiêu lần bơm thì áp suất của không khí trong săm tăng đến ? (kết quả làm tròn đến chữ số hàng đơn vị).</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de03/image19.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "",
       "B": "",
@@ -327,7 +327,7 @@
   {
     "id": 26,
     "type": "short",
-    "question": "Câu 4. Biết khối lượng mol của oxygen là $32 \\frac{g}{mol}$. Một bình khí chứa 48 g oxygen có số phân tử là <img src=\"assets/exams/vedich2k9_de03/image20.png\" alt=\"công thức\" class=\"q-formula-img\" />. Giá trị của x là bao nhiêu. (kết quả làm tròn đến chữ số hàng phần trăm).",
+    "question": "<div class=\"q-text-body\">Câu 4. Biết khối lượng mol của oxygen là $32 \\frac{g}{mol}$. Một bình khí chứa 48 g oxygen có số phân tử là . Giá trị của x là bao nhiêu. (kết quả làm tròn đến chữ số hàng phần trăm).</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de03/image20.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "",
       "B": "",
@@ -335,12 +335,12 @@
       "D": ""
     },
     "correct": "9,03",
-    "giaiThich": "$N=n.{N}_{A}=\\frac{m}{M}.{N}_{A}=\\frac{48}{32}×6,02.1{0}^{23}=9,03.1{0}^{23}$<br><img src=\"assets/exams/vedich2k9_de03/image21.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho câu 5 và câu 6: Dùng máy đo phóng xạ của một mẫu gỗ của một cổ vật phát hiện được 240 phóng xạ mỗi phút. Biết rằng thành phần của mẫu gỗ có chứa 25 g $614C$ và $612C$, chu kì bán rã của $614C$ là 5730 năm và tỉ lệ nguyên tử $612C$ và $614C$ khi một sinh vật còn sống 1012:1."
+    "giaiThich": "$N=n.{N}_{A}=\\frac{m}{M}.{N}_{A}=\\frac{48}{32}×6,02.1{0}^{23}=9,03.1{0}^{23}$<br><img src=\"assets/exams/vedich2k9_de03/image21.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho câu 5 và câu 6: Dùng máy đo phóng xạ của một mẫu gỗ của một cổ vật phát hiện được 240 phóng xạ mỗi phút. Biết rằng thành phần của mẫu gỗ có chứa 25 g ${}^{4}_{61}\\mathrm{C}$ và ${}^{2}_{61}\\mathrm{C}$, chu kì bán rã của ${}^{4}_{61}\\mathrm{C}$ là 5730 năm và tỉ lệ nguyên tử ${}^{2}_{61}\\mathrm{C}$ và ${}^{4}_{61}\\mathrm{C}$ khi một sinh vật còn sống 1012:1."
   },
   {
     "id": 27,
     "type": "short",
-    "question": "Câu 5. Số nguyên tử $614C$ có trong mẫu gỗ trên bằng X.1012. Xác định giá trị của X (Kết quả làm tròn đến chữ số hàng phần mười).",
+    "question": "Câu 5. Số nguyên tử ${}^{4}_{61}\\mathrm{C}$ có trong mẫu gỗ trên bằng X.1012. Xác định giá trị của X (Kết quả làm tròn đến chữ số hàng phần mười).",
     "options": {
       "A": "",
       "B": "",
@@ -361,6 +361,6 @@
       "D": ""
     },
     "correct": "1523",
-    "giaiThich": "Khối lượng mẫu gỗ có chứa 25 g $614C$ và $612C$:<br>$25={m}_{C14}+{m}_{C12}=\\frac{{N}_{C14}}{{N}_{A}}.14+\\frac{{N}_{C12}}{{N}_{A}}.12 {N}_{C14}=1,043.1{0}^{12} {N}_{C12}=1,254.1{0}^{24}$ (nguyên tử)<br>Áp dụng: $\\frac{1,043.1{0}^{12}}{1,254.1{0}^{24}}=\\frac{1}{1{0}^{12}}.{2}^{-\\frac{t}{5730}}⇒t=1523$ năm"
+    "giaiThich": "Khối lượng mẫu gỗ có chứa 25 g ${}^{4}_{61}\\mathrm{C}$ và ${}^{2}_{61}\\mathrm{C}$:<br>$25={m}_{C14}+{m}_{C12}=\\frac{{N}_{C14}}{{N}_{A}}.14+\\frac{{N}_{C12}}{{N}_{A}}.12 {N}_{C14}=1,043.1{0}^{12} {N}_{C12}=1,254.1{0}^{24}$ (nguyên tử)<br>Áp dụng: $\\frac{1,043.1{0}^{12}}{1,254.1{0}^{24}}=\\frac{1}{1{0}^{12}}.{2}^{-\\frac{t}{5730}}⇒t=1523$ năm"
   }
 ]

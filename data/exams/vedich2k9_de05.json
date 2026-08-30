@@ -17,8 +17,8 @@
     "type": "mc",
     "question": "Ở Việt Nam, mạng điện xoay chiều dân dụng có tần số góc là",
     "options": {
-      "A": "$100π$ Hz.",
-      "B": "$50π$ Hz.",
+      "A": "${}^{0}_{10}\\mathrm{π}$ Hz.",
+      "B": "${}^{0}_{5}\\mathrm{π}$ Hz.",
       "C": "50 Hz.",
       "D": "100 Hz."
     },
@@ -106,7 +106,7 @@
   {
     "id": 9,
     "type": "mc",
-    "question": "Một khung dây dẫn phẳng có diện tích S, điện trở khung dây là R, gồm N vòng dây quay đều với tốc độ góc <img src=\"assets/exams/vedich2k9_de05/image2.png\" alt=\"công thức\" class=\"q-formula-img\" /> quanh trục cố định vuông góc với cảm ứng từ B của từ trường đều .Từ thông cực đại gửi qua khung dây nói trên là",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Một khung dây dẫn phẳng có diện tích S, điện trở khung dây là R, gồm N vòng dây quay đều với tốc độ góc  quanh trục cố định vuông góc với cảm ứng từ B của từ trường đều .Từ thông cực đại gửi qua khung dây nói trên là</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de05/image2.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "$Φ=\\frac{NBS}{R}$.",
       "B": "$Φ=\\frac{NBSω}{R}$.",
@@ -132,7 +132,7 @@
   {
     "id": 11,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de05/image3.png\" alt=\"hình vẽ\" class=\"q-img\" />Bộ dụng cụ thí nghiệm thực hành phần nhiệt vật lí 12 gồm: Biến thế nguồn (1), bộ đo công suất nguồn điện (2) có tích hợp chức năng đo thời gian, nhiệt kế điện tử (3), nhiệt lượng kế (4) bằng nhựa có vỏ xốp kèm que khuấy và dây điện trở, cân điện tử (5). Khi sử dụng bộ thí nghiệm trên để đo nhiệt dung riêng của nước thì nguyên nhân nào sau đây không làm cho kết quả phép đo kém chính xác?",
+    "question": "<div class=\"q-text-body\">Bộ dụng cụ thí nghiệm thực hành phần nhiệt vật lí 12 gồm: Biến thế nguồn (1), bộ đo công suất nguồn điện (2) có tích hợp chức năng đo thời gian, nhiệt kế điện tử (3), nhiệt lượng kế (4) bằng nhựa có vỏ xốp kèm que khuấy và dây điện trở, cân điện tử (5). Khi sử dụng bộ thí nghiệm trên để đo nhiệt dung riêng của nước thì nguyên nhân nào sau đây không làm cho kết quả phép đo kém chính xác?</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de05/image3.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Giá trị các số liệu thời gian, nhiệt độ được đọc chưa đồng thời.",
       "B": "Dây điện trở ngập chìm hoàn toàn trong nước.",
@@ -173,10 +173,10 @@
     "type": "mc",
     "question": "Hạt nhân X chứa 2 proton và 1 notron, hạt nhân Y chứa 3 proton và 5 notron. Kí hiệu 2 hạt nhân trên là",
     "options": {
-      "A": "$23X$ và $35Y$.",
-      "B": "$23X$ và $38Y$.",
-      "C": "$21X$ và $35Y$.",
-      "D": "$32X$ và $83Y$."
+      "A": "${}^{3}_{2}\\mathrm{X}$ và ${}^{5}_{3}\\mathrm{Y}$.",
+      "B": "${}^{3}_{2}\\mathrm{X}$ và ${}^{8}_{3}\\mathrm{Y}$.",
+      "C": "${}^{1}_{2}\\mathrm{X}$ và ${}^{5}_{3}\\mathrm{Y}$.",
+      "D": "${}^{2}_{3}\\mathrm{X}$ và ${}^{3}_{8}\\mathrm{Y}$."
     },
     "correct": "C",
     "giaiThich": ""
@@ -210,7 +210,7 @@
   {
     "id": 17,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de05/image4.png\" alt=\"hình vẽ\" class=\"q-img\" />Việc phân loại chất thải rắn sinh hoạt (lon nước ngọt, kim loại nói chung) nhằm thúc đẩy tăng cường tái sử dụng, tái chế chất thải, sản phẩm thải bỏ, tận dụng tối đa giá trị, kéo dài vòng đời sản phẩm, vật liệu. Hình bên là dây chuyển xử lí rác thải bằng từ tính (bên trong có nam châm). Hãy cho biết những chất thải rắn ở trên dây chuyển khi rơi xuống vị trí 1 thuộc loại chất thải rắn của kim loại nào?",
+    "question": "<div class=\"q-text-body\">Việc phân loại chất thải rắn sinh hoạt (lon nước ngọt, kim loại nói chung) nhằm thúc đẩy tăng cường tái sử dụng, tái chế chất thải, sản phẩm thải bỏ, tận dụng tối đa giá trị, kéo dài vòng đời sản phẩm, vật liệu. Hình bên là dây chuyển xử lí rác thải bằng từ tính (bên trong có nam châm). Hãy cho biết những chất thải rắn ở trên dây chuyển khi rơi xuống vị trí 1 thuộc loại chất thải rắn của kim loại nào?</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de05/image4.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Sắt.",
       "B": "Nhôm.",
@@ -249,12 +249,12 @@
   {
     "id": 20,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de05/image5.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 2. Trong giờ thực hành, một nhóm học sinh thực hiện thí nghiệm xác định nhiệt nóng chảy riêng của nước đá. Các bạn bố trí thí nghiệm như hình bên và tiến hành thí nghiệm qua các bước sau:<br>Bước 1<br>- Cho nước đá vào nhiệt lượng kế và hứng nước chảy ra bằng một chiếc cốc, bật đồng hồ đo thời gian, sau khoảng thời gian t, xác định khối lượng m của nước trong cốc này.<br>Bước 2<br>- Bật biến áp nguồn.<br>- Đọc số chỉ $P$ của oát kế.<br>- Cho nước chảy thêm vào cốc trong thời gian t. Xác định khối lượng M của nước trong cốc lúc này.<br>Kết quả thí nghiệm được nhóm ghi lại ở bảng sau:<br>Đại lượng<br>Kết quả đo<br>Khối lượng m (g) của nước trong cốc (chưa bật biến áp nguồn)<br>2,0<br>Khối lượng M (g) của nước trong cốc (đã bật biến áp nguồn)<br>17,5<br>Thời gian đun t (s)<br>180<br>Công suất $P\\left(W\\right)$<br>24<br>Xem điều kiện môi trường (nhiệt độ, áp suất, …) không đổi trong suốt thời gian làm thí nghiệm và điện năng tiêu thụ chuyển hóa hoàn toàn thành nhiệt lượng cung cấp cho nước đá. Bỏ qua sự bay hơi của nước.",
+    "question": "<div class=\"q-text-body\">Câu 2. Trong giờ thực hành, một nhóm học sinh thực hiện thí nghiệm xác định nhiệt nóng chảy riêng của nước đá. Các bạn bố trí thí nghiệm như hình bên và tiến hành thí nghiệm qua các bước sau:<br>Bước 1<br>- Cho nước đá vào nhiệt lượng kế và hứng nước chảy ra bằng một chiếc cốc, bật đồng hồ đo thời gian, sau khoảng thời gian t, xác định khối lượng m của nước trong cốc này.<br>Bước 2<br>- Bật biến áp nguồn.<br>- Đọc số chỉ $P$ của oát kế.<br>- Cho nước chảy thêm vào cốc trong thời gian t. Xác định khối lượng M của nước trong cốc lúc này.<br>Kết quả thí nghiệm được nhóm ghi lại ở bảng sau:<br>Đại lượng<br>Kết quả đo<br>Khối lượng m (g) của nước trong cốc (chưa bật biến áp nguồn)<br>2,0<br>Khối lượng M (g) của nước trong cốc (đã bật biến áp nguồn)<br>17,5<br>Thời gian đun t (s)<br>180<br>Công suất $P\\left(W\\right)$<br>24<br>Xem điều kiện môi trường (nhiệt độ, áp suất, …) không đổi trong suốt thời gian làm thí nghiệm và điện năng tiêu thụ chuyển hóa hoàn toàn thành nhiệt lượng cung cấp cho nước đá. Bỏ qua sự bay hơi của nước.</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de05/image5.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
-      "A": "Nhiệt lượng mà dây điện trở đã cung cấp cho nước đá trong thí nghiệm trên bằng $4320 J$.",
+      "A": "Nhiệt lượng mà dây điện trở đã cung cấp cho nước đá trong thí nghiệm trên bằng ${}^{0}_{432}\\mathrm{J}$.",
       "B": "Khối lượng nước đá đã nóng chảy do nhận nhiệt lượng từ dây điện trở bằng $15,5 g$.",
       "C": "Nhiệt nóng chảy riêng của nước đá trong thí nghiệm này đo được là $3,2.1{0}^{5}J/kg$.",
-      "D": "Nhiệt lượng mà môi trường cung cấp cho nước đá trong khoảng thời gian t là $640 J$."
+      "D": "Nhiệt lượng mà môi trường cung cấp cho nước đá trong khoảng thời gian t là ${}^{0}_{64}\\mathrm{J}$."
     },
     "correct": "ĐSĐĐ",
     "giaiThich": "a) ${Q}_{cc}=P.t=24.180=4320J$<br>b) Công suất tỏa nhiệt của môi trường luôn không đổi, trong khoảng thời gian t, môi trường làm nóng chảy m (g) nước đá nên trong khoảng thời 2t thì môi trường làm nóng 2m (g) nước đá. Khối lượng nước đá đã nóng chảy do nhận nhiệt lượng từ dây điện trở: $M-2m=13,5 g$<br>c) Gọi ${P}^{'}$ là công suất tỏa nhiệt (không đổi) của môi trường bên ngoài (môi trường không khí).<br>Ta có:$\\left\\{m.λ={P}^{'}.t                 \\left(M-m\\right)λ={P}^{'}.t+P.t\\right)⇒λ=\\frac{P.t}{M-2m}=\\frac{24.180}{\\left(17,5-2.2\\right).1{0}^{-3}}=3,2.1{0}^{5} J/kg$<br>d)${Q}^{'}={P}^{'}.t=m.λ=2.1{0}^{-3}.3,2.1{0}^{5}=640 J$"
@@ -262,7 +262,7 @@
   {
     "id": 21,
     "type": "tf",
-    "question": "Câu 3. Một ngôi nhà có thể tích phần không gian bên trong là $40 {m}^{3}$. Vào một ngày mùa đông, nhiệt độ trong ngôi nhà vào buổi sáng sớm là 200C và đến giữa trưa là 250C. Cho biết áp suất khí quyển không đổi trong ngày là $1atm=1,013.1{0}^{5}Pa$ và khối lượng mol của không khí là $29 g/mol$.",
+    "question": "Câu 3. Một ngôi nhà có thể tích phần không gian bên trong là $40 {m}^{3}$. Vào một ngày mùa đông, nhiệt độ trong ngôi nhà vào buổi sáng sớm là 20°C và đến giữa trưa là 25°C. Cho biết áp suất khí quyển không đổi trong ngày là $1atm=1,013.1{0}^{5}Pa$ và khối lượng mol của không khí là $29 g/mol$.",
     "options": {
       "A": "Từ buổi sáng sớm đến giữa trưa, nhiệt độ trong ngôi nhà tăng 278 K.",
       "B": "Ở buổi trưa các phân tử khí trong ngôi nhà chuyển động nhanh hơn so với buổi sáng.",
@@ -275,7 +275,7 @@
   {
     "id": 22,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de05/image6.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Trong hình bên, N là một mẫu phóng xạ được đặt trong một điện trường đều do hai bản kim loại phẳng song song và tích điện trái dấu tạo ra. Các tia phóng xạ phát ra từ N đập vào màn huỳnh quang F gây ra các chấm sáng. Hệ thống được đặt trong chân không.",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 4. Trong hình bên, N là một mẫu phóng xạ được đặt trong một điện trường đều do hai bản kim loại phẳng song song và tích điện trái dấu tạo ra. Các tia phóng xạ phát ra từ N đập vào màn huỳnh quang F gây ra các chấm sáng. Hệ thống được đặt trong chân không.</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de05/image6.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "Chấm sáng tại S do tia ${β}^{-}$ gây ra.",
       "B": "Hầu hết các tia γ gây ra chấm sáng tại T.",
@@ -288,7 +288,7 @@
   {
     "id": 23,
     "type": "short",
-    "question": "<img src=\"assets/exams/vedich2k9_de05/image7.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 1. Một nhóm học sinh THPT dùng một ấm điện đun sôi 1 kg nước ở áp suất khí quyển 105 Pa, dùng nhiệt kế đo nhiệt độ của nước theo thời gian thì thu được đồ thị như hình bên. Nhiệt dung riêng của nước là 4180 J/kgK. Cho rằng có 18,4% nhiệt lượng của ấm tỏa ra môi trường. Coi sự bay hơi ở nhiệt độ thường của nước trong ấm là không đáng kể. Công suất của ấm là bao nhiêu kW? (làm tròn kết quả đến chữ số hàng phần mười).",
+    "question": "<div class=\"q-text-body\">Câu 1. Một nhóm học sinh THPT dùng một ấm điện đun sôi 1 kg nước ở áp suất khí quyển 105 Pa, dùng nhiệt kế đo nhiệt độ của nước theo thời gian thì thu được đồ thị như hình bên. Nhiệt dung riêng của nước là 4180 J/kgK. Cho rằng có 18,4% nhiệt lượng của ấm tỏa ra môi trường. Coi sự bay hơi ở nhiệt độ thường của nước trong ấm là không đáng kể. Công suất của ấm là bao nhiêu kW? (làm tròn kết quả đến chữ số hàng phần mười).</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de05/image7.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "",
       "B": "",
@@ -301,7 +301,7 @@
   {
     "id": 24,
     "type": "short",
-    "question": "<img src=\"assets/exams/vedich2k9_de05/image8.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 2. Một bàn chải đánh răng điện sử dụng thiết bị sạc pin không dây được thiết kế dùng dock sạc. Trong dock sạc có cuộn dây 1 với số vòng N1 = 80 vòng, được nối vào mạng điện dân dụng có điện áp hiệu dụng 220 V. Trong tay cầm của bàn chải có cuộn dây 2 với số vòng N2 = 4 vòng. Khi sạc pin cho bàn chải, dòng điện trong cuộn dây 1 tạo ra dòng điện cảm ứng trong cuộn dây 2. Điện áp cực đại giữa hai đầu cuộn dây 2 bằng bao nhiêu Vôn?(làm tròn kết quả đến chữ số hàng phần mười).",
+    "question": "<div class=\"q-text-body\">Câu 2. Một bàn chải đánh răng điện sử dụng thiết bị sạc pin không dây được thiết kế dùng dock sạc. Trong dock sạc có cuộn dây 1 với số vòng N1 = 80 vòng, được nối vào mạng điện dân dụng có điện áp hiệu dụng 220 V. Trong tay cầm của bàn chải có cuộn dây 2 với số vòng N2 = 4 vòng. Khi sạc pin cho bàn chải, dòng điện trong cuộn dây 1 tạo ra dòng điện cảm ứng trong cuộn dây 2. Điện áp cực đại giữa hai đầu cuộn dây 2 bằng bao nhiêu Vôn?(làm tròn kết quả đến chữ số hàng phần mười).</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de05/image8.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "",
       "B": "",
@@ -314,7 +314,7 @@
   {
     "id": 25,
     "type": "short",
-    "question": "Câu 3. Năng lượng phân hạch trung bình của một hạt nhân <img src=\"assets/exams/vedich2k9_de05/image12.png\" alt=\"công thức\" class=\"q-formula-img\" /> tỏa ra là $x.1{0}^{-11} J$. Tính x (làm tròn kết quả đến chữ số hàng phần mười).",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 3. Năng lượng phân hạch trung bình của một hạt nhân  tỏa ra là $x.1{0}^{-11} J$. Tính x (làm tròn kết quả đến chữ số hàng phần mười).</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de05/image12.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "",
       "B": "",
@@ -327,7 +327,7 @@
   {
     "id": 26,
     "type": "short",
-    "question": "Câu 4. Nhiên liệu là các thanh <img src=\"assets/exams/vedich2k9_de05/image13.png\" alt=\"công thức\" class=\"q-formula-img\" /> đã làm giàu <img src=\"assets/exams/vedich2k9_de05/image14.png\" alt=\"công thức\" class=\"q-formula-img\" /> (tỉ lệ phần trăm khối lượng của <img src=\"assets/exams/vedich2k9_de05/image15.png\" alt=\"công thức\" class=\"q-formula-img\" /> và khối lượng thanh là 25%). Khối lượng nhiên liệu cần cho nhà máy Diablo Canyon hoạt động liên tục trong 1 năm (365 ngày) là bao nhiêu tấn? (làm tròn kết quả đến chữ số hàng phần mười).",
+    "question": "<div class=\"q-text-body\">Câu 4. Nhiên liệu là các thanh  đã làm giàu  (tỉ lệ phần trăm khối lượng của  và khối lượng thanh là 25%). Khối lượng nhiên liệu cần cho nhà máy Diablo Canyon hoạt động liên tục trong 1 năm (365 ngày) là bao nhiêu tấn? (làm tròn kết quả đến chữ số hàng phần mười).</div><div class=\"q-multi-img-grid\"><img src=\"assets/exams/vedich2k9_de05/image13.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de05/image14.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de05/image15.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /></div>",
     "options": {
       "A": "",
       "B": "",
@@ -335,7 +335,7 @@
       "D": ""
     },
     "correct": "5,4",
-    "giaiThich": "$H=\\frac{P.t}{\\frac{m}{A}{N}_{A}.ΔE}⇒0,32=\\frac{1120.1{0}^{6}.365.24.3600}{\\frac{0,25{m}_{nl}}{235.1{0}^{-3}}.6,02.1{0}^{23}.3,2.1{0}^{-11}}⇒{m}_{nl}=5386 kg=5,4$ tấn<br><img src=\"assets/exams/vedich2k9_de05/image16.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng thông tin sau cho câu 5 và câu 6: Một quả bóng thám không hình cầu, có tổng khối lượng vỏ bóng và thiết bị đo là 1 kg. Bóng được bơm khí helium ở áp suất bằng áp suất khí quyển tại mặt đất ${p}_{0}=1,013.1{0}^{5}Pa$ và nhiệt độ 270C (bằng nhiệt độ khí quyển). Biết khối lượng mol của không khí là ${M}_{kk}=29 g/mol$ của He là ${M}_{He}=4 g/mol,$ lấy $g=10 m/{s}^{2}$"
+    "giaiThich": "$H=\\frac{P.t}{\\frac{m}{A}{N}_{A}.ΔE}⇒0,32=\\frac{1120.1{0}^{6}.365.24.3600}{\\frac{0,25{m}_{nl}}{235.1{0}^{-3}}.6,02.1{0}^{23}.3,2.1{0}^{-11}}⇒{m}_{nl}=5386 kg=5,4$ tấn<br><img src=\"assets/exams/vedich2k9_de05/image16.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng thông tin sau cho câu 5 và câu 6: Một quả bóng thám không hình cầu, có tổng khối lượng vỏ bóng và thiết bị đo là 1 kg. Bóng được bơm khí helium ở áp suất bằng áp suất khí quyển tại mặt đất ${p}_{0}=1,013.1{0}^{5}Pa$ và nhiệt độ 27°C (bằng nhiệt độ khí quyển). Biết khối lượng mol của không khí là ${M}_{kk}=29 g/mol$ của He là ${M}_{He}=4 g/mol,$ lấy $g=10 m/{s}^{2}$"
   },
   {
     "id": 27,

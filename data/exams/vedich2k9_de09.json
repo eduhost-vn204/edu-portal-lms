@@ -28,7 +28,7 @@
   {
     "id": 3,
     "type": "mc",
-    "question": "Theo Định luật I nhiệt động lực học, độ biến thiên nội năng <img src=\"assets/exams/vedich2k9_de09/image1.png\" alt=\"hình vẽ\" class=\"q-img\" /> của một vật, công A và nhiệt lượng Q liên hệ với nhau bởi biểu thức",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Theo Định luật I nhiệt động lực học, độ biến thiên nội năng  của một vật, công A và nhiệt lượng Q liên hệ với nhau bởi biểu thức</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de09/image1.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "$ΔU=A+Q$.",
       "B": "$Q=ΔU+A$.",
@@ -41,7 +41,7 @@
   {
     "id": 4,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de09/image2.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho Câu 4 và Câu 5: Hình vẽ bên là hình ảnh của quạt điều hoà (còn gọi là quạt nước) và các tấm Cooling Pad. Cấu tạo của quạt có 5 bộ phận chính gồm: bình nước, máy phun hơi nước, tấm Cooling Pad, tấm giữ bụi, động cơ gắn với cánh quạt. Tấm Cooling Pad chính là bộ phận quan trọng, được thiết kế dưới dạng hình khối chữ nhật với các rãnh nhằm tiếp xúc với nước, đồng thời giữ nước lại. Tấm màng này chiết xuất từ vỏ cây nên khả năng thẩm thấu tương đối nhanh.<br>Khi hệ thống làm mát hoạt động, các rãnh của tấm Cooling Pad tiếp xúc với nước, đồng thời nước được giữ lại và nhiệt độ của nước sẽ thay đổi thế nào?",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Sử dụng các thông tin sau cho Câu 4 và Câu 5: Hình vẽ bên là hình ảnh của quạt điều hoà (còn gọi là quạt nước) và các tấm Cooling Pad. Cấu tạo của quạt có 5 bộ phận chính gồm: bình nước, máy phun hơi nước, tấm Cooling Pad, tấm giữ bụi, động cơ gắn với cánh quạt. Tấm Cooling Pad chính là bộ phận quan trọng, được thiết kế dưới dạng hình khối chữ nhật với các rãnh nhằm tiếp xúc với nước, đồng thời giữ nước lại. Tấm màng này chiết xuất từ vỏ cây nên khả năng thẩm thấu tương đối nhanh.<br>Khi hệ thống làm mát hoạt động, các rãnh của tấm Cooling Pad tiếp xúc với nước, đồng thời nước được giữ lại và nhiệt độ của nước sẽ thay đổi thế nào?</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de09/image2.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "tăng lên.",
       "B": "không thay đổi.",
@@ -145,7 +145,7 @@
   {
     "id": 12,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de09/image3.png\" alt=\"hình vẽ\" class=\"q-img\" />Bước đột phá mới: “Điều trị tăng sinh tuyến tiền liệt bằng liệu pháp nhiệt hơi nước (rezum) lần đầu tiên tại bệnh viện trung ương huế” (tháng 12 năm 2025). Khoa Ngoại Thận – Tiết niệu, Bệnh viện Trung ương Huế vừa triển khai thành công kỹ thuật Rezum – phương pháp điều trị tăng sinh lành tính tuyến tiền liệt bằng liệu pháp nhiệt hơi nước, đánh dấu bước tiến mới trong ứng dụng các kỹ thuật xâm lấn tối thiểu, hiện đại trong điều trị bệnh lý tiết niệu trên phạm vi cả nước. Rezum là phương pháp sử dụng năng lượng nhiệt từ hơi nước vô trùng tiêm trực tiếp vào vùng mô tuyến tiền liệt tăng sinh. Nhiệt lượng cao làm mô thừa của tuyến hoại tử và dẫn đến tiêu biến tự nhiên và giảm thể tích tuyến. Từ đó giúp mở rộng niệu đạo và khai thông dòng tiểu. Liệu pháp điều trị ở trên liên quan đến lĩnh vực Vật lí nào?",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Bước đột phá mới: “Điều trị tăng sinh tuyến tiền liệt bằng liệu pháp nhiệt hơi nước (rezum) lần đầu tiên tại bệnh viện trung ương huế” (tháng 12 năm 2025). Khoa Ngoại Thận – Tiết niệu, Bệnh viện Trung ương Huế vừa triển khai thành công kỹ thuật Rezum – phương pháp điều trị tăng sinh lành tính tuyến tiền liệt bằng liệu pháp nhiệt hơi nước, đánh dấu bước tiến mới trong ứng dụng các kỹ thuật xâm lấn tối thiểu, hiện đại trong điều trị bệnh lý tiết niệu trên phạm vi cả nước. Rezum là phương pháp sử dụng năng lượng nhiệt từ hơi nước vô trùng tiêm trực tiếp vào vùng mô tuyến tiền liệt tăng sinh. Nhiệt lượng cao làm mô thừa của tuyến hoại tử và dẫn đến tiêu biến tự nhiên và giảm thể tích tuyến. Từ đó giúp mở rộng niệu đạo và khai thông dòng tiểu. Liệu pháp điều trị ở trên liên quan đến lĩnh vực Vật lí nào?</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de09/image3.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "Điện học.",
       "B": "Hạt nhân nguyên tử.",
@@ -171,7 +171,7 @@
   {
     "id": 14,
     "type": "mc",
-    "question": "Cho phản ứng hạt nhân $ZAX+p→52138Te+3n+7{β}^{+}$. A và Z có giá trị",
+    "question": "Cho phản ứng hạt nhân $ZAX+p→${}^{138}_{52}\\mathrm{Te}$+3n+7{β}^{+}$. A và Z có giá trị",
     "options": {
       "A": "$A=138; Z=58$.",
       "B": "$A=142; Z=56$.",
@@ -179,7 +179,7 @@
       "D": "$A=133; Z=58$."
     },
     "correct": "D",
-    "giaiThich": "$ZAX+11p→52138Te+301n+710e$. Bảo toàn số khối và bảo toàn điện tích ta thiết lập được hệ phương trình:<br>$\\left\\{A+1=138+3.1+7.0Z+1=52+3.0+7.1 \\right)⇒\\left\\{A=140Z=58 \\right)$"
+    "giaiThich": "$ZAX+${}^{1}_{1}\\mathrm{p}$→${}^{138}_{52}\\mathrm{Te}$+3\\cdot {}^{1}_{0}\\mathrm{n}$+7\\cdot {}^{0}_{1}\\mathrm{e}$$. Bảo toàn số khối và bảo toàn điện tích ta thiết lập được hệ phương trình:<br>$\\left\\{A+1=138+3.1+7.0Z+1=52+3.0+7.1 \\right)⇒\\left\\{A=140Z=58 \\right)$"
   },
   {
     "id": 15,
@@ -197,7 +197,7 @@
   {
     "id": 16,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de09/image4.png\" alt=\"hình vẽ\" class=\"q-img\" />Xét quá trình biến đổi trạng thái của một khối khí lí tưởng. Áp suất và thể tích của khối khí ở các trạng thái (1), (2), (3), và (4) được biểu diễn trong hình bên. Trong số các trạng thái đã cho, trạng thái mà khối khí có nhiệt độ lớn nhất là",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Xét quá trình biến đổi trạng thái của một khối khí lí tưởng. Áp suất và thể tích của khối khí ở các trạng thái (1), (2), (3), và (4) được biểu diễn trong hình bên. Trong số các trạng thái đã cho, trạng thái mà khối khí có nhiệt độ lớn nhất là</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de09/image4.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "1.",
       "B": "2.",
@@ -210,7 +210,7 @@
   {
     "id": 17,
     "type": "mc",
-    "question": "Một học sinh dùng một la bàn nhỏ đặt phía trên một đoạn dây dẫn thẳng dài mang dòng điện để tìm hiểu về chiều đường sức của dòng điện thẳng. Hình vẽ mô tả bốn thử nghiệm của học sinh này với một đoạn dây dẫn có dòng điện chạy qua. Trên kim nam châm thử, cực được tô đậm là cực Bắc (N).<br><img src=\"assets/exams/vedich2k9_de09/image5.png\" alt=\"hình vẽ\" class=\"q-img\" />",
+    "question": "<div class=\"q-text-body\">Một học sinh dùng một la bàn nhỏ đặt phía trên một đoạn dây dẫn thẳng dài mang dòng điện để tìm hiểu về chiều đường sức của dòng điện thẳng. Hình vẽ mô tả bốn thử nghiệm của học sinh này với một đoạn dây dẫn có dòng điện chạy qua. Trên kim nam châm thử, cực được tô đậm là cực Bắc (N).<br></div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de09/image5.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Hình 1.",
       "B": "Hình 2.",
@@ -236,9 +236,9 @@
   {
     "id": 19,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de09/image6.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 1. Trong quá trình đun nóng chì, người ta thu được đồ thị sự thay đổi của nhiệt độ theo thời gian như hình bên.",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 1. Trong quá trình đun nóng chì, người ta thu được đồ thị sự thay đổi của nhiệt độ theo thời gian như hình bên.</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de09/image6.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
-      "A": "Nhiệt độ nóng chảy của chì là 3270C.",
+      "A": "Nhiệt độ nóng chảy của chì là 327°C.",
       "B": "Nhiệt độ sôi của chỉ là 17490C.",
       "C": "Tại thời điểm N: chất ở thể lỏng.",
       "D": "Tại thời điểm Q: chất ở cả thể lỏng lẫn thể hơi."
@@ -249,7 +249,7 @@
   {
     "id": 20,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de09/image7.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 2. Hình bên mô tả cấu tạo của thiết bị cân dùng từ trường. Một cuộn dây hình chữ nhật chứa 50 vòng và có chiều rộng $d=5 cm$. Từ trường đều vuông góc với cuộn dây và có độ lớn $B=0,2 T$. Chỉ cạnh dưới của khung dây và một phần cạnh dài nằm trong từ trường $\\vec{B}$. Khi khóa K mở và chưa đặt vật nặng lên đĩa cân thì cân thăng bằng (thanh đòn nằm ngang). Lấy $g=10  m/{s}^{2}$, chiều dài đòn cân hai bên bằng nhau.",
+    "question": "<div class=\"q-text-body\">Câu 2. Hình bên mô tả cấu tạo của thiết bị cân dùng từ trường. Một cuộn dây hình chữ nhật chứa 50 vòng và có chiều rộng $d=5 cm$. Từ trường đều vuông góc với cuộn dây và có độ lớn $B=0,2 T$. Chỉ cạnh dưới của khung dây và một phần cạnh dài nằm trong từ trường $\\vec{B}$. Khi khóa K mở và chưa đặt vật nặng lên đĩa cân thì cân thăng bằng (thanh đòn nằm ngang). Lấy $g=10  m/{s}^{2}$, chiều dài đòn cân hai bên bằng nhau.</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de09/image7.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Lực từ tác dụng lên cuộn dây khi dòng điện chạy qua là kết quả của sự tương tác giữa dòng điện và từ trường",
       "B": "Lực từ tác dụng lên phần cạnh dài của khung dây trong từ trường không ảnh hưởng đến độ thăng bằng của cân.",
@@ -262,7 +262,7 @@
   {
     "id": 21,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de09/image10.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 3.  Từ quan sát việc bơm xe, một nhóm học sinh nhận thấy càng bơm thì lốp xe càng căng (1). Nhóm thảo luận và đưa ra nhận định: “Với một bình chứa khí có thể tích không đổi, giữ khí ở một nhiệt độ ổn định thì áp suất tỉ lệ thuận với lượng khí chứa trong bình” (2). Để kiểm tra nhận định này nhóm thiết kế bộ thí nghiệm như hình vẽ, bao gồm các dụng cụ: bình chứa khí có thể tích V2 = 5,0 lít; bơm có thể tích V1 = 0,6 lít, các van k1, k2 là loại van chỉ cho khí truyền theo một chiều; áp kế loại tính theo đơn vị Bar, chỉ 0 khi áp suất bằng áp suất khí quyển, số chỉ của áp kế là phần áp suất tăng thêm so với áp suất khí quyển; nhiệt kế hiện số (3). Ban đầu khi chưa bơm, áp kế chỉ 0. Nhóm thực hiện bơm khí vào bình đảm bảo số chỉ nhiệt kế là 29,0 0C, ghi lại số chỉ áp kế sau mỗi lần bơm vào bảng (4).",
+    "question": "<div class=\"q-text-body\">Câu 3.  Từ quan sát việc bơm xe, một nhóm học sinh nhận thấy càng bơm thì lốp xe càng căng (1). Nhóm thảo luận và đưa ra nhận định: “Với một bình chứa khí có thể tích không đổi, giữ khí ở một nhiệt độ ổn định thì áp suất tỉ lệ thuận với lượng khí chứa trong bình” (2). Để kiểm tra nhận định này nhóm thiết kế bộ thí nghiệm như hình vẽ, bao gồm các dụng cụ: bình chứa khí có thể tích V2 = 5,0 lít; bơm có thể tích V1 = 0,6 lít, các van k1, k2 là loại van chỉ cho khí truyền theo một chiều; áp kế loại tính theo đơn vị Bar, chỉ 0 khi áp suất bằng áp suất khí quyển, số chỉ của áp kế là phần áp suất tăng thêm so với áp suất khí quyển; nhiệt kế hiện số (3). Ban đầu khi chưa bơm, áp kế chỉ 0. Nhóm thực hiện bơm khí vào bình đảm bảo số chỉ nhiệt kế là 29,0 0C, ghi lại số chỉ áp kế sau mỗi lần bơm vào bảng (4).</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de09/image10.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "(1) là vấn đề xuất phát từ quan sát của học sinh trong thực tiễn, (2) là giả thuyết của học sinh.",
       "B": "Việc lựa chọn và lắp ráp thí nghiệm ở (3) là một phần kế hoạch nghiên cứu của học sinh.",
@@ -283,12 +283,12 @@
       "D": "Kể từ thời điểm ban đầu, tỉ số giữa khối lượng ${}_{27}^{60}Co$ và khối lượng ${}_{28}^{60}Ni$ có trong mẫu tại thời điểm 2,56 năm là 0,400."
     },
     "correct": "ĐĐSS",
-    "giaiThich": "a) Phương trình phân rã: $2760Co→2860Ni+-10e$<br>b) ${H}_{0}={N}_{0}λ=\\frac{{m}_{0}}{A}{N}_{A}.λ=\\frac{15}{60}.6,02.1{0}^{23}.\\frac{\\mathrm{ln} {2}}{5,27.365.86400}=6,28.1{0}^{24}Bq$<br>c) ${m}_{con}={m}_{0}\\frac{{A}_{con}}{{A}_{me}}\\left(1-{2}^{-\\frac{t}{T}}\\right)=15.\\frac{60}{60}\\left(1-{2}^{-\\frac{7,25}{5,27}}\\right)=9,22 g$<br>d) $\\left\\{{m}_{me}={m}_{0}.{2}^{-\\frac{t}{T}}               {m}_{con}={{m}_{​}}_{0}\\frac{{A}_{con}}{{A}_{me}}\\left(1-{2}^{-\\frac{t}{T}}\\right)\\right)⇒\\frac{{m}_{me}}{{m}_{con}}=\\frac{{2}^{-\\frac{t}{T}}}{\\frac{{A}_{con}}{{A}_{me}}\\left(1-{2}^{-\\frac{t}{T}}\\right)}=\\frac{{2}^{-\\frac{2,56}{5,27}}}{\\frac{60}{60}\\left(1-{2}^{-\\frac{2,56}{5,27}}\\right)}=2,498$"
+    "giaiThich": "a) Phương trình phân rã: $${}^{60}_{27}\\mathrm{Co}$→${}^{60}_{28}\\mathrm{Ni}$+-${}^{0}_{1}\\mathrm{e}$$<br>b) ${H}_{0}={N}_{0}λ=\\frac{{m}_{0}}{A}{N}_{A}.λ=\\frac{15}{60}.6,02.1{0}^{23}.\\frac{\\mathrm{ln} {2}}{5,27.365.86400}=6,28.1{0}^{24}Bq$<br>c) ${m}_{con}={m}_{0}\\frac{{A}_{con}}{{A}_{me}}\\left(1-{2}^{-\\frac{t}{T}}\\right)=15.\\frac{60}{60}\\left(1-{2}^{-\\frac{7,25}{5,27}}\\right)=9,22 g$<br>d) $\\left\\{{m}_{me}={m}_{0}.{2}^{-\\frac{t}{T}}               {m}_{con}={{m}_{​}}_{0}\\frac{{A}_{con}}{{A}_{me}}\\left(1-{2}^{-\\frac{t}{T}}\\right)\\right)⇒\\frac{{m}_{me}}{{m}_{con}}=\\frac{{2}^{-\\frac{t}{T}}}{\\frac{{A}_{con}}{{A}_{me}}\\left(1-{2}^{-\\frac{t}{T}}\\right)}=\\frac{{2}^{-\\frac{2,56}{5,27}}}{\\frac{60}{60}\\left(1-{2}^{-\\frac{2,56}{5,27}}\\right)}=2,498$"
   },
   {
     "id": 23,
     "type": "short",
-    "question": "Giả thiết rằng trong một tia sét có một điện tích $q=25 C$ được phóng từ đám mây dông xuống đất và khi đó hiệu điện thế giữa đám mây và mặt đất $U=1,4.1{0}^{8} V$. Cho nhiệt hóa hơi của nước bằng $2,3.1{0}^{6}J/kg$. Hỏi năng lượng của tia sét đó có thể làm bao nhiêu kilôgam nước ở 1000C biến thành hơi nước ở 1000C?(làm tròn kết quả đến chữ số hàng đơn vị).",
+    "question": "Giả thiết rằng trong một tia sét có một điện tích $q=25 C$ được phóng từ đám mây dông xuống đất và khi đó hiệu điện thế giữa đám mây và mặt đất $U=1,4.1{0}^{8} V$. Cho nhiệt hóa hơi của nước bằng $2,3.1{0}^{6}J/kg$. Hỏi năng lượng của tia sét đó có thể làm bao nhiêu kilôgam nước ở 100°C biến thành hơi nước ở 100°C?(làm tròn kết quả đến chữ số hàng đơn vị).",
     "options": {
       "A": "",
       "B": "",
@@ -301,7 +301,7 @@
   {
     "id": 24,
     "type": "short",
-    "question": "Câu 2. Biết khối lượng riêng của nước là 1000 kg/m3. Muốn có 10 lít nước ở nhiệt độ 400C thì phải đổ bao nhiêu lít nước ở 1000C vào nước ở nhiệt độ 200C (làm tròn kết quả đến chữ số  hàng phần mười).",
+    "question": "Câu 2. Biết khối lượng riêng của nước là 1000 kg/m3. Muốn có 10 lít nước ở nhiệt độ 400C thì phải đổ bao nhiêu lít nước ở 100°C vào nước ở nhiệt độ 20°C (làm tròn kết quả đến chữ số  hàng phần mười).",
     "options": {
       "A": "",
       "B": "",
@@ -314,7 +314,7 @@
   {
     "id": 25,
     "type": "short",
-    "question": "<img src=\"assets/exams/vedich2k9_de09/image11.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 3. PSI (là từ viết tắt của Pound-force per Square Inch) là đơn vị được dùng để đo áp suất lốp. Thông số PSI ghi trên lốp xe là áp suất tối đa mà lốp xe có thể chịu được. Trên một lốp xe có ghi $350 kPa \\left(51 PSI\\right)$ như hình bên. Lúc đầu trong lốp xe chưa có khí, người ta bơm đẳng nhiệt khí ở áp suất $100 kPa$ vào lốp xe sao cho áp suất đạt đến giá trị ghi trên lốp, lúc đó thể tích lốp là 30 lít. Thể tích khí được bơm vào xe là bao nhiêu lít?",
+    "question": "<div class=\"q-text-body\">Câu 3. PSI (là từ viết tắt của Pound-force per Square Inch) là đơn vị được dùng để đo áp suất lốp. Thông số PSI ghi trên lốp xe là áp suất tối đa mà lốp xe có thể chịu được. Trên một lốp xe có ghi $350 kPa \\left(51 PSI\\right)$ như hình bên. Lúc đầu trong lốp xe chưa có khí, người ta bơm đẳng nhiệt khí ở áp suất ${}^{0}_{10}\\mathrm{kPa}$ vào lốp xe sao cho áp suất đạt đến giá trị ghi trên lốp, lúc đó thể tích lốp là 30 lít. Thể tích khí được bơm vào xe là bao nhiêu lít?</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de09/image11.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "",
       "B": "",
@@ -327,7 +327,7 @@
   {
     "id": 26,
     "type": "short",
-    "question": "<img src=\"assets/exams/vedich2k9_de09/image12.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Xét một mạch tạo sóng với đầu ra được nối với một dao động kí điện tử dùng để hiển thị mối liên hệ giữa cường độ của tín hiệu điện áp theo thời gian. Dựa vào hình ảnh quan sát được trên màn hình của dao động kí điện tử trong hình bên, hãy xác định tần số của dòng điện xoay chiều được tạo ra bởi mạch tạo sóng âm tần nói trên theo đơn vị Hz. Biết mỗi ô trên trục hoành ứng với khoảng thời gian 0,5 ms.",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 4. Xét một mạch tạo sóng với đầu ra được nối với một dao động kí điện tử dùng để hiển thị mối liên hệ giữa cường độ của tín hiệu điện áp theo thời gian. Dựa vào hình ảnh quan sát được trên màn hình của dao động kí điện tử trong hình bên, hãy xác định tần số của dòng điện xoay chiều được tạo ra bởi mạch tạo sóng âm tần nói trên theo đơn vị Hz. Biết mỗi ô trên trục hoành ứng với khoảng thời gian 0,5 ms.</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de09/image12.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "",
       "B": "",
@@ -340,7 +340,7 @@
   {
     "id": 27,
     "type": "short",
-    "question": "Câu 5. Một ống dây dẫn hình trụ dài gồm 1000 vòng dây, diện tích mỗi vòng là 100 cm2. Ống dây có điện trở $16 Ω$, hai đầu dây nối đoản mạch và được đặt trong một từ trường đều có vectơ cảm ứng từ $\\vec{B}$ hướng song song với trục của ống dây và có độ lớn tăng đều 4,0.10-2 T/s. Xác định công suất toả nhiệt trong ống dây dẫn này.",
+    "question": "Câu 5. Một ống dây dẫn hình trụ dài gồm 1000 vòng dây, diện tích mỗi vòng là 100 cm2. Ống dây có điện trở ${}^{6}_{1}\\mathrm{Ω}$, hai đầu dây nối đoản mạch và được đặt trong một từ trường đều có vectơ cảm ứng từ $\\vec{B}$ hướng song song với trục của ống dây và có độ lớn tăng đều 4,0.10-2 T/s. Xác định công suất toả nhiệt trong ống dây dẫn này.",
     "options": {
       "A": "",
       "B": "",
@@ -353,7 +353,7 @@
   {
     "id": 28,
     "type": "short",
-    "question": "<img src=\"assets/exams/vedich2k9_de09/image13.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 6.  Như hình bên, xilanh A và B giống nhau đều được đặt cố định, nằm ngang, hai pit-tông cách nhiệt được nối bằng một thanh cứng nhẹ có thể chuyển động không ma sát với thành các xilanh. Trong xilanh A và B chứa lần lượt 0,2 mol và 0,5 mol khí lí tưởng. Ban đầu, khí trong xilanh A và B có cùng nhiệt độ. Bây giờ, giữ nhiệt độ khí trong xilanh B không đổi, đồng thời đốt nóng từ từ khí trong xilanh A cho đến khi thể tích của khí trong xilanh A tăng gấp 1,5 lẫn giá trị ban đầu. Nhiệt độ tuyệt đối của khí trong xilanh A đã tăng bao nhiêu lần (làm tròn kết quả đến chữ số hàng phần mười).",
+    "question": "<div class=\"q-text-body\">Câu 6.  Như hình bên, xilanh A và B giống nhau đều được đặt cố định, nằm ngang, hai pit-tông cách nhiệt được nối bằng một thanh cứng nhẹ có thể chuyển động không ma sát với thành các xilanh. Trong xilanh A và B chứa lần lượt 0,2 mol và 0,5 mol khí lí tưởng. Ban đầu, khí trong xilanh A và B có cùng nhiệt độ. Bây giờ, giữ nhiệt độ khí trong xilanh B không đổi, đồng thời đốt nóng từ từ khí trong xilanh A cho đến khi thể tích của khí trong xilanh A tăng gấp 1,5 lẫn giá trị ban đầu. Nhiệt độ tuyệt đối của khí trong xilanh A đã tăng bao nhiêu lần (làm tròn kết quả đến chữ số hàng phần mười).</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de09/image13.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "",
       "B": "",

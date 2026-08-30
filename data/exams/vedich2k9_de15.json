@@ -41,7 +41,7 @@
   {
     "id": 4,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de15/image1.png\" alt=\"hình vẽ\" class=\"q-img\" />Trong các hình vẽ sau, hình vẽ cho biết từ thông qua diện tích của khung dây có giá trị lớn nhất là",
+    "question": "<div class=\"q-text-body\">Trong các hình vẽ sau, hình vẽ cho biết từ thông qua diện tích của khung dây có giá trị lớn nhất là</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de15/image1.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "hình (3).",
       "B": "hình (2).",
@@ -80,7 +80,7 @@
   {
     "id": 7,
     "type": "mc",
-    "question": "Một khối chì có khối lượng 5 kg, nhiệt dung riêng là 130 J/(kg.K). Để nhiệt độ của khối chì tăng thêm 500C thì cần phải cung cấp một nhiệt lượng bằng",
+    "question": "Một khối chì có khối lượng 5 kg, nhiệt dung riêng là 130 J/(kg.K). Để nhiệt độ của khối chì tăng thêm 50°C thì cần phải cung cấp một nhiệt lượng bằng",
     "options": {
       "A": "35,2 kJ.",
       "B": "32,5 kJ.",
@@ -158,7 +158,7 @@
   {
     "id": 13,
     "type": "mc",
-    "question": "Hạt nhân Triti $13T$ có",
+    "question": "Hạt nhân Triti ${}^{3}_{1}\\mathrm{T}$ có",
     "options": {
       "A": "3 nuclôn, trong đó có 1 nơtron.",
       "B": "3 nuclôn, trong đó có 1 prôtôn.",
@@ -186,10 +186,10 @@
     "type": "mc",
     "question": "Các định luật Boyle và Charles được rút ra từ những thí nghiệm thực hiện trong điều kiện nào?",
     "options": {
-      "A": "Áp suất trên <img src=\"assets/exams/vedich2k9_de15/image2.png\" alt=\"công thức\" class=\"q-formula-img\" /> và nhiệt độ dưới 200 K.",
-      "B": "Áp suất dưới <img src=\"assets/exams/vedich2k9_de15/image3.png\" alt=\"công thức\" class=\"q-formula-img\" /> và nhiệt độ không dưới 200 K.",
+      "A": "Áp suất trên $10^6\\text{ Pa}$ và nhiệt độ dưới 200 K.",
+      "B": "Áp suất dưới $10^6\\text{ Pa}$ và nhiệt độ không dưới 200 K.",
       "C": "không có dòng điện nào chạy qua.",
-      "D": "Áp suất trên <img src=\"assets/exams/vedich2k9_de15/image5.png\" alt=\"công thức\" class=\"q-formula-img\" /> và nhiệt độ dưới 200 K."
+      "D": "Áp suất trên $10^7\\text{ Pa}$ và nhiệt độ dưới 200 K."
     },
     "correct": "B",
     "giaiThich": ""
@@ -236,20 +236,20 @@
   {
     "id": 19,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de15/image6.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 1. Thang nhiệt độ Fahrenheit được nhà vật lí người Đức Danlel Gabniel Fahrenheint đề xuất vào năm 1724. Ông chọn hai mốc nhiệt độ tương ứng với nhiệt độ nước đá đang tan và nhiệt độ sôi của nước tinh khiết ở áp suất chuẩn lần lượt là 32 0F và 212 0F. Thang đo này được sử dụng phổ biến ở các nước phương Tây. Nhiệt kế thủy ngân đo nhiệt độ phòng thường có độ chia cả thang Celsius và thang Fahrenheit.",
+    "question": "<div class=\"q-text-body\">Câu 1. Thang nhiệt độ Fahrenheit được nhà vật lí người Đức Danlel Gabniel Fahrenheint đề xuất vào năm 1724. Ông chọn hai mốc nhiệt độ tương ứng với nhiệt độ nước đá đang tan và nhiệt độ sôi của nước tinh khiết ở áp suất chuẩn lần lượt là 32 0F và 212 0F. Thang đo này được sử dụng phổ biến ở các nước phương Tây. Nhiệt kế thủy ngân đo nhiệt độ phòng thường có độ chia cả thang Celsius và thang Fahrenheit.</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de15/image6.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
-      "A": "Ở áp suất chuẩn, trong thang Celsius nhiệt độ đóng băng và điểm sôi của nước tinh khiết lần lượt là 00C và 1000C.",
+      "A": "Ở áp suất chuẩn, trong thang Celsius nhiệt độ đóng băng và điểm sôi của nước tinh khiết lần lượt là 0°C và 100°C.",
       "B": "Một độ chia trong thang Farenheit bằng 1,8 độ chia trong thang Celsius.",
       "C": "Công thức chuyển đổi giữa nhiệt độ trong thang Celsius (t0C) và trong thang Farenheit (t0F) là $t\\left(0C\\right)=\\frac{5}{9}t \\left(0F\\right)-\\frac{160}{9}$.",
-      "D": "Trong thang Farenheit nhiệt độ 680F tương ứng trong thang Celsius nhiệt độ là 200C."
+      "D": "Trong thang Farenheit nhiệt độ 68°F tương ứng trong thang Celsius nhiệt độ là 20°C."
     },
     "correct": "ĐSĐĐ",
-    "giaiThich": "a) Ở áp suất chuẩn, trong thang Celsius nhiệt độ đóng băng và điểm sôi của nước tinh khiết lần lượt là 00C và 1000C.<br>b) 100 khoảng chia trong thang Celsius bằng 180 khoảng chia trong thang Farenheit.<br>$⇒$ Một độ chia trong thang Celsius bằng 1,8 độ chia trong thang Farenheit.<br>c) Ta có:  $\\frac{t\\left(0C\\right)-0}{100-0}=\\frac{t\\left(0F\\right)-32}{212-32}⇒t\\left(0C\\right)=\\frac{5}{9}t\\left(0F\\right)-\\frac{160}{9}$<br>d) $t\\left(0C\\right)=\\frac{5}{9}.68-\\frac{160}{9}=2{0}^{0}C$"
+    "giaiThich": "a) Ở áp suất chuẩn, trong thang Celsius nhiệt độ đóng băng và điểm sôi của nước tinh khiết lần lượt là 0°C và 100°C.<br>b) 100 khoảng chia trong thang Celsius bằng 180 khoảng chia trong thang Farenheit.<br>$⇒$ Một độ chia trong thang Celsius bằng 1,8 độ chia trong thang Farenheit.<br>c) Ta có:  $\\frac{t\\left(0C\\right)-0}{100-0}=\\frac{t\\left(0F\\right)-32}{212-32}⇒t\\left(0C\\right)=\\frac{5}{9}t\\left(0F\\right)-\\frac{160}{9}$<br>d) $t\\left(0C\\right)=\\frac{5}{9}.68-\\frac{160}{9}=2{0}^{0}C$"
   },
   {
     "id": 20,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de15/image7.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 2. Một nhóm học sinh thiết lập sơ đồ thí nghiệm như hình bên để \"nghiên cứu mối liên hệ giữa áp suất và thể tích của một khối khí nhất định ở nhiệt độ không đổi\".<br>+ Trong hình, thiết bị thí nghiệm A là ____ (1).<br>+ Nhóm học sinh đã đo hai bộ dữ liệu (p, V) khác nhau trong hai thí nghiệm khác nhau và thấy rằng tích của p và V trong hai bộ dữ liệu khác nhau đáng kể, lí do có thể là ____ (2).<br>+ Để giữ nhiệt độ của khí trong xilanh không đổi, biện pháp được thực hiện trong thí nghiệm là ____ (3).<br>+ Ban đầu khí trong xilanh có thể tích 10 cm3 và áp suất bằng áp suất khí quyển bên ngoài là p0. Trong quá trình thí nghiệm, thể tích khí trong xilanh thay đổi từ 4 cm3 đến 20 cm3. Chênh lệch áp suất khí bên trong xilanh và bên ngoài lớn nhất là ____ (4).",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 2. Một nhóm học sinh thiết lập sơ đồ thí nghiệm như hình bên để \"nghiên cứu mối liên hệ giữa áp suất và thể tích của một khối khí nhất định ở nhiệt độ không đổi\".<br>+ Trong hình, thiết bị thí nghiệm A là ____ (1).<br>+ Nhóm học sinh đã đo hai bộ dữ liệu (p, V) khác nhau trong hai thí nghiệm khác nhau và thấy rằng tích của p và V trong hai bộ dữ liệu khác nhau đáng kể, lí do có thể là ____ (2).<br>+ Để giữ nhiệt độ của khí trong xilanh không đổi, biện pháp được thực hiện trong thí nghiệm là ____ (3).<br>+ Ban đầu khí trong xilanh có thể tích 10 cm3 và áp suất bằng áp suất khí quyển bên ngoài là p0. Trong quá trình thí nghiệm, thể tích khí trong xilanh thay đổi từ 4 cm3 đến 20 cm3. Chênh lệch áp suất khí bên trong xilanh và bên ngoài lớn nhất là ____ (4).</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de15/image7.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "(1): cảm biến nhiệt độ.",
       "B": "(2): nhiệt độ môi trường khác nhau và khối lượng khí trong xilanh khác nhau.",
@@ -262,7 +262,7 @@
   {
     "id": 21,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de15/image8.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 3. Từ trường là một dạng vật chất tồn tại xung quanh nam châm hay dòng điện.",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 3. Từ trường là một dạng vật chất tồn tại xung quanh nam châm hay dòng điện.</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de15/image8.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "Vectơ cảm ứng từ tại điểm M của từ trường tạo bởi dòng điện trong dây dẫn thẳng dài vô hạn được biểu diễn như hình vẽ.",
       "B": "Cảm ứng từ là đại lượng đặc trưng cho từ trường về mặt năng lượng.",
@@ -275,7 +275,7 @@
   {
     "id": 22,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de15/image9.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Máy cán vật liệu thô thành lá vật liệu có độ dày được điều chỉnh tự động là một sản phẩm ứng dụng tính chất đâm xuyên của tia phóng xạ như hình bên. Nguyên lí hoạt động của máy cán vật liệu có độ dày được điều chỉnh tự động: Ở độ dày tiêu chuẩn d0 của lá vật liệu, đầu thu sẽ nhận một độ phóng xạ xác định, do đó mức tín hiệu ở đầu thu cũng xác định. Khi đó, hệ thống máy tính sẽ không gửi tín hiệu điều chỉnh vị trí con lăn. Nếu lá vật liệu có độ dày khác độ dày tiêu chuẩn thì tín hiệu đầu thu sẽ thay đổi (do độ phóng xạ tới đầu thu bị thay đổi).Thông qua hệ thống máy tính, một tín hiệu điều chỉnh vị trí con quay cán vật liệu sẽ được gửi đi nhằm đưa độ dày của lá vật liệu trở về giá trị tiêu chuẩn d0. Biết rằng, với một nguồn phóng xạ mới, chùm tia phóng xạ sẽ giảm độ phóng xạ đi n0 = 4 lần khi đi qua lá thép có độ dày tiêu chuẩn d0 = 4 mm. Nếu người ta cài đặt máy để cán được lá thép có độ dày d1 thì độ phóng xạ khi qua lá thép sẽ giảm ${n}_{1}={n}_{0}^{\\frac{{d}_{1}}{{d}_{0}}}$ lần.",
+    "question": "<div class=\"q-text-body\">Câu 4. Máy cán vật liệu thô thành lá vật liệu có độ dày được điều chỉnh tự động là một sản phẩm ứng dụng tính chất đâm xuyên của tia phóng xạ như hình bên. Nguyên lí hoạt động của máy cán vật liệu có độ dày được điều chỉnh tự động: Ở độ dày tiêu chuẩn d0 của lá vật liệu, đầu thu sẽ nhận một độ phóng xạ xác định, do đó mức tín hiệu ở đầu thu cũng xác định. Khi đó, hệ thống máy tính sẽ không gửi tín hiệu điều chỉnh vị trí con lăn. Nếu lá vật liệu có độ dày khác độ dày tiêu chuẩn thì tín hiệu đầu thu sẽ thay đổi (do độ phóng xạ tới đầu thu bị thay đổi).Thông qua hệ thống máy tính, một tín hiệu điều chỉnh vị trí con quay cán vật liệu sẽ được gửi đi nhằm đưa độ dày của lá vật liệu trở về giá trị tiêu chuẩn d0. Biết rằng, với một nguồn phóng xạ mới, chùm tia phóng xạ sẽ giảm độ phóng xạ đi n0 = 4 lần khi đi qua lá thép có độ dày tiêu chuẩn d0 = 4 mm. Nếu người ta cài đặt máy để cán được lá thép có độ dày d1 thì độ phóng xạ khi qua lá thép sẽ giảm ${n}_{1}={n}_{0}^{\\frac{{d}_{1}}{{d}_{0}}}$ lần.</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de15/image9.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Ban đầu người ta sử dụng một nguồn phóng xạ có chu kì bán rã T và cài tín hiệu ở đầu thu để sản xuất lá thép có độ dày tiêu chuẩn d0. Sau khoảng thời gian bằng t = T cùng sử dụng nguồn phóng xạ đó và để tín hiệu đầu thu nhận được độ phóng xạ như đã cài ban đầu thì máy sẽ cho ra lá thép có độ dày bằng 2 mm.",
       "B": "Độ phóng xạ do đầu thu nhận được tăng thì độ dày tấm vật liệu đã được cán tăng.",
@@ -288,7 +288,7 @@
   {
     "id": 23,
     "type": "short",
-    "question": "Câu 1. Vào mùa đông, xử lý hạt giống trong nước ấm theo kỹ thuật “3 sôi 2 lạnh” (3 phần nước sôi, 2 phần nước lạnh, các phần bằng nhau) nhằm diệt mầm bệnh, kích thích hạt nảy mầm nhanh và đồng đều. Nếu sử dụng nước nóng ở nhiệt độ ban đầu là 1000C và nước lạnh ở nhiệt độ 170C, bỏ qua sự trao đổi nhiệt với môi trường. Xác định nhiệt độ (theo đơn vị 0C) của hỗn hợp sau khi cân bằng nhiệt.",
+    "question": "Câu 1. Vào mùa đông, xử lý hạt giống trong nước ấm theo kỹ thuật “3 sôi 2 lạnh” (3 phần nước sôi, 2 phần nước lạnh, các phần bằng nhau) nhằm diệt mầm bệnh, kích thích hạt nảy mầm nhanh và đồng đều. Nếu sử dụng nước nóng ở nhiệt độ ban đầu là 100°C và nước lạnh ở nhiệt độ 17°C, bỏ qua sự trao đổi nhiệt với môi trường. Xác định nhiệt độ (theo đơn vị 0C) của hỗn hợp sau khi cân bằng nhiệt.",
     "options": {
       "A": "",
       "B": "",
@@ -296,7 +296,7 @@
       "D": ""
     },
     "correct": "67",
-    "giaiThich": "Nhiệt độ hỗn hợp sau cân bằng là t: $3c\\left(100-t\\right)=2c.\\left(t-17\\right)$ → t = 66,8 0C ≈ 670C"
+    "giaiThich": "Nhiệt độ hỗn hợp sau cân bằng là t: $3c\\left(100-t\\right)=2c.\\left(t-17\\right)$ → t = 66,8 0C ≈ 67°C"
   },
   {
     "id": 24,
@@ -309,12 +309,12 @@
       "D": ""
     },
     "correct": "450",
-    "giaiThich": "Độ tăng nội năng của hệ bằng độ giảm cơ năng của đạn:<br>$ΔU={W}_{1}-{W}_{2}=\\frac{1}{2}.50.1{0}^{-3}.{\\left(\\frac{360}{3,6}\\right)}^{2}-\\frac{1}{2}.50.1{0}^{-3}.{\\left(\\frac{54}{3,6}\\right)}^{2}=244,4≈0,24 kJ$<br>Sử dụng thông tin sau cho câu 3 và câu 4: Một thanh đồng dài 5 cm, có khối lượng 5 g được treo cân bằng nằm ngang bằng hai sợi dây mảnh, nhẹ có phương thẳng đứng và có cùng chiều dài 40 cm. Đưa hệ thống vào trong từ trường đều có độ lớn cảm ứng từ là 0,5 T, các đường sức từ hướng thẳng đứng từ dưới lên. Cho dòng điện không đổi có cường độ 2 A chạy qua thanh đồng thì các dây treo bị lệch khỏi phương thẳng đứng. Bỏ qua lực cản của không khí và lấy <img src=\"assets/exams/vedich2k9_de15/image11.png\" alt=\"công thức\" class=\"q-formula-img\" />."
+    "giaiThich": "Độ tăng nội năng của hệ bằng độ giảm cơ năng của đạn:<br>$ΔU={W}_{1}-{W}_{2}=\\frac{1}{2}.50.1{0}^{-3}.{\\left(\\frac{360}{3,6}\\right)}^{2}-\\frac{1}{2}.50.1{0}^{-3}.{\\left(\\frac{54}{3,6}\\right)}^{2}=244,4≈0,24 kJ$<br>Sử dụng thông tin sau cho câu 3 và câu 4: Một thanh đồng dài 5 cm, có khối lượng 5 g được treo cân bằng nằm ngang bằng hai sợi dây mảnh, nhẹ có phương thẳng đứng và có cùng chiều dài 40 cm. Đưa hệ thống vào trong từ trường đều có độ lớn cảm ứng từ là 0,5 T, các đường sức từ hướng thẳng đứng từ dưới lên. Cho dòng điện không đổi có cường độ 2 A chạy qua thanh đồng thì các dây treo bị lệch khỏi phương thẳng đứng. Bỏ qua lực cản của không khí và lấy $g=10\\text{ m/s}^2$."
   },
   {
     "id": 25,
     "type": "short",
-    "question": "<img src=\"assets/exams/vedich2k9_de15/image12.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 3. Tính góc lệch (theo đơn vị độ) của các dây treo so với phương thẳng đứng và lực căng của mỗi dây treo (làm tròn kết quả đến chữ số hàng đơn vị).",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 3. Tính góc lệch (theo đơn vị độ) của các dây treo so với phương thẳng đứng và lực căng của mỗi dây treo (làm tròn kết quả đến chữ số hàng đơn vị).</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de15/image12.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "",
       "B": "",
@@ -335,7 +335,7 @@
       "D": ""
     },
     "correct": "1,53",
-    "giaiThich": "Bảo toàn cơ năng:<br>$\\frac{1}{2}m{v}_{O}^{2}=mgl\\left(1-\\mathrm{cos} {θ}\\right)⇒{v}_{O}=\\sqrt{2gl\\left(1-\\mathrm{cos} {θ}\\right)}=\\sqrt{2.10.0,4.\\left(1-\\mathrm{cos} {4}5\\right)}=1,53 m/s$<br><img src=\"assets/exams/vedich2k9_de15/image13.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho câu 5 và câu 6. Hình dưới là quy định của liên đoàn bóng chuyền thế giới về quả bóng chuyền thi đấu (nguồn Wiki). Cho áp suất khí quyển là 1 atm = 105 Pa, nhiệt độ khí trong bóng là 270C."
+    "giaiThich": "Bảo toàn cơ năng:<br>$\\frac{1}{2}m{v}_{O}^{2}=mgl\\left(1-\\mathrm{cos} {θ}\\right)⇒{v}_{O}=\\sqrt{2gl\\left(1-\\mathrm{cos} {θ}\\right)}=\\sqrt{2.10.0,4.\\left(1-\\mathrm{cos} {4}5\\right)}=1,53 m/s$<br><img src=\"assets/exams/vedich2k9_de15/image13.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho câu 5 và câu 6. Hình dưới là quy định của liên đoàn bóng chuyền thế giới về quả bóng chuyền thi đấu (nguồn Wiki). Cho áp suất khí quyển là 1 atm = 105 Pa, nhiệt độ khí trong bóng là 27°C."
   },
   {
     "id": 27,

@@ -2,7 +2,7 @@
   {
     "id": 1,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de14/image1.png\" alt=\"hình vẽ\" class=\"q-img\" />Ở một số chung cư cao tầng, để tận dụng nguồn năng lượng dòng chảy của nước thải từ tầng trên xuống người ta lắp đặt máy phát điện mini ở dưới tầng thấp nhất. Dòng nước thải chảy qua tuabin quay máy phát điện. Tác dụng của máy phát điện là chuyển hoá",
+    "question": "<div class=\"q-text-body\">Ở một số chung cư cao tầng, để tận dụng nguồn năng lượng dòng chảy của nước thải từ tầng trên xuống người ta lắp đặt máy phát điện mini ở dưới tầng thấp nhất. Dòng nước thải chảy qua tuabin quay máy phát điện. Tác dụng của máy phát điện là chuyển hoá</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de14/image1.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "nhiệt năng của nước thành điện năng.",
       "B": "cơ năng của nước thành hoá năng.",
@@ -106,7 +106,7 @@
   {
     "id": 9,
     "type": "mc",
-    "question": "Đồ thị nào sau đây không phù hợp với quá trình đẳng áp?<br><img src=\"assets/exams/vedich2k9_de14/image2.png\" alt=\"hình vẽ\" class=\"q-img\" />",
+    "question": "<div class=\"q-text-body\">Đồ thị nào sau đây không phù hợp với quá trình đẳng áp?<br></div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de14/image2.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Hình c).",
       "B": "Hình b).",
@@ -158,7 +158,7 @@
   {
     "id": 13,
     "type": "mc",
-    "question": "Số nơtron có trong 1,5 mol $37Li$   là",
+    "question": "Số nơtron có trong 1,5 mol ${}^{7}_{3}\\mathrm{Li}$   là",
     "options": {
       "A": "6,32.1024.",
       "B": "2,71.1024.",
@@ -197,7 +197,7 @@
   {
     "id": 16,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de14/image3.png\" alt=\"hình vẽ\" class=\"q-img\" />Một lượng khí lí tưởng xác định thực hiện quá trình biến đổi như đồ thị hình vẽ. Quá trình (1) – (2) là đẳng nhiệt, quá trình (2) – (3) là đẳng tích. Nhiệt độ ở trạng thái (1) là T = 450 K. Nhiệt độ của khí ở trạng thái (3) bằng",
+    "question": "<div class=\"q-text-body\">Một lượng khí lí tưởng xác định thực hiện quá trình biến đổi như đồ thị hình vẽ. Quá trình (1) – (2) là đẳng nhiệt, quá trình (2) – (3) là đẳng tích. Nhiệt độ ở trạng thái (1) là T = 450 K. Nhiệt độ của khí ở trạng thái (3) bằng</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de14/image3.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "300 K.",
       "B": "450 K.",
@@ -223,7 +223,7 @@
   {
     "id": 18,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de14/image4.png\" alt=\"hình vẽ\" class=\"q-img\" />Trong một căn phòng, có 3 bình A, B, C chứa cùng một lượng rượu như nhau. Sau một tuần thì",
+    "question": "<div class=\"q-text-body\">Trong một căn phòng, có 3 bình A, B, C chứa cùng một lượng rượu như nhau. Sau một tuần thì</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de14/image4.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "bình A còn ít rượu nhất.",
       "B": "bình B còn ít rượu nhất.",
@@ -236,7 +236,7 @@
   {
     "id": 19,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de14/image5.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 1. Có hai nhiệt kế thủy ngân (1) và (2) giống nhau, ban đầu đều chỉ cùng một nhiệt độ. Sau đó hai nhiệt kế được nhúng vào hai cốc nước A và B. Sau một thời gian, mức thủy ngân trong nhiệt kế (2) cao hơn so với (1) như hình vẽ bên.",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 1. Có hai nhiệt kế thủy ngân (1) và (2) giống nhau, ban đầu đều chỉ cùng một nhiệt độ. Sau đó hai nhiệt kế được nhúng vào hai cốc nước A và B. Sau một thời gian, mức thủy ngân trong nhiệt kế (2) cao hơn so với (1) như hình vẽ bên.</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de14/image5.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "Nhiệt kế (1) và (2) đang đo nhiệt độ của nước trong mỗi cốc.",
       "B": "Nhiệt độ nước trong cốc B lớn hơn nhiệt độ nước trong cốc A.",
@@ -249,11 +249,11 @@
   {
     "id": 20,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de14/image6.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 2.  là một phần của hệ thống an toàn được thiết kế để bảo vệ người lái và hành khách trong trường hợp va chạm vượt ngưỡng nguy hiểm.<br>Cấu tạo túi khí ô tô được xây dựng từ ba thành phần chính: hệ thống cảm biến, bộ phận kích nổ và túi khí (được làm từ sợi tổng hợp, co giãn tốt, chịu lực cao, chống nhiệt và chống cháy tốt). Khi có sự va chạm xảy ra, những tín hiệu từ hệ thống cảm biến được truyền tới bộ điều khiển túi khí. Bộ phận kích nổ sẽ tạo ra một lượng lớn khí N2 để làm phồng túi khí nhanh chóng, bảo vệ an toàn cho người ngồi trên xe, đồng thời khí bên trong túi cũng xì hơi nhanh qua các lỗ thoát khí để tránh gây áp lực lên cơ thể.<br>Một túi khí tiêu chuẩn có thể tích xấp xỉ 60 lít khi được bơm căng ở 250C và chịu được áp suất tối đa lên đến 5 psi (1 psi ≈ 6,895 kPa).",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 2.  là một phần của hệ thống an toàn được thiết kế để bảo vệ người lái và hành khách trong trường hợp va chạm vượt ngưỡng nguy hiểm.<br>Cấu tạo túi khí ô tô được xây dựng từ ba thành phần chính: hệ thống cảm biến, bộ phận kích nổ và túi khí (được làm từ sợi tổng hợp, co giãn tốt, chịu lực cao, chống nhiệt và chống cháy tốt). Khi có sự va chạm xảy ra, những tín hiệu từ hệ thống cảm biến được truyền tới bộ điều khiển túi khí. Bộ phận kích nổ sẽ tạo ra một lượng lớn khí N2 để làm phồng túi khí nhanh chóng, bảo vệ an toàn cho người ngồi trên xe, đồng thời khí bên trong túi cũng xì hơi nhanh qua các lỗ thoát khí để tránh gây áp lực lên cơ thể.<br>Một túi khí tiêu chuẩn có thể tích xấp xỉ 60 lít khi được bơm căng ở 25°C và chịu được áp suất tối đa lên đến 5 psi (1 psi ≈ 6,895 kPa).</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de14/image6.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "Khi xảy ra va chạm, hệ thống túi khí sẽ phồng lên rất nhanh để tạo thành đệm hơi giúp làm giảm chấn thương cho người ngồi trong xe.",
       "B": "Áp suất tối đa mà túi khí tiêu chuẩn chịu được có giá trị xấp xỉ 34,475 kPa.",
-      "C": "Cần sản sinh 0,5 mol khí N2 để bơm căng túi khí này đến áp suất 3 psi ở nhiệt độ 250C.",
+      "C": "Cần sản sinh 0,5 mol khí N2 để bơm căng túi khí này đến áp suất 3 psi ở nhiệt độ 25°C.",
       "D": "Lực bung mạnh của túi khí vẫn có khả năng gây thương tích cho người ngồi trong xe, đặc biệt là trẻ em. Túi khí hoạt động hiệu quả nhất khi kết hợp với dây an toàn và không nên để trẻ nhỏ ngồi ở ghế trước."
     },
     "correct": "ĐĐĐĐ",
@@ -262,9 +262,9 @@
   {
     "id": 21,
     "type": "tf",
-    "question": "Câu 3. Quan sát mô hình loa điện động được mô tả như hình a:",
+    "question": "<div class=\"q-text-body\">Câu 3. Quan sát mô hình loa điện động được mô tả như hình a:</div><div class=\"q-multi-img-grid\"><img src=\"assets/exams/vedich2k9_de14/image7.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de14/image8.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /></div>",
     "options": {
-      "A": "<img src=\"assets/exams/vedich2k9_de14/image7.png\" alt=\"hình vẽ\" class=\"q-img\" /><img src=\"assets/exams/vedich2k9_de14/image8.png\" alt=\"hình vẽ\" class=\"q-img\" /><img src=\"assets/exams/vedich2k9_de14/image9.png\" alt=\"công thức\" class=\"q-formula-img\" /><img src=\"assets/exams/vedich2k9_de14/image10.png\" alt=\"công thức\" class=\"q-formula-img\" />a)b)a)b)",
+      "A": "Khi cho dòng điện không đổi vào hai điểm nối tín hiệu thì loa chỉ phát ra âm với tần số không đổi.",
       "B": "Loa hoạt động dựa trên hiện tượng cảm ứng điện từ.",
       "C": "Khi có dòng điện chạy qua cuộn dây thì nam châm vĩnh cửu sẽ dao động làm cho màng loa dao động với tần số âm.",
       "D": "Nếu nối hai điểm nối tín hiệu vào loa với điện áp biểu diễn như hình b thì tần số âm loa phát ra là $\\frac{40000}{3}$ Hz."
@@ -275,20 +275,20 @@
   {
     "id": 22,
     "type": "tf",
-    "question": "Câu 4. Một bình kín cổ đại chứa một chất lỏng, được cho là nước. Một nhà khảo cổ học đã yêu cầu các nhà khoa học xác định thể tích chất lỏng trong bình mà không được mở bình. Một nhà khoa học quyết định sử dụng một đồng vị sodium-24 $\\left(1124Na\\right)$ phóng xạ ${β}^{-}$ với chu kì bán rã là 14,8 giờ. Đầu tiên, nhà khoa học đã trộn một hợp chất chứa $3,0.1{0}^{-10}g$ sodium-24 với 1500 cm3 nước. Sau đó bơm 15 cm3 dung dịch vào bình qua lớp niêm phong và lắc nhẹ bình.",
+    "question": "Câu 4. Một bình kín cổ đại chứa một chất lỏng, được cho là nước. Một nhà khảo cổ học đã yêu cầu các nhà khoa học xác định thể tích chất lỏng trong bình mà không được mở bình. Một nhà khoa học quyết định sử dụng một đồng vị sodium-24 $\\left(${}^{24}_{11}\\mathrm{Na}$\\right)$ phóng xạ ${β}^{-}$ với chu kì bán rã là 14,8 giờ. Đầu tiên, nhà khoa học đã trộn một hợp chất chứa $3,0.1{0}^{-10}g$ sodium-24 với 1500 cm3 nước. Sau đó bơm 15 cm3 dung dịch vào bình qua lớp niêm phong và lắc nhẹ bình.",
     "options": {
       "A": "Nhà khoa học lắc nhẹ bình để chất phóng xạ sodium-24 lắng xuống đáy bình.",
-      "B": "Hạt nhân con tạo thành của chất phóng xạ $1124Na$ là Magnesium-24 $\\left(1224Mg\\right)$.",
+      "B": "Hạt nhân con tạo thành của chất phóng xạ ${}^{4}_{112}\\mathrm{Na}$ là Magnesium-24 $\\left(${}^{24}_{12}\\mathrm{Mg}$\\right)$.",
       "C": "Hằng số phóng xạ của đồng vị Sodium-24 là 1,3.10-5 s-1.",
       "D": "Sau khi bơm dung dịch có chất phóng xạ vào bình 3,5 giờ, nhà khoa học rút 15 cm3 hỗn hợp chất lỏng ra khỏi bình và đo độ phóng xạ của nó thì thu được kết quả là 3600 Bq. Thể tích chất lỏng có trong bình ban đầu xấp xỉ 3,5 lít."
     },
     "correct": "SĐĐĐ",
-    "giaiThich": "a) Nhà khoa học lắc nhẹ bình để chất phóng xạ sodium-24 phân bố đều trong bình để đo được chính xác.<br>b) Phương trình: $1124Na {β}^{-} -10e+1224Mg$<br>c)$λ=\\frac{\\mathrm{ln} {2}}{T}=\\frac{\\mathrm{ln} {2}}{14,8.3600}=1,3.1{0}^{-5}{s}^{-1}$<br>d) Độ phóng xạ đồng vị sodium-24 ban đầu: ${H}_{0}=λ.{N}_{0}.\\frac{15}{1500}=\\frac{\\mathrm{ln} {2}}{T}.\\frac{{m}_{0}}{A}{N}_{A}.\\frac{1}{100}$<br>Độ phóng xạ đồng vị sodium-24 sau 3,5 giờ rút ra: $H=\\frac{15+V}{15}.3600$<br>(V là thể tích nước trong bình)<br>$H={H}_{0}.{2}^{-\\frac{t}{T}}⇒\\frac{15+V}{15}.3600=\\frac{\\mathrm{ln} {2}}{14,8.3600}.\\frac{3.1{0}^{-10}}{24}.6,02.1{0}^{23}.\\frac{1}{100}.{2}^{-\\frac{3,5}{14,8}}⇒V=3447 c{m}^{3}$"
+    "giaiThich": "a) Nhà khoa học lắc nhẹ bình để chất phóng xạ sodium-24 phân bố đều trong bình để đo được chính xác.<br>b) Phương trình: $${}^{24}_{11}\\mathrm{Na}$ {β}^{-} -${}^{0}_{1}\\mathrm{e}$+${}^{24}_{12}\\mathrm{Mg}$$<br>c)$λ=\\frac{\\mathrm{ln} {2}}{T}=\\frac{\\mathrm{ln} {2}}{14,8.3600}=1,3.1{0}^{-5}{s}^{-1}$<br>d) Độ phóng xạ đồng vị sodium-24 ban đầu: ${H}_{0}=λ.{N}_{0}.\\frac{15}{1500}=\\frac{\\mathrm{ln} {2}}{T}.\\frac{{m}_{0}}{A}{N}_{A}.\\frac{1}{100}$<br>Độ phóng xạ đồng vị sodium-24 sau 3,5 giờ rút ra: $H=\\frac{15+V}{15}.3600$<br>(V là thể tích nước trong bình)<br>$H={H}_{0}.{2}^{-\\frac{t}{T}}⇒\\frac{15+V}{15}.3600=\\frac{\\mathrm{ln} {2}}{14,8.3600}.\\frac{3.1{0}^{-10}}{24}.6,02.1{0}^{23}.\\frac{1}{100}.{2}^{-\\frac{3,5}{14,8}}⇒V=3447 c{m}^{3}$"
   },
   {
     "id": 23,
     "type": "short",
-    "question": "<img src=\"assets/exams/vedich2k9_de14/image11.png\" alt=\"hình vẽ\" class=\"q-img\" />Dùng thông tin sau cho câu 1 và câu 2: “Đá vĩnh cửu” là loại đá nhân tạo, được làm bằng thép không gỉ 304 (bên trong là hợp chất gel làm lạnh) hoặc đá Soapstone tự nhiên, có tác dụng làm lạnh thức uống thay vì dùng đá viên thông thường. Một viên “đá vĩnh cửu” gồm 15 gam vỏ thép không gỉ có nhiệt dụng riêng bằng 500 J/(kg.K) và 15 gam gel làm lạnh có nhiệt dung riêng bằng 3500 J/(kg.K). Biết nhiệt dung riêng của nước là 4200 J/kg.K và khối lượng riêng của nước là 1 gam/ml<br>Câu 1. Để làm lạnh một chai nước suối (250 ml) từ 300C xuống 100C cần tối thiểu bao nhiêu viên “đá vĩnh cửu” ở -150C? (làm tròn kết quả đến chữ số hàng đơn vị).",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Dùng thông tin sau cho câu 1 và câu 2: “Đá vĩnh cửu” là loại đá nhân tạo, được làm bằng thép không gỉ 304 (bên trong là hợp chất gel làm lạnh) hoặc đá Soapstone tự nhiên, có tác dụng làm lạnh thức uống thay vì dùng đá viên thông thường. Một viên “đá vĩnh cửu” gồm 15 gam vỏ thép không gỉ có nhiệt dụng riêng bằng 500 J/(kg.K) và 15 gam gel làm lạnh có nhiệt dung riêng bằng 3500 J/(kg.K). Biết nhiệt dung riêng của nước là 4200 J/kg.K và khối lượng riêng của nước là 1 gam/ml<br>Câu 1. Để làm lạnh một chai nước suối (250 ml) từ 30°C xuống 10°C cần tối thiểu bao nhiêu viên “đá vĩnh cửu” ở -15°C? (làm tròn kết quả đến chữ số hàng đơn vị).</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de14/image11.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "",
       "B": "",
@@ -301,7 +301,7 @@
   {
     "id": 24,
     "type": "short",
-    "question": "Câu 2. Nhiệt lượng một viên “đá vĩnh cửu” hấp thụ là bao nhiêu J khi nó tăng lên 10C? (làm tròn kết quả đến chữ số hàng đơn vị).",
+    "question": "Câu 2. Nhiệt lượng một viên “đá vĩnh cửu” hấp thụ là bao nhiêu J khi nó tăng lên 1°C? (làm tròn kết quả đến chữ số hàng đơn vị).",
     "options": {
       "A": "",
       "B": "",
@@ -309,7 +309,7 @@
       "D": ""
     },
     "correct": "60",
-    "giaiThich": "$Q=\\left({m}_{1}{c}_{1}+{m}_{2}{c}_{2}\\right).\\left(t-{t}_{0}\\right)=\\left(15.1{0}^{-3}.500+15.1{0}^{-3}.3500\\right).1=60J$<br><img src=\"assets/exams/vedich2k9_de14/image12.png\" alt=\"hình vẽ\" class=\"q-img\" />Dùng thông tin sau cho câu 3 và câu 4: Gas là nhiên liệu phổ biến hiện nay có thành phần chính là propane (C3H8) và butane (C4H10). Khi vận chuyển, gas được hóa lỏng bằng cách nén ở nhiệt độ thấp. Khi sử dụng gas hóa hơi chuyển thành thể khí trước khi được đốt cháy. Trong quá trình hóa hơi trong bình gas, áp suất và thành phần mỗi loại phụ truộc vào nhiệt độ. Ở 150C, 1 m3 khí gas trong bình gas chứa 1,89 kg propane và 2,53 kg butane."
+    "giaiThich": "$Q=\\left({m}_{1}{c}_{1}+{m}_{2}{c}_{2}\\right).\\left(t-{t}_{0}\\right)=\\left(15.1{0}^{-3}.500+15.1{0}^{-3}.3500\\right).1=60J$<br><img src=\"assets/exams/vedich2k9_de14/image12.png\" alt=\"hình vẽ\" class=\"q-img\" />Dùng thông tin sau cho câu 3 và câu 4: Gas là nhiên liệu phổ biến hiện nay có thành phần chính là propane (C3H8) và butane (C4H10). Khi vận chuyển, gas được hóa lỏng bằng cách nén ở nhiệt độ thấp. Khi sử dụng gas hóa hơi chuyển thành thể khí trước khi được đốt cháy. Trong quá trình hóa hơi trong bình gas, áp suất và thành phần mỗi loại phụ truộc vào nhiệt độ. Ở 15°C, 1 m3 khí gas trong bình gas chứa 1,89 kg propane và 2,53 kg butane."
   },
   {
     "id": 25,
@@ -327,7 +327,7 @@
   {
     "id": 26,
     "type": "short",
-    "question": "Câu 4. Áp suất của khí gas trong bình ở 150C là x.105 (Pa). Giá trị của x bằng bao nhiêu? (làm tròn kết quả đến chữ số hàng phần trăm).",
+    "question": "Câu 4. Áp suất của khí gas trong bình ở 15°C là x.105 (Pa). Giá trị của x bằng bao nhiêu? (làm tròn kết quả đến chữ số hàng phần trăm).",
     "options": {
       "A": "",
       "B": "",

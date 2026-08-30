@@ -2,7 +2,7 @@
   {
     "id": 1,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de04/image1.png\" alt=\"hình vẽ\" class=\"q-img\" />Tại vị trí O, người ta bắn ra một proton chuyển động với vận tốc $\\vec{v}$ vào vùng không gian có từ trường đều MNPQ, theo hướng vuông góc với cảm ứng từ $\\vec{B}$. Quỹ đạo của proton sau đó là đường nào trong hình bên?",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Tại vị trí O, người ta bắn ra một proton chuyển động với vận tốc $\\vec{v}$ vào vùng không gian có từ trường đều MNPQ, theo hướng vuông góc với cảm ứng từ $\\vec{B}$. Quỹ đạo của proton sau đó là đường nào trong hình bên?</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de04/image1.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "(3).",
       "B": "(1).",
@@ -41,7 +41,7 @@
   {
     "id": 4,
     "type": "mc",
-    "question": "Hạt nhân $1123Na$ có",
+    "question": "Hạt nhân ${}^{3}_{112}\\mathrm{Na}$ có",
     "options": {
       "A": "11 prôtôn và 12 nơtron.",
       "B": "2 prôtôn và 11 nơtron.",
@@ -158,7 +158,7 @@
   {
     "id": 13,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de04/image3.png\" alt=\"hình vẽ\" class=\"q-img\" />Một chiếc ghế văn phòng có thể nâng hạ độ cao như hình vẽ. Một khối khí xác định bị giam giữa hai ống M và N; M có thể trượt lên xuống dọc theo thành trong của N. Coi khối khí là khí lí tưởng và không trao đổi nhiệt với bên ngoài. Khi M trượt xuống dưới thì khối khí bên trong ống",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Một chiếc ghế văn phòng có thể nâng hạ độ cao như hình vẽ. Một khối khí xác định bị giam giữa hai ống M và N; M có thể trượt lên xuống dọc theo thành trong của N. Coi khối khí là khí lí tưởng và không trao đổi nhiệt với bên ngoài. Khi M trượt xuống dưới thì khối khí bên trong ống</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de04/image3.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "nhận công và nội năng tăng.",
       "B": "thực hiện công và nội năng tăng.",
@@ -184,7 +184,7 @@
   {
     "id": 15,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de04/image4.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng thông tin cho ở bảng bên cho các câu 15 và câu 16: Thầy Hoàng Sư Điểu sử dụng cảm biến điện thế để đo điện áp xoay chiều đặt vào hai đầu một phần tử tiêu thụ điện và vẽ được đồ thị điện áp như hình vẽ bên dưới:<br>Tần số của điện áp xoay chiều đặt vào hai đầu phần tử là",
+    "question": "<div class=\"q-text-body\">Sử dụng thông tin cho ở bảng bên cho các câu 15 và câu 16: Thầy Hoàng Sư Điểu sử dụng cảm biến điện thế để đo điện áp xoay chiều đặt vào hai đầu một phần tử tiêu thụ điện và vẽ được đồ thị điện áp như hình vẽ bên dưới:<br>Tần số của điện áp xoay chiều đặt vào hai đầu phần tử là</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de04/image4.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "50 Hz.",
       "B": "100 Hz.",
@@ -249,7 +249,7 @@
   {
     "id": 20,
     "type": "tf",
-    "question": "Câu 2. Một nhóm học sinh làm thí nghiệm khảo sát khả năng làm nguội nước nhờ gió ở điều kiện nhiệt độ phòng 250C. Nhóm sử dụng 2 kg nước có nhiệt độ ban đầu là 500C. Dùng quạt thổi qua chậu nước ở các chế độ khác nhau và đo nhiệt độ của nước sau mỗi phút. Biết nhiệt dung riêng của nước là ${c}_{n}=4200J/kg.K$. Kết quả đo được ghi vào bảng như sau:<br><img src=\"assets/exams/vedich2k9_de04/image5.png\" alt=\"hình vẽ\" class=\"q-img\" />",
+    "question": "<div class=\"q-text-body\">Câu 2. Một nhóm học sinh làm thí nghiệm khảo sát khả năng làm nguội nước nhờ gió ở điều kiện nhiệt độ phòng 25°C. Nhóm sử dụng 2 kg nước có nhiệt độ ban đầu là 50°C. Dùng quạt thổi qua chậu nước ở các chế độ khác nhau và đo nhiệt độ của nước sau mỗi phút. Biết nhiệt dung riêng của nước là ${c}_{n}=4200J/kg.K$. Kết quả đo được ghi vào bảng như sau:<br></div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de04/image5.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Tốc độ gió càng mạnh thì nhiệt độ nước giảm càng chậm.",
       "B": "Trong cùng một điều kiện về tốc độ gió, khi nhiệt độ nước càng giảm thì tốc độ tỏa nhiệt của nước ra môi trường càng giảm.",
@@ -262,7 +262,7 @@
   {
     "id": 21,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de04/image6.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 3. Hình vẽ thể hiện một mô hình. Hai thanh kim loại dẫn điện và con lăn kim loại chạm vào cả hai thanh và hoàn thành mạch điện. Con lăn nằm trong từ trường do nam châm tạo ra.",
+    "question": "<div class=\"q-text-body\">Câu 3. Hình vẽ thể hiện một mô hình. Hai thanh kim loại dẫn điện và con lăn kim loại chạm vào cả hai thanh và hoàn thành mạch điện. Con lăn nằm trong từ trường do nam châm tạo ra.</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de04/image6.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Các đường sức từ trong vùng giữa hai thanh kim loại có chiều vuông góc và hướng lên trên với mặt phẳng do hai thanh tạo ra.",
       "B": "Biết cảm ứng từ B = 1,2 T; chiều dài con lăn $L=6  cm$; cường độ dòng điện $I=2,5 A$. Lực từ tác dụng lên con lăn là 1,8 N.",
@@ -275,7 +275,7 @@
   {
     "id": 22,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de04/image8.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Đua xe đạp rèn luyện thân thể đang là một xu hướng thể thao được nhiều người ưa thích. Một chiếc xe đạp thể thao có giá từ vài triệu đến vài chục triệu VNĐ. Líp xe gắn với trục của bánh xe sau là loại líp nhiều tầng để có thể thay đổi tốc độ xe tùy thuộc vào địa hình đường chạy.",
+    "question": "<div class=\"q-text-body\">Câu 4. Đua xe đạp rèn luyện thân thể đang là một xu hướng thể thao được nhiều người ưa thích. Một chiếc xe đạp thể thao có giá từ vài triệu đến vài chục triệu VNĐ. Líp xe gắn với trục của bánh xe sau là loại líp nhiều tầng để có thể thay đổi tốc độ xe tùy thuộc vào địa hình đường chạy.</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de04/image8.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Khi xe chạy trên đường (bánh xe lăn không trượt) thì lực ma sát nghỉ giữa bánh xe và mặt đường đóng vai trò lực phát động.",
       "B": "Người đạp xe làm quay đĩa, nhờ dây xích truyền động cho líp làm bánh xe quay. Sự chuyển hóa năng lượng ở đây là từ năng lượng cơ bắp của người phần lớn thành động năng của hệ “xe + người“.",
@@ -322,7 +322,7 @@
       "D": ""
     },
     "correct": "50",
-    "giaiThich": "$e=NB.S.\\left|\\frac{\\mathrm{cos} {{α}_{2}}-\\mathrm{cos} {{α}_{1}}}{Δt}\\right|⇒0,2.1{0}^{-3}=100.B.0,01.\\left|\\frac{\\mathrm{cos} {1}80-\\mathrm{cos} {0}}{0,5}\\right|⇒B=50.1{0}^{-6}T$<br>Sử dụng các thông tin sau cho câu 4 và câu 5: Trong dây chuyền sản xuất đúc các chi tiết máy, sau khi thành phẩm các chi tiết máy được làm nguội bằng cách nhúng ngập hoàn toàn vào bể chất lỏng có nhiệt độ sôi lớn hơn 1000C. Giả sử các chi tiết máy đều giống nhau và đạt cùng nhiệt độ ${t}_{1}=13{5}^{0}C$ thì nhúng ngập vào bể chất lỏng. Biết rằng nhiệt độ ban đầu của chất lỏng trong bể là 25°C và nếu chỉ nhúng một chi tiết máy thì khi cân bằng nhiệt, chất lỏng trong bể có nhiệt độ ${t}_{cb}=3{0}^{0}C$. Coi rằng quá trình nhúng chi tiết máy vào bể chất lỏng chỉ có sự trao đổi nhiệt giữa các chi tiết máy và chất lỏng trong bể, sự hóa hơi của chất lỏng là không đáng kể."
+    "giaiThich": "$e=NB.S.\\left|\\frac{\\mathrm{cos} {{α}_{2}}-\\mathrm{cos} {{α}_{1}}}{Δt}\\right|⇒0,2.1{0}^{-3}=100.B.0,01.\\left|\\frac{\\mathrm{cos} {1}80-\\mathrm{cos} {0}}{0,5}\\right|⇒B=50.1{0}^{-6}T$<br>Sử dụng các thông tin sau cho câu 4 và câu 5: Trong dây chuyền sản xuất đúc các chi tiết máy, sau khi thành phẩm các chi tiết máy được làm nguội bằng cách nhúng ngập hoàn toàn vào bể chất lỏng có nhiệt độ sôi lớn hơn 100°C. Giả sử các chi tiết máy đều giống nhau và đạt cùng nhiệt độ ${t}_{1}=13{5}^{0}C$ thì nhúng ngập vào bể chất lỏng. Biết rằng nhiệt độ ban đầu của chất lỏng trong bể là 25°C và nếu chỉ nhúng một chi tiết máy thì khi cân bằng nhiệt, chất lỏng trong bể có nhiệt độ ${t}_{cb}=3{0}^{0}C$. Coi rằng quá trình nhúng chi tiết máy vào bể chất lỏng chỉ có sự trao đổi nhiệt giữa các chi tiết máy và chất lỏng trong bể, sự hóa hơi của chất lỏng là không đáng kể."
   },
   {
     "id": 26,
@@ -340,7 +340,7 @@
   {
     "id": 27,
     "type": "short",
-    "question": "Câu 5. Phải nhúng đồng thời bao nhiêu chi tiết máy để khi cân bằng nhiệt, nhiệt độ của chất lỏng trong bể tăng lên đến 1000C?",
+    "question": "Câu 5. Phải nhúng đồng thời bao nhiêu chi tiết máy để khi cân bằng nhiệt, nhiệt độ của chất lỏng trong bể tăng lên đến 100°C?",
     "options": {
       "A": "",
       "B": "",

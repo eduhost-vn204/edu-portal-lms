@@ -93,7 +93,7 @@
   {
     "id": 8,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de10/image1.png\" alt=\"hình vẽ\" class=\"q-img\" />Mạng điện sinh hoạt ở Nhật Bản có hiệu điện thế hiệu dụng là 110 V trong khi ở Việt Nam ta là 220 V. Chiếc đài Sony xách tay từ Nhật Bản về nước ta phải được gắn thêm một máy biến áp nhỏ có tổng số 2400 vòng dây. Cuộn sơ cấp của máy biến áp này có số vòng dây là",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Mạng điện sinh hoạt ở Nhật Bản có hiệu điện thế hiệu dụng là 110 V trong khi ở Việt Nam ta là 220 V. Chiếc đài Sony xách tay từ Nhật Bản về nước ta phải được gắn thêm một máy biến áp nhỏ có tổng số 2400 vòng dây. Cuộn sơ cấp của máy biến áp này có số vòng dây là</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de10/image1.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "1600 vòng.",
       "B": "1200 vòng.",
@@ -197,7 +197,7 @@
   {
     "id": 16,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de10/image2.png\" alt=\"hình vẽ\" class=\"q-img\" />Ống dây điện trên hình vẽ bị hút về phía thanh nam châm (Quan sát hình vẽ). Hãy chỉ rõ cực của thanh nam châm?",
+    "question": "<div class=\"q-text-body\">Ống dây điện trên hình vẽ bị hút về phía thanh nam châm (Quan sát hình vẽ). Hãy chỉ rõ cực của thanh nam châm?</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de10/image2.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Đầu P là cực dương, đầu Q là cực âm.",
       "B": "Đầu P là cực nam, đầu Q là cực bắc.",
@@ -249,7 +249,7 @@
   {
     "id": 20,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de10/image4.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 2. Một nhóm học sinh đã chuẩn bị các dụng cụ: Ống nghiệm (1), nút bấc có kích thước vừa khít với miệng ống nghiệm (2), đèn cồn (3), giá đỡ thí nghiệm (4) và các điều kiện cần thiết khác để làm thí nghiệm tìm hiểu về mối liên hệ giữa nội năng của một khối khí với năng lượng của các phân tử khí. Bố trí thí nghiệm như hình bên, sau đó dùng đèn cồn hơ nóng ống nghiệm cho đến khi nút bấc bật ra khỏi miệng ống nghiệm.",
+    "question": "<div class=\"q-text-body\">Câu 2. Một nhóm học sinh đã chuẩn bị các dụng cụ: Ống nghiệm (1), nút bấc có kích thước vừa khít với miệng ống nghiệm (2), đèn cồn (3), giá đỡ thí nghiệm (4) và các điều kiện cần thiết khác để làm thí nghiệm tìm hiểu về mối liên hệ giữa nội năng của một khối khí với năng lượng của các phân tử khí. Bố trí thí nghiệm như hình bên, sau đó dùng đèn cồn hơ nóng ống nghiệm cho đến khi nút bấc bật ra khỏi miệng ống nghiệm.</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de10/image4.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Khi nút bấc chưa bật ra, nội năng của không khí trong ống nghiệm tăng.",
       "B": "Nhiệt lượng không khí trong ống nghiệm nhận được từ ngọn lửa đèn cồn chuyển hoàn toàn thành công mà khí thực hiện để làm nút bấc bật ra ngoài.",
@@ -265,30 +265,30 @@
     "question": "Câu 3. Dưới đây là bảng thông tin của 3 hạt nhân gồm: Uranium (U); Calcium (Ca) và Iron (Fe).<br>Tên hạt nhân<br>Số hạt mang điện<br>Số hạt trung hòa về điện<br>Năng lượng liên kết (MeV)<br>Uranium (U)<br>92<br>143<br>1786<br>Calcium (Ca)<br>20<br>20<br>234<br>Iron (Fe)<br>26<br>30<br>493",
     "options": {
       "A": "Mỗi nguyên tử Uranium (U) gồm có 92 proton, 143 neutron và 92 electron.",
-      "B": "Hạt nhân Iron (Fe) có kí hiệu là $3056Fe$.",
+      "B": "Hạt nhân Iron (Fe) có kí hiệu là ${}^{6}_{305}\\mathrm{Fe}$.",
       "C": "Năng lượng liên kết tính cho 1 hạt nucleon của hạt nhân Calcium (Ca) là 234 (MeV/nucleon).",
       "D": "Sắp xếp theo thứ tự giảm dần độ bền vững của hạt nhân là (Fe), (U), (Ca)."
     },
     "correct": "ĐSSĐ",
-    "giaiThich": "a) Dựa vào bảng thông tin trên ta có mỗi nguyên tử Uranium (U) gồm có 92 proton, 143 neutron và 92 electron.<br>b) Hạt nhân Iron (Fe) có kí hiệu là $2656Fe$.<br>c)${E}_{lkr}=\\frac{{E}_{lk}}{A}=\\frac{234}{40}=5,85 MeV/nucleon$<br>d) Năng lượng liên kết riêng đặc trưng cho mức độ bền vững của hạt nhân.<br>Hạt nhân Uranium: ${E}_{lkr}=\\frac{1786}{92+143}=7,6 MeV/nucleon$<br>Hạt nhân Iron: ${E}_{lkr}=\\frac{493}{26+30}=8,8 MeV/nucleon$"
+    "giaiThich": "a) Dựa vào bảng thông tin trên ta có mỗi nguyên tử Uranium (U) gồm có 92 proton, 143 neutron và 92 electron.<br>b) Hạt nhân Iron (Fe) có kí hiệu là ${}^{6}_{265}\\mathrm{Fe}$.<br>c)${E}_{lkr}=\\frac{{E}_{lk}}{A}=\\frac{234}{40}=5,85 MeV/nucleon$<br>d) Năng lượng liên kết riêng đặc trưng cho mức độ bền vững của hạt nhân.<br>Hạt nhân Uranium: ${E}_{lkr}=\\frac{1786}{92+143}=7,6 MeV/nucleon$<br>Hạt nhân Iron: ${E}_{lkr}=\\frac{493}{26+30}=8,8 MeV/nucleon$"
   },
   {
     "id": 22,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de10/image5.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Hình vẽ bên cho thấy đồ thị biểu diễn sự biến thiên của nhiệt độ $t$ theo thời gian $τ$ trong quá trình nung nóng một thỏi chì có khối lượng 1 kg. Biết nhiệt dung riêng của chì là 130 J/(kg.K).",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 4. Hình vẽ bên cho thấy đồ thị biểu diễn sự biến thiên của nhiệt độ $t$ theo thời gian $τ$ trong quá trình nung nóng một thỏi chì có khối lượng 1 kg. Biết nhiệt dung riêng của chì là 130 J/(kg.K).</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de10/image5.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "Khi chì chuyển từ trạng thái B sang trạng thái C, nội năng của chì không thay đổi.",
       "B": "Nội năng của chì tăng 20800 J trong 8 phút đầu nung nóng.",
-      "C": "Nhiệt độ nóng chảy của chì là 270C .",
+      "C": "Nhiệt độ nóng chảy của chì là 27°C .",
       "D": "Tại điểm B trên đồ thị chì ở trạng thái lỏng."
     },
     "correct": "SĐSS",
-    "giaiThich": "a) Khi chì nóng nảy, $Q>0⇒ΔU>0$ (nội năng tăng).<br>b)$\\left\\{P.{t}_{15}=mcΔTP.{t}_{8}=ΔU   \\right)⇒ΔU=mc.ΔT.\\frac{{t}_{8}}{{t}_{15}}=1.130.\\left(327-27\\right).\\frac{8}{15}=20800 J$<br>c) Nhiệt độ nóng chảy của chì là 3270C .<br>d) Tại điểm B trên đồ thị chì ở trạng thái rắn và bắt đầu nóng chảy."
+    "giaiThich": "a) Khi chì nóng nảy, $Q>0⇒ΔU>0$ (nội năng tăng).<br>b)$\\left\\{P.{t}_{15}=mcΔTP.{t}_{8}=ΔU   \\right)⇒ΔU=mc.ΔT.\\frac{{t}_{8}}{{t}_{15}}=1.130.\\left(327-27\\right).\\frac{8}{15}=20800 J$<br>c) Nhiệt độ nóng chảy của chì là 327°C .<br>d) Tại điểm B trên đồ thị chì ở trạng thái rắn và bắt đầu nóng chảy."
   },
   {
     "id": 23,
     "type": "short",
-    "question": "<img src=\"assets/exams/vedich2k9_de10/image6.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 1. Chất phóng xạ chứa đồng vị của $1123Na$ được sử dụng làm chất đánh dấu điện giải (Chất điện giải là những chất dịch khoáng có thể hòa tan trong các dịch cơ thể tạo ra các ion tích điện, một số ion sẽ tích điện dương và một số ion tích điện âm. Chúng giữ các vai trò rất quan trọng trong quá trình trao đổi chất, thúc đẩy hoạt động và giúp cơ thể hoạt động một cách bình thường). Số hạt nhân nguyên tử trong 10 mg $1123Na$ bằng X.1020. Tìm giá trị của X(làm tròn kết quả đến chữ số hàng phần mười).",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 1. Chất phóng xạ chứa đồng vị của ${}^{3}_{112}\\mathrm{Na}$ được sử dụng làm chất đánh dấu điện giải (Chất điện giải là những chất dịch khoáng có thể hòa tan trong các dịch cơ thể tạo ra các ion tích điện, một số ion sẽ tích điện dương và một số ion tích điện âm. Chúng giữ các vai trò rất quan trọng trong quá trình trao đổi chất, thúc đẩy hoạt động và giúp cơ thể hoạt động một cách bình thường). Số hạt nhân nguyên tử trong 10 mg ${}^{3}_{112}\\mathrm{Na}$ bằng X.1020. Tìm giá trị của X(làm tròn kết quả đến chữ số hàng phần mười).</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de10/image6.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "",
       "B": "",
@@ -314,7 +314,7 @@
   {
     "id": 25,
     "type": "short",
-    "question": "Câu 3. Một học sinh tự làm một nhiệt kế gồm một cái ống thủy tinh thành mỏng nối với một cái bình nhỏ chứa chất lỏng. Dọc theo ống có gắn một thang đo có các vạch chia đều nhau. Khi bạn này nhúng nhiệt kế vào cốc nước đá đang tan thì nhiệt kế chỉ ${t}_{0}={5}^{0}C$, còn khi nhúng vào một nồi nước đang sôi thì nhiệt kế chỉ ${t}_{1}=9{5}^{0}C$. Khi đặt nhiệt kế này trong phòng thì nó chỉ $t=2{5}^{0}C$. Nhiệt độ đúng trong phòng lúc đó là bao nhiêu độ 0C? (kết quả lấy đến một con số sau dấu phẩy).",
+    "question": "Câu 3. Một học sinh tự làm một nhiệt kế gồm một cái ống thủy tinh thành mỏng nối với một cái bình nhỏ chứa chất lỏng. Dọc theo ống có gắn một thang đo có các vạch chia đều nhau. Khi bạn này nhúng nhiệt kế vào cốc nước đá đang tan thì nhiệt kế chỉ ${t}_{0}={5}^{0}C$, còn khi nhúng vào một nồi nước đang sôi thì nhiệt kế chỉ ${t}_{1}=9{5}^{0}C$. Khi đặt nhiệt kế này trong phòng thì nó chỉ $t=25°C$. Nhiệt độ đúng trong phòng lúc đó là bao nhiêu độ 0C? (kết quả lấy đến một con số sau dấu phẩy).",
     "options": {
       "A": "",
       "B": "",
@@ -340,7 +340,7 @@
   {
     "id": 27,
     "type": "short",
-    "question": "Câu 5. Mỗi phản ứng nhiệt hạch $12D+12D→23He+01n$ tỏa ta 17,6 MeV. Nước biển có chứa 0,0150% nước nặng ${D}_{2}O$ là nhiên liệu cho phản ứng nhiệt hạch trên. Khi tổng hợp $23He$ từ 2,00 kg nước biển bằng phản ứng trên thì năng lượng tỏa ra tương đương đốt cháy hoàn toàn a (kg) than đá. Biết mỗi kg than đá đốt cháy hoàn toàn tỏa ra năng lượng $27,0.1{0}^{6}J$. Lấy $e=1,6.1{0}^{-19}C$ và khối lượng mol của ${D}_{2}O$ là 20,0 g/mol. Giá trị của a là bao nhiêu? (làm tròn kết quả đến chữ số hàng đơn vị).",
+    "question": "Câu 5. Mỗi phản ứng nhiệt hạch $12D+12D→${}^{3}_{2}\\mathrm{He}$+${}^{1}_{0}\\mathrm{n}$$ tỏa ta 17,6 MeV. Nước biển có chứa 0,0150% nước nặng ${D}_{2}O$ là nhiên liệu cho phản ứng nhiệt hạch trên. Khi tổng hợp ${}^{3}_{2}\\mathrm{He}$ từ 2,00 kg nước biển bằng phản ứng trên thì năng lượng tỏa ra tương đương đốt cháy hoàn toàn a (kg) than đá. Biết mỗi kg than đá đốt cháy hoàn toàn tỏa ra năng lượng $27,0.1{0}^{6}J$. Lấy $e=1,6\\cdot 10^{-19}\\text{ C}$ và khối lượng mol của ${D}_{2}O$ là 20,0 g/mol. Giá trị của a là bao nhiêu? (làm tròn kết quả đến chữ số hàng đơn vị).",
     "options": {
       "A": "",
       "B": "",
@@ -348,12 +348,12 @@
       "D": ""
     },
     "correct": "942",
-    "giaiThich": "Khối lượng nước nặng có trong 2 kg nước biển: ${m}_{{D}_{2}O}=2000.0,015%=0,3 g$<br>Mỗi phản ứng cần 2 hạt nhân $12D$, tức là chỉ cần một phân tử nước nặng ${D}_{2}O$.<br>Số phản ứng bằng số hạt nước nặng ${D}_{2}O$: $N=\\frac{{m}_{{D}_{2}O}}{{A}_{{D}_{2}O}}.{N}_{A}$<br>Năng lượng toàn phần:  $Q=N.ΔE=\\frac{{m}_{{D}_{2}O}}{{A}_{{D}_{2}O}}.{N}_{A}=m.{q}_{t}$<br>$⇒\\frac{0,3}{20}.6,02.1{0}^{23}.17,6.1,6.1{0}^{-13}=a.27.1{0}^{6}⇒a=941,8⇒a=942 kg$"
+    "giaiThich": "Khối lượng nước nặng có trong 2 kg nước biển: ${m}_{{D}_{2}O}=2000.0,015%=0,3 g$<br>Mỗi phản ứng cần 2 hạt nhân ${}^{2}_{1}\\mathrm{D}$, tức là chỉ cần một phân tử nước nặng ${D}_{2}O$.<br>Số phản ứng bằng số hạt nước nặng ${D}_{2}O$: $N=\\frac{{m}_{{D}_{2}O}}{{A}_{{D}_{2}O}}.{N}_{A}$<br>Năng lượng toàn phần:  $Q=N.ΔE=\\frac{{m}_{{D}_{2}O}}{{A}_{{D}_{2}O}}.{N}_{A}=m.{q}_{t}$<br>$⇒\\frac{0,3}{20}.6,02.1{0}^{23}.17,6.1,6.1{0}^{-13}=a.27.1{0}^{6}⇒a=941,8⇒a=942 kg$"
   },
   {
     "id": 28,
     "type": "short",
-    "question": "<img src=\"assets/exams/vedich2k9_de10/image7.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 6. Hai thanh ray dẫn điện, song song cách nhau một khoảng $d=20 cm$, nằm trong mặt phẳng thẳng đứng. Một thanh dây dẫn điện MN có khối lượng m = 2 g tựa vào 2 đường ray và có thể trượt không ma sát dọc theo các đường B ray. Hệ thống được đặt trong từ trường đều nằm ngang vuông góc với mặt phẳng của hai đường ray như hình vẽ, $B=2 T$. Mắc vào giữa hai điểm P và Q một tụ điện có điện dung $C=1 mF$ ban đầu không tích điện. Tại thời điểm ban đầu thanh MN được giữ yên. Bỏ qua mọi ma sát và điện trở của các thanh, coi chiều dài 2 thanh ray đủ lớn. Thả thanh MN tự do thì nó sẽ trượt với gia tốc bằng bao nhiêu m/s2? coi trong quá trình trượt thanh MN luôn nằm ngang và tì vào 2 thanh ray, lấy $g=10 m/{s}^{2}$. ( kết quả làm tròn đến 2 chữ số thập phân).",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 6. Hai thanh ray dẫn điện, song song cách nhau một khoảng $d=20 cm$, nằm trong mặt phẳng thẳng đứng. Một thanh dây dẫn điện MN có khối lượng m = 2 g tựa vào 2 đường ray và có thể trượt không ma sát dọc theo các đường B ray. Hệ thống được đặt trong từ trường đều nằm ngang vuông góc với mặt phẳng của hai đường ray như hình vẽ, $B=2 T$. Mắc vào giữa hai điểm P và Q một tụ điện có điện dung $C=1 mF$ ban đầu không tích điện. Tại thời điểm ban đầu thanh MN được giữ yên. Bỏ qua mọi ma sát và điện trở của các thanh, coi chiều dài 2 thanh ray đủ lớn. Thả thanh MN tự do thì nó sẽ trượt với gia tốc bằng bao nhiêu m/s2? coi trong quá trình trượt thanh MN luôn nằm ngang và tì vào 2 thanh ray, lấy $g=10 m/{s}^{2}$. ( kết quả làm tròn đến 2 chữ số thập phân).</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de10/image7.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "",
       "B": "",

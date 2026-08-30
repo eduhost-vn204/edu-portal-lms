@@ -159,7 +159,32 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
-### 29/08/2026 — Tối ưu Giao diện Đua Top & Solo 1-1: Hiển Thị Vừa Khít 1 Màn Hình Không Cuộn Trang
+### 30/08/2026 — Chuẩn Hóa Bố Cục Ảnh, Công Thức Nội Dòng & Ký Hiệu Hạt Nhân 14 Đề 2k9 (Issue #14)
+
+- **Vấn đề & Yêu cầu của Thầy**:
+  1. Dàn lại toàn bộ hình ảnh 14 đề theo chuẩn Word: ảnh nhỏ/gần vuông đặt cạnh đề bài (side layout) trên Desktop/Laptop; ảnh chữ nhật dài/chuỗi hình/đồ thị xuống hàng riêng dưới đề bài (block layout); mobile tự động xuống dòng không tràn ngang.
+  2. Khôi phục OCR/KaTeX cho các công thức/giá trị ảnh mờ (như 2 giá trị nhiệt nóng chảy ở câu mỏ hàn Đề 02, Silicon Đề 12, Pickup Đề 13, Loa điện Đề 14, Boyle Đề 15).
+  3. Chuẩn hóa toàn bộ ký hiệu hạt nhân dính số (`1020Ne`, `24He`, `53131I`, `92235U`...) thành dạng chuẩn KaTeX chỉ số trên–dưới `{}^{A}_{Z}\mathrm{X}` trên đề bài, 4 phương án và lời giải chi tiết.
+  4. Duy trì 14 đề ở trạng thái **Ẩn + Khóa** (`hienThi: 'an'`, `trangThai: 'khoa'`) trong suốt quá trình.
+  5. Kiểm tra trực quan đủ 392 câu trên Desktop, Laptop zoom 125% và Mobile.
+- **Các file đã sửa**:
+  - `data/exams/vedich2k9_de02.json` ... `vedich2k9_de15.json` (đủ 14 bộ đề, 392 câu).
+  - `thithu.html`: Thêm CSS hệ thống layout `.q-layout-side`, `.q-text-body`, `.q-img-col`, `.q-side-img`, `.q-block-wrap`, `.q-block-img`, `.q-multi-img-grid`, `.q-grid-img` và chống tràn ngang cho MathML/KaTeX.
+  - Admin `index.html` (`edu-portal-console`): Đồng bộ CSS hệ thống layout tương ứng.
+- **Hành vi mới**:
+  - Giao diện câu hỏi có ảnh nhỏ/gần vuông hiển thị dạng 2 cột cân đối bên cạnh văn bản trên Desktop/Laptop; tự chuyển thành 1 cột trên Mobile.
+  - Ảnh dài và đồ thị căn giữa bên dưới văn bản đề bài.
+  - Mọi ký hiệu hạt nhân và nhiệt độ hiển thị rõ nét với số khối/số proton và ký hiệu độ Celsius chuẩn KaTeX.
+- **Kiểm tra**:
+  - Step 1: Kiểm toán dữ liệu 14 đề (392 câu: 252 MC đủ 4 options, 56 TF đủ a-b-c-d, 84 Short đủ đáp số) $\rightarrow$ 100% PASS.
+  - Step 2: Playwright Visual QA Suite chạy trên 3 viewports (Desktop 1440×900, Laptop 1280×800, Mobile 375×812) duyệt đủ 392 câu $\rightarrow$ 0 lỗi tràn ngang, 0 ảnh lỗi.
+  - Xuất manifest 39 screenshots đại diện tại `assets/qa_screenshots/` và báo cáo HTML `assets/qa_screenshots/visual_qa_report.html`.
+  - Xác nhận 14 đề vẫn giữ an toàn ở trạng thái **Ẩn + Khóa**.
+- **Điều phải giữ nguyên**:
+  - Giữ 14 đề ở `hienThi: 'an'`, `trangThai: 'khoa'` cho tới khi Thầy ra chỉ thị mở cho học sinh.
+  - Giữ nguyên cấu trúc dữ liệu, đáp án và cơ chế bảo mật fail-closed của `thithu.html`.
+
+
 
 - **Vấn đề & Yêu cầu của Thầy**:
   1. Loại bỏ dòng thông báo phạm vi nội bộ (`🎯 Đang phát câu hỏi Tinh (đã duyệt)...`).

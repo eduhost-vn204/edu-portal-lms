@@ -4,10 +4,10 @@
     "type": "mc",
     "question": "Hạt nhân nguyên tử chì có 82 prôtôn và 124 nơtron. Hạt nhân nguyên tử này có kí hiệu là",
     "options": {
-      "A": "$82124Pb$.",
-      "B": "$82206Pb$.",
-      "C": "$12482Pb$.",
-      "D": "$20682Pb$."
+      "A": "${}^{24}_{821}\\mathrm{Pb}$.",
+      "B": "${}^{06}_{822}\\mathrm{Pb}$.",
+      "C": "${}^{82}_{124}\\mathrm{Pb}$.",
+      "D": "${}^{82}_{206}\\mathrm{Pb}$."
     },
     "correct": "C",
     "giaiThich": ""
@@ -15,7 +15,7 @@
   {
     "id": 2,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de13/image1.png\" alt=\"hình vẽ\" class=\"q-img\" />Trong một thí nghiệm đo nhiệt dung riêng của nước bằng các dụng cụ như Hình 10 dưới đây.<br>Các dụng cụ trong bộ thí nghiệm được đánh số trên hình vẽ. Đâu là bình nhiệt lượng kế ?",
+    "question": "<div class=\"q-text-body\">Trong một thí nghiệm đo nhiệt dung riêng của nước bằng các dụng cụ như Hình 10 dưới đây.<br>Các dụng cụ trong bộ thí nghiệm được đánh số trên hình vẽ. Đâu là bình nhiệt lượng kế ?</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de13/image1.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "(4).",
       "B": "(3).",
@@ -54,7 +54,7 @@
   {
     "id": 5,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de13/image3.png\" alt=\"hình vẽ\" class=\"q-img\" />Khi làm thí nghiệm quan sát các hạt phấn hoa rất nhỏ trong nước bằng kính hiển vi, thì thấy chúng chuyển động hỗn loạn không ngừng. Chuyển động này gọi là",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Khi làm thí nghiệm quan sát các hạt phấn hoa rất nhỏ trong nước bằng kính hiển vi, thì thấy chúng chuyển động hỗn loạn không ngừng. Chuyển động này gọi là</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de13/image3.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "chuyển động Brown.",
       "B": "chuyển động Jun.",
@@ -80,12 +80,12 @@
   {
     "id": 7,
     "type": "mc",
-    "question": "Các hạt nhân $24He$; $36Li$ ; $49Be$ ; $510B$ có năng lượng liên kết theo thứ tự là EHe = 28,296 MeV ;<br>ELi = 31,965 MeV ; EBe = 58,167 MeV ; EB = 64,752 MeV. Hạt nhân có độ bền vững kém nhất là",
+    "question": "Các hạt nhân ${}^{4}_{2}\\mathrm{He}$; ${}^{6}_{3}\\mathrm{Li}$ ; ${}^{9}_{4}\\mathrm{Be}$ ; ${}^{0}_{51}\\mathrm{B}$ có năng lượng liên kết theo thứ tự là EHe = 28,296 MeV ;<br>ELi = 31,965 MeV ; EBe = 58,167 MeV ; EB = 64,752 MeV. Hạt nhân có độ bền vững kém nhất là",
     "options": {
-      "A": "$36Li$.",
-      "B": "$49Be$.",
-      "C": "$24He$.",
-      "D": "$510B$."
+      "A": "${}^{6}_{3}\\mathrm{Li}$.",
+      "B": "${}^{9}_{4}\\mathrm{Be}$.",
+      "C": "${}^{4}_{2}\\mathrm{He}$.",
+      "D": "${}^{0}_{51}\\mathrm{B}$."
     },
     "correct": "B",
     "giaiThich": "$\\frac{{E}_{He}}{4}=7,074MeV$ ; $\\frac{{E}_{Li}}{6}=5,3275MeV$ ; $\\frac{{E}_{Be}}{9}=6,463MeV$ ; $\\frac{{E}_{B}}{10}=6,4752MeV$"
@@ -93,12 +93,12 @@
   {
     "id": 8,
     "type": "mc",
-    "question": "Ta thấy năng lượng liên kết riêng của $36Li$ là nhỏ nhất nên là hạt kém bền vững nhất.<br>Cách xác định nhiệt độ trong thang nhiệt độ Celsius là?",
+    "question": "Ta thấy năng lượng liên kết riêng của ${}^{6}_{3}\\mathrm{Li}$ là nhỏ nhất nên là hạt kém bền vững nhất.<br>Cách xác định nhiệt độ trong thang nhiệt độ Celsius là?",
     "options": {
-      "A": "Lấy nhiệt độ của nước khi đóng băng là 100C và nhiệt độ sôi của nước 1000C làm chuẩn.",
-      "B": "Lấy nhiệt độ của nước khi đóng băng là 100C và nhiệt độ sôi của nước 00C làm chuẩn.",
-      "C": "Lấy nhiệt độ của nước khi đóng băng là 00C và nhiệt độ sôi của nước 1000C làm chuẩn.",
-      "D": "Lấy nhiệt độ của nước khi đóng băng là 1000C và nhiệt độ sôi của nước 100C làm chuẩn."
+      "A": "Lấy nhiệt độ của nước khi đóng băng là 10°C và nhiệt độ sôi của nước 100°C làm chuẩn.",
+      "B": "Lấy nhiệt độ của nước khi đóng băng là 10°C và nhiệt độ sôi của nước 0°C làm chuẩn.",
+      "C": "Lấy nhiệt độ của nước khi đóng băng là 0°C và nhiệt độ sôi của nước 100°C làm chuẩn.",
+      "D": "Lấy nhiệt độ của nước khi đóng băng là 100°C và nhiệt độ sôi của nước 10°C làm chuẩn."
     },
     "correct": "C",
     "giaiThich": ""
@@ -150,7 +150,7 @@
       "A": "27 0C.",
       "B": "573 0C.",
       "C": "ngang với trục quay.",
-      "D": "370C."
+      "D": "37°C."
     },
     "correct": "D",
     "giaiThich": ""
@@ -174,7 +174,7 @@
     "question": "Bản chất của tia phóng xạ $γ$ là",
     "options": {
       "A": "dòng hạt pôzitron.",
-      "B": "dòng các hạt nhân $24He$.",
+      "B": "dòng các hạt nhân ${}^{4}_{2}\\mathrm{He}$.",
       "C": "dòng các êlectron.",
       "D": "sóng điện từ."
     },
@@ -236,7 +236,7 @@
   {
     "id": 19,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de13/image4.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 1. Cho một lượng khí Helium (coi là khí lý tưởng) thực hiện chu trình $1-2-3-4-1$ được biểu diễn trên đồ thị P-V như hình vẽ.<br>Cho P0 = 105 Pa; V0 = 2 lít.",
+    "question": "<div class=\"q-text-body\">Câu 1. Cho một lượng khí Helium (coi là khí lý tưởng) thực hiện chu trình $1-2-3-4-1$ được biểu diễn trên đồ thị P-V như hình vẽ.<br>Cho P0 = 105 Pa; V0 = 2 lít.</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de13/image4.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Nhiệt độ của khí ở hai trạng thái (2) và (4) có giá trị bằng nhau.",
       "B": "Quá trình biến đổi trạng thái từ (1) đến (2) là quá trình đẳng tích.",
@@ -262,12 +262,12 @@
   {
     "id": 21,
     "type": "tf",
-    "question": "Câu 3. Trong y học, đồng vị phóng xạ $53131I$ có chu kỳ bán rã 8 ngày (tạo ra hạt nhân con là $54131Xe$) được sử dụng rộng rãi trong điều trị ung thư tuyến giáp. Giả sử trong liệu trình điều trị của mình, một bệnh nhân nhận được một liều thuốc chứa 50 mg $53131I$.",
+    "question": "Câu 3. Trong y học, đồng vị phóng xạ ${}^{31}_{531}\\mathrm{I}$ có chu kỳ bán rã 8 ngày (tạo ra hạt nhân con là ${}^{31}_{541}\\mathrm{Xe}$) được sử dụng rộng rãi trong điều trị ung thư tuyến giáp. Giả sử trong liệu trình điều trị của mình, một bệnh nhân nhận được một liều thuốc chứa 50 mg ${}^{31}_{531}\\mathrm{I}$.",
     "options": {
-      "A": "Tia phóng xạ sinh ra trong quá trình phóng xạ của $53131I$ là tia β+.",
-      "B": "Hằng số phóng xạ của $53131I$ xấp xỉ là $1{0}^{-6}({s}^{-1})$.",
-      "C": "Sau 10 ngày kể từ khi bệnh nhân nhận liều thuốc trên thì tỉ lệ phần trăm giữa số hạt nhân $53131I$ đã phân rã và số hạt nhân ban đầu xấp xỉ là 57,96%.",
-      "D": "Độ phóng xạ của lượng $53131I$ tại thời điểm ban đầu ngay khi bệnh nhân nhận liều thuốc xấp xỉ là 2,5.1011 Bq."
+      "A": "Tia phóng xạ sinh ra trong quá trình phóng xạ của ${}^{31}_{531}\\mathrm{I}$ là tia β+.",
+      "B": "Hằng số phóng xạ của ${}^{31}_{531}\\mathrm{I}$ xấp xỉ là $1{0}^{-6}({s}^{-1})$.",
+      "C": "Sau 10 ngày kể từ khi bệnh nhân nhận liều thuốc trên thì tỉ lệ phần trăm giữa số hạt nhân ${}^{31}_{531}\\mathrm{I}$ đã phân rã và số hạt nhân ban đầu xấp xỉ là 57,96%.",
+      "D": "Độ phóng xạ của lượng ${}^{31}_{531}\\mathrm{I}$ tại thời điểm ban đầu ngay khi bệnh nhân nhận liều thuốc xấp xỉ là 2,5.1011 Bq."
     },
     "correct": "SĐĐS",
     "giaiThich": "a) Dấu hiệu hạt nhân con tăng 1 ô trên bảng tuần hoàn  phóng xạ β-<br>b) $λ=\\frac{\\mathrm{ln} {2}}{T}=\\frac{\\mathrm{ln} {2}}{8.86400}≈1{0}^{-6}\\left({s}^{-1}\\right)$<br>c) Sau 10 ngày: $\\frac{ΔN}{{N}_{0}}=\\frac{{N}_{0}-N}{{N}_{0}}=1-{2}^{-\\frac{t}{T}}≈57,955%$<br>d) ${H}_{0}=λ{N}_{0}=\\frac{{m}_{0}}{A}λ{N}_{A}=\\frac{50.1{0}^{-3}}{131}.1{0}^{-6}.6,02.1{0}^{23}≈2,3.1{0}^{14}Bq$"
@@ -275,7 +275,7 @@
   {
     "id": 22,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de13/image5.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Ghi-ta điện là nhạc cụ quan trọng trong các ban nhạc. Các dây đàn nhiễm từ dao động trên các cuộn dây trên thân đàn, tạo ra một từ trường biến thiên sinh ra suất điện động cảm ứng trong các cuộn dây của bộ thu (pickup). Giả sử rằng một cuộn dây của bộ thu có 500 vòng và diện tích mỗi vòng là $0,0005  {m}^{2}$. Khi dây đàn dao động, từ trường biến thiên với tần số 460 Hz và cảm ứng từ có độ lớn 0,02 T.",
+    "question": "<div class=\"q-text-body\">Câu 4. Ghi-ta điện là nhạc cụ quan trọng trong các ban nhạc. Các dây đàn nhiễm từ dao động trên các cuộn dây trên thân đàn, tạo ra một từ trường biến thiên sinh ra suất điện động cảm ứng trong các cuộn dây của bộ thu (pickup). Giả sử rằng một cuộn dây của bộ thu có 500 vòng và diện tích mỗi vòng là $0,0005  {m}^{2}$. Khi dây đàn dao động, từ trường biến thiên với tần số 460 Hz và cảm ứng từ có độ lớn 0,02 T.</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de13/image5.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Ghi-ta điện hoạt động dựa trên hiện tượng cảm ứng điện từ.",
       "B": "Nếu dây đàn dao động với tần số 460 Hz (tín hiệu đầu vào) thì pickup sinh ra suất điện động có tần số 460 Hz (tín hiệu đầu ra).",
@@ -283,12 +283,12 @@
       "D": "Nếu điều chinh dây đàn dao động với tần số tăng gấp hai lần, thì suất điện động cảm ứng sẽ giảm còn7,22 V."
     },
     "correct": "ĐĐĐS",
-    "giaiThich": "c) <img src=\"assets/exams/vedich2k9_de13/image6.png\" alt=\"công thức\" class=\"q-formula-img\" />; ${E}_{0}=NBSω=500.0,02.0,0005.920π=4,6π≈14V$<br>d) <img src=\"assets/exams/vedich2k9_de13/image7.png\" alt=\"công thức\" class=\"q-formula-img\" /> tăng thì <img src=\"assets/exams/vedich2k9_de13/image8.png\" alt=\"công thức\" class=\"q-formula-img\" /> tăng."
+    "giaiThich": "c) $\\omega=2\\pi f=2\\pi\\cdot 460=920\\pi\\text{ (rad/s)}$; ${E}_{0}=NBSω=500.0,02.0,0005.920π=4,6π≈14V$<br>d) $\\omega$ tăng thì $E_0$ tăng."
   },
   {
     "id": 23,
     "type": "short",
-    "question": "<img src=\"assets/exams/vedich2k9_de13/image9.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng thông tin sau cho câu 1 và câu 2: Đinamô xe đạp là một loại máy phát điện xoay chiều một pha. Một xe đạp được bố trí đinamô để thắp sáng một bóng đèn sợi đốt có điện áp hiệu dụng định mức là 3 V như hình vẽ. Khi xe chạy, núm của đinamô tiếp xúc với bánh xe làm cho đinamô hoạt động. Coi nam châm vĩnh cửu có cảm ứng từ không đổi, cuộn dây có điện trở không đáng kể, chuyển động của núm đinamô là chuyển động quay không trượt.<br>Câu 1. Để bóng đèn sáng bình thường thì suất điện động cực đại mà đinamo tạo ra bằng bao nhiêu Vôn?(làm tròn kết quả đến chữ số hàng phần mười).",
+    "question": "<div class=\"q-text-body\">Sử dụng thông tin sau cho câu 1 và câu 2: Đinamô xe đạp là một loại máy phát điện xoay chiều một pha. Một xe đạp được bố trí đinamô để thắp sáng một bóng đèn sợi đốt có điện áp hiệu dụng định mức là 3 V như hình vẽ. Khi xe chạy, núm của đinamô tiếp xúc với bánh xe làm cho đinamô hoạt động. Coi nam châm vĩnh cửu có cảm ứng từ không đổi, cuộn dây có điện trở không đáng kể, chuyển động của núm đinamô là chuyển động quay không trượt.<br>Câu 1. Để bóng đèn sáng bình thường thì suất điện động cực đại mà đinamo tạo ra bằng bao nhiêu Vôn?(làm tròn kết quả đến chữ số hàng phần mười).</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de13/image9.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "",
       "B": "",
@@ -309,12 +309,12 @@
       "D": ""
     },
     "correct": "1,53",
-    "giaiThich": "$E=\\frac{{Φ}_{0}ω}{\\sqrt{2}}=\\frac{{Φ}_{0}.\\frac{v}{r}}{\\sqrt{2}}⇒E∼v⇒\\frac{{E}_{2}}{{E}_{1}}=\\frac{{v}_{2}}{{v}_{1}}⇒{E}_{2}=3.\\frac{4}{5}=2,4 V⇒{E}_{02}=3,4 V$<br>Dùng các thông tin sau cho câu 3 và câu 4: Một nhà máy điện hạt nhân sử dụng nguyên liệu là $92235U$ Biết rằng mỗi phân hạch sẽ tỏa ra năng lượng 205 MeV; $1 MeV=1,6.1{0}^{-13}J$. Hiệu suất và công suất phát điện của nhà máy lần lượt là 35% và 1600 MW."
+    "giaiThich": "$E=\\frac{{Φ}_{0}ω}{\\sqrt{2}}=\\frac{{Φ}_{0}.\\frac{v}{r}}{\\sqrt{2}}⇒E∼v⇒\\frac{{E}_{2}}{{E}_{1}}=\\frac{{v}_{2}}{{v}_{1}}⇒{E}_{2}=3.\\frac{4}{5}=2,4 V⇒{E}_{02}=3,4 V$<br>Dùng các thông tin sau cho câu 3 và câu 4: Một nhà máy điện hạt nhân sử dụng nguyên liệu là ${}^{35}_{922}\\mathrm{U}$ Biết rằng mỗi phân hạch sẽ tỏa ra năng lượng 205 MeV; $1 MeV=1,6.1{0}^{-13}J$. Hiệu suất và công suất phát điện của nhà máy lần lượt là 35% và 1600 MW."
   },
   {
     "id": 25,
     "type": "short",
-    "question": "Câu 3. Trong lò phản ứng, mỗi giây có $x.1{0}^{19}$ hạt $92235U$ phân hạch. Giá trị của x là bao nhiêu (làm tròn kết quả đến hàng đơn vị)?",
+    "question": "Câu 3. Trong lò phản ứng, mỗi giây có $x.1{0}^{19}$ hạt ${}^{35}_{922}\\mathrm{U}$ phân hạch. Giá trị của x là bao nhiêu (làm tròn kết quả đến hàng đơn vị)?",
     "options": {
       "A": "",
       "B": "",
@@ -335,7 +335,7 @@
       "D": ""
     },
     "correct": "15",
-    "giaiThich": "Để đảm bảo công suất phát điện không đổi, hệ số nhân neutron tương ứng $k=1$, khi đó các thanh điều khiển hấp thụ 1,6 neutron dư thừa.<br>Mỗi giây có 14.1019 hạt Urani phân hạch, mỗi hạt Urani phân hạch tạo ra 2,6 hạt neutron, trong đó các thanh điều khiển cần hấp thụ 1,6 hạt neutron (nhằm đảm bảo mật độ hạt neutron không tăng theo thời gian).<br>Mỗi giây có: $1,6.N=1,6.14.1{0}^{19}=2,24.1{0}^{20}$ hạt neutron dư thừa bị hấp thụ<br>Thời gian hấp thụ: $t=\\frac{289.1{0}^{24}}{2,24.1{0}^{20}}.\\left(\\frac{1}{24.3600}\\right)≈15$ (ngày).<br><img src=\"assets/exams/vedich2k9_de13/image10.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho câu 5 và câu 6: Xi lanh kim loại có thể tích 0,012 m3 chứa khí nén dưới áp suất 8,5 atm ban đầu ở mực nưởc biển, áp suất là 1,0 atm và nhiệt độ là 270C. Sau đó, người thợ lặn đưa xi lanh xuống đáy biển nơi có áp suất 4,0 atm và nhiệt độ là 200C. Giả sử thể tích của xi lanh không đổi."
+    "giaiThich": "Để đảm bảo công suất phát điện không đổi, hệ số nhân neutron tương ứng $k=1$, khi đó các thanh điều khiển hấp thụ 1,6 neutron dư thừa.<br>Mỗi giây có 14.1019 hạt Urani phân hạch, mỗi hạt Urani phân hạch tạo ra 2,6 hạt neutron, trong đó các thanh điều khiển cần hấp thụ 1,6 hạt neutron (nhằm đảm bảo mật độ hạt neutron không tăng theo thời gian).<br>Mỗi giây có: $1,6.N=1,6.14.1{0}^{19}=2,24.1{0}^{20}$ hạt neutron dư thừa bị hấp thụ<br>Thời gian hấp thụ: $t=\\frac{289.1{0}^{24}}{2,24.1{0}^{20}}.\\left(\\frac{1}{24.3600}\\right)≈15$ (ngày).<br><img src=\"assets/exams/vedich2k9_de13/image10.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho câu 5 và câu 6: Xi lanh kim loại có thể tích 0,012 m3 chứa khí nén dưới áp suất 8,5 atm ban đầu ở mực nưởc biển, áp suất là 1,0 atm và nhiệt độ là 27°C. Sau đó, người thợ lặn đưa xi lanh xuống đáy biển nơi có áp suất 4,0 atm và nhiệt độ là 20°C. Giả sử thể tích của xi lanh không đổi."
   },
   {
     "id": 27,

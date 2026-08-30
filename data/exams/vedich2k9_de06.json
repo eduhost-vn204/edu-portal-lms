@@ -80,7 +80,7 @@
   {
     "id": 7,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de06/image3.png\" alt=\"hình vẽ\" class=\"q-img\" />Sử dụng các thông tin sau cho câu 7 và câu 8: Máy sấy tóc là một thiết bị điện được sử dụng sau khi gội đầu để làm khô tóc. Hình bên là sơ đồ một máy sấy tóc đơn giản, quạt (motor) và bộ phận sưởi ấm được kết nối với nguồn điện 220 V. Công tắc K có thể được nối với tiếp điểm E hoặc F. Nhiệt độ của luồng không khí lạnh đi vào máy sấy là 18,0 0C. Điện trở bộ phận sưởi là $60 Ω$.Nhiệt dung riêng của không khí là 1000 J/kg.K. Ban đầu công tắc K ở tiếp điểm E thì lưu lượng không khí chảy qua máy là 0,05 kg/s. Bỏ qua mọi hao phí.<br>Công suất tiêu thụ điện của bộ phận sưởi trong máy sấy là",
+    "question": "<div class=\"q-text-body\">Sử dụng các thông tin sau cho câu 7 và câu 8: Máy sấy tóc là một thiết bị điện được sử dụng sau khi gội đầu để làm khô tóc. Hình bên là sơ đồ một máy sấy tóc đơn giản, quạt (motor) và bộ phận sưởi ấm được kết nối với nguồn điện 220 V. Công tắc K có thể được nối với tiếp điểm E hoặc F. Nhiệt độ của luồng không khí lạnh đi vào máy sấy là 18,0 0C. Điện trở bộ phận sưởi là ${}^{0}_{6}\\mathrm{Ω}$.Nhiệt dung riêng của không khí là 1000 J/kg.K. Ban đầu công tắc K ở tiếp điểm E thì lưu lượng không khí chảy qua máy là 0,05 kg/s. Bỏ qua mọi hao phí.<br>Công suất tiêu thụ điện của bộ phận sưởi trong máy sấy là</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de06/image3.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "806,7 W.",
       "B": "366,7 W.",
@@ -132,7 +132,7 @@
   {
     "id": 11,
     "type": "mc",
-    "question": "Một nhóm học sinh tiến hành thí nghiệm kiểm chứng định luật Boyle về quá trình biến đổi đẳng nhiệt của một lượng khí xác định (xem như khí lí tưởng) được chứa trong xi-lanh kín. Dụng cụ thí nghiệm được bố trí như hình dưới. Kết quả thí nghiệm được nhóm ghi lại trong bảng dưới đây:<br><img src=\"assets/exams/vedich2k9_de06/image4.png\" alt=\"hình vẽ\" class=\"q-img\" /><img src=\"assets/exams/vedich2k9_de06/image5.png\" alt=\"hình vẽ\" class=\"q-img\" /><img src=\"assets/exams/vedich2k9_de06/image17.png\" alt=\"công thức\" class=\"q-formula-img\" /><img src=\"assets/exams/vedich2k9_de06/image18.png\" alt=\"công thức\" class=\"q-formula-img\" /><br>Biết $1​ bar=1{0}^{5}Pa$. Số mol khí đã dùng trong thí nghiệm xấp xỉ bằng",
+    "question": "<div class=\"q-text-body\">Một nhóm học sinh tiến hành thí nghiệm kiểm chứng định luật Boyle về quá trình biến đổi đẳng nhiệt của một lượng khí xác định (xem như khí lí tưởng) được chứa trong xi-lanh kín. Dụng cụ thí nghiệm được bố trí như hình dưới. Kết quả thí nghiệm được nhóm ghi lại trong bảng dưới đây:<br><br>Biết $1​ bar=1{0}^{5}Pa$. Số mol khí đã dùng trong thí nghiệm xấp xỉ bằng</div><div class=\"q-multi-img-grid\"><img src=\"assets/exams/vedich2k9_de06/image4.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de06/image5.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de06/image17.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /><img src=\"assets/exams/vedich2k9_de06/image18.png\" alt=\"hình vẽ\" class=\"q-grid-img\" /></div>",
     "options": {
       "A": "1,91.10-4 mol.",
       "B": "1,91.10-5 mol.",
@@ -184,7 +184,7 @@
   {
     "id": 15,
     "type": "mc",
-    "question": "<img src=\"assets/exams/vedich2k9_de06/image6.png\" alt=\"hình vẽ\" class=\"q-img\" />Trái Đất là một nam châm khổng lồ, xung quanh Trái Đất có từ trường. Trong rừng sâu, dùng kim nam châm đặt trên mặt đất nằm ngang có thể xác định được hướng của từ trường Trái Đất, từ đó xác định được hướng địa lí. Kết luận nào sau đây đúng?",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Trái Đất là một nam châm khổng lồ, xung quanh Trái Đất có từ trường. Trong rừng sâu, dùng kim nam châm đặt trên mặt đất nằm ngang có thể xác định được hướng của từ trường Trái Đất, từ đó xác định được hướng địa lí. Kết luận nào sau đây đúng?</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de06/image6.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "Cực N chỉ về hướng Đông.",
       "B": "Cực N chỉ về hướng Nam.",
@@ -236,7 +236,7 @@
   {
     "id": 19,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de06/image7.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 1. Máy phát điện trong gia đình (hình vẽ) là thiết bị được nhiều gia đình lựa chọn trong những ngày lũ lụt.",
+    "question": "<div class=\"q-layout-side\"><div class=\"q-text-body\">Câu 1. Máy phát điện trong gia đình (hình vẽ) là thiết bị được nhiều gia đình lựa chọn trong những ngày lũ lụt.</div><div class=\"q-img-col\"><img src=\"assets/exams/vedich2k9_de06/image7.png\" alt=\"hình vẽ\" class=\"q-side-img\" /></div></div>",
     "options": {
       "A": "Để tránh xảy ra tai nạn đáng tiếc khi sử dụng máy phát điện trong gia đình, người dân không sử dụng máy phát điện trong nhà và khu vực có không gian kín.",
       "B": "Khi máy phát điện hoạt động, động cơ đốt trong, đốt nhiên liệu, thải ra một lượng khí CO.",
@@ -249,25 +249,25 @@
   {
     "id": 20,
     "type": "tf",
-    "question": "Câu 2. Hạt nhân $92235U$ hấp thụ một neutron nhiệt rồi vỡ ra thành hai hạt nhân $3995Y$ và $53138I$ kèm theo giải phóng một số hạt neutron mới. Biết rằng tổng khối lượng các hạt trước phản ứng lớn hơn tổng khối lượng các hạt sau phản ứng là 0,181 amu. Lấy 1 amu = 931,5 MeV/c2",
+    "question": "Câu 2. Hạt nhân ${}^{35}_{922}\\mathrm{U}$ hấp thụ một neutron nhiệt rồi vỡ ra thành hai hạt nhân ${}^{5}_{399}\\mathrm{Y}$ và ${}^{38}_{531}\\mathrm{I}$ kèm theo giải phóng một số hạt neutron mới. Biết rằng tổng khối lượng các hạt trước phản ứng lớn hơn tổng khối lượng các hạt sau phản ứng là 0,181 amu. Lấy 1 amu = 931,5 MeV/c2",
     "options": {
       "A": "Phản ứng trên gọi là phản ứng nhiệt hạch (phản ứng tổng hợp).",
       "B": "Quá trình này giải phóng kèm theo hai hạt neutron mới.",
-      "C": "Một hạt nhân urani $92235U$ phân hạch thì tỏa ra năng lượng trung bình là 168,6 MeV",
-      "D": "Giả sử ban đầu ta kích thích cho 1010 hạt $92235U$ phân hạch. Năng lượng toả ra sau 9 phân hạch dây chuyền đầu tiên (kể cả phân hạch kích thích ban đầu) thì năng lượng tỏa ra bằng 1,66.1016 MeV."
+      "C": "Một hạt nhân urani ${}^{35}_{922}\\mathrm{U}$ phân hạch thì tỏa ra năng lượng trung bình là 168,6 MeV",
+      "D": "Giả sử ban đầu ta kích thích cho 1010 hạt ${}^{35}_{922}\\mathrm{U}$ phân hạch. Năng lượng toả ra sau 9 phân hạch dây chuyền đầu tiên (kể cả phân hạch kích thích ban đầu) thì năng lượng tỏa ra bằng 1,66.1016 MeV."
     },
     "correct": "SSĐĐ",
-    "giaiThich": "a) Phản ứng trên gọi là phản ứng phân hạch.<br>b) Phương trình phản ứng: $01n+92235U→3995Y+53138I+301n$<br>c) Năng lượng tỏa ra của một phản ứng bằng: $ΔE=\\left({m}_{t}-{m}_{s}\\right).{c}^{2}=0,181.931,5=168,6 MeV$<br>d) Gọi N là tổng số hạt Uranium (tổng số phản ứng) cần được kích thích sau 9 phân hạch<br>$N={N}_{0}{k}^{0}+{N}_{0}{k}^{1}+{N}_{0}{k}^{2}+...+{N}_{0}{k}^{n}={N}_{0}.\\frac{{k}^{n}-1}{k-1}$ (dãy số có công bội là k)<br>Năng lượng toả ra sau 9 phân hạch dây chuyền đầu tiên:<br>$Q=1{0}^{10}.\\frac{{k}^{n}-1}{k-1}.ΔE=1{0}^{10}.\\frac{{3}^{9}-1}{3-1}.168,6=1,66.1{0}^{16}MeV$"
+    "giaiThich": "a) Phản ứng trên gọi là phản ứng phân hạch.<br>b) Phương trình phản ứng: $${}^{1}_{0}\\mathrm{n}$+${}^{235}_{92}\\mathrm{U}$→${}^{95}_{39}\\mathrm{Y}$+${}^{138}_{53}\\mathrm{I}$+3\\cdot {}^{1}_{0}\\mathrm{n}$$<br>c) Năng lượng tỏa ra của một phản ứng bằng: $ΔE=\\left({m}_{t}-{m}_{s}\\right).{c}^{2}=0,181.931,5=168,6 MeV$<br>d) Gọi N là tổng số hạt Uranium (tổng số phản ứng) cần được kích thích sau 9 phân hạch<br>$N={N}_{0}{k}^{0}+{N}_{0}{k}^{1}+{N}_{0}{k}^{2}+...+{N}_{0}{k}^{n}={N}_{0}.\\frac{{k}^{n}-1}{k-1}$ (dãy số có công bội là k)<br>Năng lượng toả ra sau 9 phân hạch dây chuyền đầu tiên:<br>$Q=1{0}^{10}.\\frac{{k}^{n}-1}{k-1}.ΔE=1{0}^{10}.\\frac{{3}^{9}-1}{3-1}.168,6=1,66.1{0}^{16}MeV$"
   },
   {
     "id": 21,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de06/image8.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 3. Trong ô tô, người ta thường đặt ở hệ thống tay lái một thiết bị nhằm bảo vệ người lái xe khi xe gặp tai nạn, gọi là “túi khí”. Trong túi khí thường chứa 87 g chất $Na{N}_{3},$ khi va chạm mạnh vào vật cản thì hệ thống cảm biến của xe sẽ kích thích chất rắn này làm nó phân hủy tạo thành Na và khí Nitơ. Khí Nitơ được tạo thành sẽ làm túi khí phồng lên, giúp người lái xe không va chạm trực tiếp vào hệ thống lái.",
+    "question": "<div class=\"q-text-body\">Câu 3. Trong ô tô, người ta thường đặt ở hệ thống tay lái một thiết bị nhằm bảo vệ người lái xe khi xe gặp tai nạn, gọi là “túi khí”. Trong túi khí thường chứa 87 g chất $Na{N}_{3},$ khi va chạm mạnh vào vật cản thì hệ thống cảm biến của xe sẽ kích thích chất rắn này làm nó phân hủy tạo thành Na và khí Nitơ. Khí Nitơ được tạo thành sẽ làm túi khí phồng lên, giúp người lái xe không va chạm trực tiếp vào hệ thống lái.</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de06/image8.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Túi khí được chế tạo bằng vật liệu co dãn, chịu được áp suất lớn.",
       "B": "Phương trình phân hủy của chất NaN3 là $Na{N}_{3}→Na + {N}_{3}$",
       "C": "Biết $Na = 23;N = 14$. Ở nhiệt độ sau khí NaN3 phân hủy, 1 mol khí Nitơ có thể tích 24,0 lít/mol. Khi phân hủy hết NaN3 thể tích khí Nitơ tạo thành là 48 lít.",
-      "D": "Bỏ qua thể tích khí trong túi trước khi phồng lên, bỏ qua thể tích của Na tạo thành. Nhiệt độ khí Nitơ sau khi phân hủy hết 87 g NaN3 là 370C. Áp suất khí Nitơ sau khi túi khí phồng lên là 107,34 kPa."
+      "D": "Bỏ qua thể tích khí trong túi trước khi phồng lên, bỏ qua thể tích của Na tạo thành. Nhiệt độ khí Nitơ sau khi phân hủy hết 87 g NaN3 là 37°C. Áp suất khí Nitơ sau khi túi khí phồng lên là 107,34 kPa."
     },
     "correct": "ĐSĐĐ",
     "giaiThich": "a) Túi khí được chế tạo bằng vật liệu co dãn, chịu được áp suất lớn.<br>b) Phương trình phân hủy NaN3 (Natri azua): $2Na{N}_{3}→2Na+3{N}_{2}$<br>c) Số mol NaN3 tham gia phân hủy: $n=\\frac{m}{M}=\\frac{87}{23+14.3}=\\frac{87}{65} mol$<br>Số mol khí ${N}_{2}$: ${n}^{'}=\\frac{87}{65}.\\frac{3}{2}=\\frac{261}{130}\\left(mol\\right)⇒{V}_{{N}_{2}}=\\frac{261}{130}.24≈48\\left(l\\right)$ (đã làm tròn đến hàng đơn vị)<br>d)$pV={n}^{'}RT⇒p=\\frac{{n}^{'}RT}{V}=\\frac{\\frac{261}{130}.8,31.\\left(37+273\\right)}{\\frac{261}{130}.24.1{0}^{-3}}=107337,5Pa$"
@@ -275,20 +275,20 @@
   {
     "id": 22,
     "type": "tf",
-    "question": "<img src=\"assets/exams/vedich2k9_de06/image9.png\" alt=\"hình vẽ\" class=\"q-img\" />Câu 4. Dùng đèn cồn đun nước và theo dõi nhiệt độ của băng phiến. Khi nhiệt độ của băng phiến lên tới 600C thì cứ sau 1 phút lại ghi nhiệt độ và nhận xét về thể (rắn hay lỏng) của băng phiến vào bảng theo dõi. Ghi cho tới khi băng phiến đạt đến nhiệt độ 860C, ta được bảng<br>Thời gian đun (phút)<br>Nhiệt độ (oC)<br>Thể<br>Thời gian đun (phút)<br>Nhiệt độ (oC)<br>Thể<br>0<br>60<br>Rắn<br>8<br>80<br>Rắn và lỏng<br>1<br>63<br>Rắn<br>9<br>80<br>Rắn và lỏng<br>2<br>66<br>Rắn<br>10<br>80<br>Rắn và lỏng<br>3<br>69<br>Rắn<br>11<br>80<br>Rắn và lỏng<br>4<br>72<br>Rắn<br>12<br>81<br>Lỏng<br>5<br>75<br>Rắn<br>13<br>82<br>Lỏng<br>6<br>77<br>Rắn<br>14<br>84<br>Lỏng<br>7<br>79<br>Rắn<br>15<br>86<br>Lỏng",
+    "question": "<div class=\"q-text-body\">Câu 4. Dùng đèn cồn đun nước và theo dõi nhiệt độ của băng phiến. Khi nhiệt độ của băng phiến lên tới 60°C thì cứ sau 1 phút lại ghi nhiệt độ và nhận xét về thể (rắn hay lỏng) của băng phiến vào bảng theo dõi. Ghi cho tới khi băng phiến đạt đến nhiệt độ 86°C, ta được bảng<br>Thời gian đun (phút)<br>Nhiệt độ (oC)<br>Thể<br>Thời gian đun (phút)<br>Nhiệt độ (oC)<br>Thể<br>0<br>60<br>Rắn<br>8<br>80<br>Rắn và lỏng<br>1<br>63<br>Rắn<br>9<br>80<br>Rắn và lỏng<br>2<br>66<br>Rắn<br>10<br>80<br>Rắn và lỏng<br>3<br>69<br>Rắn<br>11<br>80<br>Rắn và lỏng<br>4<br>72<br>Rắn<br>12<br>81<br>Lỏng<br>5<br>75<br>Rắn<br>13<br>82<br>Lỏng<br>6<br>77<br>Rắn<br>14<br>84<br>Lỏng<br>7<br>79<br>Rắn<br>15<br>86<br>Lỏng</div><div class=\"q-block-wrap\"><img src=\"assets/exams/vedich2k9_de06/image9.png\" alt=\"hình vẽ\" class=\"q-block-img\" /></div>",
     "options": {
       "A": "Nhiệt độ nóng chảy của băng phiến là 80 K.",
       "B": "Trong thời gian nóng chảy nhiệt độ của băng phiến không thay đổi.",
-      "C": "Sau khi nóng chảy hoàn toàn, ngừng cấp nhiệt, băng phiến tiếp tục nhận nhiệt từ môi trường (nhiệt độ môi trường 300C).",
+      "C": "Sau khi nóng chảy hoàn toàn, ngừng cấp nhiệt, băng phiến tiếp tục nhận nhiệt từ môi trường (nhiệt độ môi trường 30°C).",
       "D": "Nhiệt nóng chảy riêng của băng phiến là 150 kJ/kg. Để cung cấp cho 48 g băng phiến trong quá trình nóng chảy cần nhiệt lượng là 7,2.10-3J."
     },
     "correct": "SĐSS",
-    "giaiThich": "c) Nhiệt độ nóng chảy của băng phiến là 800C, lớn hơn nhiệt độ của môi trường nên băng phiến tỏa nhiệt.<br>d) $Q=mλ=48.1{0}^{-3}.150.1{0}^{3}=7200J=7,2.1{0}^{3}J$"
+    "giaiThich": "c) Nhiệt độ nóng chảy của băng phiến là 80°C, lớn hơn nhiệt độ của môi trường nên băng phiến tỏa nhiệt.<br>d) $Q=mλ=48.1{0}^{-3}.150.1{0}^{3}=7200J=7,2.1{0}^{3}J$"
   },
   {
     "id": 23,
     "type": "short",
-    "question": "Sử dụng thông tin sau cho câu 1 và câu 2. Để tiết kiệm điện năng tiêu thụ khi sử dụng máy điều hòa, người ta khuyến nghị nên điều chỉnh máy ở mức 250C.<br>Câu 1. Xác định nhiệt độ này trong thang nhiệt độ Ken-vin?",
+    "question": "Sử dụng thông tin sau cho câu 1 và câu 2. Để tiết kiệm điện năng tiêu thụ khi sử dụng máy điều hòa, người ta khuyến nghị nên điều chỉnh máy ở mức 25°C.<br>Câu 1. Xác định nhiệt độ này trong thang nhiệt độ Ken-vin?",
     "options": {
       "A": "",
       "B": "",
@@ -335,12 +335,12 @@
       "D": ""
     },
     "correct": "19,1",
-    "giaiThich": "Áp dụng phương trình Cla-pê-rôn :$\\left\\{p.V=1.RT {p}^{'}.V=1.R{T}^{'}\\right)⇒{p}^{'}-p=\\frac{R}{V}.\\left({T}^{'}-T\\right)$<br>Ban đầu : $\\left\\{p.S={p}_{0}.S+k.Δ{l}_{1}{p}^{'}.S={p}_{0}.S+k.Δ{l}_{2}\\right)⇒\\left({p}^{'}-p\\right).S=k.\\left(Δ{l}_{2}-Δ{l}_{1}\\right)⇒{p}^{'}-p=\\frac{k.l}{S}=\\frac{R}{V}\\left({T}^{'}-T\\right)$<br>$⇒{T}^{'}-T=\\frac{k.l.V}{RS}=\\frac{50.2.1{0}^{-3}.20.1{0}^{-3}}{8,31.12,6.1{0}^{-6}}=19,1$<br>Dùng thông tin sau cho câu 5 và câu 6: Trước đây, để thuận tiện cho việc xem giờ, các nhà sản xuất đồng hồ đã sơn mặt số và kim đồng hồ bằng một lớp dạ quang chứa đồng vị phóng xạ radium $88226Ra$ có chu kì bán rã là 1600 năm. Ban đầu, lớp dạ quang này chứa 8,5 $μg$ $88226Ra$. Lấy số ngày trong một năm là 365. Khối lượng mol của $88226Ra$ là 226 g/mol."
+    "giaiThich": "Áp dụng phương trình Cla-pê-rôn :$\\left\\{p.V=1.RT {p}^{'}.V=1.R{T}^{'}\\right)⇒{p}^{'}-p=\\frac{R}{V}.\\left({T}^{'}-T\\right)$<br>Ban đầu : $\\left\\{p.S={p}_{0}.S+k.Δ{l}_{1}{p}^{'}.S={p}_{0}.S+k.Δ{l}_{2}\\right)⇒\\left({p}^{'}-p\\right).S=k.\\left(Δ{l}_{2}-Δ{l}_{1}\\right)⇒{p}^{'}-p=\\frac{k.l}{S}=\\frac{R}{V}\\left({T}^{'}-T\\right)$<br>$⇒{T}^{'}-T=\\frac{k.l.V}{RS}=\\frac{50.2.1{0}^{-3}.20.1{0}^{-3}}{8,31.12,6.1{0}^{-6}}=19,1$<br>Dùng thông tin sau cho câu 5 và câu 6: Trước đây, để thuận tiện cho việc xem giờ, các nhà sản xuất đồng hồ đã sơn mặt số và kim đồng hồ bằng một lớp dạ quang chứa đồng vị phóng xạ radium ${}^{26}_{882}\\mathrm{Ra}$ có chu kì bán rã là 1600 năm. Ban đầu, lớp dạ quang này chứa 8,5 $μg$ ${}^{26}_{882}\\mathrm{Ra}$. Lấy số ngày trong một năm là 365. Khối lượng mol của ${}^{26}_{882}\\mathrm{Ra}$ là 226 g/mol."
   },
   {
     "id": 27,
     "type": "short",
-    "question": "Câu 5. Độ phóng xạ ban đầu của lượng $88226Ra$ được sơn trên đồng hồ là bao nhiêu megabecoren (MBq, làm tròn kết quả đến chữ số hàng phần trăm)?",
+    "question": "Câu 5. Độ phóng xạ ban đầu của lượng ${}^{26}_{882}\\mathrm{Ra}$ được sơn trên đồng hồ là bao nhiêu megabecoren (MBq, làm tròn kết quả đến chữ số hàng phần trăm)?",
     "options": {
       "A": "",
       "B": "",
@@ -353,7 +353,7 @@
   {
     "id": 28,
     "type": "short",
-    "question": "Câu 6. Sau bao nhiêu năm thì độ phóng xạ của lượng $88226Ra$ còn lại bằng 3,125% so với độ phóng xạ ban đầu (làm tròn kết quả đến chữ số hàng đơn vị).",
+    "question": "Câu 6. Sau bao nhiêu năm thì độ phóng xạ của lượng ${}^{26}_{882}\\mathrm{Ra}$ còn lại bằng 3,125% so với độ phóng xạ ban đầu (làm tròn kết quả đến chữ số hàng đơn vị).",
     "options": {
       "A": "",
       "B": "",
