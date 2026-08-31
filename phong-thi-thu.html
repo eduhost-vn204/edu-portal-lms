@@ -19,7 +19,7 @@
             --border: #cbd5e1;
             --border-light: #e2e8f0;
             --bg: #ffffff;
-            --bg2: #f1f5f9;
+            --bg2: #f0f4f9;
             --card-bg: #ffffff;
             --green: #15803d;
             --green-bg: #dcfce7;
@@ -61,106 +61,134 @@
         .nav-links a.active { border-bottom: 2px solid #fff; padding-bottom: 2px; }
         .nav-right { display: flex; align-items: center; gap: 16px; }
 
-        /* ─── BANNER TIÊU ĐỀ HỆ THỐNG MÔ PHỎNG ─── */
+        /* ─── STEP 1: SIMULATED LOGIN CARD (MÔ PHỎNG ĐĂNG NHẬP PHÒNG THI) ─── */
+        .sim-login-wrap {
+            max-width: 520px; margin: 40px auto 60px; padding: 0 16px;
+        }
+        .sim-login-card {
+            background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 16px;
+            padding: 32px 28px; box-shadow: 0 10px 30px rgba(10,75,156,0.08); text-align: center;
+        }
+        .sim-login-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--primary-bg); color: var(--primary);
+            font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;
+            padding: 4px 12px; border-radius: 20px; margin-bottom: 12px;
+            border: 1px solid rgba(10,75,156,0.2);
+        }
+        .sim-login-title { font-size: 20px; font-weight: 900; color: var(--primary); margin-bottom: 6px; }
+        .sim-login-sub { font-size: 13px; color: var(--gray); margin-bottom: 24px; }
+        
+        .sim-form-group { text-align: left; margin-bottom: 16px; }
+        .sim-form-label { display: block; font-size: 12.5px; font-weight: 700; color: var(--black); margin-bottom: 6px; }
+        .sim-input {
+            width: 100%; height: 42px; padding: 0 14px; border-radius: 8px;
+            border: 1.5px solid var(--border); background: var(--bg2);
+            font-size: 14px; font-weight: 600; color: var(--black); outline: none;
+            font-family: inherit; transition: border-color 0.15s, background 0.15s;
+        }
+        .sim-input:focus { border-color: var(--primary); background: #fff; }
+        .sim-input[readonly] { background: #f8fafc; color: var(--gray); cursor: default; }
+
+        .btn-sim-login {
+            width: 100%; height: 46px; background: var(--primary); color: #fff;
+            border: none; border-radius: 10px; font-size: 14.5px; font-weight: 800;
+            cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            margin-top: 8px; transition: background 0.15s, transform 0.15s;
+            box-shadow: 0 4px 12px rgba(10,75,156,0.2);
+        }
+        .btn-sim-login:hover { background: var(--primary-dark); transform: translateY(-1px); }
+        .sim-note { font-size: 11.5px; color: var(--gray2); margin-top: 14px; line-height: 1.4; }
+
+        /* ─── STEP 2: SẢNH THI TRỰC TUYẾN (LOBBY) ─── */
+        .lobby-screen { display: none; }
+        .lobby-screen.active { display: block; }
+
         .cbt-header-banner {
             background: linear-gradient(135deg, var(--primary) 0%, #0d5bbd 100%);
-            color: #fff; padding: 24px 20px 28px; text-align: center;
+            color: #fff; padding: 22px 20px 24px; text-align: center;
             border-bottom: 1px solid rgba(255,255,255,0.15);
             box-shadow: 0 4px 12px rgba(10,75,156,0.15);
         }
         .cbt-banner-badge {
             display: inline-flex; align-items: center; gap: 6px;
             background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 700;
-            letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px;
+            border-radius: 20px; padding: 4px 14px; font-size: 11.5px; font-weight: 700;
+            letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;
         }
         .cbt-banner-title {
-            font-size: clamp(22px, 3.5vw, 30px); font-weight: 900;
-            letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 6px;
+            font-size: clamp(20px, 3.2vw, 28px); font-weight: 900;
+            letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 4px;
         }
         .cbt-banner-sub {
-            font-size: 14px; color: rgba(255,255,255,0.85); font-weight: 500;
+            font-size: 13.5px; color: rgba(255,255,255,0.88); font-weight: 500;
             max-width: 680px; margin: 0 auto;
         }
 
-        /* ─── MAIN CONTAINER ─── */
         .container { max-width: 1240px; margin: 0 auto; padding: 24px 20px 80px; }
 
-        /* ─── CHECK-IN VERIFICATION SCREEN (SCREEN 1) ─── */
-        .checkin-card {
-            background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 14px;
-            padding: 28px 32px; margin-bottom: 28px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-            display: flex; justify-content: space-between; align-items: center;
-            flex-wrap: wrap; gap: 24px;
-        }
-        .checkin-left { display: flex; align-items: center; gap: 20px; flex: 1; min-width: 300px; }
-        .checkin-avatar {
-            width: 64px; height: 64px; border-radius: 50%;
-            background: var(--primary-bg); border: 2px solid var(--primary-light);
-            color: var(--primary); font-size: 26px; font-weight: 800;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-        }
-        .checkin-info h3 { font-size: 18px; font-weight: 800; margin-bottom: 4px; color: var(--black); }
-        .checkin-meta { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--gray); font-weight: 600; }
-        .checkin-meta span { display: inline-flex; align-items: center; gap: 5px; }
-        .checkin-status-badge {
-            background: var(--green-bg); color: var(--green);
-            padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 12px;
-            display: inline-flex; align-items: center; gap: 5px;
-        }
-        .checkin-right { display: flex; align-items: center; gap: 12px; }
-        .btn-cbt-lobby {
-            background: var(--primary); color: #fff; border: none; border-radius: 8px;
-            padding: 12px 24px; font-size: 14px; font-weight: 700; cursor: pointer;
-            display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
-            transition: background 0.15s, transform 0.15s;
-        }
-        .btn-cbt-lobby:hover { background: var(--primary-dark); transform: translateY(-1px); color: #fff; }
-
-        /* ─── LOBBY 2-COLUMN LAYOUT (SCREEN 2) ─── */
+        /* ─── 2-COLUMN LOBBY LAYOUT ─── */
         .lobby-layout {
-            display: grid; grid-template-columns: 340px 1fr; gap: 24px;
+            display: grid; grid-template-columns: 320px 1fr; gap: 24px;
             align-items: start;
         }
         @media (max-width: 960px) {
             .lobby-layout { grid-template-columns: 1fr; }
         }
 
-        /* ─── LEFT SIDEBAR: RULES & EXAM PROFILE ─── */
+        /* ─── SIDEBAR: RULES & EXAM STRUCTURE ─── */
         .sidebar-card {
             background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 12px;
-            padding: 22px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.03);
         }
         .card-header-bar {
-            font-size: 14px; font-weight: 800; color: var(--primary); text-transform: uppercase;
-            letter-spacing: 0.5px; padding-bottom: 12px; margin-bottom: 14px;
+            font-size: 13.5px; font-weight: 800; color: var(--primary); text-transform: uppercase;
+            letter-spacing: 0.5px; padding-bottom: 10px; margin-bottom: 12px;
             border-bottom: 2px solid var(--primary-bg);
             display: flex; align-items: center; gap: 8px;
         }
-        .rule-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        .rule-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
         .rule-item {
-            font-size: 13px; line-height: 1.5; color: var(--gray);
-            display: flex; align-items: flex-start; gap: 10px;
+            font-size: 12.5px; line-height: 1.5; color: var(--gray);
+            display: flex; align-items: flex-start; gap: 8px;
         }
-        .rule-item i { color: var(--primary-light); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
+        .rule-item i { color: var(--primary-light); font-size: 13px; margin-top: 2px; flex-shrink: 0; }
         .exam-structure-table {
-            width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 10px;
+            width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px;
         }
         .exam-structure-table th, .exam-structure-table td {
-            padding: 8px 10px; border: 1px solid var(--border-light); text-align: left;
+            padding: 7px 8px; border: 1px solid var(--border-light); text-align: left;
         }
         .exam-structure-table th { background: var(--bg2); font-weight: 700; color: var(--black); }
         .exam-structure-table tr:nth-child(even) td { background: #fafbfc; }
 
-        /* ─── RIGHT MAIN: CONTROLS & EXAM LIST ─── */
+        /* ─── MAIN COLUMN: CANDIDATE & COUNCIL INFO CARDS ─── */
+        .info-cards-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;
+        }
+        @media (max-width: 640px) {
+            .info-cards-grid { grid-template-columns: 1fr; }
+        }
+        .info-box-card {
+            background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 12px;
+            padding: 16px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .info-box-head {
+            font-size: 12px; font-weight: 800; color: var(--primary); text-transform: uppercase;
+            letter-spacing: 0.5px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+        }
+        .info-box-name { font-size: 16px; font-weight: 800; color: var(--black); margin-bottom: 6px; }
+        .info-box-lines { font-size: 12.5px; color: var(--gray); line-height: 1.6; }
+        .info-box-lines b { color: var(--black); }
+
+        /* ─── CONTROLS & EXAM LIST ─── */
         .main-controls-card {
             background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 12px;
-            padding: 16px 20px; margin-bottom: 20px;
-            display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between;
+            padding: 14px 18px; margin-bottom: 18px;
+            display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;
             box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
-        .search-box { position: relative; flex: 1; min-width: 220px; }
+        .search-box { position: relative; flex: 1; min-width: 200px; }
         .search-box i {
             position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
             color: var(--gray2); font-size: 13px; pointer-events: none;
@@ -168,7 +196,7 @@
         .search-box input {
             width: 100%; height: 38px; padding: 0 12px 0 34px;
             border-radius: 8px; border: 1.5px solid var(--border);
-            background: var(--bg2); color: var(--black); font-size: 13.5px;
+            background: var(--bg2); color: var(--black); font-size: 13px;
             outline: none; transition: border-color 0.15s, background 0.15s;
             font-family: inherit;
         }
@@ -185,57 +213,57 @@
         }
 
         /* ─── EXAM CARDS GRID ─── */
-        .exam-grid { display: flex; flex-direction: column; gap: 16px; }
+        .exam-grid { display: flex; flex-direction: column; gap: 14px; }
         .exam-row-card {
             background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 12px;
-            padding: 20px 24px; display: grid; grid-template-columns: 1fr auto;
-            gap: 20px; align-items: center; transition: border-color 0.2s, box-shadow 0.2s;
+            padding: 18px 22px; display: grid; grid-template-columns: 1fr auto;
+            gap: 18px; align-items: center; transition: border-color 0.2s, box-shadow 0.2s;
             box-shadow: 0 2px 6px rgba(0,0,0,0.02);
         }
         .exam-row-card:hover {
             border-color: var(--primary-light); box-shadow: 0 6px 18px rgba(10,75,156,0.08);
         }
-        .exam-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+        .exam-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
         .exam-id-badge {
-            font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 700;
+            font-family: 'DM Mono', monospace; font-size: 11.5px; font-weight: 700;
             background: var(--primary-bg); color: var(--primary);
-            padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(10,75,156,0.2);
+            padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(10,75,156,0.2);
         }
         .status-pill {
-            font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 100px;
+            font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 100px;
             display: inline-flex; align-items: center; gap: 4px;
         }
         .status-pill.open { background: var(--green-bg); color: var(--green); border: 1px solid rgba(21,128,61,0.3); }
         .status-pill.locked { background: var(--red-bg); color: var(--red); border: 1px solid rgba(185,28,28,0.2); }
         .status-pill.done { background: var(--primary-bg); color: var(--primary); border: 1px solid rgba(10,75,156,0.3); }
 
-        .exam-row-title { font-size: 16px; font-weight: 800; color: var(--black); line-height: 1.4; margin-bottom: 6px; }
-        .exam-row-desc { font-size: 13px; color: var(--gray); line-height: 1.5; margin-bottom: 12px; }
+        .exam-row-title { font-size: 15.5px; font-weight: 800; color: var(--black); line-height: 1.4; margin-bottom: 4px; }
+        .exam-row-desc { font-size: 12.5px; color: var(--gray); line-height: 1.5; margin-bottom: 10px; }
         .exam-row-meta {
-            display: flex; align-items: center; gap: 16px; font-size: 12.5px; color: var(--gray); font-weight: 600;
+            display: flex; align-items: center; gap: 14px; font-size: 12px; color: var(--gray); font-weight: 600;
         }
-        .exam-row-meta span { display: inline-flex; align-items: center; gap: 5px; }
+        .exam-row-meta span { display: inline-flex; align-items: center; gap: 4px; }
         .exam-row-meta i { color: var(--primary-light); }
 
-        .exam-row-actions { display: flex; flex-direction: column; gap: 8px; min-width: 160px; }
+        .exam-row-actions { display: flex; flex-direction: column; gap: 6px; min-width: 150px; }
         .btn-exam-entry {
-            height: 40px; background: var(--primary); color: #fff; border-radius: 8px;
-            font-size: 13.5px; font-weight: 700; text-decoration: none; border: none; cursor: pointer;
+            height: 38px; background: var(--primary); color: #fff; border-radius: 8px;
+            font-size: 13px; font-weight: 700; text-decoration: none; border: none; cursor: pointer;
             display: inline-flex; align-items: center; justify-content: center; gap: 6px;
             transition: background 0.15s, opacity 0.15s;
         }
         .btn-exam-entry:hover { background: var(--primary-dark); color: #fff; }
         .btn-exam-video {
-            height: 36px; background: var(--amber-bg); color: var(--amber); border-radius: 8px;
-            font-size: 12.5px; font-weight: 700; border: 1px solid rgba(180,83,9,0.3); cursor: pointer;
-            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            height: 34px; background: var(--amber-bg); color: var(--amber); border-radius: 8px;
+            font-size: 12px; font-weight: 700; border: 1px solid rgba(180,83,9,0.3); cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; gap: 5px;
             transition: background 0.15s;
         }
         .btn-exam-video:hover { background: #fde68a; }
         .btn-exam-locked {
-            height: 40px; background: var(--bg2); color: var(--gray2); border-radius: 8px;
-            font-size: 13px; font-weight: 600; border: 1px solid var(--border); cursor: not-allowed;
-            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            height: 38px; background: var(--bg2); color: var(--gray2); border-radius: 8px;
+            font-size: 12.5px; font-weight: 600; border: 1px solid var(--border); cursor: not-allowed;
+            display: inline-flex; align-items: center; justify-content: center; gap: 5px;
         }
 
         /* ─── VIDEO MODAL ─── */
@@ -250,10 +278,10 @@
             overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); display: flex; flex-direction: column;
         }
         .video-modal-head {
-            padding: 14px 20px; display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 18px; display: flex; align-items: center; justify-content: space-between;
             border-bottom: 1px solid #374151; background: #1f2937; color: #fff;
         }
-        .video-modal-title { font-size: 14.5px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .video-modal-title { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
         .video-modal-close {
             background: none; border: none; color: #9ca3af; font-size: 18px; cursor: pointer; padding: 4px;
         }
@@ -261,21 +289,17 @@
         .video-frame-wrap { position: relative; padding-top: 56.25%; background: #000; }
         .video-frame-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
         .video-modal-foot {
-            padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;
-            background: #1f2937; color: #9ca3af; font-size: 12.5px;
+            padding: 10px 18px; display: flex; justify-content: space-between; align-items: center;
+            background: #1f2937; color: #9ca3af; font-size: 12px;
         }
 
-        /* Empty state */
         .empty-box {
             background: var(--card-bg); border: 1.5px dashed var(--border); border-radius: 12px;
-            padding: 48px 24px; text-align: center; color: var(--gray);
+            padding: 40px 20px; text-align: center; color: var(--gray);
         }
-        .empty-box i { font-size: 32px; color: var(--gray2); margin-bottom: 12px; display: block; }
+        .empty-box i { font-size: 28px; color: var(--gray2); margin-bottom: 10px; display: block; }
 
         @media (max-width: 680px) {
-            .checkin-card { padding: 20px; }
-            .checkin-right { width: 100%; }
-            .btn-cbt-lobby { width: 100%; justify-content: center; }
             .exam-row-card { grid-template-columns: 1fr; }
             .exam-row-actions { width: 100%; }
         }
@@ -299,7 +323,7 @@
             </svg>
             Vật Lý Xuân Trường
         </a>
-        <span class="nav-brand-badge">PHÒNG THI THỬ MÁY TÍNH</span>
+        <span class="nav-brand-badge">PHÒNG THI THỬ TRÊN MÁY TÍNH</span>
         <div class="nav-links">
             <a href="baihoc.html">Khóa Học</a>
             <a href="phong-thi-thu.html" class="active">Phòng Thi Thử</a>
@@ -314,133 +338,169 @@
     </div>
 </nav>
 
-<!-- ─── CBT HEADER BANNER ─── -->
-<div class="cbt-header-banner">
-    <div class="cbt-banner-badge">
-        <i class="fa-solid fa-desktop"></i> PHÒNG THI THỬ - MÔ PHỎNG GIAO DIỆN THI TRÊN MÁY TÍNH
+<!-- ─── STEP 1: SIMULATED LOGIN CARD (MÔ PHỎNG ĐĂNG NHẬP PHÒNG THI) ─── -->
+<div class="sim-login-wrap" id="simLoginScreen">
+    <div class="sim-login-card">
+        <div class="sim-login-badge">
+            <i class="fa-solid fa-desktop"></i> MÔ PHỎNG TRẢI NGHIỆM THI TRÊN MÁY TÍNH
+        </div>
+        <h2 class="sim-login-title">HỆ THỐNG THI TRỰC TUYẾN</h2>
+        <p class="sim-login-sub">Đăng nhập phòng thi mô phỏng để bắt đầu ca thi khảo sát năng lực</p>
+
+        <form onsubmit="handleSimulatedLogin(event)">
+            <div class="sim-form-group">
+                <label class="sim-form-label"><i class="fa-regular fa-user"></i> Mã thí sinh / Số báo danh:</label>
+                <input type="text" class="sim-input" id="simSBD" readonly>
+            </div>
+            <div class="sim-form-group">
+                <label class="sim-form-label"><i class="fa-solid fa-lock"></i> Mật khẩu ca thi:</label>
+                <input type="password" class="sim-input" id="simPassword" value="••••••••" readonly>
+            </div>
+            <div class="sim-form-group">
+                <label class="sim-form-label"><i class="fa-solid fa-calendar-day"></i> Đợt thi / Ca thi:</label>
+                <input type="text" class="sim-input" id="simExamWave" value="Đợt thi: Khảo sát Năng lực Vật Lý" readonly>
+            </div>
+            <button type="submit" class="btn-sim-login" id="btnSimEnter">
+                <i class="fa-solid fa-right-to-bracket"></i> ĐĂNG NHẬP VÀO PHÒNG THI
+            </button>
+        </form>
+        <p class="sim-note"><i class="fa-solid fa-shield-halved"></i> Bước mô phỏng trải nghiệm theo chuẩn thi trên máy tính. Kết quả bài thi được gắn tự động với tài khoản học sinh đã đăng nhập.</p>
     </div>
-    <h1 class="cbt-banner-title">Hệ Thống Thi Thử Trực Tuyến Chuẩn Cấu Trúc Bộ GD&ĐT</h1>
-    <p class="cbt-banner-sub">Rèn luyện áp lực phòng thi thật với đồng hồ đếm ngược, chấm điểm tự động tức thì và video chữa đề chi tiết từng câu.</p>
 </div>
 
-<!-- ─── MAIN CONTENT ─── -->
-<div class="container">
+<!-- ─── STEP 2: SẢNH THI TRỰC TUYẾN (LOBBY SCREEN) ─── -->
+<div class="lobby-screen" id="lobbyScreen">
 
-    <!-- ─── SCREEN 1: CHECK-IN / XÁC NHẬN THÍ SINH ─── -->
-    <div class="checkin-card" id="checkinScreen">
-        <div class="checkin-left">
-            <div class="checkin-avatar" id="candidateAvatar">HS</div>
-            <div class="checkin-info">
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-                    <span class="checkin-status-badge"><i class="fa-solid fa-circle-check"></i> ĐÃ XÁC THỰC THÍ SINH</span>
-                    <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gray);font-weight:700" id="candidateSBD">SBD: Đang nạp...</span>
-                </div>
-                <h3 id="candidateName">Học sinh dự thi</h3>
-                <div class="checkin-meta">
-                    <span><i class="fa-solid fa-school"></i> <b id="candidateClass">Lớp 12</b></span>
-                    <span><i class="fa-solid fa-book-open"></i> Môn: <b>Vật Lý</b></span>
-                    <span><i class="fa-solid fa-calendar-day"></i> Kỳ thi: <b>Khảo sát năng lực 2026</b></span>
-                </div>
-            </div>
+    <!-- Header banner -->
+    <div class="cbt-header-banner">
+        <div class="cbt-banner-badge">
+            <i class="fa-solid fa-desktop"></i> PHÒNG THI THỬ TRÊN MÁY TÍNH - VẬT LÝ XUÂN TRƯỜNG
         </div>
-        <div class="checkin-right">
-            <a href="#examListArea" class="btn-cbt-lobby">
-                <i class="fa-solid fa-right-to-bracket"></i> VÀO SẢNH THI TRỰC TUYẾN
-            </a>
-        </div>
+        <h1 class="cbt-banner-title">KỲ THI THỬ TỐT NGHIỆP THPT</h1>
+        <p class="cbt-banner-sub">Mô phỏng trải nghiệm thi trên máy tính với đồng hồ đếm ngược, tự động lưu bài làm và chấm điểm tức thì.</p>
     </div>
 
-    <!-- ─── SCREEN 2: SẢNH THI & DANH SÁCH ĐỀ THI ─── -->
-    <div class="lobby-layout" id="examListArea">
+    <div class="container">
+        <div class="lobby-layout">
 
-        <!-- Sidebar: Candidate summary & Regulations -->
-        <div class="lobby-sidebar">
-            <div class="sidebar-card">
-                <div class="card-header-bar">
-                    <i class="fa-solid fa-circle-info"></i> Quy Chế Phòng Thi CBT
+            <!-- Sidebar: Regulations & Structure -->
+            <div class="lobby-sidebar">
+                <div class="sidebar-card">
+                    <div class="card-header-bar">
+                        <i class="fa-solid fa-circle-info"></i> Quy Chế Phòng Thi CBT
+                    </div>
+                    <ul class="rule-list">
+                        <li class="rule-item">
+                            <i class="fa-solid fa-clock"></i>
+                            <span>Thời gian làm bài tiêu chuẩn <b>50 phút</b>. Đồng hồ đếm ngược chạy liên tục.</span>
+                        </li>
+                        <li class="rule-item">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <span>Hệ thống <b>tự động lưu (Autosave)</b> đáp án vào máy. Reload trang không bị mất bài.</span>
+                        </li>
+                        <li class="rule-item">
+                            <i class="fa-solid fa-bookmark"></i>
+                            <span>Thí sinh có thể bấm <b>Đánh dấu xem lại</b> để quay lại các câu chưa chắc chắn.</span>
+                        </li>
+                        <li class="rule-item">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <span>Khi hết giờ, hệ thống sẽ <b>tự động thu bài và khóa nộp</b> tức thì.</span>
+                        </li>
+                    </ul>
                 </div>
-                <ul class="rule-list">
-                    <li class="rule-item">
-                        <i class="fa-solid fa-clock"></i>
-                        <span>Thời gian làm bài tiêu chuẩn <b>50 phút</b>. Đồng hồ đếm ngược chạy liên tục.</span>
-                    </li>
-                    <li class="rule-item">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                        <span>Hệ thống <b>tự động lưu (Autosave)</b> đáp án vào máy. Reload trang không bị mất bài.</span>
-                    </li>
-                    <li class="rule-item">
-                        <i class="fa-solid fa-bookmark"></i>
-                        <span>Thí sinh có thể bấm <b>Đánh dấu xem lại</b> để quay lại các câu chưa chắc chắn.</span>
-                    </li>
-                    <li class="rule-item">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                        <span>Khi hết giờ, hệ thống sẽ <b>tự động thu bài và khóa nộp</b> tức thì.</span>
-                    </li>
-                </ul>
+
+                <div class="sidebar-card">
+                    <div class="card-header-bar">
+                        <i class="fa-solid fa-list-ol"></i> Cấu Trúc Đề Thi Vật Lý
+                    </div>
+                    <table class="exam-structure-table">
+                        <thead>
+                            <tr>
+                                <th>Phần thi</th>
+                                <th>Số câu</th>
+                                <th>Điểm</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><b>Phần I:</b> Trắc nghiệm 4 PA</td>
+                                <td>18 câu</td>
+                                <td>4.50 đ</td>
+                            </tr>
+                            <tr>
+                                <td><b>Phần II:</b> Đúng / Sai</td>
+                                <td>4 câu (16 ý)</td>
+                                <td>4.00 đ</td>
+                            </tr>
+                            <tr>
+                                <td><b>Phần III:</b> Trả lời ngắn</td>
+                                <td>6 câu</td>
+                                <td>1.50 đ</td>
+                            </tr>
+                            <tr style="font-weight:700;background:var(--primary-bg)">
+                                <td>Tổng cộng</td>
+                                <td>28 câu</td>
+                                <td>10.0 đ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="sidebar-card">
-                <div class="card-header-bar">
-                    <i class="fa-solid fa-list-ol"></i> Cấu Trúc Đề Thi Vật Lý
+            <!-- Main Area: Candidate Profile, Exam Council & Catalog -->
+            <div class="lobby-main">
+                
+                <!-- Info cards: Candidate & Council -->
+                <div class="info-cards-grid">
+                    <div class="info-box-card">
+                        <div class="info-box-head">
+                            <i class="fa-solid fa-id-card"></i> Thông Tin Thí Sinh
+                        </div>
+                        <div class="info-box-name" id="candidateName">Đang tải...</div>
+                        <div class="info-box-lines">
+                            <div>Mã thí sinh / SBD: <b id="candidateSBD">...</b></div>
+                            <div>Lớp / Đơn vị: <b id="candidateClass">...</b></div>
+                        </div>
+                    </div>
+
+                    <div class="info-box-card">
+                        <div class="info-box-head">
+                            <i class="fa-solid fa-building-columns"></i> Hội Đồng Thi
+                        </div>
+                        <div class="info-box-name">Vật Lý Xuân Trường</div>
+                        <div class="info-box-lines">
+                            <div>Địa điểm: <b>Phòng thi trực tuyến</b></div>
+                            <div>Môn thi: <b>Vật Lý</b></div>
+                        </div>
+                    </div>
                 </div>
-                <table class="exam-structure-table">
-                    <thead>
-                        <tr>
-                            <th>Phần thi</th>
-                            <th>Số câu</th>
-                            <th>Điểm</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><b>Phần I:</b> Trắc nghiệm 4 PA</td>
-                            <td>18 câu</td>
-                            <td>4.50 đ</td>
-                        </tr>
-                        <tr>
-                            <td><b>Phần II:</b> Đúng / Sai</td>
-                            <td>4 câu (16 ý)</td>
-                            <td>4.00 đ</td>
-                        </tr>
-                        <tr>
-                            <td><b>Phần III:</b> Trả lời ngắn</td>
-                            <td>6 câu</td>
-                            <td>1.50 đ</td>
-                        </tr>
-                        <tr style="font-weight:700;background:var(--primary-bg)">
-                            <td>Tổng cộng</td>
-                            <td>28 câu</td>
-                            <td>10.0 đ</td>
-                        </tr>
-                    </tbody>
-                </table>
+
+                <!-- Controls: Search & Filter -->
+                <div class="main-controls-card">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="searchInput" placeholder="Tìm kiếm tên đề, mã đề thi..." oninput="handleSearch()">
+                    </div>
+                    <div class="filter-group">
+                        <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">Tất cả đề</button>
+                        <button class="filter-btn" data-filter="open" onclick="setFilter('open')">🟢 Đang mở</button>
+                        <button class="filter-btn" data-filter="video" onclick="setFilter('video')">🎬 Có video chữa</button>
+                        <button class="filter-btn" data-filter="done" onclick="setFilter('done')">📝 Đã thi</button>
+                    </div>
+                </div>
+
+                <!-- Exam grid -->
+                <div class="exam-grid" id="examGrid">
+                    <div class="empty-box">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                        <h3>Đang tải danh sách đề thi...</h3>
+                        <p>Vui lòng đợi giây lát trong khi hệ thống nạp dữ liệu.</p>
+                    </div>
+                </div>
+
             </div>
+
         </div>
-
-        <!-- Main Column: Filter & Exam Catalog -->
-        <div class="lobby-main">
-            <div class="main-controls-card">
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="searchInput" placeholder="Tìm kiếm tên đề, mã đề thi..." oninput="handleSearch()">
-                </div>
-                <div class="filter-group">
-                    <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">Tất cả đề</button>
-                    <button class="filter-btn" data-filter="open" onclick="setFilter('open')">🟢 Đang mở</button>
-                    <button class="filter-btn" data-filter="video" onclick="setFilter('video')">🎬 Có video chữa</button>
-                    <button class="filter-btn" data-filter="done" onclick="setFilter('done')">📝 Đã thi</button>
-                </div>
-            </div>
-
-            <div class="exam-grid" id="examGrid">
-                <div class="empty-box">
-                    <i class="fa-solid fa-spinner fa-spin"></i>
-                    <h3>Đang tải danh sách đề thi thử...</h3>
-                    <p>Vui lòng đợi giây lát trong khi hệ thống nạp dữ liệu chuẩn Bộ GD&ĐT.</p>
-                </div>
-            </div>
-        </div>
-
     </div>
 
 </div>
@@ -483,14 +543,21 @@ function initCandidateInfo() {
     }
 
     const name = currentUser.hoten || 'Học sinh dự thi';
-    const sbd = 'SBD: ' + (currentUser.sdt || currentUser.email || 'HS-2026');
+    const sbd = currentUser.sdt || currentUser.email || 'HS-2026';
     const sClass = currentUser.lop || 'Khóa XPS 2026';
-    const initials = name.split(' ').map(w => w[0]).slice(-2).join('').toUpperCase();
 
+    document.getElementById('simSBD').value = sbd;
     document.getElementById('candidateName').textContent = name;
     document.getElementById('candidateSBD').textContent = sbd;
     document.getElementById('candidateClass').textContent = sClass;
-    document.getElementById('candidateAvatar').textContent = initials || 'HS';
+}
+
+// Step 1 -> Step 2 transition
+function handleSimulatedLogin(e) {
+    if (e) e.preventDefault();
+    document.getElementById('simLoginScreen').style.display = 'none';
+    document.getElementById('lobbyScreen').classList.add('active');
+    loadExams();
 }
 
 function extractVideoUrl(ex) {
@@ -531,27 +598,25 @@ async function loadExams() {
     try {
         const r = await cachedFetch(DB_URL + '?type=danhsachde');
         const j = await r.json();
-        const rawData = (j.ok && Array.isArray(j.data)) ? j.data : [];
+        const rawData = (j.ok && Array.isArray(j.data)) ? j.data : (Array.isArray(j) ? j : []);
 
-        // Lọc đề thuộc Phòng Thi Thử (hoặc có loaiDe === 'thithu' hoặc bắt đầu bằng thithu/vedich)
+        // Lọc đề thuộc Phòng Thi Thử: loaiDe === 'thithu' hoặc examId bắt đầu bằng vedich2k9 / thithu
+        // Ẩn các đề có hienThi === 'an'
         allExams = rawData.filter(ex => {
-            const isThiThu = ex.loaiDe === 'thithu' || String(ex.examId || '').startsWith('thithu') || String(ex.examId || '').startsWith('vedich2k9') || String(ex.tenDe || '').toLowerCase().includes('thi thử') || String(ex.tenDe || '').toLowerCase().includes('về đích');
+            const isThiThu = ex.loaiDe === 'thithu' || String(ex.examId || '').startsWith('vedich2k9') || String(ex.examId || '').startsWith('thithu');
             if (!isThiThu) return false;
-            // Ẩn nếu explicitly hienThi === 'an' VÀ không phải demo
-            const isAn = (String(ex.hienThi).toLowerCase() === 'an' && ex.examId !== 'thithu_demo_01');
+            const isAn = (String(ex.hienThi || '').toLowerCase() === 'an');
             return !isAn;
         });
 
-        // Sắp xếp tự nhiên (demo_01 lên đầu, sau đó de02, de03...)
+        // Sắp xếp theo thứ tự tự nhiên examId
         allExams.sort((a, b) => {
-            if (a.examId === 'thithu_demo_01') return -1;
-            if (b.examId === 'thithu_demo_01') return 1;
             return (a.examId || '').localeCompare(b.examId || '', undefined, { numeric: true, sensitivity: 'base' });
         });
 
         renderExams();
     } catch(e) {
-        grid.innerHTML = '<div class="empty-box"><i class="fa-solid fa-triangle-exclamation" style="color:var(--red)"></i><h3>Không thể kết nối đến máy chủ đề thi</h3><p>Vui lòng kiểm tra lại đường truyền mạng rồi tải lại trang.</p></div>';
+        grid.innerHTML = '<div class="empty-box"><i class="fa-solid fa-triangle-exclamation" style="color:var(--red)"></i><h3>Không thể tải danh sách đề thi</h3><p>Vui lòng kiểm tra lại kết nối mạng rồi tải lại trang.</p></div>';
     }
 }
 
@@ -577,7 +642,7 @@ function handleSearch() {
 function renderExams() {
     const grid = document.getElementById('examGrid');
     if (!allExams.length) {
-        grid.innerHTML = '<div class="empty-box"><i class="fa-solid fa-folder-open"></i><h3>Chưa có đề thi thử nào</h3><p>Thầy Xuân Trường đang chuẩn bị các bộ đề thi thử thực chiến mới nhất.</p></div>';
+        grid.innerHTML = '<div class="empty-box"><i class="fa-solid fa-folder-open"></i><h3>Chưa có đề thi thử nào đang mở</h3><p>Các bộ đề thi thử sẽ được mở theo lịch ôn tập của Thầy Xuân Trường.</p></div>';
         return;
     }
 
@@ -591,7 +656,7 @@ function renderExams() {
             }
         }
         const hist = getExamHistory(ex.examId);
-        const isOpen = (ex.trangThai === 'mo' || ex.examId === 'thithu_demo_01');
+        const isOpen = (ex.trangThai === 'mo');
 
         if (currentFilter === 'open') return isOpen;
         if (currentFilter === 'video') return !!extractVideoUrl(ex);
@@ -600,18 +665,18 @@ function renderExams() {
     });
 
     if (!filtered.length) {
-        grid.innerHTML = '<div class="empty-box"><i class="fa-solid fa-filter-circle-xmark"></i><h3>Không tìm thấy đề thi phù hợp</h3><p>Hãy thử thay đổi từ khóa tìm kiếm hoặc chọn bộ lọc "Tất cả đề".</p></div>';
+        grid.innerHTML = '<div class="empty-box"><i class="fa-solid fa-filter-circle-xmark"></i><h3>Không tìm thấy đề thi phù hợp</h3><p>Hãy thử chọn bộ lọc "Tất cả đề" hoặc tìm từ khóa khác.</p></div>';
         return;
     }
 
     grid.innerHTML = filtered.map(ex => {
-        const isOpen = (ex.trangThai === 'mo' || ex.examId === 'thithu_demo_01');
+        const isOpen = (ex.trangThai === 'mo');
         const soCau = ex.soCau || 28;
         const thoiGian = ex.thoiGian || 50;
         const luotLam = Number(ex.soLuotLam || 0).toLocaleString('vi-VN');
         const videoUrl = extractVideoUrl(ex);
         const hist = getExamHistory(ex.examId);
-        const moTa = ex.moTa ? ex.moTa.replace(/https?:\/\/[^\s"'<>]+/g, '').trim() : 'Đề thi khảo sát năng lực chuẩn cấu trúc Bộ GD&ĐT, chấm điểm tự động tức thì.';
+        const moTa = ex.moTa ? ex.moTa.replace(/https?:\/\/[^\s"'<>]+/g, '').trim() : 'Đề thi khảo sát năng lực trực tuyến, chấm điểm tự động và xem lại lời giải chi tiết.';
 
         let statusHtml = '';
         if (hist) {
@@ -628,7 +693,7 @@ function renderExams() {
 
         let actionBtnHtml = '';
         if (isOpen) {
-            actionBtnHtml = `<a href="thithu.html?exam=${encodeURIComponent(ex.examId)}" class="btn-exam-entry">VÀO THI NGAY <i class="fa-solid fa-arrow-right" style="font-size:12px"></i></a>`;
+            actionBtnHtml = `<a href="thithu.html?exam=${encodeURIComponent(ex.examId)}" class="btn-exam-entry">VÀO THI NGAY <i class="fa-solid fa-arrow-right" style="font-size:11px"></i></a>`;
         } else {
             actionBtnHtml = `<button class="btn-exam-locked"><i class="fa-solid fa-lock"></i> Chưa mở thi</button>`;
         }
@@ -679,7 +744,6 @@ document.addEventListener('keydown', function(e) {
 });
 
 initCandidateInfo();
-loadExams();
 </script>
 </body>
 </html>

@@ -2,34 +2,19 @@
   "ok": true,
   "data": [
     {
-      "_rowIndex": 1,
-      "examId": "thithu_demo_01",
-      "tenDe": "[Thi Thử THPTQG 2026] Đề Thực Chiến Vật Lý Số 01 - Chuẩn cấu trúc BGD",
-      "moTa": "Đề thi thử THPT Quốc Gia môn Vật Lý chuẩn cấu trúc BGD. Đầy đủ 3 phần: 18 câu Trắc nghiệm 4 lựa chọn, 4 câu Đúng/Sai và 6 câu Trả lời ngắn có kèm video chữa đề chi tiết.",
-      "thoiGian": 50,
-      "trangThai": "mo",
-      "lop": 12,
-      "soLuotLam": 128,
-      "hienThi": "hien",
-      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      "loaiDe": "thithu",
-      "soCau": 28,
-      "updatedAt": "2026-08-31T03:28:20.055Z"
-    },
-    {
       "_rowIndex": 2,
       "examId": "vedich2k9_de02",
       "tenDe": "Đề về đích 2k9 – Đề số 02",
       "moTa": "Đề thi thử THPT Quốc Gia môn Vật Lý chuẩn cấu trúc BGD khóa XPS 2k9. Đầy đủ 3 phần: Trắc nghiệm 4 lựa chọn, Đúng/Sai và Trả lời ngắn kèm lời giải chi tiết.",
       "thoiGian": 50,
-      "trangThai": "khoa",
+      "trangThai": "mo",
       "lop": 12,
       "soLuotLam": 2,
-      "hienThi": "an",
+      "hienThi": "hien",
       "videoUrl": "",
       "loaiDe": "thithu",
       "soCau": 28,
-      "updatedAt": "2026-08-29T15:07:16.311Z"
+      "updatedAt": "2026-08-31T03:37:45.075Z"
     },
     {
       "_rowIndex": 3,
@@ -67,14 +52,14 @@
       "tenDe": "Đề về đích 2k9 – Đề số 05",
       "moTa": "Đề thi thử THPT Quốc Gia môn Vật Lý chuẩn cấu trúc BGD khóa XPS 2k9. Đầy đủ 3 phần: Trắc nghiệm 4 lựa chọn, Đúng/Sai và Trả lời ngắn kèm lời giải chi tiết.",
       "thoiGian": 50,
-      "trangThai": "khoa",
+      "trangThai": "mo",
       "lop": 12,
       "soLuotLam": 0,
-      "hienThi": "an",
+      "hienThi": "hien",
       "videoUrl": "",
       "loaiDe": "thithu",
       "soCau": 28,
-      "updatedAt": "2026-08-29T14:40:44.652Z"
+      "updatedAt": "2026-08-31T03:39:07.522Z"
     },
     {
       "_rowIndex": 6,

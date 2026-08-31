@@ -548,19 +548,6 @@ function saveScore(data) {
     data.score || data.diem || 0,
     new Date().toISOString()
   ]);
-  if (data.phone || data.sdt) {
-    const sdt = data.phone || data.sdt;
-    const acc = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame']);
-    const rows = acc.getDataRange().getValues();
-    for (let i = 1; i < rows.length; i++) {
-      if (normSdt(rows[i][0]) === normSdt(sdt)) {
-        const cur = Number(rows[i][5]) || 0;
-        const newScore = Number(data.score || data.diem || 0);
-        acc.getRange(i+1, 6).setValue(Math.max(cur, newScore));
-        break;
-      }
-    }
-  }
   return jsonOut({ ok: true });
 }
 

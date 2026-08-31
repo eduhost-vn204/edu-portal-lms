@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phòng Thi Thử CBT | Vật Lý Xuân Trường</title>
+    <title>Phòng Thi Thử Máy Tính | Vật Lý Xuân Trường</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -24,7 +24,7 @@
             --border: #cbd5e1;
             --border-light: #e2e8f0;
             --bg: #ffffff;
-            --bg2: #f1f5f9;
+            --bg2: #f0f4f9;
             --card-bg: #ffffff;
             --green: #15803d;
             --green-bg: #dcfce7;
@@ -42,7 +42,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ─── FIXED CBT TOPBAR (SCREEN 3) ─── */
+        /* ─── FIXED CBT TOPBAR ─── */
         .cbt-topbar {
             position: fixed; top: 0; left: 0; right: 0; height: 56px; z-index: 1000;
             background: var(--primary); color: #fff;
@@ -105,10 +105,10 @@
         }
         .btn-cbt-submit:hover { background: #b91c1c; transform: translateY(-1px); }
 
-        /* ─── CBT MAIN WORKSPACE ─── */
+        /* ─── CBT WORKSPACE ─── */
         .cbt-workspace {
             margin-top: 56px; height: calc(100vh - 56px);
-            display: grid; grid-template-columns: 1fr 340px;
+            display: grid; grid-template-columns: 1fr 330px;
             overflow: hidden;
         }
         @media (max-width: 900px) {
@@ -117,21 +117,21 @@
 
         /* ─── LEFT: QUESTION VIEWPORT ─── */
         .q-viewport {
-            height: 100%; overflow-y: auto; padding: 24px 28px 100px;
+            height: 100%; overflow-y: auto; padding: 22px 26px 90px;
             display: flex; flex-direction: column; justify-content: space-between;
         }
         .q-content-box {
             background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 14px;
-            padding: 28px; box-shadow: 0 4px 16px rgba(0,0,0,0.03); margin-bottom: 20px;
+            padding: 26px; box-shadow: 0 4px 16px rgba(0,0,0,0.03); margin-bottom: 18px;
         }
         .q-head-bar {
             display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1.5px solid var(--border-light); padding-bottom: 14px; margin-bottom: 20px;
+            border-bottom: 1.5px solid var(--border-light); padding-bottom: 12px; margin-bottom: 18px;
             flex-wrap: wrap; gap: 10px;
         }
         .q-badge-group { display: flex; align-items: center; gap: 8px; }
         .q-number-badge {
-            font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 800;
+            font-family: 'DM Mono', monospace; font-size: 14.5px; font-weight: 800;
             background: var(--primary); color: #fff; padding: 4px 12px; border-radius: 6px;
         }
         .q-part-badge {
@@ -150,32 +150,20 @@
         }
 
         .q-body-text {
-            font-size: 16.5px; line-height: 1.7; font-weight: 600; color: var(--black);
-            margin-bottom: 24px;
+            font-size: 16px; line-height: 1.7; font-weight: 600; color: var(--black);
+            margin-bottom: 22px;
         }
         .q-body-text img, .tf-stmt img {
             max-width: 100%; height: auto; border-radius: 8px; margin: 12px 0;
             border: 1px solid var(--border); background: #fff; display: block;
         }
 
-        /* Image layouts */
-        .q-layout-side { display: flex; gap: 20px; align-items: flex-start; justify-content: space-between; }
-        .q-layout-side .q-text-body { flex: 1; min-width: 0; }
-        .q-layout-side .q-img-col { flex-shrink: 0; }
-        .q-side-img { max-width: 250px; max-height: 220px; object-fit: contain; border-radius: 8px; border: 1px solid var(--border); }
-        .q-block-wrap { margin: 14px 0 10px; text-align: center; }
-        .q-block-img { max-width: 100%; max-height: 380px; object-fit: contain; border-radius: 8px; border: 1px solid var(--border); }
-        @media (max-width: 680px) {
-            .q-layout-side { flex-direction: column-reverse; }
-            .q-side-img { max-width: 100%; }
-        }
-
         /* ─── PART I: MC OPTIONS (A, B, C, D) ─── */
-        .mc-options-list { display: flex; flex-direction: column; gap: 12px; }
+        .mc-options-list { display: flex; flex-direction: column; gap: 10px; }
         .mc-option-label {
-            display: flex; align-items: center; gap: 14px; padding: 14px 18px;
+            display: flex; align-items: center; gap: 12px; padding: 12px 16px;
             background: var(--bg2); border: 1.5px solid var(--border); border-radius: 10px;
-            cursor: pointer; transition: all 0.15s; font-size: 15px; font-weight: 600;
+            cursor: pointer; transition: all 0.15s; font-size: 14.5px; font-weight: 600;
         }
         .mc-option-label:hover {
             border-color: var(--primary-light); background: var(--primary-bg);
@@ -195,17 +183,17 @@
         }
 
         /* ─── PART II: TRUE / FALSE ─── */
-        .tf-container { display: flex; flex-direction: column; gap: 12px; }
+        .tf-container { display: flex; flex-direction: column; gap: 10px; }
         .tf-stmt {
             background: var(--bg2); border: 1.5px solid var(--border); border-radius: 10px;
-            padding: 14px 18px; display: flex; justify-content: space-between; align-items: center;
-            gap: 16px; flex-wrap: wrap;
+            padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;
+            gap: 14px; flex-wrap: wrap;
         }
-        .tf-text { flex: 1; font-size: 15px; font-weight: 600; line-height: 1.55; min-width: 200px; }
+        .tf-text { flex: 1; font-size: 14.5px; font-weight: 600; line-height: 1.55; min-width: 200px; }
         .tf-btn-group { display: flex; gap: 8px; flex-shrink: 0; }
         .tf-choice-btn {
             padding: 7px 18px; border-radius: 8px; border: 1.5px solid var(--border);
-            background: #fff; font-size: 13.5px; font-weight: 800; cursor: pointer;
+            background: #fff; font-size: 13px; font-weight: 800; cursor: pointer;
             transition: all 0.15s; font-family: inherit;
         }
         .tf-choice-btn:hover { border-color: var(--gray); }
@@ -219,12 +207,12 @@
         /* ─── PART III: SHORT ANSWER ─── */
         .short-answer-box {
             background: var(--primary-bg); border: 1.5px solid rgba(10,75,156,0.3);
-            border-radius: 12px; padding: 24px; text-align: center;
+            border-radius: 12px; padding: 22px; text-align: center;
         }
-        .short-answer-label { font-size: 14.5px; font-weight: 700; color: var(--primary-dark); margin-bottom: 12px; }
+        .short-answer-label { font-size: 14px; font-weight: 700; color: var(--primary-dark); margin-bottom: 12px; }
         .short-input-field {
-            width: 200px; height: 48px; border-radius: 8px; border: 2px solid var(--primary);
-            text-align: center; font-size: 20px; font-weight: 800; color: var(--black);
+            width: 200px; height: 46px; border-radius: 8px; border: 2px solid var(--primary);
+            text-align: center; font-size: 19px; font-weight: 800; color: var(--black);
             font-family: 'DM Mono', monospace; outline: none; background: #fff;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
@@ -232,11 +220,11 @@
         /* ─── BOTTOM QUESTION NAV BAR ─── */
         .q-nav-bar {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 16px 0; gap: 12px; flex-wrap: wrap;
+            padding: 14px 0; gap: 12px; flex-wrap: wrap;
         }
         .btn-q-nav {
-            height: 42px; padding: 0 20px; border-radius: 8px; border: 1.5px solid var(--border);
-            background: #fff; font-size: 13.5px; font-weight: 700; cursor: pointer;
+            height: 40px; padding: 0 18px; border-radius: 8px; border: 1.5px solid var(--border);
+            background: #fff; font-size: 13px; font-weight: 700; cursor: pointer;
             display: inline-flex; align-items: center; gap: 8px; transition: all 0.15s;
             color: var(--black);
         }
@@ -250,41 +238,41 @@
         /* ─── RIGHT: QUESTION PALETTE ─── */
         .q-palette-panel {
             height: 100%; overflow-y: auto; background: var(--card-bg);
-            border-left: 1.5px solid var(--border); padding: 20px;
+            border-left: 1.5px solid var(--border); padding: 18px;
             display: flex; flex-direction: column; justify-content: space-between;
         }
         .palette-title {
-            font-size: 13.5px; font-weight: 800; color: var(--primary); text-transform: uppercase;
+            font-size: 13px; font-weight: 800; color: var(--primary); text-transform: uppercase;
             letter-spacing: 0.5px; padding-bottom: 10px; border-bottom: 1.5px solid var(--border-light);
             margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;
         }
         .palette-stats {
-            display: flex; gap: 10px; font-size: 12px; font-weight: 700; margin-bottom: 14px; flex-wrap: wrap;
+            display: flex; gap: 8px; font-size: 11.5px; font-weight: 700; margin-bottom: 12px; flex-wrap: wrap;
         }
-        .stat-badge { padding: 3px 8px; border-radius: 4px; }
+        .stat-badge { padding: 3px 7px; border-radius: 4px; }
         .stat-badge.answered { background: var(--green-bg); color: var(--green); }
         .stat-badge.unanswered { background: var(--bg2); color: var(--gray); }
         .stat-badge.flagged { background: var(--amber-bg); color: var(--amber); }
 
         .palette-legend {
-            display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px; font-weight: 600; color: var(--gray);
-            margin-bottom: 16px; padding: 8px; background: var(--bg2); border-radius: 6px;
+            display: flex; flex-wrap: wrap; gap: 8px; font-size: 10.5px; font-weight: 600; color: var(--gray);
+            margin-bottom: 14px; padding: 6px 8px; background: var(--bg2); border-radius: 6px;
         }
         .legend-item { display: inline-flex; align-items: center; gap: 4px; }
-        .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+        .legend-dot { width: 9px; height: 9px; border-radius: 2px; }
 
         .palette-section-title {
-            font-size: 12px; font-weight: 800; color: var(--gray); text-transform: uppercase;
-            margin: 12px 0 8px; display: block;
+            font-size: 11.5px; font-weight: 800; color: var(--gray); text-transform: uppercase;
+            margin: 10px 0 6px; display: block;
         }
         .palette-grid {
-            display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 14px;
+            display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 12px;
         }
         .p-btn {
-            height: 36px; border-radius: 6px; border: 1.5px solid var(--border);
-            background: #fff; font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 700;
+            height: 34px; border-radius: 6px; border: 1.5px solid var(--border);
+            background: #fff; font-family: 'DM Mono', monospace; font-size: 12.5px; font-weight: 700;
             color: var(--black); cursor: pointer; display: flex; align-items: center; justify-content: center;
-            position: relative; transition: all 0.15s;
+            position: relative; transition: border-color 0.15s, background 0.15s;
         }
         .p-btn:hover { border-color: var(--primary-light); }
         .p-btn.active {
@@ -295,8 +283,8 @@
             background: var(--green-bg); border-color: var(--green); color: var(--green);
         }
         .p-btn.flagged::after {
-            content: '★'; position: absolute; top: -4px; right: 0px;
-            font-size: 11px; color: var(--flag-color);
+            content: '★'; position: absolute; top: -4px; right: 1px;
+            font-size: 10px; color: var(--flag-color);
         }
         .p-btn.flagged { border-color: var(--flag-color); }
 
@@ -309,17 +297,17 @@
         .cbt-modal-overlay.show { opacity: 1; pointer-events: auto; }
         .cbt-modal-card {
             background: #fff; border-radius: 16px; width: 100%; max-width: 480px;
-            padding: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center;
+            padding: 26px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center;
         }
         .modal-icon-wrap {
-            width: 56px; height: 56px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-size: 24px;
-            margin: 0 auto 16px;
+            width: 52px; height: 52px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 22px;
+            margin: 0 auto 14px;
         }
         .modal-icon-wrap.warn { background: var(--amber-bg); color: var(--amber); }
         .modal-icon-wrap.check { background: var(--green-bg); color: var(--green); }
-        .modal-title { font-size: 19px; font-weight: 900; margin-bottom: 8px; }
-        .modal-desc { font-size: 14px; color: var(--gray); line-height: 1.6; margin-bottom: 20px; }
+        .modal-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+        .modal-desc { font-size: 13.5px; color: var(--gray); line-height: 1.6; margin-bottom: 20px; }
         .modal-btn-row { display: flex; gap: 12px; justify-content: center; }
 
         /* ─── SCREEN 4: RESULT REVIEW VIEW ─── */
@@ -328,49 +316,49 @@
         }
         .score-card {
             background: linear-gradient(135deg, #0a4b9c 0%, #0d5bbd 100%);
-            color: #fff; border-radius: 16px; padding: 32px; text-align: center;
-            box-shadow: 0 10px 30px rgba(10,75,156,0.25); margin-bottom: 28px;
+            color: #fff; border-radius: 16px; padding: 30px; text-align: center;
+            box-shadow: 0 10px 30px rgba(10,75,156,0.25); margin-bottom: 26px;
         }
         .score-eyebrow {
-            font-family: 'DM Mono', monospace; font-size: 12.5px; font-weight: 700;
+            font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 700;
             text-transform: uppercase; letter-spacing: 2px; color: #93c5fd; margin-bottom: 8px;
         }
         .big-score-num {
-            font-size: clamp(44px, 7vw, 64px); font-weight: 900; line-height: 1;
-            margin-bottom: 12px; font-family: 'DM Mono', monospace;
+            font-size: clamp(40px, 6vw, 56px); font-weight: 900; line-height: 1;
+            margin-bottom: 10px; font-family: 'DM Mono', monospace;
         }
         .score-meta-grid {
-            display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
-            font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 600;
-            border-top: 1px solid rgba(255,255,255,0.2); padding-top: 18px; margin-top: 18px;
+            display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+            font-size: 13.5px; color: rgba(255,255,255,0.9); font-weight: 600;
+            border-top: 1px solid rgba(255,255,255,0.2); padding-top: 16px; margin-top: 16px;
         }
         .result-actions {
-            display: flex; gap: 12px; justify-content: center; margin-bottom: 32px; flex-wrap: wrap;
+            display: flex; gap: 12px; justify-content: center; margin-bottom: 28px; flex-wrap: wrap;
         }
         .rv-item-block {
             background: #fff; border: 1.5px solid var(--border); border-radius: 12px;
-            padding: 22px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            padding: 20px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
         .rv-item-block.correct { border-left: 5px solid var(--green); }
         .rv-item-block.wrong { border-left: 5px solid var(--red); }
         .rv-item-head {
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border-light);
+            margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border-light);
         }
         .rv-status-badge {
-            font-size: 12px; font-weight: 800; padding: 3px 10px; border-radius: 100px;
+            font-size: 11.5px; font-weight: 800; padding: 2px 8px; border-radius: 100px;
         }
         .rv-status-badge.correct { background: var(--green-bg); color: var(--green); }
         .rv-status-badge.wrong { background: var(--red-bg); color: var(--red); }
 
         .btn-toggle-solution {
             background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(180,83,9,0.3);
-            border-radius: 6px; padding: 6px 12px; font-size: 12.5px; font-weight: 700;
-            cursor: pointer; display: inline-flex; align-items: center; gap: 6px; margin-top: 12px;
+            border-radius: 6px; padding: 5px 12px; font-size: 12px; font-weight: 700;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 5px; margin-top: 10px;
         }
         .solution-box {
-            display: none; margin-top: 12px; padding: 14px 16px; background: #fffbeb;
-            border: 1px solid #fde68a; border-radius: 8px; font-size: 14px; line-height: 1.65;
+            display: none; margin-top: 10px; padding: 12px 14px; background: #fffbeb;
+            border: 1px solid #fde68a; border-radius: 8px; font-size: 13.5px; line-height: 1.65;
             color: #78350f;
         }
 
@@ -395,7 +383,7 @@
             </svg>
             Vật Lý Xuân Trường
         </a>
-        <span class="cbt-brand-badge">PHÒNG THI THỬ MÁY TÍNH</span>
+        <span class="cbt-brand-badge">PHÒNG THI THỬ TRÊN MÁY TÍNH</span>
         <div class="cbt-exam-tag" id="topbarExamTag">
             <span>Môn: <b>Vật Lý</b></span>
             <span>·</span>
@@ -495,8 +483,8 @@
             <div class="palette-grid" id="palettePart3"></div>
         </div>
 
-        <div style="padding-top:14px;border-top:1.5px solid var(--border-light)">
-            <button class="btn-cbt-submit" style="width:100%;justify-content:center;height:42px" onclick="confirmSubmitExam()">
+        <div style="padding-top:12px;border-top:1.5px solid var(--border-light)">
+            <button class="btn-cbt-submit" style="width:100%;justify-content:center;height:40px" onclick="confirmSubmitExam()">
                 <i class="fa-solid fa-paper-plane"></i> NỘP BÀI THI
             </button>
         </div>
@@ -509,11 +497,11 @@
     <div class="score-card">
         <div class="score-eyebrow"><i class="fa-solid fa-award"></i> KẾT QUẢ KHẢO SÁT NĂNG LỰC THI THỬ</div>
         <div class="big-score-num" id="resultBigScore">0.00 / 10.0 đ</div>
-        <p style="font-size:16px;font-weight:700" id="resultCorrectRatio">Đúng 0 / 28 câu</p>
+        <p style="font-size:15px;font-weight:700" id="resultCorrectRatio">Đúng 0 / 28 câu</p>
         <div class="score-meta-grid">
             <span><i class="fa-regular fa-user"></i> Thí sinh: <b id="resStudentName">...</b> (<b id="resStudentClass">...</b>)</span>
             <span><i class="fa-regular fa-clock"></i> Thời gian: <b id="resTimeUsed">...</b></span>
-            <span><i class="fa-solid fa-circle-check" style="color:#86efac"></i> Trạng thái: <b>Đã lưu Bảng Vàng</b></span>
+            <span><i class="fa-solid fa-circle-check" style="color:#86efac"></i> Trạng thái: <b>Đã hoàn thành</b></span>
         </div>
     </div>
 
@@ -537,7 +525,7 @@
             <i class="fa-solid fa-triangle-exclamation"></i>
         </div>
         <h3 class="modal-title" id="modalTitle">Xác Nhận Nộp Bài</h3>
-        <p class="modal-desc" id="modalDesc">Bạn có chắc chắn muốn kết thúc bài thi và nộp kết quả lên hệ thống?</p>
+        <p class="modal-desc" id="modalDesc">Bạn có chắc chắn muốn kết thúc bài thi và nộp kết quả?</p>
         <div class="modal-btn-row">
             <button class="btn-q-nav" onclick="closeConfirmModal()">Tiếp tục làm bài</button>
             <button class="btn-cbt-submit" id="modalSubmitBtn" onclick="doSubmitExam()">Xác nhận nộp</button>
@@ -547,11 +535,12 @@
 
 <script>
 const DB_URL = "https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec";
-const _examId = new URLSearchParams(location.search).get('exam') || 'thithu_demo_01';
+const _examId = new URLSearchParams(location.search).get('exam') || 'vedich2k9_de02';
 
 let currentUser = null;
 let questions = [];
 let currentQIndex = 0;
+let renderVersion = 0;  // Monotonic token to prevent flicker & race conditions
 let answers = {};       // e.g. { "1": "A", "19_A": "Đ", "23": "5.21" }
 let flags = {};         // e.g. { "1": true }
 let timeLeft = 3000;    // 50 minutes = 3000s
@@ -559,7 +548,7 @@ let timerInterval = null;
 let isSubmitting = false;
 let isSubmitted = false;
 
-// Initialize candidate & auth
+// Initialize candidate & auth (READ-ONLY, NEVER OVERWRITES vlxt_user_v2)
 function initCandidate() {
     try {
         currentUser = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null');
@@ -574,7 +563,6 @@ function initCandidate() {
     }
 
     const name = currentUser.hoten || 'Học sinh dự thi';
-    const sbd = currentUser.sdt || currentUser.email || 'HS-2026';
     document.getElementById('topbarCandidateName').innerHTML = '<i class="fa-regular fa-user"></i> <span>' + name + '</span>';
     document.getElementById('topbarExamCode').textContent = 'Mã đề: ' + _examId;
 }
@@ -626,7 +614,6 @@ window.addEventListener('offline', () => {
     el.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> <span>Offline (Đã lưu)</span>';
 });
 
-// Fullscreen toggle
 function toggleFullscreen() {
     if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(() => {});
@@ -635,7 +622,7 @@ function toggleFullscreen() {
     }
 }
 
-// Load exam questions
+// Load exam questions once
 async function loadExam() {
     try {
         const [qRes, metaRes] = await Promise.all([
@@ -645,11 +632,11 @@ async function loadExam() {
         const data = await qRes.json();
         questions = Array.isArray(data) ? data : [];
 
-        // Check meta
         try {
             const meta = await metaRes.json();
-            if (meta.ok && Array.isArray(meta.data)) {
-                const ex = meta.data.find(e => String(e.examId).toLowerCase() === String(_examId).toLowerCase());
+            const list = meta.data || meta;
+            if (Array.isArray(list)) {
+                const ex = list.find(e => String(e.examId).toLowerCase() === String(_examId).toLowerCase());
                 if (ex && ex.thoiGian) {
                     const totalSec = parseInt(ex.thoiGian, 10) * 60;
                     if (!localStorage.getItem('vlxt_cbt_timer_' + _examId + '_' + (currentUser.sdt || 'guest'))) {
@@ -668,7 +655,6 @@ async function loadExam() {
     }
 }
 
-// Timer
 function startTimer() {
     clearInterval(timerInterval);
     const digits = document.getElementById('timerDigits');
@@ -695,7 +681,6 @@ function startTimer() {
     timerInterval = setInterval(updateDisplay, 1000);
 }
 
-// Normalize question type
 function getQType(q) {
     const tp = (q.type || '').toString().toLowerCase().trim();
     if (tp === 'mc' || tp === 'tf' || tp === 'short') return tp;
@@ -716,7 +701,6 @@ function fixNuclear(html) {
     return html;
 }
 
-// Check if question is answered
 function isQAnswered(idx) {
     const q = questions[idx];
     if (!q) return false;
@@ -732,7 +716,6 @@ function isQAnswered(idx) {
     return false;
 }
 
-// Render Palette
 function renderPalette() {
     const p1 = document.getElementById('palettePart1');
     const p2 = document.getElementById('palettePart2');
@@ -771,10 +754,11 @@ function renderPalette() {
     document.getElementById('statFlagged').textContent = 'Đánh dấu: ' + flaggedCount;
 }
 
-// Render current question
+// Synchronous, zero-flicker renderQuestion with renderVersion guard
 function renderQuestion(idx) {
     if (!questions[idx]) return;
     currentQIndex = idx;
+    const thisVersion = ++renderVersion;
     const q = questions[idx];
     const type = getQType(q);
 
@@ -870,8 +854,9 @@ function renderQuestion(idx) {
         b.classList.toggle('active', i === idx);
     });
 
-    // KaTeX render
-    setTimeout(() => {
+    // KaTeX render with version guard
+    requestAnimationFrame(() => {
+        if (thisVersion !== renderVersion) return;
         if (typeof renderMathInElement === 'function') {
             try {
                 renderMathInElement(document.getElementById('qContentBox'), {
@@ -882,7 +867,7 @@ function renderQuestion(idx) {
                 });
             } catch(e){}
         }
-    }, 40);
+    });
 }
 
 function setTfChoice(qid, letter, val, btnEl) {
@@ -938,7 +923,7 @@ function saveCurrentWithFeedback() {
     setTimeout(() => { btn.innerHTML = oldHtml; }, 1200);
 }
 
-// Submit Modal & Confirmation
+// Confirmation modal before submit
 function confirmSubmitExam() {
     if (isSubmitting || isSubmitted) return;
 
@@ -971,7 +956,7 @@ function closeConfirmModal() {
     document.getElementById('confirmModal').classList.remove('show');
 }
 
-// Execute submit
+// Submit and compute score
 async function doSubmitExam() {
     if (isSubmitting || isSubmitted) return;
     isSubmitting = true;
@@ -981,7 +966,6 @@ async function doSubmitExam() {
     document.getElementById('btnSubmitExam').disabled = true;
     document.getElementById('btnSubmitExam').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang nộp...';
 
-    // Calculate score
     let score = 0;
     let maxScore = 0;
     const W_MC = 0.25;
@@ -1006,7 +990,7 @@ async function doSubmitExam() {
                 let tag = '';
                 if (isCorrect) tag = ' <span style="color:var(--green);font-weight:800">✔ Đáp án đúng</span>';
                 if (isChosen && !isCorrect) tag = ' <span style="color:var(--red);font-weight:800">✘ Bạn chọn</span>';
-                optsHtml += `<div style="margin:4px 0;font-size:14px">${L}. ${fixNuclear(q.options[L])}${tag}</div>`;
+                optsHtml += `<div style="margin:4px 0;font-size:13.5px">${L}. ${fixNuclear(q.options[L])}${tag}</div>`;
             });
 
             reviewHtml += `
@@ -1015,7 +999,7 @@ async function doSubmitExam() {
                         <span style="font-weight:800">Câu ${q.id} (Phần I)</span>
                         <span class="rv-status-badge ${ok?'correct':'wrong'}">${ok?'✔ Đúng (+0.25đ)':'✘ Sai (0.00đ)'}</span>
                     </div>
-                    <div style="font-size:15.5px;font-weight:600;margin-bottom:10px">${fixNuclear(q.question)}</div>
+                    <div style="font-size:15px;font-weight:600;margin-bottom:8px">${fixNuclear(q.question)}</div>
                     ${optsHtml}
                     <button class="btn-toggle-solution" onclick="toggleGiai('${q.id}')"><i class="fa-solid fa-lightbulb"></i> Lời giải chi tiết</button>
                     <div class="solution-box" id="giai-${q.id}">${fixNuclear(q.giaiThich || 'Đang cập nhật lời giải...')}</div>
@@ -1037,9 +1021,9 @@ async function doSubmitExam() {
 
                 const dsMap = { 'Đ': 'Đúng', 'S': 'Sai' };
                 rows += `
-                    <div style="margin:6px 0;font-size:14px;padding:6px 10px;background:var(--bg2);border-radius:6px">
+                    <div style="margin:6px 0;font-size:13.5px;padding:6px 10px;background:var(--bg2);border-radius:6px">
                         <b>${{A:'a)',B:'b)',C:'c)',D:'d)'}[L]}</b> ${fixNuclear(q.options[L])}
-                        <div style="font-size:12.5px;color:var(--gray);margin-top:2px">
+                        <div style="font-size:12px;color:var(--gray);margin-top:2px">
                             Bạn chọn: <b>${dsMap[got]||'(chưa chọn)'}</b> · Đáp án: <b style="color:var(--green)">${dsMap[want]||want}</b> ${ok?'<span style="color:var(--green)">✔</span>':'<span style="color:var(--red)">✘</span>'}
                         </div>
                     </div>
@@ -1057,7 +1041,7 @@ async function doSubmitExam() {
                         <span style="font-weight:800">Câu ${q.id} (Phần II)</span>
                         <span class="rv-status-badge ${allOk?'correct':'wrong'}">${nc}/${letters.length} ý đúng (+${tfPts}đ)</span>
                     </div>
-                    <div style="font-size:15.5px;font-weight:600;margin-bottom:10px">${fixNuclear(q.question)}</div>
+                    <div style="font-size:15px;font-weight:600;margin-bottom:8px">${fixNuclear(q.question)}</div>
                     ${rows}
                     <button class="btn-toggle-solution" onclick="toggleGiai('${q.id}')"><i class="fa-solid fa-lightbulb"></i> Lời giải chi tiết</button>
                     <div class="solution-box" id="giai-${q.id}">${fixNuclear(q.giaiThich || 'Đang cập nhật lời giải...')}</div>
@@ -1076,8 +1060,8 @@ async function doSubmitExam() {
                         <span style="font-weight:800">Câu ${q.id} (Phần III)</span>
                         <span class="rv-status-badge ${ok?'correct':'wrong'}">${ok?'✔ Đúng (+0.25đ)':'✘ Sai (0.00đ)'}</span>
                     </div>
-                    <div style="font-size:15.5px;font-weight:600;margin-bottom:10px">${fixNuclear(q.question)}</div>
-                    <div style="font-size:14px">
+                    <div style="font-size:15px;font-weight:600;margin-bottom:8px">${fixNuclear(q.question)}</div>
+                    <div style="font-size:13.5px">
                         Bạn trả lời: <b>${got || '(bỏ trống)'}</b> · Đáp án chuẩn: <b style="color:var(--green)">${q.correct}</b>
                     </div>
                     <button class="btn-toggle-solution" onclick="toggleGiai('${q.id}')"><i class="fa-solid fa-lightbulb"></i> Lời giải chi tiết</button>
@@ -1090,7 +1074,6 @@ async function doSubmitExam() {
     score = Math.round(score * 100) / 100;
     maxScore = Math.round(maxScore * 100) / 100;
 
-    // Time used
     const totalTime = (timeLeft > 0 ? (3000 - timeLeft) : 3000);
     const mUsed = Math.floor(totalTime / 60);
     const sUsed = totalTime % 60;
@@ -1108,21 +1091,6 @@ async function doSubmitExam() {
         submittedAt: new Date().toISOString()
     };
     localStorage.setItem('vlxt_cbt_result_' + _examId + '_' + sdt, JSON.stringify(resultObj));
-
-    // Send score to GAS
-    fetch(DB_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({
-            action: 'saveScore',
-            name: currentUser.hoten || 'Thí sinh',
-            studentClass: currentUser.lop || '12',
-            phone: currentUser.sdt || '0000',
-            score: `${score}/${maxScore}`,
-            examId: _examId
-        })
-    }).catch(() => {});
 
     // Switch to Screen 4 (Results)
     isSubmitted = true;
