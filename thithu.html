@@ -126,6 +126,10 @@
         .q-content-box {
             background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 14px;
             padding: 26px; box-shadow: 0 4px 16px rgba(0,0,0,0.03); margin-bottom: 18px;
+            min-height: 320px; transition: opacity 0.12s ease; position: relative;
+        }
+        .q-content-box.q-loading {
+            opacity: 0.65; pointer-events: none;
         }
         .q-head-bar {
             display: flex; justify-content: space-between; align-items: center;
@@ -159,6 +163,11 @@
         .q-body-text img, .tf-stmt img {
             max-width: 100%; height: auto; border-radius: 8px; margin: 12px 0;
             border: 1px solid var(--border); background: #fff; display: block;
+        }
+        .img-error-box {
+            display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+            background: var(--red-bg); color: var(--red); border: 1px solid rgba(185,28,28,0.2);
+            border-radius: 8px; font-size: 13px; font-weight: 600; margin: 10px 0;
         }
 
         /* ─── PART I: MC OPTIONS (A, B, C, D) ─── */
@@ -552,8 +561,9 @@ let simulatedCandidate = {
 
 let questions = [];
 let currentQIndex = 0;
-let renderVersion = 0;   // Monotonic version token to prevent KaTeX overwrite
-let isNavigating = false; // Debounce / Lock flag to eliminate question jumping
+let currentNavToken = 0; // Monotonic navigation token for Atomic Preloading & Race Condition Elimination
+const imagePreloadCache = new Map(); // Cache decoded HTMLImageElements
+
 let answers = {};        // e.g. { "1": "A", "19_A": "Đ", "23": "5.21" }
 let flags = {};          // e.g. { "1": true }
 let timeLeft = 3000;     // 50 minutes = 3000s
@@ -647,6 +657,82 @@ function toggleFullscreen() {
     }
 }
 
+// Extract all image URLs in a question object
+function extractQuestionImages(q) {
+    const urls = [];
+    if (!q) return urls;
+
+    const regex = /<img[^>]+src=["']([^"']+)["']/gi;
+    let match;
+
+    if (q.question) {
+        while ((match = regex.exec(q.question)) !== null) {
+            urls.push(match[1]);
+        }
+    }
+
+    if (q.options) {
+        Object.keys(q.options).forEach(key => {
+            const optVal = String(q.options[key] || '');
+            while ((match = regex.exec(optVal)) !== null) {
+                urls.push(match[1]);
+            }
+        });
+    }
+
+    return urls;
+}
+
+// Preload & Decode a single image URL with timeout
+function preloadSingleImage(src) {
+    if (!src) return Promise.resolve({ ok: true, src });
+    if (imagePreloadCache.has(src)) return imagePreloadCache.get(src);
+
+    const promise = new Promise((resolve) => {
+        const img = new Image();
+        let isDone = false;
+
+        const timer = setTimeout(() => {
+            if (!isDone) {
+                isDone = true;
+                resolve({ ok: false, src, reason: 'timeout' });
+            }
+        }, 1500); // 1.5s timeout safeguard
+
+        img.onload = async () => {
+            if (isDone) return;
+            isDone = true;
+            clearTimeout(timer);
+            if (img.decode) {
+                try {
+                    await img.decode();
+                } catch(e){}
+            }
+            resolve({ ok: true, src, img });
+        };
+
+        img.onerror = () => {
+            if (isDone) return;
+            isDone = true;
+            clearTimeout(timer);
+            resolve({ ok: false, src, reason: 'error' });
+        };
+
+        img.src = src;
+    });
+
+    imagePreloadCache.set(src, promise);
+    return promise;
+}
+
+// Preload all assets for a question before atomic rendering
+async function preloadQuestionAssets(q) {
+    const urls = extractQuestionImages(q);
+    if (!urls.length) return true;
+    await Promise.all(urls.map(preloadSingleImage));
+    return true;
+}
+
 // Load exam questions once
 async function loadExam() {
     try {
@@ -673,8 +759,11 @@ async function loadExam() {
 
         restoreProgress();
         renderPalette();
-        renderQuestion(currentQIndex);
+        await goToQuestion(currentQIndex);
         startTimer();
+
+        // Background preload adjacent questions (Q1, Q2, etc.)
+        questions.slice(0, 5).forEach(preloadQuestionAssets);
     } catch(e) {
         document.getElementById('qBodyText').innerHTML = '<span style="color:var(--red)">Không thể tải đề thi từ máy chủ. Vui lòng kiểm tra lại kết nối mạng!</span>';
     }
@@ -786,23 +875,35 @@ function renderPalette() {
     document.getElementById('statFlagged').textContent = 'Đánh dấu: ' + flaggedCount;
 }
 
-// Synchronous, zero-flicker renderQuestion with renderVersion guard
-function renderQuestion(idx) {
-    if (!questions[idx]) return;
+// ATOMIC QUESTION NAVIGATION WITH ASSET PRELOADING & RACE-CONDITION SHIELD
+async function goToQuestion(idx) {
+    if (idx < 0 || idx >= questions.length) return;
+    const thisToken = ++currentNavToken;
+    const targetQ = questions[idx];
+    const qBox = document.getElementById('qContentBox');
+
+    // Show smooth loading state while assets decode
+    if (qBox) qBox.classList.add('q-loading');
+
+    // Preload & decode images of destination question
+    await preloadQuestionAssets(targetQ);
+
+    // Race Condition Check: Drop execution if user clicked another question in the meantime
+    if (thisToken !== currentNavToken) return;
+
+    // ATOMIC SWAP: Update current index and all DOM nodes synchronously
     currentQIndex = idx;
-    const thisVersion = ++renderVersion;
-    const q = questions[idx];
-    const type = getQType(q);
+    const type = getQType(targetQ);
 
-    document.getElementById('qNumberBadge').textContent = 'CÂU ' + q.id + ' / ' + questions.length;
-
+    // 1. Badges & Header
+    document.getElementById('qNumberBadge').textContent = 'CÂU ' + targetQ.id + ' / ' + questions.length;
     let partText = 'PHẦN I: TRẮC NGHIỆM 4 LỰA CHỌN';
     if (type === 'tf') partText = 'PHẦN II: TRẮC NGHIỆM ĐÚNG / SAI';
     if (type === 'short') partText = 'PHẦN III: TRẢ LỜI NGẮN';
     document.getElementById('qPartBadge').textContent = partText;
 
-    // Flag button
-    const isFlagged = !!flags[q.id];
+    // 2. Flag State
+    const isFlagged = !!flags[targetQ.id];
     const flagBtn = document.getElementById('flagBtn');
     const flagIcon = document.getElementById('flagIcon');
     const flagText = document.getElementById('flagText');
@@ -816,10 +917,10 @@ function renderQuestion(idx) {
         flagText.textContent = 'Đánh dấu xem lại';
     }
 
-    // Body
-    document.getElementById('qBodyText').innerHTML = fixNuclear(q.question);
+    // 3. Question Body
+    document.getElementById('qBodyText').innerHTML = fixNuclear(targetQ.question);
 
-    // Answer area
+    // 4. Answer Area Payload
     const ansArea = document.getElementById('qAnswerArea');
     ansArea.innerHTML = '';
 
@@ -827,16 +928,16 @@ function renderQuestion(idx) {
         const mcWrap = document.createElement('div');
         mcWrap.className = 'mc-options-list';
         ['A','B','C','D'].forEach(L => {
-            if (!q.options || q.options[L] === undefined || q.options[L] === '') return;
-            const optVal = q.options[L];
-            const isSel = (answers[q.id] === L);
+            if (!targetQ.options || targetQ.options[L] === undefined || targetQ.options[L] === '') return;
+            const optVal = targetQ.options[L];
+            const isSel = (answers[targetQ.id] === L);
 
             const label = document.createElement('div');
             label.className = 'mc-option-label' + (isSel ? ' selected' : '');
             label.innerHTML = `<span class="mc-letter-badge">${L}</span> <span>${fixNuclear(optVal)}</span>`;
             label.onclick = (e) => {
                 if (e) e.stopPropagation();
-                answers[q.id] = L;
+                answers[targetQ.id] = L;
                 persistProgress();
                 mcWrap.querySelectorAll('.mc-option-label').forEach(lbl => lbl.classList.remove('selected'));
                 label.classList.add('selected');
@@ -850,9 +951,9 @@ function renderQuestion(idx) {
         tfWrap.className = 'tf-container';
         const subLabels = { A:'a)', B:'b)', C:'c)', D:'d)' };
         ['A','B','C','D'].forEach(L => {
-            if (!q.options || !q.options[L] || !q.options[L].trim()) return;
-            const stmtVal = q.options[L];
-            const curVal = answers[q.id + '_' + L];
+            if (!targetQ.options || !targetQ.options[L] || !targetQ.options[L].trim()) return;
+            const stmtVal = targetQ.options[L];
+            const curVal = answers[targetQ.id + '_' + L];
 
             const row = document.createElement('div');
             row.className = 'tf-stmt';
@@ -860,8 +961,8 @@ function renderQuestion(idx) {
             row.innerHTML = `
                 <div class="tf-text"><b>${subLabels[L]}</b> ${fixNuclear(stmtVal)}</div>
                 <div class="tf-btn-group">
-                    <button type="button" class="tf-choice-btn ${curVal==='Đ'?'pick-d':''}" onclick="setTfChoice('${q.id}', '${L}', 'Đ', this, event)">Đúng</button>
-                    <button type="button" class="tf-choice-btn ${curVal==='S'?'pick-s':''}" onclick="setTfChoice('${q.id}', '${L}', 'S', this, event)">Sai</button>
+                    <button type="button" class="tf-choice-btn ${curVal==='Đ'?'pick-d':''}" onclick="setTfChoice('${targetQ.id}', '${L}', 'Đ', this, event)">Đúng</button>
+                    <button type="button" class="tf-choice-btn ${curVal==='S'?'pick-s':''}" onclick="setTfChoice('${targetQ.id}', '${L}', 'S', this, event)">Sai</button>
                 </div>
             `;
             tfWrap.appendChild(row);
@@ -870,29 +971,32 @@ function renderQuestion(idx) {
     } else if (type === 'short') {
         const shortWrap = document.createElement('div');
         shortWrap.className = 'short-answer-box';
-        const curVal = answers[q.id] || '';
+        const curVal = answers[targetQ.id] || '';
         shortWrap.innerHTML = `
             <div class="short-answer-label"><i class="fa-solid fa-keyboard" style="color:var(--primary)"></i> Nhập đáp án số của bạn:</div>
-            <input type="text" class="short-input-field" id="shortInput" value="${curVal}" maxlength="10" placeholder="Ví dụ: 3.14" oninput="setShortChoice('${q.id}', this.value)" onkeydown="if(event.key==='Enter')event.preventDefault()">
+            <input type="text" class="short-input-field" id="shortInput" value="${curVal}" maxlength="10" placeholder="Ví dụ: 3.14" oninput="setShortChoice('${targetQ.id}', this.value)" onkeydown="if(event.key==='Enter')event.preventDefault()">
         `;
         ansArea.appendChild(shortWrap);
     }
 
-    // Prev / Next button states
+    // 5. Navigation buttons & Palette State
     document.getElementById('btnPrevQ').disabled = (idx === 0);
     document.getElementById('btnNextQ').disabled = (idx === questions.length - 1);
-
-    // Update active in palette
     document.querySelectorAll('.p-btn').forEach((b, i) => {
         b.classList.toggle('active', i === idx);
     });
 
-    // KaTeX render with version guard
+    // 6. Reveal rendered question & Reset scroll
+    if (qBox) qBox.classList.remove('q-loading');
+    const vp = document.getElementById('qViewport');
+    if (vp) vp.scrollTop = 0;
+
+    // 7. KaTeX Auto-render with token check
     requestAnimationFrame(() => {
-        if (thisVersion !== renderVersion) return;
+        if (thisToken !== currentNavToken) return;
         if (typeof renderMathInElement === 'function') {
             try {
-                renderMathInElement(document.getElementById('qContentBox'), {
+                renderMathInElement(qBox, {
                     delimiters: [
                         { left: '$$', right: '$$', display: true },
                         { left: '$', right: '$', display: false }
@@ -901,6 +1005,10 @@ function renderQuestion(idx) {
             } catch(e){}
         }
     });
+
+    // Preload next and previous adjacent questions in background
+    if (questions[idx + 1]) preloadQuestionAssets(questions[idx + 1]);
+    if (questions[idx - 1]) preloadQuestionAssets(questions[idx - 1]);
 }
 
 function setTfChoice(qid, letter, val, btnEl, event) {
@@ -930,38 +1038,16 @@ function toggleFlagCurrent() {
     if (!q) return;
     flags[q.id] = !flags[q.id];
     persistProgress();
-    renderQuestion(currentQIndex);
+    goToQuestion(currentQIndex);
     renderPalette();
 }
 
-// Robust navigation with debounce lock to eliminate question jumping
 function prevQuestion() {
-    if (isNavigating) return;
-    if (currentQIndex > 0) {
-        goToQuestion(currentQIndex - 1);
-    }
+    if (currentQIndex > 0) goToQuestion(currentQIndex - 1);
 }
 
 function nextQuestion() {
-    if (isNavigating) return;
-    if (currentQIndex < questions.length - 1) {
-        goToQuestion(currentQIndex + 1);
-    }
-}
-
-function goToQuestion(idx) {
-    if (idx < 0 || idx >= questions.length) return;
-    if (idx === currentQIndex && questions.length > 0) return;
-    
-    isNavigating = true;
-    renderQuestion(idx);
-    
-    const vp = document.getElementById('qViewport');
-    if (vp) vp.scrollTop = 0;
-    
-    setTimeout(() => {
-        isNavigating = false;
-    }, 120);
+    if (currentQIndex < questions.length - 1) goToQuestion(currentQIndex + 1);
 }
 
 function saveCurrentWithFeedback() {
