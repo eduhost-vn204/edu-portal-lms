@@ -84,6 +84,9 @@
         .cbt-timer.warning {
             background: #fee2e2; color: #dc2626; animation: timerBlink 1s infinite alternate;
         }
+        .cbt-timer.finished {
+            background: #dcfce7; color: #15803d; animation: none;
+        }
         @keyframes timerBlink {
             from { transform: scale(1); }
             to { transform: scale(1.04); }
@@ -164,6 +167,7 @@
             display: flex; align-items: center; gap: 12px; padding: 12px 16px;
             background: var(--bg2); border: 1.5px solid var(--border); border-radius: 10px;
             cursor: pointer; transition: all 0.15s; font-size: 14.5px; font-weight: 600;
+            user-select: none;
         }
         .mc-option-label:hover {
             border-color: var(--primary-light); background: var(--primary-bg);
@@ -194,7 +198,7 @@
         .tf-choice-btn {
             padding: 7px 18px; border-radius: 8px; border: 1.5px solid var(--border);
             background: #fff; font-size: 13px; font-weight: 800; cursor: pointer;
-            transition: all 0.15s; font-family: inherit;
+            transition: all 0.15s; font-family: inherit; user-select: none;
         }
         .tf-choice-btn:hover { border-color: var(--gray); }
         .tf-choice-btn.pick-d {
@@ -226,7 +230,7 @@
             height: 40px; padding: 0 18px; border-radius: 8px; border: 1.5px solid var(--border);
             background: #fff; font-size: 13px; font-weight: 700; cursor: pointer;
             display: inline-flex; align-items: center; gap: 8px; transition: all 0.15s;
-            color: var(--black);
+            color: var(--black); user-select: none;
         }
         .btn-q-nav:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
         .btn-q-nav:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -272,7 +276,7 @@
             height: 34px; border-radius: 6px; border: 1.5px solid var(--border);
             background: #fff; font-family: 'DM Mono', monospace; font-size: 12.5px; font-weight: 700;
             color: var(--black); cursor: pointer; display: flex; align-items: center; justify-content: center;
-            position: relative; transition: border-color 0.15s, background 0.15s;
+            position: relative; transition: border-color 0.15s, background 0.15s; user-select: none;
         }
         .p-btn:hover { border-color: var(--primary-light); }
         .p-btn.active {
@@ -387,6 +391,8 @@
         <div class="cbt-exam-tag" id="topbarExamTag">
             <span>Môn: <b>Vật Lý</b></span>
             <span>·</span>
+            <span><b>Kỳ thi THPT QG 2027</b></span>
+            <span>·</span>
             <span id="topbarExamCode">Mã đề: ...</span>
         </div>
     </div>
@@ -495,13 +501,13 @@
 <!-- ─── SCREEN 4: RESULT VIEW (HIDDEN INITIALLY) ─── -->
 <div class="result-container hidden" id="resultScreen">
     <div class="score-card">
-        <div class="score-eyebrow"><i class="fa-solid fa-award"></i> KẾT QUẢ KHẢO SÁT NĂNG LỰC THI THỬ</div>
+        <div class="score-eyebrow"><i class="fa-solid fa-award"></i> KẾT QUẢ KHẢO SÁT NĂNG LỰC — KỲ THI THPT QG 2027</div>
         <div class="big-score-num" id="resultBigScore">0.00 / 10.0 đ</div>
         <p style="font-size:15px;font-weight:700" id="resultCorrectRatio">Đúng 0 / 28 câu</p>
         <div class="score-meta-grid">
             <span><i class="fa-regular fa-user"></i> Thí sinh: <b id="resStudentName">...</b> (<b id="resStudentClass">...</b>)</span>
             <span><i class="fa-regular fa-clock"></i> Thời gian: <b id="resTimeUsed">...</b></span>
-            <span><i class="fa-solid fa-circle-check" style="color:#86efac"></i> Trạng thái: <b>Đã hoàn thành</b></span>
+            <span><i class="fa-solid fa-circle-check" style="color:#86efac"></i> Trạng thái: <b>Đã nộp bài thành công</b></span>
         </div>
     </div>
 
@@ -538,12 +544,19 @@ const DB_URL = "https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWY
 const _examId = new URLSearchParams(location.search).get('exam') || 'vedich2k9_de02';
 
 let currentUser = null;
+let simulatedCandidate = {
+    hoten: '',
+    sbd: '',
+    wave: 'Kỳ thi THPT QG 2027'
+};
+
 let questions = [];
 let currentQIndex = 0;
-let renderVersion = 0;  // Monotonic token to prevent flicker & race conditions
-let answers = {};       // e.g. { "1": "A", "19_A": "Đ", "23": "5.21" }
-let flags = {};         // e.g. { "1": true }
-let timeLeft = 3000;    // 50 minutes = 3000s
+let renderVersion = 0;   // Monotonic version token to prevent KaTeX overwrite
+let isNavigating = false; // Debounce / Lock flag to eliminate question jumping
+let answers = {};        // e.g. { "1": "A", "19_A": "Đ", "23": "5.21" }
+let flags = {};          // e.g. { "1": true }
+let timeLeft = 3000;     // 50 minutes = 3000s
 let timerInterval = null;
 let isSubmitting = false;
 let isSubmitted = false;
@@ -562,8 +575,20 @@ function initCandidate() {
         };
     }
 
-    const name = currentUser.hoten || 'Học sinh dự thi';
-    document.getElementById('topbarCandidateName').innerHTML = '<i class="fa-regular fa-user"></i> <span>' + name + '</span>';
+    // Read simulated login candidate if available
+    try {
+        const sim = sessionStorage.getItem('vlxt_cbt_sim_candidate');
+        if (sim) {
+            const p = JSON.parse(sim);
+            if (p.hoten) simulatedCandidate.hoten = p.hoten;
+            if (p.sbd) simulatedCandidate.sbd = p.sbd;
+        }
+    } catch(e){}
+
+    const displayName = simulatedCandidate.hoten || currentUser.hoten || 'Học sinh dự thi';
+    const displaySBD = simulatedCandidate.sbd || currentUser.sdt || 'HS-THITHU2026';
+
+    document.getElementById('topbarCandidateName').innerHTML = '<i class="fa-regular fa-user"></i> <span>' + displayName + ' (' + displaySBD + ')</span>';
     document.getElementById('topbarExamCode').textContent = 'Mã đề: ' + _examId;
 }
 
@@ -661,6 +686,10 @@ function startTimer() {
     const timerBox = document.getElementById('cbtTimer');
 
     function updateDisplay() {
+        if (isSubmitted) {
+            clearInterval(timerInterval);
+            return;
+        }
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
             digits.textContent = '00:00';
@@ -740,7 +769,10 @@ function renderPalette() {
         if (answered) btn.classList.add('answered');
         if (flagged) btn.classList.add('flagged');
 
-        btn.onclick = () => { goToQuestion(idx); };
+        btn.onclick = (e) => {
+            if (e) e.stopPropagation();
+            goToQuestion(idx);
+        };
 
         if (type === 'mc') p1.appendChild(btn);
         else if (type === 'tf') p2.appendChild(btn);
@@ -802,7 +834,8 @@ function renderQuestion(idx) {
             const label = document.createElement('div');
             label.className = 'mc-option-label' + (isSel ? ' selected' : '');
             label.innerHTML = `<span class="mc-letter-badge">${L}</span> <span>${fixNuclear(optVal)}</span>`;
-            label.onclick = () => {
+            label.onclick = (e) => {
+                if (e) e.stopPropagation();
                 answers[q.id] = L;
                 persistProgress();
                 mcWrap.querySelectorAll('.mc-option-label').forEach(lbl => lbl.classList.remove('selected'));
@@ -827,8 +860,8 @@ function renderQuestion(idx) {
             row.innerHTML = `
                 <div class="tf-text"><b>${subLabels[L]}</b> ${fixNuclear(stmtVal)}</div>
                 <div class="tf-btn-group">
-                    <button class="tf-choice-btn ${curVal==='Đ'?'pick-d':''}" onclick="setTfChoice('${q.id}', '${L}', 'Đ', this)">Đúng</button>
-                    <button class="tf-choice-btn ${curVal==='S'?'pick-s':''}" onclick="setTfChoice('${q.id}', '${L}', 'S', this)">Sai</button>
+                    <button type="button" class="tf-choice-btn ${curVal==='Đ'?'pick-d':''}" onclick="setTfChoice('${q.id}', '${L}', 'Đ', this, event)">Đúng</button>
+                    <button type="button" class="tf-choice-btn ${curVal==='S'?'pick-s':''}" onclick="setTfChoice('${q.id}', '${L}', 'S', this, event)">Sai</button>
                 </div>
             `;
             tfWrap.appendChild(row);
@@ -840,7 +873,7 @@ function renderQuestion(idx) {
         const curVal = answers[q.id] || '';
         shortWrap.innerHTML = `
             <div class="short-answer-label"><i class="fa-solid fa-keyboard" style="color:var(--primary)"></i> Nhập đáp án số của bạn:</div>
-            <input type="text" class="short-input-field" id="shortInput" value="${curVal}" maxlength="10" placeholder="Ví dụ: 3.14" oninput="setShortChoice('${q.id}', this.value)">
+            <input type="text" class="short-input-field" id="shortInput" value="${curVal}" maxlength="10" placeholder="Ví dụ: 3.14" oninput="setShortChoice('${q.id}', this.value)" onkeydown="if(event.key==='Enter')event.preventDefault()">
         `;
         ansArea.appendChild(shortWrap);
     }
@@ -870,7 +903,8 @@ function renderQuestion(idx) {
     });
 }
 
-function setTfChoice(qid, letter, val, btnEl) {
+function setTfChoice(qid, letter, val, btnEl, event) {
+    if (event) event.stopPropagation();
     answers[qid + '_' + letter] = val;
     persistProgress();
     if (btnEl) {
@@ -900,19 +934,34 @@ function toggleFlagCurrent() {
     renderPalette();
 }
 
+// Robust navigation with debounce lock to eliminate question jumping
 function prevQuestion() {
-    if (currentQIndex > 0) goToQuestion(currentQIndex - 1);
+    if (isNavigating) return;
+    if (currentQIndex > 0) {
+        goToQuestion(currentQIndex - 1);
+    }
 }
 
 function nextQuestion() {
-    if (currentQIndex < questions.length - 1) goToQuestion(currentQIndex + 1);
+    if (isNavigating) return;
+    if (currentQIndex < questions.length - 1) {
+        goToQuestion(currentQIndex + 1);
+    }
 }
 
 function goToQuestion(idx) {
-    if (idx >= 0 && idx < questions.length) {
-        renderQuestion(idx);
-        document.getElementById('qViewport').scrollTop = 0;
-    }
+    if (idx < 0 || idx >= questions.length) return;
+    if (idx === currentQIndex && questions.length > 0) return;
+    
+    isNavigating = true;
+    renderQuestion(idx);
+    
+    const vp = document.getElementById('qViewport');
+    if (vp) vp.scrollTop = 0;
+    
+    setTimeout(() => {
+        isNavigating = false;
+    }, 120);
 }
 
 function saveCurrentWithFeedback() {
@@ -963,8 +1012,19 @@ async function doSubmitExam() {
     closeConfirmModal();
     clearInterval(timerInterval);
 
-    document.getElementById('btnSubmitExam').disabled = true;
-    document.getElementById('btnSubmitExam').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang nộp...';
+    // Update topbar submit button state
+    const submitBtn = document.getElementById('btnSubmitExam');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.style.display = 'none'; // Cleanly hide button during result view
+    }
+
+    // Update topbar timer state
+    const timerBox = document.getElementById('cbtTimer');
+    if (timerBox) {
+        timerBox.className = 'cbt-timer finished';
+        timerBox.innerHTML = '<i class="fa-solid fa-flag-checkered"></i> <span>ĐÃ NỘP BÀI</span>';
+    }
 
     let score = 0;
     let maxScore = 0;
@@ -1097,10 +1157,13 @@ async function doSubmitExam() {
     document.getElementById('examWorkspace').classList.add('hidden');
     document.getElementById('resultScreen').classList.remove('hidden');
 
+    const displayName = simulatedCandidate.hoten || (currentUser ? currentUser.hoten : 'Thí sinh');
+    const displayClass = (currentUser ? currentUser.lop : 'Khóa XPS 2026') || 'Khóa XPS 2026';
+
     document.getElementById('resultBigScore').textContent = score + ' / ' + maxScore + ' đ';
     document.getElementById('resultCorrectRatio').textContent = 'Đúng ' + correctCount + ' / ' + questions.length + ' câu';
-    document.getElementById('resStudentName').textContent = currentUser.hoten || 'Thí sinh';
-    document.getElementById('resStudentClass').textContent = currentUser.lop || '12';
+    document.getElementById('resStudentName').textContent = displayName;
+    document.getElementById('resStudentClass').textContent = displayClass;
     document.getElementById('resTimeUsed').textContent = timeUsedStr;
     document.getElementById('reviewQuestionsArea').innerHTML = reviewHtml;
 
