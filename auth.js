@@ -171,11 +171,11 @@ function vlxtRenderWidget(user){
     navArea.appendChild(widget);
   } else {
     var fixedCSS=[
-      '#vlxt-user-widget{position:fixed;top:12px;right:12px;z-index:99999;font-family:\'Inter\',system-ui,sans-serif;}',
-      '#vlxt-avatar-btn{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0072ff,#00f0ff);',
-      'border:2px solid rgba(0,240,255,0.4);color:#fff;font-size:14px;font-weight:700;cursor:pointer;',
+      '#vlxt-user-widget{position:fixed;top:72px;right:16px;z-index:99999;font-family:\'Inter\',system-ui,sans-serif;}',
+      '#vlxt-avatar-btn{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#0072ff,#00f0ff);',
+      'border:2px solid rgba(0,240,255,0.4);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;',
       'display:flex;align-items:center;justify-content:center;',
-      'box-shadow:0 2px 12px rgba(0,114,255,0.4);transition:transform 0.15s;user-select:none;}',
+      'box-shadow:0 3px 14px rgba(0,114,255,0.35);transition:transform 0.15s;user-select:none;}',
       '#vlxt-avatar-btn:hover{transform:scale(1.08);}',
       ddCSS
     ].join('');
