@@ -1078,7 +1078,7 @@ async function goToQuestion(idx) {
         const curVal = answers[targetQ.id] || '';
         shortWrap.innerHTML = `
             <div class="short-answer-label"><i class="fa-solid fa-keyboard" style="color:var(--primary)"></i> Nhập đáp án số của bạn:</div>
-            <input type="text" class="short-input-field" id="shortInput" value="${curVal}" maxlength="10" placeholder="Ví dụ: 3.14" oninput="setShortChoice('${targetQ.id}', this.value)" onkeydown="if(event.key==='Enter')event.preventDefault()">
+            <input type="text" class="short-input-field" id="shortInput" value="${curVal}" maxlength="10" placeholder="Ví dụ: 3,14" oninput="setShortChoice('${targetQ.id}', this.value)" onkeydown="if(event.key==='Enter')event.preventDefault()">
         `;
         ansArea.appendChild(shortWrap);
     }
@@ -1312,7 +1312,7 @@ async function doSubmitExam() {
                     </div>
                     <div style="font-size:15px;font-weight:600;margin-bottom:8px">${formatQuestionHtml(q.question)}</div>
                     <div style="font-size:13.5px">
-                        Bạn trả lời: <b>${got || '(bỏ trống)'}</b> · Đáp án chuẩn: <b style="color:var(--green)">${q.correct}</b>
+                        Bạn trả lời: <b>${answers[q.id] || '(bỏ trống)'}</b> · Đáp án chuẩn: <b style="color:var(--green)">${q.correct}</b>
                     </div>
                     <button class="btn-toggle-solution" onclick="toggleGiai('${q.id}')"><i class="fa-solid fa-lightbulb"></i> Lời giải chi tiết</button>
                     <div class="solution-box" id="giai-${q.id}">${formatQuestionHtml(q.giaiThich || 'Đang cập nhật lời giải...')}</div>
