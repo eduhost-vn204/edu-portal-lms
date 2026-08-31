@@ -731,19 +731,51 @@
       .replace(/[^a-z0-9]/g, '');
   }
 
-  function parseTeachingScope(key) {
+  function parseTeachingScope(key, lessonsList) {
     if (!key) return null;
-    var parts = String(key).split('|||');
-    var course = parts[0] || '';
-    var chuong = parts[1] || '';
-    var bai = parts[2] || '';
+    var rawKey = String(key).trim();
+    if (rawKey.indexOf('|||') >= 0) {
+      var parts = rawKey.split('|||');
+      var course = (parts[0] || '').trim();
+      var chuong = (parts[1] || '').trim();
+      var bai = (parts[2] || '').trim();
+      return {
+        raw: rawKey,
+        course: course,
+        chuong: chuong,
+        bai: bai,
+        normChuong: normalizeStr(chuong),
+        maxLessonNum: getLessonNumber(bai)
+      };
+    }
+    // Key dạng MaBai: tra cứu từ danh sách bài
+    if (Array.isArray(lessonsList) && lessonsList.length > 0) {
+      var target = rawKey.normalize ? rawKey.normalize('NFC') : rawKey;
+      for (var i = 0; i < lessonsList.length; i++) {
+        var row = lessonsList[i];
+        var mb = String(row.MaBai || row.mabai || '').trim();
+        if (mb && (mb.normalize ? mb.normalize('NFC') : mb) === target) {
+          var c = String(row.KhoaHoc || row.khoahoc || '').trim();
+          var ch = String(row.Chuong || row.chuong || '').trim();
+          var b = String(row.TenBai || row.tenbai || '').trim();
+          return {
+            raw: rawKey,
+            course: c,
+            chuong: ch,
+            bai: b,
+            normChuong: normalizeStr(ch),
+            maxLessonNum: getLessonNumber(b)
+          };
+        }
+      }
+    }
     return {
-      raw: key,
-      course: course,
-      chuong: chuong,
-      bai: bai,
-      normChuong: normalizeStr(chuong),
-      maxLessonNum: getLessonNumber(bai)
+      raw: rawKey,
+      course: '',
+      chuong: '',
+      bai: '',
+      normChuong: '',
+      maxLessonNum: getLessonNumber(rawKey)
     };
   }
 
@@ -844,7 +876,7 @@
       '</div>';
   }
 
-  function fetchSettingsAsync() {
+  function fetchSettingsAsync(lessonsList) {
     return fetcher('data/settings.json')
       .then(function (r) { return r.json(); })
       .catch(function () {
@@ -852,7 +884,7 @@
       })
       .then(function (d) {
         if (d && d.ok && d.data && d.data.currentTeachingLesson) {
-          teachingScopeInfo = parseTeachingScope(d.data.currentTeachingLesson);
+          teachingScopeInfo = parseTeachingScope(d.data.currentTeachingLesson, lessonsList);
         }
       })
       .catch(function () {});
@@ -866,32 +898,38 @@
       fetcher('data/teachingscope.json').then(function(r){ return r.json(); }).catch(function(){
         return fetcher(GAS + '?type=teachingscope').then(function(r){ return r.json(); }).catch(function(){ return []; });
       }),
-      fetchSettingsAsync()
+      fetcher('data/baihoc.json').then(function(r){ return r.json(); }).catch(function(){
+        return fetcher(GAS + '?type=baihoc').then(function(r){ return r.json(); }).catch(function(){ return []; });
+      })
     ]).then(function (results) {
       var data = results[0];
       var scopeData = results[1];
+      var lessons = Array.isArray(results[2]) ? results[2] : (results[2].data || results[2].baihoc || []);
       var raw = Array.isArray(data) ? data : (data.data || data.rows || []);
       
       questions = raw;
       teachingScopes = scopeData;
-      queue = buildQueue(questions, teachingScopes);
 
-      if (!queue.length) {
-        var scopeDesc = teachingScopeInfo ? ((teachingScopeInfo.chuong ? teachingScopeInfo.chuong + ' – ' : '') + teachingScopeInfo.bai) : 'đang mở';
-        arena.innerHTML = 
-          '<div class="empty-box" style="text-align:center;padding:48px 20px">' +
-            '<div style="font-size:44px;margin-bottom:12px">📚</div>' +
-            '<h3>Chưa có câu hỏi trong phạm vi bài học đang mở</h3>' +
-            '<p style="color:var(--sub);margin:8px auto 20px;max-width:440px;line-height:1.6">' +
-            'Đua Top chỉ phát các câu hỏi <strong>đã qua kiểm duyệt (Tinh)</strong> thuộc phạm vi bài học (<strong>' + scopeDesc + '</strong>). Thầy đang liên tục cập nhật ngân hàng câu hỏi nhé!' +
-            '</p>' +
-            '<a href="baihoc.html" class="btn-primary" style="display:inline-block;text-decoration:none;padding:12px 24px;border-radius:10px;background:linear-gradient(135deg,#0072ff,#00f0ff);color:#fff;font-weight:700">Vào học bài giảng →</a>' +
-          '</div>';
-        return;
-      }
+      return fetchSettingsAsync(lessons).then(function() {
+        queue = buildQueue(questions, teachingScopes);
 
-      updateScoreBar();
-      renderQuestion();
+        if (!queue.length) {
+          var scopeDesc = teachingScopeInfo ? ((teachingScopeInfo.chuong ? teachingScopeInfo.chuong + ' – ' : '') + teachingScopeInfo.bai) : 'đang mở';
+          arena.innerHTML = 
+            '<div class="empty-box" style="text-align:center;padding:48px 20px">' +
+              '<div style="font-size:44px;margin-bottom:12px">📚</div>' +
+              '<h3>Chưa có câu hỏi trong phạm vi bài học đang mở</h3>' +
+              '<p style="color:var(--sub);margin:8px auto 20px;max-width:440px;line-height:1.6">' +
+              'Đua Top chỉ phát các câu hỏi <strong>đã qua kiểm duyệt (Tinh)</strong> thuộc phạm vi bài học (<strong>' + scopeDesc + '</strong>). Thầy đang liên tục cập nhật ngân hàng câu hỏi nhé!' +
+              '</p>' +
+              '<a href="baihoc.html" class="btn-primary" style="display:inline-block;text-decoration:none;padding:12px 24px;border-radius:10px;background:linear-gradient(135deg,#0072ff,#00f0ff);color:#fff;font-weight:700">Vào học bài giảng →</a>' +
+            '</div>';
+          return;
+        }
+
+        updateScoreBar();
+        renderQuestion();
+      });
     }).catch(function () {
       arena.innerHTML = '<div class="empty-box"><h3>Không thể tải câu hỏi</h3><p>Kiểm tra kết nối mạng rồi thử lại.</p></div>';
     });

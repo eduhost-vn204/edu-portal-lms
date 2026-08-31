@@ -72,24 +72,31 @@
   // nhiem-vu.js không còn khớp được với dữ liệu tiến độ thật (TienDo.lesson lưu MaBai) →
   // "Em học đến bài" luôn báo sai (kẹt ở bài rất cũ), % tiến độ sai, nút "Học ngay" mở
   // link hỏng ("Không tìm thấy bài học") vì gửi key ghép chuỗi mà baihoc.html không nhận ra.
+  function normTeachingKey(k) {
+    return (k === null || k === undefined) ? '' : String(k).trim().normalize('NFC');
+  }
+
+  // Key GHÉP CHUỖI CŨ (Khoa|||Chuong|||TenBai)
   function legacyKeyOf(l) {
     return (l.KhoaHoc || '') + '|||' + (l.Chuong || '') + '|||' + (l.TenBai || '');
   }
-  // Key ỔN ĐỊNH — PHẢI khớp chính xác cách baihoc.html tính l.key (ưu tiên MaBai, xem
-  // buildCourses() trong baihoc.html): dùng để so khớp với TienDo/WATCHED và để build
-  // link "Học ngay". KHÔNG dùng để so với settings.currentTeachingLesson — admin panel
-  // (edu-portal-console) vẫn đang lưu currentTeachingLesson theo key ghép chuỗi cũ.
+  // Key ỔN ĐỊNH — PHẢI khớp chính xác cách baihoc.html tính l.key (ưu tiên MaBai)
   function stableKeyOf(l) {
     var mb = (fieldOf(l, ['mabai']) || '').toString().trim();
     return mb || legacyKeyOf(l);
   }
 
-  // Vị trí trong XPS mà thầy đang dạy tới (khớp settings.currentTeachingLesson — admin
-  // panel vẫn lưu theo key ghép chuỗi cũ, KHÔNG phải MaBai), -1 nếu chưa đặt
+  // Vị trí trong XPS mà thầy đang dạy tới — hỗ trợ cả stable key (MaBai) lẫn legacy key (Khoa|||Chuong|||Ten)
   function findTeacherIdx(xps, teachingKey) {
     if (!teachingKey) return -1;
+    var target = normTeachingKey(teachingKey);
+    if (!target) return -1;
     for (var i = 0; i < xps.length; i++) {
-      if (legacyKeyOf(xps[i]) === teachingKey) return i;
+      var l = xps[i];
+      var mb = normTeachingKey(fieldOf(l, ['mabai']));
+      var sk = normTeachingKey(stableKeyOf(l));
+      var lk = normTeachingKey(legacyKeyOf(l));
+      if ((mb && mb === target) || sk === target || lk === target) return i;
     }
     return -1;
   }

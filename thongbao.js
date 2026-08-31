@@ -122,6 +122,10 @@
   // dù trang Nhiệm vụ hôm nay đã báo đúng. legacyKeyOf = key ghép chuỗi cũ, CHỈ dùng để so
   // khớp settings.currentTeachingLesson (admin panel chưa migrate). stableKeyOf ưu tiên
   // MaBai, PHẢI khớp cách baihoc.html tính l.key — dùng để so khớp TienDo/watched.
+  function normTeachingKey(k) {
+    return (k === null || k === undefined) ? '' : String(k).trim().normalize('NFC');
+  }
+
   function legacyKeyOf(l) {
     return (l.KhoaHoc || '') + '|||' + (l.Chuong || '') + '|||' + (l.TenBai || '');
   }
@@ -130,10 +134,17 @@
     return mb || legacyKeyOf(l);
   }
 
+  // Vị trí trong XPS mà thầy đang dạy tới — hỗ trợ cả stable key (MaBai) lẫn legacy key (Khoa|||Chuong|||Ten)
   function findTeacherIdx(xps, teachingKey) {
     if (!teachingKey) return -1;
+    var target = normTeachingKey(teachingKey);
+    if (!target) return -1;
     for (var i = 0; i < xps.length; i++) {
-      if (legacyKeyOf(xps[i]) === teachingKey) return i;
+      var l = xps[i];
+      var mb = normTeachingKey(fieldOf(l, ['mabai']));
+      var sk = normTeachingKey(stableKeyOf(l));
+      var lk = normTeachingKey(legacyKeyOf(l));
+      if ((mb && mb === target) || sk === target || lk === target) return i;
     }
     return -1;
   }

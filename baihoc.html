@@ -769,6 +769,21 @@ async function fetchProgress(){
     }
 }
 
+let _coursesReadyResolve = null;
+let _coursesReady = false;
+const coursesReadyPromise = new Promise(resolve => {
+    _coursesReadyResolve = resolve;
+});
+
+function ensureCoursesReady(){
+    if(_coursesReady && COURSES && COURSES.length > 0) return Promise.resolve(COURSES);
+    return coursesReadyPromise;
+}
+
+function normLessonKey(k){
+    return (k === null || k === undefined) ? '' : String(k).trim().normalize('NFC');
+}
+
 /* ═══════════════════════════════════════════
    XÂY DỰNG CẤU TRÚC KHÓA HỌC
 ═══════════════════════════════════════════ */
@@ -795,15 +810,13 @@ function buildCourses(rows){
         if(baitap){ try{ baitapArr=JSON.parse(baitap); }catch(e){ baitapArr=[]; } }
         const ttbRaw = field(row,['thutubai']).toString().trim();
         const ttb = (ttbRaw !== '' && !isNaN(Number(ttbRaw))) ? Number(ttbRaw) : null;
+        const mb = field(row,['mabai']).toString().trim();
+        const legKey = [cname,chname,lname].join(SEP);
+        const stableKey = mb || legKey;
         ch.lessons.push({
-            key:(function(){
-                // Uu tien MaBai (ma dinh danh ON DINH, khong doi khi doi ten khoa/chuong/bai
-                // hoac sap xep lai vi tri - xem migration 6/8/2026) de tien do hoc sinh (TienDo.lesson)
-                // khong bao gio bi mo coi. Bai cu chua kip gan MaBai (hiem, se tu gan khi luu lai
-                // trong admin) fallback ve key ten cu de khong vo hieu bai do.
-                var mb = field(row,['mabai']).toString().trim();
-                return mb || [cname,chname,lname].join(SEP);
-            })(),
+            key: stableKey,
+            mabai: mb,
+            legacyKey: legKey,
             name:lname,
             video:field(row,['video','youtube','link','url','lienket']).toString().trim(),
             videogiai:field(row,['videogiai','videochua','videogiangiai','chua','giai']).toString().trim(),
@@ -836,7 +849,32 @@ function coursePct(c){ return c.total?Math.round(courseWatched(c)/c.total*100):0
 function courseNew(c){ let n=0; c.chapters.forEach(ch=>ch.lessons.forEach(l=>{ if(daysAgo(l.date)<=NEW_DAYS)n++; })); return n; }
 function findCourse(name){ return COURSES.find(c=>c.name===name); }
 function flatLessons(c){ const out=[]; c.chapters.forEach(ch=>ch.lessons.forEach(l=>out.push(Object.assign({chapter:ch.name},l)))); return out; }
-function findLesson(key){ for(const c of COURSES) for(const ch of c.chapters) for(const l of ch.lessons) if(l.key===key) return {course:c,chapter:ch,lesson:l}; return null; }
+function findLesson(key){
+    const target = normLessonKey(key);
+    if(!target) return null;
+    // 1st pass: Khớp chính xác theo stable key (l.key hoặc l.mabai)
+    for(const c of COURSES){
+        for(const ch of c.chapters){
+            for(const l of ch.lessons){
+                if(normLessonKey(l.key) === target || (l.mabai && normLessonKey(l.mabai) === target)){
+                    return {course:c, chapter:ch, lesson:l};
+                }
+            }
+        }
+    }
+    // 2nd pass: Fallback khớp theo legacy key (KhoaHoc|||Chuong|||TenBai)
+    for(const c of COURSES){
+        for(const ch of c.chapters){
+            for(const l of ch.lessons){
+                const leg = normLessonKey(l.legacyKey || [c.name, ch.name, l.name].join(SEP));
+                if(leg === target){
+                    return {course:c, chapter:ch, lesson:l};
+                }
+            }
+        }
+    }
+    return null;
+}
 
 // Bài "trống" = chưa có video VÀ chưa có bất kỳ nội dung nào khác (PDF lý thuyết/bài tập/
 // luyện tập, video chữa bài, quiz) — tức thầy chưa kịp soạn/dạy, không phải chỉ thiếu video.
@@ -1382,10 +1420,18 @@ async function renderLiveLesson(){
     app().innerHTML = `<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p style="margin-top:12px">Đang tải buổi live...</p></div>`;
     let teachingKey = '';
     try{
-        const r = await fetch(APPS_SCRIPT_URL + '?type=settings&_t=' + Date.now());
-        const d = await r.json();
-        teachingKey = (d && d.data && d.data.currentTeachingLesson) || '';
-    }catch(e){ console.error('Không tải được cấu hình bài đang dạy:', e); }
+        const [settingsRes] = await Promise.all([
+            fetchJsonTimeout(APPS_SCRIPT_URL + '?type=settings&_t=' + Date.now(), 15000).catch(async () => {
+                const r = await fetch('data/settings.json');
+                return r.json();
+            }),
+            ensureCoursesReady()
+        ]);
+        teachingKey = (settingsRes && settingsRes.data && settingsRes.data.currentTeachingLesson) || '';
+    }catch(e){
+        console.error('Không tải được cấu hình bài đang dạy:', e);
+        try { await ensureCoursesReady(); } catch(_) {}
+    }
 
     // Nếu học sinh đã chuyển hash sang trang khác trong lúc đang tải thì bỏ qua
     if(decodeURIComponent(location.hash||'') !== '#live') return;
@@ -1396,11 +1442,11 @@ async function renderLiveLesson(){
     }
     const info = findLesson(teachingKey);
     if(!info){
-        app().innerHTML = `<div class="empty"><i class="fa-solid fa-circle-exclamation"></i><p>Không tìm thấy bài học tương ứng trong khóa.</p></div>`;
+        app().innerHTML = `<div class="empty"><i class="fa-solid fa-tower-broadcast" style="font-size:40px;color:var(--sub);margin-bottom:12px"></i><p style="font-size:17px;font-weight:700;margin-bottom:6px">Chưa có bài giảng live tương ứng</p><p style="color:var(--sub);margin-bottom:14px">Bài học thầy đang dạy tạm thời chưa sẵn sàng hoặc đã được cập nhật. Bạn quay lại sau nhé!</p><p><a onclick="go('#home')" style="cursor:pointer;color:var(--blue);font-weight:600">← Về danh sách khóa học</a></p></div>`;
         return;
     }
     const {course,chapter,lesson} = info;
-    const key = teachingKey;
+    const key = lesson.key;
     const flat=flatLessons(course); const idx=flat.findIndex(l=>l.key===key);
     const prev=idx>0?flat[idx-1]:null, next=idx<flat.length-1?flat[idx+1]:null;
     const done=WATCHED.has(key);
@@ -3251,6 +3297,8 @@ async function boot(){
     })));
     GROUPS=new Map();
     COURSES.forEach(c=>{ if(c.group){ if(!GROUPS.has(c.group))GROUPS.set(c.group,[]); GROUPS.get(c.group).push(c); }});
+    _coursesReady = true;
+    if(_coursesReadyResolve) _coursesReadyResolve(COURSES);
     route();
     syncPendingProgress(false);
     fetchProgress().then(function(){ route(); });
