@@ -73,6 +73,8 @@ function vlxtLocalDoneCount(sdt){
 // Render widget — inline nếu có #vlxt-nav-user-area, fixed nếu không
 function vlxtRenderWidget(user){
   if(!user) return;
+  // Trong phòng thi thử CBT (thithu.html), không hiện widget nổi để học sinh tập trung tối đa làm bài
+  if(window.location.pathname.includes('thithu.html')) return;
   const ex=document.getElementById('vlxt-user-widget');
   if(ex) ex.remove();
 
