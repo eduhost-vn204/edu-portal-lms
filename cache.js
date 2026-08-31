@@ -23,7 +23,7 @@
   var FRESH_MS_OVERRIDE = { danhsachde: 8000, lichlive: 8000, leaderboard: 90000 };
 
   var REQUEST_TIMEOUT_MS = 15000;
-  var STATIC_TYPES = { baihoc: 1, khoaconfig: 1, settings: 1, huongdan: 1 };
+  var STATIC_TYPES = { baihoc: 1, khoaconfig: 1, settings: 1, huongdan: 1, danhsachde: 1 };
 
   function keyOf(url) {
     return 'vlxt_cache_' + url.replace(/([?&])t=\d+/g, '').replace(/[?&]$/, '');

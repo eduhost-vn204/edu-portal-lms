@@ -401,16 +401,6 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 - Kiểm tra đã chạy sau khi sửa: `node --check scripts/quiz-publish.mjs` và `node --check scripts/test-quiz-publish.mjs` (qua, không lỗi); `node scripts/test-quiz-publish.mjs` → **12/12 pass**; `node scripts/test-quiz-merge.mjs` (hồi quy, không đổi file này) → **6/6 pass**. Không chạy/không cần chạy lại test Admin (không đổi).
 - Bước tiếp theo: Codex tích hợp cuối trên working copy sạch từ `main`; commit/push/merge vẫn KHÔNG do trợ lý AI tự thực hiện. Cập nhật mục này sau mỗi thay đổi đáng kể, không thêm một sổ bàn giao cạnh tranh.
 
-### 27/08/2026 — Hoàn tất hotfix Quản lý tài khoản Admin & Xác nhận CORS PingAdmin
-
-- **Nhiệm vụ 1: Hotfix Quản lý tài khoản Admin (Xóa tài khoản & Nâng Premium)**:
-  - Admin `index.html`: Cập nhật `ADMIN_WRITE_ACTIONS` whitelist đầy đủ (`deleteaccount`, `setvipstatus`, `pingadmin`, `bulksetbainganhang`, `bulksetchatluongnganhang`, `updateaccount`, `savevideocauhoi`, `savebaitaptracnghiem`, `savesetting`, `resetdevice`).
-  - Hàm `postAdminWrite` được chuẩn hóa nghiêm ngặt và đồng nhất 100% với `scripts/postAdminWrite.mjs`: chỉ coi là thành công khi `res.ok && typeof json === 'object' && json.ok === true`, có `AbortController` timeout 55s và try-finally `clearTimeout`.
-  - Loại bỏ hoàn toàn mọi `mode: 'no-cors'` và fetch trực tiếp không qua helper trong toàn bộ file `index.html` của Admin (`savehuongdan`, `savelivesession`, `deletelivesession`, `saveQuestions`, `updatenganhang`, `bulksetbainganhang`, `deleteNganHang`, `savenganhang`, `savevideocauhoi`, `savebaitaptracnghiem`, `savesetting`, `updateaccount`, `resetdevice`).
-  - Modal `tk-modal`: hỗ trợ chọn động VIP Trial (nhập số ngày), Premium (vĩnh viễn, ẩn ô số ngày), Miễn phí (hạ cấp, ẩn ô số ngày).
-  - `confirmSetVip` & `deleteTK`: kiểm tra id/SĐT hợp lệ, gọi `postAdminWriteWithRetry`, hiển thị toast phản hồi tương ứng theo từng loại tài khoản, tự động làm mới danh sách `loadTaiKhoan(true)` khi thành công, thông báo lỗi rõ ràng khi thất bại.
-  - Backend tham chiếu `apps-script-CAPNHAT.txt` (cả 2 repo): `deleteAccount` thực hiện dọn dẹp liên hoàn ở `TienDo`, `BangVang`, `NhiemVu`, `HoatDong` trước khi xóa dòng trong `TaiKhoan`; `setVipStatus` phân biệt rõ `premium` (`trialExpiry=0`), `vip` (`trialExpiry=expiry`), `free` (`trialExpiry=0`).
-  - Unit test Admin `scripts/test-postAdminWrite.mjs`: **19/19 pass** (kiểm thử mock fetch nội bộ cho logic `postAdminWriteCore`, đính kèm `adminKey` qua `ADMIN_WRITE_ACTIONS` cho `savebaitaptracnghiem`, `savesetting` và mô phỏng router `doPost`).
 
 - **Nhiệm vụ 2: Bổ sung pingadmin & Xác nhận cấu hình CORS**:
   - `apps-script-CAPNHAT.txt` (cả 2 repo): thêm route `action === 'pingadmin'` trong `doPost(e)` và hàm `pingAdmin(data)` chỉ kiểm tra `adminKey` qua `getAdminKey()` rồi trả `{ ok: true, ping: 'pong', ts: Date.now() }`, không đọc/ghi Sheets.
@@ -482,3 +472,31 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
      - `scripts/test-1click-tinh-scanner.mjs` (Admin): **4/4 PASS**.
      - `scripts/test-quiz-merge.mjs` (Student): **6/6 PASS**.
      - `scripts/test-quiz-publish.mjs` (Student): **12/12 PASS**.
+
+### 31/08/2026 — Hoàn tất Thiết kế lại Phòng Thi Thử theo Giao diện Thi Trên Máy Tính Chuẩn Bộ GD&ĐT (Issue #5 P0)
+
+- **Người thực hiện**: Machine-2 (Antigravity)
+- **Phạm vi thay đổi**:
+  - phong-thi-thu.html: Tích hợp Màn hình 1 (Check-in & Xác nhận danh tính thí sinh) và Màn hình 2 (Sảnh thi trực tuyến CBT, quy chế phòng thi, cấu trúc đề 28 câu, danh sách đề kèm bộ lọc & video chữa đề).
+  - 	hithu.html: Thiết kế lại toàn bộ giao diện làm bài thi CBT trên máy tính (Màn hình 3) và Màn hình Kết quả & Lời giải chi tiết (Màn hình 4).
+  - data/exams/thithu_demo_01.json: Đề thi thử mẫu chuẩn 28 câu (18 MC + 4 TF + 6 SA) độc lập có đầy đủ KaTeX, sơ đồ và lời giải để kiểm thử live.
+  - data/danhsachde.json: Bổ sung đề demo 	hithu_demo_01 (trạng thái mở).
+  - cache.js: Thêm danhsachde: 1 vào STATIC_TYPES để ưu tiên JSON tĩnh theo đúng quy định kiến trúc.
+  - 	est_cbt_exam_e2e.js: Kịch bản Puppeteer E2E tự động kiểm thử toàn diện cả 4 màn hình, autosave, offline/online, cảnh báo nộp sớm và responsive 3 kích thước màn hình.
+- **Tính năng & Trải nghiệm CBT đã hoàn thành (100%)**:
+  1. **Màn hình 1 (Vào phòng thi / Xác nhận thí sinh)**: Nhận diện phiên đăng nhập học sinh (uth.js), hiển thị họ tên, SBD, lớp, môn thi, kỳ thi và nút vào sảnh thi.
+  2. **Màn hình 2 (Sảnh thi - Lobby)**: Thẻ thông tin thí sinh, quy chế thi, bảng cấu trúc 3 phần đề thi, danh sách thẻ đề thi với trạng thái 🟢 Đang mở, 🔒 Chưa mở, 📝 Đã thi ([score]/10.0đ), 🎬 Video chữa.
+  3. **Màn hình 3 (Làm bài CBT Desktop/Mobile)**:
+     - Topbar xanh cố định (#0a4b9c): Logo Vật Lý Xuân Trường, tên thí sinh, SBD, mã đề, đồng hồ đếm ngược (nhấp nháy đỏ khi còn <5 phút), chỉ báo kết nối mạng, nút toàn màn hình và nút NỘP BÀI.
+     - Viewport câu hỏi không cuộn toàn trang: Render KaTeX toán học, hình ảnh sơ đồ, hỗ trợ mượt mà cả 3 phần: Trắc nghiệm 4 lựa chọn (Phần I), Đúng/Sai 4 ý (Phần II), Trả lời ngắn (Phần III).
+     - Bảng số câu hỏi (Palette): Phân chia rõ 3 phần, 4 màu trạng thái (Đã làm, Chưa làm, Đang làm, Đánh dấu xem lại), thống kê thời gian thực Đã làm: X/28 | Chưa làm: Y/28 | Đánh dấu: Z.
+     - Tự động lưu (Autosave) vào localStorage: F5/Reload khôi phục 100% đáp án, cờ đánh dấu và thời gian còn lại.
+     - Cảnh báo nộp bài sớm: Modal popup trang trọng hiển thị số lượng và danh sách câu chưa làm.
+     - Hết giờ tự động nộp bài và khóa nộp chống nộp hai lần.
+  4. **Màn hình 4 (Kết quả & Lời giải chi tiết)**: Scorecard trang trọng, điểm số quy đổi (/10.0 đ), tỷ lệ câu đúng, thời gian làm bài, lưu điểm tự động vào Bảng Vàng, xem lại từng câu hỏi với so sánh đáp án và lời giải KaTeX từng bước.
+- **Kết quả kiểm thử**:
+  - 	est_cbt_exam_e2e.js: **6/6 TEST SUITES PASS (100%)**.
+  - 	est-teaching-scope.mjs: **14/14 PASS**.
+  - 	est-quiz-merge.mjs: **6/6 PASS**.
+  - 	est-quiz-publish.mjs: **12/12 PASS**.
+  - Visual QA Screenshots: Đã chụp đầy đủ ở 1920x1080, 1366x768 và Mobile 375x812.

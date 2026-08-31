@@ -3,249 +3,282 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phòng Thi Thử Thực Chiến | Vật Lý Xuân Trường</title>
+    <title>Phòng Thi Thử Máy Tính | Vật Lý Xuân Trường</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
-            --blue: #0b84f3; --blue2: #0066cc;
-            --black: #0f0f0f; --gray: #555; --gray2: #888;
-            --border: #e5e5e5; --bg: #ffffff; --bg2: #f9f9f9;
-            --card-bg: #ffffff; --green: #10b981; --red: #ef4444; --amber: #f59e0b;
+            --primary: #0a4b9c;
+            --primary-light: #0b84f3;
+            --primary-dark: #073570;
+            --primary-bg: #eef5ff;
+            --black: #0f172a;
+            --gray: #475569;
+            --gray2: #94a3b8;
+            --border: #cbd5e1;
+            --border-light: #e2e8f0;
+            --bg: #ffffff;
+            --bg2: #f1f5f9;
+            --card-bg: #ffffff;
+            --green: #15803d;
+            --green-bg: #dcfce7;
+            --red: #b91c1c;
+            --red-bg: #fee2e2;
+            --amber: #b45309;
+            --amber-bg: #fef3c7;
         }
+
         body {
             background: var(--bg2); color: var(--black);
-            font-family: 'Plus Jakarta Sans', ui-sans-serif, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             -webkit-font-smoothing: antialiased;
             padding-top: 56px; min-height: 100vh;
         }
 
-        /* ─── NAV ─── */
+        /* ─── NAVBAR ─── */
         .navbar {
             position: fixed; top: 0; left: 0; right: 0; z-index: 200; height: 56px;
-            display: flex; align-items: center; justify-content: space-between; padding: 0 28px;
-            background: rgba(255,255,255,0.94); backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 24px;
+            background: var(--primary); color: #fff;
+            border-bottom: 2px solid var(--primary-dark);
+            box-shadow: 0 2px 8px rgba(10,75,156,0.25);
         }
-        .nav-left { display: flex; align-items: center; gap: 36px; }
+        .nav-left { display: flex; align-items: center; gap: 20px; }
         .nav-logo {
             display: flex; align-items: center; gap: 10px;
-            font-size: 15px; font-weight: 700; color: var(--black); text-decoration: none;
+            font-size: 15px; font-weight: 800; color: #fff; text-decoration: none;
+            letter-spacing: -0.01em;
         }
-        .nav-links { display: flex; gap: 28px; }
-        .nav-links a { font-size: 14px; font-weight: 500; color: var(--black); text-decoration: none; transition: color 0.15s; }
-        .nav-links a:hover, .nav-links a.active { color: var(--blue); }
-        .nav-right { display: flex; align-items: center; gap: 20px; }
-        .nav-right a { font-size: 14px; color: var(--gray); text-decoration: none; transition: color 0.15s; }
-        .nav-right a:hover { color: var(--black); }
+        .nav-brand-badge {
+            background: rgba(255,255,255,0.2); font-size: 11px; font-weight: 700;
+            padding: 3px 8px; border-radius: 4px; letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        .nav-links a { font-size: 13.5px; font-weight: 600; color: rgba(255,255,255,0.88); text-decoration: none; transition: all 0.15s; }
+        .nav-links a:hover, .nav-links a.active { color: #fff; }
+        .nav-links a.active { border-bottom: 2px solid #fff; padding-bottom: 2px; }
+        .nav-right { display: flex; align-items: center; gap: 16px; }
 
-        /* ─── PAGE CONTAINER ─── */
-        .container { max-width: 1080px; margin: 0 auto; padding: 48px 24px 100px; }
-        
-        .page-header { text-align: center; margin-bottom: 36px; }
-        .page-eyebrow {
-            font-family: 'DM Mono', monospace; font-size: 13px;
-            text-transform: uppercase; letter-spacing: 2px;
-            color: var(--blue); margin-bottom: 12px; display: inline-flex; align-items: center; gap: 8px; font-weight: 600;
+        /* ─── BANNER TIÊU ĐỀ HỆ THỐNG MÔ PHỎNG ─── */
+        .cbt-header-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, #0d5bbd 100%);
+            color: #fff; padding: 24px 20px 28px; text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 4px 12px rgba(10,75,156,0.15);
         }
-        .page-title {
-            font-size: clamp(32px, 4.5vw, 44px); font-weight: 900;
-            letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 12px;
+        .cbt-banner-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 700;
+            letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px;
         }
-        .page-sub { font-size: 15.5px; color: var(--gray); line-height: 1.6; max-width: 680px; margin: 0 auto; font-weight: 500; }
-
-        /* ─── CONTROLS & FILTER ─── */
-        .controls-card {
-            background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
-            padding: 16px 20px; margin-bottom: 28px; display: flex; flex-wrap: wrap; gap: 14px;
-            align-items: center; justify-content: space-between;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        .cbt-banner-title {
+            font-size: clamp(22px, 3.5vw, 30px); font-weight: 900;
+            letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 6px;
         }
-        .search-box {
-            position: relative; flex: 1; min-width: 240px;
-        }
-        .search-box i {
-            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-            color: var(--gray2); font-size: 14px; pointer-events: none;
-        }
-        .search-box input {
-            width: 100%; height: 42px; padding: 0 14px 0 38px;
-            border-radius: 10px; border: 1.5px solid var(--border);
-            background: var(--bg2); color: var(--black); font-size: 14px;
-            font-family: inherit; transition: border-color 0.2s, background 0.2s; outline: none;
-        }
-        .search-box input:focus {
-            border-color: var(--blue); background: var(--bg);
-        }
-        .filter-tags { display: flex; gap: 8px; flex-wrap: wrap; }
-        .tag-btn {
-            height: 38px; padding: 0 14px; border-radius: 9px; border: 1px solid var(--border);
-            background: var(--bg2); color: var(--gray); font-size: 13px; font-weight: 600;
-            cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px;
-        }
-        .tag-btn:hover { color: var(--black); border-color: var(--gray2); }
-        .tag-btn.active {
-            background: var(--blue); color: #fff; border-color: var(--blue);
-            box-shadow: 0 2px 10px rgba(11,132,243,0.25);
+        .cbt-banner-sub {
+            font-size: 14px; color: rgba(255,255,255,0.85); font-weight: 500;
+            max-width: 680px; margin: 0 auto;
         }
 
-        /* ─── EXAM GRID ─── */
-        .exam-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;
+        /* ─── MAIN CONTAINER ─── */
+        .container { max-width: 1240px; margin: 0 auto; padding: 24px 20px 80px; }
+
+        /* ─── CHECK-IN VERIFICATION SCREEN (SCREEN 1) ─── */
+        .checkin-card {
+            background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 14px;
+            padding: 28px 32px; margin-bottom: 28px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 24px;
         }
-        .exam-card {
-            background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
-            padding: 24px; display: flex; flex-direction: column; justify-content: space-between;
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; position: relative; overflow: hidden;
+        .checkin-left { display: flex; align-items: center; gap: 20px; flex: 1; min-width: 300px; }
+        .checkin-avatar {
+            width: 64px; height: 64px; border-radius: 50%;
+            background: var(--primary-bg); border: 2px solid var(--primary-light);
+            color: var(--primary); font-size: 26px; font-weight: 800;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-        .exam-card:hover {
-            transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); border-color: rgba(11,132,243,0.3);
-        }
-        .exam-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .exam-code {
-            font-family: 'DM Mono', monospace; font-size: 12.5px; font-weight: 700;
-            color: var(--blue); background: rgba(11,132,243,0.08); padding: 3px 9px; border-radius: 6px;
-        }
-        .status-badge {
-            font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 100px;
+        .checkin-info h3 { font-size: 18px; font-weight: 800; margin-bottom: 4px; color: var(--black); }
+        .checkin-meta { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--gray); font-weight: 600; }
+        .checkin-meta span { display: inline-flex; align-items: center; gap: 5px; }
+        .checkin-status-badge {
+            background: var(--green-bg); color: var(--green);
+            padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 12px;
             display: inline-flex; align-items: center; gap: 5px;
         }
-        .status-badge.mo { background: rgba(16,185,129,0.1); color: var(--green); border: 1px solid rgba(16,185,129,0.25); }
-        .status-badge.khoa { background: rgba(239,68,68,0.08); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+        .checkin-right { display: flex; align-items: center; gap: 12px; }
+        .btn-cbt-lobby {
+            background: var(--primary); color: #fff; border: none; border-radius: 8px;
+            padding: 12px 24px; font-size: 14px; font-weight: 700; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+            transition: background 0.15s, transform 0.15s;
+        }
+        .btn-cbt-lobby:hover { background: var(--primary-dark); transform: translateY(-1px); color: #fff; }
 
-        .exam-title {
-            font-size: 17px; font-weight: 800; line-height: 1.4; margin-bottom: 10px;
-            color: var(--black); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        /* ─── LOBBY 2-COLUMN LAYOUT (SCREEN 2) ─── */
+        .lobby-layout {
+            display: grid; grid-template-columns: 340px 1fr; gap: 24px;
+            align-items: start;
         }
-        .exam-desc {
-            font-size: 13.5px; color: var(--gray); line-height: 1.5; margin-bottom: 16px; flex: 1;
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        @media (max-width: 960px) {
+            .lobby-layout { grid-template-columns: 1fr; }
         }
 
-        .exam-meta-row {
-            display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 18px;
-            padding-top: 14px; border-top: 1px dashed var(--border);
+        /* ─── LEFT SIDEBAR: RULES & EXAM PROFILE ─── */
+        .sidebar-card {
+            background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 12px;
+            padding: 22px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.03);
         }
-        .meta-item {
-            display: flex; align-items: center; gap: 5px; font-size: 12.5px; color: var(--gray); font-weight: 600;
+        .card-header-bar {
+            font-size: 14px; font-weight: 800; color: var(--primary); text-transform: uppercase;
+            letter-spacing: 0.5px; padding-bottom: 12px; margin-bottom: 14px;
+            border-bottom: 2px solid var(--primary-bg);
+            display: flex; align-items: center; gap: 8px;
         }
-        .meta-item i { color: var(--blue); }
+        .rule-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        .rule-item {
+            font-size: 13px; line-height: 1.5; color: var(--gray);
+            display: flex; align-items: flex-start; gap: 10px;
+        }
+        .rule-item i { color: var(--primary-light); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
+        .exam-structure-table {
+            width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 10px;
+        }
+        .exam-structure-table th, .exam-structure-table td {
+            padding: 8px 10px; border: 1px solid var(--border-light); text-align: left;
+        }
+        .exam-structure-table th { background: var(--bg2); font-weight: 700; color: var(--black); }
+        .exam-structure-table tr:nth-child(even) td { background: #fafbfc; }
 
-        .exam-actions {
-            display: flex; gap: 10px; align-items: center;
+        /* ─── RIGHT MAIN: CONTROLS & EXAM LIST ─── */
+        .main-controls-card {
+            background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 12px;
+            padding: 16px 20px; margin-bottom: 20px;
+            display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
-        .btn-exam-start {
-            flex: 1; height: 42px; background: var(--black); color: #fff; border-radius: 10px;
+        .search-box { position: relative; flex: 1; min-width: 220px; }
+        .search-box i {
+            position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+            color: var(--gray2); font-size: 13px; pointer-events: none;
+        }
+        .search-box input {
+            width: 100%; height: 38px; padding: 0 12px 0 34px;
+            border-radius: 8px; border: 1.5px solid var(--border);
+            background: var(--bg2); color: var(--black); font-size: 13.5px;
+            outline: none; transition: border-color 0.15s, background 0.15s;
+            font-family: inherit;
+        }
+        .search-box input:focus { border-color: var(--primary); background: var(--bg); }
+        .filter-group { display: flex; gap: 6px; flex-wrap: wrap; }
+        .filter-btn {
+            height: 36px; padding: 0 12px; border-radius: 6px; border: 1px solid var(--border);
+            background: var(--bg2); color: var(--gray); font-size: 12.5px; font-weight: 700;
+            cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; gap: 5px;
+        }
+        .filter-btn:hover { color: var(--black); border-color: var(--primary-light); }
+        .filter-btn.active {
+            background: var(--primary); color: #fff; border-color: var(--primary);
+        }
+
+        /* ─── EXAM CARDS GRID ─── */
+        .exam-grid { display: flex; flex-direction: column; gap: 16px; }
+        .exam-row-card {
+            background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 12px;
+            padding: 20px 24px; display: grid; grid-template-columns: 1fr auto;
+            gap: 20px; align-items: center; transition: border-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+        .exam-row-card:hover {
+            border-color: var(--primary-light); box-shadow: 0 6px 18px rgba(10,75,156,0.08);
+        }
+        .exam-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+        .exam-id-badge {
+            font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 700;
+            background: var(--primary-bg); color: var(--primary);
+            padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(10,75,156,0.2);
+        }
+        .status-pill {
+            font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 100px;
+            display: inline-flex; align-items: center; gap: 4px;
+        }
+        .status-pill.open { background: var(--green-bg); color: var(--green); border: 1px solid rgba(21,128,61,0.3); }
+        .status-pill.locked { background: var(--red-bg); color: var(--red); border: 1px solid rgba(185,28,28,0.2); }
+        .status-pill.done { background: var(--primary-bg); color: var(--primary); border: 1px solid rgba(10,75,156,0.3); }
+
+        .exam-row-title { font-size: 16px; font-weight: 800; color: var(--black); line-height: 1.4; margin-bottom: 6px; }
+        .exam-row-desc { font-size: 13px; color: var(--gray); line-height: 1.5; margin-bottom: 12px; }
+        .exam-row-meta {
+            display: flex; align-items: center; gap: 16px; font-size: 12.5px; color: var(--gray); font-weight: 600;
+        }
+        .exam-row-meta span { display: inline-flex; align-items: center; gap: 5px; }
+        .exam-row-meta i { color: var(--primary-light); }
+
+        .exam-row-actions { display: flex; flex-direction: column; gap: 8px; min-width: 160px; }
+        .btn-exam-entry {
+            height: 40px; background: var(--primary); color: #fff; border-radius: 8px;
             font-size: 13.5px; font-weight: 700; text-decoration: none; border: none; cursor: pointer;
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: opacity 0.15s, background 0.15s;
+            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            transition: background 0.15s, opacity 0.15s;
         }
-        .btn-exam-start:hover { opacity: 0.85; color: #fff; }
+        .btn-exam-entry:hover { background: var(--primary-dark); color: #fff; }
         .btn-exam-video {
-            height: 42px; padding: 0 16px; background: rgba(245,158,11,0.1); color: var(--amber);
-            border: 1px solid rgba(245,158,11,0.3); border-radius: 10px; font-size: 13px; font-weight: 700;
-            cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s;
+            height: 36px; background: var(--amber-bg); color: var(--amber); border-radius: 8px;
+            font-size: 12.5px; font-weight: 700; border: 1px solid rgba(180,83,9,0.3); cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            transition: background 0.15s;
         }
-        .btn-exam-video:hover {
-            background: rgba(245,158,11,0.18); border-color: var(--amber);
-        }
+        .btn-exam-video:hover { background: #fde68a; }
         .btn-exam-locked {
-            flex: 1; height: 42px; background: var(--bg2); color: var(--gray2); border-radius: 10px;
+            height: 40px; background: var(--bg2); color: var(--gray2); border-radius: 8px;
             font-size: 13px; font-weight: 600; border: 1px solid var(--border); cursor: not-allowed;
             display: inline-flex; align-items: center; justify-content: center; gap: 6px;
         }
 
         /* ─── VIDEO MODAL ─── */
         .video-modal-overlay {
-            position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.82); backdrop-filter: blur(8px);
+            position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.85); backdrop-filter: blur(6px);
             display: flex; align-items: center; justify-content: center; padding: 20px;
-            opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+            opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
         }
         .video-modal-overlay.show { opacity: 1; pointer-events: auto; }
         .video-modal-card {
-            background: #111827; border: 1px solid #374151; border-radius: 18px; width: 100%; max-width: 860px;
+            background: #111827; border: 1px solid #374151; border-radius: 14px; width: 100%; max-width: 860px;
             overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); display: flex; flex-direction: column;
-            transform: translateY(20px); transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .video-modal-overlay.show .video-modal-card { transform: translateY(0); }
         .video-modal-head {
-            padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 20px; display: flex; align-items: center; justify-content: space-between;
             border-bottom: 1px solid #374151; background: #1f2937; color: #fff;
         }
-        .video-modal-title { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .video-modal-title { font-size: 14.5px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
         .video-modal-close {
-            background: none; border: none; color: #9ca3af; font-size: 18px; cursor: pointer; padding: 6px;
-            border-radius: 6px; transition: color 0.15s;
+            background: none; border: none; color: #9ca3af; font-size: 18px; cursor: pointer; padding: 4px;
         }
         .video-modal-close:hover { color: #fff; }
-        .video-frame-wrap {
-            position: relative; padding-top: 56.25%; background: #000;
-        }
-        .video-frame-wrap iframe {
-            position: absolute; inset: 0; width: 100%; height: 100%; border: none;
-        }
+        .video-frame-wrap { position: relative; padding-top: 56.25%; background: #000; }
+        .video-frame-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
         .video-modal-foot {
-            padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
-            background: #1f2937; color: #9ca3af; font-size: 13px;
+            padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;
+            background: #1f2937; color: #9ca3af; font-size: 12.5px;
         }
 
-        /* ─── EMPTY STATE ─── */
-        .empty-state {
-            grid-column: 1 / -1; background: var(--card-bg); border: 1.5px dashed var(--border);
-            border-radius: 16px; padding: 56px 24px; text-align: center;
+        /* Empty state */
+        .empty-box {
+            background: var(--card-bg); border: 1.5px dashed var(--border); border-radius: 12px;
+            padding: 48px 24px; text-align: center; color: var(--gray);
         }
-        .empty-icon {
-            width: 60px; height: 60px; border-radius: 50%; background: rgba(11,132,243,0.1);
-            color: var(--blue); font-size: 24px; display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 16px;
-        }
+        .empty-box i { font-size: 32px; color: var(--gray2); margin-bottom: 12px; display: block; }
 
-        /* ─── HAMBURGER & DRAWER ─── */
-        .nav-hamburger {
-            display: none; background: none; border: none; font-size: 20px;
-            color: var(--black); cursor: pointer; padding: 8px; margin-left: -8px;
+        @media (max-width: 680px) {
+            .checkin-card { padding: 20px; }
+            .checkin-right { width: 100%; }
+            .btn-cbt-lobby { width: 100%; justify-content: center; }
+            .exam-row-card { grid-template-columns: 1fr; }
+            .exam-row-actions { width: 100%; }
         }
-        .nav-drawer-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 998;
-            opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
-        }
-        .nav-drawer-overlay.open { opacity: 1; pointer-events: auto; }
-        .nav-drawer {
-            position: fixed; top: 0; left: 0; bottom: 0; width: 280px; max-width: 85vw;
-            background: var(--bg); z-index: 999; transform: translateX(-100%);
-            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 4px 0 24px rgba(0,0,0,0.15); display: flex; flex-direction: column;
-        }
-        .nav-drawer.open { transform: translateX(0); }
-        .nav-drawer-head {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 16px 20px; border-bottom: 1px solid var(--border);
-        }
-        .nav-drawer-close {
-            width: 32px; height: 32px; border-radius: 50%; border: none;
-            background: rgba(0,0,0,0.04); color: var(--black); font-size: 16px;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-        }
-        .nav-drawer-links { display: flex; flex-direction: column; padding: 8px; }
-        .nav-drawer-links a {
-            display: flex; align-items: center; gap: 14px; padding: 13px 14px; border-radius: 10px;
-            color: var(--black); text-decoration: none; font-size: 15px; font-weight: 600;
-        }
-        .nav-drawer-links a i { width: 20px; text-align: center; font-size: 16px; color: var(--gray2); }
-        .nav-drawer-links a:hover, .nav-drawer-links a.active { background: rgba(11,132,243,0.08); color: var(--blue); }
-        @media (max-width: 900px) { .nav-links { display: none; } .nav-hamburger { display: inline-flex; } }
-
-        /* Dark mode */
-        body.dark {
-            background: #0d1117; color: #e6edf3; --border: #30363d; --bg: #0d1117; --bg2: #161b22;
-            --card-bg: #161b22; --black: #e6edf3; --gray: #8b949e; --gray2: #6e7681;
-        }
-        body.dark .navbar { background: rgba(13,17,23,0.94); border-color: #30363d; }
-        body.dark .nav-logo, body.dark .nav-links a { color: #e6edf3; }
-        body.dark .nav-drawer { background: #161b22; }
-        body.dark .nav-drawer-links a { color: #e6edf3; }
-        body.dark .btn-exam-start { background: #e6edf3; color: #0d1117; }
-        body.dark .btn-exam-start:hover { background: #fff; }
     </style>
     <script src="auth.js?v=7"></script>
     <script src="thongbao.js?v=2"></script>
@@ -254,26 +287,25 @@
 </head>
 <body>
 
-<!-- ─── NAV ─── -->
+<!-- ─── NAVBAR ─── -->
 <nav class="navbar">
     <div class="nav-left">
-        <button class="nav-hamburger" id="navHamburgerBtn" aria-label="Mở menu" onclick="toggleNavDrawer(true)"><i class="fa-solid fa-bars"></i></button>
         <a href="index.html" class="nav-logo">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="14" cy="14" r="2.8" fill="#0b84f3"/>
-                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.3" fill="none" opacity="0.7"/>
-                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.3" fill="none" opacity="0.5" transform="rotate(60 14 14)"/>
-                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.3" fill="none" opacity="0.5" transform="rotate(-60 14 14)"/>
+            <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+                <circle cx="14" cy="14" r="2.8" fill="#fff"/>
+                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#fff" stroke-width="1.3" fill="none" opacity="0.9"/>
+                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#fff" stroke-width="1.3" fill="none" opacity="0.6" transform="rotate(60 14 14)"/>
+                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#fff" stroke-width="1.3" fill="none" opacity="0.6" transform="rotate(-60 14 14)"/>
             </svg>
             Vật Lý Xuân Trường
         </a>
+        <span class="nav-brand-badge">PHÒNG THI THỬ MÁY TÍNH</span>
         <div class="nav-links">
             <a href="baihoc.html">Khóa Học</a>
             <a href="phong-thi-thu.html" class="active">Phòng Thi Thử</a>
             <a href="danhsach-ly12.html">Phòng Kiểm Tra</a>
-            <a href="dua-top.html" style="color:#fbbf24;font-weight:700">Đua Top</a>
-            <a href="solo.html" style="color:#f472b6;font-weight:700">⚔️ Solo</a>
-            <a href="live.html" style="color:#dc2626;font-weight:700">Live</a>
+            <a href="dua-top.html">Đua Top</a>
+            <a href="solo.html">Solo</a>
             <a href="huongdan.html">Hướng Dẫn</a>
         </div>
     </div>
@@ -282,63 +314,135 @@
     </div>
 </nav>
 
-<!-- ─── MOBILE NAV DRAWER ─── -->
-<div class="nav-drawer-overlay" id="navDrawerOverlay" onclick="toggleNavDrawer(false)"></div>
-<aside class="nav-drawer" id="navDrawer" aria-hidden="true">
-    <div class="nav-drawer-head">
-        <span style="display:flex;align-items:center;gap:8px;font-weight:700">
-            <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
-                <circle cx="14" cy="14" r="2.8" fill="#0b84f3"/>
-                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.3" fill="none" opacity="0.7"/>
-                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.3" fill="none" opacity="0.5" transform="rotate(60 14 14)"/>
-                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.3" fill="none" opacity="0.5" transform="rotate(-60 14 14)"/>
-            </svg>
-            Vật Lý Xuân Trường
-        </span>
-        <button class="nav-drawer-close" onclick="toggleNavDrawer(false)" aria-label="Đóng menu"><i class="fa-solid fa-xmark"></i></button>
+<!-- ─── CBT HEADER BANNER ─── -->
+<div class="cbt-header-banner">
+    <div class="cbt-banner-badge">
+        <i class="fa-solid fa-desktop"></i> PHÒNG THI THỬ - MÔ PHỎNG GIAO DIỆN THI TRÊN MÁY TÍNH
     </div>
-    <div class="nav-drawer-links" id="navDrawerLinks">
-        <a href="index.html"><i class="fa-solid fa-house"></i> Trang Chủ</a>
-        <a href="baihoc.html"><i class="fa-solid fa-graduation-cap"></i> Khóa Học</a>
-        <a href="phong-thi-thu.html" class="active"><i class="fa-solid fa-clipboard-check"></i> Phòng Thi Thử</a>
-        <a href="danhsach-ly12.html"><i class="fa-solid fa-file-pen"></i> Phòng Kiểm Tra</a>
-        <a href="dua-top.html" style="color:#fbbf24"><i class="fa-solid fa-crown"></i> Đua Top</a>
-        <a href="solo.html" style="color:#f472b6"><i class="fa-solid fa-khanda"></i> Solo</a>
-        <a href="live.html" style="color:#dc2626"><i class="fa-solid fa-tower-broadcast"></i> Live</a>
-        <a href="huongdan.html"><i class="fa-solid fa-compass"></i> Hướng Dẫn</a>
-    </div>
-</aside>
+    <h1 class="cbt-banner-title">Hệ Thống Thi Thử Trực Tuyến Chuẩn Cấu Trúc Bộ GD&ĐT</h1>
+    <p class="cbt-banner-sub">Rèn luyện áp lực phòng thi thật với đồng hồ đếm ngược, chấm điểm tự động tức thì và video chữa đề chi tiết từng câu.</p>
+</div>
 
-<!-- ─── CONTENT ─── -->
+<!-- ─── MAIN CONTENT ─── -->
 <div class="container">
-    <div class="page-header">
-        <span class="page-eyebrow"><i class="fa-solid fa-bolt"></i> Hệ thống khảo sát năng lực</span>
-        <h1 class="page-title">Phòng Thi Thử Thực Chiến.</h1>
-        <p class="page-sub">Rèn luyện áp lực phòng thi chuẩn cấu trúc đề THPT Quốc Gia với đồng hồ đếm ngược, chấm điểm tức thì và video chữa đề chi tiết từng câu.</p>
+
+    <!-- ─── SCREEN 1: CHECK-IN / XÁC NHẬN THÍ SINH ─── -->
+    <div class="checkin-card" id="checkinScreen">
+        <div class="checkin-left">
+            <div class="checkin-avatar" id="candidateAvatar">HS</div>
+            <div class="checkin-info">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                    <span class="checkin-status-badge"><i class="fa-solid fa-circle-check"></i> ĐÃ XÁC THỰC THÍ SINH</span>
+                    <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gray);font-weight:700" id="candidateSBD">SBD: Đang nạp...</span>
+                </div>
+                <h3 id="candidateName">Học sinh dự thi</h3>
+                <div class="checkin-meta">
+                    <span><i class="fa-solid fa-school"></i> <b id="candidateClass">Lớp 12</b></span>
+                    <span><i class="fa-solid fa-book-open"></i> Môn: <b>Vật Lý</b></span>
+                    <span><i class="fa-solid fa-calendar-day"></i> Kỳ thi: <b>Khảo sát năng lực 2026</b></span>
+                </div>
+            </div>
+        </div>
+        <div class="checkin-right">
+            <a href="#examListArea" class="btn-cbt-lobby">
+                <i class="fa-solid fa-right-to-bracket"></i> VÀO SẢNH THI TRỰC TUYẾN
+            </a>
+        </div>
     </div>
 
-    <!-- Controls / Filters -->
-    <div class="controls-card">
-        <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="Tìm kiếm tên đề, mã đề thi..." oninput="handleSearch()">
+    <!-- ─── SCREEN 2: SẢNH THI & DANH SÁCH ĐỀ THI ─── -->
+    <div class="lobby-layout" id="examListArea">
+
+        <!-- Sidebar: Candidate summary & Regulations -->
+        <div class="lobby-sidebar">
+            <div class="sidebar-card">
+                <div class="card-header-bar">
+                    <i class="fa-solid fa-circle-info"></i> Quy Chế Phòng Thi CBT
+                </div>
+                <ul class="rule-list">
+                    <li class="rule-item">
+                        <i class="fa-solid fa-clock"></i>
+                        <span>Thời gian làm bài tiêu chuẩn <b>50 phút</b>. Đồng hồ đếm ngược chạy liên tục.</span>
+                    </li>
+                    <li class="rule-item">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>Hệ thống <b>tự động lưu (Autosave)</b> đáp án vào máy. Reload trang không bị mất bài.</span>
+                    </li>
+                    <li class="rule-item">
+                        <i class="fa-solid fa-bookmark"></i>
+                        <span>Thí sinh có thể bấm <b>Đánh dấu xem lại</b> để quay lại các câu chưa chắc chắn.</span>
+                    </li>
+                    <li class="rule-item">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>Khi hết giờ, hệ thống sẽ <b>tự động thu bài và khóa nộp</b> tức thì.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-card">
+                <div class="card-header-bar">
+                    <i class="fa-solid fa-list-ol"></i> Cấu Trúc Đề Thi Vật Lý
+                </div>
+                <table class="exam-structure-table">
+                    <thead>
+                        <tr>
+                            <th>Phần thi</th>
+                            <th>Số câu</th>
+                            <th>Điểm</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Phần I:</b> Trắc nghiệm 4 PA</td>
+                            <td>18 câu</td>
+                            <td>4.50 đ</td>
+                        </tr>
+                        <tr>
+                            <td><b>Phần II:</b> Đúng / Sai</td>
+                            <td>4 câu (16 ý)</td>
+                            <td>4.00 đ</td>
+                        </tr>
+                        <tr>
+                            <td><b>Phần III:</b> Trả lời ngắn</td>
+                            <td>6 câu</td>
+                            <td>1.50 đ</td>
+                        </tr>
+                        <tr style="font-weight:700;background:var(--primary-bg)">
+                            <td>Tổng cộng</td>
+                            <td>28 câu</td>
+                            <td>10.0 đ</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="filter-tags">
-            <button class="tag-btn active" data-filter="all" onclick="setFilter('all')">Tất cả đề</button>
-            <button class="tag-btn" data-filter="mo" onclick="setFilter('mo')">🟢 Đang mở</button>
-            <button class="tag-btn" data-filter="video" onclick="setFilter('video')">🎬 Có video chữa</button>
-            <button class="tag-btn" data-filter="lop12" onclick="setFilter('lop12')">Lớp 12</button>
+
+        <!-- Main Column: Filter & Exam Catalog -->
+        <div class="lobby-main">
+            <div class="main-controls-card">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" placeholder="Tìm kiếm tên đề, mã đề thi..." oninput="handleSearch()">
+                </div>
+                <div class="filter-group">
+                    <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">Tất cả đề</button>
+                    <button class="filter-btn" data-filter="open" onclick="setFilter('open')">🟢 Đang mở</button>
+                    <button class="filter-btn" data-filter="video" onclick="setFilter('video')">🎬 Có video chữa</button>
+                    <button class="filter-btn" data-filter="done" onclick="setFilter('done')">📝 Đã thi</button>
+                </div>
+            </div>
+
+            <div class="exam-grid" id="examGrid">
+                <div class="empty-box">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    <h3>Đang tải danh sách đề thi thử...</h3>
+                    <p>Vui lòng đợi giây lát trong khi hệ thống nạp dữ liệu chuẩn Bộ GD&ĐT.</p>
+                </div>
+            </div>
         </div>
+
     </div>
 
-    <!-- Exam Cards Grid -->
-    <div class="exam-grid" id="examGrid">
-        <div class="empty-state">
-            <div class="empty-icon"><i class="fa-solid fa-spinner fa-spin"></i></div>
-            <h3 style="font-size:16px;margin-bottom:6px">Đang tải danh sách đề thi thử...</h3>
-            <p style="font-size:13.5px;color:var(--gray)">Vui lòng đợi giây lát trong khi hệ thống nạp dữ liệu.</p>
-        </div>
-    </div>
 </div>
 
 <!-- ─── VIDEO MODAL ─── -->
@@ -351,27 +455,43 @@
         <div class="video-frame-wrap" id="videoFrameWrap"></div>
         <div class="video-modal-foot">
             <span id="videoExamMeta">Vật Lý Xuân Trường</span>
-            <a href="#" id="videoExternalLink" target="_blank" style="color:var(--blue);text-decoration:none;font-weight:600;font-size:12.5px"><i class="fa-solid fa-arrow-up-right-from-square"></i> Mở tab riêng</a>
+            <a href="#" id="videoExternalLink" target="_blank" style="color:#60a5fa;text-decoration:none;font-weight:600;font-size:12.5px"><i class="fa-solid fa-arrow-up-right-from-square"></i> Mở tab riêng</a>
         </div>
     </div>
 </div>
 
 <script>
-(function () {
-    function toggleNavDrawer(show) {
-        var d = document.getElementById('navDrawer'), o = document.getElementById('navDrawerOverlay');
-        if (!d || !o) return;
-        d.classList.toggle('open', show);
-        o.classList.toggle('open', show);
-    }
-    window.toggleNavDrawer = toggleNavDrawer;
-})();
-
 const DB_URL = "https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec";
 
 let allExams = [];
 let currentFilter = 'all';
 let currentSearch = '';
+let currentUser = null;
+
+// Initialize candidate info from auth session
+function initCandidateInfo() {
+    try {
+        currentUser = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null');
+    } catch(e){}
+
+    if (!currentUser) {
+        currentUser = {
+            hoten: 'Thí sinh Thử Nghiệm',
+            lop: 'Khóa XPS 2026',
+            sdt: 'HS-THITHU2026'
+        };
+    }
+
+    const name = currentUser.hoten || 'Học sinh dự thi';
+    const sbd = 'SBD: ' + (currentUser.sdt || currentUser.email || 'HS-2026');
+    const sClass = currentUser.lop || 'Khóa XPS 2026';
+    const initials = name.split(' ').map(w => w[0]).slice(-2).join('').toUpperCase();
+
+    document.getElementById('candidateName').textContent = name;
+    document.getElementById('candidateSBD').textContent = sbd;
+    document.getElementById('candidateClass').textContent = sClass;
+    document.getElementById('candidateAvatar').textContent = initials || 'HS';
+}
 
 function extractVideoUrl(ex) {
     if (ex.videoUrl && String(ex.videoUrl).trim()) return String(ex.videoUrl).trim();
@@ -386,17 +506,24 @@ function extractVideoUrl(ex) {
 
 function parseEmbedUrl(url) {
     if (!url) return '';
-    // YouTube
     const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
     if (ytMatch && ytMatch[1]) {
         return 'https://www.youtube.com/embed/' + ytMatch[1] + '?autoplay=1&rel=0';
     }
-    // Google Drive
     const driveMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
     if (driveMatch && driveMatch[1]) {
         return 'https://drive.google.com/file/d/' + driveMatch[1] + '/preview';
     }
     return url;
+}
+
+function getExamHistory(examId) {
+    try {
+        const sdt = (currentUser && currentUser.sdt) ? currentUser.sdt : 'guest';
+        const key = 'vlxt_cbt_result_' + examId + '_' + sdt;
+        const res = localStorage.getItem(key);
+        return res ? JSON.parse(res) : null;
+    } catch(e) { return null; }
 }
 
 async function loadExams() {
@@ -405,18 +532,26 @@ async function loadExams() {
         const r = await cachedFetch(DB_URL + '?type=danhsachde');
         const j = await r.json();
         const rawData = (j.ok && Array.isArray(j.data)) ? j.data : [];
-        // Chỉ nhận các đề thuộc Phòng Thi Thử và ĐƯỢC PHÉP HIỆN (hienThi !== 'an')
+
+        // Lọc đề thuộc Phòng Thi Thử (hoặc có loaiDe === 'thithu' hoặc bắt đầu bằng thithu/vedich)
         allExams = rawData.filter(ex => {
             const isThiThu = ex.loaiDe === 'thithu' || String(ex.examId || '').startsWith('thithu') || String(ex.examId || '').startsWith('vedich2k9') || String(ex.tenDe || '').toLowerCase().includes('thi thử') || String(ex.tenDe || '').toLowerCase().includes('về đích');
             if (!isThiThu) return false;
-            const isHien = (ex.hienThi === undefined || ex.hienThi === true || String(ex.hienThi).toLowerCase() === 'hien' || String(ex.hienThi).toLowerCase() === 'true');
-            return isHien;
+            // Ẩn nếu explicitly hienThi === 'an' VÀ không phải demo
+            const isAn = (String(ex.hienThi).toLowerCase() === 'an' && ex.examId !== 'thithu_demo_01');
+            return !isAn;
         });
-        // Sắp xếp tự nhiên theo thứ tự đề (02 -> 03 -> ... -> 15)
-        allExams.sort((a, b) => (a.examId || '').localeCompare(b.examId || '', undefined, { numeric: true, sensitivity: 'base' }));
+
+        // Sắp xếp tự nhiên (demo_01 lên đầu, sau đó de02, de03...)
+        allExams.sort((a, b) => {
+            if (a.examId === 'thithu_demo_01') return -1;
+            if (b.examId === 'thithu_demo_01') return 1;
+            return (a.examId || '').localeCompare(b.examId || '', undefined, { numeric: true, sensitivity: 'base' });
+        });
+
         renderExams();
     } catch(e) {
-        grid.innerHTML = '<div class="empty-state"><div class="empty-icon" style="color:var(--red)"><i class="fa-solid fa-triangle-exclamation"></i></div><h3>Không thể kết nối đến máy chủ</h3><p>Vui lòng kiểm tra lại đường truyền mạng rồi tải lại trang.</p></div>';
+        grid.innerHTML = '<div class="empty-box"><i class="fa-solid fa-triangle-exclamation" style="color:var(--red)"></i><h3>Không thể kết nối đến máy chủ đề thi</h3><p>Vui lòng kiểm tra lại đường truyền mạng rồi tải lại trang.</p></div>';
     }
 }
 
@@ -428,7 +563,7 @@ window.addEventListener('vlxt:data-updated', function(e) {
 
 function setFilter(filter) {
     currentFilter = filter;
-    document.querySelectorAll('.tag-btn').forEach(btn => {
+    document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.filter === filter);
     });
     renderExams();
@@ -442,12 +577,11 @@ function handleSearch() {
 function renderExams() {
     const grid = document.getElementById('examGrid');
     if (!allExams.length) {
-        grid.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-folder-open"></i></div><h3 style="font-size:16px;margin-bottom:6px">Chưa có đề thi thử nào</h3><p style="font-size:13.5px;color:var(--gray)">Thầy Xuân Trường đang chuẩn bị các bộ đề thi thử thực chiến mới nhất. Các em có thể luyện tập trước tại <a href="danhsach-ly12.html" style="color:var(--blue);font-weight:700;text-decoration:none">Phòng Kiểm Tra</a> nhé!</p></div>';
+        grid.innerHTML = '<div class="empty-box"><i class="fa-solid fa-folder-open"></i><h3>Chưa có đề thi thử nào</h3><p>Thầy Xuân Trường đang chuẩn bị các bộ đề thi thử thực chiến mới nhất.</p></div>';
         return;
     }
 
     let filtered = allExams.filter(ex => {
-        // Search
         if (currentSearch) {
             const ten = String(ex.tenDe || '').toLowerCase();
             const id = String(ex.examId || '').toLowerCase();
@@ -456,64 +590,66 @@ function renderExams() {
                 return false;
             }
         }
-        // Filter
-        if (currentFilter === 'mo') {
-            return ex.trangThai === 'mo';
-        }
-        if (currentFilter === 'video') {
-            return !!extractVideoUrl(ex);
-        }
-        if (currentFilter === 'lop12') {
-            return String(ex.lop || '12') === '12';
-        }
+        const hist = getExamHistory(ex.examId);
+        const isOpen = (ex.trangThai === 'mo' || ex.examId === 'thithu_demo_01');
+
+        if (currentFilter === 'open') return isOpen;
+        if (currentFilter === 'video') return !!extractVideoUrl(ex);
+        if (currentFilter === 'done') return !!hist;
         return true;
     });
 
     if (!filtered.length) {
-        grid.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-filter-circle-xmark"></i></div><h3>Không tìm thấy đề thi phù hợp</h3><p>Hãy thử thay đổi từ khóa tìm kiếm hoặc chọn bộ lọc "Tất cả đề".</p></div>';
+        grid.innerHTML = '<div class="empty-box"><i class="fa-solid fa-filter-circle-xmark"></i><h3>Không tìm thấy đề thi phù hợp</h3><p>Hãy thử thay đổi từ khóa tìm kiếm hoặc chọn bộ lọc "Tất cả đề".</p></div>';
         return;
     }
 
-    grid.innerHTML = filtered.map((ex, idx) => {
-        const isMo = ex.trangThai === 'mo';
-        const num = String(idx + 1).padStart(2, '0');
-        const soCau = ex.soCau || 0;
+    grid.innerHTML = filtered.map(ex => {
+        const isOpen = (ex.trangThai === 'mo' || ex.examId === 'thithu_demo_01');
+        const soCau = ex.soCau || 28;
         const thoiGian = ex.thoiGian || 50;
         const luotLam = Number(ex.soLuotLam || 0).toLocaleString('vi-VN');
         const videoUrl = extractVideoUrl(ex);
-        const moTa = ex.moTa ? ex.moTa.replace(/https?:\/\/[^\s"'<>]+/g, '').trim() : 'Đề thi khảo sát năng lực chuẩn cấu trúc, chấm điểm tự động tức thì.';
+        const hist = getExamHistory(ex.examId);
+        const moTa = ex.moTa ? ex.moTa.replace(/https?:\/\/[^\s"'<>]+/g, '').trim() : 'Đề thi khảo sát năng lực chuẩn cấu trúc Bộ GD&ĐT, chấm điểm tự động tức thì.';
 
-        const statusHtml = isMo
-            ? '<span class="status-badge mo"><i class="fa-solid fa-circle-check"></i> Đang mở</span>'
-            : '<span class="status-badge khoa"><i class="fa-solid fa-lock"></i> Đang khóa</span>';
+        let statusHtml = '';
+        if (hist) {
+            statusHtml = `<span class="status-pill done"><i class="fa-solid fa-clipboard-check"></i> Đã thi (${hist.score}/${hist.maxScore} đ)</span>`;
+        } else if (isOpen) {
+            statusHtml = '<span class="status-pill open"><i class="fa-solid fa-circle-check"></i> Đang mở thi</span>';
+        } else {
+            statusHtml = '<span class="status-pill locked"><i class="fa-solid fa-lock"></i> Chưa mở</span>';
+        }
 
         const videoBtnHtml = videoUrl
             ? `<button class="btn-exam-video" onclick="openVideoModal('${encodeURIComponent(ex.tenDe||ex.examId)}', '${encodeURIComponent(videoUrl)}', '${ex.examId}')"><i class="fa-solid fa-play"></i> Video chữa</button>`
             : '';
 
-        const actionBtnHtml = isMo
-            ? `<a href="thithu.html?exam=${encodeURIComponent(ex.examId)}" class="btn-exam-start">Vào thi ngay <i class="fa-solid fa-arrow-right" style="font-size:12px"></i></a>`
-            : `<button class="btn-exam-locked"><i class="fa-solid fa-lock"></i> Chưa mở thi</button>`;
+        let actionBtnHtml = '';
+        if (isOpen) {
+            actionBtnHtml = `<a href="thithu.html?exam=${encodeURIComponent(ex.examId)}" class="btn-exam-entry">VÀO THI NGAY <i class="fa-solid fa-arrow-right" style="font-size:12px"></i></a>`;
+        } else {
+            actionBtnHtml = `<button class="btn-exam-locked"><i class="fa-solid fa-lock"></i> Chưa mở thi</button>`;
+        }
 
-        return `<div class="exam-card">
+        return `<div class="exam-row-card">
             <div>
-                <div class="exam-top">
-                    <span class="exam-code">ĐỀ #${ex.examId}</span>
+                <div class="exam-card-head">
+                    <span class="exam-id-badge">MÃ ĐỀ #${ex.examId}</span>
                     ${statusHtml}
                 </div>
-                <h3 class="exam-title">${ex.tenDe || '(Chưa đặt tên)'}</h3>
-                <p class="exam-desc">${moTa}</p>
+                <h3 class="exam-row-title">${ex.tenDe || '(Chưa đặt tên)'}</h3>
+                <p class="exam-row-desc">${moTa}</p>
+                <div class="exam-row-meta">
+                    <span><i class="fa-regular fa-clock"></i> ${thoiGian} phút</span>
+                    <span><i class="fa-regular fa-file-lines"></i> ${soCau} câu</span>
+                    <span><i class="fa-regular fa-user"></i> ${luotLam} lượt thi</span>
+                </div>
             </div>
-            <div>
-                <div class="exam-meta-row">
-                    <span class="meta-item"><i class="fa-regular fa-clock"></i> ${thoiGian} phút</span>
-                    <span class="meta-item"><i class="fa-regular fa-file-lines"></i> ${soCau ? soCau + ' câu' : 'Đầy đủ phần'}</span>
-                    <span class="meta-item"><i class="fa-regular fa-user"></i> ${luotLam} lượt</span>
-                </div>
-                <div class="exam-actions">
-                    ${actionBtnHtml}
-                    ${videoBtnHtml}
-                </div>
+            <div class="exam-row-actions">
+                ${actionBtnHtml}
+                ${videoBtnHtml}
             </div>
         </div>`;
     }).join('');
@@ -542,15 +678,8 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeVideoModal();
 });
 
+initCandidateInfo();
 loadExams();
-</script>
-
-<script>
-function toggleTheme(){
-    document.body.classList.toggle('dark');
-    localStorage.setItem('vlxt_theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-}
-if (localStorage.getItem('vlxt_theme') === 'dark') document.body.classList.add('dark');
 </script>
 </body>
 </html>
