@@ -1336,8 +1336,11 @@ async function doSubmitExam() {
 
     // Save result to localStorage
     const sdt = currentUser ? (currentUser.sdt || 'guest') : 'guest';
+    const displayName = simulatedCandidate.hoten || (currentUser ? currentUser.hoten : 'Thí sinh');
+    const displayClass = (currentUser ? currentUser.lop : 'Khóa XPS 2026') || 'Khóa XPS 2026';
     const resultObj = {
         examId: _examId,
+        examName: 'Đề ' + _examId.replace('vedich2k9_de','') + ' — Về Đích 2K9 (Kỳ thi THPT QG 2027)',
         score: score,
         maxScore: maxScore,
         correctCount: correctCount,
@@ -1347,13 +1350,30 @@ async function doSubmitExam() {
     };
     localStorage.setItem('vlxt_cbt_result_' + _examId + '_' + sdt, JSON.stringify(resultObj));
 
+    // Save score to server BangVang for persistent profile history (SAFE: Does NOT touch TaiKhoan LP)
+    if (currentUser && currentUser.sdt && !String(currentUser.sdt).includes('guest') && !String(currentUser.sdt).includes('HS-THITHU')) {
+        try {
+            fetch(DB_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({
+                    action: 'savescore',
+                    name: displayName,
+                    studentClass: displayClass,
+                    phone: currentUser.sdt,
+                    score: score,
+                    examId: _examId,
+                    examName: resultObj.examName,
+                    timeUsed: timeUsedStr
+                })
+            }).catch(() => {});
+        } catch(e){}
+    }
+
     // Switch to Screen 4 (Results)
     isSubmitted = true;
     document.getElementById('examWorkspace').classList.add('hidden');
     document.getElementById('resultScreen').classList.remove('hidden');
-
-    const displayName = simulatedCandidate.hoten || (currentUser ? currentUser.hoten : 'Thí sinh');
-    const displayClass = (currentUser ? currentUser.lop : 'Khóa XPS 2026') || 'Khóa XPS 2026';
 
     document.getElementById('resultBigScore').textContent = score + ' / ' + maxScore + ' đ';
     document.getElementById('resultCorrectRatio').textContent = 'Đúng ' + correctCount + ' / ' + questions.length + ' câu';

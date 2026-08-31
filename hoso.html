@@ -445,7 +445,9 @@ function formatDate(d) {
   if (!d) return '';
   const dt = new Date(d);
   if (isNaN(dt)) return d;
-  return dt.toLocaleDateString('vi-VN', { day:'2-digit', month:'2-digit', year:'numeric' });
+  const time = dt.toLocaleTimeString('vi-VN', { hour:'2-digit', minute:'2-digit' });
+  const date = dt.toLocaleDateString('vi-VN', { day:'2-digit', month:'2-digit', year:'numeric' });
+  return `${date} (${time})`;
 }
 
 // FIX 15/8: _lbLastUser phải khai báo TRƯỚC lệnh gọi renderPage() đầu tiên bên dưới
@@ -613,12 +615,70 @@ function renderPage(profile, lb, nvRes, baihocRows) {
   const lbData  = normalizeLbData(lb);
   _lbLastUser = u;
 
+  function parseScoreNum(val) {
+    if (val === null || val === undefined) return 0;
+    const str = String(val).trim().split('/')[0].replace(',', '.');
+    const num = parseFloat(str);
+    return isNaN(num) ? 0 : Math.round(num * 100) / 100;
+  }
+
+  // Scan local exam attempts from localStorage for instant sync
+  const localCbtScores = [];
+  try {
+    const sdtKey = u.sdt || user.sdt || '';
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('vlxt_cbt_result_') && (!sdtKey || key.includes(sdtKey))) {
+        const raw = localStorage.getItem(key);
+        if (raw) {
+          const item = JSON.parse(raw);
+          if (item && item.score !== undefined) {
+            localCbtScores.push({
+              ten: item.examId || 'Bài thi THPT QG',
+              examId: item.examId || '',
+              diem: item.score,
+              maxScore: item.maxScore || 10,
+              ngay: item.submittedAt || new Date().toISOString(),
+              timeUsed: item.timeUsed || '',
+              correctCount: item.correctCount,
+              totalQ: item.totalQ
+            });
+          }
+        }
+      }
+    }
+  } catch(e){}
+
+  // Merge server scores and local CBT scores
+  const allScores = [...scores];
+  localCbtScores.forEach(loc => {
+    const exists = allScores.some(s => 
+      (s.examId && loc.examId && s.examId === loc.examId) ||
+      (s.ngay && loc.ngay && Math.abs(new Date(s.ngay).getTime() - new Date(loc.ngay).getTime()) < 30000)
+    );
+    if (!exists) {
+      allScores.push(loc);
+    }
+  });
+
+  function resolveExamName(s) {
+    const raw = s.examName || s.tenDe || s.made || s.examId || s.de || s.ten || '';
+    if (!raw || raw === '10 đ Lý' || raw === u.hoten) return 'Khảo sát năng lực — Kỳ thi THPT QG 2027';
+    if (raw.includes('vedich2k9_de02')) return 'Đề 02 — Về Đích 2K9 (Kỳ thi THPT QG 2027)';
+    if (raw.includes('vedich2k9_de05')) return 'Đề 05 — Về Đích 2K9 (Kỳ thi THPT QG 2027)';
+    if (raw.startsWith('vedich2k9_de')) {
+      const num = raw.replace('vedich2k9_de', '');
+      return `Đề ${num} — Về Đích 2K9 (Kỳ thi THPT QG 2027)`;
+    }
+    return raw;
+  }
+
   const lp     = Number(u.lpTotal) || 0;
   const rank   = getRank(lp);
   const next   = nextRank(lp);
   const subLabel = vlxtSubRank(lp);
   const initials = (u.hoten || 'HS').split(' ').map(w=>w[0]).slice(-2).join('').toUpperCase();
-  const bestScore = scores.length ? Math.max(...scores.map(s => Number(s.diem) || 0)) : 0;
+  const bestScore = allScores.length ? Math.max(...allScores.map(s => parseScoreNum(s.diem))) : 0;
   const vip = vipInfo(u);
 
   const myRankPos = lbData.findIndex(r =>
@@ -662,7 +722,7 @@ function renderPage(profile, lb, nvRes, baihocRows) {
         <div class="stat-lbl">📚 Bài đã học</div>
       </div>
       <div class="stat-card">
-        <div class="stat-val score">${scores.length > 0 ? bestScore : '—'}</div>
+        <div class="stat-val score">${allScores.length > 0 ? (bestScore % 1 === 0 ? bestScore : bestScore.toFixed(2)) : '—'}</div>
         <div class="stat-lbl">🏅 Điểm cao nhất</div>
       </div>
     </div>
@@ -697,19 +757,23 @@ function renderPage(profile, lb, nvRes, baihocRows) {
     <!-- Tab: Điểm thi -->
     <div class="tab-panel" id="tab-diem">
       <div class="section-card">
-        <div class="section-head">📝 Lịch sử điểm thi (${scores.length} lần)</div>
+        <div class="section-head">📝 Lịch sử điểm thi (${allScores.length} lần)</div>
         <div>
-          ${scores.length === 0
-            ? '<div class="empty-msg">Chưa có lịch sử thi.<br><a href="danhsach-ly12.html" style="color:var(--blue);font-weight:600;">Thi thử ngay →</a></div>'
-            : [...scores].reverse().map(s => {
-                const d = Number(s.diem) || 0;
-                const cls = d >= 8 ? 'high' : d >= 5 ? 'mid' : 'low';
+          ${allScores.length === 0
+            ? '<div class="empty-msg">Chưa có lịch sử thi.<br><a href="phong-thi-thu.html" style="color:var(--blue);font-weight:600;">Vào phòng thi thử ngay →</a></div>'
+            : [...allScores].sort((a,b) => new Date(b.ngay || 0) - new Date(a.ngay || 0)).map(s => {
+                const num = parseScoreNum(s.diem);
+                const cls = num >= 8 ? 'high' : num >= 5 ? 'mid' : 'low';
+                const name = resolveExamName(s);
+                const timeInfo = s.timeUsed ? ` · ⏱ ${s.timeUsed}` : '';
+                const correctInfo = (s.correctCount !== undefined && s.totalQ) ? ` · ✔ Đúng ${s.correctCount}/${s.totalQ} câu` : '';
+                const scoreDisplay = (num % 1 === 0) ? num : num.toFixed(2);
                 return `
                 <div class="score-item">
-                  <div class="score-circle ${cls}">${d}</div>
+                  <div class="score-circle ${cls}">${scoreDisplay}</div>
                   <div class="score-info">
-                    <div class="score-name">Bài thi</div>
-                    <div class="score-date">${formatDate(s.ngay)}</div>
+                    <div class="score-name">${name}</div>
+                    <div class="score-date">📅 ${formatDate(s.ngay)}${timeInfo}${correctInfo}</div>
                   </div>
                 </div>`;
               }).join('')
