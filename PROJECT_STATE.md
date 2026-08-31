@@ -159,6 +159,27 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 31/08/2026 — Thêm Chế Độ Xem Trước Đề (Exam Preview Simulation) & Duyệt Cùng Lúc Nhiều Đề (Bulk Approve)
+
+- **Vấn đề & Yêu cầu của Thầy**:
+  1. Thêm chế độ xem trước đề thi trước khi đưa lên web giống với Phòng thi thử trong trang **Phòng kiểm tra** (`phong-kiem-tra.html` & `index.html` của Admin Console).
+  2. Cho phép xem trước trực quan cả đề đã lưu trong danh sách và bản nháp vừa bóc tách từ file Word `.docx` (với đầy đủ bộ lọc Phần I, II, III, KaTeX công thức toán, đáp án đúng và lời giải).
+  3. Cho phép duyệt cùng lúc nhiều đề (chọn hàng loạt, Hiện/Ẩn hàng loạt, Mở/Khóa thi hàng loạt, Xóa hàng loạt).
+- **Các file đã sửa**:
+  - `edu-portal-console/phong-kiem-tra.html`:
+    - Thêm nút `👁️ Xem đề` trên từng thẻ đề kiểm tra để mở modal chi tiết đề `#exam-detail-overlay` với đầy đủ bộ lọc phần I/II/III và lời giải chi tiết.
+    - Thêm nút `👁️ Xem trước dạng phòng thi` (`previewDraftExamInModal()`) cạnh nút `Xuất Bản Lên Web` khi bóc tách file Word `.docx`.
+    - Thêm thanh công cụ duyệt hàng loạt (`#kt-bulk-toolbar`), checkbox chọn tất cả và checkbox từng thẻ đề.
+    - Bổ sung các hàm xử lý duyệt hàng loạt qua API `bulkupdateexams`: `bulkSetKiemTraVisibility()`, `bulkSetKiemTraStatus()`, `bulkDeleteKiemTraExams()`.
+  - `edu-portal-console/index.html`: Đồng bộ hoàn toàn các chức năng trên.
+- **Hành vi mới**:
+  - Thầy có thể xem trước chi tiết bất kỳ đề kiểm tra nào trong danh sách hoặc đề vừa kéo thả file Word trước khi xuất bản.
+  - Thầy có thể tích chọn nhiều đề kiểm tra để duyệt Hiện/Ẩn hoặc Mở/Khóa thi cùng lúc chỉ với 1 cú click.
+- **Kiểm tra**:
+  - Node.js syntax audit script chạy kiểm tra 100% script blocks trong `phong-kiem-tra.html` và `index.html` $\rightarrow$ ALL SCRIPTS SYNTAX CHECK PASSED.
+- **Điều phải giữ nguyên**:
+  - Tiếp tục sử dụng `postAdminWriteWithRetry` đảm bảo xác nhận ghi dữ liệu thực tế trên Google Apps Script / Google Sheets.
+
 ### 30/08/2026 — Chuẩn Hóa Bố Cục Ảnh, Công Thức Nội Dòng & Ký Hiệu Hạt Nhân 14 Đề 2k9 (Issue #14)
 
 - **Vấn đề & Yêu cầu của Thầy**:
