@@ -114,23 +114,48 @@
             display: grid; grid-template-columns: 1fr 330px;
             overflow: hidden;
         }
-        @media (max-width: 900px) {
+        @media (max-width: 960px) {
             .cbt-workspace { grid-template-columns: 1fr; }
+            .q-palette-panel { display: none; }
         }
 
-        /* ─── LEFT: QUESTION VIEWPORT ─── */
+        /* ─── LEFT: QUESTION VIEWPORT WITH PINNED BOTTOM NAV BAR ─── */
         .q-viewport {
-            height: 100%; overflow-y: auto; padding: 22px 26px 90px;
-            display: flex; flex-direction: column; justify-content: space-between;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            background: var(--bg2);
         }
+
+        /* Scrollable container for question text, diagrams, and options */
+        .q-scroll-body {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 20px 24px 24px;
+            min-height: 0; /* Critical for flex child scroll */
+        }
+
         .q-content-box {
-            background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 14px;
-            padding: 26px; box-shadow: 0 4px 16px rgba(0,0,0,0.03); margin-bottom: 18px;
-            min-height: 320px; transition: opacity 0.12s ease; position: relative;
+            background: var(--card-bg);
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            padding: 24px 26px 28px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+            margin-bottom: 12px;
+            min-height: 280px;
+            transition: opacity 0.12s ease;
+            position: relative;
+            max-width: 100%;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
         .q-content-box.q-loading {
             opacity: 0.65; pointer-events: none;
         }
+
         .q-head-bar {
             display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1.5px solid var(--border-light); padding-bottom: 12px; margin-bottom: 18px;
@@ -138,11 +163,11 @@
         }
         .q-badge-group { display: flex; align-items: center; gap: 8px; }
         .q-number-badge {
-            font-family: 'DM Mono', monospace; font-size: 14.5px; font-weight: 800;
+            font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 800;
             background: var(--primary); color: #fff; padding: 4px 12px; border-radius: 6px;
         }
         .q-part-badge {
-            font-size: 12.5px; font-weight: 700; color: var(--primary);
+            font-size: 12px; font-weight: 700; color: var(--primary);
             background: var(--primary-bg); padding: 4px 10px; border-radius: 6px;
         }
         .btn-flag-q {
@@ -157,13 +182,63 @@
         }
 
         .q-body-text {
-            font-size: 16px; line-height: 1.7; font-weight: 600; color: var(--black);
-            margin-bottom: 22px;
+            font-size: 15.5px; line-height: 1.7; font-weight: 600; color: var(--black);
+            margin-bottom: 20px; max-width: 100%; overflow-x: hidden;
         }
-        .q-body-text img, .tf-stmt img {
-            max-width: 100%; height: auto; border-radius: 8px; margin: 12px 0;
-            border: 1px solid var(--border); background: #fff; display: block;
+
+        /* ─── RESPONSIVE IMAGE & DIAGRAM CONTAINMENT ─── */
+        .q-img-wrap, .q-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin: 12px 0 16px;
+            max-width: 100%;
+            text-align: center;
         }
+
+        .q-body-text img, 
+        .tf-stmt img, 
+        .mc-option-label img,
+        .q-img-wrap img,
+        .q-gallery img {
+            max-width: 100% !important;
+            max-height: min(40vh, 360px) !important;
+            width: auto !important;
+            height: auto !important;
+            object-fit: contain !important;
+            border-radius: 8px;
+            border: 1.5px solid var(--border);
+            background: #fff;
+            display: inline-block;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            vertical-align: middle;
+        }
+
+        /* Two or more diagrams side by side on wide screens, stacked on small screens */
+        .q-gallery.multi-imgs img {
+            max-width: min(100%, 48%) !important;
+            max-height: min(34vh, 280px) !important;
+        }
+
+        @media (max-width: 768px) {
+            .q-gallery.multi-imgs img {
+                max-width: 100% !important;
+                max-height: min(28vh, 220px) !important;
+            }
+            .q-scroll-body {
+                padding: 14px 14px 18px;
+            }
+            .q-content-box {
+                padding: 16px 18px;
+            }
+            .q-nav-bar {
+                height: 56px;
+                padding: 0 14px;
+            }
+        }
+
         .img-error-box {
             display: flex; align-items: center; gap: 8px; padding: 10px 14px;
             background: var(--red-bg); color: var(--red); border: 1px solid rgba(185,28,28,0.2);
@@ -171,12 +246,13 @@
         }
 
         /* ─── PART I: MC OPTIONS (A, B, C, D) ─── */
-        .mc-options-list { display: flex; flex-direction: column; gap: 10px; }
+        .mc-options-list { display: flex; flex-direction: column; gap: 10px; max-width: 100%; }
         .mc-option-label {
             display: flex; align-items: center; gap: 12px; padding: 12px 16px;
             background: var(--bg2); border: 1.5px solid var(--border); border-radius: 10px;
             cursor: pointer; transition: all 0.15s; font-size: 14.5px; font-weight: 600;
-            user-select: none;
+            user-select: none; max-width: 100%; box-sizing: border-box;
+            word-break: break-word; overflow-wrap: break-word;
         }
         .mc-option-label:hover {
             border-color: var(--primary-light); background: var(--primary-bg);
@@ -196,14 +272,17 @@
         }
 
         /* ─── PART II: TRUE / FALSE ─── */
-        .tf-container { display: flex; flex-direction: column; gap: 10px; }
+        .tf-container { display: flex; flex-direction: column; gap: 10px; max-width: 100%; }
         .tf-stmt {
             background: var(--bg2); border: 1.5px solid var(--border); border-radius: 10px;
             padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;
-            gap: 14px; flex-wrap: wrap;
+            gap: 14px; flex-wrap: wrap; max-width: 100%; box-sizing: border-box;
         }
-        .tf-text { flex: 1; font-size: 14.5px; font-weight: 600; line-height: 1.55; min-width: 200px; }
-        .tf-btn-group { display: flex; gap: 8px; flex-shrink: 0; }
+        .tf-text {
+            flex: 1 1 300px; font-size: 14.5px; font-weight: 600; line-height: 1.55;
+            min-width: 200px; max-width: 100%; word-break: break-word; overflow-wrap: break-word;
+        }
+        .tf-btn-group { display: flex; gap: 8px; flex-shrink: 0; align-self: center; }
         .tf-choice-btn {
             padding: 7px 18px; border-radius: 8px; border: 1.5px solid var(--border);
             background: #fff; font-size: 13px; font-weight: 800; cursor: pointer;
@@ -220,20 +299,29 @@
         /* ─── PART III: SHORT ANSWER ─── */
         .short-answer-box {
             background: var(--primary-bg); border: 1.5px solid rgba(10,75,156,0.3);
-            border-radius: 12px; padding: 22px; text-align: center;
+            border-radius: 12px; padding: 22px; text-align: center; max-width: 100%;
         }
         .short-answer-label { font-size: 14px; font-weight: 700; color: var(--primary-dark); margin-bottom: 12px; }
         .short-input-field {
-            width: 200px; height: 46px; border-radius: 8px; border: 2px solid var(--primary);
+            width: 200px; max-width: 100%; height: 46px; border-radius: 8px; border: 2px solid var(--primary);
             text-align: center; font-size: 19px; font-weight: 800; color: var(--black);
             font-family: 'DM Mono', monospace; outline: none; background: #fff;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
 
-        /* ─── BOTTOM QUESTION NAV BAR ─── */
+        /* ─── PINNED BOTTOM QUESTION NAV BAR ─── */
         .q-nav-bar {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 14px 0; gap: 12px; flex-wrap: wrap;
+            flex-shrink: 0;
+            height: 62px;
+            padding: 0 24px;
+            background: #fff;
+            border-top: 1.5px solid var(--border);
+            box-shadow: 0 -3px 12px rgba(0,0,0,0.04);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            z-index: 20;
         }
         .btn-q-nav {
             height: 40px; padding: 0 18px; border-radius: 8px; border: 1.5px solid var(--border);
@@ -433,28 +521,31 @@
 
     <!-- Left: Question Viewport -->
     <main class="q-viewport" id="qViewport">
-        <div class="q-content-box" id="qContentBox">
-            <div class="q-head-bar">
-                <div class="q-badge-group">
-                    <span class="q-number-badge" id="qNumberBadge">CÂU 1 / 28</span>
-                    <span class="q-part-badge" id="qPartBadge">PHẦN I: TRẮC NGHIỆM 4 LỰA CHỌN</span>
+        <!-- Scrollable content area with natural vertical scroll and dedicated padding -->
+        <div class="q-scroll-body" id="qScrollBody">
+            <div class="q-content-box" id="qContentBox">
+                <div class="q-head-bar">
+                    <div class="q-badge-group">
+                        <span class="q-number-badge" id="qNumberBadge">CÂU 1 / 28</span>
+                        <span class="q-part-badge" id="qPartBadge">PHẦN I: TRẮC NGHIỆM 4 LỰA CHỌN</span>
+                    </div>
+                    <button class="btn-flag-q" id="flagBtn" onclick="toggleFlagCurrent()">
+                        <i class="fa-regular fa-star" id="flagIcon"></i> <span id="flagText">Đánh dấu xem lại</span>
+                    </button>
                 </div>
-                <button class="btn-flag-q" id="flagBtn" onclick="toggleFlagCurrent()">
-                    <i class="fa-regular fa-star" id="flagIcon"></i> <span id="flagText">Đánh dấu xem lại</span>
-                </button>
-            </div>
 
-            <!-- Question Body -->
-            <div class="q-body-text" id="qBodyText">
-                Đang nạp câu hỏi...
-            </div>
+                <!-- Question Body -->
+                <div class="q-body-text" id="qBodyText">
+                    Đang nạp câu hỏi...
+                </div>
 
-            <!-- Dynamic Answer Area -->
-            <div id="qAnswerArea"></div>
+                <!-- Dynamic Answer Area -->
+                <div id="qAnswerArea"></div>
+            </div>
         </div>
 
-        <!-- Navigation bar -->
-        <div class="q-nav-bar">
+        <!-- Pinned Bottom Navigation Bar -->
+        <div class="q-nav-bar" id="qNavBar">
             <button class="btn-q-nav" id="btnPrevQ" onclick="prevQuestion()" disabled>
                 <i class="fa-solid fa-arrow-left"></i> Câu trước
             </button>
@@ -683,7 +774,7 @@ function extractQuestionImages(q) {
     return urls;
 }
 
-// Preload & Decode a single image URL with timeout
+// Preload & Decode a single image URL with timeout safeguard
 function preloadSingleImage(src) {
     if (!src) return Promise.resolve({ ok: true, src });
     if (imagePreloadCache.has(src)) return imagePreloadCache.get(src);
@@ -810,12 +901,25 @@ function getQType(q) {
     return 'mc';
 }
 
-function fixNuclear(html) {
+function formatQuestionHtml(html) {
     if (!html) return '';
+    
+    // Fix nuclear notation
     html = html.replace(/<sup>([^<]+)<\/sup>\s*<sub>([^<]+)<\/sub>\s*([A-Za-zÀ-ỹ]{1,3})/g, (_, a, z, x) => '${}^{' + a + '}_{' + z + '}\\text{' + x + '}$');
     html = html.replace(/<sub>([^<]+)<\/sub>\s*<sup>([^<]+)<\/sup>\s*([A-Za-zÀ-ỹ]{1,3})/g, (_, z, a, x) => '${}^{' + a + '}_{' + z + '}\\text{' + x + '}$');
     html = html.replace(/\\cdotp/g, '\\cdot');
     html = html.replace(/([A-Za-zÀ-ỹ])\u20D7/g, '\\vec{$1}');
+
+    // Count images to apply multi-img gallery if needed
+    const imgMatches = html.match(/<img[^>]+>/gi) || [];
+    if (imgMatches.length >= 2) {
+        // Group images in responsive gallery
+        const isMulti = imgMatches.length >= 2 ? 'multi-imgs' : '';
+        html = html.replace(/((?:<img[^>]+>\s*)+)/gi, `<div class="q-gallery ${isMulti}">$1</div>`);
+    } else if (imgMatches.length === 1 && !html.includes('q-img-wrap')) {
+        html = html.replace(/(<img[^>]+>)/gi, `<div class="q-img-wrap">$1</div>`);
+    }
+
     return html;
 }
 
@@ -917,8 +1021,8 @@ async function goToQuestion(idx) {
         flagText.textContent = 'Đánh dấu xem lại';
     }
 
-    // 3. Question Body
-    document.getElementById('qBodyText').innerHTML = fixNuclear(targetQ.question);
+    // 3. Question Body with responsive image formatting
+    document.getElementById('qBodyText').innerHTML = formatQuestionHtml(targetQ.question);
 
     // 4. Answer Area Payload
     const ansArea = document.getElementById('qAnswerArea');
@@ -934,7 +1038,7 @@ async function goToQuestion(idx) {
 
             const label = document.createElement('div');
             label.className = 'mc-option-label' + (isSel ? ' selected' : '');
-            label.innerHTML = `<span class="mc-letter-badge">${L}</span> <span>${fixNuclear(optVal)}</span>`;
+            label.innerHTML = `<span class="mc-letter-badge">${L}</span> <span>${formatQuestionHtml(optVal)}</span>`;
             label.onclick = (e) => {
                 if (e) e.stopPropagation();
                 answers[targetQ.id] = L;
@@ -959,7 +1063,7 @@ async function goToQuestion(idx) {
             row.className = 'tf-stmt';
             row.setAttribute('data-stmt', L);
             row.innerHTML = `
-                <div class="tf-text"><b>${subLabels[L]}</b> ${fixNuclear(stmtVal)}</div>
+                <div class="tf-text"><b>${subLabels[L]}</b> ${formatQuestionHtml(stmtVal)}</div>
                 <div class="tf-btn-group">
                     <button type="button" class="tf-choice-btn ${curVal==='Đ'?'pick-d':''}" onclick="setTfChoice('${targetQ.id}', '${L}', 'Đ', this, event)">Đúng</button>
                     <button type="button" class="tf-choice-btn ${curVal==='S'?'pick-s':''}" onclick="setTfChoice('${targetQ.id}', '${L}', 'S', this, event)">Sai</button>
@@ -986,10 +1090,10 @@ async function goToQuestion(idx) {
         b.classList.toggle('active', i === idx);
     });
 
-    // 6. Reveal rendered question & Reset scroll
+    // 6. Reveal rendered question & Reset scroll inside scroll-body
     if (qBox) qBox.classList.remove('q-loading');
-    const vp = document.getElementById('qViewport');
-    if (vp) vp.scrollTop = 0;
+    const scrollBody = document.getElementById('qScrollBody');
+    if (scrollBody) scrollBody.scrollTop = 0;
 
     // 7. KaTeX Auto-render with token check
     requestAnimationFrame(() => {
@@ -1136,7 +1240,7 @@ async function doSubmitExam() {
                 let tag = '';
                 if (isCorrect) tag = ' <span style="color:var(--green);font-weight:800">✔ Đáp án đúng</span>';
                 if (isChosen && !isCorrect) tag = ' <span style="color:var(--red);font-weight:800">✘ Bạn chọn</span>';
-                optsHtml += `<div style="margin:4px 0;font-size:13.5px">${L}. ${fixNuclear(q.options[L])}${tag}</div>`;
+                optsHtml += `<div style="margin:4px 0;font-size:13.5px">${L}. ${formatQuestionHtml(q.options[L])}${tag}</div>`;
             });
 
             reviewHtml += `
@@ -1145,10 +1249,10 @@ async function doSubmitExam() {
                         <span style="font-weight:800">Câu ${q.id} (Phần I)</span>
                         <span class="rv-status-badge ${ok?'correct':'wrong'}">${ok?'✔ Đúng (+0.25đ)':'✘ Sai (0.00đ)'}</span>
                     </div>
-                    <div style="font-size:15px;font-weight:600;margin-bottom:8px">${fixNuclear(q.question)}</div>
+                    <div style="font-size:15px;font-weight:600;margin-bottom:8px">${formatQuestionHtml(q.question)}</div>
                     ${optsHtml}
                     <button class="btn-toggle-solution" onclick="toggleGiai('${q.id}')"><i class="fa-solid fa-lightbulb"></i> Lời giải chi tiết</button>
-                    <div class="solution-box" id="giai-${q.id}">${fixNuclear(q.giaiThich || 'Đang cập nhật lời giải...')}</div>
+                    <div class="solution-box" id="giai-${q.id}">${formatQuestionHtml(q.giaiThich || 'Đang cập nhật lời giải...')}</div>
                 </div>
             `;
         } else if (type === 'tf') {
@@ -1168,7 +1272,7 @@ async function doSubmitExam() {
                 const dsMap = { 'Đ': 'Đúng', 'S': 'Sai' };
                 rows += `
                     <div style="margin:6px 0;font-size:13.5px;padding:6px 10px;background:var(--bg2);border-radius:6px">
-                        <b>${{A:'a)',B:'b)',C:'c)',D:'d)'}[L]}</b> ${fixNuclear(q.options[L])}
+                        <b>${{A:'a)',B:'b)',C:'c)',D:'d)'}[L]}</b> ${formatQuestionHtml(q.options[L])}
                         <div style="font-size:12px;color:var(--gray);margin-top:2px">
                             Bạn chọn: <b>${dsMap[got]||'(chưa chọn)'}</b> · Đáp án: <b style="color:var(--green)">${dsMap[want]||want}</b> ${ok?'<span style="color:var(--green)">✔</span>':'<span style="color:var(--red)">✘</span>'}
                         </div>
@@ -1187,10 +1291,10 @@ async function doSubmitExam() {
                         <span style="font-weight:800">Câu ${q.id} (Phần II)</span>
                         <span class="rv-status-badge ${allOk?'correct':'wrong'}">${nc}/${letters.length} ý đúng (+${tfPts}đ)</span>
                     </div>
-                    <div style="font-size:15px;font-weight:600;margin-bottom:8px">${fixNuclear(q.question)}</div>
+                    <div style="font-size:15px;font-weight:600;margin-bottom:8px">${formatQuestionHtml(q.question)}</div>
                     ${rows}
                     <button class="btn-toggle-solution" onclick="toggleGiai('${q.id}')"><i class="fa-solid fa-lightbulb"></i> Lời giải chi tiết</button>
-                    <div class="solution-box" id="giai-${q.id}">${fixNuclear(q.giaiThich || 'Đang cập nhật lời giải...')}</div>
+                    <div class="solution-box" id="giai-${q.id}">${formatQuestionHtml(q.giaiThich || 'Đang cập nhật lời giải...')}</div>
                 </div>
             `;
         } else if (type === 'short') {
@@ -1206,12 +1310,12 @@ async function doSubmitExam() {
                         <span style="font-weight:800">Câu ${q.id} (Phần III)</span>
                         <span class="rv-status-badge ${ok?'correct':'wrong'}">${ok?'✔ Đúng (+0.25đ)':'✘ Sai (0.00đ)'}</span>
                     </div>
-                    <div style="font-size:15px;font-weight:600;margin-bottom:8px">${fixNuclear(q.question)}</div>
+                    <div style="font-size:15px;font-weight:600;margin-bottom:8px">${formatQuestionHtml(q.question)}</div>
                     <div style="font-size:13.5px">
                         Bạn trả lời: <b>${got || '(bỏ trống)'}</b> · Đáp án chuẩn: <b style="color:var(--green)">${q.correct}</b>
                     </div>
                     <button class="btn-toggle-solution" onclick="toggleGiai('${q.id}')"><i class="fa-solid fa-lightbulb"></i> Lời giải chi tiết</button>
-                    <div class="solution-box" id="giai-${q.id}">${fixNuclear(q.giaiThich || 'Đang cập nhật lời giải...')}</div>
+                    <div class="solution-box" id="giai-${q.id}">${formatQuestionHtml(q.giaiThich || 'Đang cập nhật lời giải...')}</div>
                 </div>
             `;
         }
