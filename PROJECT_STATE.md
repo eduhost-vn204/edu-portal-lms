@@ -175,7 +175,7 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
   - `website-import-candidate.json`: Payload theo chuẩn Data Contract v2.1.
   - `payload-issue-20-manifest.json`: Manifest đối soát SHA-256 toàn vẹn.
   - Pipeline & Test: `content-pipeline/chuong-1/pipeline/generate_issue_20_payload.py`, `tests/test_issue_20_payload_fidelity.py`.
-- **Kiểm thử**: `tests/test_issue_20_payload_fidelity.py` (5/5 tests PASS), `tests/test_export_tinh_to_bank.py` (5/5 suites PASS).
+- **Kiểm thử**: `tests/test_issue_20_payload_fidelity.py` (6/6 tests PASS — bao gồm kiểm tra khớp SHA-256 manifest đối soát byte-for-byte), `tests/test_export_tinh_to_bank.py` (5/5 suites PASS).
 
 ### 26/08/2026 — Thiết lập vận hành dài hạn bằng Antigravity
 
