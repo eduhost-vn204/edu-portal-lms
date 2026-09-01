@@ -159,6 +159,24 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 01/09/2026 — Issue #20: Tạo payload cơ học từ teacher-approved-questions.json
+
+- **Nhiệm vụ**: Thực hiện Issue #20 — Tạo payload cơ học trực tiếp từ `teacher-approved-questions.json` (Lô 145 trang PDF 107–251), không tự viết lại bất kỳ nội dung nào.
+- **Tiêu chuẩn nghiệm thu định lượng**:
+  - Đúng **390 ID duy nhất**, không thiếu, không thừa (100% khớp danh sách đã duyệt).
+  - Đổi đúng **3 ID va chạm** theo quy tắc `{Old-ID}-H{identityHash[:8]}`: `VLXT-PT-DE_05-P1-Q01-H6808885d`, `VLXT-PT-DE_05-P1-Q17-Hdc672a67`, `VLXT-PT-DE_20-P1-Q02-H04d938be`. 3 ID cũ không còn tồn tại trong payload.
+  - **Sai khác nội dung = 0**: Chuyển đổi cơ học thuần túy 1:1, giữ nguyên từng ký tự, công thức KaTeX, các phương án A/B/C/D, đáp án, lời giải chi tiết và identityHash.
+  - **Bảo toàn Taxonomy**: Giữ nguyên trọn vẹn object `taxonomy` nguồn (grade, chapter, lessonCode, lessonTitle, problemType, difficulty) trong toàn bộ artifact đối soát.
+  - **Lỗi Unicode = 0**: 100% chuẩn hóa UTF-8 NFC, không lỗi font, không mojibake.
+  - **Kiểm soát môi trường**: Chỉ **DRY-RUN**, gắn cờ an toàn `dryRun: true` và `productionDeploy: false`, tuyệt đối chưa nạp/ghi/xóa dữ liệu sống trên Google Sheets hay production.
+- **Gói dữ liệu & File sinh ra**:
+  - `teacher-approved-questions.json`: Dataset 390 câu đã chuẩn hóa 3 ID.
+  - `savenganhang-payload-390-dryrun.json`: Payload sẵn sàng cho Apps Script API `action: "savenganhang"`.
+  - `website-import-candidate.json`: Payload theo chuẩn Data Contract v2.1.
+  - `payload-issue-20-manifest.json`: Manifest đối soát SHA-256 toàn vẹn.
+  - Pipeline & Test: `content-pipeline/chuong-1/pipeline/generate_issue_20_payload.py`, `tests/test_issue_20_payload_fidelity.py`.
+- **Kiểm thử**: `tests/test_issue_20_payload_fidelity.py` (5/5 tests PASS), `tests/test_export_tinh_to_bank.py` (5/5 suites PASS).
+
 ### 26/08/2026 — Thiết lập vận hành dài hạn bằng Antigravity
 
 - Xác định hai repo chính thức: Student `eduhost-vn204/edu-portal-lms`, Admin `eduhost-vn204/edu-portal-console`; loại repository Netlify legacy khỏi phạm vi làm việc mới.
