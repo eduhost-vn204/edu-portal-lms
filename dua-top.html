@@ -925,6 +925,7 @@
 
     var picked = theory.slice(0, numTheory).concat(calc.slice(0, numCalc));
     console.log('Đua Top - Tổng câu Tinh hợp lệ:', filtered.length, '| Chọn Lý thuyết:', numTheory, '| Chọn Tính toán:', numCalc);
+    console.log('👉 BẤM VÀO MŨI TÊN BÊN CẠNH ĐỂ XEM CHI TIẾT TOÀN BỘ ' + filtered.length + ' CÂU HỎI THẬT:', filtered);
     window.__DEBUG_POOL = filtered; // Expose for teacher to verify
     return shuffle(picked);
   }
