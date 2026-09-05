@@ -629,6 +629,20 @@
         (q.giaiThich ? '<br><span style="color:var(--sub)">' + fixLatexQuirks(q.giaiThich) + '</span>' : '');
     }
 
+    if (q.giaiThich && typeof renderMathInElement === 'function') {
+      setTimeout(function() {
+        try {
+          renderMathInElement(fb, {
+            delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false}
+            ],
+            throwOnError: false
+          });
+        } catch(e) {}
+      }, 0);
+    }
+
     // Giữ tối đa 10 lịch sử streak
     if (streakHistory.length > 10) streakHistory = streakHistory.slice(-10);
 
