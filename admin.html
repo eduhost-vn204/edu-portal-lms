@@ -500,14 +500,22 @@
 /* ════════════════════════════════════
    CẤU HÌNH
 ════════════════════════════════════ */
-const ADMIN_PASSWORD = "thaytruong"; // ← ĐỔI MẬT KHẨU Ở ĐÂY
+const ADMIN_PASSWORD_HASH = "e5de6384ec4af3d23eb4bed982163b216be90c3ac3b7d531d8b914b0984c9ae5"; // SHA-256 của mật khẩu
 const DB_URL = "https://script.google.com/macros/s/AKfycbxT-pZNJJbbCiv1HfN99m10Z1kXcRzEhIzMyx6K8u2TDLobpylsXzq_zQKaY9zkHC8m/exec";
 
 /* ════════════════════════════════════
    LOGIN
 ════════════════════════════════════ */
-function checkLogin(){
-    if(document.getElementById('admin-pass').value === ADMIN_PASSWORD){
+async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function checkLogin(){
+    const inputHash = await sha256(document.getElementById('admin-pass').value);
+    if(inputHash === ADMIN_PASSWORD_HASH){
         localStorage.setItem('adminLoggedIn','1');
         document.getElementById('login-overlay').style.display='none';
         initAdmin();
@@ -1134,3 +1142,4 @@ function resetAll(){parsedQuestions=[];document.getElementById('preview-wrap2').
 </script>
 </body>
 </html>
+   
