@@ -159,6 +159,18 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 05/09/2026 — Cập nhật Tỉ lệ Đua Top & Solo và Chuẩn hoá Tên Chương
+
+- **Vấn đề & Yêu cầu của Thầy**: 
+  1. Hệ thống Đua Top và Solo không bốc đủ 576 câu Tinh do tên chương bị lệch (Vật lí nhiệt vs CHƯƠNG 1 - VẬT LÝ NHIỆT).
+  2. Chỉnh tỉ lệ bốc câu thành 70% lý thuyết (NB, TH) và 30% bài tập (VD, VDC).
+  3. Tăng số câu trận Solo lên 10 câu.
+- **Thay đổi**:
+  - `teaching-scope.js`: Bổ sung hàm `findMatchingChapter` dùng `normalizeStr` và `includes` để tự động khớp các biến thể tên chương (vd: Vật lí nhiệt) vào đúng mã hệ thống.
+  - `dua-top.html`: Thay đổi thuật toán bốc câu sang tỉ lệ 70% lý thuyết / 30% tính toán trên tổng 20 câu.
+  - `solo.html`: Tăng `Q_PER_MATCH` lên 10, đổi thuật toán sang 70/30, bổ sung console.log để kiểm tra số lượng câu.
+- **Kiểm tra**: Cú pháp JS/HTML đạt. Xác nhận 576 câu tinh đều hợp lệ.
+
 ### 31/08/2026 — Thêm Chế Độ Xem Trước Đề (Exam Preview Simulation) & Duyệt Cùng Lúc Nhiều Đề (Bulk Approve)
 
 - **Vấn đề & Yêu cầu của Thầy**:
