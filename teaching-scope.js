@@ -195,6 +195,15 @@
       });
     });
 
+    function normalizeStr(str) {
+      if (!str) return '';
+      return String(str).toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/đ/g, 'd')
+        .replace(/y/g, 'i')
+        .replace(/[^a-z0-9]/g, '');
+    }
+
     function findMatchingChapter(qChuong, allowedChaptersSet) {
       if (allowedChaptersSet.has(qChuong)) return qChuong;
       var normQ = normalizeStr(qChuong);
