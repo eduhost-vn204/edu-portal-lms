@@ -100,7 +100,7 @@
 
     /* ─── MAIN ARENA ─── */
     .arena {
-      max-width: 820px; margin: 0 auto; padding: 28px 20px 48px;
+      max-width: 1040px; margin: 0 auto; padding: 28px 20px 48px;
     }
 
     /* ─── LOADING ─── */
@@ -289,58 +289,90 @@
     body.in-game .sc-val { font-size: 14px; }
     body.in-game .sc-lbl { font-size: 10.5px; margin-top: 0; }
     body.in-game .arena {
-      padding: 8px 12px 18px;
-      max-width: 760px;
+      padding: 12px 16px 28px;
+      max-width: 1040px;
+      width: 100%;
     }
     body.in-game .streak-row {
-      margin-bottom: 6px;
-      font-size: 11px;
-      gap: 5px;
-    }
-    body.in-game .q-card {
-      padding: 12px 16px;
-      border-radius: 14px;
-    }
-    body.in-game .q-meta {
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      font-size: 12px;
       gap: 6px;
     }
-    body.in-game .q-num { font-size: 11px; }
-    body.in-game .q-badge { font-size: 9.5px; padding: 1px 6px; }
-    body.in-game .q-text {
-      margin-bottom: 8px;
-      font-size: 14px;
-      line-height: 1.42;
+    body.in-game .q-card {
+      padding: 20px 24px;
+      border-radius: 16px;
     }
-    body.in-game .q-options { gap: 6px; }
-    body.in-game .q-opt {
-      padding: 7px 11px;
-      font-size: 13.5px;
-      line-height: 1.35;
-      border-radius: 8px;
+    body.in-game .q-meta {
+      margin-bottom: 10px;
       gap: 8px;
     }
+    body.in-game .q-num { font-size: 13px; }
+    body.in-game .q-badge { font-size: 11px; padding: 2px 8px; }
+    body.in-game .q-text {
+      margin-bottom: 14px;
+      font-size: 16px;
+      line-height: 1.65;
+    }
+    body.in-game .q-options { gap: 8px; }
+    body.in-game .q-opt {
+      padding: 11px 16px;
+      font-size: 15px;
+      line-height: 1.45;
+      border-radius: 10px;
+      gap: 10px;
+    }
     body.in-game .q-opt .opt-key {
-      width: 20px;
-      height: 20px;
-      font-size: 10.5px;
+      width: 24px;
+      height: 24px;
+      font-size: 12px;
     }
     body.in-game .q-feedback {
-      margin-top: 6px;
-      padding: 6px 10px;
-      font-size: 12px;
-      line-height: 1.35;
+      margin-top: 14px;
+      padding: 14px 18px;
+      font-size: 15px;
+      line-height: 1.6;
+      border-radius: 12px;
     }
     body.in-game .q-score-earn {
-      margin-top: 3px;
-      font-size: 11px;
-      min-height: 14px;
+      margin-top: 6px;
+      font-size: 13px;
+      min-height: 18px;
     }
     body.in-game .q-next {
-      margin-top: 6px;
-      padding: 9px;
-      font-size: 13.5px;
-      border-radius: 9px;
+      margin-top: 12px;
+      padding: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 10px;
+    }
+    .q-explain {
+      margin-top: 10px;
+      padding: 12px 16px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-left: 4px solid var(--cyan);
+      border-radius: 8px;
+      color: #f0f6fc;
+      font-size: 15px;
+      line-height: 1.7;
+      word-break: break-word;
+    }
+    .q-explain-title {
+      font-weight: 700;
+      color: var(--cyan);
+      display: inline-block;
+      margin-bottom: 4px;
+    }
+    .q-feedback .katex {
+      font-size: 1.15em;
+    }
+    @media (max-width: 600px) {
+      body.in-game .arena { padding: 8px 10px 20px; }
+      body.in-game .q-card { padding: 14px; }
+      body.in-game .q-text { font-size: 14.5px; margin-bottom: 10px; }
+      body.in-game .q-opt { padding: 8px 12px; font-size: 14px; }
+      body.in-game .q-feedback { font-size: 13.5px; padding: 10px 12px; }
+      .q-explain { font-size: 13.5px; padding: 10px 12px; }
     }
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
@@ -607,8 +639,8 @@
 
       fb.className = 'q-feedback correct';
       fb.innerHTML = (seconds <= SPEED_BONUS_THRESH ? '⚡ Nhanh! ' : '✅ ') +
-        'Đúng rồi!' +
-        (q.giaiThich ? '<br><span style="color:var(--sub)">' + fixLatexQuirks(q.giaiThich) + '</span>' : '');
+        '<strong>Đúng rồi!</strong>' +
+        (q.giaiThich ? '<div class="q-explain"><div class="q-explain-title">💡 Lời giải chi tiết:</div>' + fixLatexQuirks(q.giaiThich) + '</div>' : '');
 
       var earnEl = document.getElementById('q-earn');
       if (earned > 0) {
@@ -626,7 +658,7 @@
       var correctText = q['opt' + correct] ? (correct + '. ' + q['opt' + correct]) : correct;
       fb.className = 'q-feedback wrong';
       fb.innerHTML = '❌ Sai rồi. Đáp án đúng là <strong>' + fixLatexQuirks(correctText) + '</strong>.' +
-        (q.giaiThich ? '<br><span style="color:var(--sub)">' + fixLatexQuirks(q.giaiThich) + '</span>' : '');
+        (q.giaiThich ? '<div class="q-explain"><div class="q-explain-title">💡 Lời giải chi tiết:</div>' + fixLatexQuirks(q.giaiThich) + '</div>' : '');
     }
 
     if (q.giaiThich && typeof renderMathInElement === 'function') {
