@@ -910,18 +910,22 @@
     calc = shuffle(calc);
 
     var numTheory = 14; // 70% của 20
-    var numCalc = 6;    // 30% của 20
-    
+    var total = Math.min(20, filtered.length);
+    var numTheory = Math.round(total * 0.7);
+    var numCalc = total - numTheory;
+
     if (theory.length < numTheory) {
-       numTheory = theory.length;
-       numCalc = Math.min(20 - numTheory, calc.length);
-    } else if (calc.length < numCalc) {
-       numCalc = calc.length;
-       numTheory = Math.min(20 - numCalc, theory.length);
+      numTheory = theory.length;
+      numCalc = total - numTheory;
+    }
+    if (calc.length < numCalc) {
+      numCalc = calc.length;
+      numTheory = total - numCalc;
     }
 
     var picked = theory.slice(0, numTheory).concat(calc.slice(0, numCalc));
     console.log('Đua Top - Tổng câu Tinh hợp lệ:', filtered.length, '| Chọn Lý thuyết:', numTheory, '| Chọn Tính toán:', numCalc);
+    window.__DEBUG_POOL = filtered; // Expose for teacher to verify
     return shuffle(picked);
   }
 
