@@ -335,16 +335,14 @@
     return s.replace(/[.#$/[\]\s]/g, '_').toLowerCase();
   }
   function renderKatex(root) {
-    setTimeout(function () {
-      if (typeof renderMathInElement === 'function') {
-        try {
-          renderMathInElement(root || document.body, {
-            delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }],
-            throwOnError: false
-          });
-        } catch (e) {}
-      }
-    }, 80);
+    if (typeof renderMathInElement === 'function') {
+      try {
+        renderMathInElement(root || document.body, {
+          delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }],
+          throwOnError: false
+        });
+      } catch (e) {}
+    }
   }
 
   // ─── State ────────────────────────────────────────────────
@@ -961,17 +959,15 @@
     }
 
     if (q.giaiThich && typeof renderMathInElement === 'function') {
-      setTimeout(function() {
-        try {
-          renderMathInElement(fb, {
-            delimiters: [
-              {left: '$$', right: '$$', display: true},
-              {left: '$', right: '$', display: false}
-            ],
-            throwOnError: false
-          });
-        } catch(e) {}
-      }, 0);
+      try {
+        renderMathInElement(fb, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      } catch(e) {}
     }
 
     qIdx++;

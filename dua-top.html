@@ -583,20 +583,18 @@
 
     qStartTime = Date.now();
     startTimer(document.getElementById('q-timer'));
-    // Render KaTeX
-    setTimeout(function() {
-      if (typeof renderMathInElement === 'function') {
-        try {
-          renderMathInElement(document.getElementById('q-opts') && document.getElementById('q-opts').closest('.q-card') || document.body, {
-            delimiters: [
-              {left: '$$', right: '$$', display: true},
-              {left: '$', right: '$', display: false}
-            ],
-            throwOnError: false
-          });
-        } catch(e) {}
-      }
-    }, 80);
+    // Render KaTeX đồng bộ để tránh bị nháy
+    if (typeof renderMathInElement === 'function') {
+      try {
+        renderMathInElement(document.getElementById('q-opts') && document.getElementById('q-opts').closest('.q-card') || document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      } catch(e) {}
+    }
   }
 
   // ─── Answer handler ──────────────────────────────────────
@@ -662,17 +660,15 @@
     }
 
     if (q.giaiThich && typeof renderMathInElement === 'function') {
-      setTimeout(function() {
-        try {
-          renderMathInElement(fb, {
-            delimiters: [
-              {left: '$$', right: '$$', display: true},
-              {left: '$', right: '$', display: false}
-            ],
-            throwOnError: false
-          });
-        } catch(e) {}
-      }, 0);
+      try {
+        renderMathInElement(fb, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false}
+          ],
+          throwOnError: false
+        });
+      } catch(e) {}
     }
 
     // Giữ tối đa 10 lịch sử streak
@@ -889,9 +885,36 @@
       return copy;
     }
 
+    function getSeenIds() {
+      if (!user || !user.sdt) return [];
+      try { return JSON.parse(localStorage.getItem('vlxt_seen_dua_top_' + user.sdt) || '[]'); } catch(e) { return []; }
+    }
+    function addSeenIds(ids) {
+      if (!user || !user.sdt) return;
+      var seen = new Set(getSeenIds());
+      ids.forEach(function(id) { seen.add(id); });
+      localStorage.setItem('vlxt_seen_dua_top_' + user.sdt, JSON.stringify(Array.from(seen)));
+    }
+    function resetSeenIds() {
+      if (user && user.sdt) localStorage.removeItem('vlxt_seen_dua_top_' + user.sdt);
+    }
+
+    var seenSet = new Set(getSeenIds());
+    var newQuestions = filtered.filter(function(q) { return !seenSet.has(q.id); });
+
+    if (newQuestions.length === 0 && filtered.length > 0) {
+      var cf = confirm("🎉 Chúc mừng em đã luyện xuất sắc TOÀN BỘ câu hỏi trong ngân hàng chuyên đề này!\n\nEm có muốn làm lại từ đầu để ôn tập không?");
+      if (cf) {
+        resetSeenIds();
+        newQuestions = filtered;
+      } else {
+        return [];
+      }
+    }
+
     var theory = [];
     var calc = [];
-    filtered.forEach(function(q) {
+    newQuestions.forEach(function(q) {
       var m = q.mucDo || 'NB';
       var isCalc = false;
       if (m === 'VD' || m === 'VDC') {
@@ -924,9 +947,13 @@
     }
 
     var picked = theory.slice(0, numTheory).concat(calc.slice(0, numCalc));
-    console.log('Đua Top - Tổng câu Tinh hợp lệ:', filtered.length, '| Chọn Lý thuyết:', numTheory, '| Chọn Tính toán:', numCalc);
+    console.log('Đua Top - Tổng câu Tinh hợp lệ:', filtered.length, '| Câu chưa làm:', newQuestions.length, '| Chọn Lý thuyết:', numTheory, '| Chọn Tính toán:', numCalc);
     console.log('👉 BẤM VÀO MŨI TÊN BÊN CẠNH ĐỂ XEM CHI TIẾT TOÀN BỘ ' + filtered.length + ' CÂU HỎI THẬT:', filtered);
     window.__DEBUG_POOL = filtered; // Expose for teacher to verify
+    
+    // Đánh dấu các câu này đã được làm
+    addSeenIds(picked.map(function(q) { return q.id; }));
+    
     return shuffle(picked);
   }
 
