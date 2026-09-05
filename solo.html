@@ -551,13 +551,42 @@
       return arr;
     }
 
-    if (bank.length <= Q_PER_MATCH) {
-      return shuffle(bank).map(function (q) { return String(q.id); });
+    function getSeenIds() {
+      if (!user || !user.sdt) return [];
+      try { return JSON.parse(localStorage.getItem('vlxt_seen_solo_' + user.sdt) || '[]'); } catch(e) { return []; }
+    }
+    function addSeenIds(ids) {
+      if (!user || !user.sdt) return;
+      var seen = new Set(getSeenIds());
+      ids.forEach(function(id) { seen.add(id); });
+      localStorage.setItem('vlxt_seen_solo_' + user.sdt, JSON.stringify(Array.from(seen)));
+    }
+    function resetSeenIds() {
+      if (user && user.sdt) localStorage.removeItem('vlxt_seen_solo_' + user.sdt);
+    }
+
+    var seenSet = new Set(getSeenIds());
+    var newQuestions = bank.filter(function(q) { return !seenSet.has(q.id); });
+
+    if (newQuestions.length === 0 && bank.length > 0) {
+      var cf = confirm("🎉 Chúc mừng em đã luyện xuất sắc TOÀN BỘ câu hỏi trong ngân hàng chuyên đề này!\n\nEm có muốn làm lại từ đầu để ôn tập không?");
+      if (cf) {
+        resetSeenIds();
+        newQuestions = bank;
+      } else {
+        return []; // Hủy
+      }
+    }
+
+    if (newQuestions.length <= Q_PER_MATCH) {
+      var fallbackIds = shuffle(newQuestions).map(function (q) { return String(q.id); });
+      addSeenIds(fallbackIds);
+      return fallbackIds;
     }
 
     var theory = [];
     var calc = [];
-    bank.forEach(function (q) {
+    newQuestions.forEach(function (q) {
       var m = q.mucDo || 'NB';
       var isCalc = false;
       if (m === 'VD' || m === 'VDC') {
@@ -589,8 +618,9 @@
     var picked = theory.slice(0, numTheory).concat(calc.slice(0, numCalc));
     picked = shuffle(picked);
     
-    console.log('Solo - Tổng câu Tinh hợp lệ:', bank.length, '| Chọn Lý thuyết:', numTheory, '| Chọn Tính toán:', numCalc);
-    return picked.map(function (q) { return String(q.id); });
+    var pickedIds = picked.map(function (q) { return String(q.id); });
+    addSeenIds(pickedIds);
+    return pickedIds;
   }
   function resolveQuestions(ids) {
     return ids.map(function (id) {
