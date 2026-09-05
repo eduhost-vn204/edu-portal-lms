@@ -561,7 +561,16 @@
     var calc = [];
     bank.forEach(function (q) {
       var m = q.mucDo || 'NB';
-      if (m === 'VD' || m === 'VDC') calc.push(q);
+      var isCalc = false;
+      if (m === 'VD' || m === 'VDC') {
+        isCalc = true;
+      } else if (m === 'TH') {
+        var opts = [q.optA, q.optB, q.optC, q.optD].join(' ');
+        var hasDigit = /\d/.test(opts);
+        if (hasDigit && opts.length < 200) isCalc = true;
+      }
+      
+      if (isCalc) calc.push(q);
       else theory.push(q);
     });
 
