@@ -195,8 +195,15 @@
       });
     });
 
-    if (allowedChapters.size === 0) {
-      return [];
+    function findMatchingChapter(qChuong, allowedChaptersSet) {
+      if (allowedChaptersSet.has(qChuong)) return qChuong;
+      var normQ = normalizeStr(qChuong);
+      var arr = Array.from(allowedChaptersSet);
+      for (var i = 0; i < arr.length; i++) {
+        var normC = normalizeStr(arr[i]);
+        if (normC.includes(normQ) || normQ.includes(normC)) return arr[i];
+      }
+      return null;
     }
 
     return allQuestions.filter(function(q) {
@@ -205,14 +212,16 @@
 
       // 2. Kiểm tra Chương
       var qChuong = (q.chuong || '').trim();
-      if (!qChuong || !allowedChapters.has(qChuong)) return false;
+      if (!qChuong) return false;
+      var matchedChapter = findMatchingChapter(qChuong, allowedChapters);
+      if (!matchedChapter) return false;
 
       // 3. Kiểm tra Bài học
       // Nếu chương này mở toàn bộ bài -> chấp nhận
-      if (openChaptersAllLessons.has(qChuong)) return true;
+      if (openChaptersAllLessons.has(matchedChapter)) return true;
 
       // Nếu chương chỉ định danh sách bài -> kiểm tra trong phạm vi chương đó
-      var allowedLessonsInThisCh = chapterLessonsMap[qChuong];
+      var allowedLessonsInThisCh = chapterLessonsMap[matchedChapter];
       if (!allowedLessonsInThisCh || allowedLessonsInThisCh.size === 0) {
         // Chương mở nhưng không có bài nào được chọn -> 0 câu
         return false;

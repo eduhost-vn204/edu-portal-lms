@@ -308,7 +308,7 @@
   };
 
   var BASE_PTS = { NB: 10, TH: 20, VD: 35, VDC: 50 };
-  var Q_PER_MATCH = 8;
+  var Q_PER_MATCH = 10;
   var Q_TIME_CAP = 40;       // giây mỗi câu, hết giờ tự tính sai
   var SEARCH_BOT_MS = 12000; // sau 12s không có đối thủ -> đấu bot
   var INVITE_TIMEOUT_MS = 6000;
@@ -557,19 +557,32 @@
       return shuffle(bank).map(function (q) { return String(q.id); });
     }
 
-    var byDiff = { NB: [], TH: [], VD: [], VDC: [] };
-    bank.forEach(function (q) { (byDiff[q.mucDo || 'NB'] || byDiff.NB).push(q); });
-    var quota = { NB: 3, TH: 3, VD: 1, VDC: 1 };
-    var picked = [];
-    Object.keys(quota).forEach(function (k) {
-      var pool = shuffle(byDiff[k] || []);
-      picked = picked.concat(pool.slice(0, quota[k]));
+    var theory = [];
+    var calc = [];
+    bank.forEach(function (q) {
+      var m = q.mucDo || 'NB';
+      if (m === 'VD' || m === 'VDC') calc.push(q);
+      else theory.push(q);
     });
-    if (picked.length < Q_PER_MATCH) {
-      var rest = shuffle(bank.filter(function (q) { return picked.indexOf(q) === -1; }));
-      picked = picked.concat(rest.slice(0, Q_PER_MATCH - picked.length));
+
+    theory = shuffle(theory);
+    calc = shuffle(calc);
+
+    var numTheory = 7; // 70% của 10
+    var numCalc = 3;   // 30% của 10
+
+    if (theory.length < numTheory) {
+       numTheory = theory.length;
+       numCalc = Math.min(10 - numTheory, calc.length);
+    } else if (calc.length < numCalc) {
+       numCalc = calc.length;
+       numTheory = Math.min(10 - numCalc, theory.length);
     }
-    picked = shuffle(picked).slice(0, Q_PER_MATCH);
+
+    var picked = theory.slice(0, numTheory).concat(calc.slice(0, numCalc));
+    picked = shuffle(picked);
+    
+    console.log('Solo - Tổng câu Tinh hợp lệ:', bank.length, '| Chọn Lý thuyết:', numTheory, '| Chọn Tính toán:', numCalc);
     return picked.map(function (q) { return String(q.id); });
   }
   function resolveQuestions(ids) {
