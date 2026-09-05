@@ -903,6 +903,21 @@
       fb.className = 'q-feedback wrong';
       fb.innerHTML = (chosenKey ? '❌ Sai rồi.' : '⏱️ Hết giờ.') + ' Đáp án đúng là <strong>' + fixLatexQuirks(correctText) + '</strong>.' + (q.giaiThich ? '<br><span style="color:var(--sub)">' + fixLatexQuirks(q.giaiThich) + '</span>' : '');
     }
+
+    if (q.giaiThich && typeof renderMathInElement === 'function') {
+      setTimeout(function() {
+        try {
+          renderMathInElement(fb, {
+            delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false}
+            ],
+            throwOnError: false
+          });
+        } catch(e) {}
+      }, 0);
+    }
+
     qIdx++;
     myProgress.idx = qIdx;
     if (!isBotMatch) db.ref('solo_matches/' + matchId + '/progress/' + mySdt).set(myProgress);
