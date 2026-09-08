@@ -655,3 +655,27 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
     7. Quy trình Thầy duyệt Draft trên Admin Console rồi xuất bản.
     8. Quy trình rollback và khôi phục snapshot tự động/thủ công.
     9. 5 điều cấm tuyệt đối (không đọc secret/localStorage/token, không tự publish, không ghi đè bài gốc, không bypass gates, không sửa nóng trên main).
+
+### 09/09/2026 — Hotfix Tài Liệu Quy Chuẩn: Loại Bỏ Hoàn Toàn Cơ Chế Tự Publish Của AI, Siết Chặt Fail-Closed Rollback & Cảnh Báo B11
+
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Codex & Thầy Xuân Trường
+- **Trạng thái**: `HOTFIX_DOCS_COMPLETE` (Chỉ cập nhật tài liệu quy chuẩn, tuyệt đối không can thiệp code hay dữ liệu production).
+- **Phạm vi cập nhật**:
+  - `student_upstream_clean/AUTO_PUBLISH_LESSON_SPEC.md`
+  - `_codex_verify_live/AUTO_PUBLISH_LESSON_SPEC.md`
+  - `00-BRAIN-VLXT/tasks/AUTO_PUBLISH_LESSON_SPEC.md`
+- **Nội dung điều chỉnh chi tiết**:
+  1. **Mục 4: Chế độ thực thi (`trial-draft` vs. `approved-assets-draft`)**:
+     - Loại bỏ hoàn toàn mọi cơ chế/diễn đạt cho phép pipeline tự động chuyển trạng thái bài học sang `published`.
+     - Quy định chuẩn: Mọi chế độ của pipeline chỉ được ghi ở trạng thái `draft`. Chế độ `approved-assets-draft` nạp học liệu chính thức (YouTube unlisted, Drive thư mục chính thức) nhưng trạng thái trên backend BẮT BUỘC VẪN LÀ `draft`.
+     - Pipeline luôn kết thúc tại trạng thái `READY_FOR_TEACHER`.
+     - Quyền chuyển `Published` thuộc về 100% duy nhất một mình Thầy thao tác trực tiếp trên Admin Console UI (`quan-ly-bai-hoc.html`). Xóa bỏ hoàn toàn câu chữ "AI có thể publish khi được phê duyệt bằng văn bản".
+  2. **Cảnh báo bảo vệ B11 Pilot**:
+     - Bổ sung cảnh báo nghiêm ngặt: Bài học B11 hiện đang dùng học liệu demo sao chép từ B10 để kiểm thử pipeline; bắt buộc giữ B11 ở trạng thái `draft` vĩnh viễn, tuyệt đối không được chuyển sang `published` cho học sinh.
+  3. **Mục 6 & 8: Quy tắc Rollback an toàn (Fail-Closed & Stop)**:
+     - Khi gặp bất kỳ lỗi nào hoặc đối soát nghiệm thu thất bại: Pipeline mặc định **DỪNG (STOP)**, bảo tồn nguyên trạng file `snapshot_<mabai>_before.json`, cập nhật `.checkpoint.json` với trạng thái `MANUAL_RECOVERY_REQUIRED`.
+     - Tuyệt đối KHÔNG tự ý xóa video YouTube, xóa file Drive, hay tự ý gửi payload khôi phục backend nếu chưa có lệnh rõ ràng của Thầy. Giữ nguyên hiện trường phục vụ tra cứu.
+     - Quy trình khôi phục snapshot trở thành phương án khôi phục thủ công khi có chỉ thị trực tiếp từ Thầy.
+  4. **Mục 9: Các điều cấm tuyệt đối**:
+     - Bổ sung điều cấm AI tự động publish dưới mọi hình thức và điều cấm tự tiện xóa tài nguyên / tự ý rollback production khi chưa có chỉ thị rõ ràng của Thầy.

@@ -171,17 +171,23 @@ flowchart TD
 
 ---
 
-## 4. CHẾ ĐỘ THỰC THI: TRIAL VS. LIVE
+### 4. CHẾ ĐỘ THỰC THI: TRIAL-DRAFT VS. APPROVED-ASSETS-DRAFT
 
-Pipeline hỗ trợ 2 chế độ rõ ràng, ngăn ngừa việc nhầm lẫn môi trường:
+Mọi chế độ thực thi của pipeline đều tuân thủ nguyên tắc **FAIL-CLOSED DRAFT ONLY**: Pipeline **CHỈ ĐƯỢC PHÉP GHI BÀI HỌC Ở TRẠNG THÁI `draft`**, tuyệt đối không có bất kỳ cơ chế nào cho phép pipeline tự động chuyển sang `published`.
 
-| Tiêu chí | Chế độ `--mode=trial` (Mặc định cho Pilot) | Chế độ `--mode=live` (Sau khi Thầy duyệt) |
+| Tiêu chí | Chế độ `--mode=trial-draft` (Mặc định cho Pilot/Thử nghiệm) | Chế độ `--mode=approved-assets-draft` (Nạp học liệu chính thức) |
 | :--- | :--- | :--- |
-| **YouTube Privacy** | **`private`** (Chỉ tài khoản sở hữu kênh xem được) | **`unlisted`** (Không công khai, chỉ nhúng web) |
-| **Google Drive** | Thư mục `[TRIAL]` độc lập | Thư mục học liệu chính thức |
-| **Trạng thái bài học** | **`draft`** | **`published`** |
-| **Học sinh xem được?** | **HOÀN TOÀN KHÔNG** (Ẩn 100% trên API/Web) | **CÓ** (Hiển thị đầy đủ) |
-| **Yêu cầu phê duyệt** | AI tự động chạy theo task Thầy giao | **Bắt buộc có phê duyệt bằng văn bản của Thầy** |
+| **Mục đích** | Thử nghiệm pipeline với tài khoản/thư mục cô lập | Nạp bài giảng và tài liệu học tập chính thức đã được biên soạn |
+| **YouTube Privacy** | **`private`** (Chỉ tài khoản sở hữu kênh xem được) | **`unlisted`** (Không công khai, chỉ xem qua nhúng web) |
+| **Google Drive** | Thư mục `[TRIAL]` độc lập | Thư mục học liệu chính thức của khóa học |
+| **Trạng thái bài học backend** | **`draft`** | **`draft`** |
+| **Học sinh xem được?** | **HOÀN TOÀN KHÔNG** (Ẩn 100% trên API/Web học sinh) | **HOÀN TOÀN KHÔNG** (Ẩn 100% trên API/Web học sinh) |
+| **Kết thúc Pipeline** | Luôn dừng ở trạng thái `READY_FOR_TEACHER` | Luôn dừng ở trạng thái `READY_FOR_TEACHER` |
+| **Quyền xuất bản (Publish)** | **CHỈ DUY NHẤT THẦY** thao tác trên Admin Console UI | **CHỈ DUY NHẤT THẦY** thao tác trên Admin Console UI |
+
+> [!CAUTION]
+> **CẢNH BÁO BẢO VỆ B11 PILOT**:
+> Bài học B11 (`B11. ĐỊNH LUẬT BOYLE – QUÁ TRÌNH ĐẲNG NHIỆT`) hiện đang sử dụng học liệu demo sao chép từ B10 phục vụ mục đích kiểm thử pipeline. **BẮT BUỘC GIỮ B11 Ở TRẠNG THÁI DRAFT VĨNH VIỄN**, tuyệt đối không được chuyển sang `published` như nội dung Boyle thật cho học sinh.
 
 ---
 
@@ -194,8 +200,8 @@ Pipeline hỗ trợ 2 chế độ rõ ràng, ngăn ngừa việc nhầm lẫn m�
 ### Các nấc trạng thái trong `.checkpoint.json`:
 1. `INIT`: Bắt đầu phiên làm việc.
 2. `SNAPSHOT_TAKEN`: Đã snapshot thành công dữ liệu trước ghi.
-3. `YOUTUBE_UPLOADED`: Đã upload xong 2 video YouTube Private (lưu kèm video ID).
-4. `DRIVE_UPLOADED`: Đã upload xong 3 PDF vào thư mục Trial (lưu kèm Drive file ID).
+3. `YOUTUBE_UPLOADED`: Đã upload xong 2 video YouTube Private/Unlisted (lưu kèm video ID).
+4. `DRIVE_UPLOADED`: Đã upload xong 3 PDF vào đúng thư mục chỉ định (lưu kèm Drive file ID).
 5. `BACKEND_WRITTEN`: Đã ghi thành công bài học `draft` và nạp 40 câu hỏi vào Sheets.
 6. `VERIFIED_DRAFT`: Đã vượt qua 7 cổng đối soát nghiệm thu read-back và public leak check.
 7. `READY_FOR_TEACHER`: Toàn bộ quy trình hoàn tất, sẵn sàng bàn giao Thầy nghiệm thu.
@@ -208,13 +214,13 @@ Sau khi ghi dữ liệu lên backend, pipeline tự động chạy quy trình ki
 
 | Gate | Đối soát | Tiêu chuẩn ĐẠT (PASS) | Hành động khi FAIL |
 | :--- | :--- | :--- | :--- |
-| **Gate 5.1** | Read-back 11 trường bài học từ `getbaihocadmin` | Khớp 100% từng trường: `KhoaHoc`, `Chuong`, `TenBai`, `ThuTuBai`, `MoTaBai`, `Video`, `VideoGiai`, `PDFLyThuyet`, `PDF`, `PDFLuyenTap`, `TrangThai: 'draft'`. | Ném lỗi `FIELD_MISMATCH` $\rightarrow$ Rollback |
-| **Gate 5.2** | Read-back câu hỏi video từ `getvideocauhoiadmin` | Đủ đúng 20 câu hỏi, timestamp và đáp án đúng khớp 100%. | Ném lỗi `VIDEO_QUESTIONS_MISMATCH` $\rightarrow$ Rollback |
-| **Gate 5.3** | Read-back bài tập từ `getbaitaptracnghiemadmin` | Đủ đúng 20 câu bài tập trắc nghiệm, 4 lựa chọn A-B-C-D và đáp án khớp 100%. | Ném lỗi `PRACTICE_QUESTIONS_MISMATCH` $\rightarrow$ Rollback |
-| **Gate 5.4** | Public GET `?type=baihoc` | Bài học mới **TUYỆT ĐỐI KHÔNG XUẤT HIỆN** trong danh sách bài học công khai của học sinh. | Ném lỗi `PUBLIC_LEAK_DETECTED` $\rightarrow$ Rollback Khẩn Cấp |
-| **Gate 5.5** | Public GET `?type=videocauhoi&bai=<MaBai>` | Trả về `{ data: [] }` rỗng (bị chặn fail-closed). | Ném lỗi `PUBLIC_LEAK_DETECTED` $\rightarrow$ Rollback Khẩn Cấp |
-| **Gate 5.6** | Public GET `?type=baitaptracnghiem&bai=<MaBai>` | Trả về `{ data: [] }` rỗng (bị chặn fail-closed). | Ném lỗi `PUBLIC_LEAK_DETECTED` $\rightarrow$ Rollback Khẩn Cấp |
-| **Gate 5.7** | Bảo vệ bài học lân cận (vd: Bài 10 thật) | Kiểm tra bài học lân cận nguyên vẹn 100% (14/14 trường không suy suyển). | Ném lỗi `NEIGHBOR_CORRUPTED` $\rightarrow$ Rollback Khẩn Cấp |
+| **Gate 5.1** | Read-back 11 trường bài học từ `getbaihocadmin` | Khớp 100% từng trường: `KhoaHoc`, `Chuong`, `TenBai`, `ThuTuBai`, `MoTaBai`, `Video`, `VideoGiai`, `PDFLyThuyet`, `PDF`, `PDFLuyenTap`, `TrangThai: 'draft'`. | Ném lỗi `FIELD_MISMATCH` $\rightarrow$ STOP, giữ snapshot & báo `MANUAL_RECOVERY_REQUIRED` |
+| **Gate 5.2** | Read-back câu hỏi video từ `getvideocauhoiadmin` | Đủ đúng 20 câu hỏi, timestamp và đáp án đúng khớp 100%. | Ném lỗi `VIDEO_QUESTIONS_MISMATCH` $\rightarrow$ STOP, giữ snapshot & báo `MANUAL_RECOVERY_REQUIRED` |
+| **Gate 5.3** | Read-back bài tập từ `getbaitaptracnghiemadmin` | Đủ đúng 20 câu bài tập trắc nghiệm, 4 lựa chọn A-B-C-D và đáp án khớp 100%. | Ném lỗi `PRACTICE_QUESTIONS_MISMATCH` $\rightarrow$ STOP, giữ snapshot & báo `MANUAL_RECOVERY_REQUIRED` |
+| **Gate 5.4** | Public GET `?type=baihoc` | Bài học mới **TUYỆT ĐỐI KHÔNG XUẤT HIỆN** trong danh sách bài học công khai của học sinh. | Ném lỗi `PUBLIC_LEAK_DETECTED` $\rightarrow$ STOP, giữ snapshot & báo `MANUAL_RECOVERY_REQUIRED` |
+| **Gate 5.5** | Public GET `?type=videocauhoi&bai=<MaBai>` | Trả về `{ data: [] }` rỗng (bị chặn fail-closed). | Ném lỗi `PUBLIC_LEAK_DETECTED` $\rightarrow$ STOP, giữ snapshot & báo `MANUAL_RECOVERY_REQUIRED` |
+| **Gate 5.6** | Public GET `?type=baitaptracnghiem&bai=<MaBai>` | Trả về `{ data: [] }` rỗng (bị chặn fail-closed). | Ném lỗi `PUBLIC_LEAK_DETECTED` $\rightarrow$ STOP, giữ snapshot & báo `MANUAL_RECOVERY_REQUIRED` |
+| **Gate 5.7** | Bảo vệ bài học lân cận (vd: Bài 10 thật) | Kiểm tra bài học lân cận nguyên vẹn 100% (14/14 trường không suy suyển). | Ném lỗi `NEIGHBOR_CORRUPTED` $\rightarrow$ STOP, giữ snapshot & báo `MANUAL_RECOVERY_REQUIRED` |
 
 ---
 
@@ -231,10 +237,10 @@ sequenceDiagram
     Note over AC: Pipeline hoàn tất -> Trạng thái READY_FOR_TEACHER
     T->>AC: 1. Đăng nhập Admin Console (quan-ly-bai-hoc.html)
     AC->>GAS: POST getbaihocadmin
-    GAS-->>AC: Trả về 41 bài (gồm bài Draft B11)
-    AC-->>T: Hiển thị B11 tại Chương 2 kèm huy hiệu 🟡 Draft
-    T->>AC: 2. Thầy bấm nút "Sửa" / "Xem trước" để kiểm tra học liệu
-    T->>AC: 3. Thầy xác nhận học liệu chuẩn -> Chọn "Published" và bấm Lưu
+    GAS-->>AC: Trả về danh sách bài học (gồm bài Draft vừa nạp)
+    AC-->>T: Hiển thị bài học tại đúng Chương kèm huy hiệu 🟡 Draft
+    T->>AC: 2. Thầy bấm nút "Sửa" / "Xem trước" để tự mình kiểm tra toàn bộ học liệu
+    T->>AC: 3. Thầy xác nhận học liệu chuẩn -> Tự chọn "Published" trên giao diện và bấm Lưu
     AC->>GAS: POST savebaihoc (TrangThai = 'published')
     GAS-->>AC: Phản hồi { ok: true }
     T->>LMS: 4. Mở website học sinh kiểm tra
@@ -242,36 +248,39 @@ sequenceDiagram
 ```
 
 ### Quy tắc bất biến:
-1. **AI tuyệt đối không tự bấm xuất bản**: Sau khi pipeline nạp xong `draft`, AI chỉ bàn giao checkpoint và bằng chứng cho Thầy.
-2. **Quyền quyết định 100% thuộc về Thầy**: Thầy xem xét bài học trên Admin Console. Nếu ưng ý, Thầy tự chọn trạng thái `Published` trên giao diện Admin hoặc ra lệnh rõ ràng cho AI.
+1. **AI tuyệt đối không được phép xuất bản bài học**: Mọi chế độ pipeline luôn kết thúc tại trạng thái `READY_FOR_TEACHER` với `TrangThai = 'draft'`. AI chỉ bàn giao checkpoint và bằng chứng đối soát cho Thầy.
+2. **Quyền xuất bản 100% thuộc về Thầy**: Thầy tự mình xem xét bài học trên Admin Console UI (`quan-ly-bai-hoc.html`). Chỉ Thầy mới trực tiếp thao tác chuyển sang `Published` và bấm Lưu. Tuyệt đối không được diễn đạt hoặc cho phép "AI có thể publish khi được phê duyệt bằng văn bản".
 
 ---
 
-## 8. QUY TRÌNH HOÀN TÁC VÀ KHÔI PHỤC SNAPSHOT (ROLLBACK PROCEDURE)
+## 8. QUY TRÌNH XỬ LÝ SỰ CỐ VÀ KHÔI PHỤC SNAPSHOT (INCIDENT & ROLLBACK PROCEDURE)
 
-Nếu xảy ra bất kỳ sự cố nào trong quá trình chạy thử nghiệm hoặc đối soát nghiệm thu thất bại:
+Nếu xảy ra bất kỳ sự cố nào trong quá trình nạp hoặc nếu bất kỳ cổng nào trong 7 cổng đối soát nghiệm thu thất bại:
 
-### Các bước Rollback tự động / thủ công:
-1. **Bước 1: Nạp Snapshot**:
-   - Đọc file `snapshot_<mabai>_before.json`.
-2. **Bước 2: Khôi phục Bảng Bài Học**:
-   - Gửi payload authenticated `savebaihoc` phục hồi nguyên trạng 14 trường ban đầu của bài học (xóa link video, xóa link PDF, đặt lại trạng thái cũ).
-3. **Bước 3: Xóa Dữ Liệu Câu Hỏi Mới Nạp**:
-   - Gửi payload authenticated `savevideocauhoi` với `baiKey = MaBai` và `data = []` (hoặc dữ liệu câu hỏi cũ nếu trước đó có).
-   - Gửi payload authenticated `savebaitaptracnghiem` với `baiKey = MaBai` và `data = []` (hoặc dữ liệu cũ).
-4. **Bước 4: Xóa / Thu hồi Tài nguyên Đám mây**:
-   - Xóa 2 video đã tải lên trên YouTube bằng YouTube Data API (hoặc giữ ở Private).
-   - Xóa các file PDF trong thư mục Trial trên Google Drive.
-5. **Bước 5: Kiểm chứng Sau Hoàn tác**:
-   - Đọc lại dữ liệu backend để đảm bảo hệ thống đã quay về trạng thái ban đầu 100%.
-   - Cập nhật `.checkpoint.json` với trạng thái `ROLLED_BACK`.
+### Quy tắc xử lý an toàn (Fail-Closed & Stop):
+1. **Mặc định khi FAIL**: Pipeline lập tức **DỪNG (STOP)**, bảo tồn nguyên vẹn file `snapshot_<mabai>_before.json`, cập nhật `.checkpoint.json` với trạng thái `MANUAL_RECOVERY_REQUIRED`, và báo cáo chi tiết sự cố cho Thầy.
+2. **Tuyệt đối KHÔNG tự ý xóa tài nguyên hay tự ý rollback production**: Pipeline **KHÔNG ĐƯỢC TỰ ĐỘNG XÓA** video YouTube, file Google Drive, hay tự ý gửi payload phục hồi lên backend nếu chưa có lệnh rõ ràng của Thầy. Việc giữ nguyên hiện trường giúp Thầy và đội ngũ kỹ thuật có đầy đủ bằng chứng đối soát nguyên nhân.
+
+### Quy trình khôi phục thủ công khi có chỉ thị của Thầy (Manual Recovery Plan):
+Khi Thầy yêu cầu khôi phục từ snapshot, quy trình thực hiện theo các bước có kiểm soát:
+1. **Bước 1: Nạp Snapshot**: Đọc file `snapshot_<mabai>_before.json` đã lưu ở Gate 3.
+2. **Bước 2: Đối chiếu Hiện trạng**: Đọc dữ liệu hiện tại trên backend qua `getbaihocadmin` và so sánh diff với snapshot.
+3. **Bước 3: Khôi phục Dữ liệu Backend (khi được Thầy xác nhận)**:
+   - Gửi payload authenticated `savebaihoc` phục hồi 14 trường nguyên trạng theo snapshot.
+   - Gửi payload authenticated `savevideocauhoi` và `savebaitaptracnghiem` với `baiKey = MaBai` phục hồi dữ liệu câu hỏi cũ theo snapshot (hoặc mảng rỗng nếu ban đầu không có câu hỏi).
+4. **Bước 4: Xử lý Tài nguyên Đám mây (khi được Thầy xác nhận)**:
+   - Chỉ thu hồi/xóa video YouTube hoặc file PDF trên Drive khi Thầy phê duyệt rõ ràng.
+5. **Bước 5: Kiểm chứng Sau Khôi phục**:
+   - Đọc lại dữ liệu backend đảm bảo hệ thống đã hoàn toàn quay về trạng thái snapshot ban đầu.
+   - Ghi nhận trạng thái `ROLLED_BACK` vào `.checkpoint.json`.
 
 ---
 
 ## 9. CÁC ĐIỀU CẤM TUYỆT ĐỐI (NON-NEGOTIABLE CONSTRAINTS)
 
 1. **CẤM đọc secret/localStorage/token**: Không đọc Chrome/Edge LevelDB, file `.clasprc`, OAuth token hay `ADMIN_KEY`. Sử dụng các module pipeline trung gian có sẵn, không tự tạo script đọc trộm khóa.
-2. **CẤM tự ý Publish**: Không tự tiện đổi `TrangThai: 'draft'` thành `'published'` nếu chưa có chỉ thị rõ ràng của Thầy.
-3. **CẤM ghi đè học liệu nguồn**: Thư mục bài học gốc (như B10) chỉ được đọc để tham chiếu, tuyệt đối không sửa đổi file gốc.
-4. **CẤM bypass Preflight Gates**: Không được tắt cờ kiểm tra hay bỏ qua bất kỳ bước nào trong 7 cổng đối soát nghiệm thu.
-5. **CẤM sửa nóng trên nhánh `main`**: Mọi cập nhật code pipeline hay giao diện phải đi qua branch riêng và PR sạch.
+2. **CẤM tự ý Publish**: Mọi chế độ của pipeline chỉ được ghi ở trạng thái `draft`. Tuyệt đối cấm AI chuyển trạng thái bài học sang `published` dưới mọi hình thức (kể cả khi được nhắc trong prompt/văn bản). Chỉ Thầy mới trực tiếp chuyển trạng thái trên Admin Console UI.
+3. **CẤM tự động xóa tài nguyên / tự động rollback production**: Khi gặp lỗi, mặc định phải STOP, giữ nguyên snapshot và báo `MANUAL_RECOVERY_REQUIRED`. Không được tự tiện xóa video YouTube, xóa file Drive hay ghi đè rollback production khi chưa có chỉ thị rõ ràng của Thầy.
+4. **CẤM ghi đè học liệu nguồn**: Thư mục bài học gốc (như B10) chỉ được đọc để tham chiếu, tuyệt đối không sửa đổi file gốc.
+5. **CẤM bypass Preflight Gates**: Không được tắt cờ kiểm tra hay bỏ qua bất kỳ bước nào trong 7 cổng đối soát nghiệm thu.
+6. **CẤM sửa nóng trên nhánh `main`**: Mọi cập nhật code pipeline hay giao diện phải đi qua branch riêng và PR sạch.
