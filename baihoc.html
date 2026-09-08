@@ -675,25 +675,34 @@ async function fetchJsonTimeout(url, timeoutMs, options){
         return await r.json();
     }finally{ clearTimeout(timer); }
 }
+function isPublicLesson(x){
+    if(!x) return false;
+    const st = field(x,['trangthai','status','trang_thai']).toString().trim().toLowerCase();
+    return !st || st === 'published';
+}
+
 async function _fetchFromSheets(){
     const data=await fetchJsonTimeout(APPS_SCRIPT_URL+'?type=baihoc',8000);
     const rows=Array.isArray(data)?data:(data.baihoc||data.data||[]);
-    return rows.filter(x=>field(x,['khoahoc','khoa','course','mon']).toString().trim());
+    return rows.filter(x=>field(x,['khoahoc','khoa','course','mon']).toString().trim() && isPublicLesson(x));
 }
 async function fetchLessons(){
     const cached=_lcLoad();
     try{
         const data=await fetchJsonTimeout('data/baihoc.json',3000,{cache:'no-cache'});
         const valid=(Array.isArray(data)?data:(data.baihoc||data.data||[]))
-            .filter(x=>field(x,['khoahoc','khoa','course','mon']).toString().trim());
+            .filter(x=>field(x,['khoahoc','khoa','course','mon']).toString().trim() && isPublicLesson(x));
         if(valid.length){ USING_DEMO=false; _lcSave(valid); return valid; }
     }catch(e){ console.warn('Chưa tải được JSON bài học:',e); }
-    if(cached){ USING_DEMO=false; return cached; }
+    if(cached){
+        const publicCached=(Array.isArray(cached)?cached:[]).filter(isPublicLesson);
+        if(publicCached.length){ USING_DEMO=false; return publicCached; }
+    }
     try{
         const valid=await _fetchFromSheets();
         if(valid.length){ USING_DEMO=false; _lcSave(valid); return valid; }
     }catch(e){ console.warn('GAS bài học không phản hồi:',e); }
-    USING_DEMO=true; return DEMO_ROWS;
+    USING_DEMO=true; return DEMO_ROWS.filter(isPublicLesson);
 }
 
 // Chỉ tải câu hỏi của đúng bài đang mở. Danh sách khóa học không còn phải chờ
@@ -790,6 +799,7 @@ function normLessonKey(k){
 function buildCourses(rows){
     const cmap=new Map();
     rows.forEach((row,idx)=>{
+        if(!isPublicLesson(row)) return;
         const cname=field(row,['khoahoc','khoa','course','mon']).toString().trim();
         const chname=(field(row,['chuong','chapter','phan'])||'Nội dung').toString().trim();
         const lname=field(row,['tenbai','bai','baihoc','tieude','title','ten']).toString().trim();

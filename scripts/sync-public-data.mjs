@@ -56,7 +56,12 @@ const [lessonData, configData, quizData, liveData, examData, settingsData, guide
   fetchOptional('teachingscope')
 ]);
 
-const lessons = rowsOf(lessonData, ['baihoc', 'data']);
+const rawLessons = rowsOf(lessonData, ['baihoc', 'data']);
+// Draft/Hidden Lesson Contract: Tuyệt đối không đưa bài draft hoặc archived vào dữ liệu tĩnh công khai
+const lessons = rawLessons.filter(l => {
+  const st = (l?.TrangThai || l?.trangthai || l?.status || 'published').toString().trim().toLowerCase();
+  return st === 'published';
+});
 const configs = rowsOf(configData, ['khoaconfig', 'data']);
 const quizRows = rowsOf(quizData, ['baitaptracnghiem', 'data']);
 const liveRows = rowsOf(liveData, ['lichlive', 'data']);
