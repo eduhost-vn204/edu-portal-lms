@@ -159,6 +159,45 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 08/09/2026 — Quản trị trạng thái, dọn dẹp task và chuẩn hóa sổ bàn giao toàn hệ thống
+
+- **Người thực hiện**: Antigravity Coordinator (Bộ não VLXT)
+- **Mục tiêu**: Hợp nhất và chuẩn hóa toàn bộ danh sách task, loại bỏ thông tin cũ/trùng lặp, khôi phục mã hóa UTF-8 và cập nhật đúng tiến độ thực tế theo chỉ đạo trực tiếp của Thầy.
+- **Nguồn sự thật điều phối**: Chọn `00-BRAIN-VLXT/TASKS.md` làm danh sách điều phối chuẩn duy nhất của Brain; `TASKS.md` ở thư mục gốc trỏ về file chuẩn này.
+- **Chuyển đổi trạng thái chính**:
+  1. **Xuất file Word (OMML)**: Chuyển sang `DONE` (Đã được Thầy trực tiếp nghiệm thu thực tế; độc lập với Bulk Delete).
+  2. **Admin Bulk Delete**: Giữ ở `VERIFY` (backend Apps Script v138/v139 đã deploy xóa theo block; chờ xác minh commit và kiểm thử an toàn trên staging).
+  3. **Mẫu bài giảng XPS Physics**: Giữ ở `WAITING_TEACHER` (đã có bản thử 8 slide, chờ Thầy chốt mẫu chính thức).
+  4. **Nền tảng OCR Ebook Phong Toả (4 Chương)**: Đánh dấu nền tảng `PROCESS_COMPLETE` (Quy trình hoàn thiện, bảo toàn spec chuẩn tái sử dụng).
+  5. **Worker tự động poll**: Chuyển sang `SUPERSEDED` (Bãi bỏ Scheduled Task tự poll; Thầy chủ động điều phối trực tiếp).
+- **Các file đã sửa**:
+  - `00-BRAIN-VLXT/TASKS.md`: Danh sách công việc chuẩn hóa duy nhất.
+  - `00-BRAIN-VLXT/CURRENT_STATE.md`: Trạng thái cập nhật, khắc phục lỗi mojibake UTF-8.
+  - `00-BRAIN-VLXT/DECISIONS.md`: Bổ sung quyết định bãi bỏ worker tự poll và chuẩn hóa quy trình OCR.
+  - `00-BRAIN-VLXT/HANDOFF_TO_CODEX.md`: Bản bàn giao nhanh cho Codex/Claude.
+  - `00-BRAIN-VLXT/handoffs/2026-09-08-1845-cleanup-tasks-and-state.md`: Nhật ký phiên làm việc.
+  - `TASKS.md` (root): Ghi chú trỏ về danh sách chuẩn.
+  - `PROJECT_STATE.md`: Bổ sung mục bàn giao này.
+- **Những việc còn mở**:
+  - `WAITING_TEACHER`: Thầy chốt mẫu bài giảng XPS Physics.
+  - `VERIFY`: Kiểm thử an toàn tính năng Admin Bulk Delete trên staging.
+
+### 07/09/2026 - Sửa lỗi xuất Word không hiển thị đúng định dạng công thức Toán học (OMML)
+
+- **Vấn đề & Yêu cầu của Thầy**:
+  - Khi tải file Word (.docx) các câu hỏi từ ngân hàng đề, toàn bộ công thức bị lỗi hiển thị, ví dụ như phân số hoặc số mũ không giữ đúng định dạng và xuất ra dạng text thô của LaTeX (VD: `$\frac{p}{T} = \text{hằng số}$`). Yêu cầu khắc phục để khi xuất ra Word vẫn giữ nguyên công thức.
+- **Phân tích**:
+  - File `ngan-hang-de.html` sử dụng hàm `htmlToRunsXml` để build cây XML (Office Open XML - OOXML) cho file `.docx` thủ công bằng chuỗi. Tuy nhiên, nó coi các đoạn `$ ... $` chứa LaTeX là văn bản thông thường (`w:t`) thay vì chuyển sang dạng toán học của Word (OMML - `<m:oMath>`).
+- **Thay đổi**:
+  - `_codex_verify_live/ngan-hang-de.html`: Viết hàm `mathMLToOMML` sử dụng `DOMParser` để map các thẻ MathML sang cú pháp OMML của Word (như `<m:f>` cho phân số, `<m:sSup>` cho số mũ, `<m:rad>` cho căn bậc hai, v.v.).
+  - Sử dụng thư viện KaTeX (đã có sẵn trong dự án) thông qua `katex.renderToString(tex, { output: 'mathml' })` để parse LaTeX sang MathML.
+  - Sửa đổi hàm `wRun` trong `htmlToRunsXml` để phát hiện `$ ... $` và `$$ ... $$`, truyền qua converter và chèn vào tài liệu dưới dạng OMML tags.
+  - Cập nhật thêm namespace `xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"` vào phần tử gốc `<w:document>` để Word hiểu các thẻ `<m:...>`.
+- **Lưu ý triển khai & Git**:
+  - Các thay đổi đã được thực hiện trực tiếp trên file `_codex_verify_live/ngan-hang-de.html` và commit lên nhánh `codex/manual-file-update-existing-390`.
+  - Nếu nhánh chính của repo Admin chưa chứa nội dung này, cần merge file `ngan-hang-de.html` hoặc sao chép mã nguồn các hàm `mathMLToOMML`, `latexToOmml`, và `wRun` (cùng namespace root xml) vào file tương ứng trên Repo Admin thật (`eduhost-vn204/edu-portal-console`).
+- **Kiểm tra**:
+  - Đã chạy qua `node -e` test logic inline JS cho DOMParser và Regex an toàn. Cú pháp Javascript hoàn toàn hợp lệ, không có lỗi regex.
 ### 05/09/2026 — Cập nhật Tỉ lệ Đua Top & Solo và Chuẩn hoá Tên Chương
 
 - **Vấn đề & Yêu cầu của Thầy**: 
@@ -510,3 +549,109 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
   - `test-teaching-scope.mjs`: **14/14 PASS**.
   - `test-quiz-merge.mjs`: **6/6 PASS**.
   - `test-quiz-publish.mjs`: **12/12 PASS**.
+
+### 08/09/2026 — Thiết Kế và Triển Khai "Draft/Hidden Lesson Contract" (Bảo Vệ Đa Tầng Chống Lộ Bài Pilot Cho Học Sinh)
+
+- **Người thực hiện**: Não AI Điều Phối & Antigravity
+- **Người nhận bàn giao**: Codex & Thầy Xuân Trường
+- **Trạng thái**: `READY_FOR_CODEX_QA` (Sẵn sàng nghiệm thu trên 2 nhánh riêng biệt của Admin và Student repo).
+- **Phạm vi & Kho lưu trữ**:
+  - **Admin Repo**: `_codex_verify_live` (`https://github.com/eduhost-vn204/edu-portal-console.git`).
+    - Nhánh: `codex/draft-lesson-contract` (Commit: `2d4001a`).
+  - **Student Repo**: `.` (`https://github.com/eduhost-vn204/edu-portal-lms.git`).
+    - Nhánh: `codex/draft-lesson-contract-student` (Commit: `8884761`).
+- **Nội dung thay đổi & Hợp đồng Draft/Hidden Lesson**:
+  1. **Cấu trúc dữ liệu `TrangThai`**: Bổ sung cột 15 `TrangThai` cho bảng `BaiHoc`. Giá trị hợp lệ: `published`, `draft`, `archived`.
+  2. **Tương thích ngược (Backward Compatibility)**: Tất cả bài học cũ chưa có hoặc để trống cột `TrangThai` được chuẩn hóa thành `published`, giữ nguyên 100% quyền truy cập của học sinh với dữ liệu hiện có.
+  3. **Bảo vệ Server-side GAS (`src/Mã.js`)**:
+     - `getBaiHoc(e)`: Nếu không có `scope=admin` hoặc `adminKey`, GAS lọc sạch các bài `draft` và `archived`, chỉ trả về bài `published` cho học sinh.
+     - `getVideoCauHoi(bai, e)` & `getBaiTapTracNghiem(bai, e)`: Trả về `{ data: [] }` nếu bài học là `draft`/`archived` khi học sinh truy cập.
+     - `saveBaiHoc(data)`: Nhận và lưu trường `TrangThai` vào cột 15.
+  4. **Admin Console (`quan-ly-bai-hoc.html`)**:
+     - Gọi API kèm `&scope=admin` để quản lý toàn bộ bài học.
+     - Hiển thị badge trạng thái rõ ràng: `🟢 Published`, `🟡 Draft`, `⚪ Archived`.
+     - Bộ lọc trực quan trên thanh toolbar: `Tất cả trạng thái`, `Published`, `Draft`, `Archived`.
+     - Form thêm/sửa bài học bổ sung dropdown chọn `TrangThai`.
+  5. **Student Portal Phòng Thủ Đa Tầng**:
+     - `scripts/sync-public-data.mjs`: Lọc bỏ triệt để bài `draft` và `archived` trước khi ghi `data/baihoc.json` và chỉ tạo quiz tĩnh cho bài `published`.
+     - `baihoc.html`: Lớp phòng thủ 3 tầng: lọc fetch từ sheets, lọc cache localStorage cũ, và lọc khi gom nhóm/render khóa học.
+  6. **Pipeline Pilot & Public Leak Detection (`scripts/youtube-lesson-pipeline.mjs`)**:
+     - Bài pilot gửi `TrangThai: 'draft'`.
+     - Read-back đối soát sâu 11/11 trường (kể cả `TrangThai`).
+     - Tự động gọi 3 endpoint công khai (`type=baihoc`, `type=videocauhoi`, `type=baitaptracnghiem`) để kiểm tra rò rỉ; nếu phát hiện ném `PUBLIC_LEAK_DETECTED` fail-closed.
+- **Kiểm thử nghiệm thu**:
+  - `test-draft-lesson-contract.mjs`: **12/12 PASS (100%)**.
+  - `test-youtube-lesson-pipeline.mjs`: **35/35 PASS (100%)**.
+  - `test-pipeline-safety-faults.mjs`: **56/56 PASS (100%)** (bổ sung mutation test `TrangThai`).
+  - `test-trial-oauth-live-engine.mjs`: **24/24 PASS (100%)**.
+  - `test-apps-script-logic.mjs`: **12/12 PASS (100%)** (kèm 7/7 self-test).
+  - Tổng số test pass: **146/146 (100%)**.
+- **Cam kết an toàn**:
+  - KHÔNG deploy Google Apps Script production.
+  - KHÔNG merge/push vào `main`.
+  - KHÔNG chạy OAuth live, KHÔNG ghi pilot thật vào Google Sheets production.
+  - Dữ liệu Bài 10 thật trên production hoàn toàn nguyên vẹn.
+
+### 09/09/2026 — Hotfix Admin Console: Revalidate Admin Authenticated Để Hiển Thị Bài Draft (B11)
+
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Codex & Thầy Xuân Trường
+- **Trạng thái**: `PRODUCTION_PUBLISHED` (Đã merge và triển khai thành công lên GitHub Pages Admin).
+- **Phạm vi & Kho lưu trữ**:
+  - **Admin Repo**: `_codex_verify_live` (`https://github.com/eduhost-vn204/edu-portal-console.git`).
+  - **Hotfix Branch**: `codex/hotfix-admin-init-draft-revalidate` (Commit: `a97c333`).
+  - **PR**: https://github.com/eduhost-vn204/edu-portal-console/pull/2 (Merged: `5e7c59e`).
+  - **Rollback Tag**: `rollback-before-admin-draft-init-20260909` trỏ `2bc2aae94424c3e70aaee2963ad344568be2292a`.
+- **Nguyên nhân sự cố & Khắc phục**:
+  - **Nguyên nhân**: `initAdmin()` trong `quan-ly-bai-hoc.html` gọi `loadLessonsPreview()` nạp 40 bài công khai (đã lọc ẩn draft fail-closed), sau đó chỉ gọi `loadLessons()` khi `allLessons.length === 0`. Do preview đã có 40 bài, `loadLessons()` (sử dụng POST `getbaihocadmin`) không bao giờ được gọi, khiến bài Draft (B11) bị ẩn trên giao diện Admin.
+  - **Khắc phục**:
+    1. Trong `initAdmin()`: Luôn gọi `loadLessons()` vô điều kiện sau preview/settings/config để revalidate bằng admin POST `getbaihocadmin`, thay thế `allLessons` bằng danh sách quản trị đầy đủ gồm bài Draft.
+    2. Trong `loadLessons()`: Chỉ chèn dòng loading spinner khi `!allLessons.length`, giữ nguyên DOM preview mượt mà trong khi revalidate nền.
+    3. Thêm bộ kiểm thử hồi quy `scripts/test-admin-init-draft-revalidate.mjs` (3/3 pass) chứng minh: preview công khai có 40 bài không có B11, `getbaihocadmin` trả 41 bài có B11, UI render huy hiệu Draft, và cache preview trong `localStorage` không chặn revalidate.
+- **Kiểm thử & Xác minh Thực tế**:
+  - `test-admin-init-draft-revalidate.mjs`: **3/3 PASS (100%)**.
+  - `test-admin-form-safety.mjs`: **8/8 PASS (100%)**.
+  - `test-draft-lesson-contract.mjs`: **31/31 PASS (100%)**.
+### 09/09/2026 — Hotfix Student LMS: Định Danh Ổn Định Số Buổi / Số Bài Học (Khắc Phục Lệch Buổi Khi Ẩn B11 Draft)
+
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Codex & Thầy Xuân Trường
+- **Trạng thái**: `PRODUCTION_PUBLISHED` (Đã merge và triển khai thành công lên GitHub Pages Student LMS).
+- **Phạm vi & Kho lưu trữ**:
+  - **Student Repo**: `student_upstream_clean` (`https://github.com/eduhost-vn204/edu-portal-lms.git`).
+  - **Hotfix Branch**: `codex/hotfix-student-stable-session-num` (Commit: `eff3883`).
+  - **PR**: https://github.com/eduhost-vn204/edu-portal-lms/pull/2 (Merged: `b0f9233`).
+  - **Rollback Tag**: `rollback-before-student-session-num-20260909` trỏ `94782e5` (đã push upstream).
+- **Nguyên nhân sự cố & Khắc phục**:
+  - **Nguyên nhân**: Trong `baihoc.html`, nhãn `Buổi` và `Bxx.` được sinh bằng cách duyệt tuần tự mảng `ch.lessons` sau khi đã lọc bỏ bài Draft. Khi bài B11 bị ẩn vì là Draft, bài B12 nhận index 11 (hiển thị thành "Buổi 11"), bài B13 nhận index 12 (hiển thị thành "Buổi 12").
+  - **Khắc phục**:
+    1. Bổ sung hàm `getLessonSessionNum(l, fallbackIndex)`: Trích xuất số bài ổn định ưu tiên từ `TenBai`/`name` dạng `Bxx`, `Bài xx`, `Buổi xx`, `Ngày xx` (hoặc `MaBai` / `ThuTuBai`), tuyệt đối không phụ thuộc index sau lọc.
+    2. Áp dụng `getLessonSessionNum` đồng bộ tại 4 vị trí: danh sách bài toàn khóa (`renderCourse`), tiêu đề bài đang học (`renderLesson`), thanh sidebar (`side-item`), và chế độ xem live (`renderLiveLesson`).
+    3. Thêm bộ kiểm thử hồi quy `scripts/test-student-stable-session-num.mjs` (8/8 pass) xác nhận: khi B11 là Draft thì B11 hoàn toàn không render, B12 giữ nguyên nhãn `Buổi 12` / `B12.`, B13 giữ nguyên nhãn `Buổi 13` / `B13.`, cùng các kiểm thử đơn vị trích xuất số bài.
+- **Kiểm thử & Xác minh Thực tế**:
+  - `test-student-stable-session-num.mjs`: **8/8 PASS (100%)**.
+  - `test-teaching-scope.mjs`: **14/14 PASS (100%)**.
+  - Cú pháp HTML/JS & `git diff --check`: Không lỗi, thẻ `</html>` nguyên vẹn, 17/17 thẻ script cú pháp hợp lệ.
+  - **Triển khai GitHub Pages**: Workflow `Deploy to GitHub Pages` (run `34260122287`) và `pages build and deployment` (run `34260121706`) thành công (`success`).
+  - **Xác minh Trực tiếp Live Site (`https://vatlyxuantruong.io.vn/baihoc.html`)**:
+    - Mã nguồn triển khai đã cập nhật hàm `getLessonSessionNum(l, fallbackIndex)`.
+    - B11 Draft bị ẩn hoàn toàn khỏi danh sách học sinh.
+    - Bài B12 giữ nguyên nhãn `Buổi 12`, bài B13 giữ nguyên nhãn `Buổi 13`.
+
+### 09/09/2026 — Chuẩn Hóa Tài Liệu Quy Chuẩn Xưởng Xuất Bản Bài Học Tự Động (AUTO_PUBLISH_LESSON_SPEC.md)
+
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Codex & Thầy Xuân Trường
+- **Trạng thái**: `SPEC_PUBLISHED`
+- **Mô tả tài liệu**:
+  - Soạn thảo quy chuẩn toàn diện [AUTO_PUBLISH_LESSON_SPEC.md](file:///d:/Work/D%E1%BA%A1y%20h%E1%BB%8Dc/Trang%20wed/X%C3%A2y%20wed%20h%E1%BB%8Dc%20v%E1%BA%ADt%20l%C3%BD/AUTO_PUBLISH_LESSON_SPEC.md) dựa trên thực tiễn nạp Pilot B11 thành công 100%.
+  - Bao gồm 9 phần chi tiết:
+    1. Mục tiêu & 4 nguyên tắc cốt lõi (Fail-Closed, Zero Credential Leak, Data Integrity, Teacher-Controlled Publish).
+    2. Cấu trúc gói học liệu đầu vào (`manifest.json` schema, 2 video MP4, 3 PDF, 20 câu video timestamp, 20 câu bài tập).
+    3. 6 Preflight Gates nghiêm ngặt (Contract & Syntax, Exact Backend Match 1 độc bản duy nhất, Snapshot Integrity, Input Package Validation, Trial Profile Isolation, Fail-Closed Draft State).
+    4. Cờ lệnh `--mode=trial` (Private, thư mục trial, trạng thái draft) vs `--mode=live` (Unlisted, published khi Thầy duyệt).
+    5. Checkpoint, resume (`.checkpoint.json`) và tính bất biến (idempotency).
+    6. Quy trình đối soát nghiệm thu 7 cổng độc lập (read-back 11 trường, 20/20 câu video, 20/20 câu bài tập, public leak check qua 3 public endpoints, bảo vệ bài lân cận B10 nguyên vẹn).
+    7. Quy trình Thầy duyệt Draft trên Admin Console rồi xuất bản.
+    8. Quy trình rollback và khôi phục snapshot tự động/thủ công.
+    9. 5 điều cấm tuyệt đối (không đọc secret/localStorage/token, không tự publish, không ghi đè bài gốc, không bypass gates, không sửa nóng trên main).
