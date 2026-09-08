@@ -859,6 +859,31 @@ function coursePct(c){ return c.total?Math.round(courseWatched(c)/c.total*100):0
 function courseNew(c){ let n=0; c.chapters.forEach(ch=>ch.lessons.forEach(l=>{ if(daysAgo(l.date)<=NEW_DAYS)n++; })); return n; }
 function findCourse(name){ return COURSES.find(c=>c.name===name); }
 function flatLessons(c){ const out=[]; c.chapters.forEach(ch=>ch.lessons.forEach(l=>out.push(Object.assign({chapter:ch.name},l)))); return out; }
+function getLessonSessionNum(l, fallbackIndex){
+    if(!l) return fallbackIndex !== undefined ? fallbackIndex : '';
+    const name = (l.name || l.TenBai || l.tenbai || '').trim();
+    const mb = (l.mabai || l.MaBai || '').trim();
+    const ttbRaw = (l.ttb !== undefined && l.ttb !== null) ? l.ttb : (l.ThuTuBai !== undefined ? l.ThuTuBai : l.thutubai);
+    const ttb = (ttbRaw !== undefined && ttbRaw !== null && ttbRaw !== '' && !isNaN(Number(ttbRaw))) ? Number(ttbRaw) : null;
+
+    // 1. Trích xuất số bài từ TenBai / name: Bxx, Bài xx, Buổi xx, Ngày xx
+    if(name){
+        const m = name.match(/(?:^|\b)(?:B\s*\.?\s*|Bài\s*|Buổi\s*|Ngày\s*)(\d+)\b/i);
+        if(m) return Number(m[1]);
+    }
+
+    // 2. Trích xuất từ MaBai nếu có định dạng Bxx (tránh nhầm lẫn với hash hex như B4ca...)
+    if(mb){
+        const m = mb.match(/^B(\d{1,3})(?:[^0-9a-f]|$)/i);
+        if(m) return Number(m[1]);
+    }
+
+    // 3. Sử dụng ThuTuBai nếu hợp lệ và lớn hơn 0
+    if(ttb !== null && ttb > 0) return ttb;
+
+    // 4. Fallback vị trí tuần tự nếu không có định danh số ổn định
+    return fallbackIndex !== undefined ? fallbackIndex : '';
+}
 function findLesson(key){
     const target = normLessonKey(key);
     if(!target) return null;
@@ -1090,10 +1115,10 @@ function renderCourse(name){
                 </div>
             </div>
         </div>`;
-    // Đánh số buổi toàn khoá (xuyên suốt tất cả chương)
-    let _sessionNum = 0;
+    // Đánh số buổi toàn khoá (xuyên suốt tất cả chương) dựa trên định danh ổn định
+    let _fallbackNum = 0;
     const _sessionMap = new Map();
-    c.chapters.forEach(ch => ch.lessons.forEach(l => { _sessionMap.set(l.key, ++_sessionNum); }));
+    c.chapters.forEach(ch => ch.lessons.forEach(l => { _sessionMap.set(l.key, getLessonSessionNum(l, ++_fallbackNum)); }));
 
     c.chapters.forEach((ch,i)=>{
         const cw=ch.lessons.filter(l=>WATCHED.has(l.key)).length;
@@ -1166,8 +1191,8 @@ function renderLesson(key){
     const prev=idx>0?flat[idx-1]:null, next=idx<flat.length-1?flat[idx+1]:null;
     const vid=ytId(lesson.video); const did=driveId(lesson.video); const vtype=videoType(lesson.video); const done=WATCHED.has(key);
     const pct=coursePct(course), w=courseWatched(course);
-    // Tính số buổi của bài này trong khoá
-    const _lsn_session = idx + 1; // idx = vị trí trong flatLessons (0-based) → buổi = idx+1
+    // Tính số buổi của bài này trong khoá dựa trên định danh ổn định
+    const _lsn_session = getLessonSessionNum(lesson, idx + 1);
 
     // Video player — YouTube IFrame API hoặc Google Drive embed
     const videoHtml = vtype==='youtube'
@@ -1194,10 +1219,10 @@ function renderLesson(key){
             <div class="side-hd-prog">${pct}% hoàn thành · ${w}/${course.total} bài</div>
             <div class="bar" style="margin-top:4px"><i style="width:${pct}%"></i></div>
         </div>`;
-    // Đánh số buổi cho sidebar (xuyên suốt khoá)
-    let _sideSessionNum = 0;
+    // Đánh số buổi cho sidebar (xuyên suốt khoá) dựa trên định danh ổn định
+    let _sideFallbackNum = 0;
     const _sideSessionMap = new Map();
-    course.chapters.forEach(ch => ch.lessons.forEach(l => { _sideSessionMap.set(l.key, ++_sideSessionNum); }));
+    course.chapters.forEach(ch => ch.lessons.forEach(l => { _sideSessionMap.set(l.key, getLessonSessionNum(l, ++_sideFallbackNum)); }));
 
     course.chapters.forEach((ch,ci)=>{
         const cw=ch.lessons.filter(l=>WATCHED.has(l.key)).length;
@@ -1461,7 +1486,7 @@ async function renderLiveLesson(){
     const prev=idx>0?flat[idx-1]:null, next=idx<flat.length-1?flat[idx+1]:null;
     const done=WATCHED.has(key);
     const pct=coursePct(course), w=courseWatched(course);
-    const _lsn_session = idx + 1;
+    const _lsn_session = getLessonSessionNum(lesson, idx + 1);
 
     // ── Khung LIVE thay cho video ghi hình ──
     const liveVideoHtml = `<div class="ratio">
@@ -1494,9 +1519,9 @@ async function renderLiveLesson(){
             <div class="side-hd-prog">${pct}% hoàn thành · ${w}/${course.total} bài</div>
             <div class="bar" style="margin-top:4px"><i style="width:${pct}%"></i></div>
         </div>`;
-    let _sideSessionNum = 0;
+    let _sideFallbackNum = 0;
     const _sideSessionMap = new Map();
-    course.chapters.forEach(ch => ch.lessons.forEach(l => { _sideSessionMap.set(l.key, ++_sideSessionNum); }));
+    course.chapters.forEach(ch => ch.lessons.forEach(l => { _sideSessionMap.set(l.key, getLessonSessionNum(l, ++_sideFallbackNum)); }));
     course.chapters.forEach((ch,ci)=>{
         const cw=ch.lessons.filter(l=>WATCHED.has(l.key)).length;
         side+=`<div class="side-chap">
