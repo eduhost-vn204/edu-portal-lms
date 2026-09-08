@@ -187,7 +187,7 @@ Mọi chế độ thực thi của pipeline đều tuân thủ nguyên tắc **F
 
 > [!CAUTION]
 > **CẢNH BÁO BẢO VỆ B11 PILOT**:
-> Bài học B11 (`B11. ĐỊNH LUẬT BOYLE – QUÁ TRÌNH ĐẲNG NHIỆT`) hiện đang sử dụng học liệu demo sao chép từ B10 phục vụ mục đích kiểm thử pipeline. **BẮT BUỘC GIỮ B11 Ở TRẠNG THÁI DRAFT VĨNH VIỄN**, tuyệt đối không được chuyển sang `published` như nội dung Boyle thật cho học sinh.
+> Bài học B11 (`B11. ĐỊNH LUẬT BOYLE – QUÁ TRÌNH ĐẲNG NHIỆT`) hiện đang sử dụng học liệu demo sao chép từ B10 phục vụ mục đích kiểm thử pipeline. B11 phải giữ trạng thái draft cho đến khi học liệu demo B10 được thay toàn bộ bằng học liệu Boyle thật và bài học được nghiệm thu lại theo đủ 7 audit gates.
 
 ---
 

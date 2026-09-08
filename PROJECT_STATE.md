@@ -672,7 +672,7 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
      - Pipeline luôn kết thúc tại trạng thái `READY_FOR_TEACHER`.
      - Quyền chuyển `Published` thuộc về 100% duy nhất một mình Thầy thao tác trực tiếp trên Admin Console UI (`quan-ly-bai-hoc.html`). Xóa bỏ hoàn toàn câu chữ "AI có thể publish khi được phê duyệt bằng văn bản".
   2. **Cảnh báo bảo vệ B11 Pilot**:
-     - Bổ sung cảnh báo nghiêm ngặt: Bài học B11 hiện đang dùng học liệu demo sao chép từ B10 để kiểm thử pipeline; bắt buộc giữ B11 ở trạng thái `draft` vĩnh viễn, tuyệt đối không được chuyển sang `published` cho học sinh.
+     - Bổ sung cảnh báo nghiêm ngặt: Bài học B11 hiện đang dùng học liệu demo sao chép từ B10 để kiểm thử pipeline; B11 phải giữ trạng thái draft cho đến khi học liệu demo B10 được thay toàn bộ bằng học liệu Boyle thật và bài học được nghiệm thu lại theo đủ 7 audit gates.
   3. **Mục 6 & 8: Quy tắc Rollback an toàn (Fail-Closed & Stop)**:
      - Khi gặp bất kỳ lỗi nào hoặc đối soát nghiệm thu thất bại: Pipeline mặc định **DỪNG (STOP)**, bảo tồn nguyên trạng file `snapshot_<mabai>_before.json`, cập nhật `.checkpoint.json` với trạng thái `MANUAL_RECOVERY_REQUIRED`.
      - Tuyệt đối KHÔNG tự ý xóa video YouTube, xóa file Drive, hay tự ý gửi payload khôi phục backend nếu chưa có lệnh rõ ràng của Thầy. Giữ nguyên hiện trường phục vụ tra cứu.
