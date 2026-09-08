@@ -224,32 +224,84 @@ Sau khi ghi dữ liệu lên backend, pipeline tự động chạy quy trình ki
 
 ---
 
-## 7. QUY TRÌNH THẦY DUYỆT DRAFT RỒI XUẤT BẢN (PUBLISH WORKFLOW)
+## 7. QUY TRÌNH THẦY DUYỆT DRAFT VÀ XUẤT BẢN (PUBLISH & POST-PUBLISH SYNC WORKFLOW)
 
+### 7.1. Trình tự xuất bản từ Admin Console
 ```mermaid
 sequenceDiagram
     autonumber
     actor T as Thầy Xuân Trường
     participant AC as Admin Console (Web)
     participant GAS as Google Apps Script (Backend)
+    participant GH as GitHub Actions (refresh-data.yml)
     participant LMS as Student LMS (Web Học Sinh)
 
     Note over AC: Pipeline hoàn tất -> Trạng thái READY_FOR_TEACHER
-    T->>AC: 1. Đăng nhập Admin Console (quan-ly-bai-hoc.html)
+    T->>AC: 1. Đăng nhập Admin Console (index.html / quan-ly-bai-hoc.html)
     AC->>GAS: POST getbaihocadmin
     GAS-->>AC: Trả về danh sách bài học (gồm bài Draft vừa nạp)
     AC-->>T: Hiển thị bài học tại đúng Chương kèm huy hiệu 🟡 Draft
-    T->>AC: 2. Thầy bấm nút "Sửa" / "Xem trước" để tự mình kiểm tra toàn bộ học liệu
-    T->>AC: 3. Thầy xác nhận học liệu chuẩn -> Tự chọn "Published" trên giao diện và bấm Lưu
+    T->>AC: 2. Thầy bấm "Sửa" để tự mình kiểm tra toàn bộ học liệu (Video, PDF, Câu hỏi)
+    T->>AC: 3. Thầy xác nhận học liệu chuẩn -> Tự chọn "Published" trên form và bấm Lưu
     AC->>GAS: POST savebaihoc (TrangThai = 'published')
     GAS-->>AC: Phản hồi { ok: true }
-    T->>LMS: 4. Mở website học sinh kiểm tra
-    LMS-->>T: Hiển thị bài học mới công khai đầy đủ nhãn Buổi chuẩn xác
+    T->>GH: 4. Kích hoạt workflow 'refresh-data.yml' (hoặc chờ cron 15 phút)
+    GH->>GAS: Đọc Sheets (BaiHoc, BaiTapTracNghiem)
+    GH->>LMS: Đồng bộ JSON tĩnh (baihoc.json, quiz-index.json, quiz-*.json)
+    Note over LMS: Thực hiện Post-Publish Static LMS Sync Gate
+    T->>LMS: 5. Đối chiếu số câu public = số câu Admin và kiểm tra UI học sinh
+    LMS-->>T: PASS 100% (Hiện đủ 20/20 câu, tab 'Luyện tập trắc nghiệm (20)')
+    Note over T: 6. CHỈ SAU KHI PASS: Mới chính thức thông báo bài học cho học sinh!
 ```
 
-### Quy tắc bất biến:
+### 7.2. Cổng kiểm soát đồng bộ tĩnh sau xuất bản (Post-Publish Static LMS Sync Gate)
+
+Vì website học sinh (`vatlyxuantruong.io.vn/baihoc.html`) sử dụng kiến trúc JSON tĩnh hiệu năng cao (`data/baihoc.json`, `data/quiz-index.json`, `data/quizzes/quiz-*.json`), việc Thầy bấm "Lưu" (Published) trên Admin Console **MỚI CHỈ LÀ ĐIỀU KIỆN CẦN**. Dữ liệu công khai trên CDN GitHub Pages chưa cập nhật tức thì nếu chưa hoàn thành chu trình đồng bộ tĩnh.
+
+**BẮT BUỘC THỰC HIỆN ĐỦ 4 BƯỚC CỦA CỔNG NÀY TRƯỚC KHI THÔNG BÁO BÀI HỌC:**
+
+1. **Kích hoạt đồng bộ dữ liệu tĩnh (Trigger Sync)**:
+   - Chạy lệnh kích hoạt thủ công trên nhánh `main` của repo Student LMS:
+     ```bash
+     gh workflow run refresh-data.yml --repo eduhost-vn204/edu-portal-lms --ref main
+     ```
+   - Chờ workflow `Đồng bộ dữ liệu học tập` (`refresh-data.yml`) hoàn tất, commit dữ liệu tự động (`data: đồng bộ Google Sheets`) được đẩy lên `main`.
+   - Chờ workflow `pages build and deployment` build và deploy thành công (`success`) lên CDN GitHub Pages.
+
+2. **Đối chiếu chỉ mục bài tập (`quiz-index.json`)**:
+   - Truy cập trực tiếp `https://vatlyxuantruong.io.vn/data/quiz-index.json` (kèm cache-buster timestamp).
+   - Tìm kiếm entry theo `MaBai`:
+     ```json
+     "B4ca24b64572f": {
+       "file": "data/quizzes/quiz-<hash>.json?v=...",
+       "count": 20
+     }
+     ```
+   - **Tiêu chuẩn ĐẠT**: Thuộc tính `count` trong `quiz-index.json` bắt buộc phải khớp chính xác 100% số câu hỏi bài tập trắc nghiệm trên Admin backend (`count_public === count_admin`, ví dụ 20 = 20). Tuyệt đối không được để tình trạng count cũ (ví dụ 7 câu).
+
+3. **Đối chiếu file nội dung bài tập (`data/quizzes/quiz-*.json`)**:
+   - Truy cập trực tiếp file quiz mà `quiz-index.json` trỏ tới.
+   - **Tiêu chuẩn ĐẠT**:
+     - Phản hồi HTTP 200, parse JSON hợp lệ.
+     - Số phần tử mảng câu hỏi đúng bằng `count` (ví dụ đúng 20 câu).
+     - Toàn bộ các câu từ Câu 1 đến Câu 20 đều có đầy đủ thân câu hỏi (`question`/`q`), các phương án lựa chọn và đáp án chuẩn (`correct`/`ans`).
+
+4. **Kiểm chứng trực tiếp trên giao diện học sinh (`baihoc.html`)**:
+   - Mở bài học trên website: `https://vatlyxuantruong.io.vn/baihoc.html#lesson/<key>`.
+   - **Tiêu chuẩn ĐẠT**:
+     - Bài học xuất hiện công khai tại đúng Chương, giữ nguyên định danh số Buổi ổn định.
+     - Tab bài tập hiển thị chính xác nhãn: **`Luyện tập trắc nghiệm (<count>)`** (ví dụ: `Luyện tập trắc nghiệm (20)`).
+     - Toàn bộ giao diện câu hỏi từ 1 đến `<count>` hiển thị đầy đủ, học sinh có thể chọn đáp án, nhập số và bấm "Kiểm tra đáp án" bình thường.
+
+### 7.3. Điều kiện tiên quyết để thông báo bài học (Strict Broadcast Blocker)
+> [!CAUTION]
+> **QUY TẮC CẤM PHÁT THÔNG BÁO SỚM**:
+> Giáo viên và trợ lý **TUYỆT ĐỐI KHÔNG ĐƯỢC PHÉP PHÁT THÔNG BÁO BÀI HỌC CHO HỌC SINH** (qua nhóm Zalo, Facebook, SMS hoặc bảng tin thông báo) ngay sau khi vừa bấm Lưu trên Admin.
+> Chỉ được phép thông báo khi và chỉ khi **Post-Publish Static LMS Sync Gate** đã được kiểm tra và ghi nhận **PASS 100% (Số câu Public tĩnh = Số câu Admin Backend = 20/20)**.
+
+### 7.4. Quy tắc bất biến về quyền hạn:
 1. **AI tuyệt đối không được phép xuất bản bài học**: Mọi chế độ pipeline luôn kết thúc tại trạng thái `READY_FOR_TEACHER` với `TrangThai = 'draft'`. AI chỉ bàn giao checkpoint và bằng chứng đối soát cho Thầy.
-2. **Quyền xuất bản 100% thuộc về Thầy**: Thầy tự mình xem xét bài học trên Admin Console UI (`quan-ly-bai-hoc.html`). Chỉ Thầy mới trực tiếp thao tác chuyển sang `Published` và bấm Lưu. Tuyệt đối không được diễn đạt hoặc cho phép "AI có thể publish khi được phê duyệt bằng văn bản".
+2. **Quyền xuất bản 100% thuộc về Thầy**: Thầy tự mình xem xét bài học trên Admin Console UI (`index.html` / `quan-ly-bai-hoc.html`). Chỉ Thầy mới trực tiếp thao tác chuyển sang `Published` và bấm Lưu. Tuyệt đối không được diễn đạt hoặc cho phép "AI có thể publish khi được phê duyệt bằng văn bản".
 
 ---
 
