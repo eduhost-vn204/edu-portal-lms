@@ -4,17 +4,14 @@ import vm from 'node:vm';
 
 console.log('=== RUNNING COMPREHENSIVE VERIFICATION FOR BÀI 11 ===');
 
-// 1. Check data/baihoc.json
+// 1. Check data/baihoc.json (Draft Safety Contract: B11 must be hidden from students)
 const baihocRaw = readFileSync('data/baihoc.json', 'utf8');
 const lessons = JSON.parse(baihocRaw);
-assert.equal(lessons.length, 41, 'data/baihoc.json phải có đúng 41 bài học');
+assert.equal(lessons.length, 40, 'data/baihoc.json phải có đúng 40 bài học công khai (B11 Draft không được lộ)');
 
-const b11 = lessons.find(l => l.MaBai === 'B4ca24b64572f');
-assert.ok(b11, 'Bài 11 (B4ca24b64572f) phải có mặt trong data/baihoc.json');
-assert.equal(b11.TenBai, 'B11. ĐỊNH LUẬT BOYLE – QUÁ TRÌNH ĐẲNG NHIỆT');
-assert.equal(b11.ThuTuBai, 4);
-assert.equal(b11.Chuong, 'Chương 2 – Khí lí tưởng');
-console.log('✅ 1. data/baihoc.json: 41 bài học, B11 định danh chuẩn xác.');
+const b11Public = lessons.find(l => l.MaBai === 'B4ca24b64572f');
+assert.equal(b11Public, undefined, 'Bài 11 (B4ca24b64572f) tuyệt đối không được có mặt trong data/baihoc.json công khai của học sinh');
+console.log('✅ 1. data/baihoc.json: 40 bài published, B11 Draft được ẩn tuyệt đối theo hợp đồng bảo mật.');
 
 // 2. Check data/quiz-index.json
 const quizIndex = JSON.parse(readFileSync('data/quiz-index.json', 'utf8'));
@@ -73,7 +70,25 @@ for (const sm of scriptMatch) {
   }
 }
 
-const courses = vm.runInContext('buildCourses(' + JSON.stringify(lessons) + ')', ctx);
+// 3. Test baihoc.html in VM: Draft safety & Pre-publish readiness
+const b11Data = {
+  _rowIndex: 5,
+  KhoaHoc: 'CHUYÊN ĐỀ LÝ THUYẾT GĐ1 - Vật Lý 12',
+  Chuong: 'Chương 2 – Khí lí tưởng',
+  TenBai: 'B11. ĐỊNH LUẬT BOYLE – QUÁ TRÌNH ĐẲNG NHIỆT',
+  Video: 'https://www.youtube.com/watch?v=yHYNTWS1iCA',
+  VideoGiai: 'https://www.youtube.com/watch?v=hl0yjy331xw',
+  PDFLyThuyet: 'https://drive.google.com/file/d/1P9Bn0-KXrf1hA2NyNE5UE6HxOu91xINX/view?usp=sharing',
+  PDF: 'https://drive.google.com/file/d/1q011XVLDrVEg0SW1g6VHPBzKIFLz1nFn/view?usp=sharing',
+  PDFLuyenTap: 'https://drive.google.com/file/d/1n47DgcucFgz8nr_DGdxy3FCNr62375Bi/view?usp=sharing',
+  ThoiGianLamBai: '',
+  ThuTuBai: 4,
+  MaBai: 'B4ca24b64572f',
+  TrangThai: 'draft'
+};
+
+const simulatedLessons = [...lessons, { ...b11Data, TrangThai: 'published' }];
+const courses = vm.runInContext('buildCourses(' + JSON.stringify(simulatedLessons) + ')', ctx);
 const course = courses.find(c => c.name.includes('CHUYÊN ĐỀ LÝ THUYẾT GĐ1'));
 assert.ok(course, 'Phải tìm thấy khóa CHUYÊN ĐỀ LÝ THUYẾT GĐ1');
 
@@ -122,16 +137,16 @@ assert.equal(mappedBaitap[19].ans, 'C');
 console.log('✅ 6. mapQuizRows nạp đủ 20 câu trắc nghiệm luyện tập và đáp án hợp lệ.');
 
 // 7. Check Video and PDF assets
-assert.ok(b11.Video && b11.Video.includes('youtube.com'), 'Video lý thuyết phải là YouTube link');
-assert.ok(b11.VideoGiai && b11.VideoGiai.includes('youtube.com'), 'Video giải phải là YouTube link');
-assert.ok(b11.PDFLyThuyet && b11.PDFLyThuyet.includes('drive.google.com'), 'PDF lý thuyết phải là Drive link');
-assert.ok(b11.PDF && b11.PDF.includes('drive.google.com'), 'PDF bài tập áp dụng phải là Drive link');
-assert.ok(b11.PDFLuyenTap && b11.PDFLuyenTap.includes('drive.google.com'), 'PDF luyện tập phải là Drive link');
-assert.equal(b11.Video, 'https://www.youtube.com/watch?v=yHYNTWS1iCA');
-assert.equal(b11.VideoGiai, 'https://www.youtube.com/watch?v=hl0yjy331xw');
-assert.equal(b11.PDFLyThuyet, 'https://drive.google.com/file/d/1P9Bn0-KXrf1hA2NyNE5UE6HxOu91xINX/view?usp=sharing');
-assert.equal(b11.PDF, 'https://drive.google.com/file/d/1q011XVLDrVEg0SW1g6VHPBzKIFLz1nFn/view?usp=sharing');
-assert.equal(b11.PDFLuyenTap, 'https://drive.google.com/file/d/1n47DgcucFgz8nr_DGdxy3FCNr62375Bi/view?usp=sharing');
+assert.ok(b11Data.Video && b11Data.Video.includes('youtube.com'), 'Video lý thuyết phải là YouTube link');
+assert.ok(b11Data.VideoGiai && b11Data.VideoGiai.includes('youtube.com'), 'Video giải phải là YouTube link');
+assert.ok(b11Data.PDFLyThuyet && b11Data.PDFLyThuyet.includes('drive.google.com'), 'PDF lý thuyết phải là Drive link');
+assert.ok(b11Data.PDF && b11Data.PDF.includes('drive.google.com'), 'PDF bài tập áp dụng phải là Drive link');
+assert.ok(b11Data.PDFLuyenTap && b11Data.PDFLuyenTap.includes('drive.google.com'), 'PDF luyện tập phải là Drive link');
+assert.equal(b11Data.Video, 'https://www.youtube.com/watch?v=yHYNTWS1iCA');
+assert.equal(b11Data.VideoGiai, 'https://www.youtube.com/watch?v=hl0yjy331xw');
+assert.equal(b11Data.PDFLyThuyet, 'https://drive.google.com/file/d/1P9Bn0-KXrf1hA2NyNE5UE6HxOu91xINX/view?usp=sharing');
+assert.equal(b11Data.PDF, 'https://drive.google.com/file/d/1q011XVLDrVEg0SW1g6VHPBzKIFLz1nFn/view?usp=sharing');
+assert.equal(b11Data.PDFLuyenTap, 'https://drive.google.com/file/d/1n47DgcucFgz8nr_DGdxy3FCNr62375Bi/view?usp=sharing');
 console.log('✅ 7. Video YouTube và PDF Google Drive của Bài 11 hợp lệ 100%.');
 
 console.log('\n🎉 TOÀN BỘ 7 BƯỚC KIỂM TRA ĐỐI SOÁT BÀI 11 ĐÃ PASS 100%!');

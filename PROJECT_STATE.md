@@ -159,11 +159,15 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
-### 11/09/2026 — Hoàn Tất Triển Khai & Xuất Bản Toàn Diện Bài 11 Lên Website Vật Lý Xuân Trường (Video YouTube, PDF Drive, Quiz 20 Câu)
+### 11/09/2026 — Sửa Lỗi Khẩn Cấp Bài 11 (Mã B4ca24b64572f): Dọn Sạch Dữ Liệu Pilot, Cập Nhật Học Liệu Thật 100% & Bảo Vệ Trạng Thái DRAFT
 
 - **Người thực hiện**: Antigravity AI Coordinator
 - **Người nhận bàn giao**: Thầy Xuân Trường & Codex
-- **Trạng thái**: `PRODUCTION_PUBLISHED` (Đã hoàn tất 100% học liệu thực tế, kiểm thử tự động 7/7 pass, sẵn sàng merge `main` theo phê duyệt của Thầy).
+- **Trạng thái**: `READY_FOR_TEACHER` (Trạng thái Draft được bảo vệ nghiêm ngặt; Tuyệt đối KHÔNG xuất bản cho học sinh; Đã chuẩn bị toàn bộ học liệu thật trên hệ thống để Thầy trực tiếp nghiệm thu và bấm Publish trên Admin Console sau).
+- **Hiện tượng lỗi đã xác minh & khắc phục**:
+  1. *Trang học sinh phát nhầm video*: Trước đó video Bài 11 mang tiêu đề B11 nhưng trỏ nhầm video pilot cũ (`ebNk9fol3ak` - video Bài 10 dài 33m16s). Đã thay thế bằng video B11 Lý thuyết thật (`yHYNTWS1iCA`, dài 39m39s).
+  2. *Admin còn dữ liệu pilot*: Mô tả cũ có `(Pilot Draft)` và trỏ link PDF pilot cũ. Đã dọn sạch hoàn toàn, mô tả bài học chuẩn chỉ, trỏ 3 link Google Drive PDF chính thức mới xuất từ Word.
+  3. *Lệch dữ liệu 2 chiều & B11 bị lộ*: Dữ liệu Bài 11 đã được rút sạch khỏi `data/baihoc.json` công khai (phục hồi đúng 40 bài published), bảo vệ fail-closed không làm lộ Bài 11 cho học sinh.
 - **Học liệu nguồn chính thức sử dụng**:
   - Thư mục nguồn: `D:\Work\Dạy học\Xây Dựng Lộ Trình XPS 2k9\Triển khai\GĐ1 - Chuyên đề Lý thuyết\Chương 2\Bài 11 - Định luật Boyle – Quá trình đẳng nhiệt`
   - Đầy đủ 7 file học liệu:
@@ -172,43 +176,45 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
     3. `Bai 11 - Định luật Boyle – Quá trình đẳng nhiệt - Bài tập áp dụng - wed.docx`
     4. `Bai 11 - Định luật Boyle – Quá trình đẳng nhiệt - Bài tập luyện tập.docx` (20 câu kèm lời giải chi tiết và bảng đáp án)
     5. `Bai 11 - Định luật Boyle – Quá trình đẳng nhiệt - Bài tập luyện tập - wed.docx` (20 câu trắc nghiệm có sao `*`)
-    6. `Bài 11. Lý thuyết.mp4` (1273.6 MB, 1080p)
-    7. `Bài 11. Luyện tập .mp4` (1322.7 MB, 1080p)
-- **Các tài nguyên số hóa thực tế đã đưa lên hạ tầng**:
+    6. `Bài 11. Lý thuyết.mp4` (2378.36s / 39m39s) — Slide bài giảng Bài 11 Định luật Boyle (0–1740s) và chữa 20 câu bài tập áp dụng trên Word (1740–2378s).
+    7. `Bài 11. Luyện tập .mp4` (2355s / 39m15s) — Chữa 20 câu bài tập luyện tập trên Word.
+- **Các tài nguyên số hóa thực tế đã đưa lên hạ tầng & đối soát**:
   1. **Video YouTube (Kênh Thầy `Xuân Trường Nguyễn` `UC12n9QGGCnI3mJke_XswlZg`, chế độ `unlisted`)**:
-     - Video Lý thuyết: `https://www.youtube.com/watch?v=yHYNTWS1iCA` (ID: `yHYNTWS1iCA`, HTTP 200 oEmbed)
-     - Video Luyện tập: `https://www.youtube.com/watch?v=hl0yjy331xw` (ID: `hl0yjy331xw`, HTTP 200 oEmbed)
+     - Video Bài giảng Lý thuyết: `https://www.youtube.com/watch?v=yHYNTWS1iCA` (ID: `yHYNTWS1iCA`, thời lượng 39m39s, khớp 100% `Bài 11. Lý thuyết.mp4`).
+     - Video Chữa bài Luyện tập: `https://www.youtube.com/watch?v=hl0yjy331xw` (ID: `hl0yjy331xw`, thời lượng 39m15s, khớp 100% `Bài 11. Luyện tập .mp4`).
+     - Video pilot cũ sai: `ebNk9fol3ak` (Private, 33m16s, nội dung Bài 10) -> Đã loại bỏ hoàn toàn khỏi bản ghi B11.
   2. **Tài liệu PDF Google Drive (Chuyển đổi Word chuẩn Microsoft Word 16.0 COM, phân quyền `anyone: reader`)**:
-     - PDF Lý thuyết: `https://drive.google.com/file/d/1P9Bn0-KXrf1hA2NyNE5UE6HxOu91xINX/view?usp=sharing` (ID: `1P9Bn0-KXrf1hA2NyNE5UE6HxOu91xINX`)
-     - PDF Áp dụng: `https://drive.google.com/file/d/1q011XVLDrVEg0SW1g6VHPBzKIFLz1nFn/view?usp=sharing` (ID: `1q011XVLDrVEg0SW1g6VHPBzKIFLz1nFn`)
-     - PDF Luyện tập: `https://drive.google.com/file/d/1n47DgcucFgz8nr_DGdxy3FCNr62375Bi/view?usp=sharing` (ID: `1n47DgcucFgz8nr_DGdxy3FCNr62375Bi`)
-- **Các thay đổi trong kho mã**:
-  1. `data/baihoc.json`:
-     - Bản ghi chính thức Bài 11 (`MaBai`: `B4ca24b64572f`, `ThuTuBai`: 4, `TenBai`: `B11. ĐỊNH LUẬT BOYLE – QUÁ TRÌNH ĐẲNG NHIỆT`, `TrangThai`: `""`).
-     - Gắn đầy đủ 2 URL YouTube (`Video`, `VideoGiai`) và 3 URL Google Drive (`PDFLyThuyet`, `PDF`, `PDFLuyenTap`).
-     - Tổng số bài học toàn website là 41 bài.
-  2. `data/quizzes/quiz-c88214ff9cb9bfffe1d1.json`:
-     - 20/20 câu hỏi trắc nghiệm luyện tập thực tế từ file Word của Thầy theo chuẩn content-addressed.
-     - Khớp 100% bảng đáp án chính thức (`1D 2A 3C 4D 5A 6B 7A 8C 9A 10C 11B 12B 13B 14D 15A 16A 17B 18D 19D 20C`).
-  3. `data/quiz-index.json`:
-     - Trỏ Bài 11 tới `data/quizzes/quiz-c88214ff9cb9bfffe1d1.json?v=mtw6s40z` với `count: 20`.
-  4. `scripts/test-b11-publish.mjs`:
-     - Suite kiểm thử tự động 7/7 pass toàn diện: kiểm tra cấu trúc 41 bài, quiz content-addressed, VM test `buildCourses`, tính ổn định số buổi (Buổi 10 -> Buổi 11 -> Buổi 12 -> Buổi 13), điều hướng trước/sau, KaTeX, và các URL Video YouTube / PDF Drive.
-- **Hành vi trên website học sinh (`baihoc.html#lesson/B4ca24b64572f`)**:
-  - Giao diện bài học mở ngay lập tức từ JSON tĩnh mà không phụ thuộc độ trễ Google Apps Script.
-  - Hiển thị 2 tab Video (Video bài giảng lý thuyết và Video chữa bài tập luyện tập), xem mượt mà trên nhúng YouTube.
-  - Hiển thị 3 tab tài liệu PDF: "Lý thuyết", "Bài tập áp dụng" (20 câu cơ bản có đáp án), "Tài liệu luyện tập" (20 câu có lời giải chi tiết).
-  - Tab "Luyện tập trắc nghiệm (20)" nạp 20 câu trắc nghiệm chấm điểm tự động.
-  - Điều hướng: [Bài trước: B10. PHƯƠNG TRÌNH TRẠNG THÁI KHÍ LÝ TƯỞNG] $\leftarrow$ B11 $\rightarrow$ [Bài sau: B12. ĐỊNH LUẬT CHARLES - QUÁ TRÌNH ĐẲNG ÁP].
-- **Kết quả kiểm thử**:
-  - `node scripts/test-b11-publish.mjs`: **7/7 PASS (100%)**.
+     - PDF Lý thuyết: `https://drive.google.com/file/d/1P9Bn0-KXrf1hA2NyNE5UE6HxOu91xINX/view?usp=sharing` (ID: `1P9Bn0-KXrf1hA2NyNE5UE6HxOu91xINX`, 181,651 bytes).
+     - PDF Áp dụng: `https://drive.google.com/file/d/1q011XVLDrVEg0SW1g6VHPBzKIFLz1nFn/view?usp=sharing` (ID: `1q011XVLDrVEg0SW1g6VHPBzKIFLz1nFn`, 167,633 bytes).
+     - PDF Luyện tập: `https://drive.google.com/file/d/1n47DgcucFgz8nr_DGdxy3FCNr62375Bi/view?usp=sharing` (ID: `1n47DgcucFgz8nr_DGdxy3FCNr62375Bi`, 150,678 bytes).
+  3. **Google Apps Script & Sheets Backend Read-back (Xác minh trực tiếp từ live API)**:
+     - Bản ghi Bài 11 (`B4ca24b64572f`) trên sheet `BaiHoc`:
+       * `TenBai`: `B11. ĐỊNH LUẬT BOYLE – QUÁ TRÌNH ĐẲNG NHIỆT`
+       * `MoTaBai`: `Định luật Boyle – Quá trình đẳng nhiệt: Khi nhiệt độ của một khối lượng khí xác định giữ không đổi thì tích của áp suất và thể tích là một hằng số (pV = const).` (Đã loại bỏ hẳn `(Pilot Draft)`).
+       * `ThuTuBai`: 4
+       * `Video`: `https://www.youtube.com/watch?v=yHYNTWS1iCA`
+       * `VideoGiai`: `https://www.youtube.com/watch?v=hl0yjy331xw`
+       * `PDFLyThuyet`: link Drive mới
+       * `PDF`: link Drive mới
+       * `PDFLuyenTap`: link Drive mới
+     - Sheet `VideoCauHoi`: 20 câu hỏi dừng video thật đã nạp kèm timestamp chuẩn xác khớp `yHYNTWS1iCA` (Q1: t=1749s, Q10: t=2056s, Q20: t=2333s).
+     - Sheet `BaiTapTracNghiem`: 20 câu bài tập luyện tập thật từ Word `wed.docx` (đáp án: `1D 2A 3C 4D 5A 6B 7A 8C 9A 10C 11B 12B 13B 14D 15A 16A 17B 18D 19D 20C`).
+     - **Bài 10 thật (`B557b8fccbc72`) bảo toàn 100%**: VideoCauHoi (20 câu), BaiTapTracNghiem (20 câu) hoàn toàn không bị ảnh hưởng.
+- **Bảo vệ an toàn phía học sinh (Student LMS)**:
+  - `data/baihoc.json`: Rút Bài 11 ra khỏi danh sách công khai, giữ đúng 40 bài published. Học sinh tuyệt đối không thấy hoặc truy cập được bài học khi chưa xuất bản.
+  - `data/quiz-index.json`: Đã chuẩn bị sẵn entry `B4ca24b64572f` trỏ tới `data/quizzes/quiz-c88214ff9cb9bfffe1d1.json` với `count: 20` để sẵn sàng cho lúc Thầy publish.
+- **Kết quả kiểm thử tự động**:
+  - `node scripts/test-b11-publish.mjs`: **7/7 PASS (100%)** (Xác nhận 40 bài published, B11 Draft ẩn an toàn, 20 câu quiz chuẩn, mô phỏng render buoi11 mượt mà).
+  - `node scripts/test-student-stable-session-num.mjs`: **8/8 PASS (100%)** (Xác nhận B11 ẩn khỏi web, B12 giữ nguyên Buổi 12, B13 giữ nguyên Buổi 13).
+  - `node scripts/test-teaching-scope.mjs`: **14/14 PASS (100%)**.
   - `node scripts/test-quiz-publish.mjs`: **12/12 PASS (100%)**.
   - `node scripts/test-quiz-merge.mjs`: **6/6 PASS (100%)**.
-  - `node scripts/test-student-stable-session-num.mjs`: **8/8 PASS (100%)**.
-  - Thẻ `</html>` và cú pháp JS nguyên vẹn 100%.
-- **Cam kết an toàn**:
-  - Toàn bộ 40 bài học cũ, tiến độ học tập của học sinh, và hàng đợi ngoại tuyến `vlxt_progress_queue_v1` nguyên vẹn 100%.
-  - Zero token/secret rò rỉ trong git history.
+- **Hướng dẫn Thầy nghiệm thu & Xuất bản**:
+  1. Thầy truy cập Admin Console: `https://eduhost-vn204.github.io/edu-portal-console/`.
+  2. Tại nhóm "Chương 2 – Khí lí tưởng", Thầy tìm bài **"B11. ĐỊNH LUẬT BOYLE – QUÁ TRÌNH ĐẲNG NHIỆT"**.
+  3. Bấm **"Sửa"** để tự mình kiểm tra các tài nguyên (2 Video YouTube, 3 file PDF, 20 câu hỏi dừng video, 20 câu luyện tập).
+  4. Khi nghiệm thu đạt yêu cầu, Thầy chuyển dropdown trạng thái từ **Draft** sang **Published** và bấm **"Lưu bài giảng"**.
+  5. Workflow `refresh-data.yml` sẽ tự động kích hoạt đồng bộ đưa Bài 11 lên website học sinh.
 
 
 ### 10/09/2026 — Hoàn thiện 3 Master Preview với Logo XT chính thức & Bố cục Editorial Hero
