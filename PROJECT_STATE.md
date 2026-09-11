@@ -952,3 +952,26 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
      - Quy trình khôi phục snapshot trở thành phương án khôi phục thủ công khi có chỉ thị trực tiếp từ Thầy.
   4. **Mục 9: Các điều cấm tuyệt đối**:
      - Bổ sung điều cấm AI tự động publish dưới mọi hình thức và điều cấm tự tiện xóa tài nguyên / tự ý rollback production khi chưa có chỉ thị rõ ràng của Thầy.
+
+### 11/09/2026 — Sửa Lỗi Dữ Liệu Video Câu Hỏi Dừng Bài 11 (B4ca24b64572f) Khớp 100% Video và Tài Liệu Thật
+
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Codex & Thầy Xuân Trường
+- **Trạng thái**: `PRODUCTION_FIX_VERIFIED` (Đã cập nhật và nghiệm thu read-back 100% trên Google Sheets / Apps Script backend).
+- **Phạm vi xử lý**:
+  - Endpoint GAS Production: `https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec`
+  - Action: `savevideocauhoi` với `baiKey: 'B4ca24b64572f'`, `originalKey: 'B4ca24b64572f'`.
+  - Thay thế toàn bộ 20 dòng pilot cũ (vốn lấy nhầm từ Bài 10) bằng đúng 20 câu Bài tập áp dụng của Bài 11: “Định luật Boyle – Quá trình đẳng nhiệt”.
+- **Cơ sở dữ liệu & Đối soát đa lớp**:
+  1. **Nguồn câu hỏi**: File Word chính thức `Bài 11 - Định luật Boyle – Quá trình đẳng nhiệt - Bài tập áp dụng - wed.docx` (20 câu trắc nghiệm 4 đáp án A/B/C/D, đáp án chuẩn: 1A, 2B, 3C, 4C, 5B, 6B, 7C, 8A, 9C, 10B, 11B, 12B, 13D, 14A, 15C, 16B, 17C, 18A, 19B, 20D).
+  2. **Nguồn video & Xác định mốc thời gian**:
+     - Video YouTube Bài 11 Lý thuyết: `https://www.youtube.com/watch?v=yHYNTWS1iCA` (thời lượng 2378.36s).
+     - Đoạn chữa bài tập: từ 1740s đến 2378s (trên màn hình Microsoft Word).
+     - Trích xuất audio và chạy nhận diện giọng nói `faster-whisper` với word-level timestamps, kết hợp quét OCR 636 frame (1s/frame từ 1740s đến 2375s) để xác định chính xác giây giáo viên bắt đầu nêu từng câu hỏi.
+     - 20 mốc thời gian (tính bằng giây): 1749, 1762, 1770, 1784, 1802, 1824, 1871, 1900, 1922, 1928, 1964, 2063, 2080, 2132, 2174, 2188, 2214, 2233, 2265, 2333. Toàn bộ mốc tăng dần nghiêm ngặt và khớp hình ảnh/giọng nói.
+- **Kết quả Kiểm thử & Nghiệm thu Read-back**:
+  - Ghi đè thành công (`POST savevideocauhoi` phản hồi `{ ok: true, count: 20 }`).
+  - Read-back Bài 11 (`?type=videocauhoi&bai=B4ca24b64572f`): Đúng 20 câu, mốc thời gian khớp 100%, đáp án khớp 100%, nội dung không còn bất kỳ dấu vết nào của Bài 10.
+  - Read-back Bài 10 (`?type=videocauhoi&bai=B557b8fccbc72`): Đủ 20 câu, hoàn toàn độc lập và nguyên vẹn 100%.
+  - Giả lập tải trên giao diện học sinh (`baihoc.html` parser): 20/20 câu nạp chuẩn xác, Câu 1 (1749s), Câu 10 (1928s), Câu 20 (2333s) hiển thị hoàn hảo.
+

@@ -1,0 +1,182 @@
+[
+  {
+    "thuTu": 1,
+    "question": "Định luật Boyle phát biểu: ở nhiệt độ không đổi, tích số pV của một lượng khí xác định là",
+    "optA": "hằng số.",
+    "optB": "tỉ lệ thuận với T.",
+    "optC": "tỉ lệ nghịch với T.",
+    "optD": "luôn bằng 0.",
+    "correct": "A"
+  },
+  {
+    "thuTu": 2,
+    "question": "Biểu thức của định luật Boyle là",
+    "optA": "p₁/V₁ = p₂/V₂",
+    "optB": "p₁V₁ = p₂V₂",
+    "optC": "p₁/T₁ = p₂/T₂",
+    "optD": "V₁/T₁ = V₂/T₂",
+    "correct": "B"
+  },
+  {
+    "thuTu": 3,
+    "question": "Định luật Boyle áp dụng cho quá trình",
+    "optA": "đẳng áp.",
+    "optB": "đẳng tích.",
+    "optC": "đẳng nhiệt.",
+    "optD": "đoạn nhiệt.",
+    "correct": "C"
+  },
+  {
+    "thuTu": 4,
+    "question": "Trong hệ trục (p, V), đường đẳng nhiệt biểu diễn định luật Boyle có dạng",
+    "optA": "đường thẳng qua gốc toạ độ.",
+    "optB": "đường parabol.",
+    "optC": "nhánh hypebol (đường cong).",
+    "optD": "đoạn thẳng song song trục hoành.",
+    "correct": "C"
+  },
+  {
+    "thuTu": 5,
+    "question": "Khi nén khí đẳng nhiệt, nếu thể tích giảm thì áp suất",
+    "optA": "giảm.",
+    "optB": "tăng.",
+    "optC": "không đổi.",
+    "optD": "bằng 0.",
+    "correct": "B"
+  },
+  {
+    "thuTu": 6,
+    "question": "Một khối khí có V₁ = 6 lít ở p₁ = 2 atm. Nén đẳng nhiệt đến p₂ = 4 atm. Thể tích V₂ là",
+    "optA": "12 lít.",
+    "optB": "3 lít.",
+    "optC": "8 lít.",
+    "optD": "1,5 lít.",
+    "correct": "B"
+  },
+  {
+    "thuTu": 7,
+    "question": "Một khối khí có p₁ = 1 atm, V₁ = 8 lít. Giãn đẳng nhiệt đến V₂ = 16 lít. Áp suất p₂ là",
+    "optA": "2 atm.",
+    "optB": "1 atm.",
+    "optC": "0,5 atm.",
+    "optD": "4 atm.",
+    "correct": "C"
+  },
+  {
+    "thuTu": 8,
+    "question": "Một xilanh chứa khí có V₁ = 4 lít, p₁ = 3 atm biến đổi đẳng nhiệt đến p₂ = 6 atm. Thể tích V₂ là",
+    "optA": "2 lít.",
+    "optB": "1 lít.",
+    "optC": "8 lít.",
+    "optD": "12 lít.",
+    "correct": "A"
+  },
+  {
+    "thuTu": 9,
+    "question": "Đại lượng nào KHÔNG đổi trong định luật Boyle?",
+    "optA": "Áp suất p.",
+    "optB": "Thể tích V.",
+    "optC": "Nhiệt độ T.",
+    "optD": "Cả p và V.",
+    "correct": "C"
+  },
+  {
+    "thuTu": 10,
+    "question": "Trong quá trình đẳng nhiệt của một lượng khí xác định, nếu áp suất tăng gấp 3 lần thì thể tích sẽ",
+    "optA": "tăng gấp 3 lần.",
+    "optB": "giảm còn 1/3.",
+    "optC": "không đổi.",
+    "optD": "tăng gấp 9 lần.",
+    "correct": "B"
+  },
+  {
+    "thuTu": 11,
+    "question": "Một bọt khí nổi từ đáy hồ lên mặt nước, coi nhiệt độ không đổi. Khi bọt khí nổi lên, áp suất giảm thì thể tích bọt khí sẽ",
+    "optA": "giảm.",
+    "optB": "tăng.",
+    "optC": "không đổi.",
+    "optD": "bằng 0.",
+    "correct": "B"
+  },
+  {
+    "thuTu": 12,
+    "question": "Định luật Boyle được phát biểu chính xác khi",
+    "optA": "khối lượng khí thay đổi.",
+    "optB": "nhiệt độ khí không đổi và khối lượng khí không đổi.",
+    "optC": "áp suất khí không đổi.",
+    "optD": "thể tích khí không đổi.",
+    "correct": "B"
+  },
+  {
+    "thuTu": 13,
+    "question": "Một lượng khí có p₁ = 2 atm, V₁ = 5 lít biến đổi đẳng nhiệt đến trạng thái có V₂ = 2 lít. Áp suất p₂ là",
+    "optA": "0,8 atm.",
+    "optB": "2 atm.",
+    "optC": "10 atm.",
+    "optD": "5 atm.",
+    "correct": "D"
+  },
+  {
+    "thuTu": 14,
+    "question": "Đồ thị biểu diễn định luật Boyle trong hệ trục (p, 1/V) có dạng",
+    "optA": "đường thẳng qua gốc toạ độ.",
+    "optB": "đường hypebol.",
+    "optC": "đường parabol.",
+    "optD": "đường tròn.",
+    "correct": "A"
+  },
+  {
+    "thuTu": 15,
+    "question": "Một khối khí ban đầu có thể tích 12 lít ở áp suất 1 atm. Nếu nén đẳng nhiệt để thể tích còn 4 lít thì áp suất mới là",
+    "optA": "1/3 atm.",
+    "optB": "4 atm.",
+    "optC": "3 atm.",
+    "optD": "12 atm.",
+    "correct": "C"
+  },
+  {
+    "thuTu": 16,
+    "question": "Khi bơm hơi một quả bóng bằng cách nén khí đẳng nhiệt vào một thể tích cố định nhỏ hơn, áp suất khí trong bóng sẽ",
+    "optA": "giảm.",
+    "optB": "tăng.",
+    "optC": "không đổi.",
+    "optD": "bằng áp suất khí quyển.",
+    "correct": "B"
+  },
+  {
+    "thuTu": 17,
+    "question": "Định luật Boyle chỉ là một trường hợp riêng của",
+    "optA": "định luật Charles.",
+    "optB": "định luật Gay-Lussac.",
+    "optC": "phương trình trạng thái khí lí tưởng khi T không đổi.",
+    "optD": "phương trình Claperon – Mendeleev khi n không đổi.",
+    "correct": "C"
+  },
+  {
+    "thuTu": 18,
+    "question": "Một khối khí có p₁V₁ = 600 (đơn vị atm·lít) ở nhiệt độ không đổi. Nếu p₂ = 3 atm thì V₂ là",
+    "optA": "200 lít.",
+    "optB": "100 lít.",
+    "optC": "300 lít.",
+    "optD": "1800 lít.",
+    "correct": "A"
+  },
+  {
+    "thuTu": 19,
+    "question": "Trong quá trình đẳng nhiệt, nếu thể tích khí giảm đi một nửa thì áp suất khí sẽ",
+    "optA": "giảm một nửa.",
+    "optB": "tăng gấp đôi.",
+    "optC": "không đổi.",
+    "optD": "giảm 4 lần.",
+    "correct": "B"
+  },
+  {
+    "thuTu": 20,
+    "question": "Một khối khí lí tưởng biến đổi đẳng nhiệt từ trạng thái p₁ = 1,5 atm, V₁ = 4 lít sang trạng thái có p₂ = 2 atm. Thể tích V₂ là",
+    "optA": "2 lít.",
+    "optB": "4 lít.",
+    "optC": "6 lít.",
+    "optD": "3 lít.",
+    "correct": "D"
+  }
+]
