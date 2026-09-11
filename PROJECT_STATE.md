@@ -952,3 +952,33 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
      - Quy trình khôi phục snapshot trở thành phương án khôi phục thủ công khi có chỉ thị trực tiếp từ Thầy.
   4. **Mục 9: Các điều cấm tuyệt đối**:
      - Bổ sung điều cấm AI tự động publish dưới mọi hình thức và điều cấm tự tiện xóa tài nguyên / tự ý rollback production khi chưa có chỉ thị rõ ràng của Thầy.
+
+
+### 11/09/2026 — Đóng Gói Toàn Diện Quy Trình Phát Hành Bài Học XPS 2k9 Thành Skill Tái Sử Dụng (dang-bai-xps2k9)
+
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Codex & Thầy Xuân Trường
+- **Trạng thái**: `SKILL_PACKAGED_AND_VERIFIED`
+- **Phạm vi & Vị trí triển khai**:
+  - **Skill Workspace**: `.agents/skills/dang-bai-xps2k9/`
+  - **Skill Global Config**: `C:\Users\Xuan Truong\.gemini\config\skills\dang-bai-xps2k9/`
+  - **Nhánh thực hiện**: `codex/skill-dang-bai-xps2k9`
+- **Các thành phần cốt lõi của Skill**:
+  1. **SKILL.md**: Định nghĩa cú pháp lệnh kích hoạt tự nhiên ("Đăng bài 12 đi", "Đăng bài 13 đi", "Đăng bài N đi"), quy trình 10 bước chuẩn hóa đã kiểm định từ Bài 11, chốt chặn an toàn `READY_FOR_TEACHER` và nguyên tắc fail-closed `MANUAL_RECOVERY_REQUIRED`.
+  2. **scripts/resolve-lesson-source.mjs**: Công cụ tự động quét các thư mục `Chương X`, chuẩn hóa tên và nhận diện chính xác thư mục bài học `Bài N - ...`. Tự động kiểm kê gói 7 file học liệu bắt buộc (2 MP4: Lý thuyết, Luyện tập; 5 docx: Lí thuyết, Áp dụng, Áp dụng wed, Luyện tập, Luyện tập wed). Đã kiểm thử với Bài 11 (100% đủ file) và Bài 12 (phát hiện chính xác thiếu 2 video và 2 file luyện tập).
+  3. **scripts/test-lesson-checklist.mjs**: Bộ kiểm thử tự động 7 cổng nghiệm thu độc lập:
+     - Cổng 1: Contract, metadata, trạng thái Draft.
+     - Cổng 2: 2 video YouTube unlisted, xem tốt 3 mốc (0%, 50%, 90%), tiêu đề đúng bài.
+     - Cổng 3: 3 PDF Google Drive, quyền xem công khai `view?usp=sharing`, trang nhất đúng bài.
+     - Cổng 4: `VideoCauHoi` gồm 20 câu với timestamp thật tăng dần trong thời lượng video lý thuyết.
+     - Cổng 5: `Baitaptracnghiem` nạp đủ 20 câu lên GAS, sinh file `quiz-<hash>.json` content-addressed, `quiz-index.json` trỏ file mới và có `count: 20` hiển thị web `(20)`.
+     - Cổng 6: Public leak check (không lộ dữ liệu bài draft qua endpoint công khai).
+     - Cổng 7: Adjacent protection (bảo vệ bài học liền kề B10, B12... không bị ghi đè hay biến đổi).
+     - *Kết quả nghiệm thu trực tiếp trên Bài 11*: **7/7 PASS (100%)**.
+  4. **scripts/dry-run.mjs**: Chế độ chạy thử nghiệm an toàn, mô phỏng đầy đủ 10 bước phát hành, tự động đối chiếu baseline bài trước/này/sau, không upload và không ghi dữ liệu nếu thiếu file.
+  5. **references/LESSON_CHECKLIST.md & references/FAILURE_MODES.md**: Bảng tiêu chí nghiệm thu chi tiết và cẩm nang phòng tránh các bẫy thường gặp (nhầm video bài trước, lệch số câu quiz, tự ý publish, lệch số buổi học).
+- **Kết quả Thử Nghiệm Dry-Run Trên Bài 12**:
+  - Nhận diện đúng thư mục nguồn: `D:\Work\Dạy học\Xây Dựng Lộ Trình XPS 2k9\Triển khai\GĐ1 - Chuyên đề Lý thuyết\Chương 2\Bài 12 - Định luật Charles - Quá trình đẳng áp`.
+  - Định danh bài học: Buổi 12, Mã `Bfbfa62b6cbf1` (sau Bài 11 `B4ca24b64572f`, trước Bài 13 `B24bbd84d8ea9`).
+  - Kiểm kê học liệu: Có 3 file Word (`Ban Lí thuyết.docx`, `Bài tập áp dụng.docx`, `Bài tập áp dụng - wed.docx`). Thiếu 2 video MP4 và 2 file Word luyện tập.
+  - Xử lý an toàn: Pipeline tự động kích hoạt cơ chế fail-closed, dừng ở trạng thái `MANUAL_RECOVERY_REQUIRED`, không upload bất kỳ file rác nào lên YouTube hay Drive, không tác động backend, sẵn sàng chờ Thầy bổ sung đủ học liệu.
