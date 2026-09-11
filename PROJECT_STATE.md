@@ -159,6 +159,24 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 11/09/2026 — Sửa Lỗi Đồng Bộ Quiz Bài 11: Nạp Đủ 20 Câu Trắc Nghiệm Chuẩn Content-Addressed Hash & Cập Nhật Quiz Index
+
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `PRODUCTION_SYNCED`
+- **Nguyên nhân sự cố**:
+  - Tại lần sync tự động trước đó (commit `0e27db3`), Google Apps Script trả về 3 dòng do cache/đang cập nhật, dẫn đến `data/quiz-index.json` ghi `count: 3` trỏ tới `quiz-cffafa81485759a6856f.json` (3 câu), khiến giao diện hiển thị "Luyện tập trắc nghiệm (3)".
+- **Biện pháp khắc phục**:
+  1. Lấy đúng 20 dòng quiz Bài 11 từ nguồn GAS (`type=baitaptracnghiem&bai=B4ca24b64572f`), đối chiếu thứ tự 1–20, đề, 4 lựa chọn và đáp án khớp 100% tài liệu gốc `wed.docx` (Đáp án: `1D 2A 3C 4D 5A 6B 7A 8C 9A 10C 11B 12B 13B 14D 15A 16A 17B 18D 19D 20C`).
+  2. Chạy đúng pipeline publish quiz (`planQuizPublish` + `applyQuizPublishPlan` trong `scripts/quiz-publish.mjs`) để tạo file content-addressed hash chuẩn: `data/quizzes/quiz-c88214ff9cb9bfffe1d1.json` gồm đúng 20 câu.
+  3. Cập nhật `data/quiz-index.json` entry `B4ca24b64572f` trỏ tới file mới với `count: 20`. Xóa file pilot cũ `quiz-cffafa81485759a6856f.json`.
+  4. Bảo toàn 100% dữ liệu Bài 10 (`B557b8fccbc72`) và các bài học khác; không sửa video, PDF, `VideoCauHoi` hay tiến độ học tập.
+- **Kết quả kiểm thử**:
+  - `node scripts/test-quiz-publish.mjs`: **12/12 PASS (100%)**.
+  - `node scripts/test-quiz-merge.mjs`: **6/6 PASS (100%)**.
+  - `node scripts/test-b11-publish.mjs`: **7/7 PASS (100%)**.
+  - `node scripts/test-student-stable-session-num.mjs`: **8/8 PASS (100%)**.
+
 ### 11/09/2026 — Hoàn Tất Triển Khai & Xuất Bản Toàn Diện Bài 11 Lên Website Vật Lý Xuân Trường (Video YouTube, PDF Drive, Quiz 20 Câu)
 
 - **Người thực hiện**: Antigravity AI Coordinator
