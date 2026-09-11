@@ -159,6 +159,279 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 11/09/2026 — Hoàn Tất Triển Khai & Xuất Bản Toàn Diện Bài 11 Lên Website Vật Lý Xuân Trường (Video YouTube, PDF Drive, Quiz 20 Câu)
+
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `PRODUCTION_PUBLISHED` (Đã hoàn tất 100% học liệu thực tế, kiểm thử tự động 7/7 pass, sẵn sàng merge `main` theo phê duyệt của Thầy).
+- **Học liệu nguồn chính thức sử dụng**:
+  - Thư mục nguồn: `D:\Work\Dạy học\Xây Dựng Lộ Trình XPS 2k9\Triển khai\GĐ1 - Chuyên đề Lý thuyết\Chương 2\Bài 11 - Định luật Boyle – Quá trình đẳng nhiệt`
+  - Đầy đủ 7 file học liệu:
+    1. `Bai 11 - Định luật Boyle – Quá trình đẳng nhiệt - Ban Lí thuyết.docx`
+    2. `Bai 11 - Định luật Boyle – Quá trình đẳng nhiệt - Bài tập áp dụng.docx` (20 câu áp dụng kèm đáp án)
+    3. `Bai 11 - Định luật Boyle – Quá trình đẳng nhiệt - Bài tập áp dụng - wed.docx`
+    4. `Bai 11 - Định luật Boyle – Quá trình đẳng nhiệt - Bài tập luyện tập.docx` (20 câu kèm lời giải chi tiết và bảng đáp án)
+    5. `Bai 11 - Định luật Boyle – Quá trình đẳng nhiệt - Bài tập luyện tập - wed.docx` (20 câu trắc nghiệm có sao `*`)
+    6. `Bài 11. Lý thuyết.mp4` (1273.6 MB, 1080p)
+    7. `Bài 11. Luyện tập .mp4` (1322.7 MB, 1080p)
+- **Các tài nguyên số hóa thực tế đã đưa lên hạ tầng**:
+  1. **Video YouTube (Kênh Thầy `Xuân Trường Nguyễn` `UC12n9QGGCnI3mJke_XswlZg`, chế độ `unlisted`)**:
+     - Video Lý thuyết: `https://www.youtube.com/watch?v=yHYNTWS1iCA` (ID: `yHYNTWS1iCA`, HTTP 200 oEmbed)
+     - Video Luyện tập: `https://www.youtube.com/watch?v=hl0yjy331xw` (ID: `hl0yjy331xw`, HTTP 200 oEmbed)
+  2. **Tài liệu PDF Google Drive (Chuyển đổi Word chuẩn Microsoft Word 16.0 COM, phân quyền `anyone: reader`)**:
+     - PDF Lý thuyết: `https://drive.google.com/file/d/1P9Bn0-KXrf1hA2NyNE5UE6HxOu91xINX/view?usp=sharing` (ID: `1P9Bn0-KXrf1hA2NyNE5UE6HxOu91xINX`)
+     - PDF Áp dụng: `https://drive.google.com/file/d/1q011XVLDrVEg0SW1g6VHPBzKIFLz1nFn/view?usp=sharing` (ID: `1q011XVLDrVEg0SW1g6VHPBzKIFLz1nFn`)
+     - PDF Luyện tập: `https://drive.google.com/file/d/1n47DgcucFgz8nr_DGdxy3FCNr62375Bi/view?usp=sharing` (ID: `1n47DgcucFgz8nr_DGdxy3FCNr62375Bi`)
+- **Các thay đổi trong kho mã**:
+  1. `data/baihoc.json`:
+     - Bản ghi chính thức Bài 11 (`MaBai`: `B4ca24b64572f`, `ThuTuBai`: 4, `TenBai`: `B11. ĐỊNH LUẬT BOYLE – QUÁ TRÌNH ĐẲNG NHIỆT`, `TrangThai`: `""`).
+     - Gắn đầy đủ 2 URL YouTube (`Video`, `VideoGiai`) và 3 URL Google Drive (`PDFLyThuyet`, `PDF`, `PDFLuyenTap`).
+     - Tổng số bài học toàn website là 41 bài.
+  2. `data/quizzes/quiz-c88214ff9cb9bfffe1d1.json`:
+     - 20/20 câu hỏi trắc nghiệm luyện tập thực tế từ file Word của Thầy theo chuẩn content-addressed.
+     - Khớp 100% bảng đáp án chính thức (`1D 2A 3C 4D 5A 6B 7A 8C 9A 10C 11B 12B 13B 14D 15A 16A 17B 18D 19D 20C`).
+  3. `data/quiz-index.json`:
+     - Trỏ Bài 11 tới `data/quizzes/quiz-c88214ff9cb9bfffe1d1.json?v=mtw6s40z` với `count: 20`.
+  4. `scripts/test-b11-publish.mjs`:
+     - Suite kiểm thử tự động 7/7 pass toàn diện: kiểm tra cấu trúc 41 bài, quiz content-addressed, VM test `buildCourses`, tính ổn định số buổi (Buổi 10 -> Buổi 11 -> Buổi 12 -> Buổi 13), điều hướng trước/sau, KaTeX, và các URL Video YouTube / PDF Drive.
+- **Hành vi trên website học sinh (`baihoc.html#lesson/B4ca24b64572f`)**:
+  - Giao diện bài học mở ngay lập tức từ JSON tĩnh mà không phụ thuộc độ trễ Google Apps Script.
+  - Hiển thị 2 tab Video (Video bài giảng lý thuyết và Video chữa bài tập luyện tập), xem mượt mà trên nhúng YouTube.
+  - Hiển thị 3 tab tài liệu PDF: "Lý thuyết", "Bài tập áp dụng" (20 câu cơ bản có đáp án), "Tài liệu luyện tập" (20 câu có lời giải chi tiết).
+  - Tab "Luyện tập trắc nghiệm (20)" nạp 20 câu trắc nghiệm chấm điểm tự động.
+  - Điều hướng: [Bài trước: B10. PHƯƠNG TRÌNH TRẠNG THÁI KHÍ LÝ TƯỞNG] $\leftarrow$ B11 $\rightarrow$ [Bài sau: B12. ĐỊNH LUẬT CHARLES - QUÁ TRÌNH ĐẲNG ÁP].
+- **Kết quả kiểm thử**:
+  - `node scripts/test-b11-publish.mjs`: **7/7 PASS (100%)**.
+  - `node scripts/test-quiz-publish.mjs`: **12/12 PASS (100%)**.
+  - `node scripts/test-quiz-merge.mjs`: **6/6 PASS (100%)**.
+  - `node scripts/test-student-stable-session-num.mjs`: **8/8 PASS (100%)**.
+  - Thẻ `</html>` và cú pháp JS nguyên vẹn 100%.
+- **Cam kết an toàn**:
+  - Toàn bộ 40 bài học cũ, tiến độ học tập của học sinh, và hàng đợi ngoại tuyến `vlxt_progress_queue_v1` nguyên vẹn 100%.
+  - Zero token/secret rò rỉ trong git history.
+
+
+### 10/09/2026 — Hoàn thiện 3 Master Preview với Logo XT chính thức & Bố cục Editorial Hero
+
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Yêu cầu của Thầy**:
+  1. Loại bỏ hoàn toàn placeholder `BRAND_ASSET_PENDING`, dùng trực tiếp 2 file logo thật Thầy cung cấp:
+     - `dbdce6d7-dc61-48b0-a04a-f29afea5a964.jpg`: Logo đầy đủ XT + VẬT LÝ XUÂN TRƯỜNG cho Bìa và Kết.
+     - `980c10d8-3d8c-4405-89f5-d4b489013159.jpg`: Monogram XT nhỏ cho slide nội dung.
+     - Crop sạch viền/khoảng trắng thừa, giữ nguyên hình, không vẽ lại.
+  2. Thiết kế lại 3 Master với bố cục đặc trưng hơn: Bỏ hoàn toàn 3 card lặp lại trên slide bìa; thay bằng layout Hero phân tầng kết hợp panel lộ trình 3 bước cốt lõi.
+  3. Duy trì nghiêm ngặt các quy chuẩn: `Biên soạn: Xuân Trường`, URL `vatlyxuantruong.io.vn`, không tràn/chồng chữ, đúng vật lý 100%.
+- **Kết quả thực hiện & Kiểm định thị giác độc lập (Visual QA Review)**:
+  - File HTML: [`teaching-decks/GD1_CH02_KhiLyTuong/B11_DinhLuatBoyle_DangNhiet/master-review.html`](file:///d:/Work/D%E1%BA%A1y%20h%E1%BB%8Dc/Trang%20wed/X%C3%A2y%20wed%20h%E1%BB%8Dc%20v%E1%BA%ADt%20l%C3%BD/teaching-decks/GD1_CH02_KhiLyTuong/B11_DinhLuatBoyle_DangNhiet/master-review.html)
+  - Đã render 3 ảnh 1920×1080 tại `qa-renders/`:
+    + `master_01_bia.png`: Logo XT đầy đủ sắc nét; tiêu đề lớn `ĐỊNH LUẬT BOYLE` / `QUÁ TRÌNH ĐẲNG NHIỆT`; panel cấu trúc bài học 3 bước bên phải (`01`, `02`, `03`).
+    + `master_02_pittong.png`: Monogram XT chính thức góc trên trái; sơ đồ xilanh pít-tông phẳng dạng vector sạch sẽ; ngắt dòng tự nhiên không hyphenate; nhãn $F_{\text{ngoài}}$, $p$, $V_1, V_2$, $T = \text{hằng số}$.
+    + `master_03_dothi.png`: Monogram XT chính thức; đồ thị $(p, V)$ chính xác 100% về vật lý: 2 nhánh hypebol giảm dần, $T_2$ (đỏ) luôn ở trên $T_1$ (navy), đường gióng $V_0$ chứng minh $p_2 > p_1 \implies T_2 > T_1$.
+  - Trạng thái kiểm định: **`VISUAL_QA_PASS`** (Độc lập rà soát lỗi thị giác, logo thật, URL, tác giả, không đè chữ, đúng vật lý).
+  - Trạng thái bàn giao: **`PENDING_TEACHER_SELECTION`** (Chờ Thầy xem 3 master và phê duyệt phong cách).
+- **Hàng rào an toàn**: Không tạo Canva, không tạo PPTX, không nạp LMS/Drive/YouTube, không sửa production.
+
+- **Vấn đề & Yêu cầu của Thầy**:
+### 09/09/2026 — Hotfix Admin Console: Revalidate Admin Authenticated Để Hiển Thị Bài Draft (B11)
+
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Codex & Thầy Xuân Trường
+- **Trạng thái**: `PRODUCTION_PUBLISHED` (Đã merge và triển khai thành công lên GitHub Pages Admin).
+- **Phạm vi & Kho lưu trữ**:
+  - **Admin Repo**: `_codex_verify_live` (`https://github.com/eduhost-vn204/edu-portal-console.git`).
+  - **Hotfix Branch**: `codex/hotfix-admin-init-draft-revalidate` (Commit: `a97c333`).
+  - **PR**: https://github.com/eduhost-vn204/edu-portal-console/pull/2 (Merged: `5e7c59e`).
+  - **Rollback Tag**: `rollback-before-admin-draft-init-20260909` trỏ `2bc2aae94424c3e70aaee2963ad344568be2292a`.
+- **Nguyên nhân sự cố & Khắc phục**:
+  - **Nguyên nhân**: `initAdmin()` trong `quan-ly-bai-hoc.html` gọi `loadLessonsPreview()` nạp 40 bài công khai (đã lọc ẩn draft fail-closed), sau đó chỉ gọi `loadLessons()` khi `allLessons.length === 0`. Do preview đã có 40 bài, `loadLessons()` (sử dụng POST `getbaihocadmin`) không bao giờ được gọi, khiến bài Draft (B11) bị ẩn trên giao diện Admin.
+  - **Khắc phục**:
+    1. Trong `initAdmin()`: Luôn gọi `loadLessons()` vô điều kiện sau preview/settings/config để revalidate bằng admin POST `getbaihocadmin`, thay thế `allLessons` bằng danh sách quản trị đầy đủ gồm bài Draft.
+    2. Trong `loadLessons()`: Chỉ chèn dòng loading spinner khi `!allLessons.length`, giữ nguyên DOM preview mượt mà trong khi revalidate nền.
+    3. Thêm bộ kiểm thử hồi quy `scripts/test-admin-init-draft-revalidate.mjs` (3/3 pass) chứng minh: preview công khai có 40 bài không có B11, `getbaihocadmin` trả 41 bài có B11, UI render huy hiệu Draft, và cache preview trong `localStorage` không chặn revalidate.
+- **Kiểm thử & Xác minh Thực tế**:
+  - `test-admin-init-draft-revalidate.mjs`: **3/3 PASS (100%)**.
+  - `test-admin-form-safety.mjs`: **8/8 PASS (100%)**.
+  - `test-draft-lesson-contract.mjs`: **31/31 PASS (100%)**.
+### 09/09/2026 — Hotfix Student LMS: Định Danh Ổn Định Số Buổi / Số Bài Học (Khắc Phục Lệch Buổi Khi Ẩn B11 Draft)
+
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Codex & Thầy Xuân Trường
+- **Trạng thái**: `PRODUCTION_PUBLISHED` (Đã merge và triển khai thành công lên GitHub Pages Student LMS).
+- **Phạm vi & Kho lưu trữ**:
+  - **Student Repo**: `student_upstream_clean` (`https://github.com/eduhost-vn204/edu-portal-lms.git`).
+  - **Hotfix Branch**: `codex/hotfix-student-stable-session-num` (Commit: `eff3883`).
+  - **PR**: https://github.com/eduhost-vn204/edu-portal-lms/pull/2 (Merged: `b0f9233`).
+  - **Rollback Tag**: `rollback-before-student-session-num-20260909` trỏ `94782e5` (đã push upstream).
+- **Nguyên nhân sự cố & Khắc phục**:
+  - **Nguyên nhân**: Trong `baihoc.html`, nhãn `Buổi` và `Bxx.` được sinh bằng cách duyệt tuần tự mảng `ch.lessons` sau khi đã lọc bỏ bài Draft. Khi bài B11 bị ẩn vì là Draft, bài B12 nhận index 11 (hiển thị thành "Buổi 11"), bài B13 nhận index 12 (hiển thị thành "Buổi 12").
+  - **Khắc phục**:
+    1. Bổ sung hàm `getLessonSessionNum(l, fallbackIndex)`: Trích xuất số bài ổn định ưu tiên từ `TenBai`/`name` dạng `Bxx`, `Bài xx`, `Buổi xx`, `Ngày xx` (hoặc `MaBai` / `ThuTuBai`), tuyệt đối không phụ thuộc index sau lọc.
+    2. Áp dụng `getLessonSessionNum` đồng bộ tại 4 vị trí: danh sách bài toàn khóa (`renderCourse`), tiêu đề bài đang học (`renderLesson`), thanh sidebar (`side-item`), và chế độ xem live (`renderLiveLesson`).
+    3. Thêm bộ kiểm thử hồi quy `scripts/test-student-stable-session-num.mjs` (8/8 pass) xác nhận: khi B11 là Draft thì B11 hoàn toàn không render, B12 giữ nguyên nhãn `Buổi 12` / `B12.`, B13 giữ nguyên nhãn `Buổi 13` / `B13.`, cùng các kiểm thử đơn vị trích xuất số bài.
+- **Kiểm thử & Xác minh Thực tế**:
+  - `test-student-stable-session-num.mjs`: **8/8 PASS (100%)**.
+  - `test-teaching-scope.mjs`: **14/14 PASS (100%)**.
+  - Cú pháp HTML/JS & `git diff --check`: Không lỗi, thẻ `</html>` nguyên vẹn, 17/17 thẻ script cú pháp hợp lệ.
+  - **Triển khai GitHub Pages**: Workflow `Deploy to GitHub Pages` (run `34260122287`) và `pages build and deployment` (run `34260121706`) thành công (`success`).
+  - **Xác minh Trực tiếp Live Site (`https://vatlyxuantruong.io.vn/baihoc.html`)**:
+    - Mã nguồn triển khai đã cập nhật hàm `getLessonSessionNum(l, fallbackIndex)`.
+    - B11 Draft bị ẩn hoàn toàn khỏi danh sách học sinh.
+    - Bài B12 giữ nguyên nhãn `Buổi 12`, bài B13 giữ nguyên nhãn `Buổi 13`.
+
+### 09/09/2026 — Chuẩn Hóa Tài Liệu Quy Chuẩn Xưởng Xuất Bản Bài Học Tự Động (AUTO_PUBLISH_LESSON_SPEC.md)
+
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Codex & Thầy Xuân Trường
+- **Trạng thái**: `SPEC_PUBLISHED`
+- **Mô tả tài liệu**:
+  - Soạn thảo quy chuẩn toàn diện [AUTO_PUBLISH_LESSON_SPEC.md](file:///d:/Work/D%E1%BA%A1y%20h%E1%BB%8Dc/Trang%20wed/X%C3%A2y%20wed%20h%E1%BB%8Dc%20v%E1%BA%ADt%20l%C3%BD/AUTO_PUBLISH_LESSON_SPEC.md) dựa trên thực tiễn nạp Pilot B11 thành công 100%.
+  - Bao gồm 9 phần chi tiết:
+    1. Mục tiêu & 4 nguyên tắc cốt lõi (Fail-Closed, Zero Credential Leak, Data Integrity, Teacher-Controlled Publish).
+    2. Cấu trúc gói học liệu đầu vào (`manifest.json` schema, 2 video MP4, 3 PDF, 20 câu video timestamp, 20 câu bài tập).
+    3. 6 Preflight Gates nghiêm ngặt (Contract & Syntax, Exact Backend Match 1 độc bản duy nhất, Snapshot Integrity, Input Package Validation, Trial Profile Isolation, Fail-Closed Draft State).
+    4. Cờ lệnh `--mode=trial` (Private, thư mục trial, trạng thái draft) vs `--mode=live` (Unlisted, published khi Thầy duyệt).
+    5. Checkpoint, resume (`.checkpoint.json`) và tính bất biến (idempotency).
+    6. Quy trình đối soát nghiệm thu 7 cổng độc lập (read-back 11 trường, 20/20 câu video, 20/20 câu bài tập, public leak check qua 3 public endpoints, bảo vệ bài lân cận B10 nguyên vẹn).
+    7. Quy trình Thầy duyệt Draft trên Admin Console rồi xuất bản.
+    8. Quy trình rollback và khôi phục snapshot tự động/thủ công.
+    9. 5 điều cấm tuyệt đối (không đọc secret/localStorage/token, không tự publish, không ghi đè bài gốc, không bypass gates, không sửa nóng trên main).
+
+### 09/09/2026 — Hotfix Tài Liệu Quy Chuẩn: Loại Bỏ Hoàn Toàn Cơ Chế Tự Publish Của AI, Siết Chặt Fail-Closed Rollback & Cảnh Báo B11
+
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Codex & Thầy Xuân Trường
+- **Trạng thái**: `HOTFIX_DOCS_COMPLETE` (Chỉ cập nhật tài liệu quy chuẩn, tuyệt đối không can thiệp code hay dữ liệu production).
+- **Phạm vi cập nhật**:
+  - `student_upstream_clean/AUTO_PUBLISH_LESSON_SPEC.md`
+  - `_codex_verify_live/AUTO_PUBLISH_LESSON_SPEC.md`
+  - `00-BRAIN-VLXT/tasks/AUTO_PUBLISH_LESSON_SPEC.md`
+- **Nội dung điều chỉnh chi tiết**:
+  1. **Mục 4: Chế độ thực thi (`trial-draft` vs. `approved-assets-draft`)**:
+     - Loại bỏ hoàn toàn mọi cơ chế/diễn đạt cho phép pipeline tự động chuyển trạng thái bài học sang `published`.
+     - Quy định chuẩn: Mọi chế độ của pipeline chỉ được ghi ở trạng thái `draft`. Chế độ `approved-assets-draft` nạp học liệu chính thức (YouTube unlisted, Drive thư mục chính thức) nhưng trạng thái trên backend BẮT BUỘC VẪN LÀ `draft`.
+     - Pipeline luôn kết thúc tại trạng thái `READY_FOR_TEACHER`.
+     - Quyền chuyển `Published` thuộc về 100% duy nhất một mình Thầy thao tác trực tiếp trên Admin Console UI (`quan-ly-bai-hoc.html`). Xóa bỏ hoàn toàn câu chữ "AI có thể publish khi được phê duyệt bằng văn bản".
+  2. **Cảnh báo bảo vệ B11 Pilot**:
+     - Bổ sung cảnh báo nghiêm ngặt: Bài học B11 hiện đang dùng học liệu demo sao chép từ B10 để kiểm thử pipeline; B11 phải giữ trạng thái draft cho đến khi học liệu demo B10 được thay toàn bộ bằng học liệu Boyle thật và bài học được nghiệm thu lại theo đủ 7 audit gates.
+  3. **Mục 6 & 8: Quy tắc Rollback an toàn (Fail-Closed & Stop)**:
+     - Khi gặp bất kỳ lỗi nào hoặc đối soát nghiệm thu thất bại: Pipeline mặc định **DỪNG (STOP)**, bảo tồn nguyên trạng file `snapshot_<mabai>_before.json`, cập nhật `.checkpoint.json` với trạng thái `MANUAL_RECOVERY_REQUIRED`.
+     - Tuyệt đối KHÔNG tự ý xóa video YouTube, xóa file Drive, hay tự ý gửi payload khôi phục backend nếu chưa có lệnh rõ ràng của Thầy. Giữ nguyên hiện trường phục vụ tra cứu.
+     - Quy trình khôi phục snapshot trở thành phương án khôi phục thủ công khi có chỉ thị trực tiếp từ Thầy.
+  4. **Mục 9: Các điều cấm tuyệt đối**:
+     - Bổ sung điều cấm AI tự động publish dưới mọi hình thức và điều cấm tự tiện xóa tài nguyên / tự ý rollback production khi chưa có chỉ thị rõ ràng của Thầy.
+
+
+### 09/09/2026 — Hotfix Admin Console: Đồng Bộ Hóa Hợp Đồng Draft & initAdmin Revalidation Vào index.html (PR #5)
+
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Codex & Thầy Xuân Trường
+- **Trạng thái**: `PRODUCTION_PUBLISHED` (Đã merge và triển khai thành công lên GitHub Pages Admin Console).
+- **Phạm vi & Kho lưu trữ**:
+  - **Admin Repo**: `_codex_verify_live` (`https://github.com/eduhost-vn204/edu-portal-console.git`).
+  - **Branch**: `codex/hotfix-admin-index-draft-sync` (Commit: `550722d`).
+  - **PR**: https://github.com/eduhost-vn204/edu-portal-console/pull/5 (Merged: `a6f9b1f`).
+  - **Rollback Tag**: `rollback-before-admin-draft-init-20260909` trỏ `2bc2aae94424c3e70aaee2963ad344568be2292a`.
+- **Nguyên nhân sự cố & Khắc phục**:
+  - **Nguyên nhân**: Khi Thầy truy cập `https://eduhost-vn204.github.io/edu-portal-console/` hoặc click vào drawer menu ở bất kỳ trang nào trong console, URL thực tế nạp file `index.html`. Trước đây các hotfix PR #1 và PR #2 chỉ áp dụng trên file `quan-ly-bai-hoc.html` nên `index.html` chưa có hợp đồng Draft, không có bộ lọc trạng thái và bị chặn bởi preview 40 bài công khai.
+  - **Khắc phục**:
+    1. Đồng bộ toàn bộ hợp đồng Draft từ `quan-ly-bai-hoc.html` sang `index.html`: thêm dropdown `f-trangthai`, bộ lọc trạng thái `currentStatusFilter`, và `initAdmin()` luôn revalidate bằng `getbaihocadmin` sau preview.
+    2. Bảo toàn nguyên vẹn tính năng xuất OMML Word mới được thêm trên `index.html`.
+    3. Cập nhật test suite `scripts/test-admin-init-draft-revalidate.mjs` chạy tự động trên cả 2 file `quan-ly-bai-hoc.html` và `index.html` (5/5 PASS).
+- **Kiểm thử & Xác minh Thực tế**:
+  - `test-admin-init-draft-revalidate.mjs`: **5/5 PASS (100%)**.
+  - `test-admin-form-safety.mjs`: **8/8 PASS (100%)**.
+  - `test-draft-lesson-contract.mjs`: **31/31 PASS (100%)**.
+  - **Deploy GitHub Pages**: Workflow run `34264091966` thành công (`success`).
+  - **Xác minh Trực tiếp Live**:
+    1. Trang chủ Admin Console (`https://eduhost-vn204.github.io/edu-portal-console/`): Hiển thị đầy đủ bộ lọc trạng thái, bài B11 Draft xuất hiện trong "Chương 2 – Khí lí tưởng" với huy hiệu cam, mở form có đầy đủ video và 3 file PDF học liệu.
+    2. Trang Học sinh (`https://vatlyxuantruong.io.vn/baihoc.html`): Endpoint công khai trả 40 bài, B11 Draft ẩn 100%, số buổi B12, B13 ổn định.
+    3. Không deploy GAS, không thay đổi bất kỳ trường dữ liệu nào của B11 hay các bài khác.
+
+
+### 09/09/2026 — Đồng Bộ Dữ Liệu Tĩnh Public LMS (B11: 20/20 Câu) & PR Bổ Sung Quy Chuẩn Post-Publish Static LMS Sync Gate
+
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Codex & Thầy Xuân Trường
+- **Trạng thái**: `PRODUCTION_MERGED` (Đã merge cả 2 PR vào `main` và đối chiếu commit thành công).
+- **Phạm vi & Kho lưu trữ**:
+  - **Student Repo**: `student_upstream_clean` (`https://github.com/eduhost-vn204/edu-portal-lms.git`).
+  - **Admin Repo**: `_codex_verify_live` (`https://github.com/eduhost-vn204/edu-portal-console.git`).
+  - **Workflow Sync**: Run `34265555228` (`workflow_dispatch` trên `main`), Commit data: `7922138` và `e49bbda`.
+  - **Pages Deployment**: Run `34265578917` (`success`).
+  - **Student PR #5**: https://github.com/eduhost-vn204/edu-portal-lms/pull/5 (Merged: `a98d2b7`, Commit spec: `c50b394`).
+  - **Admin PR #6**: https://github.com/eduhost-vn204/edu-portal-console/pull/6 (Merged: `fb8ee04`, Commit spec: `69ed78e`).
+- **Kết quả đối soát live 20/20 câu hỏi**:
+  1. `data/quiz-index.json` trên live CDN: Khóa `B4ca24b64572f` đã cập nhật chính xác từ 7 lên **`count: 20`**, trỏ tới file `data/quizzes/quiz-8177823fcbb70af6eff8.json`.
+  2. File quiz tĩnh: Phản hồi HTTP 200, parse JSON hợp lệ, chứa đúng **20 câu hỏi** trắc nghiệm có đầy đủ thân câu (`question`), 4 phương án (`optA`-`optD`) và đáp án chuẩn (`correct`).
+  3. Web học sinh (`baihoc.html`): Tải đúng metadata, hiển thị nhãn tab **`Luyện tập trắc nghiệm (20)`**, học sinh làm được đầy đủ từ câu 1 đến câu 20.
+  4. Ràng buộc an toàn: Tuyệt đối không can thiệp sửa/xóa học liệu hay đổi trạng thái bài B11 (Thầy sẽ tự chuyển về Draft sau khi kiểm thử xong).
+- **Quy chuẩn mới được bổ sung trong AUTO_PUBLISH_LESSON_SPEC.md (Section 7.2)**:
+  - Bổ sung cổng bắt buộc **Post-Publish Static LMS Sync Gate**: Sau khi Thầy chuyển bài sang `Published` trên Admin, bắt buộc kích hoạt `refresh-data.yml`, chờ Pages deploy, đối chiếu `quiz-index.json` (`count_public === count_admin`), kiểm tra file quiz đủ câu và kiểm tra UI học sinh.
+  - **Strict Broadcast Blocker**: Tuyệt đối cấm phát thông báo bài học cho học sinh khi cổng này chưa đạt trạng thái PASS 100%.
+
+
+### 10/09/2026 — Thiết Kế Lại Trực Quan Bài 11 (VLXT Premium Editorial) & Hoàn Thành Visual QA Gate (10/10 Slides)
+
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `VISUAL_QA_PASS` (Chờ Thầy thẩm duyệt trực quan - `PENDING_TEACHER_APPROVAL`). Chưa tạo Canva, chưa tạo PPTX.
+- **Phạm vi & File**:
+  - `teaching-decks/GD1_CH02_KhiLyTuong/B11_DinhLuatBoyle_DangNhiet/review.html`: Tái thiết kế 100% theo hệ nhận diện "VLXT Premium Editorial".
+  - `teaching-decks/GD1_CH02_KhiLyTuong/B11_DinhLuatBoyle_DangNhiet/qa-renders/`: Bộ 10 ảnh render độ phân giải 1920×1080 (`slide_01.png` - `slide_10.png`).
+  - `teaching-decks/GD1_CH02_KhiLyTuong/B11_DinhLuatBoyle_DangNhiet/qa-report.md`: Bổ sung Gate 8 (Visual QA Gate).
+- **Quy chuẩn Thiết kế Đã Áp Dụng ("VLXT Premium Editorial")**:
+  1. *Khung trình chiếu*: Nền ngoài kem/trắng lạnh `#EEF2F6`, khung trình chiếu navy sâu `#071224` viền đậm 3px bo góc lớn 24px, tỷ lệ cố định 16:9 (1600x900 native / 1920x1080 render).
+  2. *Màu sắc & Typography*: Navy làm màu chủ đạo, đỏ `#EF4444` làm màu nhấn kiến thức cốt lõi, xanh cyan `#38BDF8` làm màu phân cấp phụ. Font Outfit & Plus Jakarta Sans. Tiêu đề $\ge 48\text{px}$, nội dung chính $\ge 28\text{px}$. Bỏ toàn bộ chữ nhỏ, thông số thời lượng hay hành động học sinh ra khỏi slide canvas (đưa vào ngăn kéo Speaker Notes qua phím `N`).
+  3. *Nhận diện thương hiệu*: Slide 1 (Bìa) và Slide 10 (Kết) có logo SVG nguyên tử chuẩn + `VẬT LÝ XUÂN TRƯỜNG`. Các slide nội dung 2–9 có monogram `XT` góc trên bên trái. 100% slide có domain `vatlyxuantruong.io.vn` ở chân trang.
+  4. *Đồ thị & Vật lý*:
+     - Slide 3: Sơ đồ xilanh pít-tông lớn, sạch sẽ; các nhãn $F_{\text{ngoài}}$ (mũi tên hướng xuống), $p$, $V$, bình kín cách nhiệt ($T = \text{const}$) đặt ngoài hình kèm đường dẫn rõ ràng, không đè lên hình vẽ.
+     - Slide 6: 2 đường hypebol $T_1$ và $T_2$ ($T_2 > T_1$) tuyệt đối không cắt nhau; đường gióng nét đứt tại $V_0$ chứng minh $p_2 > p_1 \implies T_2 > T_1$. Nhãn $\ge 28\text{px}$.
+     - Slide 7: 3 hệ trục $(p, 1/V)$, $(p, T)$, $(V, T)$ rõ ràng, kèm dòng ghi chú sư phạm bổ sung.
+     - Slide 9: Bảng tổng hợp công thức chuẩn Bảng II Ban Lí thuyết, căn chỉnh cột sắc nét, KaTeX chuẩn.
+     - Slide 10: 3 từ khóa lý thuyết + CTA rõ ràng làm 20 câu bài tập áp dụng trên web LMS.
+  5. *Hàng rào an toàn*: Giữ nguyên quy tắc không tạo Canva/PPTX, không nạp LMS/Drive/YouTube, không sửa production khi Thầy chưa duyệt bản preview.
+
+
+
+### 10/09/2026 (Phiên tối muộn) — Chuẩn Hóa Typography Công Thức Toán/Lý Theo Chuẩn VLXT, Khóa Cổng FORMULA_TYPOGRAPHY_PASS, Cập Nhật Spec & Bàn Giao Final PPTX Bài 11
+
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `MASTER_DESIGN_COMPLETED` & `VISUAL_QA_PASS` & `FORMULA_TYPOGRAPHY_PASS` (10/10 Slide đạt chuẩn 100%).
+- **Phạm vi & File đầu ra**:
+  - `teaching-decks/GD1_CH02_KhiLyTuong/B11_DinhLuatBoyle_DangNhiet/Bai11_DinhLuatBoyle_VLXT.pptx`: File PowerPoint tỉ lệ 16:9 Widescreen (13.333" × 7.5"), nhúng trọn vẹn 10 slide độ nét cao để Thầy trình chiếu/quay trực tiếp.
+  - `teaching-decks/GD1_CH02_KhiLyTuong/B11_DinhLuatBoyle_DangNhiet/review.html`: File xem trước trực quan mở bằng trình duyệt, có thanh điều hướng chuyển slide nhanh và phím bấm.
+  - `teaching-decks/GD1_CH02_KhiLyTuong/B11_DinhLuatBoyle_DangNhiet/qa-renders/`: Thư mục 10 ảnh render 1920×1080 (`slide_01.png` đến `slide_10.png`).
+  - `teaching-decks/GD1_CH02_KhiLyTuong/B11_DinhLuatBoyle_DangNhiet/qa-report.md`: Báo cáo đối soát 10 slide đạt `VISUAL_QA_PASS` và `FORMULA_TYPOGRAPHY_PASS`.
+  - `TEACHING_DECK_SPEC.md` (root & `00-BRAIN-VLXT/specs/`): Khóa Gate 9 `FORMULA_TYPOGRAPHY_PASS` làm chuẩn bắt buộc cho mọi bộ slide trong hệ thống VLXT.
+- **Chi tiết Chuẩn Hóa Typography Công Thức Vật Lý Đã Thực Hiện**:
+  1. *Phân số toán học đứng chuẩn*: Toàn bộ quan hệ tỉ lệ nghịch và hệ trục tọa độ đã chuyển thành phân số đứng chuẩn KaTeX `p \sim \frac{1}{V}` và `\left(p, \frac{1}{V}\right)`. Tuyệt đối không viết `1/V`.
+  2. *Công thức liền mạch 1 dòng*: Toàn bộ điều kiện $T = \mathrm{const},\ m = \mathrm{const}$ tại Slide 8 và Bảng Master Slide 9 được bọc `white-space: nowrap`, căn chỉnh độ rộng cột bảng (30% / 40% / 30%), cấm ngắt dòng giữa $m =$ và $\mathrm{const}$.
+  3. *Quy tắc ISO / VLXT Font*: Biến số in nghiêng ($p, V, T, m$); chỉ số dưới chuẩn ($p_1, V_1, T_1, T_2, V_0$); chữ $\mathrm{const}$ (`\mathrm{const}`), đơn vị ($\mathrm{Pa}, \mathrm{m}^3, \mathrm{atm}, \mathrm{mmHg}, \mathrm{bar}$) và chữ mô tả in đứng dạng `\text{...}` hoặc `\mathrm{...}`.
+  4. *Đồ họa SVG & Banner*: Banner vàng Slide 6 chuyển thành KaTeX chuẩn `$$p \cdot V = \text{hằng số} \iff p \sim \frac{1}{V}$$`. Trục hoành hệ $(p, 1/V)$ trên SVG Slide 7 chuyển thành phân số đứng SVG (tử số 1 đứng, gạch ngang, mẫu số $V$ nghiêng).
+  5. *Visual QA AI Vision*: Render lại 10/10 ảnh 1920×1080, AI Vision thẩm định chi tiết từng slide, xác nhận không tràn viền, không gãy từ tiếng Việt, không lỗi font.
+  6. *Nâng cấp Cỡ Chữ Siêu Dễ Đọc (High Legibility)*: Theo góp ý của Thầy (đảm bảo học sinh xem bài giảng trên điện thoại/màn hình nhỏ vẫn đọc vanh vách), toàn bộ cỡ chữ mô tả, card, công thức và nhãn đồ thị được tăng lên mức tối thiểu tương đương Word 12 Zoom 240% (nội dung $\ge 25\text{–}28\text{px}$, tiêu đề $\ge 28\text{–}32\text{px}$, công thức $\ge 32\text{–}56\text{px}$). Giữ nguyên 100% bố cục master design và màu sắc.
+  7. *Hàng rào an toàn*: Giữ nguyên hợp đồng nguồn (`Ban Lí thuyết.docx` cho 10 slide, 20 câu bài tập áp dụng là tài nguyên web riêng), không quay video, không nạp production, tạm thời chưa xuất PPTX mới cho đến khi Thầy duyệt lại review.html.
+
+
+### 10/09/2026 (Phiên tối) — Khởi Tạo Xưởng Giáo Trình Trình Chiếu VLXT & Khóa Cố Định WORKSHOP_RULES.md (Thầy Đã Duyệt)
+
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `WORKSHOP_INITIALIZED` & `WORKSHOP_RULES_APPROVED` (Đã duyệt chính thức, khóa làm luật nền cố định).
+- **Phạm vi & File**:
+  - `WORKSHOP_RULES.md` (root): Bộ quy tắc cố định, bất biến cho mọi bài giảng trong Xưởng Giáo trình Trình chiếu VLXT.
+- **Quy tắc Nền Tảng Bắt Buộc Đối Với Mọi Bài Học Về Sau**:
+  1. *3 Nguồn bắt buộc phải đọc lại trước khi bắt tay làm bất kỳ bài nào*:
+     - `WORKSHOP_RULES.md`
+     - `TEACHING_DECK_SPEC.md`
+     - Golden sample Bài 11 (`teaching-decks/GD1_CH02_KhiLyTuong/B11_DinhLuatBoyle_DangNhiet/`)
+  2. *Phạm vi duy nhất*: Chuyển đổi $100\%$ nội dung file `Bản Lí thuyết.docx` đã được Thầy duyệt thành slide trình chiếu để Thầy giảng dạy / ghi hình Video 1.
+  3. *Các điều cấm bất biến*: Không OCR, không đăng LMS, không tự soạn kiến thức/bài tập/ví dụ, không tự đổi master design.
+  4. *Kế thừa master Bài 11*: Dùng đúng 2 logo XT thật; bìa/kết dùng logo đầy đủ; chân trang `Biên soạn: Xuân Trường` và `vatlyxuantruong.io.vn` (tuyệt đối không dùng "Giảng viên", không logo tự vẽ hay placeholder); công thức chuẩn `FORMULA_TYPOGRAPHY_PASS`; cỡ chữ to rõ tương đương tối thiểu Word 12 Zoom 240%; Render 1920×1080 và AI Vision QA trước khi trình duyệt; chỉ xuất PPTX 16:9 sau khi Thầy duyệt `review.html`.
+  5. *Quyền hạn*: CẤM tự ý thay đổi các luật này nếu chưa có chỉ đạo mới của Thầy.
+
+
 ### 08/09/2026 — Quản trị trạng thái, dọn dẹp task và chuẩn hóa sổ bàn giao toàn hệ thống
 
 - **Người thực hiện**: Antigravity Coordinator (Bộ não VLXT)
