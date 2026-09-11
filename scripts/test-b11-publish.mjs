@@ -121,4 +121,17 @@ assert.equal(mappedBaitap[0].ans, 'D');
 assert.equal(mappedBaitap[19].ans, 'C');
 console.log('✅ 6. mapQuizRows nạp đủ 20 câu trắc nghiệm luyện tập và đáp án hợp lệ.');
 
-console.log('\n🎉 TOÀN BỘ 6 BƯỚC KIỂM TRA ĐỐI SOÁT BÀI 11 ĐÃ PASS 100%!');
+// 7. Check Video and PDF assets
+assert.ok(b11.Video && b11.Video.includes('youtube.com'), 'Video lý thuyết phải là YouTube link');
+assert.ok(b11.VideoGiai && b11.VideoGiai.includes('youtube.com'), 'Video giải phải là YouTube link');
+assert.ok(b11.PDFLyThuyet && b11.PDFLyThuyet.includes('drive.google.com'), 'PDF lý thuyết phải là Drive link');
+assert.ok(b11.PDF && b11.PDF.includes('drive.google.com'), 'PDF bài tập áp dụng phải là Drive link');
+assert.ok(b11.PDFLuyenTap && b11.PDFLuyenTap.includes('drive.google.com'), 'PDF luyện tập phải là Drive link');
+assert.equal(b11.Video, 'https://www.youtube.com/watch?v=yHYNTWS1iCA');
+assert.equal(b11.VideoGiai, 'https://www.youtube.com/watch?v=hl0yjy331xw');
+assert.equal(b11.PDFLyThuyet, 'https://drive.google.com/file/d/1P9Bn0-KXrf1hA2NyNE5UE6HxOu91xINX/view?usp=sharing');
+assert.equal(b11.PDF, 'https://drive.google.com/file/d/1q011XVLDrVEg0SW1g6VHPBzKIFLz1nFn/view?usp=sharing');
+assert.equal(b11.PDFLuyenTap, 'https://drive.google.com/file/d/1n47DgcucFgz8nr_DGdxy3FCNr62375Bi/view?usp=sharing');
+console.log('✅ 7. Video YouTube và PDF Google Drive của Bài 11 hợp lệ 100%.');
+
+console.log('\n🎉 TOÀN BỘ 7 BƯỚC KIỂM TRA ĐỐI SOÁT BÀI 11 ĐÃ PASS 100%!');
