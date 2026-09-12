@@ -701,7 +701,10 @@
     var btn = document.getElementById('nv-btn-confirm');
     if (btn) { btn.disabled = true; btn.textContent = 'Đang lưu...'; }
     gasPost({ action: 'savenhiemvu', sdt: user.sdt, nhipHoc: _selectedNhip, conTro: 0, startDate: today(), lastMissionDate: '' })
-      .then(function () { location.reload(); });
+      .then(function () {
+        if (typeof window.clearVlxtCache === 'function') window.clearVlxtCache();
+        location.reload(); 
+      });
   };
 
   window.vlxtCloseNhiemVu = function () {
