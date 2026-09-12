@@ -327,7 +327,8 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 - **Nguyên nhân**: `login.html` còn gọi Web App deployment v137 (`AKfycbyq...`), trong khi deployment hiện hành của cùng dự án là v145 (`AKfycbwF...`). Đây là luồng dùng cho cả đăng ký SĐT/mật khẩu và Google sign-in.
 - **Thay đổi**: Chuyển hằng `GAS` trong `login.html` sang endpoint v145; không ghi hay thay đổi dữ liệu tài khoản thực.
 - **Đối soát**: Endpoint v145 trả đúng JSON cho ba request không ghi dữ liệu: unknown action → `Unknown action`, `pingadmin` không khóa → `Unauthorized`, `register` với SĐT rỗng → `Số điện thoại không hợp lệ!`.
-- **Việc còn lại**: Commit/push nhánh, chờ GitHub Pages triển khai, rồi thử tạo một tài khoản thật do Thầy/học sinh tự nhập trên giao diện.
+- **Chốt chặn tái phát**: `scripts/test-auth-endpoint.mjs` kiểm tra trực tiếp endpoint bằng hai request không ghi dữ liệu; workflow `auth-smoke.yml` chạy khi PR chạm luồng đăng nhập và định kỳ 15 phút; workflow deploy chạy smoke test trước khi phát hành và dừng nếu endpoint đăng ký không khỏe.
+- **Việc còn lại**: Merge PR, chờ GitHub Pages triển khai, rồi thử tạo một tài khoản thật do Thầy/học sinh tự nhập trên giao diện.
 
 
 ### 09/09/2026 — Hotfix Admin Console: Đồng Bộ Hóa Hợp Đồng Draft & initAdmin Revalidation Vào index.html (PR #5)
