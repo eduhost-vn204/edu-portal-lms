@@ -527,8 +527,15 @@
         if (ta !== tb) return ta - tb;                          // Khoá khác nhau → theo thuTu
         var ma = (a.Chuong || '').match(/\d+/), mb = (b.Chuong || '').match(/\d+/);
         var ca = ma ? parseInt(ma[0]) : 0, cb = mb ? parseInt(mb[0]) : 0;
-        return ca - cb;                                         // Cùng khoá → theo chương (TUẦN N)
-        // Cùng chương → giữ nguyên thứ tự sheet
+        if (ca !== cb) return ca - cb;                                         // Cùng khoá -> theo chương (TUẦN N)
+        // Cùng chương -> theo ThuTuBai
+        var tba = parseInt(a.ThuTuBai); if (isNaN(tba)) tba = 999999;
+        var tbb = parseInt(b.ThuTuBai); if (isNaN(tbb)) tbb = 999999;
+        if (tba !== tbb) return tba - tbb;
+        // Giữ nguyên thứ tự sheet nếu cùng ThuTuBai
+        var idxA = parseInt(a._rowIndex) || 0;
+        var idxB = parseInt(b._rowIndex) || 0;
+        return idxA - idxB;
       });
 
     return { xps: xps, watchedSet: watchedSet, teachingKey: teachingKey };
