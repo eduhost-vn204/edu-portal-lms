@@ -1,0 +1,25 @@
+name: Auth endpoint smoke test
+
+on:
+  pull_request:
+    paths:
+      - 'login.html'
+      - 'scripts/test-auth-endpoint.mjs'
+      - '.github/workflows/auth-smoke.yml'
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  auth-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify registration endpoint without writing user data
+        run: node scripts/test-auth-endpoint.mjs

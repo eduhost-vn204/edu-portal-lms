@@ -23,6 +23,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Block deployment when registration endpoint is unhealthy
+        run: node scripts/test-auth-endpoint.mjs
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
