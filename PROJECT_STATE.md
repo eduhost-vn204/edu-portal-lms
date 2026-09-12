@@ -982,3 +982,34 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
   - Định danh bài học: Buổi 12, Mã `Bfbfa62b6cbf1` (sau Bài 11 `B4ca24b64572f`, trước Bài 13 `B24bbd84d8ea9`).
   - Kiểm kê học liệu: Có 3 file Word (`Ban Lí thuyết.docx`, `Bài tập áp dụng.docx`, `Bài tập áp dụng - wed.docx`). Thiếu 2 video MP4 và 2 file Word luyện tập.
   - Xử lý an toàn: Pipeline tự động kích hoạt cơ chế fail-closed, dừng ở trạng thái `MANUAL_RECOVERY_REQUIRED`, không upload bất kỳ file rác nào lên YouTube hay Drive, không tác động backend, sẵn sàng chờ Thầy bổ sung đủ học liệu.
+
+### 12/09/2026 — Khởi Tạo Xưởng Giáo Trình Trình Chiếu VLXT & Hoàn Thành Pha 1 (Nội Dung, Kỹ Thuật & Visual QA) Bài 12: Định Luật Charles
+
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Codex & Thầy Xuân Trường
+- **Trạng thái**: `OUTLINE_AND_VISUAL_PREFLIGHT_PASS` (Hoàn tất 100% Phase 1; chờ Thầy thẩm định sư phạm trên `review.html` và chốt 2 điểm quyết định trước khi xuất PPTX).
+- **Phạm vi triển khai**:
+  - Luật xưởng cố định: `WORKSHOP_RULES.md`
+  - Thư mục gói giáo trình: `teaching-decks/GD1_CH02_KhiLyTuong/B12_DinhLuatCharles_DangAp/`
+- **Các thành phần đã hoàn tất trong gói Bài 12**:
+  1. `assets/`: Đã tích hợp 2 logo thương hiệu XT thật (`logo_xt_full.png` cho Slide 1 & 10; `logo_xt_small.png` cho Slide 2–9).
+  2. `lesson-brief.md`: Tóm tắt sư phạm, phân tích 5 nguồn học liệu, xác lập nhịp điệu (Khởi động kết thúc tại 02:45, Core Concept bắt đầu đúng 02:45; thời lượng ~30–32 phút).
+  3. `deck-manifest.json`: Manifest schema chuẩn 10 slides, `status: "OUTLINE_FOR_TEACHER"`, khóa toàn bộ safety gates (`canvaCreated: false`, `videoRecorded: false`, `youtubeUploaded: false`, `driveUploaded: false`, `productionSheetSynced: false`).
+  4. `slides.md`: Kịch bản chi tiết 10 slides với thẻ định danh `<!-- SLIDE_ID: SLIDE_01 -->` đến `SLIDE_10`, đủ 3 trường sư phạm bắt buộc (`studentAction`, `expectedEvidenceOfUnderstanding`, `nextTransition`).
+  5. `speaker-notes.md`: Lời giảng sư phạm chi tiết cho từng slide, phân tách lời giảng chính và các lưu ý sư phạm nội bộ (không hiển thị lên màn hình học sinh).
+  6. `asset-brief.md`: Quy chuẩn thị giác, thông số màu sắc, font chữ và danh mục đồ họa chi tiết từng slide.
+  7. `qa-report.md`: Báo cáo kiểm định chất lượng đối soát 7 cổng và kết quả kiểm định thị giác AI Vision QA.
+  8. `review-sheet.md`: Phiếu thẩm định sư phạm 10 slide kèm 2 điểm quyết định dành riêng cho Thầy.
+  9. `review.html`: File xem trước toàn bộ 10 slides độc lập ngoại tuyến (1.28 MB), tích hợp công thức KaTeX, SVG vector sắc nét và logo base64.
+  10. `qa-renders/`: 10 ảnh chụp màn hình 1920×1080 chuẩn tỷ lệ 16:9 (`slide_01.png` đến `slide_10.png`) được chụp tự động bằng Chromium Playwright.
+- **Kết quả Kiểm định & Khắc phục Khiếm khuyết Thị giác**:
+  - Chạy `validate-teaching-deck.mjs` → **`TECHNICAL_PREFLIGHT_PASS` (100%)**.
+  - Kiểm tra thị giác AI Vision phát hiện xung đột KaTeX bên trong thẻ SVG `<text>` trên Slide 3, Slide 6, Slide 7 → Đã khắc phục triệt để bằng cách cấu hình `ignoredTags: [..., "svg"]` và chuyển đổi toàn bộ nhãn SVG sang mã hóa unicode/tspan chuẩn vector.
+  - Slide 3: Thiết kế lại sơ đồ xilanh 2 trạng thái nung nóng đẳng áp, căn chỉnh tọa độ các badge tiêu đề, áp suất khí quyển $p_0$, dãn nở $V_2 > V_1$, và thu gọn banner kết luận nằm gọn gàng bên trong khối nền tối.
+  - Slide 6: Cố định `white-space: nowrap` cho công thức $p_1 < p_2.$ loại bỏ hoàn toàn hiện tượng ngắt dấu chấm mồ côi.
+  - Slide 7: Tinh chỉnh tọa độ điểm độ không tuyệt đối $-273^\circ\mathrm{C}$ và phương trình $V = V_0(1+\alpha t)$.
+  - Kết quả thị giác: **`VISUAL_PREFLIGHT_PASS` (10/10 slides hoàn hảo)**.
+- **2 Điểm Chờ Thầy Quyết Định (`NEEDS_TEACHER_DECISION`)**:
+  - **Quyết định 1 (Slide 6)**: Minh họa 2 đường đẳng áp $p_1, p_2$ và phương pháp dóng đứng tại $T_0$ để so sánh $p_1 < p_2$ (Đường trên bé hơn). Đã đưa vào slide theo mẫu chuẩn Bài 11.
+  - **Quyết định 2 (Slide 7)**: Giới thiệu hệ thức thực nghiệm $V = V_0(1 + \alpha t)$ với $\alpha = \frac{1}{273}$ và ý nghĩa độ không tuyệt đối $-273^\circ\mathrm{C}$ khi ngoại suy đường đẳng áp cắt trục hoành. Đã đưa vào ô công thức phụ Slide 7.
+- **Ràng buộc giữ nguyên**: Tuyệt đối không xuất file PowerPoint PPTX 16:9 cho đến khi Thầy thẩm định và duyệt xong `review.html`.
