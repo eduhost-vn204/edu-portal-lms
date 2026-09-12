@@ -1,0 +1,182 @@
+[
+  {
+    "raw_stem": "Câu 1. Định luật Charles: ở áp suất không đổi, thể tích V của một lượng khí xác định",
+    "question": "Định luật Charles: ở áp suất không đổi, thể tích V của một lượng khí xác định",
+    "optA": "tỉ lệ nghịch với nhiệt độ tuyệt đối T.",
+    "optB": "tỉ lệ thuận với nhiệt độ tuyệt đối T.",
+    "optC": "không phụ thuộc vào T.",
+    "optD": "tỉ lệ thuận với bình phương T.",
+    "correct": "B"
+  },
+  {
+    "raw_stem": "Câu 2. Biểu thức của định luật Charles là",
+    "question": "Biểu thức của định luật Charles là",
+    "optA": "V₁T₁ = V₂T₂",
+    "optB": "V₁/T₁ = V₂/T₂",
+    "optC": "p₁V₁ = p₂V₂",
+    "optD": "p₁/T₁ = p₂/T₂",
+    "correct": "B"
+  },
+  {
+    "raw_stem": "Câu 3. Định luật Charles áp dụng cho quá trình",
+    "question": "Định luật Charles áp dụng cho quá trình",
+    "optA": "đẳng nhiệt.",
+    "optB": "đẳng tích.",
+    "optC": "đẳng áp.",
+    "optD": "đoạn nhiệt.",
+    "correct": "C"
+  },
+  {
+    "raw_stem": "Câu 4. Trong hệ trục (V, T), đường đẳng áp có dạng",
+    "question": "Trong hệ trục (V, T), đường đẳng áp có dạng",
+    "optA": "đường thẳng đi qua gốc toạ độ (T tính theo Kelvin).",
+    "optB": "nhánh hypebol.",
+    "optC": "đoạn thẳng song song trục V.",
+    "optD": "đoạn thẳng song song trục T.",
+    "correct": "A"
+  },
+  {
+    "raw_stem": "Câu 5. Khi đun nóng đẳng áp một khối khí, thể tích khí sẽ",
+    "question": "Khi đun nóng đẳng áp một khối khí, thể tích khí sẽ",
+    "optA": "giảm.",
+    "optB": "tăng.",
+    "optC": "không đổi.",
+    "optD": "bằng 0.",
+    "correct": "B"
+  },
+  {
+    "raw_stem": "Câu 6. Một khối khí có V₁ = 4 lít ở T₁ = 300 K, áp suất không đổi. Đun nóng đến T₂ = 600 K. Thể tích V₂ là",
+    "question": "Một khối khí có V₁ = 4 lít ở T₁ = 300 K, áp suất không đổi. Đun nóng đến T₂ = 600 K. Thể tích V₂ là",
+    "optA": "2 lít.",
+    "optB": "4 lít.",
+    "optC": "16 lít.",
+    "optD": "8 lít.",
+    "correct": "D"
+  },
+  {
+    "raw_stem": "Câu 7. Một khối khí có V₁ = 6 lít ở T₁ = 400 K, đẳng áp làm lạnh đến T₂ = 200 K. Thể tích V₂ là",
+    "question": "Một khối khí có V₁ = 6 lít ở T₁ = 400 K, đẳng áp làm lạnh đến T₂ = 200 K. Thể tích V₂ là",
+    "optA": "3 lít.",
+    "optB": "12 lít.",
+    "optC": "6 lít.",
+    "optD": "1,5 lít.",
+    "correct": "A"
+  },
+  {
+    "raw_stem": "Câu 8. Một khối khí có V₁ = 10 lít ở nhiệt độ t₁ = 27°C, đẳng áp đun nóng đến t₂ = 127°C. Thể tích V₂ xấp xỉ",
+    "question": "Một khối khí có V₁ = 10 lít ở nhiệt độ t₁ = 27°C, đẳng áp đun nóng đến t₂ = 127°C. Thể tích V₂ xấp xỉ",
+    "optA": "13,3 lít.",
+    "optB": "10 lít.",
+    "optC": "15 lít.",
+    "optD": "20 lít.",
+    "correct": "A"
+  },
+  {
+    "raw_stem": "Câu 9. Đại lượng nào KHÔNG đổi trong định luật Charles?",
+    "question": "Đại lượng nào KHÔNG đổi trong định luật Charles?",
+    "optA": "Thể tích V.",
+    "optB": "Áp suất p.",
+    "optC": "Nhiệt độ T.",
+    "optD": "Cả V và T.",
+    "correct": "B"
+  },
+  {
+    "raw_stem": "Câu 10. Nếu nhiệt độ tuyệt đối của một khối khí (áp suất không đổi) tăng gấp đôi thì thể tích sẽ",
+    "question": "Nếu nhiệt độ tuyệt đối của một khối khí (áp suất không đổi) tăng gấp đôi thì thể tích sẽ",
+    "optA": "giảm một nửa.",
+    "optB": "không đổi.",
+    "optC": "tăng gấp 4.",
+    "optD": "tăng gấp đôi.",
+    "correct": "D"
+  },
+  {
+    "raw_stem": "Câu 11. Một khối khí đẳng áp có V₁/T₁ = 0,02 (lít/K). Nếu T₂ = 500 K thì V₂ là",
+    "question": "Một khối khí đẳng áp có V₁/T₁ = 0,02 (lít/K). Nếu T₂ = 500 K thì V₂ là",
+    "optA": "5 lít.",
+    "optB": "20 lít.",
+    "optC": "0,04 lít.",
+    "optD": "10 lít.",
+    "correct": "D"
+  },
+  {
+    "raw_stem": "Câu 12. Định luật Charles là trường hợp riêng của",
+    "question": "Định luật Charles là trường hợp riêng của",
+    "optA": "định luật Boyle.",
+    "optB": "định luật Gay-Lussac.",
+    "optC": "phương trình trạng thái khí lí tưởng khi p không đổi.",
+    "optD": "phương trình Claperon – Mendeleev khi n không đổi.",
+    "correct": "C"
+  },
+  {
+    "raw_stem": "Câu 13. Một khối khí có thể tích 8 lít ở 0°C (đẳng áp). Thể tích khí ở 273°C là",
+    "question": "Một khối khí có thể tích 8 lít ở 0°C (đẳng áp). Thể tích khí ở 273°C là",
+    "optA": "4 lít.",
+    "optB": "8 lít.",
+    "optC": "16 lít.",
+    "optD": "32 lít.",
+    "correct": "C"
+  },
+  {
+    "raw_stem": "Câu 14. Khi làm lạnh đẳng áp một khối khí đến gần độ không tuyệt đối (T → 0 K), theo lí thuyết thể tích khí sẽ",
+    "question": "Khi làm lạnh đẳng áp một khối khí đến gần độ không tuyệt đối (T → 0 K), theo lí thuyết thể tích khí sẽ",
+    "optA": "tăng vô hạn.",
+    "optB": "không đổi.",
+    "optC": "âm.",
+    "optD": "tiến dần về 0.",
+    "correct": "D"
+  },
+  {
+    "raw_stem": "Câu 15. Một quả bóng bay được bơm khí ở nhiệt độ phòng T₁ = 300 K có thể tích V₁ = 2 lít. Nếu đưa ra ngoài trời nắng nóng T₂ = 330 K (áp suất coi như không đổi), thể tích của bóng là",
+    "question": "Một quả bóng bay được bơm khí ở nhiệt độ phòng T₁ = 300 K có thể tích V₁ = 2 lít. Nếu đưa ra ngoài trời nắng nóng T₂ = 330 K (áp suất coi như không đổi), thể tích của bóng là",
+    "optA": "1,8 lít.",
+    "optB": "2,5 lít.",
+    "optC": "2,2 lít.",
+    "optD": "3 lít.",
+    "correct": "C"
+  },
+  {
+    "raw_stem": "Câu 16. Xét đồ thị đẳng áp trong hệ trục (V, T) ứng với hai áp suất khác nhau p₁ < p₂, đường ứng với áp suất nhỏ hơn (p₁) sẽ",
+    "question": "Xét đồ thị đẳng áp trong hệ trục (V, T) ứng với hai áp suất khác nhau p₁ < p₂, đường ứng với áp suất nhỏ hơn (p₁) sẽ",
+    "optA": "dốc hơn (độ dốc lớn hơn) đường ứng với p₂.",
+    "optB": "dốc ít hơn đường ứng với p₂.",
+    "optC": "trùng với đường ứng với p₂.",
+    "optD": "song song trục V.",
+    "correct": "A"
+  },
+  {
+    "raw_stem": "Câu 17. Một lượng khí xác định biến đổi đẳng áp từ thể tích V₁ = 5 lít ở T₁ = 250 K đến thể tích V₂ = 15 lít. Nhiệt độ T₂ là",
+    "question": "Một lượng khí xác định biến đổi đẳng áp từ thể tích V₁ = 5 lít ở T₁ = 250 K đến thể tích V₂ = 15 lít. Nhiệt độ T₂ là",
+    "optA": "750 K.",
+    "optB": "500 K.",
+    "optC": "83,3 K.",
+    "optD": "375 K.",
+    "correct": "A"
+  },
+  {
+    "raw_stem": "Câu 18. Phát biểu nào sau đây SAI về quá trình đẳng áp?",
+    "question": "Phát biểu nào sau đây SAI về quá trình đẳng áp?",
+    "optA": "Áp suất khí không đổi trong suốt quá trình.",
+    "optB": "Thể tích khí tỉ lệ thuận với nhiệt độ tuyệt đối.",
+    "optC": "Nhiệt độ khí luôn không đổi.",
+    "optD": "Khối lượng khí không đổi trong suốt quá trình.",
+    "correct": "C"
+  },
+  {
+    "raw_stem": "Câu 19. Một khối khí có V₁ = 3 lít ở T₁ = 200 K, đẳng áp. Để thể tích tăng lên thành V₂ = 9 lít cần đun nóng đến nhiệt độ",
+    "question": "Một khối khí có V₁ = 3 lít ở T₁ = 200 K, đẳng áp. Để thể tích tăng lên thành V₂ = 9 lít cần đun nóng đến nhiệt độ",
+    "optA": "400 K.",
+    "optB": "800 K.",
+    "optC": "1800 K.",
+    "optD": "600 K.",
+    "correct": "D"
+  },
+  {
+    "raw_stem": "Câu 20. Trong quá trình đẳng áp, nếu nhiệt độ tuyệt đối giảm còn 1/4 giá trị ban đầu thì thể tích khí sẽ",
+    "question": "Trong quá trình đẳng áp, nếu nhiệt độ tuyệt đối giảm còn 1/4 giá trị ban đầu thì thể tích khí sẽ",
+    "optA": "giảm còn 1/4.",
+    "optB": "giảm còn 1/2.",
+    "optC": "tăng gấp 4.",
+    "optD": "không đổi.",
+    "correct": "A"
+  }
+]

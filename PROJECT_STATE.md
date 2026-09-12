@@ -1013,3 +1013,37 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
   - **Quyết định 1 (Slide 6)**: Minh họa 2 đường đẳng áp $p_1, p_2$ và phương pháp dóng đứng tại $T_0$ để so sánh $p_1 < p_2$ (Đường trên bé hơn). Đã đưa vào slide theo mẫu chuẩn Bài 11.
   - **Quyết định 2 (Slide 7)**: Giới thiệu hệ thức thực nghiệm $V = V_0(1 + \alpha t)$ với $\alpha = \frac{1}{273}$ và ý nghĩa độ không tuyệt đối $-273^\circ\mathrm{C}$ khi ngoại suy đường đẳng áp cắt trục hoành. Đã đưa vào ô công thức phụ Slide 7.
 - **Ràng buộc giữ nguyên**: Tuyệt đối không xuất file PowerPoint PPTX 16:9 cho đến khi Thầy thẩm định và duyệt xong `review.html`.
+
+
+### 12/09/2026 — Hoàn Thành Phát Hành Bài 12: Định Luật Charles - Quá Trình Đẳng Áp (Trạng Thái DRAFT — READY_FOR_TEACHER)
+
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Codex & Thầy Xuân Trường
+- **Trạng thái**: `READY_FOR_TEACHER` (Bài học ở trạng thái `draft`, toàn bộ học liệu đã tải lên cloud và liên kết hoàn hảo; chờ Thầy thẩm định trên Admin Console để bấm Xuất bản).
+- **Phạm vi & Nhánh thực hiện**:
+  - Nhánh: `codex/publish-lesson-12`
+  - Thư mục nguồn: `D:\Work\Dạy học\Xây Dựng Lộ Trình XPS 2k9\Triển khai\GĐ1 - Chuyên đề Lý thuyết\Chương 2\Bài 12 - Định luật Charles - Quá trình đẳng áp`
+  - Mã bài: `Bfbfa62b6cbf1` (Buổi 12, Chương 2 – Khí lí tưởng, Thứ tự: 5)
+- **Các thành phần học liệu đã triển khai**:
+  1. **Video YouTube (Unlisted)**:
+     - Video Lý thuyết & Áp dụng (~37p37s): `https://www.youtube.com/watch?v=FBSV_kizE5o` (ID: `FBSV_kizE5o`)
+     - Video Chữa bài luyện tập (~35p23s): `https://www.youtube.com/watch?v=LVt-3mHxEtk` (ID: `LVt-3mHxEtk`)
+     - Đã kiểm định thị giác qua trích xuất khung hình và oEmbed API trả HTTP 200.
+  2. **Tài liệu PDF Google Drive (Chia sẻ công khai)**:
+     - Bản Lí thuyết: `https://drive.google.com/file/d/1BP9grIOT9dijN3iyHg_6Uv8w4iUICjkZ/view?usp=sharing` (ID: `1BP9grIOT9dijN3iyHg_6Uv8w4iUICjkZ`)
+     - Bài tập áp dụng: `https://drive.google.com/file/d/1xm4q6g5HzEUINzeSBXrpxx3FV4VqDa_c/view?usp=sharing` (ID: `1xm4q6g5HzEUINzeSBXrpxx3FV4VqDa_c`)
+     - Bài tập luyện tập: `https://drive.google.com/file/d/1OmFYv72eMruruQk7XgP1pDKLUifGqR-e/view?usp=sharing` (ID: `1OmFYv72eMruruQk7XgP1pDKLUifGqR-e`)
+     - Đã kiểm tra quyền xem công khai trả HTTP 200.
+  3. **Câu hỏi dừng video (20 câu kèm Timestamp thật)**:
+     - Trích xuất tự động qua Faster-Whisper và đối soát từng câu với lời giảng của Thầy.
+     - 20 mốc thời gian tăng dần tuần tự: `1353, 1378, 1383, 1387, 1398, 1464, 1492, 1512, 1686, 1693, 1711, 1739, 1808, 1842, 1949, 2002, 2135, 2163, 2186, 2209`.
+     - Đã nạp thành công vào bảng `VideoCauHoi` trên Google Sheets qua endpoint `savevideocauhoi`.
+  4. **Bài tập trắc nghiệm luyện tập (20 câu LMS)**:
+     - Nạp thành công vào bảng `BaiTapTracNghiem` trên Google Sheets qua endpoint `savebaitaptracnghiem`.
+     - Xuất bản file quiz tĩnh content-addressed: `data/quizzes/quiz-1cce1653ed0c6f92eedc.json` (đúng 20 câu).
+     - Cập nhật `data/quiz-index.json` trỏ tới file mới với `count: 20` để hiển thị `Luyện tập trắc nghiệm (20)`.
+- **Kết quả Kiểm thử Tự động 7 Cổng**:
+  - Chạy `test-lesson-checklist.mjs 12 --gas` đạt **7/7 PASS (100%)**.
+  - Chạy `test-student-stable-session-num.mjs` đạt **8/8 PASS (100%)**.
+  - Bài 10 (`B557b8fccbc72`) và Bài 11 (`B4ca24b64572f`) được bảo vệ nguyên vẹn 100%.
+- **Chốt chặn an toàn**: Bài 12 được lưu ở trạng thái `draft` trong `data/baihoc.json`, ẩn an toàn khỏi giao diện học sinh cho đến khi Thầy duyệt và bấm Xuất bản trên Admin Console.
