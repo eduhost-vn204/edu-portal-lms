@@ -159,6 +159,35 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 12/09/2026 — Chuẩn Bị Bản Ghi Bài 12 (Định Luật Charles) Ở Trạng Thái Draft, Quiz 20 Câu & Nâng Cấp Giao Diện
+
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `READY_FOR_REVIEW` (Trạng thái Draft, chuẩn bị PR sạch vào `eduhost-vn204/edu-portal-lms`).
+- **Phạm vi thay đổi tối giản**:
+  1. `data/baihoc.json`:
+     - Bản ghi Bài 12 (`MaBai`: `Bfbfa62b6cbf1`, `TenBai`: `B12. ĐỊNH LUẬT CHARLES - QUÁ TRÌNH ĐẲNG ÁP`, `TrangThai`: `draft`).
+     - Đầy đủ 2 URL YouTube (`Video`, `VideoGiai`), 3 URL Google Drive (`PDFLyThuyet`, `PDF`, `PDFLuyenTap`) và 20 câu bài tập trắc nghiệm trong cột `BaiTap`.
+  2. `data/quizzes/quiz-1cce1653ed0c6f92eedc.json`:
+     - File quiz 20 câu trắc nghiệm luyện tập theo chuẩn content-addressed hash.
+  3. `data/quiz-index.json`:
+     - Chỉ mục B12 trỏ tới file quiz với `count: 20`.
+  4. `data/settings.json`:
+     - Giữ nguyên `currentTeachingLesson` trỏ Bài 11 (`CHUYÊN ĐỀ LÝ THUYẾT GĐ1 - Vật Lý 12|||Chương 2 – Khí lí tưởng|||B11. ĐỊNH LUẬT BOYLE – QUÁ TRÌNH ĐẲNG NHIỆT`) theo đúng chỉ đạo của Thầy.
+  5. `baihoc.html`:
+     - Nâng cấp `loadLessonQuiz` có cơ chế fallback tự động nạp từ Apps Script khi chưa có chỉ mục tĩnh hoặc mạng trễ.
+- **Loại trừ tuyệt đối**:
+  - Không đưa file upload video (`scripts/upload-b12-videos.mjs`).
+  - Không đưa các file dữ liệu trung gian (`data/b12-*`).
+  - Không đưa skill nội bộ (`.agents/skills/dang-bai-xps2k9/*`).
+  - Xác nhận 100% không chứa OAuth token / secret.
+- **Kiểm thử**:
+  - `node scripts/test-student-stable-session-num.mjs`: **8/8 PASS (100%)**.
+  - `node scripts/test-quiz-merge.mjs`: **6/6 PASS (100%)**.
+  - `node scripts/test-quiz-publish.mjs`: **12/12 PASS (100%)**.
+  - `node scripts/test-teaching-scope.mjs`: **14/14 PASS (100%)**.
+  - Cú pháp JavaScript hợp lệ (`node --check`), bảo toàn thẻ `</html>`.
+
 ### 11/09/2026 — Hoàn Tất Triển Khai & Xuất Bản Toàn Diện Bài 11 Lên Website Vật Lý Xuân Trường (Video YouTube, PDF Drive, Quiz 20 Câu)
 
 - **Người thực hiện**: Antigravity AI Coordinator

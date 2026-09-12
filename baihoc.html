@@ -725,11 +725,20 @@ function mapQuizRows(rows){
 async function loadLessonQuiz(key,lesson){
     if(lesson._quizLoaded) return;
     const meta=QUIZ_INDEX&&QUIZ_INDEX.lessons&&QUIZ_INDEX.lessons[key];
-    if(!meta){ lesson._quizLoaded=true; return; }
-    try{
-        const rows=await fetchJsonTimeout(meta.file,4000,{cache:'no-cache'});
-        lesson.baitap=mapQuizRows(Array.isArray(rows)?rows:[]);
-    }catch(e){ console.warn('Chưa tải được bài tập của bài '+key+':',e); }
+    if(meta){
+        try{
+            const rows=await fetchJsonTimeout(meta.file,4000,{cache:'no-cache'});
+            lesson.baitap=mapQuizRows(Array.isArray(rows)?rows:[]);
+        }catch(e){ console.warn('Chưa tải được bài tập của bài '+key+':',e); }
+    } else if(!(lesson.baitap && lesson.baitap.length)){
+        try{
+            const res=await fetchJsonTimeout(`${GAS_URL}?type=baitaptracnghiem&bai=${encodeURIComponent(key)}`,4000,{cache:'no-cache'});
+            const rows=res&&(res.data||(Array.isArray(res)?res:[]));
+            if(Array.isArray(rows)&&rows.length>0){
+                lesson.baitap=mapQuizRows(rows);
+            }
+        }catch(e){ console.warn('Chưa tải được bài tập từ GAS bài '+key+':',e); }
+    }
     lesson._quizLoaded=true;
 }
 
