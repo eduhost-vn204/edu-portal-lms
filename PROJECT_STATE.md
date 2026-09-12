@@ -159,6 +159,41 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 12/09/2026 — Khắc Phục Lỗi Hiển Thị 20 Câu Bài Tập Luyện Tập Bài 12 (Trang Học Sinh & Admin Console)
+
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `FIXED_AND_READY_FOR_DEPLOY`
+- **Vấn đề phát hiện**:
+  1. **Trang học sinh (`baihoc.html#lesson/Bfbfa62b6cbf1`)**: Không hiển thị tab "Luyện tập trắc nghiệm (20)", nút hoàn thành hiển thị "Xem hết video để hoàn thành (đã miễn điều kiện luyện tập)". Nguyên nhân: bản ghi `data/quiz-index.json` và file quiz `data/quizzes/quiz-1cce1653ed0c6f92eedc.json` mới chỉ nằm trên nhánh `codex/publish-lesson-12`, chưa được merge vào `main` để GitHub Pages deploy ra live site `vatlyxuantruong.io.vn`. Đồng thời `baihoc.html` thiếu cơ chế fallback nạp quiz từ Google Apps Script khi chưa tải được chỉ mục tĩnh.
+  2. **Admin Console (`edu-portal-console`)**: Danh sách bài học ở cột trái không hiện badge số câu (như "20 câu"), mặc dù mở modal "Sửa bài giảng" thì 20 câu hỏi vẫn nạp đủ. Nguyên nhân: `renderLessonList` trong Admin chỉ tra cứu `_qbCounts[key]` theo chuỗi legacy (`KhoaHoc|||Chuong|||TenBai`), không tra cứu theo `MaBai` (`Bfbfa62b6cbf1`) của cơ chế mới; đồng thời cột `BaiTap` trong sheet `BaiHoc` đang để trống.
+- **Biện pháp đã xử lý triệt để**:
+  1. **Cập nhật Google Sheets Backend (`BaiHoc`)**:
+     - Nạp trực tiếp chuỗi JSON 20 câu trắc nghiệm luyện tập vào cột `BaiTap` của bản ghi Bài 12 (`MaBai`: `Bfbfa62b6cbf1`).
+     - Admin Console khi đọc bài học ngay lập tức tính được `baitapArr.length === 20`, hiển thị ngay badge `<span class="li-badge li-quiz"><i class="fa-solid fa-pen-to-square"></i> 20 câu</span>` mà không phụ thuộc vào `_qbCounts`.
+  2. **Nâng cấp `baihoc.html` (Student Web)**:
+     - Bổ sung cơ chế fallback thông minh trong `loadLessonQuiz`: nếu static `QUIZ_INDEX` chưa có bài (do độ trễ deploy hoặc bài mới), tự động truy vấn `${GAS_URL}?type=baitaptracnghiem&bai=${key}` để nạp câu hỏi, đảm bảo tab "Luyện tập trắc nghiệm (20)" luôn hiển thị cho học sinh.
+     - Đồng bộ lại `data/baihoc.json` và `data/quiz-index.json` (chỉ mục trỏ đúng `data/quizzes/quiz-1cce1653ed0c6f92eedc.json` với `count: 20`).
+  3. **Vá lỗi Admin Console (`eduhost-vn204/edu-portal-console`)**:
+     - Cập nhật `index.html` và `quan-ly-bai-hoc.html` tại nhánh `codex/fix-admin-mabai-quiz-badge`:
+       `const qbCount = (_qbCounts && _qbCounts[key]!==undefined) ? _qbCounts[key] : ((_qbCounts && mb && _qbCounts[mb]!==undefined) ? _qbCounts[mb] : baitapArr.length);`
+     - Đã commit và push lên nhánh `origin/codex/fix-admin-mabai-quiz-badge`.
+- **Kiểm thử đã thực hiện**:
+  - `node .agents/skills/dang-bai-xps2k9/scripts/test-lesson-checklist.mjs 12`: **PASS Cổng 1-6 (100%)**.
+  - `node scripts/test-student-stable-session-num.mjs`: **8/8 PASS (100%)**.
+  - `node scripts/test-quiz-merge.mjs`: **6/6 PASS (100%)**.
+  - `node scripts/test-quiz-publish.mjs`: **12/12 PASS (100%)**.
+  - `node scripts/test-teaching-scope.mjs`: **14/14 PASS (100%)**.
+  - `node scripts/test-admin-init-draft-revalidate.mjs`: **5/5 PASS (100%)**.
+  - `node scripts/test-admin-form-safety.mjs`: **8/8 PASS (100%)**.
+  - Kiểm tra cú pháp JavaScript bằng `node --check` và bảo toàn thẻ `</html>`.
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên toàn bộ dữ liệu Bài 10, Bài 11 và các bài học khác.
+  - Bảo toàn 20 câu hỏi dừng video kèm timestamp thật và 2 video YouTube, 3 PDF Google Drive.
+- **Việc cần làm tiếp**:
+  - Merge nhánh `codex/publish-lesson-12` vào `main` của repo Student để GitHub Pages deploy phiên bản web mới nhất có đầy đủ 20 câu luyện tập cho Bài 12.
+  - Merge PR nhánh `codex/fix-admin-mabai-quiz-badge` vào `main` của repo Admin Console.
+
 ### 11/09/2026 — Hoàn Tất Triển Khai & Xuất Bản Toàn Diện Bài 11 Lên Website Vật Lý Xuân Trường (Video YouTube, PDF Drive, Quiz 20 Câu)
 
 - **Người thực hiện**: Antigravity AI Coordinator
