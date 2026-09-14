@@ -307,22 +307,31 @@ function createMockBackend(customSecret, customGoogleClientId) {
   }
 
   function getProfile(body, isGet) {
-    if (isGet) {
-      return { ok: false, error: 'METHOD_NOT_ALLOWED', msg: 'Profile endpoint yêu cầu phương thức POST với token trong request body' };
-    }
     try {
       const token = (body && (body.token || body.authToken)) || '';
-      if (!token) {
-        return { ok: false, error: 'token_required', msg: 'Yêu cầu phiên đăng nhập hợp lệ (thiếu token)' };
+      const clientHs = normSdt(body && (body.hs || body.sdt));
+      let authSdt = null;
+
+      if (token) {
+        authSdt = verifyToken(token);
+        if (!authSdt) {
+          return { ok: false, error: 'Unauthorized', msg: 'Phiên đăng nhập không hợp lệ hoặc đã hết hạn' };
+        }
+        if (clientHs && clientHs !== normSdt(authSdt)) {
+          return { ok: false, error: 'Forbidden', msg: 'Không có quyền truy cập hồ sơ tài khoản khác' };
+        }
+      } else {
+        if (!isGet) {
+          return { ok: false, error: 'token_required', msg: 'Yêu cầu phiên đăng nhập hợp lệ (thiếu token)' };
+        }
+        // Giai đoạn chuyển tiếp: Frontend cũ gọi GET ?type=profile&hs=...
+        // Cho phép đọc profile để hiển thị widget/LP nhưng TUYỆT ĐỐI KHÔNG cấp/trả token!
+        if (!clientHs) {
+          return { ok: false, error: 'missing_hs', msg: 'Thiếu thông tin số điện thoại học sinh' };
+        }
+        authSdt = clientHs;
       }
-      const authSdt = verifyToken(token);
-      if (!authSdt) {
-        return { ok: false, error: 'Unauthorized', msg: 'Phiên đăng nhập không hợp lệ hoặc đã hết hạn' };
-      }
-      const clientHs = normSdt(body.hs || body.sdt);
-      if (clientHs && clientHs !== normSdt(authSdt)) {
-        return { ok: false, error: 'Forbidden', msg: 'Không có quyền truy cập hồ sơ tài khoản khác' };
-      }
+
       const acc = accounts.find(a => normSdt(a.sdt) === normSdt(authSdt));
       if (!acc) return { ok: false, msg: 'Không tìm thấy tài khoản' };
       return {
@@ -338,9 +347,6 @@ function createMockBackend(customSecret, customGoogleClientId) {
   }
 
   function getTrialLimit(body, isGet) {
-    if (isGet) {
-      return { ok: false, error: 'METHOD_NOT_ALLOWED', msg: 'Trial limit endpoint yêu cầu phương thức POST với token trong request body' };
-    }
     try {
       const token = (body && (body.token || body.authToken)) || '';
       if (!token) {
@@ -350,11 +356,11 @@ function createMockBackend(customSecret, customGoogleClientId) {
       if (!authSdt) {
         return { ok: false, error: 'Unauthorized', msg: 'Phiên đăng nhập không hợp lệ hoặc đã hết hạn' };
       }
-      const clientHs = normSdt(body.hs || body.sdt);
+      const clientHs = normSdt(body && (body.hs || body.sdt));
       if (clientHs && clientHs !== normSdt(authSdt)) {
         return { ok: false, error: 'Forbidden', msg: 'Không được phép đọc dữ liệu của số điện thoại khác' };
       }
-      return { ok: true, sdt: authSdt, dailyCount: 1, remaining: 1, startedLessons: [] };
+      return { ok: true, sdt: authSdt, dailyCount: 1, maxDaily: 2, remaining: 1, startedLessons: [] };
     } catch (err) {
       if (err.message === 'AUTH_SECRET_NOT_CONFIGURED') {
         return { ok: false, error: 'AUTH_SECRET_NOT_CONFIGURED', msg: 'Máy chủ chưa cấu hình AUTH_SECRET' };
@@ -450,21 +456,38 @@ console.log('\n--- [PHẦN 2] Bảo Mật Phiên Đăng Nhập, Google Auth & Ki
 
 const backend = createMockBackend(runtimeTestSecret);
 
-it('1. Gọi profile hoặc triallimit qua GET bị từ chối (METHOD_NOT_ALLOWED), POST thiếu token bị từ chối (token_required)', () => {
-  // Thử gọi GET
-  const resGetProf = backend.getProfile({ hs: '0901111111' }, true);
-  assert.equal(resGetProf.ok, false);
-  assert.equal(resGetProf.error, 'METHOD_NOT_ALLOWED');
+it('1. Backend chuyển tiếp: Hỗ trợ an toàn frontend cũ (GET không phát token) và frontend mới (POST body)', () => {
+  const loginA = backend.login({ sdt: '0901111111', matkhau: 'Pass123@' });
+  const tokenA = loginA.user.token;
 
-  const resGetLimit = backend.getTrialLimit({ hs: '0901111111' }, true);
-  assert.equal(resGetLimit.ok, false);
-  assert.equal(resGetLimit.error, 'METHOD_NOT_ALLOWED');
+  // 1.1. Frontend cũ gọi GET ?type=profile&hs=0901111111 (chưa có token):
+  // Trả về dữ liệu profile để đồng bộ widget/LP, TUYỆT ĐỐI KHÔNG CẤP HOẶC TRẢ VỀ TOKEN
+  const resLegacyGet = backend.getProfile({ hs: '0901111111' }, true);
+  assert.equal(resLegacyGet.ok, true);
+  assert.equal(resLegacyGet.user.hoten, 'Nguyễn Văn A');
+  assert.equal(resLegacyGet.user.token, undefined, 'Tuyệt đối không cấp phát hoặc trả về token qua GET profile');
 
-  // POST thiếu token
-  const resPostNoToken = backend.getProfile({ sdt: '0901111111' });
+  // 1.2. Frontend mới gọi POST body { sdt, token }:
+  const resModernPost = backend.getProfile({ sdt: '0901111111', token: tokenA }, false);
+  assert.equal(resModernPost.ok, true);
+  assert.equal(resModernPost.user.hoten, 'Nguyễn Văn A');
+  assert.equal(resModernPost.user.token, undefined, 'POST profile cũng không sinh token mới');
+
+  // 1.3. Frontend mới gọi POST body thiếu token -> Bị từ chối token_required
+  const resPostNoToken = backend.getProfile({ sdt: '0901111111' }, false);
   assert.equal(resPostNoToken.ok, false);
   assert.equal(resPostNoToken.error, 'token_required');
-  assert.equal(resPostNoToken.user, undefined, 'Tuyệt đối không trả về thông tin user khi thiếu token');
+  assert.equal(resPostNoToken.user, undefined);
+
+  // 1.4. GET triallimit thiếu token -> Bị từ chối token_required
+  const resGetLimitNoToken = backend.getTrialLimit({ hs: '0901111111' }, true);
+  assert.equal(resGetLimitNoToken.ok, false);
+  assert.equal(resGetLimitNoToken.error, 'token_required');
+
+  // 1.5. GET triallimit có token hợp lệ (giai đoạn chuyển tiếp) -> Thành công
+  const resGetLimitWithToken = backend.getTrialLimit({ hs: '0901111111', token: tokenA }, true);
+  assert.equal(resGetLimitWithToken.ok, true);
+  assert.equal(resGetLimitWithToken.maxDaily, 2);
 });
 
 it('2. Token giả và token hết hạn bị từ chối truy cập', () => {
@@ -590,6 +613,16 @@ it('6. Google credential sai audience / hết hạn / sai issuer bị từ chố
   const resUnverified = backend.loginGoogle({ credential: unverifiedCred });
   assert.equal(resUnverified.ok, false);
   assert.equal(resUnverified.error, 'invalid_google_token');
+
+  // 6.5. Thiếu Script Property GOOGLE_CLIENT_ID thực sự trả GOOGLE_CLIENT_ID_NOT_CONFIGURED (Fail-Closed)
+  const backendNoClientId = createMockBackend(runtimeTestSecret, '');
+  const snapshotBeforeNoId = JSON.stringify(backendNoClientId.accounts);
+  const validCred = backend.createMockGoogleCredential({ email: 'newvalid@gmail.com', name: 'Valid Google' });
+  const resNoProp = backendNoClientId.loginGoogle({ credential: validCred });
+  assert.equal(resNoProp.ok, false);
+  assert.equal(resNoProp.error, 'GOOGLE_CLIENT_ID_NOT_CONFIGURED');
+  const snapshotAfterNoId = JSON.stringify(backendNoClientId.accounts);
+  assert.equal(snapshotBeforeNoId, snapshotAfterNoId, 'Dữ liệu tài khoản bị thay đổi khi thiếu GOOGLE_CLIENT_ID!');
 });
 
 it('7. Token tài khoản A không truy cập được profile hay hạn mức của B (chống IDOR / CSRF)', () => {
@@ -883,6 +916,13 @@ it('TUYỆT ĐỐI KHÔNG chứa secret mặc định VLXT_SESSION_SECRET_2026 t
   assert.equal(appsScriptSource.includes('VLXT_SESSION_SECRET_2026'), false, 'apps-script-CAPNHAT.txt còn chứa secret mặc định');
   assert.equal(trialManagerSource.includes('VLXT_SESSION_SECRET_2026'), false, 'trial-manager.js còn chứa secret mặc định');
   assert.equal(htmlSource.includes('VLXT_SESSION_SECRET_2026'), false, 'baihoc.html còn chứa secret mặc định');
+});
+
+it('apps-script-CAPNHAT.txt KHÔNG chứa fallback hardcoded cho GOOGLE_CLIENT_ID (Fail-Closed)', () => {
+  const match = appsScriptSource.match(/function\s+getGoogleClientId\s*\(\)\s*\{([\s\S]*?)\}/);
+  assert.ok(match, 'Phải có hàm getGoogleClientId trong apps-script-CAPNHAT.txt');
+  assert.equal(match[1].includes('||'), false, 'getGoogleClientId không được chứa fallback ||');
+  assert.equal(match[1].includes('GOOGLE_CLIENT_ID_NOT_CONFIGURED'), true, 'getGoogleClientId phải ném lỗi GOOGLE_CLIENT_ID_NOT_CONFIGURED');
 });
 
 // =============================================================================
