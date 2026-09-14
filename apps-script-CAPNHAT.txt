@@ -30,7 +30,7 @@ function doGet(e) {
     if (type === 'baihoc')           return getBaiHoc();
     if (type === 'diemthi')          return getDiemThi();
     if (type === 'tiendo')           return getTienDo(hs);
-    if (type === 'profile')          return getProfile(hs);
+    if (type === 'profile')          return getProfile(e);
     if (type === 'leaderboard')      return getLeaderboard();
     if (type === 'sourcevideolinks') return getSourceVideoLinks();
     if (type === 'danhsachde')       return getDanhSachDe();
@@ -245,10 +245,18 @@ function registerUser(data) {
     devSheet.getRange(devSheet.getLastRow() + 1, 2, 1, 1).setNumberFormat('@'); // giữ số 0 đầu SĐT
     devSheet.appendRow([deviceId, String(data.sdt), data.hoten, now.getTime(), trialExpiry, 0]);
   }
-    return jsonOut({ ok: true, msg: 'Đăng ký thành công! Bạn có 7 ngày dùng thử VIP miễn phí.', user: {
+  let token = '';
+  try {
+    token = generateUserToken(data.sdt, { loaiTK: loaiTK, trialExpiry: trialExpiry });
+  } catch (err) {
+    if (err.message === 'AUTH_SECRET_NOT_CONFIGURED') {
+      return jsonOut({ ok: false, error: 'AUTH_SECRET_NOT_CONFIGURED', msg: 'Máy chủ chưa cấu hình AUTH_SECRET trong Script Properties' });
+    }
+  }
+  return jsonOut({ ok: true, msg: 'Đăng ký thành công! Bạn có 7 ngày dùng thử VIP miễn phí.', user: {
     sdt: data.sdt, hoten: data.hoten, lop: data.lop,
     lpTotal: 0, diemGame: 0, loaiTK: loaiTK, trialExpiry: trialExpiry, mienVideo: false, tracNghiemVideo: false,
-    token: (typeof generateUserToken === 'function' ? generateUserToken(data.sdt) : '')
+    token: token
   }});
 }
 
@@ -271,11 +279,19 @@ function loginUser(data) {
         loaiTK = 'free';
         sheet.getRange(i + 1, 8).setValue('free'); // cột loaiTK (1-based = 8)
       }
+      let token = '';
+      try {
+        token = generateUserToken(row[0], { loaiTK: loaiTK, trialExpiry: trialExpiry });
+      } catch (err) {
+        if (err.message === 'AUTH_SECRET_NOT_CONFIGURED') {
+          return jsonOut({ ok: false, error: 'AUTH_SECRET_NOT_CONFIGURED', msg: 'Máy chủ chưa cấu hình AUTH_SECRET trong Script Properties' });
+        }
+      }
       return jsonOut({ ok: true, user: {
         sdt: row[0], hoten: row[1], lop: row[2],
         lpTotal: typeof row[5] === 'number' ? (row[5] || 0) : 0, diemGame: typeof row[6] === 'number' ? (row[6] || 0) : 0,
         loaiTK: loaiTK, trialExpiry: trialExpiry, mienVideo: !!(row[9]), tracNghiemVideo: (row[10] === false ? false : true), mienLuyenTap: !!(row[11]),
-        token: (typeof generateUserToken === 'function' ? generateUserToken(row[0]) : '')
+        token: token
       }});
     }
   }
@@ -304,12 +320,20 @@ function loginGoogle(data) {
         loaiTK = 'free';
         sheet.getRange(i + 1, 8).setValue('free');
       }
+      let token = '';
+      try {
+        token = generateUserToken(rows[i][0], { loaiTK: loaiTK, trialExpiry: trialExpiry });
+      } catch (err) {
+        if (err.message === 'AUTH_SECRET_NOT_CONFIGURED') {
+          return jsonOut({ ok: false, error: 'AUTH_SECRET_NOT_CONFIGURED', msg: 'Máy chủ chưa cấu hình AUTH_SECRET trong Script Properties' });
+        }
+      }
       return jsonOut({ ok: true, user: {
         sdt: rows[i][0], hoten: data.hoten || rows[i][1],
         lop: rows[i][2] || 'Google', email: email,
         avatar: data.avatar || '', lpTotal: rows[i][5] || 0,
         loaiTK: loaiTK, trialExpiry: trialExpiry, mienVideo: !!(rows[i][9]), tracNghiemVideo: (rows[i][10] === false ? false : true),
-        token: (typeof generateUserToken === 'function' ? generateUserToken(rows[i][0]) : '')
+        token: token
       }});
     }
   }
@@ -339,18 +363,53 @@ function loginGoogle(data) {
     devSheet.getRange(devSheet.getLastRow() + 1, 2, 1, 1).setNumberFormat('@');
     devSheet.appendRow([deviceId, email, data.hoten || email, now.getTime(), trialExpiry, 0]);
   }
+  let token = '';
+  try {
+    token = generateUserToken(email, { loaiTK: loaiTK, trialExpiry: trialExpiry });
+  } catch (err) {
+    if (err.message === 'AUTH_SECRET_NOT_CONFIGURED') {
+      return jsonOut({ ok: false, error: 'AUTH_SECRET_NOT_CONFIGURED', msg: 'Máy chủ chưa cấu hình AUTH_SECRET trong Script Properties' });
+    }
+  }
   return jsonOut({ ok: true, user: {
     sdt: email, hoten: data.hoten || email,
     lop: 'Google', email: email,
     avatar: data.avatar || '', lpTotal: 0,
     loaiTK: loaiTK, trialExpiry: trialExpiry, mienVideo: false, tracNghiemVideo: false,
-    token: (typeof generateUserToken === 'function' ? generateUserToken(email) : '')
+    token: token
   }});
 }
 
-// ── GET: Hồ sơ học sinh ──────────────────────────────────────
+// ── GET: Hồ sơ học sinh (BẢO VỆ BẰNG TOKEN PHIÊN ĐĂNG NHẬP) ─────────
 
-function getProfile(sdt) {
+function getProfile(e) {
+  // BẮT BUỘC gửi kèm token phiên hợp lệ
+  const token = (e && e.parameter && (e.parameter.token || e.parameter.authToken)) || '';
+  if (!token) {
+    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Yêu cầu phiên đăng nhập hợp lệ (thiếu token)' });
+  }
+
+  let authSdt = null;
+  try {
+    authSdt = verifyUserToken(token);
+  } catch (err) {
+    if (err.message === 'AUTH_SECRET_NOT_CONFIGURED') {
+      return jsonOut({ ok: false, error: 'AUTH_SECRET_NOT_CONFIGURED', msg: 'Máy chủ chưa cấu hình AUTH_SECRET trong Script Properties' });
+    }
+    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Lỗi xác thực phiên đăng nhập' });
+  }
+
+  if (!authSdt) {
+    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Phiên đăng nhập không hợp lệ hoặc đã hết hạn' });
+  }
+
+  // Chống đọc hồ sơ của tài khoản khác
+  const clientHs = String((e && e.parameter && (e.parameter.hs || e.parameter.sdt)) || '').trim();
+  if (clientHs && normSdt(clientHs) !== normSdt(authSdt)) {
+    return jsonOut({ ok: false, error: 'Forbidden', msg: 'Không có quyền truy cập hồ sơ tài khoản khác' });
+  }
+
+  const sdt = authSdt; // LUÔN DÙNG SĐT ĐÃ ĐƯỢC XÁC THỰC TỪ TOKEN
   const acc   = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame']);
   const rows  = acc.getDataRange().getValues();
   let user    = null;
@@ -365,7 +424,19 @@ function getProfile(sdt) {
         _loaiTK = 'free';
         acc.getRange(i + 1, 8).setValue('free');
       }
-      user = { sdt: rows[i][0], hoten: rows[i][1], lop: rows[i][2], lpTotal: typeof rows[i][5]==='number'?(rows[i][5]||0):0, diemGame: typeof rows[i][6]==='number'?(rows[i][6]||0):0, loaiTK: _loaiTK, trialExpiry: _trialExpiry, mienVideo: !!(rows[i][9]), tracNghiemVideo: (rows[i][10] === false ? false : true), mienLuyenTap: !!(rows[i][11]), token: (typeof generateUserToken === 'function' ? generateUserToken(rows[i][0]) : '') };
+      user = {
+        sdt: rows[i][0],
+        hoten: rows[i][1],
+        lop: rows[i][2],
+        lpTotal: typeof rows[i][5]==='number'?(rows[i][5]||0):0,
+        diemGame: typeof rows[i][6]==='number'?(rows[i][6]||0):0,
+        loaiTK: _loaiTK,
+        trialExpiry: _trialExpiry,
+        mienVideo: !!(rows[i][9]),
+        tracNghiemVideo: (rows[i][10] === false ? false : true),
+        mienLuyenTap: !!(rows[i][11])
+        // TUYỆT ĐỐI KHÔNG cấp phát token mới tại getProfile!
+      };
       break;
     }
   }
@@ -2541,35 +2612,63 @@ function normalizeSearchText(value) {
 // - Đồng bộ dùng chung giữa nhiều thiết bị, fail-closed khi không có quyền/mất mạng
 // ═════════════════════════════════════════════════════════════════════════════
 
-const AUTH_SECRET_KEY = PropertiesService.getScriptProperties().getProperty('AUTH_SECRET') || 'VLXT_SESSION_SECRET_2026';
+function getAuthSecret() {
+  const secret = PropertiesService.getScriptProperties().getProperty('AUTH_SECRET');
+  if (!secret || !secret.trim()) {
+    throw new Error('AUTH_SECRET_NOT_CONFIGURED');
+  }
+  return secret.trim();
+}
 
-function generateUserToken(sdt) {
+function generateUserToken(sdt, userMeta) {
+  const secret = getAuthSecret();
   const cleanSdt = normSdt(sdt);
-  const timestamp = Date.now();
-  const raw = cleanSdt + ':' + timestamp;
+  const now = Date.now();
+  const issuedAt = now;
+
+  // Hạn phiên tối đa 7 ngày, nhưng không sống lâu hơn trạng thái tài khoản hợp lệ
+  let duration = 7 * 24 * 60 * 60 * 1000;
+  if (userMeta && userMeta.trialExpiry && Number(userMeta.trialExpiry) > now) {
+    const remainTrial = Number(userMeta.trialExpiry) - now;
+    if (remainTrial < duration) {
+      duration = remainTrial;
+    }
+  }
+  const expiresAt = now + duration;
+  const nonce = Utilities.getUuid().replace(/-/g, '').slice(0, 16);
+  const raw = cleanSdt + ':' + issuedAt + ':' + expiresAt + ':' + nonce;
   const sig = Utilities.base64EncodeWebSafe(
-    Utilities.computeHmacSha256Signature(raw, AUTH_SECRET_KEY)
+    Utilities.computeHmacSha256Signature(raw, secret)
   );
   return Utilities.base64EncodeWebSafe(raw + ':' + sig);
 }
 
 function verifyUserToken(token) {
   if (!token) return null;
+  const secret = getAuthSecret(); // Ném AUTH_SECRET_NOT_CONFIGURED nếu thiếu
   try {
     const decoded = Utilities.newBlob(Utilities.base64DecodeWebSafe(token)).getDataAsString();
     const parts = decoded.split(':');
-    if (parts.length !== 3) return null;
+    if (parts.length !== 5) return null;
     const sdt = parts[0];
-    const timestamp = Number(parts[1]);
-    const sig = parts[2];
-    if (Date.now() - timestamp > 30 * 86400000) return null; // Hạn phiên 30 ngày
-    const raw = sdt + ':' + timestamp;
+    const issuedAt = Number(parts[1]);
+    const expiresAt = Number(parts[2]);
+    const nonce = parts[3];
+    const sig = parts[4];
+
+    const now = Date.now();
+    if (isNaN(issuedAt) || isNaN(expiresAt)) return null;
+    if (now > expiresAt) return null; // Token đã hết hạn
+    if (issuedAt > now + 60000) return null; // Token từ tương lai
+
+    const raw = sdt + ':' + issuedAt + ':' + expiresAt + ':' + nonce;
     const expectedSig = Utilities.base64EncodeWebSafe(
-      Utilities.computeHmacSha256Signature(raw, AUTH_SECRET_KEY)
+      Utilities.computeHmacSha256Signature(raw, secret)
     );
     if (sig !== expectedSig) return null;
     return sdt;
   } catch (e) {
+    if (e.message === 'AUTH_SECRET_NOT_CONFIGURED') throw e;
     return null;
   }
 }
@@ -2593,9 +2692,21 @@ function getVietnamDateString(d) {
 // GET: Lấy trạng thái hạn mức bài mới của học sinh (BẢO VỆ BẰNG TOKEN PHIÊN)
 function getTrialLimit(e) {
   const token = (e && e.parameter && (e.parameter.token || e.parameter.authToken)) || '';
-  const authSdt = verifyUserToken(token);
+  if (!token) {
+    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Yêu cầu phiên đăng nhập hợp lệ (thiếu token)' });
+  }
+
+  let authSdt = null;
+  try {
+    authSdt = verifyUserToken(token);
+  } catch (err) {
+    if (err.message === 'AUTH_SECRET_NOT_CONFIGURED') {
+      return jsonOut({ ok: false, error: 'AUTH_SECRET_NOT_CONFIGURED', msg: 'Máy chủ chưa cấu hình AUTH_SECRET trong Script Properties' });
+    }
+    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Lỗi xác thực phiên đăng nhập' });
+  }
   if (!authSdt) {
-    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Yêu cầu phiên đăng nhập hợp lệ' });
+    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Phiên đăng nhập không hợp lệ hoặc đã hết hạn' });
   }
 
   // Chống đọc trộm hạn mức của SĐT khác
@@ -2652,9 +2763,22 @@ function getTrialLimit(e) {
 // POST: Ghi nhận bắt đầu bài học thử (BẢO VỆ BẰNG TOKEN PHIÊN + ATOMIC SCRIPTLOCK)
 function startTrialLesson(data) {
   const token = (data && (data.token || data.authToken)) || '';
-  const authSdt = verifyUserToken(token);
+  if (!token) {
+    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Yêu cầu phiên đăng nhập hợp lệ (thiếu token)' });
+  }
+
+  let authSdt = null;
+  try {
+    authSdt = verifyUserToken(token);
+  } catch (err) {
+    if (err.message === 'AUTH_SECRET_NOT_CONFIGURED') {
+      return jsonOut({ ok: false, error: 'AUTH_SECRET_NOT_CONFIGURED', msg: 'Máy chủ chưa cấu hình AUTH_SECRET trong Script Properties' });
+    }
+    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Lỗi xác thực phiên đăng nhập' });
+  }
+
   if (!authSdt) {
-    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Yêu cầu phiên đăng nhập hợp lệ' });
+    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Phiên đăng nhập không hợp lệ hoặc đã hết hạn' });
   }
 
   // Chống tiêu hao lượt của SĐT khác

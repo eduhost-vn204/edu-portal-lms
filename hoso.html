@@ -472,7 +472,7 @@ renderPage({ ok: true, user: user, scores: [], tiendo: [] }, { ok: false, data: 
 
 // Sau đó fetch GAS để cập nhật dữ liệu thực (async, không chặn render)
 Promise.all([
-  cachedFetch(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt)).then(r => r.json()),
+  cachedFetch(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt) + (user && user.token ? '&token=' + encodeURIComponent(user.token) : '')).then(r => r.json()),
   cachedFetch(GAS + '?type=leaderboard').then(r => r.json()),
   cachedFetch(GAS + '?type=nhiemvu&hs=' + encodeURIComponent(user.sdt)).then(r => r.json()).catch(() => ({ ok: false, data: null })),
   cachedFetch(GAS + '?type=baihoc').then(r => r.json()).catch(() => [])

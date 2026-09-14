@@ -27,7 +27,10 @@ function vlxtRequireAuth(){
 function vlxtRefreshUser(){
   var current=vlxtGetUser();
   if(!current||!current.sdt) return Promise.resolve(current);
-  return fetch(VLXT_GAS+'?type=profile&hs='+encodeURIComponent(current.sdt)+'&t='+Date.now(), {cache:'no-store'})
+  var url = VLXT_GAS+'?type=profile&hs='+encodeURIComponent(current.sdt);
+  if(current.token) url += '&token='+encodeURIComponent(current.token);
+  url += '&t='+Date.now();
+  return fetch(url, {cache:'no-store'})
     .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
     .then(function(d){
       if(!d||!d.ok||!d.user) return current;
@@ -188,8 +191,9 @@ function vlxtRenderWidget(user){
   }
 
   // Cập nhật LP từ GAS (async, không chặn render)
-  // Cập nhật LP từ GAS (async, không chặn render)
-  fetch(VLXT_GAS+'?type=profile&hs='+encodeURIComponent(user.sdt))
+  var _profUrl = VLXT_GAS+'?type=profile&hs='+encodeURIComponent(user.sdt);
+  if(user.token) _profUrl += '&token='+encodeURIComponent(user.token);
+  fetch(_profUrl)
     .then(function(r){return r.json();}).then(function(d){
       if(d.ok){
         var lpEl=document.getElementById('vlxt-lp');

@@ -15,7 +15,6 @@
   var TRIAL_MAX_DAILY_NEW_LESSONS = 2;
   var TRIAL_CONFIRMED_PREFIX = 'vlxt_trial_confirmed_';
   var TRIAL_DISMISSED_PREREQ_PREFIX = 'vlxt_skip_prereq_';
-  var AUTH_SECRET_KEY = 'VLXT_SESSION_SECRET_2026';
 
   // 1. Phân loại tài khoản chặt chẽ
   function vlxtIsPremiumUser(user) {
@@ -423,31 +422,38 @@
     } catch (e) {}
   }
 
-  // 9. Helper tạo và xác thực token trong môi trường Test / Dev
-  function vlxtCreateDevToken(sdt, secret) {
+  // 9. Helper tạo và xác thực token trong môi trường Test / Dev (BẮT BUỘC secret rõ ràng, không fallback)
+  function vlxtCreateDevToken(sdt, secret, options) {
+    if (!secret || typeof secret !== 'string' || !secret.trim()) {
+      throw new Error('AUTH_SECRET_REQUIRED: Môi trường dev/test bắt buộc truyền secret, không có fallback');
+    }
     var cleanSdt = normSdt(sdt);
-    var timestamp = Date.now();
-    var raw = cleanSdt + ':' + timestamp;
-    var sec = secret || AUTH_SECRET_KEY;
-    // Dùng Buffer nếu trong Node.js hoặc Base64 thuần trong trình duyệt
+    var now = Date.now();
+    var issuedAt = (options && options.issuedAt) || now;
+    var duration = (options && typeof options.duration === 'number') ? options.duration : 7 * 86400000;
+    var expiresAt = (options && options.expiresAt) || (issuedAt + duration);
+    var nonce = (options && options.nonce) || ('nonce_' + Math.random().toString(36).slice(2, 10));
+    var raw = cleanSdt + ':' + issuedAt + ':' + expiresAt + ':' + nonce;
+
     if (typeof Buffer !== 'undefined') {
       var crypto = (typeof require === 'function') ? require('node:crypto') : (global.crypto || null);
       if (crypto && crypto.createHmac) {
-        var sig = crypto.createHmac('sha256', sec).update(raw).digest('base64url');
+        var sig = crypto.createHmac('sha256', secret).update(raw).digest('base64url');
         return Buffer.from(raw + ':' + sig).toString('base64url');
       }
     }
-    // Fallback btoa
     try {
-      return btoa(raw + ':dev_sig_' + sec);
+      return btoa(raw + ':dev_sig_' + secret);
     } catch (e) {
       return raw + ':dev_sig';
     }
   }
 
   function vlxtVerifyDevToken(token, secret) {
+    if (!secret || typeof secret !== 'string' || !secret.trim()) {
+      throw new Error('AUTH_SECRET_REQUIRED: Môi trường dev/test bắt buộc truyền secret, không có fallback');
+    }
     if (!token) return null;
-    var sec = secret || AUTH_SECRET_KEY;
     try {
       var decoded = '';
       if (typeof Buffer !== 'undefined') {
@@ -456,21 +462,28 @@
         decoded = atob(token);
       }
       var parts = decoded.split(':');
-      if (parts.length !== 3) return null;
+      if (parts.length !== 5) return null;
       var sdt = parts[0];
-      var timestamp = Number(parts[1]);
-      var sig = parts[2];
-      if (Date.now() - timestamp > 30 * 86400000) return null;
-      var raw = sdt + ':' + timestamp;
+      var issuedAt = Number(parts[1]);
+      var expiresAt = Number(parts[2]);
+      var nonce = parts[3];
+      var sig = parts[4];
+
+      var now = Date.now();
+      if (isNaN(issuedAt) || isNaN(expiresAt)) return null;
+      if (now > expiresAt) return null; // Hết hạn
+      if (issuedAt > now + 60000) return null; // Từ tương lai
+
+      var raw = sdt + ':' + issuedAt + ':' + expiresAt + ':' + nonce;
       if (typeof Buffer !== 'undefined') {
         var crypto = (typeof require === 'function') ? require('node:crypto') : (global.crypto || null);
         if (crypto && crypto.createHmac) {
-          var expectedSig = crypto.createHmac('sha256', sec).update(raw).digest('base64url');
+          var expectedSig = crypto.createHmac('sha256', secret).update(raw).digest('base64url');
           if (sig !== expectedSig) return null;
           return sdt;
         }
       }
-      if (sig === 'dev_sig_' + sec) return sdt;
+      if (sig === 'dev_sig_' + secret) return sdt;
       return null;
     } catch (e) {
       return null;
@@ -491,7 +504,8 @@
   }
 
   function vlxtRecordTrialLessonStart(sdt, lesson, courseName) {
-    var user = { sdt: sdt, token: vlxtCreateDevToken(sdt) };
+    var curUser = (typeof global.vlxtGetUser === 'function') ? global.vlxtGetUser() : null;
+    var user = curUser || { sdt: sdt };
     return vlxtRequestTrialAccess(user, lesson, courseName);
   }
 

@@ -1054,8 +1054,9 @@
     // Render widget
     if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(user);
 
-    // Kiểm tra đủ LP mới cho vào — lấy LP MỚI NHẤT từ server
-    fetcher(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt))
+    var _profUrl = GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt);
+    if (user && user.token) _profUrl += '&token=' + encodeURIComponent(user.token);
+    fetcher(_profUrl)
       .then(function (r) { return r.json(); })
       .then(function (profile) {
         var lp = (profile && profile.ok && profile.user) ? (Number(profile.user.lpTotal) || 0) : (Number(user.lpTotal) || 0);

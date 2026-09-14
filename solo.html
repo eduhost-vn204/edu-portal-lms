@@ -1151,8 +1151,9 @@
     if (!initFirebase()) {
       arena.innerHTML = '<div class="empty-box"><h3>Không kết nối được máy chủ realtime</h3><p>Thử tải lại trang nhé.</p></div>';
       return;
-    }
-    fetcher(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt))
+    var _profUrl = GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt);
+    if (user && user.token) _profUrl += '&token=' + encodeURIComponent(user.token);
+    fetcher(_profUrl)
       .then(function (r) { return r.json(); })
       .then(function (profile) {
         myLp = (profile && profile.ok && profile.user) ? (Number(profile.user.lpTotal) || 0) : (Number(user.lpTotal) || 0);
