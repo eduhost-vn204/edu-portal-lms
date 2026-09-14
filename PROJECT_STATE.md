@@ -1030,37 +1030,36 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 - **Nhánh thực hiện**: `antigravity/20260914-trial-soft-unlock-limit` trên worktree cô lập `student_trial_soft_unlock`.
 - **Trạng thái**: `READY_FOR_REVIEW` (Chưa merge vào `main`, tuyệt đối không deploy GAS production, không can thiệp dữ liệu thật).
 - **Các điểm cải tiến bảo mật trọng yếu đã hoàn thành**:
-  1. **Đồng nhất GOOGLE_CLIENT_ID Fail-Closed (Zero Backend Fallback)**:
+  1. **Xóa hoàn toàn hỗ trợ GET triallimit & Triệt tiêu token trên query string**:
+     - Endpoint `triallimit` qua `GET` luôn luôn bị từ chối với `METHOD_NOT_ALLOWED` (dù có hay không có token trong query string).
+     - Chỉ chấp nhận duy nhất phương thức `POST gettriallimit` với token truyền an toàn trong JSON request body.
+     - Toàn bộ backend và frontend không còn bất kỳ luồng nào nhận hay đọc session token từ query string (`0% token in query`).
+  2. **Giai đoạn chuyển tiếp chỉ giữ GET profile cũ không token (Sunset: 28/09/2026)**:
+     - `doGet(e)` chỉ hỗ trợ `type=profile` cho frontend cũ đang chạy trên cache trình duyệt của học sinh (đọc thông tin cơ bản: họ tên, lớp, LP, tiến độ để tránh gãy giao diện).
+     - **Bảo mật bất biến**: Response của GET profile **TUYỆT ĐỐI KHÔNG chứa session token** (Zero Token Leak). GET profile cũng hoàn toàn không nhận/đọc token từ query string.
+     - **Lộ trình Deprecation Sunset**: Dự kiến chính thức tắt hoàn toàn endpoint GET profile vào ngày **28/09/2026** (2 tuần sau khi rollout frontend mới). Sau ngày 28/09/2026, GET profile sẽ trả `METHOD_NOT_ALLOWED`.
+  3. **Đồng nhất GOOGLE_CLIENT_ID Fail-Closed (Zero Backend Fallback)**:
      - Xóa bỏ hoàn toàn chuỗi fallback hardcoded trong hàm `getGoogleClientId()` của backend `apps-script-CAPNHAT.txt`.
      - Backend bắt buộc lấy `GOOGLE_CLIENT_ID` từ Google Apps Script Script Properties. Nếu thiếu hoặc rỗng, lập tức ném lỗi `GOOGLE_CLIENT_ID_NOT_CONFIGURED` (Fail-Closed).
      - Giữ nguyên client ID công khai ở frontend (`login.html`) theo đúng chuẩn Google Identity Services (SDK client-side).
      - Bổ sung kiểm thử tự động chứng minh thiếu Script Property trả về đúng mã lỗi `GOOGLE_CLIENT_ID_NOT_CONFIGURED` và bảo đảm tính toàn vẹn dữ liệu (Zero Mutation).
-  2. **Thiết kế Rollout Hai Giai Đoạn Không Gián Đoạn (Zero-Downtime Two-Phase Rollout)**:
-     - **Giai đoạn 1 (Backend chuyển tiếp tương thích kép)**:
-       * Backend `doGet(e)` tiếp tục hỗ trợ `type=profile` cho frontend cũ đang chạy trên cache trình duyệt của học sinh.
-       * **Bảo mật bất biến**: Khi phục vụ GET profile công khai cho frontend cũ, backend **TUYỆT ĐỐI KHÔNG cấp phát hoặc trả về session token**. Kẻ tấn công chỉ biết SĐT không thể lấy được token.
-       * Backend hỗ trợ song song các endpoint POST mới (`getprofile`, `gettriallimit`, `starttriallesson`) với session token bắt buộc trong request body.
-       * Hỗ trợ `GET ?type=triallimit` có token trong query dành cho các client chuyển tiếp.
+  4. **Kế hoạch Rollout Hai Giai Đoạn & Quy trình Rollback Chi Tiết**:
+     - **Giai đoạn 1 (Backend chuyển tiếp)**:
+       * Cấu hình Script Properties (`AUTH_SECRET` & `GOOGLE_CLIENT_ID`).
+       * Deploy Apps Script version mới.
+       * Smoke test bằng tài khoản test: Đăng nhập SĐT, Google, profile và trial.
+       * **Rollback Giai đoạn 1**: Thầy vào Manage deployments > chọn Deploy version N-1 > Lưu (< 1 phút). Dữ liệu nguyên vẹn.
      - **Giai đoạn 2 (Frontend mới)**:
-       * Triển khai frontend mới: Toàn bộ thao tác gửi token chuyển 100% sang POST body JSON, loại bỏ hoàn toàn token trên URL query string.
-       * Áp dụng xác thực Google ID token server-side và cơ chế Pessimistic Fail-Closed chặn bài thứ 3 trước khi vào DOM.
-     - **Giai đoạn 3 (Deprecation Sunset - Phiên bản tương lai)**:
-       * Sau khi toàn bộ cache người dùng đã đồng bộ sang frontend mới, cập nhật backend để chính thức ngừng hỗ trợ GET profile (`METHOD_NOT_ALLOWED`).
-  3. **Quy trình Rollback Chi Tiết Cho Từng Giai Đoạn**:
-     - **Rollback Giai đoạn 1 (Sự cố Backend)**:
-       * Thầy vào giao diện Google Apps Script > *Quản lý mục triển khai (Manage deployments)* > Chọn *Phiên bản trước đó (Deploy version N-1)* > Nhấn *Lưu*.
-       * Do không thay đổi cấu trúc bảng cũ, rollback phiên bản script khôi phục 100% hành vi ban đầu trong vài giây mà không làm mất dữ liệu học sinh.
-     - **Rollback Giai đoạn 2 (Sự cố Frontend)**:
-       * Dùng lệnh `git revert` commit merge trên nhánh `main` và push lại GitHub Pages.
-       * Nhờ Backend Giai đoạn 1 có cơ chế chuyển tiếp tương thích ngược (vẫn phục vụ GET profile không token), frontend cũ được khôi phục ngay lập tức mà **không cần can thiệp rollback backend**.
-  4. **Preflight AUTH_SECRET & GOOGLE_CLIENT_ID trước mọi thao tác ghi (Fail-Closed Zero Data Mutation)**:
+       * Merge nhánh vào `main` và push GitHub Pages.
+       * **Rollback Giai đoạn 2**: Chạy `git revert -m 1 <merge_commit_id>` trên `main` và push lại. Backend Giai đoạn 1 giữ nguyên vì tương thích ngược với GET profile của frontend cũ.
+  5. **Preflight AUTH_SECRET & GOOGLE_CLIENT_ID trước mọi thao tác ghi (Fail-Closed Zero Data Mutation)**:
      - Cả `registerUser` và `loginGoogle` thực hiện preflight `getAuthSecret()` và `getGoogleClientId()` ngay dòng đầu tiên trước khi đụng vào bất kỳ Google Sheet nào.
      - Nếu thiếu secret hoặc client ID: hệ thống từ chối ngay lập tức, tuyệt đối không gọi `appendRow`, không tạo hay sửa bất kỳ hàng nào trong Sheet.
      - Kiểm thử tự động chứng minh dữ liệu Sheet giữ nguyên 100% byte-for-byte khi thiếu cấu hình.
-  5. **Bộ kiểm thử tự động 21 cổng chuyên sâu**:
+  6. **Bộ kiểm thử tự động 21 cổng chuyên sâu**:
      - File test: `scripts/test-trial-soft-unlock.mjs` đạt **21/21 PASS (100%)**.
      - Bao gồm đầy đủ các test case:
-       * 1. Backend chuyển tiếp: Hỗ trợ an toàn frontend cũ (GET không phát token) và frontend mới (POST body).
+       * 1. GET triallimit có hoặc không có token đều bị từ chối `METHOD_NOT_ALLOWED`; POST gettriallimit hợp lệ hoạt động; GET profile không trả token.
        * 2. Token giả và token hết hạn bị từ chối truy cập.
        * 3. Thiếu AUTH_SECRET fail-closed và Sheet data giữ nguyên 100% byte-for-byte (`snapshotBefore === snapshotAfter`).
        * 4. Đăng nhập SĐT và Google hợp lệ vẫn hoạt động bình thường.
@@ -1071,7 +1070,7 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
        * 9-12. 4 kịch bản mở bài Fail-Closed (chặn bài thứ 3, offline fail-closed, xem lại bài cũ, concurrency lock).
        * 13-16. 4 nhóm tài khoản (Trial hợp lệ, Trial hết hạn, Free, Premium).
        * 17-21. Toàn vẹn mã nguồn `baihoc.html`, 0 secret mặc định `VLXT_SESSION_SECRET_2026`, và `apps-script-CAPNHAT.txt` 0 chứa fallback hardcoded `GOOGLE_CLIENT_ID`.
-  6. **Kiểm tra hồi quy toàn diện**:
+  7. **Kiểm tra hồi quy toàn diện**:
      - `test-student-stable-session-num.mjs`: **8/8 PASS**.
      - `test-quiz-merge.mjs`: **6/6 PASS**.
      - `test-quiz-publish.mjs`: **12/12 PASS**.

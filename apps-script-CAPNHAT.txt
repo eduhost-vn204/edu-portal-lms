@@ -47,7 +47,7 @@ function doGet(e) {
         if (type === 'searchprofiles')   return searchPublicProfiles(e);
     if (type === 'lichlive')          return getLiveSessions();
     if (type === 'huongdan')       return getHuongDan();
-    if (type === 'triallimit')     return getTrialLimit(e);
+    if (type === 'triallimit')     return jsonOut({ ok: false, error: 'METHOD_NOT_ALLOWED', msg: 'Trial limit endpoint yêu cầu phương thức POST với token trong request body' });
     return getExamQuestions('de01'); // backward compat — không có type param
   } catch(err) {
     return jsonOut({ error: err.message });
@@ -477,18 +477,32 @@ function loginGoogle(data) {
   }});
 }
 
-// ── Hồ sơ học sinh (Hỗ trợ giai đoạn chuyển tiếp GET & POST an toàn) ─────────
+// ── Hồ sơ học sinh (Hỗ trợ giai đoạn chuyển tiếp GET cũ không token & POST mới an toàn) ─────────
+// Dự kiến chính thức tắt hoàn toàn endpoint GET profile vào ngày 28/09/2026 (sau 2 tuần kể từ rollout)
 
 function getProfile(dataOrEvent) {
   const isDoGet = Boolean(dataOrEvent && dataOrEvent.parameter);
-  const params  = isDoGet ? dataOrEvent.parameter : (dataOrEvent || {});
-  const token   = String(params.token || params.authToken || '').trim();
-  const clientHs = String(params.hs || params.sdt || '').trim();
 
-  let authSdt = null;
+  let sdt = null;
 
-  if (token) {
-    // Có gửi token -> Xác thực chữ ký HMAC-SHA256
+  if (isDoGet) {
+    // Endpoint GET (Frontend cũ trong giai đoạn chuyển tiếp rollout — KHÔNG NHẬN TOKEN TỪ QUERY STRING):
+    // Cho phép đọc thông tin cơ bản để hiển thị widget / đồng bộ LP cho các client cũ đang cache.
+    // TUYỆT ĐỐI KHÔNG CẤP PHÁT HOẶC TRẢ VỀ TOKEN TẠI ĐÂY (Zero Token Leak).
+    const clientHs = String((dataOrEvent.parameter && (dataOrEvent.parameter.hs || dataOrEvent.parameter.sdt)) || '').trim();
+    if (!clientHs) {
+      return jsonOut({ ok: false, error: 'missing_hs', msg: 'Thiếu thông tin số điện thoại học sinh' });
+    }
+    sdt = clientHs;
+  } else {
+    // Endpoint POST (Frontend mới): BẮT BUỘC có token trong request body JSON
+    const data = dataOrEvent || {};
+    const token = String(data.token || data.authToken || '').trim();
+    if (!token) {
+      return jsonOut({ ok: false, error: 'token_required', msg: 'Yêu cầu phiên đăng nhập hợp lệ (thiếu token trong body)' });
+    }
+
+    let authSdt = null;
     try {
       authSdt = verifyUserToken(token);
     } catch (err) {
@@ -503,25 +517,13 @@ function getProfile(dataOrEvent) {
     }
 
     // Chống IDOR: Không được đọc hồ sơ của tài khoản khác
+    const clientHs = String(data.hs || data.sdt || '').trim();
     if (clientHs && normSdt(clientHs) !== normSdt(authSdt)) {
       return jsonOut({ ok: false, error: 'Forbidden', msg: 'Không có quyền truy cập hồ sơ tài khoản khác' });
     }
-  } else {
-    // Không có token:
-    if (!isDoGet) {
-      // Endpoint POST (Frontend mới): BẮT BUỘC có token trong request body
-      return jsonOut({ ok: false, error: 'token_required', msg: 'Yêu cầu phiên đăng nhập hợp lệ (thiếu token)' });
-    }
-    // Endpoint GET (Frontend cũ trong giai đoạn chuyển tiếp rollout):
-    // Cho phép đọc thông tin cơ bản để hiển thị widget / đồng bộ LP.
-    // TUYỆT ĐỐI KHÔNG CẤP PHÁT HOẶC TRẢ VỀ TOKEN TẠI ĐÂY (Zero Token Leak).
-    if (!clientHs) {
-      return jsonOut({ ok: false, error: 'missing_hs', msg: 'Thiếu thông tin số điện thoại học sinh' });
-    }
-    authSdt = clientHs;
-  }
 
-  const sdt = authSdt; // SĐT đã xác thực từ token hoặc từ clientHs của GET chuyển tiếp
+    sdt = authSdt; // LUÔN DÙNG SĐT ĐÃ ĐƯỢC XÁC THỰC TỪ TOKEN
+  }
   const acc   = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame']);
   const rows  = acc.getDataRange().getValues();
   let user    = null;
@@ -2803,9 +2805,9 @@ function getVietnamDateString(d) {
 
 // POST: Lấy trạng thái hạn mức bài mới của học sinh (BẢO VỆ BẰNG TOKEN PHIÊN TRONG BODY)
 function getTrialLimit(data) {
-  const token = (data && (data.token || data.authToken || (data.parameter && (data.parameter.token || data.parameter.authToken)))) || '';
+  const token = (data && (data.token || data.authToken)) || '';
   if (!token) {
-    return jsonOut({ ok: false, error: 'token_required', msg: 'Yêu cầu phiên đăng nhập hợp lệ (thiếu token)' });
+    return jsonOut({ ok: false, error: 'token_required', msg: 'Yêu cầu phiên đăng nhập hợp lệ (thiếu token trong body)' });
   }
 
   let authSdt = null;
@@ -2822,7 +2824,7 @@ function getTrialLimit(data) {
   }
 
   // Chống đọc trộm hạn mức của SĐT khác
-  const clientHs = String((data && (data.hs || data.sdt || (data.parameter && (data.parameter.hs || data.parameter.sdt)))) || '').trim();
+  const clientHs = String((data && (data.hs || data.sdt)) || '').trim();
   if (clientHs && normSdt(clientHs) !== normSdt(authSdt)) {
     return jsonOut({ ok: false, error: 'Forbidden', msg: 'Không được phép đọc dữ liệu của số điện thoại khác' });
   }

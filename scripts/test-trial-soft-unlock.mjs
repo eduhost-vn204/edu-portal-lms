@@ -308,28 +308,31 @@ function createMockBackend(customSecret, customGoogleClientId) {
 
   function getProfile(body, isGet) {
     try {
-      const token = (body && (body.token || body.authToken)) || '';
-      const clientHs = normSdt(body && (body.hs || body.sdt));
       let authSdt = null;
 
-      if (token) {
-        authSdt = verifyToken(token);
-        if (!authSdt) {
-          return { ok: false, error: 'Unauthorized', msg: 'Phiên đăng nhập không hợp lệ hoặc đã hết hạn' };
-        }
-        if (clientHs && clientHs !== normSdt(authSdt)) {
-          return { ok: false, error: 'Forbidden', msg: 'Không có quyền truy cập hồ sơ tài khoản khác' };
-        }
-      } else {
-        if (!isGet) {
-          return { ok: false, error: 'token_required', msg: 'Yêu cầu phiên đăng nhập hợp lệ (thiếu token)' };
-        }
+      if (isGet) {
         // Giai đoạn chuyển tiếp: Frontend cũ gọi GET ?type=profile&hs=...
+        // KHÔNG nhận token từ query string!
         // Cho phép đọc profile để hiển thị widget/LP nhưng TUYỆT ĐỐI KHÔNG cấp/trả token!
+        const clientHs = normSdt(body && (body.hs || body.sdt));
         if (!clientHs) {
           return { ok: false, error: 'missing_hs', msg: 'Thiếu thông tin số điện thoại học sinh' };
         }
         authSdt = clientHs;
+      } else {
+        // Endpoint POST (Frontend mới): BẮT BUỘC có token trong request body
+        const token = (body && (body.token || body.authToken)) || '';
+        if (!token) {
+          return { ok: false, error: 'token_required', msg: 'Yêu cầu phiên đăng nhập hợp lệ (thiếu token)' };
+        }
+        authSdt = verifyToken(token);
+        if (!authSdt) {
+          return { ok: false, error: 'Unauthorized', msg: 'Phiên đăng nhập không hợp lệ hoặc đã hết hạn' };
+        }
+        const clientHs = normSdt(body && (body.hs || body.sdt));
+        if (clientHs && clientHs !== normSdt(authSdt)) {
+          return { ok: false, error: 'Forbidden', msg: 'Không có quyền truy cập hồ sơ tài khoản khác' };
+        }
       }
 
       const acc = accounts.find(a => normSdt(a.sdt) === normSdt(authSdt));
@@ -347,6 +350,10 @@ function createMockBackend(customSecret, customGoogleClientId) {
   }
 
   function getTrialLimit(body, isGet) {
+    // Xóa hoàn toàn hỗ trợ GET type=triallimit (luôn trả METHOD_NOT_ALLOWED)
+    if (isGet) {
+      return { ok: false, error: 'METHOD_NOT_ALLOWED', msg: 'Trial limit endpoint yêu cầu phương thức POST với token trong request body' };
+    }
     try {
       const token = (body && (body.token || body.authToken)) || '';
       if (!token) {
@@ -479,15 +486,25 @@ it('1. Backend chuyển tiếp: Hỗ trợ an toàn frontend cũ (GET không ph�
   assert.equal(resPostNoToken.error, 'token_required');
   assert.equal(resPostNoToken.user, undefined);
 
-  // 1.4. GET triallimit thiếu token -> Bị từ chối token_required
+  // 1.4. GET triallimit KHÔNG CÓ TOKEN -> Bị từ chối METHOD_NOT_ALLOWED
   const resGetLimitNoToken = backend.getTrialLimit({ hs: '0901111111' }, true);
   assert.equal(resGetLimitNoToken.ok, false);
-  assert.equal(resGetLimitNoToken.error, 'token_required');
+  assert.equal(resGetLimitNoToken.error, 'METHOD_NOT_ALLOWED');
 
-  // 1.5. GET triallimit có token hợp lệ (giai đoạn chuyển tiếp) -> Thành công
+  // 1.5. GET triallimit CÓ TOKEN -> CŨNG BỊ TỪ CHỐI METHOD_NOT_ALLOWED (xóa hoàn toàn GET triallimit)
   const resGetLimitWithToken = backend.getTrialLimit({ hs: '0901111111', token: tokenA }, true);
-  assert.equal(resGetLimitWithToken.ok, true);
-  assert.equal(resGetLimitWithToken.maxDaily, 2);
+  assert.equal(resGetLimitWithToken.ok, false);
+  assert.equal(resGetLimitWithToken.error, 'METHOD_NOT_ALLOWED');
+
+  // 1.6. POST gettriallimit hợp lệ với token trong JSON body -> THÀNH CÔNG
+  const resPostLimit = backend.getTrialLimit({ sdt: '0901111111', token: tokenA }, false);
+  assert.equal(resPostLimit.ok, true);
+  assert.equal(resPostLimit.maxDaily, 2);
+
+  // 1.7. GET profile nếu client cố tình truyền token trên URL -> Backend KHÔNG đọc token, response TUYỆT ĐỐI không có token
+  const resGetWithTokenParam = backend.getProfile({ hs: '0901111111', token: tokenA }, true);
+  assert.equal(resGetWithTokenParam.ok, true);
+  assert.equal(resGetWithTokenParam.user.token, undefined, 'Response GET profile tuyệt đối không chứa token');
 });
 
 it('2. Token giả và token hết hạn bị từ chối truy cập', () => {
