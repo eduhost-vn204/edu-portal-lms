@@ -159,6 +159,50 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 14/09/2026 — Hoàn Thành Cải Tiến Cơ Chế Học Thử (Trial Soft Unlock, Bài Nền Tảng & Hạn Mức 2 Bài Mới/Ngày Giờ Việt Nam)
+
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `DEV_VERIFIED_100%_PASS` (Toàn bộ 24/24 cổng test automated PASS 100%, bảo toàn 100% tài khoản Premium và logic hồi quy; dừng chờ Thầy nghiệm thu).
+- **Nhánh làm việc**: `antigravity/20260914-trial-soft-unlock-limit`
+- **Worktree**: `C:\Users\Xuan Truong\.gemini\antigravity\worktrees\student_trial_soft_unlock`
+- **Các file đã sửa / tạo mới**:
+  1. `trial-manager.js` [NEW]: Mô-đun quản lý hạn mức và tài khoản trial độc lập.
+  2. `baihoc.html` [MODIFY]: Tích hợp mở mềm, hiển thị popup bài nền tảng, modal giới hạn bài mới, đồng bộ sidebar và chống tính lượt bấm nhầm.
+  3. `scripts/test-trial-soft-unlock.mjs` [NEW]: Bộ kiểm thử tự động 12 cổng (24 test cases) bao phủ toàn diện.
+  4. `PROJECT_STATE.md` [MODIFY]: Cập nhật biên bản bàn giao kỹ thuật.
+- **Hành vi mới**:
+  1. **Cơ chế mở mềm cho tài khoản học thử (Trial Soft Unlock)**:
+     - Học sinh trial (bao gồm `vip`, `trial`, `free`, tài khoản mới đăng ký) được xem và mở bất kỳ bài học nào đã `published` có nội dung (không bị khóa cứng theo thứ tự bài trước).
+     - Bài `draft`, `archived` và bài trống (`empty`) tiếp tục bị chặn tuyệt đối đối với tất cả học sinh.
+     - Tài khoản trả phí (`premium`) giữ nguyên 100% quy tắc học tuần tự (`sequence lock`).
+     - Tài khoản test của Thầy (`TEST_ACCOUNTS`): mở tự do không giới hạn.
+  2. **Khuyến nghị bài nền tảng (`BaiNenTang`)**:
+     - Thiết kế trường `bainentang` trong `buildCourses(rows)` hỗ trợ theo `MaBai`, danh sách nhiều bài (dấu phẩy, chấm phẩy, mảng JSON), tương thích ngược với tên bài cũ.
+     - Khi bài có bài nền tảng chưa học, hiển thị popup thân thiện gồm danh sách bài nền tảng, nút "Học bài nền tảng" (mở bài nền tảng) và nút "Tôi đã học rồi – tiếp tục" (cho phép vào bài trong phiên).
+     - **Bỏ qua cảnh báo tuyệt đối không tự đánh dấu bài nền tảng là đã học** (không thêm vào `WATCHED` hay gửi `saveProgress`).
+  3. **Giới hạn 2 bài mới mỗi ngày theo múi giờ Việt Nam (`Asia/Saigon`)**:
+     - Múi giờ Việt Nam UTC+7 xác định ngày từ 00:00:00 đến 23:59:59.
+     - Học tối đa 2 bài mới/ngày; sang ngày mới tự động có lại 2 lượt bài mới.
+     - **Xem lại bài cũ miễn phí không tính lượt**: Bài đã từng bắt đầu (`startedLessons`) hoặc đã hoàn thành (`WATCHED`) được mở lại tự do bất kỳ lúc nào, kể cả khi đã hết hạn mức bài mới.
+     - **Chống bấm nhầm (Misclick Protection)**: Chỉ tính lượt bài mới khi học sinh thực sự bắt đầu học (phát video $\ge 10\text{s}$, làm trắc nghiệm quiz, hoặc ở lại tương tác $\ge 30\text{s}$). Bấm nhầm rồi thoát ngay không bị trừ lượt.
+     - **Hết lượt bài mới**: Chặn mở bài mới thứ 3, hiển thị modal thông báo số lượt, mốc tự động mở lại (00:00 ngày mai) kèm danh sách bài cũ có thể ôn tập ngay.
+     - **Hàng đợi ngoại tuyến & Chống tính trùng**: Lưu bộ đệm `localStorage` kèm mã định danh chống trùng `(sdt_mabai_date)` và tự động flush lên API server khi có mạng; không bị mất dữ liệu khi mạng yếu.
+- **Kiểm tra đã chạy**:
+  - `node scripts/test-trial-soft-unlock.mjs`: **24/24 PASS (100%)**.
+  - `node scripts/test-student-stable-session-num.mjs`: **8/8 PASS (100%)**.
+  - `node scripts/test-quiz-merge.mjs`: **6/6 PASS (100%)**.
+  - `node scripts/test-quiz-publish.mjs`: **12/12 PASS (100%)**.
+  - `node --check trial-manager.js; node --check auth.js; node --check cache.js; node --check nhiem-vu.js`: **Hợp lệ 100%**.
+  - Kiểm tra toàn vẹn thẻ đóng `</html>` và 2 khối inline script trong `baihoc.html`: **PASS**.
+  - `git diff --check` và quét secret: **Sạch hoàn toàn, 0 secret**.
+- **Điều phải giữ nguyên**:
+  - Không deploy Google Apps Script production.
+  - Không merge/push vào `main`.
+  - Không sửa/xóa dữ liệu production thật, bài học thật hay tiến độ thật của học sinh.
+- **Việc cần Thầy phê duyệt**:
+  - Nghiệm thu nhánh `antigravity/20260914-trial-soft-unlock-limit` trước khi merge vào `main`.
+
 ### 11/09/2026 — Hoàn Tất Triển Khai & Xuất Bản Toàn Diện Bài 11 Lên Website Vật Lý Xuân Trường (Video YouTube, PDF Drive, Quiz 20 Câu)
 
 - **Người thực hiện**: Antigravity AI Coordinator
