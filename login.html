@@ -325,21 +325,21 @@ function decodeJWT(token) {
 }
 
 async function handleGoogleCredential(response) {
-  const payload = decodeJWT(response.credential);
-  if (!payload) return showMsg('login-msg','error','Lỗi xác thực Google.');
-  // Gọi Apps Script để đăng ký/đăng nhập bằng Google
+  if (!response || !response.credential) {
+    return showMsg('login-msg','error','Lỗi xác thực Google: Không tìm thấy credential.');
+  }
+  // Gửi Google ID token/credential lên server để backend xác minh an toàn
   try {
     const deviceId = (typeof vlxtDeviceFingerprint === 'function') ? await vlxtDeviceFingerprint() : '';
     const r = await fetch(GAS, { method:'POST', mode:'cors',
       headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body: JSON.stringify({ action:'logingoogle', hoten: payload.name,
-        email: payload.email, avatar: payload.picture, googleId: payload.sub, deviceId }) });
+      body: JSON.stringify({ action:'logingoogle', credential: response.credential, deviceId: deviceId }) });
     const d = await r.json();
     if (d.ok) {
       const user = d.user;
       // Nếu lần đầu đăng nhập Google, yêu cầu xác nhận tên + lớp
       if (!user.lop || user.lop === 'Google') {
-        showSetupModal(user, payload.name);
+        showSetupModal(user, user.hoten);
       } else {
         localStorage.setItem('vlxt_user_v2', JSON.stringify(user));
         try{ if(typeof vlxtLog==='function') vlxtLog('Đăng nhập','Bằng Google'); }catch(e){}
@@ -353,8 +353,8 @@ async function handleGoogleCredential(response) {
       }
     }
   } catch(e) {
-    // Fallback: lưu trực tiếp
-    showSetupModal({ hoten: payload.name, lop: 'Google', sdt: payload.email, email: payload.email, avatar: payload.picture, lpTotal: 0 }, payload.name);
+    // Fail-Closed tuyệt đối: Không tự tạo phiên đăng nhập khi máy chủ chưa xác thực
+    showMsg('login-msg','error','Không thể kết nối máy chủ để xác thực Google.');
   }
 }
 
@@ -378,8 +378,7 @@ async function confirmSetup() {
   try {
     await fetch(GAS, { method:'POST', mode:'cors',
       headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body: JSON.stringify({ action:'logingoogle', hoten, lop, email: user.email||user.sdt,
-        avatar: user.avatar||'', googleId: '' }) });
+      body: JSON.stringify({ action:'updateaccount', sdt: user.sdt, hoten: hoten, lop: lop, token: user.token }) });
   } catch(e) {}
   window.location.href = getRedirect();
 }

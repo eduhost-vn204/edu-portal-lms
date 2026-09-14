@@ -27,14 +27,18 @@ function vlxtRequireAuth(){
 function vlxtRefreshUser(){
   var current=vlxtGetUser();
   if(!current||!current.sdt) return Promise.resolve(current);
-  var url = VLXT_GAS+'?type=profile&hs='+encodeURIComponent(current.sdt);
-  if(current.token) url += '&token='+encodeURIComponent(current.token);
-  url += '&t='+Date.now();
-  return fetch(url, {cache:'no-store'})
+  if(!current.token) return Promise.resolve(current);
+  return fetch(VLXT_GAS, {
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ action: 'getprofile', sdt: current.sdt, token: current.token })
+  })
     .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
     .then(function(d){
       if(!d||!d.ok||!d.user) return current;
       var fresh=Object.assign({},current,d.user);
+      if(current.token && !fresh.token) fresh.token = current.token;
       vlxtSaveUser(fresh);
       window.dispatchEvent(new CustomEvent('vlxt:user-refreshed',{detail:fresh}));
       return fresh;
@@ -190,31 +194,36 @@ function vlxtRenderWidget(user){
     document.body.appendChild(widget);
   }
 
-  // Cập nhật LP từ GAS (async, không chặn render)
-  var _profUrl = VLXT_GAS+'?type=profile&hs='+encodeURIComponent(user.sdt);
-  if(user.token) _profUrl += '&token='+encodeURIComponent(user.token);
-  fetch(_profUrl)
-    .then(function(r){return r.json();}).then(function(d){
-      if(d.ok){
-        var lpEl=document.getElementById('vlxt-lp');
-        var doneEl=document.getElementById('vlxt-done');
-        if(lpEl) lpEl.textContent=(isNaN(Number(d.user.lpTotal))?0:(Number(d.user.lpTotal)||0));
-        // Lấy max giữa GAS và localStorage (tránh hiện số thấp hơn thực tế)
-        if(doneEl){
-          var gasDone=(d.tiendo||[]).length;
-          var best=Math.max(gasDone, vlxtLocalDoneCount(user.sdt));
-          doneEl.textContent=best;
-    
+  // Cập nhật LP từ GAS qua POST body (async, không chặn render, không lộ token trên URL)
+  if(user && user.sdt && user.token) {
+    fetch(VLXT_GAS, {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'getprofile', sdt: user.sdt, token: user.token })
+    })
+      .then(function(r){return r.json();}).then(function(d){
+        if(d.ok){
+          var lpEl=document.getElementById('vlxt-lp');
+          var doneEl=document.getElementById('vlxt-done');
+          if(lpEl) lpEl.textContent=(isNaN(Number(d.user.lpTotal))?0:(Number(d.user.lpTotal)||0));
+          // Lấy max giữa GAS và localStorage (tránh hiện số thấp hơn thực tế)
+          if(doneEl){
+            var gasDone=(d.tiendo||[]).length;
+            var best=Math.max(gasDone, vlxtLocalDoneCount(user.sdt));
+            doneEl.textContent=best;
+          }
+          // Đồng bộ toàn bộ hồ sơ, đặc biệt loaiTK/trialExpiry sau khi admin nâng cấp.
+          var fresh=Object.assign({},user,d.user);
+          if(user.token && !fresh.token) fresh.token = user.token;
+          vlxtSaveUser(fresh);
+          if(fresh.loaiTK!==user.loaiTK || Number(fresh.trialExpiry||0)!==Number(user.trialExpiry||0)){
+            vlxtRenderWidget(fresh);
+            window.dispatchEvent(new CustomEvent('vlxt:user-refreshed',{detail:fresh}));
+          }
         }
-        // Đồng bộ toàn bộ hồ sơ, đặc biệt loaiTK/trialExpiry sau khi admin nâng cấp.
-        var fresh=Object.assign({},user,d.user);
-        vlxtSaveUser(fresh);
-        if(fresh.loaiTK!==user.loaiTK || Number(fresh.trialExpiry||0)!==Number(user.trialExpiry||0)){
-          vlxtRenderWidget(fresh);
-          window.dispatchEvent(new CustomEvent('vlxt:user-refreshed',{detail:fresh}));
-        }
-      }
-    }).catch(function(){});
+      }).catch(function(){});
+  }
 }
 
 document.addEventListener('DOMContentLoaded',function(){

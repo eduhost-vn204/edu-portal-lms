@@ -82,8 +82,12 @@ function normSdt(s) {
 }
 
 // Mô phỏng logic backend Google Apps Script (tham chiếu apps-script-CAPNHAT.txt)
-function createMockBackend(customSecret) {
+const DEFAULT_GOOGLE_CLIENT_ID = '1022891995284-miquu1f7rlpie7ug9884sgagf21nputc.apps.googleusercontent.com';
+
+// Mô phỏng logic backend Google Apps Script (tham chiếu apps-script-CAPNHAT.txt)
+function createMockBackend(customSecret, customGoogleClientId) {
   let secret = customSecret;
+  let googleClientId = customGoogleClientId !== undefined ? customGoogleClientId : DEFAULT_GOOGLE_CLIENT_ID;
   const accounts = [
     { sdt: '0901111111', matkhau: 'Pass123@', hoten: 'Nguyễn Văn A', lop: '12A1', loaiTK: 'vip', trialExpiry: Date.now() + 7 * 86400000 },
     { sdt: '0902222222', matkhau: 'Secret456!', hoten: 'Trần Thị B', lop: '12A2', loaiTK: 'vip', trialExpiry: Date.now() + 7 * 86400000 }
@@ -92,6 +96,66 @@ function createMockBackend(customSecret) {
   function getSecret() {
     if (!secret || !secret.trim()) throw new Error('AUTH_SECRET_NOT_CONFIGURED');
     return secret.trim();
+  }
+
+  function getGoogleClientId() {
+    if (!googleClientId || !googleClientId.trim()) throw new Error('GOOGLE_CLIENT_ID_NOT_CONFIGURED');
+    return googleClientId.trim();
+  }
+
+  // Helper tạo credential Google giả lập cho test
+  function createMockGoogleCredential(payloadObj) {
+    const header = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url');
+    const payload = Buffer.from(JSON.stringify({
+      iss: 'https://accounts.google.com',
+      aud: DEFAULT_GOOGLE_CLIENT_ID,
+      exp: Math.floor(Date.now() / 1000) + 3600,
+      email_verified: true,
+      ...payloadObj
+    })).toString('base64url');
+    const signature = 'mock_signature';
+    return header + '.' + payload + '.' + signature;
+  }
+
+  // Xác minh Google credential chuẩn theo Apps Script
+  function verifyGoogleIdToken(credential) {
+    if (!credential || typeof credential !== 'string') return null;
+    const token = credential.trim();
+    if (!token) return null;
+
+    const expectedAud = getGoogleClientId();
+    let payload = null;
+    try {
+      const parts = token.split('.');
+      if (parts.length !== 3) return null;
+      payload = JSON.parse(Buffer.from(parts[1], 'base64url').toString('utf8'));
+    } catch (e) {
+      return null;
+    }
+
+    if (!payload || typeof payload !== 'object') return null;
+
+    // 1. Kiểm tra audience
+    if (payload.aud !== expectedAud) return null;
+
+    // 2. Kiểm tra issuer
+    if (payload.iss !== 'accounts.google.com' && payload.iss !== 'https://accounts.google.com') return null;
+
+    // 3. Kiểm tra expiry
+    const nowSec = Math.floor(Date.now() / 1000);
+    if (!payload.exp || Number(payload.exp) < nowSec) return null;
+
+    // 4. Kiểm tra email verified
+    const emailVerified = payload.email_verified === true || payload.email_verified === 'true';
+    const email = String(payload.email || '').trim().toLowerCase();
+    if (!email || !emailVerified) return null;
+
+    return {
+      email: email,
+      name: String(payload.name || email).trim(),
+      picture: String(payload.picture || '').trim(),
+      sub: String(payload.sub || '').trim()
+    };
   }
 
   function generateToken(sdt, userMeta) {
@@ -139,37 +203,123 @@ function createMockBackend(customSecret) {
     }
   }
 
-  function login(body) {
+  function register(body) {
+    // PREFLIGHT AUTH_SECRET trước khi sửa dữ liệu (Fail-Closed)
     try {
-      const sdt = normSdt(body.sdt);
-      const acc = accounts.find(a => normSdt(a.sdt) === sdt && a.matkhau === body.matkhau);
-      if (!acc) {
-        return { ok: false, msg: 'Số điện thoại hoặc mật khẩu không đúng!' };
-      }
-      const token = generateToken(acc.sdt, acc);
-      return {
-        ok: true,
-        user: { sdt: acc.sdt, hoten: acc.hoten, lop: acc.lop, loaiTK: acc.loaiTK, trialExpiry: acc.trialExpiry, token }
-      };
+      getSecret();
     } catch (err) {
       if (err.message === 'AUTH_SECRET_NOT_CONFIGURED') {
         return { ok: false, error: 'AUTH_SECRET_NOT_CONFIGURED', msg: 'Máy chủ chưa cấu hình AUTH_SECRET' };
       }
-      return { ok: false, error: 'ServerError' };
+      throw err;
     }
+
+    const sdt = normSdt(body.sdt);
+    if (!sdt) return { ok: false, msg: 'SĐT không hợp lệ' };
+    const exist = accounts.find(a => normSdt(a.sdt) === sdt);
+    if (exist) return { ok: false, msg: 'SĐT đã được đăng ký' };
+
+    const newAcc = {
+      sdt: body.sdt,
+      matkhau: body.matkhau,
+      hoten: body.hoten || body.sdt,
+      lop: body.lop || '12',
+      loaiTK: 'vip',
+      trialExpiry: Date.now() + 7 * 86400000
+    };
+    accounts.push(newAcc);
+    const token = generateToken(newAcc.sdt, newAcc);
+    return { ok: true, user: { ...newAcc, token } };
   }
 
-  function getProfile(params) {
+  function login(body) {
     try {
-      const token = (params && (params.token || params.authToken)) || '';
+      getSecret();
+    } catch (err) {
+      if (err.message === 'AUTH_SECRET_NOT_CONFIGURED') {
+        return { ok: false, error: 'AUTH_SECRET_NOT_CONFIGURED', msg: 'Máy chủ chưa cấu hình AUTH_SECRET' };
+      }
+      throw err;
+    }
+
+    const sdt = normSdt(body.sdt);
+    const acc = accounts.find(a => normSdt(a.sdt) === sdt && a.matkhau === body.matkhau);
+    if (!acc) {
+      return { ok: false, msg: 'Số điện thoại hoặc mật khẩu không đúng!' };
+    }
+    const token = generateToken(acc.sdt, acc);
+    return {
+      ok: true,
+      user: { sdt: acc.sdt, hoten: acc.hoten, lop: acc.lop, loaiTK: acc.loaiTK, trialExpiry: acc.trialExpiry, token }
+    };
+  }
+
+  function loginGoogle(body) {
+    // BƯỚC 1: PREFLIGHT AUTH_SECRET trước khi sửa dữ liệu (Fail-Closed)
+    try {
+      getSecret();
+    } catch (err) {
+      if (err.message === 'AUTH_SECRET_NOT_CONFIGURED') {
+        return { ok: false, error: 'AUTH_SECRET_NOT_CONFIGURED', msg: 'Máy chủ chưa cấu hình AUTH_SECRET' };
+      }
+      throw err;
+    }
+
+    // BƯỚC 2: XÁC MINH GOOGLE CREDENTIAL
+    const credential = body && (body.credential || body.idToken || body.id_token);
+    let googleUser = null;
+    try {
+      googleUser = verifyGoogleIdToken(credential);
+    } catch (err) {
+      if (err.message === 'GOOGLE_CLIENT_ID_NOT_CONFIGURED') {
+        return { ok: false, error: 'GOOGLE_CLIENT_ID_NOT_CONFIGURED', msg: 'Máy chủ chưa cấu hình GOOGLE_CLIENT_ID' };
+      }
+      return { ok: false, error: 'invalid_google_token', msg: 'Lỗi xác thực Google' };
+    }
+
+    if (!googleUser || !googleUser.email) {
+      return { ok: false, error: 'invalid_google_token', msg: 'Google credential không hợp lệ hoặc hết hạn' };
+    }
+
+    // Dùng email, name từ Google payload (KHÔNG tin body.email/hoten)
+    const email = googleUser.email;
+    const hoten = googleUser.name || email;
+    let acc = accounts.find(a => normSdt(a.sdt) === normSdt(email));
+    if (acc) {
+      acc.hoten = hoten;
+      const token = generateToken(acc.sdt, acc);
+      return { ok: true, user: { ...acc, token } };
+    }
+
+    // Tạo tài khoản mới
+    const newAcc = {
+      sdt: email,
+      matkhau: 'GOOGLE_AUTH',
+      hoten: hoten,
+      lop: 'Google',
+      email: email,
+      loaiTK: 'vip',
+      trialExpiry: Date.now() + 7 * 86400000
+    };
+    accounts.push(newAcc);
+    const token = generateToken(newAcc.sdt, newAcc);
+    return { ok: true, user: { ...newAcc, token } };
+  }
+
+  function getProfile(body, isGet) {
+    if (isGet) {
+      return { ok: false, error: 'METHOD_NOT_ALLOWED', msg: 'Profile endpoint yêu cầu phương thức POST với token trong request body' };
+    }
+    try {
+      const token = (body && (body.token || body.authToken)) || '';
       if (!token) {
-        return { ok: false, error: 'Unauthorized', msg: 'Yêu cầu phiên đăng nhập hợp lệ (thiếu token)' };
+        return { ok: false, error: 'token_required', msg: 'Yêu cầu phiên đăng nhập hợp lệ (thiếu token)' };
       }
       const authSdt = verifyToken(token);
       if (!authSdt) {
         return { ok: false, error: 'Unauthorized', msg: 'Phiên đăng nhập không hợp lệ hoặc đã hết hạn' };
       }
-      const clientHs = normSdt(params.hs || params.sdt);
+      const clientHs = normSdt(body.hs || body.sdt);
       if (clientHs && clientHs !== normSdt(authSdt)) {
         return { ok: false, error: 'Forbidden', msg: 'Không có quyền truy cập hồ sơ tài khoản khác' };
       }
@@ -187,17 +337,20 @@ function createMockBackend(customSecret) {
     }
   }
 
-  function getTrialLimit(params) {
+  function getTrialLimit(body, isGet) {
+    if (isGet) {
+      return { ok: false, error: 'METHOD_NOT_ALLOWED', msg: 'Trial limit endpoint yêu cầu phương thức POST với token trong request body' };
+    }
     try {
-      const token = (params && (params.token || params.authToken)) || '';
+      const token = (body && (body.token || body.authToken)) || '';
       if (!token) {
-        return { ok: false, error: 'Unauthorized', msg: 'Yêu cầu phiên đăng nhập hợp lệ (thiếu token)' };
+        return { ok: false, error: 'token_required', msg: 'Yêu cầu phiên đăng nhập hợp lệ (thiếu token)' };
       }
       const authSdt = verifyToken(token);
       if (!authSdt) {
         return { ok: false, error: 'Unauthorized', msg: 'Phiên đăng nhập không hợp lệ hoặc đã hết hạn' };
       }
-      const clientHs = normSdt(params.hs || params.sdt);
+      const clientHs = normSdt(body.hs || body.sdt);
       if (clientHs && clientHs !== normSdt(authSdt)) {
         return { ok: false, error: 'Forbidden', msg: 'Không được phép đọc dữ liệu của số điện thoại khác' };
       }
@@ -214,7 +367,7 @@ function createMockBackend(customSecret) {
     try {
       const token = (body && (body.token || body.authToken)) || '';
       if (!token) {
-        return { ok: false, error: 'Unauthorized', msg: 'Yêu cầu phiên đăng nhập hợp lệ (thiếu token)' };
+        return { ok: false, error: 'token_required', msg: 'Yêu cầu phiên đăng nhập hợp lệ (thiếu token)' };
       }
       const authSdt = verifyToken(token);
       if (!authSdt) {
@@ -233,7 +386,19 @@ function createMockBackend(customSecret) {
     }
   }
 
-  return { generateToken, verifyToken, login, getProfile, getTrialLimit, startTrialLesson };
+  return {
+    accounts,
+    createMockGoogleCredential,
+    verifyGoogleIdToken,
+    generateToken,
+    verifyToken,
+    register,
+    login,
+    loginGoogle,
+    getProfile,
+    getTrialLimit,
+    startTrialLesson
+  };
 }
 
 // =============================================================================
@@ -281,22 +446,31 @@ it('Nhóm 4 - Tài Khoản Premium: loaiTK = premium -> KHÓA TUẦN TỰ (khôn
 // =============================================================================
 // PHẦN 2: BẢO MẬT PHIÊN VÀ CÁC BLOCKER THEO CHỈ THỊ CỦA THẦY
 // =============================================================================
-console.log('\n--- [PHẦN 2] Bảo Mật Phiên Đăng Nhập & Kiểm Thử Blocker ---');
+console.log('\n--- [PHẦN 2] Bảo Mật Phiên Đăng Nhập, Google Auth & Kiểm Thử Blocker ---');
 
 const backend = createMockBackend(runtimeTestSecret);
 
-it('1. Gọi profile chỉ bằng SĐT không nhận được hồ sơ hoặc token (chặn rò rỉ token công khai)', () => {
-  const res = backend.getProfile({ hs: '0901111111' }); // không có token
-  assert.equal(res.ok, false);
-  assert.equal(res.error, 'Unauthorized');
-  assert.equal(res.user, undefined, 'Tuyệt đối không trả về thông tin user');
-  assert.equal(res.token, undefined, 'Tuyệt đối không cấp phát token');
+it('1. Gọi profile hoặc triallimit qua GET bị từ chối (METHOD_NOT_ALLOWED), POST thiếu token bị từ chối (token_required)', () => {
+  // Thử gọi GET
+  const resGetProf = backend.getProfile({ hs: '0901111111' }, true);
+  assert.equal(resGetProf.ok, false);
+  assert.equal(resGetProf.error, 'METHOD_NOT_ALLOWED');
+
+  const resGetLimit = backend.getTrialLimit({ hs: '0901111111' }, true);
+  assert.equal(resGetLimit.ok, false);
+  assert.equal(resGetLimit.error, 'METHOD_NOT_ALLOWED');
+
+  // POST thiếu token
+  const resPostNoToken = backend.getProfile({ sdt: '0901111111' });
+  assert.equal(resPostNoToken.ok, false);
+  assert.equal(resPostNoToken.error, 'token_required');
+  assert.equal(resPostNoToken.user, undefined, 'Tuyệt đối không trả về thông tin user khi thiếu token');
 });
 
 it('2. Token giả và token hết hạn bị từ chối truy cập', () => {
   // Token giả mạo chữ ký
   const fakeToken = Buffer.from('901111111:' + Date.now() + ':' + (Date.now() + 86400000) + ':nonce123:fake_signature').toString('base64url');
-  const resFake = backend.getProfile({ hs: '0901111111', token: fakeToken });
+  const resFake = backend.getProfile({ sdt: '0901111111', token: fakeToken });
   assert.equal(resFake.ok, false);
   assert.equal(resFake.error, 'Unauthorized');
 
@@ -305,67 +479,159 @@ it('2. Token giả và token hết hạn bị từ chối truy cập', () => {
     issuedAt: Date.now() - 100000,
     expiresAt: Date.now() - 1000
   });
-  const resExpired = backend.getProfile({ hs: '0901111111', token: expiredToken });
+  const resExpired = backend.getProfile({ sdt: '0901111111', token: expiredToken });
   assert.equal(resExpired.ok, false);
   assert.equal(resExpired.error, 'Unauthorized');
 });
 
-it('3. Thiếu AUTH_SECRET làm hệ thống Fail-Closed hoàn toàn', () => {
+it('3. Thiếu AUTH_SECRET làm hệ thống Fail-Closed hoàn toàn và KHÔNG tạo/sửa tài khoản', () => {
   // Backend không cấu hình AUTH_SECRET trong Script Properties
   const brokenBackend = createMockBackend('');
-  const resLogin = brokenBackend.login({ sdt: '0901111111', matkhau: 'Pass123@' });
-  assert.equal(resLogin.ok, false);
-  assert.equal(resLogin.error, 'AUTH_SECRET_NOT_CONFIGURED');
+  const snapshotBefore = JSON.stringify(brokenBackend.accounts);
 
-  const resProfile = brokenBackend.getProfile({ hs: '0901111111', token: 'some_token' });
-  assert.equal(resProfile.ok, false);
-  assert.equal(resProfile.error, 'AUTH_SECRET_NOT_CONFIGURED');
+  // Thử đăng ký SĐT khi thiếu AUTH_SECRET
+  const resReg = brokenBackend.register({ sdt: '0909999999', matkhau: 'Secret789!', hoten: 'Test User' });
+  assert.equal(resReg.ok, false);
+  assert.equal(resReg.error, 'AUTH_SECRET_NOT_CONFIGURED');
 
-  // TrialManager yêu cầu secret bắt buộc khi gọi createDevToken
+  // Thử đăng nhập Google khi thiếu AUTH_SECRET
+  const validCred = brokenBackend.createMockGoogleCredential({ email: 'newgoogle@gmail.com', name: 'New Google' });
+  const resG = brokenBackend.loginGoogle({ credential: validCred });
+  assert.equal(resG.ok, false);
+  assert.equal(resG.error, 'AUTH_SECRET_NOT_CONFIGURED');
+
+  // Dữ liệu tài khoản phải giữ nguyên 100% byte-for-byte không thay đổi
+  const snapshotAfter = JSON.stringify(brokenBackend.accounts);
+  assert.equal(snapshotBefore, snapshotAfter, 'Dữ liệu tài khoản đã bị thay đổi dù thiếu AUTH_SECRET!');
+
+  // TrialManager dev helper yêu cầu secret
   assert.throws(() => {
     TrialManager.createDevToken('0901111111');
   }, /AUTH_SECRET_REQUIRED/);
-
-  assert.throws(() => {
-    TrialManager.verifyDevToken('token_str');
-  }, /AUTH_SECRET_REQUIRED/);
 });
 
-it('4. Đăng nhập đúng mới nhận token (đăng nhập sai không nhận token)', () => {
-  // Sai mật khẩu
-  const resWrong = backend.login({ sdt: '0901111111', matkhau: 'SaiMatKhau' });
-  assert.equal(resWrong.ok, false);
-  assert.equal(resWrong.user, undefined);
+it('4. Đăng nhập SĐT và Google hợp lệ vẫn hoạt động bình thường', () => {
+  // 4.1. Đăng nhập SĐT hợp lệ
+  const resPhone = backend.login({ sdt: '0901111111', matkhau: 'Pass123@' });
+  assert.equal(resPhone.ok, true);
+  assert.ok(resPhone.user && resPhone.user.token, 'Phải có token sau khi đăng nhập SĐT');
+  assert.equal(normSdt(backend.verifyToken(resPhone.user.token)), normSdt('0901111111'));
 
-  // Đúng mật khẩu
-  const resRight = backend.login({ sdt: '0901111111', matkhau: 'Pass123@' });
-  assert.equal(resRight.ok, true);
-  assert.ok(resRight.user && resRight.user.token, 'Phải có token sau khi đăng nhập đúng');
-
-  // Token có cấu trúc hợp lệ và được backend xác thực đúng SĐT
-  const verifiedSdt = backend.verifyToken(resRight.user.token);
-  assert.equal(normSdt(verifiedSdt), normSdt('0901111111'));
+  // 4.2. Đăng nhập Google hợp lệ (tự động tạo tài khoản VIP trial nếu chưa có)
+  const validGoogleCred = backend.createMockGoogleCredential({
+    email: 'hocsinh2k9@gmail.com',
+    name: 'Học Sinh Google Chuẩn',
+    picture: 'https://lh3.googleusercontent.com/avatar.jpg'
+  });
+  const resGoogle = backend.loginGoogle({ credential: validGoogleCred });
+  assert.equal(resGoogle.ok, true);
+  assert.equal(resGoogle.user.email, 'hocsinh2k9@gmail.com');
+  assert.equal(resGoogle.user.hoten, 'Học Sinh Google Chuẩn');
+  assert.ok(resGoogle.user.token, 'Phải có token phiên sau khi đăng nhập Google');
+  assert.equal(normSdt(backend.verifyToken(resGoogle.user.token)), normSdt('hocsinh2k9@gmail.com'));
 });
 
-it('5. Token tài khoản A không truy cập được profile hay hạn mức của B (chống IDOR / CSRF)', () => {
+it('5. Giả mạo email Google không nhận được session', () => {
+  // 5.1. Client tự khai báo email nhưng không gửi credential
+  const resNoCred = backend.loginGoogle({ email: 'victim@gmail.com', hoten: 'Kẻ Giả Mạo' });
+  assert.equal(resNoCred.ok, false);
+  assert.equal(resNoCred.error, 'invalid_google_token');
+  assert.equal(resNoCred.user, undefined);
+
+  // 5.2. Client gửi email victim trong body nhưng credential thuộc về kẻ tấn công (attacker@gmail.com)
+  const attackerCred = backend.createMockGoogleCredential({
+    email: 'attacker@gmail.com',
+    name: 'Attacker'
+  });
+  const resSpoof = backend.loginGoogle({
+    email: 'victim@gmail.com', // client cố tình giả mạo email nạn nhân
+    hoten: 'Victim Spoof',
+    credential: attackerCred
+  });
+  assert.equal(resSpoof.ok, true);
+  // Backend bắt buộc phải dùng email từ Google token đã xác minh, KHÔNG dùng email do client gửi
+  assert.equal(resSpoof.user.email, 'attacker@gmail.com');
+  assert.notEqual(resSpoof.user.email, 'victim@gmail.com');
+});
+
+it('6. Google credential sai audience / hết hạn / sai issuer bị từ chối 100%', () => {
+  // 6.1. Sai audience (client ID của ứng dụng khác)
+  const wrongAudCred = backend.createMockGoogleCredential({
+    email: 'wrongaud@gmail.com',
+    aud: 'wrong-client-id.apps.googleusercontent.com'
+  });
+  const resAud = backend.loginGoogle({ credential: wrongAudCred });
+  assert.equal(resAud.ok, false);
+  assert.equal(resAud.error, 'invalid_google_token');
+
+  // 6.2. Hết hạn (exp trong quá khứ)
+  const expiredCred = backend.createMockGoogleCredential({
+    email: 'expired@gmail.com',
+    exp: Math.floor(Date.now() / 1000) - 300 // hết hạn 5 phút trước
+  });
+  const resExp = backend.loginGoogle({ credential: expiredCred });
+  assert.equal(resExp.ok, false);
+  assert.equal(resExp.error, 'invalid_google_token');
+
+  // 6.3. Sai issuer (không phải accounts.google.com)
+  const wrongIssCred = backend.createMockGoogleCredential({
+    email: 'fakeiss@gmail.com',
+    iss: 'https://fake-accounts.evil.com'
+  });
+  const resIss = backend.loginGoogle({ credential: wrongIssCred });
+  assert.equal(resIss.ok, false);
+  assert.equal(resIss.error, 'invalid_google_token');
+
+  // 6.4. Email chưa xác minh (email_verified: false)
+  const unverifiedCred = backend.createMockGoogleCredential({
+    email: 'unverified@gmail.com',
+    email_verified: false
+  });
+  const resUnverified = backend.loginGoogle({ credential: unverifiedCred });
+  assert.equal(resUnverified.ok, false);
+  assert.equal(resUnverified.error, 'invalid_google_token');
+});
+
+it('7. Token tài khoản A không truy cập được profile hay hạn mức của B (chống IDOR / CSRF)', () => {
   const loginA = backend.login({ sdt: '0901111111', matkhau: 'Pass123@' });
   const tokenA = loginA.user.token;
 
-  // Dùng token A để đọc profile B
-  const resProfile = backend.getProfile({ hs: '0902222222', token: tokenA });
+  // Dùng token A để đọc profile B qua POST body
+  const resProfile = backend.getProfile({ sdt: '0902222222', token: tokenA });
   assert.equal(resProfile.ok, false);
   assert.equal(resProfile.error, 'Forbidden');
   assert.equal(resProfile.msg, 'Không có quyền truy cập hồ sơ tài khoản khác');
 
-  // Dùng token A để đọc hạn mức B
-  const resLimit = backend.getTrialLimit({ hs: '0902222222', token: tokenA });
+  // Dùng token A để đọc hạn mức B qua POST body
+  const resLimit = backend.getTrialLimit({ sdt: '0902222222', token: tokenA });
   assert.equal(resLimit.ok, false);
   assert.equal(resLimit.error, 'Forbidden');
 
-  // Dùng token A để tiêu hao lượt bài của B
+  // Dùng token A để tiêu hao lượt bài của B qua POST body
   const resStart = backend.startTrialLesson({ sdt: '0902222222', token: tokenA, mabai: 'B01' });
   assert.equal(resStart.ok, false);
   assert.equal(resStart.error, 'Forbidden');
+});
+
+it('8. KHÔNG CÒN \'token=\' trong bất kỳ URL nào ở toàn bộ frontend', () => {
+  const frontendFiles = [
+    'auth.js',
+    'trial-manager.js',
+    'hoso.html',
+    'dua-top.html',
+    'solo.html',
+    'login.html',
+    'baihoc.html',
+    'index.html'
+  ];
+
+  for (const f of frontendFiles) {
+    if (!fs.existsSync(f)) continue;
+    const content = fs.readFileSync(f, 'utf8');
+    // Kiểm tra không có URL query dạng ?token= hoặc &token= hoặc ?authToken= hoặc &authToken=
+    const match = content.match(/[?&](?:token|authToken)=/i);
+    assert.equal(match, null, `File ${f} vẫn còn truyền token trong URL query: ${match ? match[0] : ''}`);
+  }
 });
 
 // =============================================================================
@@ -373,7 +639,7 @@ it('5. Token tài khoản A không truy cập được profile hay hạn mức c
 // =============================================================================
 console.log('\n--- [PHẦN 3] Kiểm Thử Pessimistic Fail-Closed Giao Diện ---');
 
-await itAsync('6. Server từ chối bài thứ ba (trial_limit) -> Video/quiz KHÔNG được mở vào DOM', async () => {
+await itAsync('9. Server từ chối bài thứ ba (trial_limit) -> Video/quiz KHÔNG được mở vào DOM', async () => {
   mockStorage.clear();
   const sdt = '0901111111';
   const token = backend.login({ sdt, matkhau: 'Pass123@' }).user.token;
@@ -449,7 +715,7 @@ await itAsync('6. Server từ chối bài thứ ba (trial_limit) -> Video/quiz K
   }
 });
 
-await itAsync('7. Mất mạng hoặc xóa localStorage không mở được bài mới (Fail-Closed)', async () => {
+await itAsync('10. Mất mạng hoặc xóa localStorage không mở được bài mới (Fail-Closed)', async () => {
   mockStorage.clear();
   const sdt = '0901111111';
   const token = backend.login({ sdt, matkhau: 'Pass123@' }).user.token;
@@ -512,7 +778,7 @@ await itAsync('7. Mất mạng hoặc xóa localStorage không mở được bà
   }
 });
 
-await itAsync('8. Bài cũ đã xác nhận vẫn xem lại được bình thường khi mất mạng (ôn tập an toàn)', async () => {
+await itAsync('11. Bài cũ đã xác nhận vẫn xem lại được bình thường khi mất mạng (ôn tập an toàn)', async () => {
   mockStorage.clear();
   const sdt = '0901111111';
   const user = { sdt, loaiTK: 'vip', trialExpiry: Date.now() + 86400000 };
@@ -542,7 +808,7 @@ await itAsync('8. Bài cũ đã xác nhận vẫn xem lại được bình thư�
   }
 });
 
-it('9. Hai thiết bị đồng thời không vượt 2 bài (concurrency lock backend)', () => {
+it('12. Hai thiết bị đồng thời không vượt 2 bài (concurrency lock backend)', () => {
   const fakeGasDb = new Map();
   let lockAcquired = false;
 

@@ -1023,37 +1023,50 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
   4. **Mục 9: Các điều cấm tuyệt đối**:
      - Bổ sung điều cấm AI tự động publish dưới mọi hình thức và điều cấm tự tiện xóa tài nguyên / tự ý rollback production khi chưa có chỉ thị rõ ràng của Thầy.
 
-### 14/09/2026 — Bảo Mật Toàn Diện Phiên Xác Thực & Hạn Mức Học Thử: Triệt Tiêu Secret Mặc Định, Bảo Vệ Endpoint Profile & Enforce Fail-Closed
+#### 14/09/2026 — Bảo Mật Toàn Diện Phiên Xác Thực, Xác Minh Google Token Phía Server, Chuyển Profile/Limit Sang POST & Preflight AUTH_SECRET Fail-Closed
 
 - **Người thực hiện**: Antigravity
 - **Người nhận bàn giao**: Thầy Xuân Trường & Codex
 - **Nhánh thực hiện**: `antigravity/20260914-trial-soft-unlock-limit` trên worktree cô lập `student_trial_soft_unlock`.
 - **Trạng thái**: `READY_FOR_REVIEW` (Chưa merge vào `main`, tuyệt đối không deploy GAS production, không can thiệp dữ liệu thật).
 - **Các điểm cải tiến bảo mật trọng yếu đã hoàn thành**:
-  1. **Triệt tiêu bí mật mặc định (Zero Default Secret)**:
-     - Loại bỏ hoàn toàn fallback secret `VLXT_SESSION_SECRET_2026` trong cả `apps-script-CAPNHAT.txt` và `trial-manager.js`.
-     - Secret bắt buộc lấy từ Google Apps Script Script Properties (`AUTH_SECRET`). Nếu thiếu hoặc rỗng, hệ thống từ chối lập tức với mã lỗi `AUTH_SECRET_NOT_CONFIGURED` (Fail-Closed).
-     - Tuyệt đối không lưu secret trong repo, mã nguồn client, tài liệu hay test logs.
-  2. **Bảo vệ endpoint Profile & Thiết kế lại phiên (Session Re-architect)**:
-     - `getProfile`: Bắt buộc truyền `token` hợp lệ kèm theo SĐT yêu cầu. Kiểm tra quyền sở hữu `authSdt === clientHs` (chống tài khoản A xem hồ sơ của B).
-     - Tuyệt đối **không** phát token qua endpoint `getProfile`.
-     - Token chỉ được cấp duy nhất qua các luồng xác thực thành công: `registerUser`, `loginUser`, `loginGoogle`.
-  3. **Cấu trúc Token 5 thành phần & Ràng buộc thời gian sống**:
+  1. **Xác minh Google Token an toàn phía Server (Google ID Token Verification)**:
+     - Tuyệt đối không tin `email`, `hoten`, `avatar` do client tự gửi. Client gửi Google ID token/credential.
+     - Backend xác minh token với Google endpoint `https://oauth2.googleapis.com/tokeninfo`, kiểm tra audience (`GOOGLE_CLIENT_ID`), issuer (`accounts.google.com`), thời hạn hết hạn (`exp > nowSec`), và trạng thái `email_verified`.
+     - Chỉ sử dụng email, tên, ảnh từ payload đã được Google xác thực để đăng nhập hoặc tạo tài khoản.
+     - Nếu Google token không hợp lệ, hết hạn hoặc thiếu: Fail-Closed lập tức, không cấp session.
+  2. **Triệt tiêu Session Token trong Query String — Chuyển Profile & Trial-Limit sang POST**:
+     - Chuyển toàn bộ endpoint `getprofile` và `gettriallimit` sang phương thức `POST`, token truyền an toàn trong request body JSON.
+     - Backend từ chối phương thức `GET` cho `profile` và `triallimit` với mã lỗi `METHOD_NOT_ALLOWED`.
+     - Cập nhật toàn bộ các trang frontend đang gọi profile: `auth.js` (`vlxtRefreshUser`, widget), `hoso.html`, `dua-top.html`, `solo.html`, và `trial-manager.js` (`vlxtFetchTrialLimitServer`).
+     - Đảm bảo 100% không còn bất kỳ chuỗi `token=` hay `authToken=` nào xuất hiện trong URL query của toàn bộ hệ thống frontend.
+  3. **Preflight AUTH_SECRET trước mọi thao tác ghi (Fail-Closed Zero Data Mutation)**:
+     - Cả `registerUser` và `loginGoogle` thực hiện preflight `getAuthSecret()` ngay dòng đầu tiên trước khi đụng vào bất kỳ Google Sheet nào.
+     - Nếu thiếu `AUTH_SECRET`: hệ thống từ chối ngay lập tức, tuyệt đối không gọi `appendRow`, không tạo hay sửa bất kỳ hàng nào trong Sheet.
+     - Kiểm thử tự động chứng minh dữ liệu Sheet giữ nguyên 100% byte-for-byte khi thiếu secret.
+  4. **Cấu trúc Token 5 thành phần & Ràng buộc thời gian sống**:
      - Cấu trúc: `cleanSdt:issuedAt:expiresAt:nonce:sig` với HMAC-SHA256.
      - Bổ sung `nonce` ngẫu nhiên (`Utilities.getUuid()`) chống replay/forge.
      - Thời hạn sống (`expiresAt`) bị chặn trên bởi `trialExpiry`: token không thể sống lâu hơn trạng thái hợp lệ của tài khoản.
-  4. **Bảo vệ Hạn mức học thử Pessimistic Fail-Closed**:
+  5. **Bảo vệ Hạn mức học thử Pessimistic Fail-Closed**:
      - `getTrialLimit` và `startTrialLesson` yêu cầu token xác thực, chống đọc hoặc tiêu hao lượt của SĐT khác.
      - Khi mất mạng hoặc server lỗi: Chặn mở bài mới (báo lỗi kết nối), chỉ cho phép học sinh học tiếp các bài đã được server xác thực trước đó.
-  5. **Bộ kiểm thử tự động 17 cổng chuyên sâu**:
-     - File test: `scripts/test-trial-soft-unlock.mjs` đạt **17/17 PASS (100%)**.
-     - 5 test case bảo mật phiên: Gọi profile chỉ bằng SĐT không nhận hồ sơ/token; Token giả mạo/hết hạn bị từ chối; Thiếu AUTH_SECRET fail-closed; Đăng nhập đúng mới nhận token; Token A không truy cập được dữ liệu B.
-     - 4 nhóm tài khoản (Trial hợp lệ, Trial hết hạn, Free, Premium).
-     - 4 kịch bản mở bài Fail-Closed (chặn bài thứ 3, offline fail-closed, xem lại bài cũ, concurrency lock).
-     - Quét sạch mã nguồn không còn bất kỳ chuỗi secret mặc định nào.
-  6. **Kiểm tra hồi quy toàn diện**:
+  6. **Bộ kiểm thử tự động 20 cổng chuyên sâu**:
+     - File test: `scripts/test-trial-soft-unlock.mjs` đạt **20/20 PASS (100%)**.
+     - Bao gồm đầy đủ các test case:
+       * Giả mạo email Google không nhận được session.
+       * Google credential sai audience / hết hạn / sai issuer / unverified bị từ chối.
+       * Không còn `token=` trong mọi URL frontend (quét regex toàn bộ repo).
+       * Thiếu AUTH_SECRET không tạo tài khoản (dữ liệu accounts giữ nguyên 100% byte-for-byte).
+       * Đăng nhập SĐT và Google hợp lệ vẫn hoạt động bình thường.
+       * Profile và triallimit qua GET bị từ chối `METHOD_NOT_ALLOWED`, POST body thành công.
+       * 4 nhóm tài khoản (Trial hợp lệ, Trial hết hạn, Free, Premium).
+       * 4 kịch bản mở bài Fail-Closed (chặn bài thứ 3, offline fail-closed, xem lại bài cũ, concurrency lock).
+       * Quét sạch mã nguồn không còn bất kỳ chuỗi secret mặc định nào.
+  7. **Kiểm tra hồi quy toàn diện**:
      - `test-student-stable-session-num.mjs`: **8/8 PASS**.
      - `test-quiz-merge.mjs`: **6/6 PASS**.
      - `test-quiz-publish.mjs`: **12/12 PASS**.
      - `test-apps-script-scope.mjs`: **4/4 PASS**.
      - Syntax check `node --check trial-manager.js; node --check auth.js`: **Hợp lệ 100%**.
+     - `git diff --check`: **0 lỗi whitespace, 0 secret rò rỉ**.

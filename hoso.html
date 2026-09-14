@@ -471,8 +471,16 @@ document.getElementById('content').style.display = 'block';
 renderPage({ ok: true, user: user, scores: [], tiendo: [] }, { ok: false, data: [] }, { ok: false, data: null }, []);
 
 // Sau đó fetch GAS để cập nhật dữ liệu thực (async, không chặn render)
+const profilePromise = (user && user.sdt && user.token)
+  ? fetch(GAS, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'getprofile', sdt: user.sdt, token: user.token })
+    }).then(r => r.json()).catch(() => ({ ok: true, user: user, scores: [], tiendo: [] }))
+  : Promise.resolve({ ok: true, user: user, scores: [], tiendo: [] });
+
 Promise.all([
-  cachedFetch(GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt) + (user && user.token ? '&token=' + encodeURIComponent(user.token) : '')).then(r => r.json()),
+  profilePromise,
   cachedFetch(GAS + '?type=leaderboard').then(r => r.json()),
   cachedFetch(GAS + '?type=nhiemvu&hs=' + encodeURIComponent(user.sdt)).then(r => r.json()).catch(() => ({ ok: false, data: null })),
   cachedFetch(GAS + '?type=baihoc').then(r => r.json()).catch(() => [])

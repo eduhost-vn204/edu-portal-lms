@@ -211,12 +211,16 @@
     var gasUrl = (typeof global.VLXT_GAS !== 'undefined') ? global.VLXT_GAS : ((typeof global.APPS_SCRIPT_URL !== 'undefined') ? global.APPS_SCRIPT_URL : '');
     if (!gasUrl) return Promise.resolve(null);
 
-    var url = gasUrl + '?type=triallimit&hs=' + encodeURIComponent(sdt) + '&t=' + Date.now();
-    if (token) {
-      url += '&token=' + encodeURIComponent(token);
-    }
-
-    return fetch(url, { cache: 'no-store' })
+    return fetch(gasUrl, {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({
+        action: 'gettriallimit',
+        sdt: sdt,
+        token: token
+      })
+    })
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(function (res) {
         if (!res || !res.ok) return res;

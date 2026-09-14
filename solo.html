@@ -1151,10 +1151,18 @@
     if (!initFirebase()) {
       arena.innerHTML = '<div class="empty-box"><h3>Không kết nối được máy chủ realtime</h3><p>Thử tải lại trang nhé.</p></div>';
       return;
-    var _profUrl = GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt);
-    if (user && user.token) _profUrl += '&token=' + encodeURIComponent(user.token);
-    fetcher(_profUrl)
-      .then(function (r) { return r.json(); })
+    }
+
+    var profilePromise = (user && user.sdt && user.token)
+      ? fetch(GAS, {
+          method: 'POST',
+          mode: 'cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'getprofile', sdt: user.sdt, token: user.token })
+        }).then(function (r) { return r.json(); }).catch(function () { return { ok: true, user: user }; })
+      : Promise.resolve({ ok: true, user: user });
+
+    profilePromise
       .then(function (profile) {
         myLp = (profile && profile.ok && profile.user) ? (Number(profile.user.lpTotal) || 0) : (Number(user.lpTotal) || 0);
         loadBank(function () {

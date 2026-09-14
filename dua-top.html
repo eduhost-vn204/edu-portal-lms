@@ -1054,10 +1054,16 @@
     // Render widget
     if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(user);
 
-    var _profUrl = GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt);
-    if (user && user.token) _profUrl += '&token=' + encodeURIComponent(user.token);
-    fetcher(_profUrl)
-      .then(function (r) { return r.json(); })
+    var profilePromise = (user && user.sdt && user.token)
+      ? fetch(GAS, {
+          method: 'POST',
+          mode: 'cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'getprofile', sdt: user.sdt, token: user.token })
+        }).then(function (r) { return r.json(); }).catch(function () { return { ok: true, user: user }; })
+      : Promise.resolve({ ok: true, user: user });
+
+    profilePromise
       .then(function (profile) {
         var lp = (profile && profile.ok && profile.user) ? (Number(profile.user.lpTotal) || 0) : (Number(user.lpTotal) || 0);
         if (lp < MIN_LP_DUATOP) { showLockedScreen(lp); return; }
