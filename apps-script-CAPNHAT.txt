@@ -47,6 +47,7 @@ function doGet(e) {
         if (type === 'searchprofiles')   return searchPublicProfiles(e);
     if (type === 'lichlive')          return getLiveSessions();
     if (type === 'huongdan')       return getHuongDan();
+    if (type === 'triallimit')     return getTrialLimit(e);
     return getExamQuestions('de01'); // backward compat — không có type param
   } catch(err) {
     return jsonOut({ error: err.message });
@@ -57,6 +58,7 @@ function doPost(e) {
   try {
     const data   = JSON.parse(e.postData.contents);
     const action = (data.action || '').toLowerCase();
+    if (action === 'starttriallesson')   return startTrialLesson(data);
     if (action === 'register')           return registerUser(data);
     if (action === 'login')              return loginUser(data);
     if (action === 'logingoogle')        return loginGoogle(data);
@@ -2523,4 +2525,163 @@ function searchPublicProfiles(e) {
 function normalizeSearchText(value) {
   return String(value || '').toLowerCase().normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/\s+/g, ' ').trim();
+}
+
+// ═════════════════════════════════════════════════════════════════════════════
+// ENDPOINTS QUẢN LÝ HẠN MỨC HỌC THỬ (TRIAL LIMIT) SERVER-SIDE THỰC SỰ
+// - Bảng dữ liệu: TrialActivity (sdt, mabai, dateStr, thoigian, deviceId, hoten)
+// - Tính ngày theo múi giờ Việt Nam (Asia/Saigon, UTC+7)
+// - Khóa ScriptLock chống race condition (hai yêu cầu đồng thời từ 2 tab/thiết bị không tạo quá 2 lượt)
+// - Đồng bộ dùng chung giữa nhiều thiết bị, không bị ảnh hưởng khi xóa localStorage
+// ═════════════════════════════════════════════════════════════════════════════
+
+function getVietnamDateString(d) {
+  try {
+    const target = d || new Date();
+    const formatter = Utilities.formatDate(target, 'Asia/Saigon', 'yyyy-MM-dd');
+    return formatter;
+  } catch(e) {
+    const target = d || new Date();
+    const utc = target.getTime() + (target.getTimezoneOffset() * 60000);
+    const vnDate = new Date(utc + (7 * 3600000));
+    const y = vnDate.getFullYear();
+    const m = String(vnDate.getMonth() + 1).padStart(2, '0');
+    const day = String(vnDate.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + day;
+  }
+}
+
+// GET: Lấy trạng thái hạn mức bài mới của học sinh
+function getTrialLimit(e) {
+  const hs = String(e.parameter.hs || e.parameter.sdt || '').trim();
+  if (!hs) return jsonOut({ ok: false, msg: 'Thiếu hs/sdt' });
+
+  // 1. Kiểm tra loại tài khoản trong sheet TaiKhoan
+  const tkSheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
+  const tkRows = sheetToJson(tkSheet);
+  const userRow = tkRows.find(function(r) { return sameTaiKhoan(r.sdt, hs); });
+
+  const loaiTK = (userRow && userRow.loaiTK) ? String(userRow.loaiTK).toLowerCase() : 'free';
+  const trialExpiry = (userRow && userRow.trialExpiry) ? Number(userRow.trialExpiry) : 0;
+  const now = Date.now();
+  const isValidTrial = (loaiTK === 'vip' || loaiTK === 'trial') && trialExpiry > now;
+
+  // 2. Đọc bảng TrialActivity
+  const actSheet = getOrCreate('TrialActivity', ['sdt','mabai','dateStr','thoigian','deviceId','hoten']);
+  const actRows = sheetToJson(actSheet);
+  const userActs = actRows.filter(function(r) { return sameTaiKhoan(r.sdt, hs); });
+
+  const todayVN = getVietnamDateString();
+  const todayActs = userActs.filter(function(r) { return String(r.dateStr) === todayVN; });
+  const dailyCount = todayActs.length;
+  const maxDaily = 2;
+
+  const startedList = userActs.map(function(r) {
+    return {
+      key: String(r.mabai || '').trim(),
+      mabai: String(r.mabai || '').trim(),
+      date: String(r.dateStr || '').trim(),
+      timestamp: r.thoigian ? new Date(r.thoigian).getTime() : Date.now()
+    };
+  });
+
+  return jsonOut({
+    ok: true,
+    sdt: hs,
+    isTrial: isValidTrial,
+    loaiTK: loaiTK,
+    trialExpiry: trialExpiry,
+    dateStr: todayVN,
+    dailyCount: dailyCount,
+    maxDaily: maxDaily,
+    remaining: Math.max(0, maxDaily - dailyCount),
+    startedLessons: startedList
+  });
+}
+
+// POST: Ghi nhận bắt đầu bài học thử (Atomic với ScriptLock chống race condition)
+function startTrialLesson(data) {
+  const sdt = String(data.sdt || '').trim();
+  const mabai = String(data.mabai || data.key || '').trim();
+  if (!sdt || !mabai) return jsonOut({ ok: false, msg: 'Thiếu sdt hoặc mabai' });
+
+  // Dùng LockService để đảm bảo hai yêu cầu đồng thời không thể vượt quá 2 lượt
+  const lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(10000); // chờ tối đa 10s
+  } catch (e) {
+    return jsonOut({ ok: false, msg: 'Hệ thống đang bận, vui lòng thử lại sau vài giây' });
+  }
+
+  try {
+    // 1. Kiểm tra tài khoản
+    const tkSheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
+    const tkRows = sheetToJson(tkSheet);
+    const userRow = tkRows.find(function(r) { return sameTaiKhoan(r.sdt, sdt); });
+
+    const loaiTK = (userRow && userRow.loaiTK) ? String(userRow.loaiTK).toLowerCase() : 'free';
+    const trialExpiry = (userRow && userRow.trialExpiry) ? Number(userRow.trialExpiry) : 0;
+    const now = Date.now();
+    const isValidTrial = (loaiTK === 'vip' || loaiTK === 'trial') && trialExpiry > now;
+
+    if (!isValidTrial) {
+      return jsonOut({ ok: false, reason: 'invalid_account', msg: 'Tài khoản không phải trial hợp lệ còn hạn' });
+    }
+
+    // 2. Đọc bảng TrialActivity
+    const actSheet = getOrCreate('TrialActivity', ['sdt','mabai','dateStr','thoigian','deviceId','hoten']);
+    const actRows = sheetToJson(actSheet);
+
+    // Kiểm tra bài đã từng bắt đầu chưa (chống tính trùng)
+    const alreadyStarted = actRows.some(function(r) {
+      return sameTaiKhoan(r.sdt, sdt) && String(r.mabai || '').trim() === mabai;
+    });
+
+    const todayVN = getVietnamDateString();
+    const countToday = actRows.filter(function(r) {
+      return sameTaiKhoan(r.sdt, sdt) && String(r.dateStr) === todayVN;
+    }).length;
+
+    if (alreadyStarted) {
+      return jsonOut({
+        ok: true,
+        isNew: false,
+        alreadyStarted: true,
+        dailyCount: countToday,
+        remaining: Math.max(0, 2 - countToday)
+      });
+    }
+
+    // Nếu là bài mới: kiểm tra hạn mức 2 bài/ngày
+    if (countToday >= 2) {
+      return jsonOut({
+        ok: false,
+        reason: 'trial_limit',
+        msg: 'Hôm nay em đã dùng đủ 2/2 bài học mới theo hạn mức học thử.',
+        dailyCount: countToday,
+        maxDaily: 2,
+        remaining: 0
+      });
+    }
+
+    // Ghi nhận bài mới
+    appendRowNamed(actSheet, {
+      sdt: sdt,
+      mabai: mabai,
+      dateStr: todayVN,
+      thoigian: new Date().toISOString(),
+      deviceId: String(data.deviceId || ''),
+      hoten: String(data.hoten || (userRow ? userRow.hoten : ''))
+    });
+
+    return jsonOut({
+      ok: true,
+      isNew: true,
+      dailyCount: countToday + 1,
+      remaining: Math.max(0, 2 - (countToday + 1))
+    });
+
+  } finally {
+    lock.releaseLock();
+  }
 }

@@ -945,8 +945,13 @@ function isLessonBlocked(course, key){
         return {blocked:false};
     }
 
-    // 2) Tài khoản Trial: cơ chế mở mềm (soft unlock) kèm giới hạn 2 bài mới/ngày
-    if(typeof TrialManager !== 'undefined'){
+    // 2) Tài khoản Trial hợp lệ (chỉ loaiTK=vip và trialExpiry > Date.now()):
+    //    Được hưởng cơ chế mở mềm (soft unlock) kèm giới hạn 2 bài mới/ngày theo giờ VN
+    const isValidTrial = (typeof TrialManager !== 'undefined' && typeof TrialManager.isValidTrialUser === 'function')
+        ? TrialManager.isValidTrialUser(user)
+        : (typeof TrialManager !== 'undefined' && typeof TrialManager.isTrialUser === 'function' ? TrialManager.isTrialUser(user) : false);
+
+    if(isValidTrial && typeof TrialManager !== 'undefined'){
         const sdt = (HS && HS.sdt) ? String(HS.sdt) : (user && user.sdt ? String(user.sdt) : '');
         const access = TrialManager.canAccessTrialLesson(sdt, flat[idx], COURSES, WATCHED);
         if(!access.allowed){
@@ -955,7 +960,7 @@ function isLessonBlocked(course, key){
         return {blocked:false, trialInfo:access};
     }
 
-    // Fallback an toàn nếu chưa tải kịp TrialManager
+    // 3) Free hoặc Trial hết hạn: KHÔNG được mở mềm 2 bài/ngày, giữ nguyên quy tắc khóa tuần tự hiện hành
     if(idx > 0 && !WATCHED.has(flat[idx-1].key)) return {blocked:true, reason:'sequence'};
     return {blocked:false};
 }
@@ -1384,7 +1389,7 @@ function renderLesson(key){
         if(_isEmpty){
             _msg = 'Em đã học kịp tiến độ rồi — qua Đua Top luyện tập thêm trong lúc chờ nhé!';
             _icon = 'fa-hourglass-half';
-        } else if(_isTrialLimit){
+        } else if(_isLimit){
             _msg = 'Em đã dùng hết 2/2 bài học mới hôm nay theo hạn mức học thử. Lượt học mới sẽ tự động mở lại vào 00:00 ngày mai (theo giờ Việt Nam). Em vẫn có thể ôn tập các bài đã học bên dưới.';
             _icon = 'fa-hourglass-half';
         }
@@ -1402,7 +1407,7 @@ function renderLesson(key){
     window._triggerTrialStart = null;
     if(typeof TrialManager !== 'undefined' && HS && HS.sdt && !WATCHED.has(key)){
         const _curUser = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
-        if(TrialManager.isTrialUser(_curUser)){
+        if(TrialManager.isValidTrialUser(_curUser)){
             let _trialStarted = false;
             const triggerTrial = () => {
                 if(_trialStarted) return;
@@ -3556,6 +3561,9 @@ async function boot(){
     renderWho();
     // Lấy quyền mới nhất trước khi quyết định khóa/mở khóa học.
     if(typeof vlxtRefreshUser==='function') await vlxtRefreshUser();
+    if(typeof TrialManager !== 'undefined' && typeof TrialManager.fetchTrialLimitServer === 'function' && HS && HS.sdt){
+        await TrialManager.fetchTrialLimitServer(String(HS.sdt));
+    }
     const [rows] = await Promise.all([fetchLessons(), fetchKhoaConfig(), fetchQuizIndex()]);
     COURSES=buildCourses(rows);
     COURSES.forEach(c=>c.chapters.forEach(ch=>ch.lessons.forEach(l=>{

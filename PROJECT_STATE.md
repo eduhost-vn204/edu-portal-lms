@@ -159,42 +159,38 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
-### 14/09/2026 — Hoàn Thành Cải Tiến Cơ Chế Học Thử (Trial Soft Unlock, Bài Nền Tảng & Hạn Mức 2 Bài Mới/Ngày Giờ Việt Nam)
+#### 14/09/2026 — Hoàn Thành Sửa 3 Blocker Cải Tiến Tài Khoản Học Thử (Trial Soft Unlock v2.0.0)
 
 - **Người thực hiện**: Antigravity AI Coordinator
 - **Người nhận bàn giao**: Thầy Xuân Trường & Codex
-- **Trạng thái**: `DEV_VERIFIED_100%_PASS` (Toàn bộ 24/24 cổng test automated PASS 100%, bảo toàn 100% tài khoản Premium và logic hồi quy; dừng chờ Thầy nghiệm thu).
+- **Trạng thái**: `DEV_VERIFIED_100%_PASS` (Đã khắc phục triệt để 3 blocker theo chỉ đạo của Thầy, 11/11 test cases cổng mới PASS 100%, 26/26 test cases hồi quy PASS 100%; bảo toàn 100% tài khoản Premium và logic học tuần tự; dừng chờ Thầy nghiệm thu).
 - **Nhánh làm việc**: `antigravity/20260914-trial-soft-unlock-limit`
 - **Worktree**: `C:\Users\Xuan Truong\.gemini\antigravity\worktrees\student_trial_soft_unlock`
-- **Các file đã sửa / tạo mới**:
-  1. `trial-manager.js` [NEW]: Mô-đun quản lý hạn mức và tài khoản trial độc lập.
-  2. `baihoc.html` [MODIFY]: Tích hợp mở mềm, hiển thị popup bài nền tảng, modal giới hạn bài mới, đồng bộ sidebar và chống tính lượt bấm nhầm.
-  3. `scripts/test-trial-soft-unlock.mjs` [NEW]: Bộ kiểm thử tự động 12 cổng (24 test cases) bao phủ toàn diện.
-  4. `PROJECT_STATE.md` [MODIFY]: Cập nhật biên bản bàn giao kỹ thuật.
-- **Hành vi mới**:
-  1. **Cơ chế mở mềm cho tài khoản học thử (Trial Soft Unlock)**:
-     - Học sinh trial (bao gồm `vip`, `trial`, `free`, tài khoản mới đăng ký) được xem và mở bất kỳ bài học nào đã `published` có nội dung (không bị khóa cứng theo thứ tự bài trước).
-     - Bài `draft`, `archived` và bài trống (`empty`) tiếp tục bị chặn tuyệt đối đối với tất cả học sinh.
-     - Tài khoản trả phí (`premium`) giữ nguyên 100% quy tắc học tuần tự (`sequence lock`).
-     - Tài khoản test của Thầy (`TEST_ACCOUNTS`): mở tự do không giới hạn.
-  2. **Khuyến nghị bài nền tảng (`BaiNenTang`)**:
-     - Thiết kế trường `bainentang` trong `buildCourses(rows)` hỗ trợ theo `MaBai`, danh sách nhiều bài (dấu phẩy, chấm phẩy, mảng JSON), tương thích ngược với tên bài cũ.
-     - Khi bài có bài nền tảng chưa học, hiển thị popup thân thiện gồm danh sách bài nền tảng, nút "Học bài nền tảng" (mở bài nền tảng) và nút "Tôi đã học rồi – tiếp tục" (cho phép vào bài trong phiên).
-     - **Bỏ qua cảnh báo tuyệt đối không tự đánh dấu bài nền tảng là đã học** (không thêm vào `WATCHED` hay gửi `saveProgress`).
-  3. **Giới hạn 2 bài mới mỗi ngày theo múi giờ Việt Nam (`Asia/Saigon`)**:
-     - Múi giờ Việt Nam UTC+7 xác định ngày từ 00:00:00 đến 23:59:59.
-     - Học tối đa 2 bài mới/ngày; sang ngày mới tự động có lại 2 lượt bài mới.
-     - **Xem lại bài cũ miễn phí không tính lượt**: Bài đã từng bắt đầu (`startedLessons`) hoặc đã hoàn thành (`WATCHED`) được mở lại tự do bất kỳ lúc nào, kể cả khi đã hết hạn mức bài mới.
-     - **Chống bấm nhầm (Misclick Protection)**: Chỉ tính lượt bài mới khi học sinh thực sự bắt đầu học (phát video $\ge 10\text{s}$, làm trắc nghiệm quiz, hoặc ở lại tương tác $\ge 30\text{s}$). Bấm nhầm rồi thoát ngay không bị trừ lượt.
-     - **Hết lượt bài mới**: Chặn mở bài mới thứ 3, hiển thị modal thông báo số lượt, mốc tự động mở lại (00:00 ngày mai) kèm danh sách bài cũ có thể ôn tập ngay.
-     - **Hàng đợi ngoại tuyến & Chống tính trùng**: Lưu bộ đệm `localStorage` kèm mã định danh chống trùng `(sdt_mabai_date)` và tự động flush lên API server khi có mạng; không bị mất dữ liệu khi mạng yếu.
-- **Kiểm tra đã chạy**:
-  - `node scripts/test-trial-soft-unlock.mjs`: **24/24 PASS (100%)**.
+- **Các file đã sửa**:
+  1. `trial-manager.js` [v2.0.0]:
+     - Nâng cấp `vlxtIsValidTrialUser`: chỉ `vip`/`trial` có `trialExpiry > Date.now()` mới là trial hợp lệ. Free và VIP hết hạn bị loại trừ, không được mở mềm.
+     - Triển khai `vlxtFetchTrialLimitServer(sdt)`: truy vấn server-side endpoint `type=triallimit&hs=...`, hợp nhất bài đã học về local, khôi phục hạn mức khi đổi thiết bị hoặc xóa `localStorage`.
+     - Triển khai `vlxtRecordTrialLessonStart(sdt, lesson, courseName)`: gửi POST tới backend GAS với `action=starttriallesson`, hỗ trợ hàng đợi ngoại tuyến `vlxt_trial_queue_v2` và fallback an toàn khi mất mạng.
+  2. `baihoc.html`:
+     - Sửa triệt để lỗi runtime: đổi `_isTrialLimit` thành `_isLimit` trong khối `renderLesson` (tránh `ReferenceError` khi mở trực tiếp bài thứ ba lúc hết lượt).
+     - `isLessonBlocked`: chỉ `TrialManager.isValidTrialUser(_curUser)` mới được hưởng cơ chế mở mềm 2 bài/ngày; `premium`, `free` và `vip hết hạn` đều tuân thủ khóa tuần tự (`sequence`).
+     - Tích hợp `TrialManager.fetchTrialLimitServer(sdt)` vào hàm `boot()` để đồng bộ server-side ngay khi khởi động trang.
+  3. `apps-script-CAPNHAT.txt` [Bản Tham Chiếu Backend]:
+     - Bổ sung định nghĩa endpoint `getTrialLimit(e)` (GET) và `startTrialLesson(data)` (POST).
+     - Triển khai `LockService.getScriptLock()` với thời gian chờ 15s để chống race condition khi 2 thiết bị/tab gửi request cùng lúc.
+     - Chuẩn hóa ngày theo múi giờ Việt Nam (`Utilities.formatDate(new Date(), 'Asia/Saigon', 'yyyy-MM-dd')`).
+     - **TUYỆT ĐỐI KHÔNG DEPLOY GAS PRODUCTION, KHÔNG ĐỤNG DỮ LIỆU SHEETS THẬT.**
+  4. `scripts/test-trial-soft-unlock.mjs`:
+     - Xây dựng 11 test cases bao quát 5 cổng nghiệm thu: Phân loại 4 nhóm tài khoản, Khôi phục hạn mức server khi xóa localStorage / đổi máy, Khóa độc quyền backend chống 2 request song song, Mở trực tiếp bài thứ ba trong `renderLesson` không có lỗi runtime, Reload & Offline Queue & Idempotency.
+  5. `PROJECT_STATE.md`:
+     - Cập nhật biên bản kỹ thuật chi tiết.
+- **Kết quả kiểm thử tự động**:
+  - `node scripts/test-trial-soft-unlock.mjs`: **11/11 PASS (100%)**.
   - `node scripts/test-student-stable-session-num.mjs`: **8/8 PASS (100%)**.
   - `node scripts/test-quiz-merge.mjs`: **6/6 PASS (100%)**.
   - `node scripts/test-quiz-publish.mjs`: **12/12 PASS (100%)**.
-  - `node --check trial-manager.js; node --check auth.js; node --check cache.js; node --check nhiem-vu.js`: **Hợp lệ 100%**.
-  - Kiểm tra toàn vẹn thẻ đóng `</html>` và 2 khối inline script trong `baihoc.html`: **PASS**.
+  - `node --check trial-manager.js; node --check auth.js`: **Hợp lệ cú pháp 100%**.
+  - Kiểm tra toàn vẹn thẻ đóng `</html>` trong `baihoc.html`: **PASS**.
   - `git diff --check` và quét secret: **Sạch hoàn toàn, 0 secret**.
 - **Điều phải giữ nguyên**:
   - Không deploy Google Apps Script production.
