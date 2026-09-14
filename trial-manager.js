@@ -1,19 +1,21 @@
 /* ═══════════════════════════════════════════════════════════════════
    TRIAL MANAGER — Quản lý tài khoản học thử & Hạn mức LMS Vật Lý Xuân Trường
-   Phiên bản: 2.0.0 (2026-09-14)
-   - Xác thực server-side thực sự, chống vượt hạn mức khi đổi thiết bị / xóa localStorage.
-   - Nhận diện chuẩn: chỉ VIP còn hạn (trialExpiry > Date.now()) mới là Trial hợp lệ.
-   - Free và Trial hết hạn giữ nguyên cấu hình hiện hành (không mở mềm 2 bài/ngày).
-   - Chống trùng lặp (idempotent) và đồng bộ an toàn khi mạng yếu.
+   Phiên bản: 2.1.0 (2026-09-14)
+   - Xác thực phiên bằng token server-side (không tin SĐT do client tự gửi).
+   - Ngăn chặn triệt để việc đọc trộm hoặc tiêu hao lượt của SĐT khác.
+   - PESSIMISTIC / FAIL-CLOSED: Luồng mở bài mới bắt buộc chờ server cấp quyền trước khi xem.
+   - Không ghi trước vào local, không fail-open qua queue khi mất mạng.
+   - Bài cũ đã xác nhận được xem lại tự do ngay cả khi mất mạng.
+   - Chống trùng lặp (idempotent) và khóa độc quyền chống race condition.
 ═══════════════════════════════════════════════════════════════════ */
 
 (function (global) {
   'use strict';
 
   var TRIAL_MAX_DAILY_NEW_LESSONS = 2;
-  var TRIAL_STARTED_PREFIX = 'vlxt_trial_started_';
-  var TRIAL_QUEUE_KEY = 'vlxt_trial_queue_v2';
+  var TRIAL_CONFIRMED_PREFIX = 'vlxt_trial_confirmed_';
   var TRIAL_DISMISSED_PREREQ_PREFIX = 'vlxt_skip_prereq_';
+  var AUTH_SECRET_KEY = 'VLXT_SESSION_SECRET_2026';
 
   // 1. Phân loại tài khoản chặt chẽ
   function vlxtIsPremiumUser(user) {
@@ -92,6 +94,10 @@
     return (s === null || s === undefined) ? '' : String(s).trim().normalize('NFC').toLowerCase();
   }
 
+  function normSdt(s) {
+    return String(s || '').replace(/\D/g, '').replace(/^0+/, '');
+  }
+
   // Tìm bài học trong toàn bộ khoá theo: MaBai -> key -> legacyKey -> TenBai
   function vlxtFindLessonByIdentifier(identifier, allCourses) {
     if (!identifier || !Array.isArray(allCourses)) return null;
@@ -120,54 +126,48 @@
       for (var cji = 0; cji < crs.chapters.length; cji++) {
         var chp = crs.chapters[cji];
         if (!chp || !chp.lessons) continue;
-        for (var lki = 0; lki < chp.lessons.length; lki++) {
-          var lsn = chp.lessons[lki];
+        for (var cki = 0; cki < chp.lessons.length; cki++) {
+          var lsn = chp.lessons[cki];
           if (lsn.legacyKey && normStr(lsn.legacyKey) === target) return lsn;
           if (lsn.name && normStr(lsn.name) === target) return lsn;
         }
       }
     }
-
     return null;
   }
 
-  // Lấy danh sách các bài nền tảng chưa hoàn thành
+  // Lọc ra danh sách bài nền tảng chưa hoàn thành
   function vlxtGetUnfinishedPrerequisites(lesson, allCourses, watchedSet) {
     if (!lesson) return [];
-    var prereqKeys = vlxtParsePrerequisites(lesson.bainentang);
-    if (!prereqKeys.length) return [];
+    var prereqIdentifiers = vlxtParsePrerequisites(
+      lesson.bainentang || lesson.BaiNenTang || lesson.prerequisites || ''
+    );
+    if (!prereqIdentifiers.length) return [];
 
     var ws = watchedSet || new Set();
     var unfinished = [];
 
-    prereqKeys.forEach(function (id) {
+    prereqIdentifiers.forEach(function (id) {
       var found = vlxtFindLessonByIdentifier(id, allCourses);
       if (found) {
-        var isDone = ws.has(found.key) || (found.mabai && ws.has(found.mabai)) || (found.legacyKey && ws.has(found.legacyKey));
+        var isDone = ws.has(found.key) || (found.mabai && ws.has(found.mabai));
         if (!isDone) {
           unfinished.push(found);
         }
       } else {
-        var isDoneStub = ws.has(id);
-        if (!isDoneStub) {
-          unfinished.push({
-            key: id,
-            mabai: id,
-            name: id,
-            isStub: true
-          });
-        }
+        unfinished.push({ key: id, mabai: id, name: id, notFoundInCourses: true });
       }
     });
 
     return unfinished;
   }
 
-  // 4. Quản lý trạng thái bài đã bắt đầu (kết hợp Local Cache + Server)
-  function vlxtGetTrialStartedLessons(sdt) {
+  // 4. Quản lý danh sách bài ĐÃ ĐƯỢC SERVER XÁC NHẬN (Server-Confirmed)
+  // Chỉ những bài server đã cấp quyền mới được lưu vào đây
+  function vlxtGetServerConfirmedLessons(sdt) {
     if (!sdt) return [];
     try {
-      var raw = localStorage.getItem(TRIAL_STARTED_PREFIX + sdt);
+      var raw = localStorage.getItem(TRIAL_CONFIRMED_PREFIX + sdt);
       var arr = JSON.parse(raw || '[]');
       return Array.isArray(arr) ? arr : [];
     } catch (e) {
@@ -175,49 +175,58 @@
     }
   }
 
-  function vlxtSaveTrialStartedLessons(sdt, list) {
+  function vlxtSaveServerConfirmedLessons(sdt, list) {
     if (!sdt) return;
     try {
-      localStorage.setItem(TRIAL_STARTED_PREFIX + sdt, JSON.stringify(list || []));
+      localStorage.setItem(TRIAL_CONFIRMED_PREFIX + sdt, JSON.stringify(list || []));
     } catch (e) {}
   }
 
-  function vlxtIsLessonStarted(sdt, lessonKey, watchedSet) {
+  function vlxtIsServerConfirmedLesson(sdt, lessonKey, watchedSet) {
     if (watchedSet && watchedSet.has(lessonKey)) return true;
     if (!sdt) return false;
-    var list = vlxtGetTrialStartedLessons(sdt);
+    var list = vlxtGetServerConfirmedLessons(sdt);
     return list.some(function (item) {
       return item.key === lessonKey || (item.mabai && item.mabai === lessonKey);
     });
   }
 
-  function vlxtGetDailyNewLessonsCount(sdt, dateStr) {
+  function vlxtGetDailyConfirmedCount(sdt, dateStr) {
     if (!sdt) return 0;
     var targetDate = dateStr || vlxtGetVietnamDateStr();
-    var list = vlxtGetTrialStartedLessons(sdt);
+    var list = vlxtGetServerConfirmedLessons(sdt);
     var filtered = list.filter(function (item) {
       return item.date === targetDate;
     });
     return filtered.length;
   }
 
-  // 5. Xác thực Server-side: Tải trạng thái hạn mức thật từ Apps Script
-  // Nếu học sinh đổi máy hoặc xóa localStorage, server sẽ khôi phục lại 100% dữ liệu
-  function vlxtFetchTrialLimitServer(sdt) {
+  // 5. Xác thực Server-side: Kéo trạng thái hạn mức từ server về local
+  // Sử dụng token phiên đăng nhập (bảo vệ chống đọc trộm dữ liệu người khác)
+  function vlxtFetchTrialLimitServer(userOrSdt) {
+    var user = (typeof userOrSdt === 'object' && userOrSdt !== null) ? userOrSdt : null;
+    var sdt = user ? (user.sdt || '') : String(userOrSdt || '').trim();
+    var token = user ? (user.token || user.authToken || '') : '';
+
     if (!sdt) return Promise.resolve(null);
     var gasUrl = (typeof global.VLXT_GAS !== 'undefined') ? global.VLXT_GAS : ((typeof global.APPS_SCRIPT_URL !== 'undefined') ? global.APPS_SCRIPT_URL : '');
     if (!gasUrl) return Promise.resolve(null);
 
-    return fetch(gasUrl + '?type=triallimit&hs=' + encodeURIComponent(sdt) + '&t=' + Date.now(), { cache: 'no-store' })
+    var url = gasUrl + '?type=triallimit&hs=' + encodeURIComponent(sdt) + '&t=' + Date.now();
+    if (token) {
+      url += '&token=' + encodeURIComponent(token);
+    }
+
+    return fetch(url, { cache: 'no-store' })
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(function (res) {
-        if (!res || !res.ok) return null;
+        if (!res || !res.ok) return res;
         var serverStarted = res.startedLessons || [];
-        var localStarted = vlxtGetTrialStartedLessons(sdt);
+        var localConfirmed = vlxtGetServerConfirmedLessons(sdt);
 
-        // Hợp nhất (union) danh sách bài giữa server và local để không sót bài
+        // Hợp nhất danh sách server vào local
         var map = new Map();
-        localStarted.forEach(function (item) { if (item.key) map.set(item.key, item); });
+        localConfirmed.forEach(function (item) { if (item.key) map.set(item.key, item); });
         serverStarted.forEach(function (item) {
           var k = item.key || item.mabai;
           if (k && !map.has(k)) {
@@ -227,24 +236,23 @@
               name: item.name || k,
               course: item.course || '',
               date: item.date || item.dateStr || vlxtGetVietnamDateStr(item.timestamp),
-              timestamp: Number(item.timestamp || Date.now()),
-              idempotencyKey: sdt + '_' + (item.mabai || k) + '_' + (item.date || item.dateStr || '')
+              timestamp: Number(item.timestamp || Date.now())
             });
           }
         });
 
         var merged = Array.from(map.values());
-        vlxtSaveTrialStartedLessons(sdt, merged);
+        vlxtSaveServerConfirmedLessons(sdt, merged);
         return res;
       })
       .catch(function (err) {
-        console.warn('Không kết nối được server trial limit (sẽ dùng bộ nhớ đệm an toàn):', err);
+        console.warn('Không kết nối được server trial limit:', err);
         return null;
       });
   }
 
-  // 6. Kiểm tra quyền mở bài Trial (Soft Unlock + Daily Limit)
-  function vlxtCanAccessTrialLesson(sdt, lesson, allCourses, watchedSet) {
+  // 6. Kiểm tra quyền mở bài tại giao diện danh sách (Soft Unlock + Daily Limit)
+  function vlxtCanAccessTrialLesson(userOrSdt, lesson, allCourses, watchedSet) {
     if (!lesson) return { allowed: false, reason: 'not_found' };
 
     // Bài trống không có nội dung bị chặn tuyệt đối
@@ -253,22 +261,23 @@
       return { allowed: false, reason: 'empty' };
     }
 
+    var sdt = (typeof userOrSdt === 'object' && userOrSdt !== null) ? (userOrSdt.sdt || '') : String(userOrSdt || '').trim();
     var ws = watchedSet || new Set();
-    var isStarted = vlxtIsLessonStarted(sdt, lesson.key, ws);
+    var isConfirmed = vlxtIsServerConfirmedLesson(sdt, lesson.key, ws);
 
-    // Ôn lại bài cũ (đã từng bắt đầu hoặc đã watched): MIỄN PHÍ KHÔNG GIỚI HẠN
-    if (isStarted) {
+    // Ôn lại bài cũ (đã từng được server xác nhận hoặc đã watched): MIỄN PHÍ KHÔNG GIỚI HẠN
+    if (isConfirmed) {
       return {
         allowed: true,
         isOldLesson: true,
-        remaining: Math.max(0, TRIAL_MAX_DAILY_NEW_LESSONS - vlxtGetDailyNewLessonsCount(sdt)),
+        remaining: Math.max(0, TRIAL_MAX_DAILY_NEW_LESSONS - vlxtGetDailyConfirmedCount(sdt)),
         unfinishedPrereqs: vlxtGetUnfinishedPrerequisites(lesson, allCourses, ws)
       };
     }
 
     // Bài mới: kiểm tra hạn mức 2 bài/ngày theo giờ VN
     var todayVN = vlxtGetVietnamDateStr();
-    var dailyCount = vlxtGetDailyNewLessonsCount(sdt, todayVN);
+    var dailyCount = vlxtGetDailyConfirmedCount(sdt, todayVN);
 
     if (dailyCount >= TRIAL_MAX_DAILY_NEW_LESSONS) {
       return {
@@ -278,89 +287,66 @@
         maxDaily: TRIAL_MAX_DAILY_NEW_LESSONS,
         nextResetDate: todayVN,
         nextResetMsg: '00:00 ngày mai (theo giờ Việt Nam)',
-        startedLessons: vlxtGetTrialStartedLessons(sdt)
+        startedLessons: vlxtGetServerConfirmedLessons(sdt)
       };
     }
 
     return {
       allowed: true,
       isOldLesson: false,
+      isNewTrial: true,
       dailyCount: dailyCount,
       remaining: TRIAL_MAX_DAILY_NEW_LESSONS - dailyCount,
       unfinishedPrereqs: vlxtGetUnfinishedPrerequisites(lesson, allCourses, ws)
     };
   }
 
-  // 7. Ghi nhận bài học đã bắt đầu (Idempotent - Chống tính trùng, chống bấm nhầm)
-  // Gửi trực tiếp lên server để server xác thực và ghi nhận với script lock chống race condition
-  var _trialRecordLock = false;
+  // 7. YÊU CẦU CẤP QUYỀN MỞ BÀI TỪ MÁY CHỦ (PESSIMISTIC / FAIL-CLOSED)
+  // Luồng mở bài mới BẮT BUỘC phải qua hàm này trước khi xem video/nội dung.
+  // Tuyệt đối không ghi trước vào local, không fail-open qua queue khi mất mạng.
+  function vlxtRequestTrialAccess(user, lesson, courseName) {
+    if (!user || !user.sdt) {
+      return Promise.resolve({ ok: false, reason: 'invalid_account', error: 'Unauthorized', msg: 'Yêu cầu đăng nhập' });
+    }
+    if (!lesson) {
+      return Promise.resolve({ ok: false, reason: 'not_found', msg: 'Không tìm thấy bài học' });
+    }
 
-  function vlxtRecordTrialLessonStart(sdt, lesson, courseName) {
-    if (!sdt || !lesson) return Promise.resolve({ ok: false, msg: 'Missing sdt or lesson' });
-
+    var sdt = String(user.sdt).trim();
     var lkey = lesson.key || lesson;
     var mb = lesson.mabai || '';
-    var todayVN = vlxtGetVietnamDateStr();
-    var list = vlxtGetTrialStartedLessons(sdt);
+    var token = user.token || user.authToken || '';
 
-    // Chống tính trùng cục bộ: nếu bài đã từng bắt đầu thì bỏ qua ngay
-    var existing = list.find(function (it) {
-      return it.key === lkey || (mb && it.mabai === mb);
-    });
-
-    if (existing) {
-      var existDaily = vlxtGetDailyNewLessonsCount(sdt, todayVN);
+    // Nếu bài này đã được server xác nhận trước đó: mở tự do (xem lại bài cũ an toàn)
+    if (vlxtIsServerConfirmedLesson(sdt, lkey)) {
+      var existDaily = vlxtGetDailyConfirmedCount(sdt);
       return Promise.resolve({
         ok: true,
         isNew: false,
+        alreadyStarted: true,
         dailyCount: existDaily,
         remaining: Math.max(0, TRIAL_MAX_DAILY_NEW_LESSONS - existDaily)
       });
     }
 
-    var currentDaily = vlxtGetDailyNewLessonsCount(sdt, todayVN);
-    if (currentDaily >= TRIAL_MAX_DAILY_NEW_LESSONS) {
-      return Promise.resolve({
-        ok: false,
-        reason: 'trial_limit',
-        msg: 'Đã đạt tối đa ' + TRIAL_MAX_DAILY_NEW_LESSONS + ' bài mới hôm nay'
-      });
-    }
-
-    var record = {
-      key: lkey,
-      mabai: mb,
-      name: lesson.name || '',
-      course: courseName || (lesson.course ? lesson.course.name : ''),
-      date: todayVN,
-      timestamp: Date.now(),
-      idempotencyKey: sdt + '_' + (mb || lkey) + '_' + todayVN
-    };
-
-    // Đưa ngay vào bộ đệm an toàn cục bộ
-    list.push(record);
-    vlxtSaveTrialStartedLessons(sdt, list);
-
-    // Gửi request lên server thật
+    // BÀI MỚI: BẮT BUỘC GỌI SERVER XÁC THỰC
     var gasUrl = (typeof global.VLXT_GAS !== 'undefined') ? global.VLXT_GAS : ((typeof global.APPS_SCRIPT_URL !== 'undefined') ? global.APPS_SCRIPT_URL : '');
     if (!gasUrl) {
-      vlxtQueueTrialSync(record, sdt);
+      // Mất kết nối server: FAIL-CLOSED
       return Promise.resolve({
-        ok: true,
-        isNew: true,
-        dailyCount: currentDaily + 1,
-        remaining: Math.max(0, TRIAL_MAX_DAILY_NEW_LESSONS - (currentDaily + 1))
+        ok: false,
+        reason: 'network_error',
+        msg: 'Không thể xác minh lượt học, vui lòng kiểm tra mạng'
       });
     }
 
     var payload = {
       action: 'starttriallesson',
+      token: token,
       sdt: sdt,
       mabai: mb || lkey,
       key: lkey,
-      dateStr: todayVN,
-      idempotencyKey: record.idempotencyKey,
-      hoten: (global.HS && global.HS.ten) || '',
+      course: courseName || '',
       deviceId: (typeof global.vlxtGetDeviceId === 'function') ? global.vlxtGetDeviceId() : ''
     };
 
@@ -369,134 +355,58 @@
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload)
     })
-      .then(function (r) { return r.json(); })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
       .then(function (res) {
         if (res && res.ok) {
-          // Server xác nhận thành công
+          // SERVER ĐÃ CHẤP NHẬN VÀ CẤP QUYỀN!
+          // Lúc này MỚI ghi nhận vào danh sách server-confirmed ở local
+          var list = vlxtGetServerConfirmedLessons(sdt);
+          list.push({
+            key: lkey,
+            mabai: mb || lkey,
+            name: lesson.name || '',
+            course: courseName || '',
+            date: vlxtGetVietnamDateStr(),
+            timestamp: Date.now()
+          });
+          vlxtSaveServerConfirmedLessons(sdt, list);
+
+          var todayVN = vlxtGetVietnamDateStr();
+          var newDaily = vlxtGetDailyConfirmedCount(sdt, todayVN);
+
           return {
             ok: true,
             isNew: res.isNew !== false,
-            dailyCount: res.dailyCount || (currentDaily + 1),
-            remaining: typeof res.remaining === 'number' ? res.remaining : Math.max(0, TRIAL_MAX_DAILY_NEW_LESSONS - (currentDaily + 1))
-          };
-        } else if (res && res.reason === 'trial_limit') {
-          // Server từ chối vì đã hết hạn mức thật trên server (ví dụ học ở máy khác)
-          // Xóa bài vừa thêm vào local và cập nhật dailyCount = 2
-          var updated = vlxtGetTrialStartedLessons(sdt).filter(function (x) { return x.key !== lkey && x.mabai !== mb; });
-          vlxtSaveTrialStartedLessons(sdt, updated);
-          return {
-            ok: false,
-            reason: 'trial_limit',
-            msg: res.msg || 'Đã hết hạn mức bài mới trên máy chủ'
+            dailyCount: res.dailyCount || newDaily,
+            remaining: typeof res.remaining === 'number' ? res.remaining : Math.max(0, TRIAL_MAX_DAILY_NEW_LESSONS - newDaily)
           };
         }
-        // Fallback an toàn nếu server lỗi nhẹ
-        vlxtQueueTrialSync(record, sdt);
+
+        // Server từ chối: trả về mã lỗi cụ thể (trial_limit, invalid_account, Unauthorized, Forbidden)
         return {
-          ok: true,
-          isNew: true,
-          dailyCount: currentDaily + 1,
-          remaining: Math.max(0, TRIAL_MAX_DAILY_NEW_LESSONS - (currentDaily + 1))
+          ok: false,
+          reason: res.reason || (res.error ? res.error.toLowerCase() : 'server_rejected'),
+          error: res.error || '',
+          msg: res.msg || 'Không được phép mở bài học',
+          dailyCount: res.dailyCount || 2,
+          remaining: res.remaining || 0
         };
       })
       .catch(function (err) {
-        // Mất mạng: giữ bộ đệm an toàn và đưa vào hàng đợi đồng bộ
-        console.warn('Mất mạng khi lưu bài học thử (đã đưa vào hàng đợi ngoại tuyến):', err);
-        vlxtQueueTrialSync(record, sdt);
+        // Lỗi mạng hoặc server không truy cập được: FAIL-CLOSED (tạm khóa bài mới)
+        console.warn('Lỗi kết nối máy chủ khi xác thực bài học thử:', err);
         return {
-          ok: true,
-          isNew: true,
-          dailyCount: currentDaily + 1,
-          remaining: Math.max(0, TRIAL_MAX_DAILY_NEW_LESSONS - (currentDaily + 1))
+          ok: false,
+          reason: 'network_error',
+          msg: 'Không thể xác minh lượt học, vui lòng kiểm tra mạng'
         };
       });
   }
 
-  // 8. Hàng đợi đồng bộ ngoại tuyến & Chống rớt mạng
-  function vlxtReadTrialQueue() {
-    try {
-      return JSON.parse(localStorage.getItem(TRIAL_QUEUE_KEY) || '[]');
-    } catch (e) {
-      return [];
-    }
-  }
-
-  function vlxtWriteTrialQueue(items) {
-    try {
-      localStorage.setItem(TRIAL_QUEUE_KEY, JSON.stringify(items || []));
-    } catch (e) {}
-  }
-
-  function vlxtQueueTrialSync(record, sdt) {
-    var queue = vlxtReadTrialQueue();
-    var exists = queue.some(function (x) {
-      return x.record && x.record.idempotencyKey === record.idempotencyKey;
-    });
-    if (!exists) {
-      queue.push({
-        sdt: sdt,
-        record: record,
-        attempts: 0
-      });
-      vlxtWriteTrialQueue(queue);
-    }
-    vlxtSyncTrialQueue();
-  }
-
-  var _trialSyncing = false;
-  function vlxtSyncTrialQueue() {
-    if (_trialSyncing || typeof navigator === 'undefined' || !navigator.onLine) return Promise.resolve();
-    var queue = vlxtReadTrialQueue();
-    if (!queue.length) return Promise.resolve();
-
-    _trialSyncing = true;
-    var gasUrl = (typeof global.VLXT_GAS !== 'undefined') ? global.VLXT_GAS : ((typeof global.APPS_SCRIPT_URL !== 'undefined') ? global.APPS_SCRIPT_URL : '');
-
-    if (!gasUrl) {
-      _trialSyncing = false;
-      return Promise.resolve();
-    }
-
-    var item = queue[0];
-    var payload = {
-      action: 'starttriallesson',
-      sdt: item.sdt,
-      mabai: item.record.mabai || item.record.key,
-      key: item.record.key,
-      dateStr: item.record.date,
-      idempotencyKey: item.record.idempotencyKey,
-      hoten: (global.HS && global.HS.ten) || '',
-      deviceId: (typeof global.vlxtGetDeviceId === 'function') ? global.vlxtGetDeviceId() : ''
-    };
-
-    return fetch(gasUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload)
-    }).then(function (r) {
-      return r.json();
-    }).then(function (res) {
-      if (res && (res.ok || res.reason === 'trial_limit' || res.msg === 'already')) {
-        queue.shift(); // Xóa khỏi queue vì server đã xử lý
-        vlxtWriteTrialQueue(queue);
-      }
-    }).catch(function (err) {
-      console.warn('Lỗi đồng bộ trial queue (sẽ thử lại sau):', err);
-    }).finally(function () {
-      _trialSyncing = false;
-      if (queue.length > 0 && navigator.onLine) {
-        setTimeout(vlxtSyncTrialQueue, 1500);
-      }
-    });
-  }
-
-  if (typeof window !== 'undefined') {
-    window.addEventListener('online', function () {
-      vlxtSyncTrialQueue();
-    });
-  }
-
-  // 9. Bỏ qua cảnh báo bài nền tảng trong phiên (Session Storage)
+  // 8. Bỏ qua cảnh báo bài nền tảng trong phiên (Session Storage)
   function vlxtIsPrereqWarningDismissed(sdt, lessonKey) {
     if (typeof sessionStorage === 'undefined') return false;
     try {
@@ -513,6 +423,78 @@
     } catch (e) {}
   }
 
+  // 9. Helper tạo và xác thực token trong môi trường Test / Dev
+  function vlxtCreateDevToken(sdt, secret) {
+    var cleanSdt = normSdt(sdt);
+    var timestamp = Date.now();
+    var raw = cleanSdt + ':' + timestamp;
+    var sec = secret || AUTH_SECRET_KEY;
+    // Dùng Buffer nếu trong Node.js hoặc Base64 thuần trong trình duyệt
+    if (typeof Buffer !== 'undefined') {
+      var crypto = (typeof require === 'function') ? require('node:crypto') : (global.crypto || null);
+      if (crypto && crypto.createHmac) {
+        var sig = crypto.createHmac('sha256', sec).update(raw).digest('base64url');
+        return Buffer.from(raw + ':' + sig).toString('base64url');
+      }
+    }
+    // Fallback btoa
+    try {
+      return btoa(raw + ':dev_sig_' + sec);
+    } catch (e) {
+      return raw + ':dev_sig';
+    }
+  }
+
+  function vlxtVerifyDevToken(token, secret) {
+    if (!token) return null;
+    var sec = secret || AUTH_SECRET_KEY;
+    try {
+      var decoded = '';
+      if (typeof Buffer !== 'undefined') {
+        decoded = Buffer.from(token, 'base64url').toString('utf8');
+      } else {
+        decoded = atob(token);
+      }
+      var parts = decoded.split(':');
+      if (parts.length !== 3) return null;
+      var sdt = parts[0];
+      var timestamp = Number(parts[1]);
+      var sig = parts[2];
+      if (Date.now() - timestamp > 30 * 86400000) return null;
+      var raw = sdt + ':' + timestamp;
+      if (typeof Buffer !== 'undefined') {
+        var crypto = (typeof require === 'function') ? require('node:crypto') : (global.crypto || null);
+        if (crypto && crypto.createHmac) {
+          var expectedSig = crypto.createHmac('sha256', sec).update(raw).digest('base64url');
+          if (sig !== expectedSig) return null;
+          return sdt;
+        }
+      }
+      if (sig === 'dev_sig_' + sec) return sdt;
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Backward compatibility alias
+  function vlxtGetTrialStartedLessons(sdt) {
+    return vlxtGetServerConfirmedLessons(sdt);
+  }
+
+  function vlxtIsLessonStarted(sdt, lessonKey, watchedSet) {
+    return vlxtIsServerConfirmedLesson(sdt, lessonKey, watchedSet);
+  }
+
+  function vlxtGetDailyNewLessonsCount(sdt, dateStr) {
+    return vlxtGetDailyConfirmedCount(sdt, dateStr);
+  }
+
+  function vlxtRecordTrialLessonStart(sdt, lesson, courseName) {
+    var user = { sdt: sdt, token: vlxtCreateDevToken(sdt) };
+    return vlxtRequestTrialAccess(user, lesson, courseName);
+  }
+
   // Xuất API toàn cục
   var TrialManager = {
     MAX_DAILY: TRIAL_MAX_DAILY_NEW_LESSONS,
@@ -523,16 +505,21 @@
     parsePrerequisites: vlxtParsePrerequisites,
     findLessonByIdentifier: vlxtFindLessonByIdentifier,
     getUnfinishedPrerequisites: vlxtGetUnfinishedPrerequisites,
+    getServerConfirmedLessons: vlxtGetServerConfirmedLessons,
+    isServerConfirmedLesson: vlxtIsServerConfirmedLesson,
+    getDailyConfirmedCount: vlxtGetDailyConfirmedCount,
+    fetchTrialLimitServer: vlxtFetchTrialLimitServer,
+    canAccessTrialLesson: vlxtCanAccessTrialLesson,
+    requestTrialAccess: vlxtRequestTrialAccess,
+    isPrereqWarningDismissed: vlxtIsPrereqWarningDismissed,
+    dismissPrereqWarning: vlxtDismissPrereqWarning,
+    createDevToken: vlxtCreateDevToken,
+    verifyDevToken: vlxtVerifyDevToken,
+    // Aliases
     getTrialStartedLessons: vlxtGetTrialStartedLessons,
     isLessonStarted: vlxtIsLessonStarted,
     getDailyNewLessonsCount: vlxtGetDailyNewLessonsCount,
-    fetchTrialLimitServer: vlxtFetchTrialLimitServer,
-    canAccessTrialLesson: vlxtCanAccessTrialLesson,
-    recordTrialLessonStart: vlxtRecordTrialLessonStart,
-    readTrialQueue: vlxtReadTrialQueue,
-    syncTrialQueue: vlxtSyncTrialQueue,
-    isPrereqWarningDismissed: vlxtIsPrereqWarningDismissed,
-    dismissPrereqWarning: vlxtDismissPrereqWarning
+    recordTrialLessonStart: vlxtRecordTrialLessonStart
   };
 
   if (typeof module !== 'undefined' && module.exports) {

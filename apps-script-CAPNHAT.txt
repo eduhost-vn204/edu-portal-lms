@@ -245,9 +245,10 @@ function registerUser(data) {
     devSheet.getRange(devSheet.getLastRow() + 1, 2, 1, 1).setNumberFormat('@'); // giữ số 0 đầu SĐT
     devSheet.appendRow([deviceId, String(data.sdt), data.hoten, now.getTime(), trialExpiry, 0]);
   }
-  return jsonOut({ ok: true, msg: 'Đăng ký thành công! Bạn có 7 ngày dùng thử VIP miễn phí.', user: {
+    return jsonOut({ ok: true, msg: 'Đăng ký thành công! Bạn có 7 ngày dùng thử VIP miễn phí.', user: {
     sdt: data.sdt, hoten: data.hoten, lop: data.lop,
-    lpTotal: 0, diemGame: 0, loaiTK: loaiTK, trialExpiry: trialExpiry, mienVideo: false, tracNghiemVideo: false
+    lpTotal: 0, diemGame: 0, loaiTK: loaiTK, trialExpiry: trialExpiry, mienVideo: false, tracNghiemVideo: false,
+    token: (typeof generateUserToken === 'function' ? generateUserToken(data.sdt) : '')
   }});
 }
 
@@ -273,7 +274,8 @@ function loginUser(data) {
       return jsonOut({ ok: true, user: {
         sdt: row[0], hoten: row[1], lop: row[2],
         lpTotal: typeof row[5] === 'number' ? (row[5] || 0) : 0, diemGame: typeof row[6] === 'number' ? (row[6] || 0) : 0,
-        loaiTK: loaiTK, trialExpiry: trialExpiry, mienVideo: !!(row[9]), tracNghiemVideo: (row[10] === false ? false : true), mienLuyenTap: !!(row[11])
+        loaiTK: loaiTK, trialExpiry: trialExpiry, mienVideo: !!(row[9]), tracNghiemVideo: (row[10] === false ? false : true), mienLuyenTap: !!(row[11]),
+        token: (typeof generateUserToken === 'function' ? generateUserToken(row[0]) : '')
       }});
     }
   }
@@ -306,7 +308,8 @@ function loginGoogle(data) {
         sdt: rows[i][0], hoten: data.hoten || rows[i][1],
         lop: rows[i][2] || 'Google', email: email,
         avatar: data.avatar || '', lpTotal: rows[i][5] || 0,
-        loaiTK: loaiTK, trialExpiry: trialExpiry, mienVideo: !!(rows[i][9]), tracNghiemVideo: (rows[i][10] === false ? false : true)
+        loaiTK: loaiTK, trialExpiry: trialExpiry, mienVideo: !!(rows[i][9]), tracNghiemVideo: (rows[i][10] === false ? false : true),
+        token: (typeof generateUserToken === 'function' ? generateUserToken(rows[i][0]) : '')
       }});
     }
   }
@@ -340,7 +343,8 @@ function loginGoogle(data) {
     sdt: email, hoten: data.hoten || email,
     lop: 'Google', email: email,
     avatar: data.avatar || '', lpTotal: 0,
-    loaiTK: loaiTK, trialExpiry: trialExpiry, mienVideo: false, tracNghiemVideo: false
+    loaiTK: loaiTK, trialExpiry: trialExpiry, mienVideo: false, tracNghiemVideo: false,
+    token: (typeof generateUserToken === 'function' ? generateUserToken(email) : '')
   }});
 }
 
@@ -361,7 +365,7 @@ function getProfile(sdt) {
         _loaiTK = 'free';
         acc.getRange(i + 1, 8).setValue('free');
       }
-      user = { sdt: rows[i][0], hoten: rows[i][1], lop: rows[i][2], lpTotal: typeof rows[i][5]==='number'?(rows[i][5]||0):0, diemGame: typeof rows[i][6]==='number'?(rows[i][6]||0):0, loaiTK: _loaiTK, trialExpiry: _trialExpiry, mienVideo: !!(rows[i][9]), tracNghiemVideo: (rows[i][10] === false ? false : true), mienLuyenTap: !!(rows[i][11]) };
+      user = { sdt: rows[i][0], hoten: rows[i][1], lop: rows[i][2], lpTotal: typeof rows[i][5]==='number'?(rows[i][5]||0):0, diemGame: typeof rows[i][6]==='number'?(rows[i][6]||0):0, loaiTK: _loaiTK, trialExpiry: _trialExpiry, mienVideo: !!(rows[i][9]), tracNghiemVideo: (rows[i][10] === false ? false : true), mienLuyenTap: !!(rows[i][11]), token: (typeof generateUserToken === 'function' ? generateUserToken(rows[i][0]) : '') };
       break;
     }
   }
@@ -2528,12 +2532,47 @@ function normalizeSearchText(value) {
 }
 
 // ═════════════════════════════════════════════════════════════════════════════
-// ENDPOINTS QUẢN LÝ HẠN MỨC HỌC THỬ (TRIAL LIMIT) SERVER-SIDE THỰC SỰ
+// ENDPOINTS QUẢN LÝ HẠN MỨC HỌC THỬ (TRIAL LIMIT) SERVER-SIDE XÁC THỰC PHIÊN BẢO MẬT
+// - Xác thực phiên đăng nhập bằng HMAC Token (không tin SĐT do client tự gửi)
+// - Chống đọc hoặc tiêu hao lượt của SĐT khác
 // - Bảng dữ liệu: TrialActivity (sdt, mabai, dateStr, thoigian, deviceId, hoten)
 // - Tính ngày theo múi giờ Việt Nam (Asia/Saigon, UTC+7)
 // - Khóa ScriptLock chống race condition (hai yêu cầu đồng thời từ 2 tab/thiết bị không tạo quá 2 lượt)
-// - Đồng bộ dùng chung giữa nhiều thiết bị, không bị ảnh hưởng khi xóa localStorage
+// - Đồng bộ dùng chung giữa nhiều thiết bị, fail-closed khi không có quyền/mất mạng
 // ═════════════════════════════════════════════════════════════════════════════
+
+const AUTH_SECRET_KEY = PropertiesService.getScriptProperties().getProperty('AUTH_SECRET') || 'VLXT_SESSION_SECRET_2026';
+
+function generateUserToken(sdt) {
+  const cleanSdt = normSdt(sdt);
+  const timestamp = Date.now();
+  const raw = cleanSdt + ':' + timestamp;
+  const sig = Utilities.base64EncodeWebSafe(
+    Utilities.computeHmacSha256Signature(raw, AUTH_SECRET_KEY)
+  );
+  return Utilities.base64EncodeWebSafe(raw + ':' + sig);
+}
+
+function verifyUserToken(token) {
+  if (!token) return null;
+  try {
+    const decoded = Utilities.newBlob(Utilities.base64DecodeWebSafe(token)).getDataAsString();
+    const parts = decoded.split(':');
+    if (parts.length !== 3) return null;
+    const sdt = parts[0];
+    const timestamp = Number(parts[1]);
+    const sig = parts[2];
+    if (Date.now() - timestamp > 30 * 86400000) return null; // Hạn phiên 30 ngày
+    const raw = sdt + ':' + timestamp;
+    const expectedSig = Utilities.base64EncodeWebSafe(
+      Utilities.computeHmacSha256Signature(raw, AUTH_SECRET_KEY)
+    );
+    if (sig !== expectedSig) return null;
+    return sdt;
+  } catch (e) {
+    return null;
+  }
+}
 
 function getVietnamDateString(d) {
   try {
@@ -2551,10 +2590,21 @@ function getVietnamDateString(d) {
   }
 }
 
-// GET: Lấy trạng thái hạn mức bài mới của học sinh
+// GET: Lấy trạng thái hạn mức bài mới của học sinh (BẢO VỆ BẰNG TOKEN PHIÊN)
 function getTrialLimit(e) {
-  const hs = String(e.parameter.hs || e.parameter.sdt || '').trim();
-  if (!hs) return jsonOut({ ok: false, msg: 'Thiếu hs/sdt' });
+  const token = (e && e.parameter && (e.parameter.token || e.parameter.authToken)) || '';
+  const authSdt = verifyUserToken(token);
+  if (!authSdt) {
+    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Yêu cầu phiên đăng nhập hợp lệ' });
+  }
+
+  // Chống đọc trộm hạn mức của SĐT khác
+  const clientHs = String(e.parameter.hs || e.parameter.sdt || '').trim();
+  if (clientHs && normSdt(clientHs) !== normSdt(authSdt)) {
+    return jsonOut({ ok: false, error: 'Forbidden', msg: 'Không được phép đọc dữ liệu của số điện thoại khác' });
+  }
+
+  const hs = authSdt; // LUÔN DÙNG SĐT ĐÃ XÁC THỰC PHÍA SERVER
 
   // 1. Kiểm tra loại tài khoản trong sheet TaiKhoan
   const tkSheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
@@ -2599,11 +2649,23 @@ function getTrialLimit(e) {
   });
 }
 
-// POST: Ghi nhận bắt đầu bài học thử (Atomic với ScriptLock chống race condition)
+// POST: Ghi nhận bắt đầu bài học thử (BẢO VỆ BẰNG TOKEN PHIÊN + ATOMIC SCRIPTLOCK)
 function startTrialLesson(data) {
-  const sdt = String(data.sdt || '').trim();
+  const token = (data && (data.token || data.authToken)) || '';
+  const authSdt = verifyUserToken(token);
+  if (!authSdt) {
+    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Yêu cầu phiên đăng nhập hợp lệ' });
+  }
+
+  // Chống tiêu hao lượt của SĐT khác
+  const clientSdt = String(data.sdt || '').trim();
+  if (clientSdt && normSdt(clientSdt) !== normSdt(authSdt)) {
+    return jsonOut({ ok: false, error: 'Forbidden', msg: 'Không được phép tiêu hao lượt học của số điện thoại khác' });
+  }
+
+  const sdt = authSdt; // LUÔN DÙNG SĐT ĐÃ XÁC THỰC PHÍA SERVER
   const mabai = String(data.mabai || data.key || '').trim();
-  if (!sdt || !mabai) return jsonOut({ ok: false, msg: 'Thiếu sdt hoặc mabai' });
+  if (!mabai) return jsonOut({ ok: false, msg: 'Thiếu mã bài học' });
 
   // Dùng LockService để đảm bảo hai yêu cầu đồng thời không thể vượt quá 2 lượt
   const lock = LockService.getScriptLock();

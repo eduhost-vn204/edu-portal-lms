@@ -1258,6 +1258,83 @@ function showTrialLimitModal(course, lesson, trialInfo){
     document.body.appendChild(overlay);
 }
 
+async function triggerTrial(user, lesson, courseName, lkey){
+    try {
+        if(!user || !lesson || !courseName){
+            return { ok: false, reason: 'invalid_params' };
+        }
+        const res = await TrialManager.requestTrialAccess(user, lesson, courseName);
+        const curHash = '#lesson/' + encodeURIComponent(lkey);
+        if(location.hash !== curHash && location.hash !== '#lesson/' + lkey){
+            return res; // Học sinh đã chuyển sang trang khác trong lúc chờ
+        }
+
+        if(res && res.ok){
+            // 1. Nhánh OK: Server chấp nhận -> ghi nhận lượt rồi mới mở bài
+            toast('<i class="fa-solid fa-star"></i> Em đã kích hoạt bài học thử (' + (res.dailyCount || 1) + '/2 bài mới hôm nay)', 'ok');
+            renderLesson(lkey);
+            return res;
+        }
+
+        if(res && (res.reason === 'trial_limit' || res.error === 'trial_limit')){
+            // 2. Nhánh HẾT LƯỢT: Giữ học sinh ngoài bài và hiện modal hết lượt
+            const course = findCourse(courseName);
+            app().innerHTML = `<div class="empty">
+                <i class="fa-solid fa-hourglass-half" style="font-size:34px;opacity:.5;color:#f59e0b"></i>
+                <p style="margin-top:10px;font-weight:700">${esc(lesson.name)}</p>
+                <p style="color:var(--sub)">Em đã dùng hết 2/2 bài học mới hôm nay theo hạn mức học thử. Lượt học mới sẽ tự động mở lại vào 00:00 ngày mai (theo giờ Việt Nam). Em vẫn có thể ôn tập các bài đã học bên dưới.</p>
+                <p style="margin-top:14px">
+                    <a onclick="go('#course/${encodeURIComponent(courseName)}')">← Về danh sách bài học</a>
+                </p>
+            </div>`;
+            if(typeof showTrialLimitModal === 'function'){
+                showTrialLimitModal(course, lesson, res);
+            }
+            return res;
+        }
+
+        if(res && res.reason === 'network_error'){
+            // 3. Nhánh LỖI MẠNG: Tạm khóa và báo "Không thể xác minh lượt học, vui lòng kiểm tra mạng"
+            app().innerHTML = `<div class="empty">
+                <i class="fa-solid fa-wifi" style="font-size:34px;opacity:.5;color:#ef4444"></i>
+                <p style="margin-top:10px;font-weight:700">${esc(lesson.name)}</p>
+                <p style="color:var(--sub)">Không thể xác minh lượt học, vui lòng kiểm tra mạng.</p>
+                <div style="margin-top:14px;display:flex;gap:10px;justify-content:center;">
+                    <button type="button" onclick="renderLesson(decodeURIComponent('${encodeURIComponent(lkey)}'))" style="padding:8px 16px;border-radius:20px;border:1px solid var(--line);background:var(--blue);color:#fff;font-weight:600;cursor:pointer;">
+                        <i class="fa-solid fa-rotate-right"></i> Thử lại
+                    </button>
+                    <a onclick="go('#course/${encodeURIComponent(courseName)}')">← Về danh sách bài học</a>
+                </div>
+            </div>`;
+            toast('Không thể xác minh lượt học, vui lòng kiểm tra mạng', 'err');
+            return res;
+        }
+
+        // 4. Nhánh TÀI KHOẢN KHÔNG HỢP LỆ (invalid_account, Unauthorized, Forbidden)
+        app().innerHTML = `<div class="empty">
+            <i class="fa-solid fa-circle-exclamation" style="font-size:34px;opacity:.5;color:#ef4444"></i>
+            <p style="margin-top:10px;font-weight:700">${esc(lesson.name)}</p>
+            <p style="color:var(--sub)">${esc(res.msg || res.error || 'Tài khoản không đủ quyền mở bài học này.')}</p>
+            <p style="margin-top:14px">
+                <a onclick="go('#course/${encodeURIComponent(courseName)}')">← Về danh sách bài học</a>
+            </p>
+        </div>`;
+        toast(res.msg || 'Không thể mở bài học', 'err');
+        return res;
+    } catch(err){
+        console.error('triggerTrial error:', err);
+        app().innerHTML = `<div class="empty">
+            <i class="fa-solid fa-wifi" style="font-size:34px;opacity:.5;color:#ef4444"></i>
+            <p style="margin-top:10px;font-weight:700">${esc(lesson.name)}</p>
+            <p style="color:var(--sub)">Không thể xác minh lượt học, vui lòng kiểm tra mạng.</p>
+            <p style="margin-top:14px"><a onclick="go('#course/${encodeURIComponent(courseName)}')">← Về danh sách bài học</a></p>
+        </div>`;
+        return { ok: false, reason: 'network_error', error: err };
+    }
+}
+if (typeof window !== 'undefined') window.triggerTrial = triggerTrial;
+if (typeof global !== 'undefined') global.triggerTrial = triggerTrial;
+
 function handleOpenLesson(courseName, lessonKey){
     const course = findCourse(courseName);
     const info = findLesson(lessonKey);
@@ -1282,9 +1359,9 @@ function handleOpenLesson(courseName, lessonKey){
     }
 
     const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
-    const isTrial = (typeof TrialManager !== 'undefined' && typeof TrialManager.isTrialUser === 'function')
-        ? TrialManager.isTrialUser(user)
-        : (user && String(user.loaiTK || '').toLowerCase() !== 'premium');
+    const isTrial = (typeof TrialManager !== 'undefined' && typeof TrialManager.isValidTrialUser === 'function')
+        ? TrialManager.isValidTrialUser(user)
+        : (typeof TrialManager !== 'undefined' && typeof TrialManager.isTrialUser === 'function' ? TrialManager.isTrialUser(user) : (user && String(user.loaiTK || '').toLowerCase() !== 'premium'));
 
     const sdt = (HS && HS.sdt) ? String(HS.sdt) : '';
     if(isTrial && !WATCHED.has(lessonKey) && typeof TrialManager !== 'undefined'){
@@ -1371,14 +1448,6 @@ function renderLesson(key){
     const info=findLesson(key);
     if(!info){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-circle-question"></i><p>Không tìm thấy bài học.</p><p><a onclick="go('#home')">← Về trang chủ</a></p></div>`; return; }
     const {course,chapter,lesson}=info;
-    const _quizMeta=QUIZ_INDEX&&QUIZ_INDEX.lessons&&QUIZ_INDEX.lessons[key];
-    if(_quizMeta&&!lesson._quizLoaded&&!lesson._quizLoading){
-        lesson._quizLoading=true;
-        app().innerHTML=`<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p style="margin-top:12px">Đang mở bài học...</p></div>`;
-        loadLessonQuiz(key,lesson).finally(()=>{ lesson._quizLoading=false; if(location.hash==='#lesson/'+encodeURIComponent(key)) renderLesson(key); });
-        return;
-    }
-    if(_quizMeta&&lesson._quizLoading) return;
     // Chặn "học vượt" kể cả khi vào thẳng bằng link/hash — không chỉ chặn ở danh sách bài
     const _blkCheck = isLessonBlocked(course, key);
     if(_blkCheck.blocked){
@@ -1403,28 +1472,33 @@ function renderLesson(key){
         </div>`;
         return;
     }
-    // Kích hoạt ghi nhận bài học thử khi thực sự bắt đầu học (chống bấm nhầm)
-    window._triggerTrialStart = null;
-    if(typeof TrialManager !== 'undefined' && HS && HS.sdt && !WATCHED.has(key)){
-        const _curUser = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
-        if(TrialManager.isValidTrialUser(_curUser)){
-            let _trialStarted = false;
-            const triggerTrial = () => {
-                if(_trialStarted) return;
-                _trialStarted = true;
-                const rec = TrialManager.recordTrialLessonStart(String(HS.sdt), lesson, course.name);
-                if(rec && rec.isNew){
-                    toast('<i class="fa-solid fa-star"></i> Em đã kích hoạt bài học thử (' + rec.dailyCount + '/2 bài mới hôm nay)','ok');
-                }
-            };
-            window._triggerTrialStart = triggerTrial;
-            setTimeout(() => {
-                if(location.hash === '#lesson/' + encodeURIComponent(key)){
-                    triggerTrial();
-                }
-            }, 30000);
-        }
+
+    // Tài khoản học thử mở bài mới: BẮT BUỘC chờ server cấp quyền trước khi tải quiz/video (Pessimistic / Fail-closed)
+    const _curUser = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
+    const _isTrial = typeof TrialManager !== 'undefined' && TrialManager.isValidTrialUser(_curUser);
+    const _sdt = (HS && HS.sdt) ? String(HS.sdt) : (_curUser && _curUser.sdt ? String(_curUser.sdt) : '');
+    const _isOldLesson = _isTrial && _sdt && (WATCHED.has(key) || TrialManager.isServerConfirmedLesson(_sdt, key));
+
+    if(_isTrial && !_isOldLesson){
+        app().innerHTML = `<div class="empty" id="trial-verifying">
+            <i class="fa-solid fa-spinner fa-spin" style="font-size:34px;color:var(--blue)"></i>
+            <p style="margin-top:14px;font-weight:700">${esc(lesson.name)}</p>
+            <p style="color:var(--sub)">Đang xác thực lượt học thử từ máy chủ...</p>
+        </div>`;
+        triggerTrial(_curUser, lesson, course.name, key);
+        return;
     }
+
+    const _quizMeta=QUIZ_INDEX&&QUIZ_INDEX.lessons&&QUIZ_INDEX.lessons[key];
+    if(_quizMeta&&!lesson._quizLoaded&&!lesson._quizLoading){
+        lesson._quizLoading=true;
+        app().innerHTML=`<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p style="margin-top:12px">Đang mở bài học...</p></div>`;
+        loadLessonQuiz(key,lesson).finally(()=>{ lesson._quizLoading=false; if(location.hash==='#lesson/'+encodeURIComponent(key)) renderLesson(key); });
+        return;
+    }
+    if(_quizMeta&&lesson._quizLoading) return;
+
+    window._triggerTrialStart = null;
     try{ if(typeof vlxtLog==='function' && HS && HS.sdt){ const _lk='vlxt_seen_'+HS.sdt+'_'+key; if(Date.now()-Number(localStorage.getItem(_lk)||0)>10*60*1000){ localStorage.setItem(_lk,String(Date.now())); vlxtLog('Xem bài học', lesson.name+' · '+course.name); } } }catch(e){}
     const flat=flatLessons(course); const idx=flat.findIndex(l=>l.key===key);
     const prev=idx>0?flat[idx-1]:null, next=idx<flat.length-1?flat[idx+1]:null;
@@ -3562,7 +3636,8 @@ async function boot(){
     // Lấy quyền mới nhất trước khi quyết định khóa/mở khóa học.
     if(typeof vlxtRefreshUser==='function') await vlxtRefreshUser();
     if(typeof TrialManager !== 'undefined' && typeof TrialManager.fetchTrialLimitServer === 'function' && HS && HS.sdt){
-        await TrialManager.fetchTrialLimitServer(String(HS.sdt));
+        const _u = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
+        await TrialManager.fetchTrialLimitServer(_u || String(HS.sdt));
     }
     const [rows] = await Promise.all([fetchLessons(), fetchKhoaConfig(), fetchQuizIndex()]);
     COURSES=buildCourses(rows);

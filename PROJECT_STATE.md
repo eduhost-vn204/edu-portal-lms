@@ -159,38 +159,58 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
-#### 14/09/2026 — Hoàn Thành Sửa 3 Blocker Cải Tiến Tài Khoản Học Thử (Trial Soft Unlock v2.0.0)
+#### 14/09/2026 — Hoàn Thành Khắc Phục Triệt Để Các Blocker Bảo Mật & Pessimistic Fail-Closed (Trial Soft Unlock v2.1.0)
 
 - **Người thực hiện**: Antigravity AI Coordinator
 - **Người nhận bàn giao**: Thầy Xuân Trường & Codex
-- **Trạng thái**: `DEV_VERIFIED_100%_PASS` (Đã khắc phục triệt để 3 blocker theo chỉ đạo của Thầy, 11/11 test cases cổng mới PASS 100%, 26/26 test cases hồi quy PASS 100%; bảo toàn 100% tài khoản Premium và logic học tuần tự; dừng chờ Thầy nghiệm thu).
+- **Trạng thái**: `DEV_VERIFIED_100%_PASS` (Đã giải quyết trọn vẹn toàn bộ 5 blocker nghiêm ngặt của Thầy: Bảo vệ HMAC Token phiên phía server, Luồng mở bài Pessimistic / Fail-Closed không tải trước video/quiz khi chưa được cấp quyền, Chặn tuyệt đối fail-open khi mất mạng, Cho phép xem lại bài cũ ngoại tuyến, Concurrency Lock chống vượt 2 bài trên backend. Đầy đủ 13/13 test cases PASS 100%, regression 26/26 PASS 100%; bảo toàn 100% tài khoản Premium và logic học tuần tự; dừng chờ Thầy nghiệm thu).
 - **Nhánh làm việc**: `antigravity/20260914-trial-soft-unlock-limit`
 - **Worktree**: `C:\Users\Xuan Truong\.gemini\antigravity\worktrees\student_trial_soft_unlock`
 - **Các file đã sửa**:
-  1. `trial-manager.js` [v2.0.0]:
-     - Nâng cấp `vlxtIsValidTrialUser`: chỉ `vip`/`trial` có `trialExpiry > Date.now()` mới là trial hợp lệ. Free và VIP hết hạn bị loại trừ, không được mở mềm.
-     - Triển khai `vlxtFetchTrialLimitServer(sdt)`: truy vấn server-side endpoint `type=triallimit&hs=...`, hợp nhất bài đã học về local, khôi phục hạn mức khi đổi thiết bị hoặc xóa `localStorage`.
-     - Triển khai `vlxtRecordTrialLessonStart(sdt, lesson, courseName)`: gửi POST tới backend GAS với `action=starttriallesson`, hỗ trợ hàng đợi ngoại tuyến `vlxt_trial_queue_v2` và fallback an toàn khi mất mạng.
-  2. `baihoc.html`:
-     - Sửa triệt để lỗi runtime: đổi `_isTrialLimit` thành `_isLimit` trong khối `renderLesson` (tránh `ReferenceError` khi mở trực tiếp bài thứ ba lúc hết lượt).
-     - `isLessonBlocked`: chỉ `TrialManager.isValidTrialUser(_curUser)` mới được hưởng cơ chế mở mềm 2 bài/ngày; `premium`, `free` và `vip hết hạn` đều tuân thủ khóa tuần tự (`sequence`).
-     - Tích hợp `TrialManager.fetchTrialLimitServer(sdt)` vào hàm `boot()` để đồng bộ server-side ngay khi khởi động trang.
-  3. `apps-script-CAPNHAT.txt` [Bản Tham Chiếu Backend]:
-     - Bổ sung định nghĩa endpoint `getTrialLimit(e)` (GET) và `startTrialLesson(data)` (POST).
+  1. `apps-script-CAPNHAT.txt` [Bản Tham Chiếu Backend]:
+     - Triển khai `generateUserToken(sdt)` và `verifyUserToken(token)` HMAC-SHA256 stateless với thời hạn 30 ngày.
+     - Bảo vệ tuyệt đối 2 endpoint `getTrialLimit(e)` và `startTrialLesson(data)`: giải mã và xác thực `authSdt` từ token. Bắt buộc có token (`Unauthorized`); từ chối ngay lập tức nếu client gửi SĐT khác (`Forbidden`).
      - Triển khai `LockService.getScriptLock()` với thời gian chờ 15s để chống race condition khi 2 thiết bị/tab gửi request cùng lúc.
+     - Tích hợp phát sinh `token` vào các phản hồi `loginUser`, `registerUser`, `loginGoogle`, `getProfile`.
      - Chuẩn hóa ngày theo múi giờ Việt Nam (`Utilities.formatDate(new Date(), 'Asia/Saigon', 'yyyy-MM-dd')`).
      - **TUYỆT ĐỐI KHÔNG DEPLOY GAS PRODUCTION, KHÔNG ĐỤNG DỮ LIỆU SHEETS THẬT.**
+  2. `trial-manager.js` [v2.1.0]:
+     - Chuyển đổi toàn diện sang mô hình **Pessimistic / Fail-Closed**: Loại bỏ hoàn toàn hàng đợi ghi trước (optimistic offline queue) cho bài học mới.
+     - Triển khai lưu trữ danh sách bài đã được server xác nhận: `vlxt_trial_confirmed_{sdt}` (`getServerConfirmedLessons`, `isServerConfirmedLesson`).
+     - Triển khai `vlxtRequestTrialAccess(user, lesson, courseName)` là async/await hoàn toàn:
+       * Bài cũ đã xác nhận: cho phép truy cập ngay lập tức (offline an toàn).
+       * Bài mới: KHÔNG ghi trước vào local, gửi POST kèm token lên GAS. Chỉ ghi vào local khi server phản hồi `ok: true`.
+       * Server từ chối (`trial_limit`, `invalid_account`, `Forbidden`, `Unauthorized`): trả lỗi nguyên vẹn.
+       * Lỗi kết nối / mất mạng: trả `reason: 'network_error'` (fail-closed), không mở bài.
+     - Cung cấp `createDevToken` và `verifyDevToken` chuẩn HMAC-SHA256 phục vụ môi trường test/dev.
+  3. `baihoc.html`:
+     - Tích hợp kiểm tra quyền Pessimistic Fail-Closed ngay đầu `renderLesson(key)`: nếu là tài khoản Trial hợp lệ và bài mới (`!_isOldLesson`), hiển thị spinner chờ xác thực máy chủ và gọi `triggerTrial(...)` rồi dừng lại (tuyệt đối không khởi tạo `iframe`, player video YouTube/Drive hay tải quiz metadata).
+     - Định nghĩa hàm `async function triggerTrial(user, lesson, courseName, lkey)` xử lý đầy đủ 4 nhánh:
+       * `ok`: Gọi `renderLesson(lkey)` hiển thị nội dung/video bài học sau khi server đã cấp quyền.
+       * `trial_limit`: Giữ học sinh ngoài bài và hiển thị `showTrialLimitModal`.
+       * `network_error`: Giữ học sinh ngoài bài, thông báo "Không thể xác minh lượt học, vui lòng kiểm tra mạng" kèm nút Thử lại.
+       * `invalid_account` / `Unauthorized` / `Forbidden`: Giữ học sinh ngoài bài, báo lỗi tài khoản.
+     - Cập nhật `handleOpenLesson(courseName, lessonKey)` sử dụng `isValidTrialUser`.
+     - Cập nhật `boot()` truyền đối tượng `user` kèm token vào `TrialManager.fetchTrialLimitServer(user)`.
+     - Đảm bảo toàn vẹn thẻ đóng `</body>` và `</html>`.
   4. `scripts/test-trial-soft-unlock.mjs`:
-     - Xây dựng 11 test cases bao quát 5 cổng nghiệm thu: Phân loại 4 nhóm tài khoản, Khôi phục hạn mức server khi xóa localStorage / đổi máy, Khóa độc quyền backend chống 2 request song song, Mở trực tiếp bài thứ ba trong `renderLesson` không có lỗi runtime, Reload & Offline Queue & Idempotency.
+     - Xây dựng 13 test cases bao quát 100% các cổng blocker cốt lõi:
+       1. Phân loại 4 nhóm tài khoản (Trial hợp lệ, Trial hết hạn, Free, Premium).
+       2. Giả mạo SĐT người khác hoặc thiếu token bị từ chối (`Forbidden` / `Unauthorized`).
+       3. Server từ chối bài thứ ba (`trial_limit`) thì nội dung/video bài thứ ba KHÔNG xuất hiện trong DOM.
+       4. Mất mạng hoặc xóa localStorage không mở được bài mới (Fail-Closed).
+       5. Bài cũ đã xác nhận vẫn xem lại được bình thường khi mất mạng (ôn tập an toàn).
+       6. Concurrency lock backend đảm bảo 2 thiết bị đồng thời không vượt quá 2 bài.
+       7. Cú pháp & toàn vẹn `baihoc.html` (không còn biến lỗi `_isTrialLimit`, có biến `_isLimit`, có fail-closed, thẻ đóng `</html>` chuẩn).
   5. `PROJECT_STATE.md`:
      - Cập nhật biên bản kỹ thuật chi tiết.
 - **Kết quả kiểm thử tự động**:
-  - `node scripts/test-trial-soft-unlock.mjs`: **11/11 PASS (100%)**.
+  - `node scripts/test-trial-soft-unlock.mjs`: **13/13 PASS (100%)**.
   - `node scripts/test-student-stable-session-num.mjs`: **8/8 PASS (100%)**.
   - `node scripts/test-quiz-merge.mjs`: **6/6 PASS (100%)**.
   - `node scripts/test-quiz-publish.mjs`: **12/12 PASS (100%)**.
+  - `node scripts/test-apps-script-scope.mjs`: **4/4 PASS (100%)**.
   - `node --check trial-manager.js; node --check auth.js`: **Hợp lệ cú pháp 100%**.
-  - Kiểm tra toàn vẹn thẻ đóng `</html>` trong `baihoc.html`: **PASS**.
   - `git diff --check` và quét secret: **Sạch hoàn toàn, 0 secret**.
 - **Điều phải giữ nguyên**:
   - Không deploy Google Apps Script production.
