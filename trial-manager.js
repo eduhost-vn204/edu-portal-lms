@@ -319,20 +319,8 @@
     var lkey = lesson.key || lesson;
     var mb = lesson.mabai || '';
     var token = user.token || user.authToken || '';
-
-    // Nếu bài này đã được server xác nhận trước đó: mở tự do (xem lại bài cũ an toàn)
-    if (vlxtIsServerConfirmedLesson(sdt, lkey)) {
-      var existDaily = vlxtGetDailyConfirmedCount(sdt);
-      return Promise.resolve({
-        ok: true,
-        isNew: false,
-        alreadyStarted: true,
-        dailyCount: existDaily,
-        remaining: Math.max(0, TRIAL_MAX_DAILY_NEW_LESSONS - existDaily)
-      });
-    }
-
-    // BÀI MỚI: BẮT BUỘC GỌI SERVER XÁC THỰC
+    // BẮT BUỘC GỌI SERVER XÁC THỰC MỌI LẦN MỞ BÀI (KỂ CẢ BÀI ĐÃ HỌC)
+    // Không dùng danh sách trong localStorage làm bằng chứng cấp quyền
     var gasUrl = (typeof global.VLXT_GAS !== 'undefined') ? global.VLXT_GAS : ((typeof global.APPS_SCRIPT_URL !== 'undefined') ? global.APPS_SCRIPT_URL : '');
     if (!gasUrl) {
       // Mất kết nối server: FAIL-CLOSED

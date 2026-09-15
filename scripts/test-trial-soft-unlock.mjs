@@ -828,12 +828,13 @@ await itAsync('10. Mất mạng hoặc xóa localStorage không mở được b�
   }
 });
 
-await itAsync('11. Bài cũ đã xác nhận vẫn xem lại được bình thường khi mất mạng (ôn tập an toàn)', async () => {
+await itAsync('11. Bài cũ khi mất mạng: Báo không thể xác minh và KHÔNG mở video (Server-verified only)', async () => {
   mockStorage.clear();
   const sdt = '0901111111';
   const user = { sdt, loaiTK: 'vip', trialExpiry: Date.now() + 86400000 };
   const l1 = mockCourses[0].chapters[0].lessons[0];
 
+  // Dù có dữ liệu cũ trong localStorage vlxt_trial_confirmed_
   const confirmedList = [
     { key: 'B01', mabai: 'B01', name: l1.name, date: TrialManager.getVietnamDateStr(), timestamp: Date.now() - 3600000 }
   ];
@@ -845,14 +846,100 @@ await itAsync('11. Bài cũ đã xác nhận vẫn xem lại được bình thư
   };
 
   try {
-    const access = TrialManager.canAccessTrialLesson(sdt, l1, mockCourses, new Set());
-    assert.equal(access.allowed, true);
-    assert.equal(access.isOldLesson, true);
-
+    // Mỗi lần mở bài BẮT BUỘC gọi server; mất mạng thì requestTrialAccess phải trả về network_error
     const reqRes = await TrialManager.requestTrialAccess(user, l1, 'Khóa 12');
-    assert.equal(reqRes.ok, true);
-    assert.equal(reqRes.isNew, false);
-    assert.equal(reqRes.alreadyStarted, true);
+    assert.equal(reqRes.ok, false);
+    assert.equal(reqRes.reason, 'network_error');
+    assert.ok(reqRes.msg.includes('Không thể xác minh lượt học'));
+  } finally {
+    global.fetch = originalFetch;
+  }
+});
+
+await itAsync('11b. Tự chèn mã bài thứ 3 vào localStorage: Tuyệt đối bị server chặn và KHÔNG hiển thị video', async () => {
+  mockStorage.clear();
+  const sdt = '0901111111';
+  const token = backend.login({ sdt, matkhau: 'Pass123@' }).user.token;
+  const user = { sdt, loaiTK: 'vip', trialExpiry: Date.now() + 86400000, token };
+  const l3 = { key: 'B03', mabai: 'B03', name: 'Bài 3: Nhiệt dung riêng', video: 'https://youtu.be/fake3' };
+
+  // Kịch bản kẻ gian mở F12 tự chèn bài B03 vào cả vlxt_trial_confirmed_ và vlxt_watched_
+  mockStorage.set('vlxt_trial_confirmed_' + sdt, JSON.stringify([
+    { key: 'B01', mabai: 'B01', name: 'Bài 1', date: TrialManager.getVietnamDateStr() },
+    { key: 'B02', mabai: 'B02', name: 'Bài 2', date: TrialManager.getVietnamDateStr() },
+    { key: 'B03', mabai: 'B03', name: 'Bài 3 (Hack)', date: TrialManager.getVietnamDateStr() }
+  ]));
+  mockStorage.set('vlxt_watched_' + sdt, JSON.stringify(['B01', 'B02', 'B03']));
+
+  // Mô phỏng server thực tế đã nhận đủ 2 bài B01, B02 trong ngày, bài B03 là bài mới thứ 3
+  const originalFetch = global.fetch;
+  global.fetch = async function (url, opts) {
+    const body = JSON.parse(opts.body);
+    if (body.action === 'starttriallesson' && (body.mabai === 'B03' || body.key === 'B03')) {
+      return {
+        ok: true,
+        json: async () => ({
+          ok: false,
+          reason: 'trial_limit',
+          msg: 'Đã dùng hết 2/2 bài học mới hôm nay',
+          dailyCount: 2,
+          remaining: 0
+        })
+      };
+    }
+    return { ok: true, json: async () => ({ ok: true }) };
+  };
+
+  try {
+    let currentInnerHtml = '';
+    const fakeAppElement = {
+      get innerHTML() { return currentInnerHtml; },
+      set innerHTML(val) { currentInnerHtml = val; }
+    };
+
+    let modalShown = false;
+    const testSandbox = {
+      console,
+      location: { hash: '#lesson/B03' },
+      TrialManager,
+      TEST_ACCOUNTS: ['0900000001'],
+      WATCHED: new Set(['B01', 'B02', 'B03']),
+      COURSES: mockCourses,
+      QUIZ_INDEX: null,
+      HS: { sdt: sdt, ten: 'Nguyễn Văn A' },
+      vlxtGetUser: () => user,
+      app: () => fakeAppElement,
+      go: () => {},
+      toast: () => {},
+      showTrialLimitModal: () => { modalShown = true; },
+      esc: (s) => (s || '').replace(/</g, '&lt;').replace(/>/g, '&gt;'),
+      localStorage: global.localStorage,
+      sessionStorage: global.sessionStorage,
+      findLesson: () => ({ course: mockCourses[0], chapter: mockCourses[0].chapters[0], lesson: l3 }),
+      findCourse: () => mockCourses[0]
+    };
+    testSandbox.window = testSandbox;
+    testSandbox.global = testSandbox;
+
+    const htmlSrc = fs.readFileSync('baihoc.html', 'utf8');
+    const triggerTrialMatch = htmlSrc.match(/async function triggerTrial\(user, lesson, courseName, lkey\)[\s\S]*?\nfunction handleOpenLesson/);
+    const triggerTrialCode = triggerTrialMatch[0].replace(/\nfunction handleOpenLesson[\s\S]*$/, '');
+
+    vm.createContext(testSandbox);
+    vm.runInContext(triggerTrialCode, testSandbox);
+
+    // Kích hoạt mở bài B03
+    const res = await testSandbox.triggerTrial(user, l3, 'Khóa 12', 'B03');
+
+    // Server từ chối bài thứ 3
+    assert.equal(res.ok, false);
+    assert.equal(res.reason, 'trial_limit');
+
+    // Giao diện: TUYỆT ĐỐI KHÔNG chứa iframe video hoặc yt-player
+    assert.equal(currentInnerHtml.includes('<iframe'), false, 'Iframe video tuyệt đối KHÔNG được render');
+    assert.equal(currentInnerHtml.includes('yt-player'), false, 'yt-player tuyệt đối KHÔNG được render');
+    assert.ok(currentInnerHtml.includes('fa-hourglass-half'), 'Phải hiển thị icon hết hạn mức');
+    assert.equal(modalShown, true, 'Modal hết hạn mức phải được hiển thị');
   } finally {
     global.fetch = originalFetch;
   }
@@ -920,7 +1007,7 @@ it('File baihoc.html KHÔNG chứa biến lỗi _isTrialLimit', () => {
 
 it('File baihoc.html chứa biến chuẩn _isLimit và cơ chế Pessimistic Fail-Closed', () => {
   assert.ok(htmlSource.includes('const _isLimit = _blkCheck.reason===\'trial_limit\';'));
-  assert.ok(htmlSource.includes('if(_isTrial && !_isOldLesson){'));
+  assert.ok(htmlSource.includes('if(_isTrial && !_isGrantedInMemory){'));
 });
 
 it('File baihoc.html kết thúc đúng thẻ đóng </body> và </html>', () => {

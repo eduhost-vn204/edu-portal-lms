@@ -1023,6 +1023,7 @@ function markWatched(key){
 function go(hash){ if(location.hash===hash) route(); else location.hash=hash; }
 window.addEventListener('hashchange',route);
 function route(){
+    window._trialActiveGrantedLesson = null;
     // Reset khung trang về mặc định — renderLesson() sẽ tự nới rộng (wide-lesson) nếu cần
     app().className = 'container';
     // Nếu có ?openLesson=... (từ nút "Học ngay" trong popup Nhiệm Vụ), mở thẳng bài đó
@@ -1270,11 +1271,14 @@ async function triggerTrial(user, lesson, courseName, lkey){
         }
 
         if(res && res.ok){
-            // 1. Nhánh OK: Server chấp nhận -> ghi nhận lượt rồi mới mở bài
-            toast('<i class="fa-solid fa-star"></i> Em đã kích hoạt bài học thử (' + (res.dailyCount || 1) + '/2 bài mới hôm nay)', 'ok');
+            // 1. Nhánh OK: Server chấp nhận -> ghi nhận quyền trong bộ nhớ rồi mới mở bài
+            window._trialActiveGrantedLesson = lkey;
+            toast('<i class="fa-solid fa-star"></i> ' + (res.alreadyStarted ? 'Đã xác thực bài học thử' : ('Em đã kích hoạt bài học thử (' + (res.dailyCount || 1) + '/2 bài mới hôm nay)')), 'ok');
             renderLesson(lkey);
             return res;
         }
+
+        window._trialActiveGrantedLesson = null;
 
         if(res && (res.reason === 'trial_limit' || res.error === 'trial_limit')){
             // 2. Nhánh HẾT LƯỢT: Giữ học sinh ngoài bài và hiện modal hết lượt
@@ -1473,17 +1477,17 @@ function renderLesson(key){
         return;
     }
 
-    // Tài khoản học thử mở bài mới: BẮT BUỘC chờ server cấp quyền trước khi tải quiz/video (Pessimistic / Fail-closed)
+    // Tài khoản học thử: BẮT BUỘC chờ server cấp quyền trước khi tải quiz/video (Pessimistic / Fail-closed)
+    // Tuyệt đối KHÔNG dùng danh sách vlxt_trial_confirmed_<sdt> trong localStorage làm bằng chứng cấp quyền
     const _curUser = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
     const _isTrial = typeof TrialManager !== 'undefined' && TrialManager.isValidTrialUser(_curUser);
-    const _sdt = (HS && HS.sdt) ? String(HS.sdt) : (_curUser && _curUser.sdt ? String(_curUser.sdt) : '');
-    const _isOldLesson = _isTrial && _sdt && (WATCHED.has(key) || TrialManager.isServerConfirmedLesson(_sdt, key));
+    const _isGrantedInMemory = _isTrial && (window._trialActiveGrantedLesson === key);
 
-    if(_isTrial && !_isOldLesson){
+    if(_isTrial && !_isGrantedInMemory){
         app().innerHTML = `<div class="empty" id="trial-verifying">
             <i class="fa-solid fa-spinner fa-spin" style="font-size:34px;color:var(--blue)"></i>
             <p style="margin-top:14px;font-weight:700">${esc(lesson.name)}</p>
-            <p style="color:var(--sub)">Đang xác thực lượt học thử từ máy chủ...</p>
+            <p style="color:var(--sub)">Đang xác thực quyền học thử từ máy chủ...</p>
         </div>`;
         triggerTrial(_curUser, lesson, course.name, key);
         return;
