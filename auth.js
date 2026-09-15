@@ -9,7 +9,7 @@ function toggleTheme(){
 }
 (function(){ try{ if(localStorage.getItem('vlxt_theme')==='dark') document.body.classList.add('dark'); }catch(e){} })();
 const VLXT_AUTH_KEY = 'vlxt_user_v2';
-const VLXT_GAS = 'https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec';
+const VLXT_GAS = 'https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec';
 
 function vlxtGetUser(){
   try{ return JSON.parse(localStorage.getItem(VLXT_AUTH_KEY)||'null'); }catch{ return null; }

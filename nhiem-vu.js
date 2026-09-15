@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  var GAS = 'https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec';
+  var GAS = 'https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec';
   var EXAM_DATE = new Date('2027-06-05'); // Mốc thi THPT QG 2027 (ước tính)
   var MISSION_RECHECK_MS = 5 * 60 * 1000; // 5 phút — tần suất tự kiểm tra lại nhiệm vụ trong lúc trang vẫn mở (chỉnh số này nếu muốn nhanh/chậm hơn)
 

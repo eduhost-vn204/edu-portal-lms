@@ -1,6 +1,6 @@
 /* ═══ VLXT — Ghi lịch sử hoạt động học sinh (hiện trong Admin > Tài khoản HS > bấm vào 1 tài khoản) ═══ */
 (function(){
-  const GAS = 'https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec';
+  const GAS = 'https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec';
   function getUser(){ try{ return JSON.parse(localStorage.getItem('vlxt_user_v2')||'null'); }catch(e){ return null; } }
 
   // ── Chỉ gửi log khi Apps Script đã có v50 (tránh doPost fallback ghi rác vào Bảng Vàng) ──

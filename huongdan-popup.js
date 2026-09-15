@@ -4,7 +4,7 @@
    vlxtAutoShowGuide('key') sau khi trang tải xong.
 ═══════════════════════════════════════════ */
 (function(){
-  const HD_GAS = 'https://script.google.com/macros/s/AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL/exec';
+  const HD_GAS = 'https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec';
   let _hdCache = null;
 
   function hdYtId(url){
