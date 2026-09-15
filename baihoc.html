@@ -1283,8 +1283,10 @@ async function triggerTrial(user, lesson, courseName, lkey){
 
         if(res && res.ok){
             // 1. Nhánh OK: Server chấp nhận -> ghi nhận quyền trong bộ nhớ rồi mới mở bài
+            window._trialGrantedLessons = window._trialGrantedLessons || new Set();
+            window._trialGrantedLessons.add(lkey);
             window._trialActiveGrantedLesson = lkey;
-            toast('<i class="fa-solid fa-star"></i> ' + (res.alreadyStarted ? 'Đã xác thực bài học thử' : ('Em đã kích hoạt bài học thử (' + (res.dailyCount || 1) + '/2 bài mới hôm nay)')), 'ok');
+            toast('<i class="fa-solid fa-star"></i> ' + (res.alreadyStarted ? 'Đã xác thực bài học' : ('Em đã kích hoạt bài học thử (' + (res.dailyCount || 1) + '/2 bài mới hôm nay)')), 'ok');
             renderLesson(lkey);
             return res;
         }
@@ -1494,7 +1496,8 @@ function renderLesson(key){
     // Tuyệt đối KHÔNG dùng danh sách vlxt_trial_confirmed_<sdt> trong localStorage làm bằng chứng cấp quyền
     const _curUser = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
     const _isTrial = typeof TrialManager !== 'undefined' && TrialManager.isValidTrialUser(_curUser);
-    const _isGrantedInMemory = _isTrial && (window._trialActiveGrantedLesson === key);
+    const _sessionGranted = (typeof window !== 'undefined' && window._trialGrantedLessons && window._trialGrantedLessons.has(key));
+    const _isGrantedInMemory = _isTrial && (_sessionGranted || window._trialActiveGrantedLesson === key);
 
     if(_isTrial && !_isGrantedInMemory){
         app().innerHTML = `<div class="empty" id="trial-verifying">
@@ -3650,11 +3653,17 @@ function showUpgrade(courseName){
 ═══════════════════════════════════════════ */
 async function boot(){
     renderWho();
-    // Lấy quyền mới nhất trước khi quyết định khóa/mở khóa học.
-    if(typeof vlxtRefreshUser==='function') await vlxtRefreshUser();
+    // Chạy ngầm làm mới thông tin tài khoản và hạn mức học thử, không chặn UI render
+    if(typeof vlxtRefreshUser === 'function'){
+        vlxtRefreshUser().then(function(){ if(_coursesReady) route(); }).catch(function(e){ console.warn('Làm mới tài khoản chạy nền:', e); });
+    }
     if(typeof TrialManager !== 'undefined' && typeof TrialManager.fetchTrialLimitServer === 'function' && HS && HS.sdt){
         const _u = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
-        await TrialManager.fetchTrialLimitServer(_u || String(HS.sdt));
+        TrialManager.fetchTrialLimitServer(_u || String(HS.sdt)).then(function(){ if(_coursesReady) route(); }).catch(function(e){ console.warn('Làm mới hạn mức trial chạy nền:', e); });
+    }
+    // Đọc tiến độ từ cache localStorage ngay để WATCHED có sẵn dữ liệu tức thì
+    if(HS && HS.sdt){
+        try{ (JSON.parse(localStorage.getItem('vlxt_watched_'+HS.sdt)||'[]')).forEach(k=>WATCHED.add(k)); }catch(e){}
     }
     const [rows] = await Promise.all([fetchLessons(), fetchKhoaConfig(), fetchQuizIndex()]);
     COURSES=buildCourses(rows);

@@ -319,7 +319,19 @@
     var lkey = lesson.key || lesson;
     var mb = lesson.mabai || '';
     var token = user.token || user.authToken || '';
-    // BẮT BUỘC GỌI SERVER XÁC THỰC MỌI LẦN MỞ BÀI (KỂ CẢ BÀI ĐÃ HỌC)
+    // Session memory cache: nếu bài đã được server cấp quyền trong phiên tab này, mở ngay lập tức (0ms)
+    var sessionSet = (typeof window !== 'undefined' && window._trialGrantedLessons) ? window._trialGrantedLessons : (typeof global !== 'undefined' && global._trialGrantedLessons ? global._trialGrantedLessons : null);
+    if (sessionSet && sessionSet.has(lkey)) {
+      return Promise.resolve({
+        ok: true,
+        alreadyStarted: true,
+        isNew: false,
+        dailyCount: vlxtGetDailyConfirmedCount(sdt, vlxtGetVietnamDateStr()),
+        fromSessionCache: true
+      });
+    }
+
+    // BẮT BUỘC GỌI SERVER XÁC THỰC LẦN ĐẦU MỞ BÀI
     // Không dùng danh sách trong localStorage làm bằng chứng cấp quyền
     var gasUrl = '';
     if (typeof global !== 'undefined' && global.VLXT_GAS) gasUrl = global.VLXT_GAS;
@@ -375,6 +387,17 @@
 
           var todayVN = vlxtGetVietnamDateStr();
           var newDaily = vlxtGetDailyConfirmedCount(sdt, todayVN);
+
+          if (typeof window !== 'undefined') {
+            window._trialGrantedLessons = window._trialGrantedLessons || new Set();
+            window._trialGrantedLessons.add(lkey);
+            window._trialActiveGrantedLesson = lkey;
+          }
+          if (typeof global !== 'undefined') {
+            global._trialGrantedLessons = global._trialGrantedLessons || new Set();
+            global._trialGrantedLessons.add(lkey);
+            global._trialActiveGrantedLesson = lkey;
+          }
 
           return {
             ok: true,
