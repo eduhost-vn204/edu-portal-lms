@@ -159,6 +159,36 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 15/09/2026 — Phát Hành Bài 13: Định Luật Gay-Lussac – Quá Trình Đẳng Tích (Trạng Thái Draft Chờ Nghiệm Thu)
+
+- **Người thực hiện**: Antigravity AI Coordinator (theo skill `dang-bai-xps2k9`)
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `READY_FOR_TEACHER_REVIEW` (Bài 13 giữ nguyên trạng thái `draft`, bảo vệ fail-closed không tự ý publish, không merge `main`, không deploy production).
+- **Học liệu & Tài nguyên Bài 13 (`B24bbd84d8ea9`)**:
+  1. **Video YouTube (Unlisted, đã xác thực oEmbed)**:
+     - Video Lý thuyết: `https://www.youtube.com/watch?v=_5G65Tq91qc` (B13. LÝ THUYẾT & ÁP DỤNG: ĐỊNH LUẬT GAY-LUSSAC - QUÁ TRÌNH ĐẲNG TÍCH | VẬT LÝ 12 XPS 2K9)
+     - Video Luyện tập: `https://www.youtube.com/watch?v=LhplYiEWTwQ` (B13. CHỮA BÀI TẬP LUYỆN TẬP: ĐỊNH LUẬT GAY-LUSSAC - QUÁ TRÌNH ĐẲNG TÍCH | VẬT LÝ 12 XPS 2K9)
+  2. **Tài liệu Google Drive (Public View)**:
+     - PDF Lí thuyết: `https://drive.google.com/file/d/1JAqVpDHBcz-6jYW5dDpfBNE5PnHAGsOs/view?usp=sharing`
+     - PDF Áp dụng: `https://drive.google.com/file/d/1ehqIDcgDoojP9qgBCtT3tR2I_ZFO3T47/view?usp=sharing`
+     - PDF Luyện tập: `https://drive.google.com/file/d/1urZoQqXk0t60M25mOpVfrBoNxiANTONI/view?usp=sharing`
+  3. **20 câu dừng video kèm Timestamp thật**:
+     - Bóc tách từ `Bài 13 - Định luật Gay Lussac - Quá trình đẳng tích - Bài tập áp dụng - wed.docx`.
+     - Timestamp thật xác thực từ khung hình và âm thanh video bài giảng:
+       + Câu 1: 822s (13:42) | Câu 2: 838s (13:58) | Câu 3: 852s (14:12) | Câu 4: 858s (14:18) | Câu 5: 871s (14:31)
+       + Câu 6: 885s (14:45) | Câu 7: 917s (15:17) | Câu 8: 944s (15:44) | Câu 9: 987s (16:27) | Câu 10: 994s (16:34)
+       + Câu 11: 1007s (16:47) | Câu 12: 1018s (16:58) | Câu 13: 1027s (17:07) | Câu 14: 1052s (17:32) | Câu 15: 1078s (17:58)
+       + Câu 16: 1137s (18:57) | Câu 17: 1161s (19:21) | Câu 18: 1182s (19:42) | Câu 19: 1200s (20:00) | Câu 20: 1227s (20:27)
+  4. **20 câu trắc nghiệm luyện tập (Atomic Content-Addressed Hash)**:
+     - File quiz: `data/quizzes/quiz-1be88908769a2c3d4940.json` (20 câu trắc nghiệm).
+     - Cập nhật `data/quiz-index.json`: trỏ `B24bbd84d8ea9` tới file mới với `count: 20`.
+  5. **Bản ghi bài học `data/baihoc.json`**:
+     - Bài 13 ở trạng thái `draft` với đầy đủ 2 video YouTube, 3 link Drive, tóm tắt `MoTaBai` và `BaiTap` 20 câu.
+- **Kiểm thử nghiệm thu**:
+  - `test-lesson-checklist.mjs 13`: 7/7 Cổng PASS 100%.
+  - Regression test suites (`test-quiz-merge.mjs`, `test-quiz-publish.mjs`, `test-student-stable-session-num.mjs`, `test-teaching-scope.mjs`): 100% PASS.
+- **Nhánh làm việc**: `codex/publish-lesson-13`.
+
 ### 15/09/2026 — Triển Khai Chính Thức (Production): Mở Bài Học Kèm Gợi Ý Bài Nền Tảng & Giới Hạn Học Thử 2 Bài/Ngày Trên Cả Backend Version 154, Admin Console và Student LMS
 
 - **Người thực hiện**: Antigravity AI Coordinator
