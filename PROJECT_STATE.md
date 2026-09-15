@@ -159,6 +159,105 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 15/09/2026 — Triển Khai Chính Thức (Production): Mở Bài Học Kèm Gợi Ý Bài Nền Tảng & Giới Hạn Học Thử 2 Bài/Ngày Trên Cả Backend Version 154, Admin Console và Student LMS
+
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `PRODUCTION_DEPLOYED_AND_VERIFIED_100%` (Backend Apps Script Version 154 Live, Admin và Student đã merge và push lên `main` chuẩn).
+- **Mốc Rollback Git & Backend**:
+  - Admin rollback tag: `rollback-before-trial-bainentang-deploy-admin` trỏ về `c3bc8ef`.
+  - Student rollback tag: `rollback-before-trial-bainentang-deploy-student` trỏ về `f84c850`.
+  - Backend rollback version: Version 149 (`AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW`).
+- **Nội dung triển khai chính thức**:
+  1. **Backend Google Apps Script (Version 154 Live)**:
+     - Deployment ID: `AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW` @154.
+     - Cấu hình Script Properties: `AUTH_SECRET` (độ dài 32 ký tự, mã hóa HMAC-SHA256 phiên học sinh), `GOOGLE_CLIENT_ID` (xác thực Google ID Token phía máy chủ).
+     - Sheet `TrialActivity`: tồn tại đúng 6 cột header (`sdt`, `mabai`, `dateStr`, `thoigian`, `deviceId`, `hoten`).
+     - Cơ chế Fail-Closed: từ chối token giả, mật khẩu sai trả lỗi chuẩn xác, chặn GET `triallimit` bằng 405 `METHOD_NOT_ALLOWED`.
+     - Bộ tự kiểm tra phía máy chủ `runAdminSelfTest` đã sửa đọc đúng phản hồi `ContentService` và trả về `ok: true, passed: true`.
+     - Danh sách bài học công khai: trả về đúng 41 bài học thật, bảo vệ toàn vẹn bài học.
+  2. **Admin Console (`edu-portal-console`)**:
+     - Remote: `origin -> https://github.com/eduhost-vn204/edu-portal-console.git` (nhánh `main`).
+     - Commit HEAD: `356187b47088d3d0e7a21e6132a63e1922f2b810`.
+     - Tính năng: Quản lý trường `BaiNenTang` trong form sửa bài học, chống chu trình phụ thuộc bằng thuật toán DFS trực quan (`checkPrerequisiteCycle`), tự vô hiệu hóa nút Lưu nếu phát hiện chu trình.
+  3. **Student LMS (`edu-portal-lms`)**:
+     - Remote: `upstream -> https://github.com/eduhost-vn204/edu-portal-lms.git` (nhánh `main`) và `origin -> https://github.com/xuantruongmyself-png/vatly-xuantruong.git` (nhánh `main`).
+     - Commit HEAD: `cd1e5b263b31916076e0940fd28d1e3f08ae1f11`.
+     - Tính năng:
+       + Gợi ý bài nền tảng: hiển thị modal hướng dẫn học sinh hoàn thành bài tiên quyết nếu bài nền tảng chưa xong (vẫn cho phép học tiếp nếu muốn).
+       + Giới hạn học thử: tối đa 2 bài mới/ngày tính theo giờ Việt Nam UTC+7.
+       + Cơ chế Fail-Closed: loại bỏ bypass localStorage, mỗi lần mở bài đều xác thực qua server; mất mạng hoặc bài thứ 3 tuyệt đối không mở video/quiz vào DOM.
+       + Bài cũ đã mở trong ngày được xem lại miễn phí.
+  4. **Kiểm thử nghiệm thu**:
+     - Admin Test Suite (`test-trial-auth-integration.mjs`): 35/35 PASS (100%).
+     - Student Test Suite (`test-trial-soft-unlock.mjs`): 22/22 PASS (100%).
+     - Live Smoke Test Backend: 5/5 cổng kiểm tra ĐẠT 100%.
+
+### 15/09/2026 — Thiết Lập Môi Trường Staging Độc Lập, Xác Thực Live 20/20 Test Hạn Mức Học Thử (Trial) & Triển Khai Bài Nền Tảng (BaiNenTang) Kèm Chống Chu Trình Trên Admin Console
+
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `STAGING_VERIFIED_100%` & `PENDING_TEACHER_APPROVAL` (Bảo vệ tuyệt đối Production tại Version 149, chỉ hoạt động trên Staging @152 và các bảng `_Staging`, chưa merge `main`).
+- **Nội dung thực hiện chính**:
+  1. **Thiết lập Môi trường Staging độc lập hoàn toàn**:
+     - Tạo và triển khai thành công Google Apps Script Staging Deployment ID: `AKfycbyqejp4SzgwNsJb3QrTP76C5-6K2MYqv5T1CzPyi6KUOEEsC7GKQLCnR07i0DNbqKBL` (@152).
+     - Live Production Deployment ID `AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW` được **cố định và bảo toàn nguyên vẹn tại Version 149** (41 bài học thật nguyên vẹn).
+     - Định tuyến an toàn bằng cờ `env: 'staging'`: mọi thao tác ghi/đọc học sinh và hoạt động trial được cô lập tại các bảng `_Staging` (`TaiKhoan_Staging`, `BaiHoc_Staging`, `ThietBiHocThu_Staging`, `TrialActivity_Staging`, `TienDo_Staging`).
+     - Script Properties Staging cấu hình `AUTH_SECRET_STAGING` mạnh (64 ký tự ngẫu nhiên) và `GOOGLE_CLIENT_ID` xác thực server-side fail-closed.
+  2. **Ma trận kiểm thử trực tiếp trên live Staging (20/20 Tests PASS - 100%)**:
+     - Chạy runner `scratch/run-full-staging-matrix.mjs` trực tiếp tới URL Staging `@152`:
+       - Đăng ký SĐT test mới nhận token HMAC-SHA256 staging.
+       - Đăng nhập SĐT đúng/sai mật khẩu, Google Login fail-closed khi token giả.
+       - GET profile cũ không trả token (Zero Token Leakage).
+       - GET triallimit chặn triệt để bằng 405 `METHOD_NOT_ALLOWED`.
+       - Mở bài 1 (B01) và bài 2 (B02) thành công (`dailyCount = 2, remaining = 0`).
+       - Mở bài mới thứ 3 (B03) bị chặn cứng `trial_limit`.
+       - Xem lại bài 1 và bài 2 không mất thêm lượt (`alreadyStarted: true`).
+       - Hai thiết bị đồng thời (`dev_alpha`, `dev_beta`) bị chặn bởi hạn mức chung 2 bài.
+       - Ẩn an toàn bài Draft (`B11_DRAFT`) và bài rỗng (`B12_EMPTY`).
+       - Phát hiện và khắc phục triệt để lỗi Google Sheets tự ép kiểu ngày `Date` object bằng hàm `normalizeDateStr`.
+  3. **Tính năng Bài Nền Tảng (BaiNenTang) trên Admin Console**:
+     - Thêm cột `BaiNenTang` vào `BAIHOC_COLS` và `saveBaiHoc` trong `src/Mã.js`.
+     - Admin `quan-ly-bai-hoc.html` tích hợp UI quản lý bài nền tảng: chip bài học, dropdown chọn theo `MaBai`, nút xóa hết.
+     - Thuật toán DFS phát hiện chu trình phụ thuộc (`checkPrerequisiteCycle`): chặn tự phụ thuộc ($A \rightarrow A$), chặn chu trình 2 chiều ($A \rightarrow B \rightarrow A$) và chu trình đa cấp.
+     - Tự động vô hiệu hóa nút Lưu khi có chu trình phụ thuộc để bảo vệ toàn vẹn dữ liệu.
+     - Nút gạt chuyển đổi môi trường Production / Staging trên toolbar Admin.
+  4. **Minh chứng giao diện học sinh & quản trị**:
+     - Chụp ảnh màn hình thực tế: `evidence_admin_bainentang_cycle.png`, `evidence_student_prereq_modal.png`, `evidence_student_trial_limit_modal.png`.
+  5. **Nhánh Git làm việc**:
+     - Admin Console: `feature/admin-bainentang-staging` (commit `7f7fbb4`).
+     - Student Web: `feature/student-bainentang-staging` (commit `ab2c046`).
+     - `git diff --check`: 100% sạch sẽ, quét secret không rò rỉ.
+     - **Dừng chờ Thầy nghiệm thu, không tự ý merge main hay deploy Production**.
+
+### 14/09/2026 — Đóng Gói Skill `tao-bai-giang-vlxt` & Hoàn Thành 5 Gói Giáo Trình Trình Chiếu Bài 13 Đến Bài 17 (Chương 2 — Khí Lí Tưởng)
+
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `TECHNICAL_PREFLIGHT_PASS` & `PENDING_TEACHER_REVIEW` (100% đạt chuẩn kỹ thuật, đã render Playwright toàn bộ slide, sẵn sàng cho Thầy nghiệm thu qua `review.html`).
+- **Nội dung thực hiện chính**:
+  1. **Đóng gói quy trình thành Skill tái sử dụng**:
+     - Tạo skill `tao-bai-giang-vlxt` tại `.agents/skills/tao-bai-giang-vlxt/SKILL.md` và `C:\Users\Xuan Truong\.gemini\config\skills\tao-bai-giang-vlxt\SKILL.md`.
+     - Tích hợp đầy đủ quy trình 8 bước: Khảo sát nguồn -> Trích xuất nguyên văn -> Lập manifest -> Soạn kịch bản 10 slide -> Thiết kế review.html -> Kiểm định kỹ thuật -> Render Playwright -> Bàn giao nghiệm thu.
+  2. **Quy định bất di bất dịch về Vùng An Toàn Webcam Giảng Viên (Webcam Safe Zone)**:
+     - Dành trọn góc dưới bên phải canvas 1920x1080 ($X \\in [1480, 1920\\text{px}], Y \\in [760, 1080\\text{px}]$, kích thước $\\approx 440 \\times 320\\text{px}$) hoàn toàn không bố trí chữ, hình vẽ, đồ thị hay công thức để đặt webcam của Thầy khi quay video.
+     - Giữ nguyên màu nền tự nhiên của slide, **tuyệt đối không vẽ khung, viền hay icon làm nổi bật vùng này**.
+     - Nhận diện chân trang chuyển toàn bộ sang bên trái: `Biên soạn: Xuân Trường • vatlyxuantruong.io.vn`.
+  3. **Tuyệt đối không chứa các từ cấm**:
+     - Kiểm soát nghiêm ngặt 03 cụm từ cấm: `GDPT 2018`, `chuẩn sư phạm`, `4 bước sư phạm` trên toàn bộ file `.md`, `.json`, `.html`. Cổng kiểm thử `validate-teaching-deck.mjs` tích hợp cổng quét tự động.
+  4. **Triển khai hoàn tất 5 gói giáo trình trình chiếu (Bài 13 đến Bài 17)**:
+     - **Bài 13 (`B13_DinhLuatGayLussac_DangTich`)**: 10 slides, đồ thị $(p, T)$ qua gốc $O$, quy tắc so sánh thể tích $V_1 < V_2$, 20 câu trắc nghiệm.
+     - **Bài 14 (`B14_PhuongTrinhClaperonMendeleev`)**: 10 slides, phương trình $pV = nRT = \\frac{m}{M}RT$, hằng số $R = 8,31\\,\\text{J/(mol}\\cdot\\text{K)}$, xác định khối lượng riêng khí $\\rho = \\frac{pM}{RT}$.
+     - **Bài 15 (`B15_ApSuat_MHDHPT_DongNangNhietDo`)**: 10 slides, công thức $p = \\frac{1}{3}\\mu m \\overline{v^2} = \\frac{2}{3}n_0 \\overline{E_d}$, động năng trung bình $\\overline{E_d} = \\frac{3}{2}kT$, căn bậc hai của bình phương vận tốc trung bình.
+     - **Bài 16 (`B16_DoThiKhiLyTuong`)**: 10 slides, tổng hợp dạng đường 3 đẳng quá trình trên 3 hệ trục $(p, V), (V, T), (p, T)$, phương pháp 4 bước chuyển đổi đồ thị chu trình, bảng ma trận 9 ô toàn diện.
+     - **Bài 17 (`B17_DinhLuat1NDLH_CacDangQuaTrinh`)**: 10 slides, định luật I $\\Delta U = A + Q$, quy ước dấu vàng, đẳng tích $A=0 \\implies \\Delta U=Q$, đẳng nhiệt $\\Delta U=0 \\implies Q=A'$, đẳng áp $A'=p\\Delta V \\implies \\Delta U=Q-A'$.
+- **Kiểm định kỹ thuật**:
+  - Cả 5 gói bài học đều vượt qua `validate-teaching-deck.mjs` với kết quả **100% TECHNICAL_PREFLIGHT_PASS**.
+  - Đầy đủ 7 file quy chuẩn + `review.html` + `qa-renders/` (10 ảnh PNG chất lượng cao) cho mỗi bài.
+- **Cam kết an toàn**:
+  - Không xuất file PPTX khi chưa có lệnh duyệt của Thầy.
+  - Giữ nguyên 100% nội dung gốc từ file `.docx` Thầy phê duyệt, không bịa thêm kiến thức hay bài tập.
+
 #### 14/09/2026 — Hoàn Thành Khắc Phục Triệt Để Các Blocker Bảo Mật & Pessimistic Fail-Closed (Trial Soft Unlock v2.1.0)
 
 - **Người thực hiện**: Antigravity AI Coordinator
