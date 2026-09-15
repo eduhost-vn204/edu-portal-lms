@@ -179,11 +179,16 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
        + Câu 6: 885s (14:45) | Câu 7: 917s (15:17) | Câu 8: 944s (15:44) | Câu 9: 987s (16:27) | Câu 10: 994s (16:34)
        + Câu 11: 1007s (16:47) | Câu 12: 1018s (16:58) | Câu 13: 1027s (17:07) | Câu 14: 1052s (17:32) | Câu 15: 1078s (17:58)
        + Câu 16: 1137s (18:57) | Câu 17: 1161s (19:21) | Câu 18: 1182s (19:42) | Câu 19: 1200s (20:00) | Câu 20: 1227s (20:27)
+     - Đã nạp thành công vào bảng `VideoCauHoi` qua API `savevideocauhoi` (20/20 câu).
   4. **20 câu trắc nghiệm luyện tập (Atomic Content-Addressed Hash)**:
      - File quiz: `data/quizzes/quiz-1be88908769a2c3d4940.json` (20 câu trắc nghiệm).
      - Cập nhật `data/quiz-index.json`: trỏ `B24bbd84d8ea9` tới file mới với `count: 20`.
-  5. **Bản ghi bài học `data/baihoc.json`**:
+     - Đã nạp thành công vào bảng `BaiTapTracNghiem` qua API `savebaitaptracnghiem` (20/20 câu).
+  5. **Bản ghi bài học `data/baihoc.json` & Google Sheets Backend**:
      - Bài 13 ở trạng thái `draft` với đầy đủ 2 video YouTube, 3 link Drive, tóm tắt `MoTaBai` và `BaiTap` 20 câu.
+     - Đã cập nhật thành công lên Google Sheets qua API `savebaihoc` với `TrangThai: 'draft'`.
+     - Read-back đối soát thành công 100% qua `getbaihocadmin`, `getvideocauhoiadmin`, `getbaitaptracnghiemadmin`.
+     - Trên Admin Console (`https://eduhost-vn204.github.io/edu-portal-console/index.html`), Bài 13 hiển thị đầy đủ ở trạng thái `Draft` với huy hiệu `Video`, `Chữa`, `20 câu`, sẵn sàng chờ Thầy duyệt và bấm Xuất bản.
 - **Kiểm thử nghiệm thu**:
   - `test-lesson-checklist.mjs 13`: 7/7 Cổng PASS 100%.
   - Regression test suites (`test-quiz-merge.mjs`, `test-quiz-publish.mjs`, `test-student-stable-session-num.mjs`, `test-teaching-scope.mjs`): 100% PASS.
