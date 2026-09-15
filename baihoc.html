@@ -1315,13 +1315,15 @@ async function triggerTrial(user, lesson, courseName, lkey){
         }
 
         // 4. Nhánh TÀI KHOẢN KHÔNG HỢP LỆ (invalid_account, Unauthorized, Forbidden)
+        const isAuthErr = res && (res.error === 'Unauthorized' || res.reason === 'unauthorized');
         app().innerHTML = `<div class="empty">
             <i class="fa-solid fa-circle-exclamation" style="font-size:34px;opacity:.5;color:#ef4444"></i>
             <p style="margin-top:10px;font-weight:700">${esc(lesson.name)}</p>
             <p style="color:var(--sub)">${esc(res.msg || res.error || 'Tài khoản không đủ quyền mở bài học này.')}</p>
-            <p style="margin-top:14px">
-                <a onclick="go('#course/${encodeURIComponent(courseName)}')">← Về danh sách bài học</a>
-            </p>
+            <div style="margin-top:14px;display:flex;gap:10px;justify-content:center;align-items:center;">
+                ${isAuthErr ? `<a href="login.html?from=${encodeURIComponent(location.pathname + location.search + location.hash)}" style="padding:8px 16px;border-radius:20px;background:var(--blue);color:#fff;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px;"><i class="fa-solid fa-right-to-bracket"></i> Đăng nhập lại</a>` : ''}
+                <a onclick="go('#course/${encodeURIComponent(courseName)}')" style="cursor:pointer;">← Về danh sách bài học</a>
+            </div>
         </div>`;
         toast(res.msg || 'Không thể mở bài học', 'err');
         return res;
