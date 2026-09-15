@@ -321,7 +321,15 @@
     var token = user.token || user.authToken || '';
     // BẮT BUỘC GỌI SERVER XÁC THỰC MỌI LẦN MỞ BÀI (KỂ CẢ BÀI ĐÃ HỌC)
     // Không dùng danh sách trong localStorage làm bằng chứng cấp quyền
-    var gasUrl = (typeof global.VLXT_GAS !== 'undefined') ? global.VLXT_GAS : ((typeof global.APPS_SCRIPT_URL !== 'undefined') ? global.APPS_SCRIPT_URL : '');
+    var gasUrl = '';
+    if (typeof global !== 'undefined' && global.VLXT_GAS) gasUrl = global.VLXT_GAS;
+    else if (typeof global !== 'undefined' && global.APPS_SCRIPT_URL) gasUrl = global.APPS_SCRIPT_URL;
+    else if (typeof window !== 'undefined' && window.VLXT_GAS) gasUrl = window.VLXT_GAS;
+    else if (typeof window !== 'undefined' && window.APPS_SCRIPT_URL) gasUrl = window.APPS_SCRIPT_URL;
+    else if (typeof VLXT_GAS !== 'undefined' && VLXT_GAS) gasUrl = VLXT_GAS;
+    else if (typeof APPS_SCRIPT_URL !== 'undefined' && APPS_SCRIPT_URL) gasUrl = APPS_SCRIPT_URL;
+    else gasUrl = 'https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec';
+
     if (!gasUrl) {
       // Mất kết nối server: FAIL-CLOSED
       return Promise.resolve({

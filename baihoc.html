@@ -514,6 +514,8 @@
    CẤU HÌNH
 ═══════════════════════════════════════════ */
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec";
+window.APPS_SCRIPT_URL = APPS_SCRIPT_URL;
+window.VLXT_GAS = APPS_SCRIPT_URL;
 const LS_HS   = "vlxt_hocsinh";
 const SEP     = "|||";
 const NEW_DAYS = 10;
@@ -1026,17 +1028,26 @@ function route(){
     window._trialActiveGrantedLesson = null;
     // Reset khung trang về mặc định — renderLesson() sẽ tự nới rộng (wide-lesson) nếu cần
     app().className = 'container';
-    // Nếu có ?openLesson=... (từ nút "Học ngay" trong popup Nhiệm Vụ), mở thẳng bài đó
-    const params = new URLSearchParams(location.search);
-    const openLesson = params.get('openLesson');
-    if(openLesson){
-        const key = decodeURIComponent(openLesson);
-        history.replaceState(null,'','baihoc.html#lesson/' + encodeURIComponent(key));
-        const nh=$('#nav-home'); if(nh) nh.classList.remove('active');
-        renderLesson(key);
-        window.scrollTo({top:0,behavior:'smooth'});
-        return;
+
+    // Chuẩn hóa nếu URL dùng ? thay vì # (ví dụ: ?lesson/..., ?lesson=..., ?openLesson=...)
+    if(location.search){
+        const rawSearch = location.search.slice(1);
+        if(rawSearch.startsWith('lesson/')){
+            const key = decodeURIComponent(rawSearch.slice(7));
+            history.replaceState(null,'','baihoc.html#lesson/' + encodeURIComponent(key));
+        } else if(rawSearch.startsWith('course/')){
+            const cname = decodeURIComponent(rawSearch.slice(7));
+            history.replaceState(null,'','baihoc.html#course/' + encodeURIComponent(cname));
+        } else {
+            const params = new URLSearchParams(location.search);
+            const openLesson = params.get('openLesson') || params.get('lesson');
+            if(openLesson){
+                const key = decodeURIComponent(openLesson);
+                history.replaceState(null,'','baihoc.html#lesson/' + encodeURIComponent(key));
+            }
+        }
     }
+
     const h=decodeURIComponent(location.hash||'#home');
     const nh=$('#nav-home'); if(nh) nh.classList.toggle('active',h==='#home'||h==='');
     if(h.startsWith('#course/')) renderCourse(h.slice(8));
@@ -1266,7 +1277,7 @@ async function triggerTrial(user, lesson, courseName, lkey){
         }
         const res = await TrialManager.requestTrialAccess(user, lesson, courseName);
         const curHash = '#lesson/' + encodeURIComponent(lkey);
-        if(location.hash !== curHash && location.hash !== '#lesson/' + lkey){
+        if(location.hash && location.hash !== curHash && location.hash !== '#lesson/' + lkey && !location.hash.includes(encodeURIComponent(lkey))){
             return res; // Học sinh đã chuyển sang trang khác trong lúc chờ
         }
 
