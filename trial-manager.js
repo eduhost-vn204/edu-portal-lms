@@ -195,7 +195,7 @@
     var targetDate = dateStr || vlxtGetVietnamDateStr();
     var list = vlxtGetServerConfirmedLessons(sdt);
     var filtered = list.filter(function (item) {
-      return item.date === targetDate;
+      return item.date === targetDate && item.completed === true;
     });
     return filtered.length;
   }
@@ -232,15 +232,21 @@
         localConfirmed.forEach(function (item) { if (item.key) map.set(item.key, item); });
         serverStarted.forEach(function (item) {
           var k = item.key || item.mabai;
-          if (k && !map.has(k)) {
-            map.set(k, {
-              key: k,
-              mabai: item.mabai || k,
-              name: item.name || k,
-              course: item.course || '',
-              date: item.date || item.dateStr || vlxtGetVietnamDateStr(item.timestamp),
-              timestamp: Number(item.timestamp || Date.now())
-            });
+          if (k) {
+            var existing = map.get(k);
+            if (!existing) {
+              map.set(k, {
+                key: k,
+                mabai: item.mabai || k,
+                name: item.name || k,
+                course: item.course || '',
+                completed: item.completed !== false,
+                date: item.date || item.dateStr || vlxtGetVietnamDateStr(item.timestamp),
+                timestamp: Number(item.timestamp || Date.now())
+              });
+            } else if (item.completed) {
+              existing.completed = true;
+            }
           }
         });
 
@@ -254,7 +260,7 @@
       });
   }
 
-  // 6. Kiểm tra quyền mở bài tại giao diện danh sách (Soft Unlock + Daily Limit)
+  // 6. Kiểm tra quyền mở bài tại giao diện danh sách (Soft Unlock + Daily Completed Limit)
   function vlxtCanAccessTrialLesson(userOrSdt, lesson, allCourses, watchedSet) {
     if (!lesson) return { allowed: false, reason: 'not_found' };
 
@@ -266,10 +272,10 @@
 
     var sdt = (typeof userOrSdt === 'object' && userOrSdt !== null) ? (userOrSdt.sdt || '') : String(userOrSdt || '').trim();
     var ws = watchedSet || new Set();
-    var isConfirmed = vlxtIsServerConfirmedLesson(sdt, lesson.key, ws);
 
-    // Ôn lại bài cũ (đã từng được server xác nhận hoặc đã watched): MIỄN PHÍ KHÔNG GIỚI HẠN
-    if (isConfirmed) {
+    // Bài ĐÃ HỌC XONG (có trong watchedSet hoặc đã hoàn thành): Ôn tập tự do không giới hạn
+    var isDone = ws.has(lesson.key) || (lesson.mabai && ws.has(lesson.mabai)) || vlxtIsServerConfirmedLesson(sdt, lesson.key, ws);
+    if (isDone) {
       return {
         allowed: true,
         isOldLesson: true,
@@ -372,22 +378,8 @@
       })
       .then(function (res) {
         if (res && res.ok) {
-          // SERVER ĐÃ CHẤP NHẬN VÀ CẤP QUYỀN!
-          // Lúc này MỚI ghi nhận vào danh sách server-confirmed ở local
-          var list = vlxtGetServerConfirmedLessons(sdt);
-          list.push({
-            key: lkey,
-            mabai: mb || lkey,
-            name: lesson.name || '',
-            course: courseName || '',
-            date: vlxtGetVietnamDateStr(),
-            timestamp: Date.now()
-          });
-          vlxtSaveServerConfirmedLessons(sdt, list);
-
-          var todayVN = vlxtGetVietnamDateStr();
-          var newDaily = vlxtGetDailyConfirmedCount(sdt, todayVN);
-
+          // SERVER ĐÃ CHẤP NHẬN VÀ CẤP QUYỀN MỞ BÀI
+          // Lưu ý: CHƯA ghi nhận hoàn thành bài vào local vì học sinh mới mở bài, chưa học xong
           if (typeof window !== 'undefined') {
             window._trialGrantedLessons = window._trialGrantedLessons || new Set();
             window._trialGrantedLessons.add(lkey);
@@ -399,11 +391,16 @@
             global._trialActiveGrantedLesson = lkey;
           }
 
+          var todayVN = vlxtGetVietnamDateStr();
+          var dailyCompleted = typeof res.dailyCompletedCount === 'number' ? res.dailyCompletedCount : (res.dailyCount || vlxtGetDailyConfirmedCount(sdt, todayVN));
+
           return {
             ok: true,
             isNew: res.isNew !== false,
-            dailyCount: res.dailyCount || newDaily,
-            remaining: typeof res.remaining === 'number' ? res.remaining : Math.max(0, TRIAL_MAX_DAILY_NEW_LESSONS - newDaily)
+            alreadyCompleted: !!res.alreadyCompleted,
+            dailyCount: dailyCompleted,
+            dailyCompletedCount: dailyCompleted,
+            remaining: typeof res.remaining === 'number' ? res.remaining : Math.max(0, TRIAL_MAX_DAILY_NEW_LESSONS - dailyCompleted)
           };
         }
 
@@ -413,7 +410,7 @@
           reason: res.reason || (res.error ? res.error.toLowerCase() : 'server_rejected'),
           error: res.error || '',
           msg: res.msg || 'Không được phép mở bài học',
-          dailyCount: res.dailyCount || 2,
+          dailyCount: res.dailyCompletedCount || res.dailyCount || 2,
           remaining: res.remaining || 0
         };
       })
@@ -426,6 +423,65 @@
           msg: 'Không thể xác minh lượt học, vui lòng kiểm tra mạng'
         };
       });
+  }
+
+  // 7b. Ghi nhận bài học thử ĐÃ HỌC XONG (HOÀN THÀNH) - Chỉ tính hạn mức khi gọi hàm này
+  function vlxtRecordTrialLessonCompleted(user, lesson, courseName) {
+    if (!user || !user.sdt || !lesson) return Promise.resolve(null);
+    var sdt = String(user.sdt).trim();
+    var lkey = lesson.key || lesson;
+    var mb = lesson.mabai || '';
+    var todayVN = vlxtGetVietnamDateStr();
+
+    var list = vlxtGetServerConfirmedLessons(sdt);
+    var found = list.find(function (item) {
+      return item.key === lkey || (mb && item.mabai === mb);
+    });
+    if (found) {
+      found.completed = true;
+      found.date = todayVN;
+    } else {
+      list.push({
+        key: lkey,
+        mabai: mb || lkey,
+        name: lesson.name || '',
+        course: courseName || '',
+        completed: true,
+        date: todayVN,
+        timestamp: Date.now()
+      });
+    }
+    vlxtSaveServerConfirmedLessons(sdt, list);
+
+    var gasUrl = '';
+    if (typeof global !== 'undefined' && global.VLXT_GAS) gasUrl = global.VLXT_GAS;
+    else if (typeof global !== 'undefined' && global.APPS_SCRIPT_URL) gasUrl = global.APPS_SCRIPT_URL;
+    else if (typeof window !== 'undefined' && window.VLXT_GAS) gasUrl = window.VLXT_GAS;
+    else if (typeof window !== 'undefined' && window.APPS_SCRIPT_URL) gasUrl = window.APPS_SCRIPT_URL;
+    else if (typeof VLXT_GAS !== 'undefined' && VLXT_GAS) gasUrl = VLXT_GAS;
+    else if (typeof APPS_SCRIPT_URL !== 'undefined' && APPS_SCRIPT_URL) gasUrl = APPS_SCRIPT_URL;
+    else gasUrl = 'https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec';
+
+    if (!gasUrl) return Promise.resolve(null);
+
+    var payload = {
+      action: 'completetriallesson',
+      token: user.token || user.authToken || '',
+      sdt: sdt,
+      mabai: mb || lkey,
+      lesson: lkey,
+      course: courseName || '',
+      deviceId: (typeof global.vlxtGetDeviceId === 'function') ? global.vlxtGetDeviceId() : ''
+    };
+
+    return fetch(gasUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    }).then(function (r) { return r.json(); }).catch(function (e) {
+      console.warn('Ghi nhận completeTrialLesson nền:', e);
+      return null;
+    });
   }
 
   // 8. Bỏ qua cảnh báo bài nền tảng trong phiên (Session Storage)
@@ -556,7 +612,9 @@
     getTrialStartedLessons: vlxtGetTrialStartedLessons,
     isLessonStarted: vlxtIsLessonStarted,
     getDailyNewLessonsCount: vlxtGetDailyNewLessonsCount,
-    recordTrialLessonStart: vlxtRecordTrialLessonStart
+    recordTrialLessonStart: vlxtRecordTrialLessonStart,
+    recordTrialLessonCompleted: vlxtRecordTrialLessonCompleted,
+    recordLessonCompleted: vlxtRecordTrialLessonCompleted
   };
 
   if (typeof module !== 'undefined' && module.exports) {
