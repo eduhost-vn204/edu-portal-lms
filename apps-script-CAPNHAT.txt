@@ -817,6 +817,7 @@ function saveBaiHoc(data) {
   // hoac sap xep lai vi tri - tien do hoc sinh (TienDo.lesson) bam theo ma nay de khong bao gio mat.
   let maBai = '';
   let existingThuTuBai = '';
+  let existingBaiTap = '';
   if (rowIdx) {
     const h_ = sheet.getRange(1,1,1,sheet.getLastColumn()).getValues()[0];
     const c_ = h_.indexOf('MaBai');
@@ -826,11 +827,19 @@ function saveBaiHoc(data) {
       const v_ = sheet.getRange(rowIdx, ct_+1).getValue();
       existingThuTuBai = (v_===null || v_===undefined) ? '' : v_;
     }
+    const cb_ = h_.indexOf('BaiTap');
+    if (cb_ >= 0) {
+      const v_ = sheet.getRange(rowIdx, cb_+1).getValue();
+      existingBaiTap = (v_===null || v_===undefined) ? '' : v_;
+    }
   }
   if (!maBai) maBai = data.maBai || ('B' + Utilities.getUuid().replace(/-/g,'').slice(0,12));
   // Giu nguyen ThuTuBai hien co neu client khong gui gia tri hop le (VD: cache trinh duyet cu
   // luc mo form Sua bai chua co ThuTuBai) - tranh bai tu "nhay xuong cuoi chuong" moi lan Luu (6/8/2026).
   const ttbToSave = (data.ThuTuBai !== undefined && data.ThuTuBai !== null && data.ThuTuBai !== '') ? data.ThuTuBai : existingThuTuBai;
+  // Giu nguyen BaiTap hien co neu client khong gui gia tri (VD: form Sua bai tren Admin Console khong co o BaiTap)
+  // tranh xoa sach 20 cau trac nghiem luyen tap moi khi giao vien cap nhat/published tren Admin (16/9/2026).
+  const btToSave = (data.BaiTap !== undefined && data.BaiTap !== null && String(data.BaiTap).trim() !== '') ? data.BaiTap : existingBaiTap;
   const rowData = {
     KhoaHoc:   data.KhoaHoc   || '',
     Chuong:    data.Chuong    || '',
@@ -839,7 +848,7 @@ function saveBaiHoc(data) {
     VideoGiai: data.VideoGiai || '',
     MoTaBai:   data.MoTaBai   || '',
     NgayDang:  data.NgayDang  || new Date().toISOString(),
-    BaiTap:    data.BaiTap    || '',
+    BaiTap:    btToSave,
     PDF:       data.PDF       || '',
         PDFLyThuyet: data.PDFLyThuyet || '',
         PDFLuyenTap: data.PDFLuyenTap || '',

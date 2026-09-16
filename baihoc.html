@@ -718,21 +718,30 @@ async function fetchQuizIndex(){
 function mapQuizRows(rows){
     return (rows||[]).sort((a,b)=>(Number(a.thuTu)||0)-(Number(b.thuTu)||0)).map(rw=>({
             type: (rw.type==='tf'||rw.type==='short') ? rw.type : 'mc',
-            q: (rw.question||'').toString(),
-            A: (rw.optA||'').toString(), B: (rw.optB||'').toString(),
-            C: (rw.optC||'').toString(), D: (rw.optD||'').toString(),
-            ans: String(rw.correct||'').toUpperCase().trim(),
-            correct: (rw.correct||'').toString()
+            q: (rw.question||rw.q||'').toString(),
+            A: (rw.optA||rw.A||'').toString(), B: (rw.optB||rw.B||'').toString(),
+            C: (rw.optC||rw.C||'').toString(), D: (rw.optD||rw.D||'').toString(),
+            ans: String(rw.correct||rw.ans||'').toUpperCase().trim(),
+            correct: (rw.correct||rw.ans||'').toString()
     }));
 }
 async function loadLessonQuiz(key,lesson){
     if(lesson._quizLoaded) return;
     const meta=QUIZ_INDEX&&QUIZ_INDEX.lessons&&QUIZ_INDEX.lessons[key];
-    if(!meta){ lesson._quizLoaded=true; return; }
-    try{
-        const rows=await fetchJsonTimeout(meta.file,4000,{cache:'no-cache'});
-        lesson.baitap=mapQuizRows(Array.isArray(rows)?rows:[]);
-    }catch(e){ console.warn('Chưa tải được bài tập của bài '+key+':',e); }
+    if(meta){
+        try{
+            const rows=await fetchJsonTimeout(meta.file,4000,{cache:'no-cache'});
+            lesson.baitap=mapQuizRows(Array.isArray(rows)?rows:[]);
+        }catch(e){ console.warn('Chưa tải được bài tập của bài '+key+':',e); }
+    } else if(!(lesson.baitap && lesson.baitap.length)){
+        try{
+            const res=await fetchJsonTimeout(`${APPS_SCRIPT_URL}?type=baitaptracnghiem&bai=${encodeURIComponent(key)}`,4000,{cache:'no-cache'});
+            const rows=res&&(res.data||(Array.isArray(res)?res:[]));
+            if(Array.isArray(rows)&&rows.length>0){
+                lesson.baitap=mapQuizRows(rows);
+            }
+        }catch(e){ console.warn('Chưa tải được bài tập từ GAS bài '+key+':',e); }
+    }
     lesson._quizLoaded=true;
 }
 
@@ -1515,13 +1524,18 @@ function renderLesson(key){
     }
 
     const _quizMeta=QUIZ_INDEX&&QUIZ_INDEX.lessons&&QUIZ_INDEX.lessons[key];
-    if(_quizMeta&&!lesson._quizLoaded&&!lesson._quizLoading){
+    const _needsQuizLoad = !lesson._quizLoaded && !lesson._quizLoading && (_quizMeta || !(lesson.baitap && lesson.baitap.length));
+    if(_needsQuizLoad){
         lesson._quizLoading=true;
         app().innerHTML=`<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p style="margin-top:12px">Đang mở bài học...</p></div>`;
-        loadLessonQuiz(key,lesson).finally(()=>{ lesson._quizLoading=false; if(location.hash==='#lesson/'+encodeURIComponent(key)) renderLesson(key); });
+        loadLessonQuiz(key,lesson).finally(()=>{
+            lesson._quizLoading=false;
+            const curHash = decodeURIComponent(location.hash || '');
+            if(curHash === '#lesson/' + key || curHash === '#lesson/' + encodeURIComponent(key)) renderLesson(key);
+        });
         return;
     }
-    if(_quizMeta&&lesson._quizLoading) return;
+    if(lesson._quizLoading) return;
 
     window._triggerTrialStart = null;
     try{ if(typeof vlxtLog==='function' && HS && HS.sdt){ const _lk='vlxt_seen_'+HS.sdt+'_'+key; if(Date.now()-Number(localStorage.getItem(_lk)||0)>10*60*1000){ localStorage.setItem(_lk,String(Date.now())); vlxtLog('Xem bài học', lesson.name+' · '+course.name); } } }catch(e){}
