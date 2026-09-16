@@ -232,6 +232,9 @@
         .pq-opt span img { max-width:min(100%,340px); height:auto; display:block; margin:6px 0;
             border-radius:6px; border:1px solid var(--line); background:#fff; }
         .pq-opt span img.mt-eq { max-width:100%; border:none !important; background:transparent !important; display:inline; vertical-align:middle; margin:0 2px; }
+        .pq-diagram-wrap { text-align:center; margin:8px 0; }
+        .pq-diagram-stem { max-width:min(100%,540px); height:auto; display:block; margin:8px auto; border-radius:8px; border:1px solid var(--line); background:#fff; box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+        .pq-diagram-opt { max-width:min(100%,260px); height:auto; display:block; margin:6px 0; border-radius:6px; border:1px solid var(--line); background:#fff; }
         .pq-opt.result-correct { border-color:var(--green); background:#f0fdf4; }
         .pq-opt.result-wrong { border-color:var(--red); background:#fff5f5; }
         .pq-opt.result-correct .pq-letter { color:var(--green); }
@@ -722,8 +725,64 @@ function mapQuizRows(rows){
             A: (rw.optA||'').toString(), B: (rw.optB||'').toString(),
             C: (rw.optC||'').toString(), D: (rw.optD||'').toString(),
             ans: String(rw.correct||'').toUpperCase().trim(),
-            correct: (rw.correct||'').toString()
+            correct: (rw.correct||'').toString(),
+            hinhAnh: (rw.hinhAnh||'').toString(),
+            diagramAssets: rw.diagramAssets || null
     }));
+}
+
+function getStudentDiagram(q, binding) {
+    if(!q) return null;
+    let list = [];
+    if(Array.isArray(q.diagramAssets)) {
+        list = q.diagramAssets;
+    } else if(typeof q.diagramAssets === 'string' && q.diagramAssets.trim()) {
+        try { list = JSON.parse(q.diagramAssets); } catch(e) { list = []; }
+    }
+    const bUpper = String(binding || 'STEM').toUpperCase();
+    if(Array.isArray(list) && list.length > 0) {
+        const found = list.find(d => d && String(d.binding || '').toUpperCase() === bUpper);
+        if(found) return found;
+    }
+    if(bUpper === 'STEM' && q.hinhAnh) {
+        return { url: q.hinhAnh, altText: 'Hình minh hoạ' };
+    }
+    return null;
+}
+
+const DIAGRAM_ORIGIN_ALLOWLIST = [
+    'https://vatlyxuantruong.io.vn/images/diagrams/',
+    'images/diagrams/'
+];
+
+function isAllowedDiagramUrl(url) {
+    if(!url || typeof url !== 'string') return false;
+    const u = url.trim().toLowerCase();
+    if(u.indexOf('javascript:') !== -1 || u.indexOf('data:') !== -1 || u.indexOf('file:') !== -1 || u.indexOf('localhost') !== -1 || u.indexOf('<') !== -1) {
+        return false;
+    }
+    return DIAGRAM_ORIGIN_ALLOWLIST.some(prefix => u.startsWith(prefix.toLowerCase()));
+}
+
+function renderStudentDiagram(diag, isOpt) {
+    if(!diag) return '';
+    let src = '';
+    let alt = 'Hình minh hoạ';
+    if(typeof diag === 'string') {
+        src = diag;
+    } else if(typeof diag === 'object') {
+        src = diag.url || '';
+        alt = diag.altText || diag.caption || 'Hình minh hoạ';
+    }
+    src = String(src || '').trim();
+    if(!src) return '';
+    if(!isAllowedDiagramUrl(src)) {
+        return '<div class="pq-diagram-wrap"><span style="font-size:12px;color:var(--gray2);font-style:italic">[Đường dẫn hình ảnh không thuộc nguồn tin cậy]</span></div>';
+    }
+    const cls = isOpt ? 'pq-diagram-opt' : 'pq-diagram-stem';
+    return `<div class="pq-diagram-wrap">` +
+           `<img class="${cls}" src="${src}" alt="${alt}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<span style=\\'font-size:12px;color:var(--gray2);font-style:italic\\'>[Không thể tải hình ảnh]</span>'"/>` +
+           `</div>`;
 }
 async function loadLessonQuiz(key,lesson){
     if(lesson._quizLoaded) return;
@@ -1609,16 +1668,19 @@ function renderLesson(key){
         lesson.baitap.forEach((q,qi)=>{
             const _qType=(q.type==='tf'||q.type==='short')?q.type:'mc';
             const _qText=fixLatexQuirks(q.q||q.question||'');
+            const _stemDiagHtml=renderStudentDiagram(getStudentDiagram(q,'STEM'),false);
             if(_qType==='tf'){
                 _qz += `<div class="pq-block pq-tf" id="pq-${qi}" data-type="tf">
                     <div class="pq-text">Câu ${qi+1}: ${_qText}</div>
+                    ${_stemDiagHtml}
                     <div class="pq-tf-instruction" style="font-size:12.5px;color:var(--gray2);margin:4px 0 8px">Chọn Đúng hoặc Sai cho mỗi ý:</div>`;
                 ['A','B','C','D'].forEach(L=>{
                     if(!q[L]&&!q[L.toLowerCase()]) return;
                     const txt=fixLatexQuirks(q[L]||q[L.toLowerCase()]||'');
+                    const _optDiagHtml=renderStudentDiagram(getStudentDiagram(q,'OPTION_'+L),true);
                     _qz += `<div class="pq-tf-row" id="pq-${qi}-${L}">
                         <span class="pq-letter">${({A:'a)',B:'b)',C:'c)',D:'d)'})[L]}</span>
-                        <span class="pq-tf-stmt">${pqSafe(txt)}</span>
+                        <span class="pq-tf-stmt">${pqSafe(txt)}${_optDiagHtml}</span>
                         <div class="pq-tf-choice">
                             <label class="pq-tf-btn"><input type="radio" name="pq${qi}_${L}" value="Đ"> Đúng</label>
                             <label class="pq-tf-btn"><input type="radio" name="pq${qi}_${L}" value="S"> Sai</label>
@@ -1629,19 +1691,22 @@ function renderLesson(key){
             } else if(_qType==='short'){
                 _qz += `<div class="pq-block pq-short" id="pq-${qi}" data-type="short">
                     <div class="pq-text">Câu ${qi+1}: ${_qText}</div>
+                    ${_stemDiagHtml}
                     <div class="pq-short-wrap"><i class="fa-solid fa-keyboard" style="color:var(--blue)"></i> Đáp án của em: <input type="text" class="pq-short-input" id="pq-${qi}-input" placeholder="Nhập số..."></div>
                 </div>`;
             } else {
                 _qz += `<div class="pq-block" id="pq-${qi}" data-type="mc">
                     <div class="pq-text">Câu ${qi+1}: ${_qText}</div>
+                    ${_stemDiagHtml}
                     <div class="pq-opts">`;
                 ['A','B','C','D'].forEach(L=>{
                     if(!q[L]&&!q[L.toLowerCase()]) return;
                     const txt=fixLatexQuirks(q[L]||q[L.toLowerCase()]||'');
+                    const _optDiagHtml=renderStudentDiagram(getStudentDiagram(q,'OPTION_'+L),true);
                     _qz += `<label class="pq-opt" id="pq-${qi}-${L}">
                         <input type="radio" name="pq${qi}" value="${L}">
                         <span class="pq-letter">${L}.</span>
-                        <span>${pqSafe(txt)}</span>
+                        <span>${pqSafe(txt)}${_optDiagHtml}</span>
                     </label>`;
                 });
                 _qz += `</div></div>`;
@@ -1902,16 +1967,19 @@ async function renderLiveLesson(){
         lesson.baitap.forEach((q,qi)=>{
             const _qType=(q.type==='tf'||q.type==='short')?q.type:'mc';
             const _qText=fixLatexQuirks(q.q||q.question||'');
+            const _stemDiagHtml=renderStudentDiagram(getStudentDiagram(q,'STEM'),false);
             if(_qType==='tf'){
                 _qz += `<div class="pq-block pq-tf" id="pq-${qi}" data-type="tf">
                     <div class="pq-text">Câu ${qi+1}: ${_qText}</div>
+                    ${_stemDiagHtml}
                     <div class="pq-tf-instruction" style="font-size:12.5px;color:var(--gray2);margin:4px 0 8px">Chọn Đúng hoặc Sai cho mỗi ý:</div>`;
                 ['A','B','C','D'].forEach(L=>{
                     if(!q[L]&&!q[L.toLowerCase()]) return;
                     const txt=fixLatexQuirks(q[L]||q[L.toLowerCase()]||'');
+                    const _optDiagHtml=renderStudentDiagram(getStudentDiagram(q,'OPTION_'+L),true);
                     _qz += `<div class="pq-tf-row" id="pq-${qi}-${L}">
                         <span class="pq-letter">${({A:'a)',B:'b)',C:'c)',D:'d)'})[L]}</span>
-                        <span class="pq-tf-stmt">${pqSafe(txt)}</span>
+                        <span class="pq-tf-stmt">${pqSafe(txt)}${_optDiagHtml}</span>
                         <div class="pq-tf-choice">
                             <label class="pq-tf-btn"><input type="radio" name="pq${qi}_${L}" value="Đ"> Đúng</label>
                             <label class="pq-tf-btn"><input type="radio" name="pq${qi}_${L}" value="S"> Sai</label>
@@ -1922,19 +1990,22 @@ async function renderLiveLesson(){
             } else if(_qType==='short'){
                 _qz += `<div class="pq-block pq-short" id="pq-${qi}" data-type="short">
                     <div class="pq-text">Câu ${qi+1}: ${_qText}</div>
+                    ${_stemDiagHtml}
                     <div class="pq-short-wrap"><i class="fa-solid fa-keyboard" style="color:var(--blue)"></i> Đáp án của em: <input type="text" class="pq-short-input" id="pq-${qi}-input" placeholder="Nhập số..."></div>
                 </div>`;
             } else {
                 _qz += `<div class="pq-block" id="pq-${qi}" data-type="mc">
                     <div class="pq-text">Câu ${qi+1}: ${_qText}</div>
+                    ${_stemDiagHtml}
                     <div class="pq-opts">`;
                 ['A','B','C','D'].forEach(L=>{
                     if(!q[L]&&!q[L.toLowerCase()]) return;
                     const txt=fixLatexQuirks(q[L]||q[L.toLowerCase()]||'');
+                    const _optDiagHtml=renderStudentDiagram(getStudentDiagram(q,'OPTION_'+L),true);
                     _qz += `<label class="pq-opt" id="pq-${qi}-${L}">
                         <input type="radio" name="pq${qi}" value="${L}">
                         <span class="pq-letter">${L}.</span>
-                        <span>${pqSafe(txt)}</span>
+                        <span>${pqSafe(txt)}${_optDiagHtml}</span>
                     </label>`;
                 });
                 _qz += `</div></div>`;
