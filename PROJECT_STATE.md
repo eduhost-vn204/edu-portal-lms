@@ -1176,3 +1176,22 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
      - `test-apps-script-scope.mjs`: **4/4 PASS**.
      - Syntax check `node --check trial-manager.js; node --check auth.js`: **Hợp lệ 100%**.
      - `git diff --check`: **0 lỗi whitespace, 0 secret rò rỉ**.
+
+#### 16/09/2026 — Sửa Triệt Để Lỗi Mất 20 Câu Trắc Nghiệm Luyện Tập (B11, B12, B13), Phòng Thủ 4 Lớp, Phát Hành PR #10 & Cập Nhật Skill
+
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Pull Request**: [#10 (eduhost-vn204/edu-portal-lms)](https://github.com/eduhost-vn204/edu-portal-lms/pull/10)
+- **Nhánh thực hiện**: `codex/publish-lesson-13-clean` (rebase sạch trên `upstream/main` tại commit `a32bf21`).
+- **File thay đổi**:
+  * `baihoc.html`: Triển khai cơ chế nạp bài tập 3 tầng kiên cố (Static Content-Addressed -> Inline BaiTap -> Dynamic Fallback GAS `?type=baitaptracnghiem&bai=...`).
+  * `apps-script-CAPNHAT.txt`: Bổ sung kiểm tra `existingBaiTap` trong hàm `saveBaiHoc`. Nếu payload client không có `BaiTap`, giữ nguyên dữ liệu 20 câu hiện tại, không xoá trắng.
+  * `data/quiz-index.json`: Thêm entry bài B13 `B24bbd84d8ea9` với `count: 20`.
+  * `data/quizzes/quiz-1be88908769a2c3d4940.json`: 20 câu hỏi luyện tập content-addressed hash của Bài 13.
+  * `C:\Users\Xuan Truong\.gemini\config\skills\dang-bai-xps2k9\SKILL.md`: Bổ sung Mục 4 chi tiết về 4 nguyên nhân gốc rễ và quy trình phòng vệ 4 lớp, kèm Gate 5.2 bắt buộc kiểm tra trực tiếp web live.
+  * `.agents/skills/dang-bai-xps2k9/scripts/test-lesson-checklist.mjs`: Cập nhật endpoint GAS production và bổ sung kiểm tra 2 lớp (Quiz file & Inline BaiTap).
+- **Kết quả kiểm thử**:
+  * `test-lesson-checklist.mjs 13 --gas`: **7/7 CỔNG PASS 100%**.
+  * `test-quiz-merge.mjs` & `test-quiz-publish.mjs`: **18/18 PASS**.
+  * Cú pháp JS trong `baihoc.html`: Hợp lệ 100%, có thẻ `</html>`.
+  * Rà soát secret: **100% Sạch (0 secret)**.
