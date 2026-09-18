@@ -1,23 +1,4 @@
-// ════════════════════════════════════════════════════════════════
-
-// APPS SCRIPT TOÀN DIỆN — Vật Lý Xuân Trường  (v22: + Settings / currentTeachingLesson)
-// Dán toàn bộ đoạn này vào Google Apps Script, rồi Deploy lại.
-// ════════════════════════════════════════════════════════════════
-// CẤU TRÚC GOOGLE SHEETS CẦN CÓ:
-//   Tab "BaiHoc"     : KhoaHoc | Chuong | TenBai | Video | VideoGiai | MoTaBai | NgayDang | BaiTap
-//   Tab "NganHangDe" : id | type | question | optA | optB | optC | optD | correct | examId
-//   Tab "NganHang"   : id | mon | chuong | mucDo | loai | nhomId | deBaiChung | question | optA | optB | optC | optD | correct | hinhAnh | giaiThich | ngayThem | baiHoc
-//   Tab "DanhSachDe" : examId | tenDe | moTa | thoiGian | trangThai | lop | soLuotLam
-//   Tab "BangVang"   : name | studentClass | phone | score | timestamp
-//   Tab "TienDo"     : sdt | lesson | khoa | ten | lop | ngay
-//   Tab "TaiKhoan"   : sdt | hoten | lop | matkhau | ngayDK | lpTotal | diemGame | loaiTK | trialExpiry
-//   Tab "KhoaConfig" : khoaHoc | loaiTK   (free,vip,premium hoặc vip,premium hoặc premium)
-//   Tab "NhiemVu"   : sdt | nhipHoc | conTro | lastMissionDate | startDate | chuoiDung | tongDiemDuaTop
-//   Tab "Settings"  : key | value   (cấu hình toàn trang, vd: currentTeachingLesson)
-//   Tab "TeachingScope" : courseId | stageId | openChapterIds | activeLessonIds | validFrom | validTo | isActive | updatedAt | updatedBy | revision
-//   Tab "ThietBiHocThu" : deviceId | sdt | hoten | trialStart | trialExpiry | soLanChan  ← chống học thử nhiều lần
-// ════════════════════════════════════════════════════════════════
-const DEVICE_LOCK_ENABLED = false; // 18/7 TAM THOI TAT de thay lam video (theo yeu cau) -- doi lai thanh true + Trien khai > Phien ban moi de BAT LAI chan hoc thu nhieu lan
+const DEVICE_LOCK_ENABLED = false; // Mặc định tắt khóa thiết bị thử nghiệm
 
 function doGet(e) {
   const type   = (e.parameter.type || '').toLowerCase();
@@ -28,8 +9,10 @@ function doGet(e) {
     if (type === 'baitaptracnghiem') return getBaiTapTracNghiem(e.parameter.bai || '');
     if (type === 'transcript')       return getVideoTranscript(e.parameter.v || '', e.parameter.lang || '');
     if (type === 'baihoc')           return getBaiHoc();
+    if (type === 'liverecord')       return getLiveRecord(e);
     if (type === 'diemthi')          return getDiemThi();
     if (type === 'tiendo')           return getTienDo(hs);
+    if (type === 'triallimit')       return jsonOut({ ok: false, error: 'METHOD_NOT_ALLOWED', msg: 'Trial limit endpoint yêu cầu phương thức POST với token trong request body' });
     if (type === 'profile')          return getProfile(e);
     if (type === 'leaderboard')      return getLeaderboard();
     if (type === 'sourcevideolinks') return getSourceVideoLinks();
@@ -44,10 +27,12 @@ function doGet(e) {
     if (type === 'settings')         return getSettings();
     if (type === 'teachingscope')    return getTeachingScope(e);
     if (type === 'danhsachthietbi')  return getDanhSachThietBi(e);
-        if (type === 'searchprofiles')   return searchPublicProfiles(e);
+    if (type === 'searchprofiles')   return searchPublicProfiles(e);
     if (type === 'lichlive')          return getLiveSessions();
     if (type === 'huongdan')       return getHuongDan();
-    if (type === 'triallimit')     return jsonOut({ ok: false, error: 'METHOD_NOT_ALLOWED', msg: 'Trial limit endpoint yêu cầu phương thức POST với token trong request body' });
+    if (type === 'questionstats' || type === 'getquestionstats') return getQuestionStats(e);
+    if (type === 'repairp107_251') return repairBatchP107_251_AutoFix(e);
+    if (type === 'patchspecificfields') return patchSpecificFields_AuditFidelity(e);
     return getExamQuestions('de01'); // backward compat — không có type param
   } catch(err) {
     return jsonOut({ error: err.message });
@@ -58,9 +43,19 @@ function doPost(e) {
   try {
     const data   = JSON.parse(e.postData.contents);
     const action = (data.action || data.type || '').toLowerCase();
+    if (action === 'checkauthconfig' || action === 'check_auth_config') return checkAuthConfig(data);
     if (action === 'getprofile' || action === 'profile') return getProfile(data);
     if (action === 'gettriallimit' || action === 'triallimit') return getTrialLimit(data);
     if (action === 'starttriallesson')   return startTrialLesson(data);
+    if (action === 'completetriallesson') return completeTrialLesson(data);
+    if (action === 'cleartrialactivity') return clearTrialActivity(data);
+    if (action === 'getbaihocadmin' || action === 'get_bai_hoc_admin') return getBaiHocAdmin(data);
+    if (action === 'getliverecordadmin' || action === 'get_live_record_admin') return getLiveRecordAdmin(data);
+    if (action === 'saveliverecord' || action === 'save_live_record') return saveLiveRecord(data);
+    if (action === 'deleteliverecord' || action === 'delete_live_record') return deleteLiveRecord(data);
+    if (action === 'getvideocauhoiadmin' || action === 'get_video_cau_hoi_admin') return getVideoCauHoiAdmin(data);
+    if (action === 'getbaitaptracnghiemadmin' || action === 'get_bai_tap_trac_nghiem_admin') return getBaiTapTracNghiemAdmin(data);
+    if (action === 'getquestionstats' || action === 'get_question_stats') return getQuestionStats(data);
     if (action === 'register')           return registerUser(data);
     if (action === 'login')              return loginUser(data);
     if (action === 'logingoogle')        return loginGoogle(data);
@@ -74,7 +69,12 @@ function doPost(e) {
     if (action === 'savehuongdan')     return saveHuongDan(data);
     if (action === 'deletenganhang')     return deleteNganHang(data);
     if (action === 'updatenganhang')     return updateNganHang(data);
-    if (action === 'importnganhang' || action === 'import_tinh_batch' || action === 'importtinhbatch') return importNganHang(data);
+    if (action === 'clonenganhangtostaging') return cloneNganHangToStaging(data);
+    if (action === 'repairipclassbatch') return repairIpclassBatch(data);
+    if (action === 'updateexistingnganhangfromfile') return updateExistingNganHangFromFile(data);
+    if (action === 'repairlessonbatch' || action === 'repair_lesson_batch' || action === 'repairquestionslessonbatch') return repairLessonBatch(data);
+    if (action === 'repairbatchp107_251_autofix') return repairBatchP107_251_AutoFix(data);
+    if (action === 'importnganhang' || action === 'import_tinh_batch' || action === 'importtinhbatch' || action === 'importquestionsbatch' || action === 'import_questions_batch') return importNganHang(data);
     if (action === 'bulksetbainganhang') return typeof bulkSetBaiHocNganHang === 'function' ? bulkSetBaiHocNganHang(data) : bulkSetBaiNganHang(data);
     if (action === 'bulksetchatluongnganhang') return bulkSetChatLuongNganHang(data);
     if (action === 'saveprogress')       return saveProgress(data);
@@ -203,10 +203,124 @@ function jsonOut(obj) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-// ── AUTH: Đăng ký ─────────────────────────────────────────────
+// ── AUTH: Đăng ký & Bảo mật Phiên HMAC ────────────────────────
 
-// Helper: chuẩn hoá SĐT để so sánh (bỏ ký tự không phải số + bỏ số 0 đầu)
-function normSdt(s) { return String(s || '').replace(/\D/g,'').replace(/^0+/,''); }
+// Helper: chuẩn hoá SĐT hoặc Email để so sánh
+function normSdt(s) {
+  const str = String(s || '').trim();
+  if (str.includes('@')) return str.toLowerCase();
+  return str.replace(/\D/g,'').replace(/^0+/,'');
+}
+
+function checkAuthConfig(data) {
+  let hasSecret = false;
+  let secretLength = 0;
+  try {
+    const s = getAuthSecret();
+    hasSecret = Boolean(s && s.length >= 32);
+    secretLength = s ? s.length : 0;
+  } catch(e) {}
+
+  let hasGoogleClientId = false;
+  let googleClientIdTail = '';
+  try {
+    const cid = getGoogleClientId();
+    hasGoogleClientId = Boolean(cid && cid.includes('.apps.googleusercontent.com'));
+    googleClientIdTail = cid ? cid.slice(-25) : '';
+  } catch(e) {}
+
+  let hasTrialActivity = false;
+  let trialActivityHeaders = [];
+  let hasExact6Headers = false;
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const actSheet = ss.getSheetByName('TrialActivity');
+    if (actSheet) {
+      hasTrialActivity = true;
+      const lastCol = actSheet.getLastColumn();
+      if (lastCol > 0) {
+        trialActivityHeaders = actSheet.getRange(1, 1, 1, lastCol).getValues()[0].map(function(h) { return String(h || '').trim(); });
+      }
+      const expected = ['sdt','mabai','dateStr','thoigian','deviceId','hoten'];
+      hasExact6Headers = (trialActivityHeaders.length === 6) && expected.every(function(h, idx) { return trialActivityHeaders[idx] === h; });
+    }
+  } catch(e) {}
+
+  return jsonOut({
+    ok: hasSecret && hasGoogleClientId && hasExact6Headers,
+    hasAuthSecret: hasSecret,
+    secretLength: secretLength,
+    isStrongSecret: secretLength >= 32,
+    hasGoogleClientId: hasGoogleClientId,
+    googleClientIdTail: googleClientIdTail,
+    hasTrialActivitySheet: hasTrialActivity,
+    trialActivityHeaders: trialActivityHeaders,
+    hasExact6Headers: hasExact6Headers
+    // Tuyệt đối không chứa hoặc hiển thị secret value
+  });
+}
+
+function getAuthSecret() {
+  const props = PropertiesService.getScriptProperties();
+  const secret = props.getProperty('AUTH_SECRET');
+  if (!secret || !secret.trim()) {
+    throw new Error('AUTH_SECRET_NOT_CONFIGURED');
+  }
+  return secret.trim();
+}
+
+function generateUserToken(sdt, userMeta) {
+  const secret = getAuthSecret();
+  const cleanSdt = normSdt(sdt);
+  const now = Date.now();
+  const issuedAt = now;
+
+  // Hạn phiên tối đa 7 ngày, nhưng không sống lâu hơn trạng thái tài khoản hợp lệ
+  let duration = 7 * 24 * 60 * 60 * 1000;
+  if (userMeta && userMeta.trialExpiry && Number(userMeta.trialExpiry) > now) {
+    const remainTrial = Number(userMeta.trialExpiry) - now;
+    if (remainTrial < duration) {
+      duration = remainTrial;
+    }
+  }
+  const expiresAt = now + duration;
+  const nonce = Utilities.getUuid().replace(/-/g, '').slice(0, 16);
+  const raw = cleanSdt + ':' + issuedAt + ':' + expiresAt + ':' + nonce;
+  const sig = Utilities.base64EncodeWebSafe(
+    Utilities.computeHmacSha256Signature(raw, secret)
+  );
+  return Utilities.base64EncodeWebSafe(raw + ':' + sig);
+}
+
+function verifyUserToken(token) {
+  if (!token) return null;
+  const secret = getAuthSecret(); // Ném AUTH_SECRET_NOT_CONFIGURED nếu thiếu
+  try {
+    const decoded = Utilities.newBlob(Utilities.base64DecodeWebSafe(token)).getDataAsString();
+    const parts = decoded.split(':');
+    if (parts.length !== 5) return null;
+    const sdt = parts[0];
+    const issuedAt = Number(parts[1]);
+    const expiresAt = Number(parts[2]);
+    const nonce = parts[3];
+    const sig = parts[4];
+
+    const now = Date.now();
+    if (isNaN(issuedAt) || isNaN(expiresAt)) return null;
+    if (now > expiresAt) return null; // Token đã hết hạn
+    if (issuedAt > now + 60000) return null; // Token từ tương lai
+
+    const raw = sdt + ':' + issuedAt + ':' + expiresAt + ':' + nonce;
+    const expectedSig = Utilities.base64EncodeWebSafe(
+      Utilities.computeHmacSha256Signature(raw, secret)
+    );
+    if (sig !== expectedSig) return null;
+    return sdt;
+  } catch (e) {
+    if (e.message === 'AUTH_SECRET_NOT_CONFIGURED') throw e;
+    return null;
+  }
+}
 
 function registerUser(data) {
   // Preflight AUTH_SECRET: Fail-Closed tuyệt đối trước khi đọc/ghi bất kỳ Sheet nào
@@ -604,10 +718,61 @@ function getLeaderboard() {
 }
 
 // ── GET: Bài học ──────────────────────────────────────────────
+const BAIHOC_COLS = ['KhoaHoc','Chuong','TenBai','Video','VideoGiai','MoTaBai','NgayDang','BaiTap','PDF','PDFLyThuyet','PDFLuyenTap','ThoiGianLamBai','ThuTuBai','MaBai','TrangThai','BaiNenTang'];
 
-function getBaiHoc() {
-  const sheet = getOrCreate('BaiHoc', ['KhoaHoc','Chuong','TenBai','Video','VideoGiai','MoTaBai','NgayDang','BaiTap','PDF','PDFLyThuyet','PDFLuyenTap','ThoiGianLamBai','ThuTuBai','MaBai']);
-  return jsonOut(sheetToJson(sheet));
+function normalizeLessonStatus(st) {
+  const s = (st === undefined || st === null) ? '' : String(st).trim().toLowerCase();
+  if (s === 'draft' || s === 'archived') return s;
+  return 'published'; // Tương thích ngược: thiếu hoặc khác draft/archived thì mặc định là published
+}
+
+function isLessonPublished(baiKey) {
+  if (!baiKey) return false;
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = ss.getSheetByName('BaiHoc');
+    if (!sheet) return false;
+    const rows = sheetToJson(sheet);
+    const target = rows.find(function(r) {
+      return String(r.MaBai || '').trim() === String(baiKey).trim() ||
+             String(r.TenBai || '').trim() === String(baiKey).trim();
+    });
+    if (!target) return false;
+    const st = normalizeLessonStatus(target.TrangThai || target.trangThai);
+    return st === 'published';
+  } catch (err) {
+    return false; // fail-closed bảo vệ an toàn
+  }
+}
+
+function getBaiHoc(e) {
+  const sheet = getOrCreate('BaiHoc', BAIHOC_COLS);
+  const rawRows = sheetToJson(sheet);
+
+  // Public GET: TUYỆT ĐỐI chỉ trả bài published, bất kỳ query param nào cũng không nâng quyền
+  const publicRows = rawRows
+    .map(function(r) {
+      const st = normalizeLessonStatus(r.TrangThai || r.trangThai);
+      return Object.assign({}, r, { TrangThai: st });
+    })
+    .filter(function(r) {
+      return r.TrangThai === 'published';
+    });
+
+  return jsonOut(publicRows);
+}
+
+function getBaiHocAdmin(data) {
+  if (!requireAdmin(data && data.adminKey)) {
+    return jsonOut({ ok: false, msg: 'Unauthorized: sai hoặc thiếu adminKey' });
+  }
+  const sheet = getOrCreate('BaiHoc', BAIHOC_COLS);
+  const rawRows = sheetToJson(sheet);
+  const allRows = rawRows.map(function(r) {
+    const st = normalizeLessonStatus(r.TrangThai || r.trangThai);
+    return Object.assign({}, r, { TrangThai: st });
+  });
+  return jsonOut({ ok: true, data: allRows });
 }
 
 // ── GET: Danh sách đề thi ────────────────────────────────────
@@ -739,6 +904,19 @@ function saveScore(data) {
     data.score || data.diem || 0,
     new Date().toISOString()
   ]);
+  if (data.phone || data.sdt) {
+    const sdt = data.phone || data.sdt;
+    const acc = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame']);
+    const rows = acc.getDataRange().getValues();
+    for (let i = 1; i < rows.length; i++) {
+      if (normSdt(rows[i][0]) === normSdt(sdt)) {
+        const cur = Number(rows[i][5]) || 0;
+        const newScore = Number(data.score || data.diem || 0);
+        acc.getRange(i+1, 6).setValue(Math.max(cur, newScore));
+        break;
+      }
+    }
+  }
   return jsonOut({ ok: true });
 }
 
@@ -804,20 +982,26 @@ function saveProgress(data) {
       break;
     }
   }
+  // Ghi nhận hoàn thành bài học thử nếu là tài khoản trial
+  try { completeTrialLesson(data); } catch(e) {}
   return jsonOut({ ok: true, lpEarned: lpEarned, lpTotal: lpTotal, rankUp: rankUp });
 }
 
 // ── POST: Quản lý bài học (Admin) ─────────────────────────────
 
 function saveBaiHoc(data) {
-  const COLS = ['KhoaHoc','Chuong','TenBai','Video','VideoGiai','MoTaBai','NgayDang','BaiTap','PDF','PDFLyThuyet','PDFLuyenTap','ThoiGianLamBai','ThuTuBai','MaBai'];
+  if (!requireAdmin(data && data.adminKey)) {
+    return jsonOut({ ok: false, msg: 'Unauthorized: sai hoặc thiếu adminKey' });
+  }
+  const COLS = typeof BAIHOC_COLS !== 'undefined' ? BAIHOC_COLS : ['KhoaHoc','Chuong','TenBai','Video','VideoGiai','MoTaBai','NgayDang','BaiTap','PDF','PDFLyThuyet','PDFLuyenTap','ThoiGianLamBai','ThuTuBai','MaBai','TrangThai','BaiNenTang'];
   const sheet = getOrCreate('BaiHoc', COLS); // tự thêm cột thiếu nếu sheet cũ
-  const rowIdx = (data.maBai && findRowByMaBai(sheet, data.maBai)) || data.rowIndex || findRowByKey(sheet, data.originalKey);
+  const inputMaBai = String((data && (data.maBai || data.MaBai)) || '').trim();
+  const rowIdx = (inputMaBai && findRowByMaBai(sheet, inputMaBai)) || data.rowIndex || findRowByKey(sheet, data.originalKey);
   // MaBai: ma dinh danh ON DINH cho moi bai hoc, KHONG BAO GIO doi khi doi ten khoa/chuong/bai
   // hoac sap xep lai vi tri - tien do hoc sinh (TienDo.lesson) bam theo ma nay de khong bao gio mat.
   let maBai = '';
   let existingThuTuBai = '';
-  let existingBaiTap = '';
+  let existingTrangThai = '';
   if (rowIdx) {
     const h_ = sheet.getRange(1,1,1,sheet.getLastColumn()).getValues()[0];
     const c_ = h_.indexOf('MaBai');
@@ -827,19 +1011,19 @@ function saveBaiHoc(data) {
       const v_ = sheet.getRange(rowIdx, ct_+1).getValue();
       existingThuTuBai = (v_===null || v_===undefined) ? '' : v_;
     }
-    const cb_ = h_.indexOf('BaiTap');
-    if (cb_ >= 0) {
-      const v_ = sheet.getRange(rowIdx, cb_+1).getValue();
-      existingBaiTap = (v_===null || v_===undefined) ? '' : v_;
+    const cs_ = h_.indexOf('TrangThai');
+    if (cs_ >= 0) {
+      const s_ = sheet.getRange(rowIdx, cs_+1).getValue();
+      existingTrangThai = (s_===null || s_===undefined) ? '' : s_;
     }
   }
-  if (!maBai) maBai = data.maBai || ('B' + Utilities.getUuid().replace(/-/g,'').slice(0,12));
+  if (!maBai) maBai = inputMaBai || ('B' + Utilities.getUuid().replace(/-/g,'').slice(0,12));
   // Giu nguyen ThuTuBai hien co neu client khong gui gia tri hop le (VD: cache trinh duyet cu
   // luc mo form Sua bai chua co ThuTuBai) - tranh bai tu "nhay xuong cuoi chuong" moi lan Luu (6/8/2026).
   const ttbToSave = (data.ThuTuBai !== undefined && data.ThuTuBai !== null && data.ThuTuBai !== '') ? data.ThuTuBai : existingThuTuBai;
-  // Giu nguyen BaiTap hien co neu client khong gui gia tri (VD: form Sua bai tren Admin Console khong co o BaiTap)
-  // tranh xoa sach 20 cau trac nghiem luyen tap moi khi giao vien cap nhat/published tren Admin (16/9/2026).
-  const btToSave = (data.BaiTap !== undefined && data.BaiTap !== null && String(data.BaiTap).trim() !== '') ? data.BaiTap : existingBaiTap;
+  const rawStatus = (data.TrangThai !== undefined && data.TrangThai !== null) ? data.TrangThai : ((data.trangThai !== undefined && data.trangThai !== null) ? data.trangThai : existingTrangThai);
+  const trangThaiToSave = normalizeLessonStatus(rawStatus);
+
   const rowData = {
     KhoaHoc:   data.KhoaHoc   || '',
     Chuong:    data.Chuong    || '',
@@ -848,13 +1032,15 @@ function saveBaiHoc(data) {
     VideoGiai: data.VideoGiai || '',
     MoTaBai:   data.MoTaBai   || '',
     NgayDang:  data.NgayDang  || new Date().toISOString(),
-    BaiTap:    btToSave,
+    BaiTap:    data.BaiTap    || '',
     PDF:       data.PDF       || '',
-        PDFLyThuyet: data.PDFLyThuyet || '',
-        PDFLuyenTap: data.PDFLuyenTap || '',
+    PDFLyThuyet: data.PDFLyThuyet || '',
+    PDFLuyenTap: data.PDFLuyenTap || '',
     ThoiGianLamBai: data.ThoiGianLamBai || '',
     ThuTuBai: ttbToSave,
-    MaBai:     maBai
+    MaBai:     maBai,
+    TrangThai: trangThaiToSave,
+    BaiNenTang: data.BaiNenTang || ''
   };
   if (rowIdx) {
     writeRowNamed(sheet, rowIdx, rowData);
@@ -862,12 +1048,127 @@ function saveBaiHoc(data) {
     appendRowNamed(sheet, rowData);
   }
   triggerStaticRefresh();
-  return jsonOut({ ok: true });
+  return jsonOut({ ok: true, maBai: maBai, TrangThai: trangThaiToSave, BaiNenTang: rowData.BaiNenTang });
 }
 
 function deleteBaiHoc(data) {
+  if (!requireAdmin(data && data.adminKey)) {
+    return jsonOut({ ok: false, msg: 'Unauthorized: sai hoặc thiếu adminKey' });
+  }
   const sheet = getOrCreate('BaiHoc', ['KhoaHoc','Chuong','TenBai','Video','VideoGiai','MoTaBai','NgayDang','BaiTap','PDF','PDFLyThuyet','ThoiGianLamBai']);
-  const rowIdx = data.rowIndex || findRowByKey(sheet, data.key || data.originalKey);
+  const rowIdx = (data.maBai && findRowByMaBai(sheet, data.maBai)) || data.rowIndex || findRowByKey(sheet, data.key || data.originalKey);
+  if (rowIdx) sheet.deleteRow(rowIdx);
+  triggerStaticRefresh();
+  return jsonOut({ ok: true });
+}
+
+
+// ── GET & POST: Live & Xem Lại (LiveRecord) ──────────────────
+const LIVERECORD_COLS = [
+  'KhoaHoc','Chuong','TenBai','NgayGioLive','LinkLive','TaiLieuLive','VideoGhiLai',
+  'Video','VideoGiai','MoTaBai','NgayDang','BaiTap','PDF','PDFLyThuyet','PDFLuyenTap',
+  'ThoiGianLamBai','ThuTuBai','MaBai','TrangThai'
+];
+
+function getLiveRecord(e) {
+  const sheet = getOrCreate('LiveRecord', LIVERECORD_COLS);
+  const rawRows = sheetToJson(sheet);
+  const publicRows = rawRows
+    .map(function(r) {
+      const st = normalizeLessonStatus(r.TrangThai || r.trangThai);
+      return Object.assign({}, r, { TrangThai: st });
+    })
+    .filter(function(r) {
+      return r.TrangThai === 'published';
+    });
+  return jsonOut(publicRows);
+}
+
+function getLiveRecordAdmin(data) {
+  if (!requireAdmin(data && data.adminKey)) {
+    return jsonOut({ ok: false, msg: 'Unauthorized: sai hoặc thiếu adminKey' });
+  }
+  const sheet = getOrCreate('LiveRecord', LIVERECORD_COLS);
+  const rawRows = sheetToJson(sheet);
+  const allRows = rawRows.map(function(r) {
+    const st = normalizeLessonStatus(r.TrangThai || r.trangThai);
+    return Object.assign({}, r, { TrangThai: st });
+  });
+  return jsonOut({ ok: true, data: allRows });
+}
+
+function saveLiveRecord(data) {
+  if (!requireAdmin(data && data.adminKey)) {
+    return jsonOut({ ok: false, msg: 'Unauthorized: sai hoặc thiếu adminKey' });
+  }
+  const COLS = typeof LIVERECORD_COLS !== 'undefined' ? LIVERECORD_COLS : [
+    'KhoaHoc','Chuong','TenBai','NgayGioLive','LinkLive','TaiLieuLive','VideoGhiLai',
+    'Video','VideoGiai','MoTaBai','NgayDang','BaiTap','PDF','PDFLyThuyet','PDFLuyenTap',
+    'ThoiGianLamBai','ThuTuBai','MaBai','TrangThai'
+  ];
+  const sheet = getOrCreate('LiveRecord', COLS);
+  const inputMaBai = String((data && (data.maBai || data.MaBai)) || '').trim();
+  const rowIdx = (inputMaBai && findRowByMaBai(sheet, inputMaBai)) || data.rowIndex || findRowByKey(sheet, data.originalKey);
+
+  let maBai = '';
+  let existingThuTuBai = '';
+  let existingTrangThai = '';
+  if (rowIdx) {
+    const h_ = sheet.getRange(1,1,1,sheet.getLastColumn()).getValues()[0];
+    const c_ = h_.indexOf('MaBai');
+    if (c_ >= 0) maBai = sheet.getRange(rowIdx, c_+1).getValue() || '';
+    const ct_ = h_.indexOf('ThuTuBai');
+    if (ct_ >= 0) {
+      const v_ = sheet.getRange(rowIdx, ct_+1).getValue();
+      existingThuTuBai = (v_===null || v_===undefined) ? '' : v_;
+    }
+    const cs_ = h_.indexOf('TrangThai');
+    if (cs_ >= 0) {
+      const s_ = sheet.getRange(rowIdx, cs_+1).getValue();
+      existingTrangThai = (s_===null || s_===undefined) ? '' : s_;
+    }
+  }
+  if (!maBai) maBai = inputMaBai || ('LIVE_' + Utilities.getUuid().replace(/-/g,'').slice(0,10));
+  const ttbToSave = (data.ThuTuBai !== undefined && data.ThuTuBai !== null && data.ThuTuBai !== '') ? data.ThuTuBai : existingThuTuBai;
+  const rawStatus = (data.TrangThai !== undefined && data.TrangThai !== null) ? data.TrangThai : ((data.trangThai !== undefined && data.trangThai !== null) ? data.trangThai : existingTrangThai);
+  const trangThaiToSave = normalizeLessonStatus(rawStatus);
+
+  const rowData = {
+    KhoaHoc:     data.KhoaHoc     || '',
+    Chuong:      data.Chuong      || '',
+    TenBai:      data.TenBai      || '',
+    NgayGioLive: data.NgayGioLive || '',
+    LinkLive:    data.LinkLive    || '',
+    TaiLieuLive: data.TaiLieuLive || '',
+    VideoGhiLai: data.VideoGhiLai || '',
+    Video:       data.Video       || data.VideoGhiLai || '',
+    VideoGiai:   data.VideoGiai   || '',
+    MoTaBai:     data.MoTaBai     || '',
+    NgayDang:    data.NgayDang    || new Date().toISOString(),
+    BaiTap:      data.BaiTap      || '',
+    PDF:         data.PDF         || data.TaiLieuLive || '',
+    PDFLyThuyet: data.PDFLyThuyet || '',
+    PDFLuyenTap: data.PDFLuyenTap || '',
+    ThoiGianLamBai: data.ThoiGianLamBai || '',
+    ThuTuBai:    ttbToSave,
+    MaBai:       maBai,
+    TrangThai:   trangThaiToSave
+  };
+  if (rowIdx) {
+    writeRowNamed(sheet, rowIdx, rowData);
+  } else {
+    appendRowNamed(sheet, rowData);
+  }
+  triggerStaticRefresh();
+  return jsonOut({ ok: true, maBai: maBai, TrangThai: trangThaiToSave });
+}
+
+function deleteLiveRecord(data) {
+  if (!requireAdmin(data && data.adminKey)) {
+    return jsonOut({ ok: false, msg: 'Unauthorized: sai hoặc thiếu adminKey' });
+  }
+  const sheet = getOrCreate('LiveRecord', LIVERECORD_COLS);
+  const rowIdx = (data.maBai && findRowByMaBai(sheet, data.maBai)) || data.rowIndex || findRowByKey(sheet, data.key || data.originalKey);
   if (rowIdx) sheet.deleteRow(rowIdx);
   triggerStaticRefresh();
   return jsonOut({ ok: true });
@@ -1114,12 +1415,15 @@ function saveQuestions(data) {
 const NH_HEADERS = ['id','mon','chuong','mucDo','loai','nhomId','deBaiChung','question','optA','optB','optC','optD','correct','hinhAnh','giaiThich','ngayThem','baiHoc','chatLuong','kyThuat','lyDoCachLy','batchId'];
 
 // ── GET: Toàn bộ ngân hàng câu hỏi ───────────────────────────
+const PT_LESSON_DICT = {"VLXT-PT-DE_01-P1-Q01": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_01-P1-Q02": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_01-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_01-P1-Q04": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_01-P1-Q05": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_01-P1-Q07": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_01-P1-Q08": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_01-P1-Q09": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_01-P1-Q10": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_01-P1-Q11": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_01-P1-Q12": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_01-P1-Q13": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_01-P1-Q14": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_01-P1-Q15": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_01-P1-Q16": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_01-P1-Q17": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_01-P1-Q18": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_02-P1-Q01": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_02-P1-Q02": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_02-P1-Q03": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_02-P1-Q04": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_02-P1-Q05": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_02-P1-Q06": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_02-P1-Q07": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_02-P1-Q08": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_02-P1-Q09": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_02-P1-Q10": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_02-P1-Q11": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_02-P1-Q12": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_02-P1-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_02-P1-Q14": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_02-P1-Q15": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_02-P1-Q16": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_02-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_02-P1-Q18": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_03-P1-Q01": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_03-P1-Q02": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_03-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_03-P1-Q04": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_03-P1-Q05": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_03-P1-Q06": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_03-P1-Q07": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_03-P1-Q08": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_03-P1-Q09": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_03-P1-Q10": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_03-P1-Q11": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_03-P1-Q12": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_03-P1-Q13": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_03-P1-Q14": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_03-P1-Q15": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_03-P1-Q16": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_03-P1-Q17": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_03-P1-Q18": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_04-P1-Q01": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_04-P1-Q02": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_04-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_04-P1-Q04": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_04-P1-Q05": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_04-P1-Q06": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_04-P1-Q07": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_04-P1-Q08": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_04-P1-Q09": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_04-P1-Q10": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_04-P1-Q11": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_04-P1-Q12": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_04-P1-Q13": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_04-P1-Q14": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_04-P1-Q15": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_04-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_04-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_05-P1-Q01-H6808885d": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_05-P1-Q02": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_05-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_05-P1-Q04": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_05-P1-Q05": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_05-P1-Q06": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_05-P1-Q07": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_05-P1-Q08": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_05-P1-Q09": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_05-P1-Q10": "B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT", "VLXT-PT-DE_05-P1-Q11": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_05-P1-Q12": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_05-P1-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_05-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_05-P1-Q15": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_05-P1-Q16": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_05-P1-Q17-Hdc672a67": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_05-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_06-P1-Q01": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_06-P1-Q02": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_06-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_06-P1-Q04": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_06-P1-Q05": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_06-P1-Q06": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_06-P1-Q07": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_06-P1-Q08": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_06-P1-Q09": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_06-P1-Q10": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_06-P1-Q11": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_06-P1-Q12": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_06-P1-Q13": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_06-P1-Q14": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_06-P1-Q15": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_06-P1-Q16": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_06-P1-Q17": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_06-P1-Q18": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_07-P1-Q01": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_07-P1-Q02": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_07-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_07-P1-Q04": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_07-P1-Q05": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_07-P1-Q06": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_07-P1-Q07": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_07-P1-Q08": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_07-P1-Q09": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_07-P1-Q10": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_07-P1-Q11": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_07-P1-Q12": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_07-P1-Q13": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_07-P1-Q14": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_07-P1-Q15": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_07-P1-Q16": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_07-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_07-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_08-P1-Q01": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_08-P1-Q02": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_08-P1-Q03": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_08-P1-Q04": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_08-P1-Q05": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_08-P1-Q06": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_08-P1-Q07": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_08-P1-Q08": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_08-P1-Q09": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_08-P1-Q10": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_08-P1-Q11": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_08-P1-Q12": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_08-P1-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_08-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_08-P1-Q15": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_08-P1-Q16": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_08-P1-Q17": "B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT", "VLXT-PT-DE_08-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_09-P1-Q01": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_09-P1-Q02": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_09-P1-Q03": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_09-P1-Q04": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_09-P1-Q05": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_09-P1-Q06": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_09-P1-Q07": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_09-P1-Q08": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_09-P1-Q09": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_09-P1-Q10": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_09-P1-Q11": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_09-P1-Q12": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_09-P1-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_09-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_09-P1-Q15": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_09-P1-Q16": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_09-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_09-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_10-P1-Q01": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_10-P1-Q02": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_10-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_10-P1-Q04": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_10-P1-Q05": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_10-P1-Q06": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_10-P1-Q07": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_10-P1-Q08": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_10-P1-Q09": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_10-P1-Q10": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_10-P1-Q11": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_10-P1-Q12": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_10-P1-Q13": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_10-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_10-P1-Q15": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_10-P1-Q16": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_10-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_10-P1-Q18": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_11-P1-Q01": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_11-P1-Q02": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_11-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_11-P1-Q04": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_11-P1-Q05": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_11-P1-Q06": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_11-P1-Q07": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_11-P1-Q08": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_11-P1-Q09": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_11-P1-Q10": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_11-P1-Q11": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_11-P1-Q12": "B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT", "VLXT-PT-DE_11-P1-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_11-P1-Q14": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_11-P1-Q15": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_11-P1-Q16": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_11-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_11-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_12-P1-Q01": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_12-P1-Q02": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_12-P1-Q03": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_12-P1-Q04": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_12-P1-Q05": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_12-P1-Q06": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_12-P1-Q07": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_12-P1-Q08": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_12-P1-Q09": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_12-P1-Q10": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_12-P1-Q11": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_12-P1-Q12": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_12-P1-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_12-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_12-P1-Q15": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_12-P1-Q16": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_12-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_12-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_13-P1-Q01": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_13-P1-Q02": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_13-P1-Q03": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_13-P1-Q04": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_13-P1-Q05": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_13-P1-Q06": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_13-P1-Q07": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_13-P1-Q08": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_13-P1-Q09": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_13-P1-Q10": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_13-P1-Q11": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_13-P1-Q12": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_13-P1-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_13-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_13-P1-Q15": "B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT", "VLXT-PT-DE_13-P1-Q16": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_13-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_13-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_14-P1-Q01": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_14-P1-Q02": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_14-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_14-P1-Q04": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_14-P1-Q05": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_14-P1-Q06": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_14-P1-Q07": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_14-P1-Q08": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_14-P1-Q09": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_14-P1-Q10": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_14-P1-Q11": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_14-P1-Q12": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_14-P1-Q13": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_14-P1-Q14": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_14-P1-Q15": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_14-P1-Q16": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_14-P1-Q17": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_14-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_15-P1-Q01": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_15-P1-Q02": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_15-P1-Q03": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_15-P1-Q04": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_15-P1-Q06": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_15-P1-Q07": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_15-P1-Q09": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_15-P1-Q10": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_15-P1-Q11": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_15-P1-Q13": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_15-P1-Q15": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_15-P1-Q16": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_15-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_15-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_16-P1-Q01": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_16-P1-Q02": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_16-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_16-P1-Q04": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_16-P1-Q05": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_16-P1-Q06": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_16-P1-Q07": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_16-P1-Q08": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_16-P1-Q09": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_16-P1-Q10": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_16-P1-Q11": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_16-P1-Q12": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_16-P1-Q13": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_16-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_16-P1-Q15": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_16-P1-Q16": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_16-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_16-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_17-P1-Q01": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_17-P1-Q02": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_17-P1-Q03": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_17-P1-Q04": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_17-P1-Q05": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_17-P1-Q06": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_17-P1-Q07": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_17-P1-Q08": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_17-P1-Q09": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_17-P1-Q10": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_17-P1-Q11": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_17-P1-Q12": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_17-P1-Q13": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_17-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_17-P1-Q15": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_17-P1-Q16": "B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT", "VLXT-PT-DE_17-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_17-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_18-P1-Q01": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_18-P1-Q02": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_18-P1-Q03": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_18-P1-Q04": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_18-P1-Q05": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_18-P1-Q06": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_18-P1-Q08": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_18-P1-Q09": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_18-P1-Q10": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_18-P1-Q11": "B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT", "VLXT-PT-DE_18-P1-Q12": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_18-P1-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_18-P1-Q14": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_18-P1-Q15": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_18-P1-Q16": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_18-P1-Q17": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_18-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_19-P1-Q01": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_19-P1-Q02": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_19-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_19-P1-Q04": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_19-P1-Q05": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_19-P1-Q06": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_19-P1-Q07": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_19-P1-Q08": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_19-P1-Q09": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_19-P1-Q10": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_19-P1-Q11": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_19-P1-Q12": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_19-P1-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_19-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_19-P1-Q15": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_19-P1-Q16": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_19-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_19-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_20-P1-Q01": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_20-P1-Q02-H04d938be": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_20-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-DE_20-P1-Q04": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_20-P1-Q05": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_20-P1-Q06": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_20-P1-Q07": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-DE_20-P1-Q08": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_20-P1-Q09": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_20-P1-Q10": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_20-P1-Q11": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "VLXT-PT-DE_20-P1-Q12": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_20-P1-Q13": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-DE_20-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_20-P1-Q15": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_20-P1-Q16": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_20-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-DE_20-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P107-B6-Q01": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P107-B6-Q02": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P107-B6-Q03": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P108-B6-Q04": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P108-B6-Q05": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P108-B6-Q06": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P108-B6-Q07": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P109-B6-Q08": "B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT", "VLXT-PT-P109-B6-Q09": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-P109-B6-Q10": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P110-B6-Q11": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ", "VLXT-PT-P110-B6-Q12": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-P110-B6-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P111-B6-Q14": "B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT", "VLXT-PT-P111-B6-Q15": "B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT", "VLXT-PT-P113-B6-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P114-B6-VD01": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P114-B6-VD02": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P115-B6-VD03": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P115-B6-VD04": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P116-B6-VD05": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P117-B6-VD07": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P118-B6-VD08": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P120-B6-BT01": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P120-B6-BT02": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P121-B6-BT03": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P121-B6-BT04": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P122-B6-BT05": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P122-B6-BT06": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P123-B6-BT07": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P124-B6-BT08": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P125-B6-BT09": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC", "VLXT-PT-P125-B6-BT10": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-P126-B6-BT11": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG", "VLXT-PT-P126-B6-BT12": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-P127-B6-BT13": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "VLXT-PT-P128-B6-BT14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG"};
+
+
 function getNganHang() {
   const sheet = getOrCreate('NganHang', NH_HEADERS);
   const data  = sheet.getDataRange().getValues();
   if (data.length < 2) return jsonOut({ ok: true, data: [] });
   const headers = data[0].map(h => String(h || '').trim().toLowerCase());
-  const baiCol = headers.findIndex(h => h === 'baihoc' || h === 'tenbai');
+  const baiCol = headers.findIndex(h => h === 'baihoc');
   const clCol  = headers.findIndex(h => h === 'chatluong');
   const ktCol  = headers.findIndex(h => h === 'kythuat');
   const lyDoCol = headers.findIndex(h => h === 'lydocachly');
@@ -1127,17 +1431,41 @@ function getNganHang() {
   const qCol   = headers.findIndex(h => h === 'question' || h === 'cauhoi' || h === 'debai');
   const actualQCol = qCol !== -1 ? qCol : 7;
 
-  const rows = data.slice(1).map(r => ({
-    id: r[0], mon: r[1], chuong: r[2], mucDo: r[3], loai: r[4] || 'TN',
-    nhomId: r[5], deBaiChung: r[6], question: r[actualQCol] || r[7] || '',
-    optA: r[8], optB: r[9], optC: r[10], optD: r[11],
-    correct: r[12], hinhAnh: r[13], giaiThich: r[14], ngayThem: r[15],
-    baiHoc: baiCol !== -1 ? r[baiCol] : (r[16] || ''),
-    chatLuong: clCol !== -1 ? r[clCol] : (r[17] || ''),
-    kyThuat: ktCol !== -1 ? (r[ktCol] || 'Dat') : 'Dat',
-    lyDoCachLy: lyDoCol !== -1 ? r[lyDoCol] : '',
-    batchId: batchCol !== -1 ? r[batchCol] : ''
-  })).filter(r => r.id && String(r.id).trim().length > 0);
+  const rows = data.slice(1).map(r => {
+    const id = String(r[0] || '').trim();
+    const isPt = id.startsWith('VLXT-PT-');
+    const rawCl = clCol !== -1 ? String(r[clCol] || '').trim().toLowerCase() : String(r[17] || '').trim().toLowerCase();
+    const cl = rawCl || (isPt ? 'tinh' : 'tho');
+    const kt = ktCol !== -1 ? (String(r[ktCol] || '').trim() || 'Dat') : (String(r[18] || '').trim() || 'Dat');
+    let baiHoc = baiCol !== -1 ? String(r[baiCol] || '').trim() : String(r[16] || '').trim();
+    if (!baiHoc && isPt) {
+      baiHoc = PT_LESSON_DICT[id] || 'B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ';
+    }
+
+    return {
+      id: id,
+      mon: String(r[1] || 'Vật lý'),
+      chuong: String(r[2] || ''),
+      mucDo: String(r[3] || 'TH'),
+      loai: String(r[4] || 'TN'),
+      nhomId: String(r[5] || ''),
+      deBaiChung: String(r[6] || ''),
+      question: (id === 'VLXT-PT-DE_05-P1-Q07' && !String(r[actualQCol] || '').startsWith("'")) ? "'" + String(r[actualQCol] || '') : String(r[actualQCol] || ''),
+      optA: String(r[8] || ''),
+      optB: String(r[9] || ''),
+      optC: String(r[10] || ''),
+      optD: String(r[11] || ''),
+      correct: String(r[12] || 'A'),
+      hinhAnh: String(r[13] || ''),
+      giaiThich: String(r[14] || ''),
+      ngayThem: r[15] instanceof Date ? r[15].toISOString() : String(r[15] || ''),
+      baiHoc: baiHoc,
+      chatLuong: cl,
+      kyThuat: kt,
+      lyDoCachLy: lyDoCol !== -1 ? String(r[lyDoCol] || '') : String(r[19] || ''),
+      batchId: batchCol !== -1 ? String(r[batchCol] || '') : String(r[20] || '')
+    };
+  });
   return jsonOut({ ok: true, data: rows });
 }
 
@@ -1244,6 +1572,129 @@ function updateNganHang(data) {
     }
   }
   return jsonOut({ ok: false, msg: 'Không tìm thấy id ' + id });
+}
+
+// POST: Cập nhật fail-closed các câu đã có theo file JSON.
+// Không thêm/xóa/đổi ID; dry-run bắt buộc và commit phải dùng đúng planToken.
+function updateExistingNganHangFromFile(data) {
+  if (!requireAdmin(data.adminKey)) {
+    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Khóa quản trị không hợp lệ' });
+  }
+
+  const dryRun = data.dryRun === true || data.dryRun === 'true';
+  const rawItems = Array.isArray(data.items) ? data.items : [];
+  const allowedFields = ['mon','chuong','mucDo','loai','question','chatLuong'];
+  if (!rawItems.length || rawItems.length > 500) {
+    return jsonOut({ ok: false, msg: 'File phải có từ 1 đến 500 bản ghi' });
+  }
+
+  const fileIds = {};
+  const invalidItems = [];
+  const items = rawItems.map(function(raw, index) {
+    const id = String(raw && raw.id || '').trim();
+    const setObj = raw && raw.set && typeof raw.set === 'object' && !Array.isArray(raw.set) ? raw.set : {};
+    const keys = Object.keys(setObj);
+    const unsupported = keys.filter(function(k) { return allowedFields.indexOf(k) === -1; });
+    if (!id) invalidItems.push({ index: index, id: '', reason: 'Thiếu ID' });
+    if (id && fileIds[id]) invalidItems.push({ index: index, id: id, reason: 'ID trùng trong file' });
+    if (id) fileIds[id] = true;
+    if (!keys.length) invalidItems.push({ index: index, id: id, reason: 'Không có trường cập nhật' });
+    if (unsupported.length) invalidItems.push({ index: index, id: id, reason: 'Cột không được hỗ trợ: ' + unsupported.join(', ') });
+    return { id: id, set: setObj };
+  });
+  if (invalidItems.length) return jsonOut({ ok: false, msg: 'File không hợp lệ', invalidItems: invalidItems });
+
+  const sheet = getOrCreate('NganHang', NH_HEADERS);
+  const rows = sheet.getDataRange().getValues();
+  const headers = rows[0] ? rows[0].map(function(h) { return String(h || '').trim(); }) : [];
+  const headerMap = {};
+  headers.forEach(function(h, i) { if (h) headerMap[h] = i; });
+  const requiredHeaders = ['id'].concat(Array.from(new Set(items.reduce(function(out, item) {
+    return out.concat(Object.keys(item.set));
+  }, []))));
+  const missingHeaders = requiredHeaders.filter(function(h) { return headerMap[h] === undefined; });
+  if (missingHeaders.length) {
+    return jsonOut({ ok: false, msg: 'Google Sheet không có cột bắt buộc: ' + missingHeaders.join(', '), missingHeaders: missingHeaders });
+  }
+
+  const rowMap = {};
+  const duplicateSheetIds = [];
+  for (let r = 1; r < rows.length; r++) {
+    const id = String(rows[r][headerMap.id] || '').trim();
+    if (!id) continue;
+    if (rowMap[id] !== undefined) duplicateSheetIds.push(id);
+    else rowMap[id] = r;
+  }
+  const missingIds = items.filter(function(item) { return rowMap[item.id] === undefined; }).map(function(item) { return item.id; });
+  const targetDuplicateIds = Array.from(new Set(duplicateSheetIds.filter(function(id) { return fileIds[id]; })));
+  if (missingIds.length || targetDuplicateIds.length) {
+    return jsonOut({ ok: false, msg: 'Bị chặn: ID thiếu hoặc trùng trong Google Sheet', missingIds: missingIds, duplicateIds: targetDuplicateIds });
+  }
+
+  const changes = [];
+  const tokenRows = [];
+  items.forEach(function(item) {
+    const rowIndex = rowMap[item.id];
+    const before = {};
+    const after = {};
+    Object.keys(item.set).sort().forEach(function(field) {
+      const oldValue = String(rows[rowIndex][headerMap[field]] === undefined || rows[rowIndex][headerMap[field]] === null ? '' : rows[rowIndex][headerMap[field]]);
+      const newValue = String(item.set[field] === undefined || item.set[field] === null ? '' : item.set[field]);
+      before[field] = oldValue;
+      after[field] = newValue;
+      if (oldValue !== newValue) changes.push({ id: item.id, field: field, before: oldValue, after: newValue });
+    });
+    tokenRows.push({ id: item.id, before: before, after: after });
+  });
+
+  const tokenInput = JSON.stringify({ schema: 'vlxt-update-existing-v1', rows: tokenRows });
+  const tokenBytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, tokenInput, Utilities.Charset.UTF_8);
+  const planToken = tokenBytes.map(function(b) { return ('0' + ((b + 256) % 256).toString(16)).slice(-2); }).join('');
+  const changedIds = Array.from(new Set(changes.map(function(c) { return c.id; })));
+  const fieldCounts = {};
+  changes.forEach(function(c) { fieldCounts[c.field] = (fieldCounts[c.field] || 0) + 1; });
+
+  if (dryRun) {
+    return jsonOut({ ok: true, dryRun: true, requested: items.length, found: items.length, insert: 0, delete: 0, changedRows: changedIds.length, changedCells: changes.length, fieldCounts: fieldCounts, planToken: planToken, changes: changes });
+  }
+  if (!data.planToken || String(data.planToken) !== planToken) {
+    return jsonOut({ ok: false, stale: true, msg: 'Dữ liệu đã thay đổi hoặc chưa dry-run. Hãy dry-run lại; chưa ghi bất kỳ ô nào.' });
+  }
+  if (!changes.length) return jsonOut({ ok: true, dryRun: false, requested: items.length, updatedRows: 0, updatedCells: 0, insert: 0, delete: 0, msg: 'Không có thay đổi cần ghi' });
+
+  const lock = LockService.getDocumentLock();
+  if (!lock.tryLock(30000)) return jsonOut({ ok: false, msg: 'Không lấy được khóa ghi; hãy thử lại' });
+  try {
+    // Kiểm tra lại dưới lock: chỉ ghi nếu snapshot vẫn khớp dry-run.
+    const lockedRows = sheet.getDataRange().getValues();
+    const lockedTokenRows = tokenRows.map(function(t) {
+      const r = rowMap[t.id];
+      const before = {};
+      Object.keys(t.before).sort().forEach(function(field) {
+        before[field] = String(lockedRows[r][headerMap[field]] === undefined || lockedRows[r][headerMap[field]] === null ? '' : lockedRows[r][headerMap[field]]);
+      });
+      return { id: t.id, before: before, after: t.after };
+    });
+    const lockedInput = JSON.stringify({ schema: 'vlxt-update-existing-v1', rows: lockedTokenRows });
+    const lockedBytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, lockedInput, Utilities.Charset.UTF_8);
+    const lockedToken = lockedBytes.map(function(b) { return ('0' + ((b + 256) % 256).toString(16)).slice(-2); }).join('');
+    if (lockedToken !== planToken) return jsonOut({ ok: false, stale: true, msg: 'Dữ liệu thay đổi sau dry-run; chưa ghi bất kỳ ô nào.' });
+
+    changes.forEach(function(change) {
+      lockedRows[rowMap[change.id]][headerMap[change.field]] = change.after;
+    });
+    // Một lệnh ghi duy nhất để tránh batch dở dang.
+    sheet.getDataRange().setValues(lockedRows);
+    return jsonOut({ ok: true, dryRun: false, requested: items.length, updatedRows: changedIds.length, updatedCells: changes.length, insert: 0, delete: 0, fieldCounts: fieldCounts });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// Temporary acceptance wrapper; logs only boolean status, never a key.
+function runAdminSelfTestReport() {
+  const result = runAdminSelfTest();
+  console.log(JSON.stringify({ ok: result && result.ok === true, passed: result && result.passed === true, step: result && result.step || '' }));
 }
 
 // ── POST: Gán "Bài học" cho nhiều câu cùng lúc (phân loại hàng loạt) ──
@@ -1361,21 +1812,89 @@ function normalizeTextForComparison(text) {
     .trim();
 }
 
-// ── POST: Nhập gói câu hỏi Tinh vào ngân hàng kèm Quét Kỹ Thuật Tự Động (1-Click Pipeline) ────
+// ── GET/POST: Thống kê hiện trạng Ngân hàng câu hỏi ──────────────────
+function getQuestionStats(data) {
+  const sheet = getOrCreate('NganHang', NH_HEADERS);
+  const rows = sheet.getDataRange().getValues();
+  if (rows.length < 2) {
+    return jsonOut({
+      ok: true,
+      success: true,
+      total: 0,
+      tinh: 0,
+      tho: 0,
+      quarantined: 0,
+      batches: {},
+      byMucDo: { NB: 0, TH: 0, VD: 0, VDC: 0 },
+      byLoai: { TN: 0, DS: 0, TLN: 0 }
+    });
+  }
+
+  const headers = rows[0].map(h => String(h || '').trim().toLowerCase());
+  const clCol = headers.findIndex(h => h === 'chatluong');
+  const ktCol = headers.findIndex(h => h === 'kythuat');
+  const batchCol = headers.findIndex(h => h === 'batchid');
+  const mucDoCol = headers.findIndex(h => h === 'mucdo');
+  const loaiCol = headers.findIndex(h => h === 'loai');
+
+  let total = 0;
+  let tinh = 0;
+  let tho = 0;
+  let quarantined = 0;
+  const batches = {};
+  const byMucDo = { NB: 0, TH: 0, VD: 0, VDC: 0 };
+  const byLoai = { TN: 0, DS: 0, TLN: 0 };
+
+  for (let i = 1; i < rows.length; i++) {
+    const rId = String(rows[i][0] || '').trim();
+    if (!rId) continue;
+    total++;
+
+    const isPt = rId.startsWith('VLXT-PT-');
+    const cl = clCol !== -1 ? String(rows[i][clCol] || '').trim().toLowerCase() : (isPt ? 'tinh' : 'tho');
+    const kt = ktCol !== -1 ? String(rows[i][ktCol] || '').trim() : (String(rows[i][18] || '').trim() || 'Dat');
+    const bId = batchCol !== -1 ? (String(rows[i][batchCol] || '').trim() || 'NO_BATCH') : (String(rows[i][20] || '').trim() || 'NO_BATCH');
+    const md = mucDoCol !== -1 ? String(rows[i][mucDoCol] || 'NB').trim().toUpperCase() : String(rows[i][3] || 'NB').trim().toUpperCase();
+    const lo = loaiCol !== -1 ? String(rows[i][loaiCol] || 'TN').trim().toUpperCase() : String(rows[i][4] || 'TN').trim().toUpperCase();
+
+    if (cl === 'tinh') tinh++;
+    else tho++;
+
+    if (kt.toLowerCase() === 'cachly') quarantined++;
+
+    batches[bId] = (batches[bId] || 0) + 1;
+    if (byMucDo[md] !== undefined) byMucDo[md]++;
+    if (byLoai[lo] !== undefined) byLoai[lo]++;
+  }
+
+  return jsonOut({
+    ok: true,
+    success: true,
+    total: total,
+    tinh: tinh,
+    tho: tho,
+    quarantined: quarantined,
+    batches: batches,
+    byMucDo: byMucDo,
+    byLoai: byLoai
+  });
+}
+
+// ── POST: Nhập gói câu hỏi Tinh vào ngân hàng kèm Quét Kỹ Thuật & Idempotent (1-Click Pipeline) ────
 function importNganHang(data) {
   if (!requireAdmin(data.adminKey)) {
-    return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Khóa quản trị không hợp lệ' });
+    return jsonOut({ ok: false, success: false, error: 'Unauthorized', msg: 'Khóa quản trị không hợp lệ' });
   }
 
   const dryRun = data.dryRun === true || data.dryRun === 'true';
-  const batchId = String(data.batchId || ('BATCH_' + new Date().toISOString().replace(/[^0-9]/g, '').slice(0, 14))).trim();
+  const batchId = String(data.batchId || data.sourceBatch || ('BATCH_' + new Date().toISOString().replace(/[^0-9]/g, '').slice(0, 14))).trim();
   const rawQuestions = Array.isArray(data.questions) ? data.questions : [];
 
   if (!rawQuestions.length) {
-    return jsonOut({ ok: false, msg: 'Danh sách questions rỗng' });
+    return jsonOut({ ok: false, success: false, msg: 'Danh sách questions rỗng' });
   }
-  if (rawQuestions.length > 200) {
-    return jsonOut({ ok: false, msg: 'Số lượng câu vượt quá giới hạn tối đa (200 câu/lần)' });
+  if (rawQuestions.length > 500) {
+    return jsonOut({ ok: false, success: false, msg: 'Số lượng câu vượt quá giới hạn tối đa (500 câu/lần)' });
   }
 
   const sheet = getOrCreate('NganHang', NH_HEADERS);
@@ -1397,13 +1916,23 @@ function importNganHang(data) {
       const normQ = normalizeTextForComparison(qText);
       const cl = String(rows[i][17] || '').trim().toLowerCase();
       const kt = String(rows[i][18] || '').trim();
+      const optA = String(rows[i][8] || '').trim();
+      const optB = String(rows[i][9] || '').trim();
+      const optC = String(rows[i][10] || '').trim();
+      const optD = String(rows[i][11] || '').trim();
+      const cor = String(rows[i][12] || '').trim();
 
       const itemInfo = {
         rowIndex: i + 1,
         questionText: qText,
         normText: normQ,
         chatLuong: cl,
-        kyThuat: kt || (cl === 'tinh' ? 'Dat' : '')
+        kyThuat: kt || (cl === 'tinh' ? 'Dat' : ''),
+        optA: optA,
+        optB: optB,
+        optC: optC,
+        optD: optD,
+        correct: cor
       };
       existingIdMap.set(rId, itemInfo);
 
@@ -1412,14 +1941,13 @@ function importNganHang(data) {
           tinhUsableBefore++;
         }
         if (normQ.length > 15) {
-          existingTinhNormMap.set(normQ, rId);
+          existingTinhNormMap.set(normQ, { id: rId, ...itemInfo });
         }
       }
     }
   }
 
   const seenPayloadIds = new Set();
-  const seenPayloadNorms = new Map();
   const alreadyExistsIds = [];
   const insertedRows = [];
   const updatedRows = [];
@@ -1430,10 +1958,10 @@ function importNganHang(data) {
 
   for (let idx = 0; idx < rawQuestions.length; idx++) {
     const q = rawQuestions[idx] || {};
-    const id = String(q.id || '').trim();
+    const id = String(q.id || q.questionId || q.identityHash || '').trim();
     const technicalErrors = [];
 
-    // 1. Kiểm tra ID cơ bản
+    // 1. Kiểm tra ID cơ bản & Trạng thái duyệt
     if (!id) {
       technicalErrors.push('Thiếu mã định danh id');
     } else if (seenPayloadIds.has(id)) {
@@ -1441,11 +1969,20 @@ function importNganHang(data) {
     }
     if (id) seenPayloadIds.add(id);
 
+    const st = String(q.reviewStatus || q.status || q.rawTier || 'APPROVED').trim().toUpperCase();
+    if (st !== 'APPROVED' && st !== 'TINH') {
+      technicalErrors.push('Chỉ chấp nhận câu hỏi đã được Duyệt (APPROVED hoặc TINH)');
+    }
+
     const questionText = String(q.question || q.stem || '').trim();
     const normText = normalizeTextForComparison(questionText);
 
     // 2. Kiểm tra Loại câu & Nội dung
-    const loai = String(q.loai || 'TN').trim().toUpperCase();
+    let loai = String(q.loai || q.type || 'TN').trim().toUpperCase();
+    if (loai === 'MULTIPLE_CHOICE') loai = 'TN';
+    else if (loai === 'TRUE_FALSE') loai = 'DS';
+    else if (loai === 'SHORT_ANSWER') loai = 'TLN';
+
     if (!['TN', 'DS', 'TLN'].includes(loai)) {
       technicalErrors.push('loai không hợp lệ (chỉ nhận TN, DS, TLN)');
     }
@@ -1454,13 +1991,40 @@ function importNganHang(data) {
     }
 
     // 3. Trích xuất chính xác Phương án & Đáp án
-    let rawCorrect = String(q.correct || q.correctAnswer || '').trim();
-    let cleanCorrect = '';
+    let optA = '', optB = '', optC = '', optD = '';
+    if (q.options && typeof q.options === 'object') {
+      if (Array.isArray(q.options)) {
+        optA = String(q.options[0]?.content ?? q.options[0] ?? '').trim();
+        optB = String(q.options[1]?.content ?? q.options[1] ?? '').trim();
+        optC = String(q.options[2]?.content ?? q.options[2] ?? '').trim();
+        optD = String(q.options[3]?.content ?? q.options[3] ?? '').trim();
+      } else {
+        optA = String(q.options.A ?? q.options.a ?? '').trim();
+        optB = String(q.options.B ?? q.options.b ?? '').trim();
+        optC = String(q.options.C ?? q.options.c ?? '').trim();
+        optD = String(q.options.D ?? q.options.d ?? '').trim();
+      }
+    }
+    if (q.subItems) {
+      if (Array.isArray(q.subItems)) {
+        if (!optA) optA = String(q.subItems[0]?.statement ?? q.subItems[0]?.content ?? q.subItems[0] ?? '').trim();
+        if (!optB) optB = String(q.subItems[1]?.statement ?? q.subItems[1]?.content ?? q.subItems[1] ?? '').trim();
+        if (!optC) optC = String(q.subItems[2]?.statement ?? q.subItems[2]?.content ?? q.subItems[2] ?? '').trim();
+        if (!optD) optD = String(q.subItems[3]?.statement ?? q.subItems[3]?.content ?? q.subItems[3] ?? '').trim();
+      } else {
+        if (!optA) optA = String(q.subItems.a?.statement ?? q.subItems.a ?? '').trim();
+        if (!optB) optB = String(q.subItems.b?.statement ?? q.subItems.b ?? '').trim();
+        if (!optC) optC = String(q.subItems.c?.statement ?? q.subItems.c ?? '').trim();
+        if (!optD) optD = String(q.subItems.d?.statement ?? q.subItems.d ?? '').trim();
+      }
+    }
+    if (!optA && q.optA) optA = String(q.optA).trim();
+    if (!optB && q.optB) optB = String(q.optB).trim();
+    if (!optC && q.optC) optC = String(q.optC).trim();
+    if (!optD && q.optD) optD = String(q.optD).trim();
 
-    const optA = String(q.optA || (q.options && (q.options.A || (q.options[0] && q.options[0].content))) || (q.subItems && (q.subItems.a ? q.subItems.a.statement : (q.subItems[0] && q.subItems[0].statement))) || '').trim();
-    const optB = String(q.optB || (q.options && (q.options.B || (q.options[1] && q.options[1].content))) || (q.subItems && (q.subItems.b ? q.subItems.b.statement : (q.subItems[1] && q.subItems[1].statement))) || '').trim();
-    const optC = String(q.optC || (q.options && (q.options.C || (q.options[2] && q.options[2].content))) || (q.subItems && (q.subItems.c ? q.subItems.c.statement : (q.subItems[2] && q.subItems[2].statement))) || '').trim();
-    const optD = String(q.optD || (q.options && (q.options.D || (q.options[3] && q.options[3].content))) || (q.subItems && (q.subItems.d ? q.subItems.d.statement : (q.subItems[3] && q.subItems[3].statement))) || '').trim();
+    let rawCorrect = String(q.correct ?? q.correctAnswer ?? q.answer ?? '').trim();
+    let cleanCorrect = '';
 
     if (loai === 'TN') {
       cleanCorrect = rawCorrect.toUpperCase().replace(/[^ABCD]/g, '').slice(0, 1);
@@ -1473,7 +2037,7 @@ function importNganHang(data) {
     } else if (loai === 'DS') {
       cleanCorrect = rawCorrect.replace(/[^ĐSds]/g, '').toUpperCase();
       if (cleanCorrect.length !== 4) {
-        // Fallback kiểm tra từ subItems nếu có
+        // Fallback trích xuất từ subItems
         if (q.subItems) {
           const subArr = Array.isArray(q.subItems) ? q.subItems : [q.subItems.a, q.subItems.b, q.subItems.c, q.subItems.d];
           const subStr = subArr.map(s => (s && (s.isCorrect === true || s.isCorrect === 'true' || s.isCorrect === 'Đ')) ? 'Đ' : 'S').join('');
@@ -1486,31 +2050,60 @@ function importNganHang(data) {
       if (!optA || !optB || !optC || !optD) {
         technicalErrors.push('Câu DS phải có đủ 4 mệnh đề a, b, c, d');
       }
+    } else if (loai === 'TLN') {
+      cleanCorrect = rawCorrect;
+      if (!cleanCorrect) {
+        technicalErrors.push('Câu TLN phải có đáp số trả lời ngắn');
+      }
     } else {
       cleanCorrect = rawCorrect;
     }
 
-    // 4. Kiểm tra Mức độ & Taxonomy
-    const mucDo = String(q.mucDo || 'NB').trim().toUpperCase();
-    if (!['NB', 'TH', 'VD', 'VDC'].includes(mucDo)) {
-      technicalErrors.push('Mức độ mucDo phải là NB, TH, VD hoặc VDC');
-    }
+    // 4. Mức độ & Taxonomy
+    let mucDo = String(q.mucDo || q.difficulty || 'NB').trim().toUpperCase();
+    if (mucDo === 'KNOW' || mucDo === 'NHAN_BIET') mucDo = 'NB';
+    else if (mucDo === 'UNDERSTAND' || mucDo === 'THONG_HIEU') mucDo = 'TH';
+    else if (mucDo === 'APPLY' || mucDo === 'VAN_DUNG') mucDo = 'VD';
+    else if (mucDo === 'ADVANCED_APPLY' || mucDo === 'VAN_DUNG_CAO') mucDo = 'VDC';
+    if (!['NB', 'TH', 'VD', 'VDC'].includes(mucDo)) mucDo = 'NB';
 
     let mon = String(q.mon || 'Vật lý').trim();
     if (mon === 'Vật Lý 12' || mon === 'Vật lí 12') mon = 'Vật lý';
 
     let chuong = String(q.chuong || '').trim();
     if (/chương 1|vật l[yí] nhiệt/i.test(chuong)) chuong = 'Vật lí nhiệt';
-    if (!chuong) technicalErrors.push('Chương không được để trống');
+    if (!chuong) chuong = 'Vật lí nhiệt';
 
-    let baiHoc = String(q.baiHoc || '').trim();
-    if (/b1|mô hình động học|cấu trúc/i.test(baiHoc)) baiHoc = 'Bài 1. Cấu trúc của chất & Mô hình động học phân tử';
-    else if (/b2|lực liên kết|chuyển thể/i.test(baiHoc)) baiHoc = 'Bài 2. Lực liên kết và sự chuyển thể';
-    else if (/b3|thang nhiệt độ|nhiệt kế/i.test(baiHoc)) baiHoc = 'Bài 3. Nhiệt độ - Thang nhiệt độ - Nhiệt kế';
-    else if (/b4|nhiệt dung riêng/i.test(baiHoc)) baiHoc = 'Bài 4. Nhiệt dung riêng - Nhiệt nóng chảy - Nhiệt hóa hơi';
-    else if (/b5|định luật i|nội năng/i.test(baiHoc)) baiHoc = 'Bài 5. Định luật I của nhiệt động lực học';
-    else if (/b6|động cơ nhiệt/i.test(baiHoc)) baiHoc = 'Bài 6. Động cơ nhiệt - Đồ thị nhiệt';
-    if (!baiHoc) technicalErrors.push('Bài học không được để trống');
+    // Trích xuất chính xác Bài học từ mọi nguồn (taxonomy.lessonCode, taxonomy.lessonTitle, _classification.baiHoc, baiHoc)
+    const tax = q.taxonomy || {};
+    const taxCode = String(tax.lessonCode || '').trim();
+    const taxTitle = String(tax.lessonTitle || '').trim();
+    const classBaiHoc = String(q._classification?.baiHoc || q.classification?.baiHoc || '').trim();
+    const rawBaiHoc = String(q.baiHoc || tax.lesson || '').trim();
+
+    let baiHoc = '';
+    if (taxCode === 'G12_C1_B01' || /b1|mô hình động học|cấu trúc/i.test(taxCode) || /b1|mô hình động học|cấu trúc/i.test(taxTitle) || /b1|mô hình động học|cấu trúc/i.test(classBaiHoc) || /b1|mô hình động học|cấu trúc/i.test(rawBaiHoc)) {
+      baiHoc = 'B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ';
+    } else if (taxCode === 'G12_C1_B02' || /b2|lực liên kết|chuyển thể/i.test(taxCode) || /b2|lực liên kết|chuyển thể/i.test(taxTitle) || /b2|lực liên kết|chuyển thể/i.test(classBaiHoc) || /b2|lực liên kết|chuyển thể/i.test(rawBaiHoc)) {
+      baiHoc = 'Bài 2. Lực liên kết và sự chuyển thể';
+    } else if (taxCode === 'G12_C1_B03' || /b3|thang nhiệt độ|nhiệt kế/i.test(taxCode) || /b3|thang nhiệt độ|nhiệt kế/i.test(taxTitle) || /b3|thang nhiệt độ|nhiệt kế/i.test(classBaiHoc) || /b3|thang nhiệt độ|nhiệt kế/i.test(rawBaiHoc)) {
+      baiHoc = 'Bài 3. Nhiệt độ - Thang nhiệt độ - Nhiệt kế';
+    } else if (taxCode === 'G12_C1_B04' || /b4|nhiệt dung riêng/i.test(taxCode) || /b4|nhiệt dung riêng/i.test(taxTitle) || /b4|nhiệt dung riêng/i.test(classBaiHoc) || /b4|nhiệt dung riêng/i.test(rawBaiHoc)) {
+      baiHoc = 'Bài 4. Nhiệt dung riêng - Nhiệt nóng chảy - Nhiệt hóa hơi';
+    } else if (taxCode === 'G12_C1_B05' || /b5|định luật i|nội năng/i.test(taxCode) || /b5|định luật i|nội năng/i.test(taxTitle) || /b5|định luật i|nội năng/i.test(classBaiHoc) || /b5|định luật i|nội năng/i.test(rawBaiHoc)) {
+      baiHoc = 'Bài 5. Định luật I của nhiệt động lực học';
+    } else if (taxCode === 'G12_C1_B06' || /b6|động cơ nhiệt|đồ thị nhiệt/i.test(taxCode) || /b6|động cơ nhiệt|đồ thị nhiệt/i.test(taxTitle) || /b6|động cơ nhiệt|đồ thị nhiệt/i.test(classBaiHoc) || /b6|động cơ nhiệt|đồ thị nhiệt/i.test(rawBaiHoc)) {
+      baiHoc = 'Bài 6. Động cơ nhiệt - Đồ thị nhiệt';
+    } else if (taxCode === 'G12_C1_REVIEW' || /ôn tập|review/i.test(taxCode) || /ôn tập|review/i.test(taxTitle)) {
+      baiHoc = 'Ôn tập Chương 1 - Vật lí nhiệt';
+    }
+
+    if (!baiHoc && id && PT_LESSON_DICT[id]) {
+      baiHoc = PT_LESSON_DICT[id];
+    }
+    if (!baiHoc) {
+      technicalErrors.push('Không xác định được bài học (thiếu taxonomy.lessonCode / baiHoc)');
+    }
 
     // 5. Kiểm tra KaTeX
     const dollarCount = (questionText.match(/\$/g) || []).length;
@@ -1531,12 +2124,16 @@ function importNganHang(data) {
       passedItems.push(id);
     }
 
-    const giaiThich = String(q.giaiThich || q.explanation || '').trim();
-    const hinhAnh = String(q.hinhAnh || '').trim();
+    const giaiThich = String(q.giaiThich || q.explanation || q.solution || '').trim();
+    let hinhAnh = String(q.hinhAnh || '').trim();
+    if (!hinhAnh && q.mediaAssets && Array.isArray(q.mediaAssets)) {
+      const m = q.mediaAssets.find(x => x && (x.url || x.path || x.image));
+      if (m) hinhAnh = String(m.url || m.path || m.image || '').trim();
+    }
     const nhomId = String(q.nhomId || '').trim();
     const deBaiChung = String(q.deBaiChung || '').trim();
 
-    // ── Xây dựng dòng dữ liệu chuẩn xác 100% theo đúng vị trí cột NH_HEADERS ──
+    // Xây dựng dòng dữ liệu chuẩn xác theo đúng NH_HEADERS
     const rowArr = [
       id,              // 0: id
       mon,             // 1: mon
@@ -1550,7 +2147,7 @@ function importNganHang(data) {
       optB,            // 9: optB
       optC,            // 10: optC
       optD,            // 11: optD
-      cleanCorrect,    // 12: correct (LUÔN LÀ A/B/C/D hoặc Đ/S, không bị ghi đè bởi text phương án)
+      cleanCorrect,    // 12: correct
       hinhAnh,         // 13: hinhAnh
       giaiThich,       // 14: giaiThich
       nowIso,          // 15: ngayThem
@@ -1561,9 +2158,27 @@ function importNganHang(data) {
       batchId          // 20: batchId
     ];
 
+    // Kiểm tra Idempotent:
     const existingEntry = id ? existingIdMap.get(id) : null;
-    if (existingEntry) {
-      updatedRows.push({ rowIndex: existingEntry.rowIndex, rowData: rowArr, id: id });
+    const existingByNorm = (!existingEntry && normText.length > 15) ? existingTinhNormMap.get(normText) : null;
+    const matchedEntry = existingEntry || existingByNorm;
+
+    if (matchedEntry) {
+      // Đã tồn tại: kiểm tra xem có thay đổi nội dung cần cập nhật không
+      const isIdentical = (
+        matchedEntry.questionText === questionText &&
+        matchedEntry.correct === cleanCorrect &&
+        matchedEntry.optA === optA &&
+        matchedEntry.optB === optB &&
+        matchedEntry.optC === optC &&
+        matchedEntry.optD === optD
+      );
+
+      if (isIdentical) {
+        alreadyExistsIds.push(id || matchedEntry.id || matchedEntry.rowIndex);
+      } else {
+        updatedRows.push({ rowIndex: matchedEntry.rowIndex, rowData: rowArr, id: id });
+      }
     } else {
       insertedRows.push(rowArr);
     }
@@ -1578,30 +2193,52 @@ function importNganHang(data) {
   const sentCount = rawQuestions.length;
   const insertable = insertedRows.length;
   const updatable = updatedRows.length;
+  const alreadyExistsCount = alreadyExistsIds.length;
   const passedCount = passedItems.length;
   const quarantinedCount = quarantinedItems.length;
+
+  // Bắt buộc xác thực cân bằng kế toán: sent = inserted + updated + existing + blocked
+  const totalAccounted = insertable + updatable + alreadyExistsCount + quarantinedCount;
+  if (totalAccounted !== sentCount) {
+    return jsonOut({
+      ok: false,
+      success: false,
+      error: 'AccountingMismatch',
+      msg: 'Lỗi cân bằng kế toán: Gửi ' + sentCount + ' câu nhưng tính toán được ' + totalAccounted + ' (' + insertable + ' mới, ' + updatable + ' cập nhật, ' + alreadyExistsCount + ' đã có, ' + quarantinedCount + ' bị chặn).'
+    });
+  }
 
   if (dryRun) {
     return jsonOut({
       ok: true,
+      success: true,
       dryRun: true,
       batchId: batchId,
+      sent: sentCount,
       sentCount: sentCount,
+      inserted: insertable,
       insertedCount: insertable,
+      updated: updatable,
       updatedCount: updatable,
-      passedCount: passedCount,
+      existing: alreadyExistsCount,
+      alreadyExistsCount: alreadyExistsCount,
+      blocked: quarantinedCount,
       quarantinedCount: quarantinedCount,
+      passedCount: passedCount,
       quarantinedItems: quarantinedItems,
+      errors: quarantinedItems,
+      before: countBefore,
       countBefore: countBefore,
-      expectedCountAfter: countBefore + insertable,
+      after: countBefore + insertable,
+      countAfter: countBefore + insertable,
       tinhUsableBefore: tinhUsableBefore,
-      expectedTinhUsableAfter: tinhUsableBefore + passedCount,
-      normalizedPreview: normalizedPreview,
-      msg: 'Dry-run: ' + sentCount + ' câu (' + insertable + ' mới, ' + updatable + ' cập nhật, ' + passedCount + ' Đạt, ' + quarantinedCount + ' Cách ly).'
+      tinhUsableAfter: tinhUsableBefore + passedCount,
+      items: normalizedPreview,
+      msg: 'Dry-run hoàn tất: ' + sentCount + ' câu (' + insertable + ' mới, ' + updatable + ' cập nhật, ' + alreadyExistsCount + ' đã tồn tại, ' + quarantinedCount + ' bị chặn).'
     });
   }
 
-  // 1. Cập nhật các dòng đã tồn tại (nếu có cập nhật đáp án chuẩn)
+  // 1. Cập nhật các dòng đã tồn tại
   updatedRows.forEach(u => {
     sheet.getRange(u.rowIndex, 1, 1, u.rowData.length).setValues([u.rowData]);
   });
@@ -1617,19 +2254,119 @@ function importNganHang(data) {
 
   return jsonOut({
     ok: true,
+    success: true,
     dryRun: false,
     batchId: batchId,
+    sent: sentCount,
     sentCount: sentCount,
+    inserted: insertable,
     insertedCount: insertable,
+    updated: updatable,
     updatedCount: updatable,
-    passedCount: passedCount,
+    existing: alreadyExistsCount,
+    alreadyExistsCount: alreadyExistsCount,
+    blocked: quarantinedCount,
     quarantinedCount: quarantinedCount,
+    passedCount: passedCount,
     quarantinedItems: quarantinedItems,
+    errors: quarantinedItems,
+    before: countBefore,
     countBefore: countBefore,
+    after: countAfter,
     countAfter: countAfter,
     tinhUsableBefore: tinhUsableBefore,
     tinhUsableAfter: tinhUsableAfter,
-    msg: 'Đã nạp thành công: ' + insertable + ' câu mới, ' + updatable + ' câu cập nhật chuẩn đáp án (' + passedCount + ' Đạt, ' + quarantinedCount + ' Cách ly).'
+    msg: 'Đã nạp thành công: ' + insertable + ' câu mới, ' + updatable + ' câu cập nhật, ' + alreadyExistsCount + ' câu đã tồn tại (' + passedCount + ' Đạt, ' + quarantinedCount + ' Bị chặn).'
+  });
+}
+
+function repairLessonBatch(data) {
+  if (!requireAdmin(data.adminKey)) {
+    return jsonOut({ ok: false, success: false, error: 'Unauthorized', msg: 'Khóa quản trị không hợp lệ' });
+  }
+
+  const dryRun = data.dryRun === true;
+  const updates = data.updates || []; // Mảng các bản ghi { id, rowIndex, intendedLesson }
+  if (!Array.isArray(updates) || updates.length === 0) {
+    return jsonOut({ ok: false, success: false, error: 'No updates provided' });
+  }
+
+  const sheet = getOrCreate('NganHang', NH_HEADERS);
+
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return jsonOut({ ok: false, error: 'Bảng NganHang trống' });
+
+  const allIds = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+  const idToRowMap = new Map();
+  for (let i = 0; i < allIds.length; i++) {
+    const rid = String(allIds[i][0] || '').trim();
+    if (rid) idToRowMap.set(rid, i + 2);
+  }
+
+  const plannedUpdates = [];
+  const errors = [];
+  const beforeCounts = {};
+  const afterCounts = {};
+
+  for (let idx = 0; idx < updates.length; idx++) {
+    const u = updates[idx] || {};
+    const id = String(u.id || '').trim();
+    const intendedLesson = String(u.intendedLesson || '').trim();
+    if (!id || !intendedLesson) continue;
+
+    const rowIdx = (u.rowIndex && u.rowIndex >= 2 && u.rowIndex <= lastRow) ? Number(u.rowIndex) : idToRowMap.get(id);
+    if (!rowIdx) {
+      errors.push({ id: id, error: 'Không tìm thấy dòng trên sheet' });
+      continue;
+    }
+
+    const curVal = sheet.getRange(rowIdx, 1, 1, 17).getValues()[0];
+    const actualId = String(curVal[0] || '').trim();
+    if (actualId && actualId !== id) {
+      errors.push({ id: id, error: 'Mã ID tại dòng ' + rowIdx + ' (' + actualId + ') không khớp với ' + id });
+      continue;
+    }
+
+    const curLesson = String(curVal[16] || '').trim(); // Cột 17: baiHoc
+    beforeCounts[curLesson] = (beforeCounts[curLesson] || 0) + 1;
+    afterCounts[intendedLesson] = (afterCounts[intendedLesson] || 0) + 1;
+
+    plannedUpdates.push({
+      rowIndex: rowIdx,
+      id: id,
+      beforeLesson: curLesson,
+      afterLesson: intendedLesson
+    });
+  }
+
+  if (dryRun) {
+    return jsonOut({
+      ok: true,
+      success: true,
+      dryRun: true,
+      totalRequested: updates.length,
+      totalMatched: plannedUpdates.length,
+      errors: errors,
+      beforeCounts: beforeCounts,
+      afterCounts: afterCounts,
+      msg: 'Dry-run sửa bài học hoàn tất: ' + plannedUpdates.length + ' / ' + updates.length + ' bản ghi sẵn sàng cập nhật.'
+    });
+  }
+
+  // Thực thi cập nhật trực tiếp cột baiHoc (Cột 17)
+  plannedUpdates.forEach(p => {
+    sheet.getRange(p.rowIndex, 17).setValue(p.afterLesson);
+  });
+
+  return jsonOut({
+    ok: true,
+    success: true,
+    dryRun: false,
+    totalUpdated: plannedUpdates.length,
+    errors: errors,
+    beforeCounts: beforeCounts,
+    afterCounts: afterCounts,
+    msg: 'Đã cập nhật chuẩn xác bài học cho ' + plannedUpdates.length + ' bản ghi thành công.'
   });
 }
 
@@ -1683,6 +2420,9 @@ function getSourceVideoLinks() {
 // ── POST: Cập nhật link video hàng loạt ───────────────────────
 
 function updateBaiHocVideo(data) {
+  if (!requireAdmin(data && data.adminKey)) {
+    return jsonOut({ ok: false, msg: 'Unauthorized: sai hoặc thiếu adminKey' });
+  }
   const sheet = getOrCreate('BaiHoc', ['KhoaHoc','Chuong','TenBai','Video','VideoGiai','MoTaBai','NgayDang','BaiTap']);
   const rows  = sheet.getDataRange().getValues();
   let updated = 0;
@@ -2030,15 +2770,41 @@ function saveSetting(data) {
 // ═══════════ CÂU HỎI TRONG VIDEO (video quiz checkpoint) ═══════════
 
 // GET ?type=videocauhoi&bai=<baiKey>
+// Public GET: TUYỆT ĐỐI CHẶN câu hỏi thuộc bài draft hoặc archived, không query nào nâng quyền
 function getVideoCauHoi(bai) {
+  if (bai && !isLessonPublished(bai)) {
+    return jsonOut({ data: [] });
+  }
+
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = ss.getSheetByName('VideoCauHoi');
   if (!sheet) return jsonOut({ data: [] });
   let rows = sheetToJson(sheet);
-  if (bai) rows = rows.filter(function(r){ return String(r.baiKey) === String(bai); });
+  if (bai) {
+    rows = rows.filter(function(r){ return String(r.baiKey) === String(bai); });
+  } else {
+    rows = rows.filter(function(r){ return isLessonPublished(r.baiKey); });
+  }
   function _sortKeyTG(t){ return (t===null||t===undefined||t==='') ? Infinity : (Number(t)||0); }
   rows.sort(function(a,b){ return _sortKeyTG(a.thoiGian)-_sortKeyTG(b.thoiGian); });
   return jsonOut({ data: rows });
+}
+
+function getVideoCauHoiAdmin(data) {
+  if (!requireAdmin(data && data.adminKey)) {
+    return jsonOut({ ok: false, msg: 'Unauthorized: sai hoặc thiếu adminKey' });
+  }
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('VideoCauHoi');
+  if (!sheet) return jsonOut({ ok: true, data: [] });
+  let rows = sheetToJson(sheet);
+  const bai = data && (data.bai || data.baiKey);
+  if (bai) {
+    rows = rows.filter(function(r){ return String(r.baiKey) === String(bai); });
+  }
+  function _sortKeyTG(t){ return (t===null||t===undefined||t==='') ? Infinity : (Number(t)||0); }
+  rows.sort(function(a,b){ return _sortKeyTG(a.thoiGian)-_sortKeyTG(b.thoiGian); });
+  return jsonOut({ ok: true, data: rows });
 }
 
 // GET ?type=transcript&v=<youtubeVideoId>&lang=<vi|en|...>
@@ -2102,6 +2868,9 @@ function getVideoTranscript(videoId, preferLang) {
 // POST {action:'savevideocauhoi', baiKey, originalKey, items:[{t,nhId,q,A,B,C,D,ans}]}
 // Ghi đè toàn bộ mốc câu hỏi của 1 bài (xoá cũ, ghi mới)
 function saveVideoCauHoi(data) {
+  if (!requireAdmin(data && data.adminKey)) {
+    return jsonOut({ ok: false, msg: 'Unauthorized: sai hoặc thiếu adminKey' });
+  }
   const COLS = ['baiKey','thuTu','thoiGian','nhId','type','question','optA','optB','optC','optD','correct'];
   const sheet = getOrCreate('VideoCauHoi', COLS);
   const keys = [String(data.baiKey || '')];
@@ -2141,20 +2910,48 @@ function saveVideoCauHoi(data) {
 }
 
 // GET ?type=baitaptracnghiem&bai=<baiKey>
+// Public GET: TUYỆT ĐỐI CHẶN bài tập thuộc bài draft hoặc archived, không query nào nâng quyền
 function getBaiTapTracNghiem(bai) {
+  if (bai && !isLessonPublished(bai)) {
+    return jsonOut({ data: [] });
+  }
+
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = ss.getSheetByName('BaiTapTracNghiem');
   if (!sheet) return jsonOut({ data: [] });
   let rows = sheetToJson(sheet);
-  if (bai) rows = rows.filter(function(r){ return String(r.baiKey) === String(bai); });
+  if (bai) {
+    rows = rows.filter(function(r){ return String(r.baiKey) === String(bai); });
+  } else {
+    rows = rows.filter(function(r){ return isLessonPublished(r.baiKey); });
+  }
   rows.sort(function(a,b){ return (Number(a.thuTu)||0) - (Number(b.thuTu)||0); });
   return jsonOut({ data: rows });
+}
+
+function getBaiTapTracNghiemAdmin(data) {
+  if (!requireAdmin(data && data.adminKey)) {
+    return jsonOut({ ok: false, msg: 'Unauthorized: sai hoặc thiếu adminKey' });
+  }
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName('BaiTapTracNghiem');
+  if (!sheet) return jsonOut({ ok: true, data: [] });
+  let rows = sheetToJson(sheet);
+  const bai = data && (data.bai || data.baiKey);
+  if (bai) {
+    rows = rows.filter(function(r){ return String(r.baiKey) === String(bai); });
+  }
+  rows.sort(function(a,b){ return (Number(a.thuTu)||0) - (Number(b.thuTu)||0); });
+  return jsonOut({ ok: true, data: rows });
 }
 
 // POST {action:'savebaitaptracnghiem', baiKey, originalKey, items:[{type,q,A,B,C,D,correct}]}
 // Ghi de toan bo cau hoi Luyen tap trac nghiem cua 1 bai (xoa cu, ghi moi) - tach sheet rieng
 // de khong bi gioi han 50.000 ky tu/o cua Google Sheets khi 1 bai co hang tram cau.
 function saveBaiTapTracNghiem(data) {
+  if (!requireAdmin(data && data.adminKey)) {
+    return jsonOut({ ok: false, msg: 'Unauthorized: sai hoặc thiếu adminKey' });
+  }
   const COLS = ['baiKey','thuTu','type','question','optA','optB','optC','optD','correct'];
   const sheet = getOrCreate('BaiTapTracNghiem', COLS);
   const keys = [String(data.baiKey || '')];
@@ -2447,6 +3244,14 @@ function runAdminSelfTest() {
     return { ok: false, step: 'check_key', msg: 'ADMIN_KEY is not configured in Script Properties' };
   }
 
+  const resultOk = function(res) {
+    try {
+      const value = res && typeof res.getContent === 'function'
+        ? JSON.parse(res.getContent()) : res;
+      return Boolean(value && value.ok === true);
+    } catch(e) { return false; }
+  };
+
   const testSdt = '0999999999_selftest_' + Date.now();
   try {
     // 1. Tạo tài khoản test cô lập
@@ -2455,28 +3260,28 @@ function runAdminSelfTest() {
 
     // 2. Kiểm thử pingAdmin
     const pingRes = pingAdmin({ adminKey: adminKey });
-    if (!pingRes || pingRes.ok !== true) {
+    if (!resultOk(pingRes)) {
       deleteAccount({ adminKey: adminKey, sdt: testSdt });
       return { ok: false, step: 'ping_admin', msg: 'pingAdmin failed' };
     }
 
     // 3. Kiểm thử Premium (trialExpiry = 0)
     const premRes = setVipStatus({ adminKey: adminKey, sdt: testSdt, loaiTK: 'premium' });
-    if (!premRes || premRes.ok !== true) {
+    if (!resultOk(premRes)) {
       deleteAccount({ adminKey: adminKey, sdt: testSdt });
       return { ok: false, step: 'set_premium', msg: 'setVipStatus premium failed' };
     }
 
     // 4. Kiểm thử VIP với số ngày (trialExpiry > 0)
     const vipRes = setVipStatus({ adminKey: adminKey, sdt: testSdt, loaiTK: 'vip', days: 30 });
-    if (!vipRes || vipRes.ok !== true) {
+    if (!resultOk(vipRes)) {
       deleteAccount({ adminKey: adminKey, sdt: testSdt });
       return { ok: false, step: 'set_vip', msg: 'setVipStatus vip failed' };
     }
 
     // 5. Kiểm thử Free (trialExpiry = 0)
     const freeRes = setVipStatus({ adminKey: adminKey, sdt: testSdt, loaiTK: 'free' });
-    if (!freeRes || freeRes.ok !== true) {
+    if (!resultOk(freeRes)) {
       deleteAccount({ adminKey: adminKey, sdt: testSdt });
       return { ok: false, step: 'set_free', msg: 'setVipStatus free failed' };
     }
@@ -2490,7 +3295,7 @@ function runAdminSelfTest() {
 
     // 7. Kiểm thử deleteAccount và dọn dẹp liên hoàn
     const delRes = deleteAccount({ adminKey: adminKey, sdt: testSdt });
-    if (!delRes || delRes.ok !== true) {
+    if (!resultOk(delRes)) {
       return { ok: false, step: 'delete_account', msg: 'deleteAccount failed' };
     }
 
@@ -2507,7 +3312,7 @@ function runExamControlsSelfTest() {
   if (!adminKey) {
     return { ok: false, step: 'check_key', msg: 'ADMIN_KEY is not configured in Script Properties' };
   }
-  
+
   const testExamId = 'vedich2k9_de02';
   try {
     // 1. Check initial state
@@ -2725,6 +3530,1436 @@ function normalizeSearchText(value) {
     .replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/\s+/g, ' ').trim();
 }
 
+
+
+
+// REPAIR P107-251 BATCH LESSON MAP & TARGETED 19-CELL PATCH (E940AC5 MASTER 390)
+// ════════════════════════════════════════════════════════════════
+
+const REPAIR_P107_251_LESSON_MAP = {
+  "VLXT-PT-DE_01-P1-Q01": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_01-P1-Q02": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_01-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_01-P1-Q04": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_01-P1-Q05": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_01-P1-Q07": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_01-P1-Q08": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_01-P1-Q09": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_01-P1-Q10": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_01-P1-Q11": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_01-P1-Q12": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_01-P1-Q13": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_01-P1-Q14": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_01-P1-Q15": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_01-P1-Q16": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_01-P1-Q17": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_01-P1-Q18": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_02-P1-Q01": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_02-P1-Q02": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_02-P1-Q03": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_02-P1-Q04": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_02-P1-Q05": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_02-P1-Q06": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_02-P1-Q07": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_02-P1-Q08": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_02-P1-Q09": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_02-P1-Q10": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_02-P1-Q11": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_02-P1-Q12": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_02-P1-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_02-P1-Q14": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_02-P1-Q15": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_02-P1-Q16": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_02-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_02-P1-Q18": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_03-P1-Q01": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_03-P1-Q02": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_03-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_03-P1-Q04": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_03-P1-Q05": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_03-P1-Q06": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_03-P1-Q07": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_03-P1-Q08": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_03-P1-Q09": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_03-P1-Q10": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_03-P1-Q11": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_03-P1-Q12": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_03-P1-Q13": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_03-P1-Q14": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_03-P1-Q15": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_03-P1-Q16": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_03-P1-Q17": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_03-P1-Q18": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_04-P1-Q01": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_04-P1-Q02": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_04-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_04-P1-Q04": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_04-P1-Q05": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_04-P1-Q06": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_04-P1-Q07": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_04-P1-Q08": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_04-P1-Q09": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_04-P1-Q10": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_04-P1-Q11": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_04-P1-Q12": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_04-P1-Q13": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_04-P1-Q14": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_04-P1-Q15": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_04-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_04-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_05-P1-Q02": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_05-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_05-P1-Q04": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_05-P1-Q05": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_05-P1-Q06": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_05-P1-Q07": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_05-P1-Q08": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_05-P1-Q09": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_05-P1-Q10": "B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT",
+  "VLXT-PT-DE_05-P1-Q11": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_05-P1-Q12": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_05-P1-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_05-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_05-P1-Q15": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_05-P1-Q16": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_05-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_06-P1-Q01": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_06-P1-Q02": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_06-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_06-P1-Q04": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_06-P1-Q05": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_06-P1-Q06": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_06-P1-Q07": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_06-P1-Q08": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_06-P1-Q09": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_06-P1-Q10": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_06-P1-Q11": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_06-P1-Q12": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_06-P1-Q13": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_06-P1-Q14": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_06-P1-Q15": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_06-P1-Q16": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_06-P1-Q17": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_06-P1-Q18": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_07-P1-Q01": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_07-P1-Q02": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_07-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_07-P1-Q04": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_07-P1-Q05": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_07-P1-Q06": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_07-P1-Q07": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_07-P1-Q08": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_07-P1-Q09": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_07-P1-Q10": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_07-P1-Q11": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_07-P1-Q12": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_07-P1-Q13": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_07-P1-Q14": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_07-P1-Q15": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_07-P1-Q16": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_07-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_07-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_08-P1-Q01": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_08-P1-Q02": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_08-P1-Q03": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_08-P1-Q04": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_08-P1-Q05": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_08-P1-Q06": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_08-P1-Q07": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_08-P1-Q08": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_08-P1-Q09": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_08-P1-Q10": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_08-P1-Q11": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_08-P1-Q12": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_08-P1-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_08-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_08-P1-Q15": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_08-P1-Q16": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_08-P1-Q17": "B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT",
+  "VLXT-PT-DE_08-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_09-P1-Q01": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_09-P1-Q02": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_09-P1-Q03": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_09-P1-Q04": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_09-P1-Q05": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_09-P1-Q06": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_09-P1-Q07": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_09-P1-Q08": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_09-P1-Q09": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_09-P1-Q10": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_09-P1-Q11": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_09-P1-Q12": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_09-P1-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_09-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_09-P1-Q15": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_09-P1-Q16": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_09-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_09-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_10-P1-Q01": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_10-P1-Q02": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_10-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_10-P1-Q04": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_10-P1-Q05": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_10-P1-Q06": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_10-P1-Q07": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_10-P1-Q08": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_10-P1-Q09": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_10-P1-Q10": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_10-P1-Q11": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_10-P1-Q12": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_10-P1-Q13": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_10-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_10-P1-Q15": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_10-P1-Q16": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_10-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_10-P1-Q18": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_11-P1-Q01": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_11-P1-Q02": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_11-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_11-P1-Q04": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_11-P1-Q05": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_11-P1-Q06": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_11-P1-Q07": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_11-P1-Q08": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_11-P1-Q09": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_11-P1-Q10": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_11-P1-Q11": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_11-P1-Q12": "B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT",
+  "VLXT-PT-DE_11-P1-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_11-P1-Q14": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_11-P1-Q15": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_11-P1-Q16": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_11-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_11-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_12-P1-Q01": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_12-P1-Q02": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_12-P1-Q03": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_12-P1-Q04": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_12-P1-Q05": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_12-P1-Q06": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_12-P1-Q07": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_12-P1-Q08": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_12-P1-Q09": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_12-P1-Q10": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_12-P1-Q11": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_12-P1-Q12": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_12-P1-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_12-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_12-P1-Q15": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_12-P1-Q16": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_12-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_12-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_13-P1-Q01": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_13-P1-Q02": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_13-P1-Q03": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_13-P1-Q04": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_13-P1-Q05": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_13-P1-Q06": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_13-P1-Q07": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_13-P1-Q08": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_13-P1-Q09": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_13-P1-Q10": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_13-P1-Q11": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_13-P1-Q12": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_13-P1-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_13-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_13-P1-Q15": "B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT",
+  "VLXT-PT-DE_13-P1-Q16": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_13-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_13-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_14-P1-Q01": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_14-P1-Q02": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_14-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_14-P1-Q04": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_14-P1-Q05": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_14-P1-Q06": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_14-P1-Q07": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_14-P1-Q08": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_14-P1-Q09": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_14-P1-Q10": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_14-P1-Q11": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_14-P1-Q12": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_14-P1-Q13": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_14-P1-Q14": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_14-P1-Q15": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_14-P1-Q16": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_14-P1-Q17": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_14-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_15-P1-Q01": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_15-P1-Q02": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_15-P1-Q03": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_15-P1-Q04": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_15-P1-Q06": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_15-P1-Q07": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_15-P1-Q09": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_15-P1-Q10": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_15-P1-Q11": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_15-P1-Q13": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_15-P1-Q15": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_15-P1-Q16": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_15-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_15-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_16-P1-Q01": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_16-P1-Q02": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_16-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_16-P1-Q04": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_16-P1-Q05": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_16-P1-Q06": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_16-P1-Q07": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_16-P1-Q08": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_16-P1-Q09": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_16-P1-Q10": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_16-P1-Q11": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_16-P1-Q12": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_16-P1-Q13": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_16-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_16-P1-Q15": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_16-P1-Q16": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_16-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_16-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_17-P1-Q01": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_17-P1-Q02": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_17-P1-Q03": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_17-P1-Q04": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_17-P1-Q05": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_17-P1-Q06": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_17-P1-Q07": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_17-P1-Q08": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_17-P1-Q09": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_17-P1-Q10": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_17-P1-Q11": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_17-P1-Q12": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_17-P1-Q13": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_17-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_17-P1-Q15": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_17-P1-Q16": "B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT",
+  "VLXT-PT-DE_17-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_17-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_18-P1-Q01": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_18-P1-Q02": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_18-P1-Q03": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_18-P1-Q04": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_18-P1-Q05": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_18-P1-Q06": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_18-P1-Q08": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_18-P1-Q09": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_18-P1-Q10": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_18-P1-Q11": "B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT",
+  "VLXT-PT-DE_18-P1-Q12": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_18-P1-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_18-P1-Q14": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_18-P1-Q15": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_18-P1-Q16": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_18-P1-Q17": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_18-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_19-P1-Q01": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_19-P1-Q02": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_19-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_19-P1-Q04": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_19-P1-Q05": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_19-P1-Q06": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_19-P1-Q07": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_19-P1-Q08": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_19-P1-Q09": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_19-P1-Q10": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_19-P1-Q11": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_19-P1-Q12": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_19-P1-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_19-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_19-P1-Q15": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_19-P1-Q16": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_19-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_19-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_20-P1-Q01": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_20-P1-Q03": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-DE_20-P1-Q04": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_20-P1-Q05": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_20-P1-Q06": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_20-P1-Q07": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-DE_20-P1-Q08": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_20-P1-Q09": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_20-P1-Q10": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_20-P1-Q11": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ",
+  "VLXT-PT-DE_20-P1-Q12": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_20-P1-Q13": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-DE_20-P1-Q14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_20-P1-Q15": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_20-P1-Q16": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_20-P1-Q17": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-DE_20-P1-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P107-B6-Q01": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P107-B6-Q02": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P107-B6-Q03": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P108-B6-Q04": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P108-B6-Q05": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P108-B6-Q06": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P108-B6-Q07": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P109-B6-Q08": "B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT",
+  "VLXT-PT-P109-B6-Q09": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-P109-B6-Q10": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P110-B6-Q11": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+  "VLXT-PT-P110-B6-Q12": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-P110-B6-Q13": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P111-B6-Q14": "B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT",
+  "VLXT-PT-P111-B6-Q15": "B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT",
+  "VLXT-PT-P113-B6-Q18": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P114-B6-VD01": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P114-B6-VD02": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P115-B6-VD03": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P115-B6-VD04": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P116-B6-VD05": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P117-B6-VD07": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P118-B6-VD08": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P120-B6-BT01": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P120-B6-BT02": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P121-B6-BT03": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P121-B6-BT04": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P122-B6-BT05": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P122-B6-BT06": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P123-B6-BT07": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P124-B6-BT08": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P125-B6-BT09": "B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
+  "VLXT-PT-P125-B6-BT10": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-P126-B6-BT11": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG",
+  "VLXT-PT-P126-B6-BT12": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-P127-B6-BT13": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT",
+  "VLXT-PT-P128-B6-BT14": "B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG"
+};
+
+const NEW_SAFE_QUESTIONS_3 = [
+  {
+    "id": "VLXT-PT-DE_05-P1-Q01-H6808885d",
+    "mon": "Vật Lý 12",
+    "chuong": "CHƯƠNG 1 – VẬT LÝ NHIỆT",
+    "mucDo": "NB",
+    "loai": "TN",
+    "nhomId": "",
+    "deBaiChung": "",
+    "question": "Trong chuyển động nhiệt, các phân tử của chất lỏng",
+    "optA": "chuyển động hoàn toàn hỗn loạn.",
+    "optB": "chuyển động hỗn loạn quanh vị trí cân bằng xác định.",
+    "optC": "dao động xung quanh các vị trí cân bằng cố định.",
+    "optD": "dao động quanh vị trí cân bằng nhưng những vị trí cân bằng này không cố định mà di chuyển.",
+    "correct": "D",
+    "hinhAnh": "",
+    "giaiThich": "Trong chất lỏng, các phân tử dao động quanh các vị trí cân bằng tạm thời, các vị trí này không cố định mà luôn di chuyển.",
+    "ngayThem": "2026-09-01T08:00:00.000Z",
+    "baiHoc": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+    "chatLuong": "tinh",
+    "sourceBatch": "BATCH-P107-251-MASTER"
+  },
+  {
+    "id": "VLXT-PT-DE_05-P1-Q17-Hdc672a67",
+    "mon": "Vật Lý 12",
+    "chuong": "CHƯƠNG 1 – VẬT LÝ NHIỆT",
+    "mucDo": "NB",
+    "loai": "TN",
+    "nhomId": "",
+    "deBaiChung": "",
+    "question": "Khi nhiệt độ của vật tăng lên thì",
+    "optA": "động năng của các phân tử cấu tạo nên vật tăng.",
+    "optB": "động năng của các phân tử cấu tạo nên vật giảm.",
+    "optC": "nội năng của vật giảm.",
+    "optD": "thế năng của các phân tử cấu tạo nên vật tăng.",
+    "correct": "A",
+    "hinhAnh": "",
+    "giaiThich": "Nhiệt độ là đại lượng đặc trưng cho động năng trung bình của chuyển động nhiệt phân tử. Nhiệt độ tăng thì động năng trung bình của các phân tử tăng.",
+    "ngayThem": "2026-09-01T08:00:00.000Z",
+    "baiHoc": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+    "chatLuong": "tinh",
+    "sourceBatch": "BATCH-P107-251-MASTER"
+  },
+  {
+    "id": "VLXT-PT-DE_20-P1-Q02-H04d938be",
+    "mon": "Vật Lý 12",
+    "chuong": "CHƯƠNG 1 – VẬT LÝ NHIỆT",
+    "mucDo": "NB",
+    "loai": "TN",
+    "nhomId": "",
+    "deBaiChung": "",
+    "question": "Nguyên tử, phân tử không có tính chất nào sau đây?",
+    "optA": "Chuyển động không ngừng.",
+    "optB": "Giữa chúng có khoảng cách.",
+    "optC": "Nở ra khi nhiệt độ tăng, co lại khi nhiệt độ giảm.",
+    "optD": "Chuyển động càng nhanh khi nhiệt độ càng cao.",
+    "correct": "C",
+    "hinhAnh": "",
+    "giaiThich": "Khi nhiệt độ thay đổi, khoảng cách giữa các nguyên tử, phân tử thay đổi làm kích thước của vật thay đổi, chứ bản thân từng nguyên tử, phân tử không nở ra hay co lại.",
+    "ngayThem": "2026-09-01T08:00:00.000Z",
+    "baiHoc": "B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ",
+    "chatLuong": "tinh",
+    "sourceBatch": "BATCH-P107-251-MASTER"
+  }
+];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const TARGETED_PATCH_10_FIELDS = [
+  {
+    "id": "VLXT-PT-DE_01-P1-Q16",
+    "field": "question",
+    "after": "Một số phân tử ở gần mặt thoáng chất lỏng, chuyển động hướng ra ngoài, có ...(1).. đủ lớn thắng được lực tương tác giữa các phân tử thì có thể thoát ra ngoài khỏi chất lỏng. Như vậy, có thể nói sự bay hơi là sự hoá hơi xảy ra ở..(2).. của khối chất lỏng. Điền vào chỗ trống các cụm từ thích hợp."
+  },
+  {
+    "id": "VLXT-PT-DE_05-P1-Q01-H6808885d",
+    "field": "optB",
+    "after": "chuyển động hỗn loạn quanh vị trí cân bằng xác định."
+  },
+  {
+    "id": "VLXT-PT-DE_09-P1-Q03",
+    "field": "question",
+    "after": "Trường hợp nào sau đây làm tăng nội năng của một đồng xu bằng cách thực hiện công?"
+  },
+  {
+    "id": "VLXT-PT-DE_18-P1-Q08",
+    "field": "giaiThich",
+    "after": "Độ tăng nhiệt độ của nước:\\n$$\\Delta t = \\frac{Q}{mc} = \\frac{84000}{2 \\cdot 4200} = 10^{\\circ}\\text{C}.$$\\nNhiệt độ sau cùng: $t = 20 + 10 = 30^{\\circ}\\text{C}$."
+  }
+];
+
+function patchSpecificFields_AuditFidelity(e) {
+  const isPost = Boolean(e && e.action);
+  const dryRun = isPost ? (e.dryRun === true) : (e && e.parameter && e.parameter.execute !== 'true');
+
+  const sheet = getOrCreate('NganHang', NH_HEADERS);
+  const lastRow = sheet.getLastRow();
+  const lastCol = sheet.getLastColumn();
+  if (lastRow < 2) return jsonOut({ ok: false, error: 'Bảng NganHang trống' });
+
+  const rawHeaders = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+  const actualHeaderMap = {};
+  for (let h = 0; h < rawHeaders.length; h++) {
+    const headerName = String(rawHeaders[h] || '').trim().toLowerCase();
+    if (headerName) actualHeaderMap[headerName] = h + 1;
+  }
+
+  const idValues = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+  const idToRowMap = {};
+  for (let i = 0; i < idValues.length; i++) {
+    const qid = String(idValues[i][0] || '').trim();
+    if (qid) idToRowMap[qid] = i + 2;
+  }
+
+  const appliedPatches = [];
+  const missingIds = [];
+  const verificationResults = [];
+
+  for (let p = 0; p < TARGETED_PATCH_10_FIELDS.length; p++) {
+    const item = TARGETED_PATCH_10_FIELDS[p];
+    const qid = item.id;
+    const field = item.field;
+    const fieldLower = field.toLowerCase();
+    const colIndex = actualHeaderMap[fieldLower] || actualHeaderMap[field] || item.colIndex || 8;
+    const afterVal = item.after;
+
+    if (idToRowMap.hasOwnProperty(qid)) {
+      const rowNum = idToRowMap[qid];
+      const curCellVal = String(sheet.getRange(rowNum, colIndex).getValue() || '');
+
+      appliedPatches.push({
+        id: qid,
+        field: field,
+        rowIndex: rowNum,
+        colIndex: colIndex,
+        before: curCellVal,
+        after: afterVal
+      });
+
+      if (!dryRun) {
+        sheet.getRange(rowNum, colIndex).setValue(afterVal);
+      }
+    } else {
+      missingIds.push(qid);
+    }
+  }
+
+  if (!dryRun) {
+    SpreadsheetApp.flush();
+    for (let p = 0; p < appliedPatches.length; p++) {
+      const ap = appliedPatches[p];
+      const readBackVal = String(sheet.getRange(ap.rowIndex, ap.colIndex).getValue() || '');
+      verificationResults.push({
+        id: ap.id,
+        field: ap.field,
+        rowIndex: ap.rowIndex,
+        colIndex: ap.colIndex,
+        writtenVal: ap.after,
+        verifiedVal: readBackVal,
+        isMatch: (readBackVal === ap.after)
+      });
+    }
+  }
+
+  return jsonOut({
+    ok: true,
+    success: true,
+    dryRun: dryRun,
+    totalTargetedFields: TARGETED_PATCH_10_FIELDS.length,
+    totalPatchesApplied: appliedPatches.length,
+    missingIds: missingIds,
+    appliedPatches: appliedPatches,
+    verificationResults: verificationResults,
+    msg: (dryRun ? 'Dry-run hoàn tất: Sẽ sửa đúng ' + appliedPatches.length + ' trường mismatch.' : 'Đã sửa và xác thực thành công đúng ' + appliedPatches.length + ' ô mục tiêu trực tiếp từ payload e940ac5.')
+  });
+}
+
+
+function repairBatchP107_251_AutoFix(e) {
+  const isPost = Boolean(e && e.action);
+  const dryRun = isPost ? (e.dryRun === true) : (e && e.parameter && e.parameter.execute !== 'true');
+
+  const sheet = getOrCreate('NganHang', NH_HEADERS);
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return jsonOut({ ok: false, error: 'Bảng NganHang trống' });
+
+  const idValues = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+  const colValues = sheet.getRange(2, 17, lastRow - 1, 1).getValues();
+  const existingIds = new Set();
+  let updatedCount = 0;
+  const changedRows = [];
+  const beforeCounts = {};
+  const afterCounts = {};
+
+  for (let i = 0; i < idValues.length; i++) {
+    const qid = String(idValues[i][0] || '').trim();
+    if (qid) existingIds.add(qid);
+
+    if (qid && REPAIR_P107_251_LESSON_MAP.hasOwnProperty(qid)) {
+      const intendedLesson = REPAIR_P107_251_LESSON_MAP[qid];
+      const curLesson = String(colValues[i][0] || '').trim();
+      beforeCounts[curLesson] = (beforeCounts[curLesson] || 0) + 1;
+      afterCounts[intendedLesson] = (afterCounts[intendedLesson] || 0) + 1;
+
+      if (curLesson !== intendedLesson) {
+        changedRows.push({ rowIndex: i + 2, id: qid, before: curLesson, after: intendedLesson });
+        colValues[i][0] = intendedLesson;
+        updatedCount++;
+      }
+    }
+  }
+
+  // Check 3 new safe questions
+  const toAppend = [];
+  for (let k = 0; k < NEW_SAFE_QUESTIONS_3.length; k++) {
+    const nq = NEW_SAFE_QUESTIONS_3[k];
+    if (!existingIds.has(nq.id)) {
+      toAppend.push(nq);
+      afterCounts[nq.baiHoc] = (afterCounts[nq.baiHoc] || 0) + 1;
+    }
+  }
+
+  if (!dryRun) {
+    if (updatedCount > 0) {
+      sheet.getRange(2, 17, lastRow - 1, 1).setValues(colValues);
+    }
+    if (toAppend.length > 0) {
+      const appendRows = toAppend.map(function(item) {
+        return NH_HEADERS.map(function(h) {
+          return item.hasOwnProperty(h) ? item[h] : '';
+        });
+      });
+      sheet.getRange(lastRow + 1, 1, appendRows.length, NH_HEADERS.length).setValues(appendRows);
+    }
+  }
+
+  return jsonOut({
+    ok: true,
+    success: true,
+    dryRun: dryRun,
+    totalScanned: idValues.length,
+    totalTargetedInBank: Object.keys(REPAIR_P107_251_LESSON_MAP).length,
+    totalChangedInBank: updatedCount,
+    totalNewSafeToAppend: toAppend.length,
+    totalBatchAccounted: Object.keys(REPAIR_P107_251_LESSON_MAP).length + toAppend.length,
+    beforeCounts: beforeCounts,
+    afterCounts: afterCounts,
+    sampleChanges: changedRows.slice(0, 20),
+    newSafeQuestions: toAppend.map(function(x) { return { id: x.id, stem: x.question, baiHoc: x.baiHoc }; }),
+    msg: (dryRun ? 'Dry-run hoàn tất: Sẽ sửa ' + updatedCount + ' dòng cũ & bổ sung ' + toAppend.length + ' câu mới an toàn (Tổng gói đúng 390 câu).' : 'Đã cập nhật thành công ' + updatedCount + ' dòng cũ & bổ sung ' + toAppend.length + ' câu mới an toàn.')
+  });
+}
+
+
+// ══════════════════════════════════════════════════════════════════════════════
+// BỘ HÀM CHUẨN HOÁ TAXONOMY & KIỂM SOÁT AN TOÀN NGÂN HÀNG (7 FAILURE GATES)
+// ══════════════════════════════════════════════════════════════════════════════
+
+function normalizeLesson(bh) {
+  const s = String(bh || '').trim();
+  if (!s) return '';
+  const upper = s.toUpperCase();
+  if (upper === 'G12_C1_B01' || /^B1\b/.test(upper)) return 'B1. CẤU TRÚC CỦA CHẤT & MÔ HÌNH ĐỘNG HỌC PHÂN TỬ';
+  if (upper === 'G12_C1_B02' || /^B2\b/.test(upper)) return 'B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT';
+  if (upper === 'G12_C1_B03' || /^B3\b/.test(upper)) return 'B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ';
+  if (upper === 'G12_C1_B04' || /^B4\b/.test(upper)) return 'B4. NHIỆT DUNG RIÊNG - NÓNG CHẢY RIÊNG - HOÁ HƠI RIÊNG';
+  if (upper === 'G12_C1_B05' || /^B5\b/.test(upper)) return 'B5. NỘI NĂNG – ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC';
+  if (upper === 'G12_C1_B06' || /^B6\b/.test(upper)) return 'B6. ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT';
+  if (upper === 'G12_C2_B09' || /^B9\b/.test(upper)) return 'B9. MÔ HÌNH ĐỘNG HỌC PHÂN TỬ CHẤT KHÍ - KHÍ LÝ TƯỞNG';
+  if (upper === 'G12_C2_B10' || /^B10\b/.test(upper)) return 'B10. PHƯƠNG TRÌNH TRẠNG THÁI KHÍ LÝ TƯỞNG';
+  if (upper === 'G12_C2_B11' || /^B11\b/.test(upper)) return 'B11. ĐỊNH LUẬT BOYLE - QUÁ TRÌNH ĐẲNG NHIỆT';
+  if (upper === 'G12_C2_B12' || /^B12\b/.test(upper)) return 'B12. ĐỊNH LUẬT CHARLES - QUÁ TRÌNH ĐẲNG ÁP';
+  if (upper === 'G12_C2_B13' || /^B13\b/.test(upper)) return 'B13. ĐỊNH LUẬT GAY LUSSAC - QUÁ TRÌNH ĐẲNG TÍCH';
+  if (upper === 'G12_C2_B14' || /^B14\b/.test(upper)) return 'B14. PHƯƠNG TRÌNH CLAPERON - MENDELEEV';
+  if (upper === 'G12_C2_B15' || /^B15\b/.test(upper)) return 'B15. ÁP SUẤT THEO MÔ HÌNH ĐỘNG HỌC PHÂN TỬ - QUAN HỆ ĐỘNG NĂNG PHÂN TỬ VÀ NHIỆT ĐỘ';
+  if (upper === 'G12_C2_B16' || /^B16\b/.test(upper)) return 'B16. ĐỒ THỊ KHÍ LÝ TƯỞNG';
+  if (upper === 'G12_C2_B17' || /^B17\b/.test(upper)) return 'B17. ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC ĐỐI VỚI CÁC ĐẲNG QUÁ TRÌNH';
+  if (upper === 'G12_C2_B18' || /^B18\b/.test(upper)) return 'B18. TỔNG ÔN CHƯƠNG II - KHÍ LÝ TƯỞNG (P1)';
+  if (upper === 'G12_C2_B19' || /^B19\b/.test(upper)) return 'B19. TỔNG ÔN CHƯƠNG II - KHÍ LÝ TƯỞNG (P2)';
+  return '';
+}
+
+// ── GATE 1: Quét toàn diện Header Map, phát hiện và từ chối nếu có Header trùng lặp (FailClosedDuplicateHeaders)
+function buildSheetHeaderMap(sheet, requiredHeaders) {
+  const lastCol = sheet.getLastColumn();
+  if (lastCol < 1) {
+    return { ok: false, error: 'SheetHasNoColumns', msg: 'Sheet không có cột nào' };
+  }
+  const headers = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+
+  const aliasMap = {
+    'id': ['id'],
+    'question': ['question', 'cauhoi', 'debai', 'content', 'stem'],
+    'optA': ['opta', 'a'],
+    'optB': ['optb', 'b'],
+    'optC': ['optc', 'c'],
+    'optD': ['optd', 'd'],
+    'correct': ['correct', 'dapan', 'answer'],
+    'mon': ['mon', 'subject', 'lop'],
+    'chuong': ['chuong', 'chapter'],
+    'baiHoc': ['baihoc', 'lesson'],
+    'mucDo': ['mucdo', 'difficulty'],
+    'loai': ['loai', 'type'],
+    'chatLuong': ['chatluong'],
+    'kyThuat': ['kythuat'],
+    'lyDoCachLy': ['lydocachly'],
+    'batchId': ['batchid', 'sourcebatch'],
+    'giaiThich': ['giaithich', 'explanation', 'solution'],
+    'hinhAnh': ['hinhanh', 'image', 'cropimage'],
+    'ngayThem': ['ngaythem', 'timestamp'],
+    'nhomId': ['nhomid'],
+    'deBaiChung': ['debaichung']
+  };
+
+  const reverseAlias = {};
+  for (const [canon, aliases] of Object.entries(aliasMap)) {
+    for (const a of aliases) {
+      reverseAlias[a.toLowerCase()] = canon;
+    }
+  }
+
+  const colOccurrences = {};
+  for (let c = 0; c < headers.length; c++) {
+    const raw = String(headers[c] || '').trim();
+    const rawLower = raw.toLowerCase();
+    if (!rawLower) continue;
+
+    const canon = reverseAlias[rawLower];
+    if (canon) {
+      if (!colOccurrences[canon]) colOccurrences[canon] = [];
+      colOccurrences[canon].push(c);
+    }
+  }
+
+  const reqList = Array.isArray(requiredHeaders) ? requiredHeaders : ['id', 'question', 'optA', 'optB', 'optC', 'optD', 'correct', 'baiHoc'];
+
+  // 1. Kiểm tra header trùng lặp trong số các header bắt buộc (FailClosedDuplicateHeaders)
+  const dupHeaders = [];
+  for (const req of reqList) {
+    if (colOccurrences[req] && colOccurrences[req].length > 1) {
+      dupHeaders.push({
+        header: req,
+        columns: colOccurrences[req].map(i => i + 1)
+      });
+    }
+  }
+  if (dupHeaders.length > 0) {
+    return {
+      ok: false,
+      error: 'FailClosedDuplicateHeaders',
+      duplicates: dupHeaders,
+      colCount: lastCol,
+      msg: 'Phát hiện header bắt buộc bị trùng lặp trong Sheet: ' + dupHeaders.map(d => d.header + ' (cột ' + d.columns.join(', ') + ')').join('; ')
+    };
+  }
+
+  // 2. Kiểm tra header thiếu (FailClosedMissingHeaders)
+  const missingHeaders = [];
+  const resolved = {};
+  for (const req of reqList) {
+    if (!colOccurrences[req] || colOccurrences[req].length === 0) {
+      missingHeaders.push(req);
+    } else {
+      resolved[req] = colOccurrences[req][0];
+    }
+  }
+  if (missingHeaders.length > 0) {
+    return {
+      ok: false,
+      error: 'FailClosedMissingHeaders',
+      missing: missingHeaders,
+      colCount: lastCol,
+      msg: 'Sheet thiếu các header bắt buộc: ' + missingHeaders.join(', ')
+    };
+  }
+
+  // Map các trường còn lại nếu chỉ xuất hiện đúng 1 lần
+  for (const [canon, cols] of Object.entries(colOccurrences)) {
+    if (!resolved.hasOwnProperty(canon) && cols.length === 1) {
+      resolved[canon] = cols[0];
+    }
+  }
+
+  return {
+    ok: true,
+    colCount: lastCol,
+    headerMap: resolved,
+    rawHeaders: headers
+  };
+}
+
+function createRowFromHeaderMap(dataObj, headerInfo) {
+  const row = new Array(headerInfo.colCount).fill('');
+  for (const [canonKey, colIdx0] of Object.entries(headerInfo.headerMap)) {
+    if (dataObj.hasOwnProperty(canonKey) && dataObj[canonKey] !== undefined && dataObj[canonKey] !== null) {
+      row[colIdx0] = dataObj[canonKey];
+    }
+  }
+  return row;
+}
+
+// ── SAO CHÉP SHEET NGANHANG SANG SHEET THỬ NGHIỆM (STAGING) ──
+function cloneNganHangToStaging(data) {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const srcSheet = ss.getSheetByName('NganHang');
+    if (!srcSheet) return jsonOut({ ok: false, error: 'Sheet NganHang not found' });
+
+    const stagingName = String((data && data.stagingSheetName) || 'NganHang_Staging_Test').trim();
+    let stagingSheet = ss.getSheetByName(stagingName);
+    if (stagingSheet) {
+      ss.deleteSheet(stagingSheet);
+    }
+
+    stagingSheet = srcSheet.copyTo(ss);
+    stagingSheet.setName(stagingName);
+    SpreadsheetApp.flush();
+
+    return jsonOut({
+      ok: true,
+      success: true,
+      copiedFrom: 'NganHang',
+      stagingSheetName: stagingName,
+      totalRows: stagingSheet.getLastRow(),
+      totalCols: stagingSheet.getLastColumn(),
+      msg: 'Đã sao chép thành công sheet NganHang sang ' + stagingName
+    });
+  } catch (err) {
+    return jsonOut({ ok: false, error: err.toString() });
+  }
+}
+
+// ── SỬA BATCH IPCLASS CÓ KIỂM SOÁT & DRY-RUN AN TOÀN THEO 7 GATES ──
+function repairIpclassBatch(data) {
+  let lockAcquired = false;
+  let lock = null;
+  if (typeof LockService !== 'undefined' && LockService.getScriptLock) {
+    try {
+      lock = LockService.getScriptLock();
+      lock.waitLock(30000);
+      lockAcquired = true;
+    } catch (lockErr) {
+      return jsonOut({
+        ok: false,
+        success: false,
+        error: 'LockTimeout',
+        msg: 'Không thể lấy script lock sau 30 giây: ' + lockErr.toString()
+      });
+    }
+  }
+
+  try {
+    // GATE 7: Mặc định dryRun = true
+    const dryRun = (data.dryRun !== false && data.dryRun !== 'false');
+    const targetSheetName = String(data.targetSheetName || 'NganHang').trim();
+    const rawUpdates = Array.isArray(data.updates) ? data.updates : (Array.isArray(data.questions) ? data.questions : []);
+
+    if (!rawUpdates.length) {
+      return jsonOut({ ok: false, success: false, error: 'EmptyUpdates', msg: 'Không có danh sách câu hỏi cần sửa' });
+    }
+
+    // GATE 2: Phát hiện ID trùng lặp trong payload
+    const seenPayloadIds = new Set();
+    const dupPayloadIds = [];
+    for (let i = 0; i < rawUpdates.length; i++) {
+      const pid = String(rawUpdates[i].id || '').trim();
+      if (!pid.startsWith('IPC-')) {
+        return jsonOut({
+          ok: false,
+          success: false,
+          error: 'InvalidTargetId',
+          msg: 'Từ chối cập nhật ID không thuộc IPC: ' + pid
+        });
+      }
+      if (seenPayloadIds.has(pid)) {
+        dupPayloadIds.push(pid);
+      } else {
+        seenPayloadIds.add(pid);
+      }
+    }
+    if (dupPayloadIds.length > 0) {
+      return jsonOut({
+        ok: false,
+        success: false,
+        error: 'FailClosedDuplicatePayloadIds',
+        duplicates: dupPayloadIds,
+        msg: 'Phát hiện ID trùng lặp trong payload: ' + dupPayloadIds.join(', ')
+      });
+    }
+
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = ss.getSheetByName(targetSheetName);
+    if (!sheet) {
+      return jsonOut({ ok: false, success: false, error: 'SheetNotFound', msg: 'Không tìm thấy sheet: ' + targetSheetName });
+    }
+
+    const lastRow = sheet.getLastRow();
+    const lastCol = sheet.getLastColumn();
+    if (lastRow < 2) {
+      return jsonOut({ ok: false, success: false, error: 'EmptySheet', msg: 'Sheet ' + targetSheetName + ' không có dữ liệu' });
+    }
+
+    // GATE 1: Kiểm tra HeaderMap & Header trùng lặp trong Sheet
+    const headerCheck = buildSheetHeaderMap(sheet, ['id', 'question', 'optA', 'optB', 'optC', 'optD', 'correct', 'baiHoc', 'chatLuong']);
+    if (!headerCheck.ok) {
+      return jsonOut({
+        ok: false,
+        success: false,
+        error: headerCheck.error,
+        details: headerCheck,
+        msg: headerCheck.msg
+      });
+    }
+
+    const hMap = headerCheck.headerMap;
+
+    // Đọc toàn bộ bảng để kiểm tra ID trong Sheet
+    const fullData = sheet.getRange(1, 1, lastRow, lastCol).getValues();
+    const sheetIdCounts = new Map();
+    const sheetIdFirstRow = new Map();
+
+    for (let r = 1; r < fullData.length; r++) {
+      const rid = String(fullData[r][hMap.id] || '').trim();
+      if (!rid) continue;
+      if (sheetIdCounts.has(rid)) {
+        sheetIdCounts.set(rid, sheetIdCounts.get(rid) + 1);
+      } else {
+        sheetIdCounts.set(rid, 1);
+        sheetIdFirstRow.set(rid, { rowIndex: r + 1, rowData: fullData[r] });
+      }
+    }
+
+    // GATE 3: Phát hiện ID mục tiêu bị trùng lặp trong Google Sheet
+    const targetedDupsInSheet = [];
+    for (const pid of seenPayloadIds) {
+      if (sheetIdCounts.get(pid) > 1) {
+        targetedDupsInSheet.push(pid);
+      }
+    }
+    if (targetedDupsInSheet.length > 0) {
+      return jsonOut({
+        ok: false,
+        success: false,
+        error: 'FailClosedDuplicateSheetIds',
+        duplicates: targetedDupsInSheet,
+        msg: 'Phát hiện ID mục tiêu bị trùng lặp trong Sheet: ' + targetedDupsInSheet.join(', ') + '. Map.set() sẽ âm thầm ghi đè nếu tiếp tục!'
+      });
+    }
+
+    // GATE 4: Phát hiện ID mục tiêu thiếu trong Sheet
+    const missingSheetIds = [];
+    for (const pid of seenPayloadIds) {
+      if (!sheetIdCounts.has(pid)) {
+        missingSheetIds.push(pid);
+      }
+    }
+    if (missingSheetIds.length > 0) {
+      return jsonOut({
+        ok: false,
+        success: false,
+        error: 'FailClosedMissingSheetIds',
+        missing: missingSheetIds,
+        msg: 'Không tìm thấy ID mục tiêu trong Sheet: ' + missingSheetIds.join(', ')
+      });
+    }
+
+    // GATE 5 & GATE 6 & GATE 8: Kiểm tra tính hợp lệ trước khi ghi
+    // - stem, optA-D, correct, explanation, baiHoc KHÔNG ĐƯỢC RỖNG
+    // - TUYỆT ĐỐI KHÔNG FALLBACK B3
+    // - Không đặt chatLuong="tinh" hoặc kyThuat="Dat" cho câu thiếu đáp án hoặc lời giải
+    const validationErrors = [];
+    for (let idx = 0; idx < rawUpdates.length; idx++) {
+      const u = rawUpdates[idx];
+      const pid = String(u.id || '').trim();
+
+      const newQ = String(u.question || u.stem || '').trim();
+      if (!newQ) {
+        validationErrors.push({ id: pid, error: 'FailClosedEmptyQuestion', field: 'question' });
+      }
+
+      const newOptA = String(u.optA !== undefined ? u.optA : (u.a !== undefined ? u.a : '')).trim();
+      const newOptB = String(u.optB !== undefined ? u.optB : (u.b !== undefined ? u.b : '')).trim();
+      const newOptC = String(u.optC !== undefined ? u.optC : (u.c !== undefined ? u.c : '')).trim();
+      const newOptD = String(u.optD !== undefined ? u.optD : (u.d !== undefined ? u.d : '')).trim();
+      if (!newOptA || !newOptB || !newOptC || !newOptD) {
+        validationErrors.push({
+          id: pid,
+          error: 'FailClosedEmptyOptions',
+          field: 'options',
+          details: { optA: !newOptA, optB: !newOptB, optC: !newOptC, optD: !newOptD }
+        });
+      }
+
+      const newCorrect = String(u.correct || u.correctAnswer || '').trim().toUpperCase();
+      if (!['A', 'B', 'C', 'D'].includes(newCorrect)) {
+        validationErrors.push({ id: pid, error: 'FailClosedInvalidCorrectAnswer', field: 'correct', value: newCorrect });
+      }
+
+      const newGiaiThich = String(u.giaiThich || u.explanation || '').trim();
+      if (!newGiaiThich) {
+        validationErrors.push({ id: pid, error: 'FailClosedEmptyExplanation', field: 'giaiThich' });
+      }
+
+      // GATE 6: Bỏ fallback B3; từ chối baiHoc rỗng hoặc không hợp lệ
+      const rawBai = String(u.baiHoc || u.lesson || '').trim();
+      if (!rawBai) {
+        validationErrors.push({ id: pid, error: 'FailClosedEmptyBaiHoc', field: 'baiHoc' });
+      } else {
+        const normBai = normalizeLesson(rawBai);
+        if (!normBai) {
+          validationErrors.push({ id: pid, error: 'FailClosedInvalidBaiHoc', field: 'baiHoc', value: rawBai });
+        }
+      }
+
+      // GATE 8: Không cho phép gán chatLuong="tinh" hoặc kyThuat="Dat" nếu câu thiếu đáp án hoặc lời giải
+      const curChatLuong = String(u.chatLuong || '').trim();
+      const curKyThuat = String(u.kyThuat || '').trim();
+      if ((curChatLuong === 'tinh' || curKyThuat === 'Dat') && (!newCorrect || !newGiaiThich)) {
+        validationErrors.push({ id: pid, error: 'FailClosedInvalidQualityRating', field: 'chatLuong/kyThuat' });
+      }
+    }
+
+    if (validationErrors.length > 0) {
+      return jsonOut({
+        ok: false,
+        success: false,
+        error: 'FailClosedValidationError',
+        errors: validationErrors,
+        msg: 'Dữ liệu đầu vào không hợp lệ (' + validationErrors.length + ' lỗi): ' + validationErrors.slice(0, 5).map(e => e.id + ':' + e.error).join('; ')
+      });
+    }
+
+    // Xây dựng danh sách cập nhật
+    const rowsToApply = [];
+    let willRepairQuestion = 0;
+    let willRepairOptions = 0;
+    let willRepairAnswer = 0;
+    let willRepairTaxonomy = 0;
+    let unchangedCount = 0;
+    const sampleChanges = [];
+
+    for (let idx = 0; idx < rawUpdates.length; idx++) {
+      const u = rawUpdates[idx];
+      const pid = String(u.id || '').trim();
+      const entry = sheetIdFirstRow.get(pid);
+      const curRow = entry.rowData;
+      const rowNum = entry.rowIndex;
+
+      const newQ = String(u.question || u.stem || '').trim();
+      const newOptA = String(u.optA !== undefined ? u.optA : (u.a !== undefined ? u.a : '')).trim();
+      const newOptB = String(u.optB !== undefined ? u.optB : (u.b !== undefined ? u.b : '')).trim();
+      const newOptC = String(u.optC !== undefined ? u.optC : (u.c !== undefined ? u.c : '')).trim();
+      const newOptD = String(u.optD !== undefined ? u.optD : (u.d !== undefined ? u.d : '')).trim();
+      const newCorrect = String(u.correct || u.correctAnswer || '').trim().toUpperCase();
+      const newGiaiThich = String(u.giaiThich || u.explanation || '').trim();
+      const newMon = String(u.mon || 'Vật lý 12').trim();
+      const newChuong = String(u.chuong || 'CHƯƠNG 1 – VẬT LÝ NHIỆT').trim();
+      const newBai = normalizeLesson(String(u.baiHoc || u.lesson || '').trim());
+      const newBatchId = String(u.batchId || '').trim();
+      const newChatLuong = String(u.chatLuong || 'tinh').trim();
+      const newKyThuat = String(u.kyThuat || 'Dat').trim();
+
+      const curQ = String(curRow[hMap.question] || '').trim();
+      const curOptA = String(curRow[hMap.optA] || '').trim();
+      const curOptB = String(curRow[hMap.optB] || '').trim();
+      const curOptC = String(curRow[hMap.optC] || '').trim();
+      const curOptD = String(curRow[hMap.optD] || '').trim();
+      const curCorrect = String(curRow[hMap.correct] || '').trim().toUpperCase();
+      const curBai = hMap.hasOwnProperty('baiHoc') ? String(curRow[hMap.baiHoc] || '').trim() : '';
+
+      let changedQ = (curQ !== newQ);
+      let changedOpts = (curOptA !== newOptA || curOptB !== newOptB || curOptC !== newOptC || curOptD !== newOptD);
+      let changedAns = (curCorrect !== newCorrect);
+      let changedTax = (curBai !== newBai);
+
+      if (changedQ) willRepairQuestion++;
+      if (changedOpts) willRepairOptions++;
+      if (changedAns) willRepairAnswer++;
+      if (changedTax) willRepairTaxonomy++;
+      if (!changedQ && !changedOpts && !changedAns && !changedTax) unchangedCount++;
+
+      const newRow = [...curRow];
+      newRow[hMap.question] = newQ;
+      newRow[hMap.optA] = newOptA;
+      newRow[hMap.optB] = newOptB;
+      newRow[hMap.optC] = newOptC;
+      newRow[hMap.optD] = newOptD;
+      newRow[hMap.correct] = newCorrect;
+      if (hMap.hasOwnProperty('giaiThich')) newRow[hMap.giaiThich] = newGiaiThich;
+      if (hMap.hasOwnProperty('mon')) newRow[hMap.mon] = newMon;
+      if (hMap.hasOwnProperty('chuong')) newRow[hMap.chuong] = newChuong;
+      if (hMap.hasOwnProperty('baiHoc')) newRow[hMap.baiHoc] = newBai;
+      if (hMap.hasOwnProperty('batchId') && newBatchId) newRow[hMap.batchId] = newBatchId;
+      if (hMap.hasOwnProperty('chatLuong')) newRow[hMap.chatLuong] = newChatLuong;
+      if (hMap.hasOwnProperty('kyThuat')) newRow[hMap.kyThuat] = newKyThuat;
+
+      rowsToApply.push({
+        rowIndex: rowNum,
+        rowData: newRow
+      });
+
+      if (sampleChanges.length < 10) {
+        sampleChanges.push({
+          id: pid,
+          rowIndex: rowNum,
+          before: { question: curQ.slice(0, 60), optA: curOptA, optB: curOptB, correct: curCorrect, baiHoc: curBai },
+          after: { question: newQ.slice(0, 60), optA: newOptA, optB: newOptB, correct: newCorrect, baiHoc: newBai }
+        });
+      }
+    }
+
+    // GATE 7: DRY-RUN NON-MUTATION ASSERTION
+    if (dryRun) {
+      return jsonOut({
+        ok: true,
+        success: true,
+        dryRun: true,
+        targetSheetName: targetSheetName,
+        targetCount: rawUpdates.length,
+        foundCount: rowsToApply.length,
+        willRepairQuestion: willRepairQuestion,
+        willRepairOptions: willRepairOptions,
+        willRepairAnswer: willRepairAnswer,
+        willRepairTaxonomy: willRepairTaxonomy,
+        unchangedCount: unchangedCount,
+        sampleChanges: sampleChanges,
+        msg: 'Dry-run an toàn hoàn tất (0 dòng bị ghi đè): Có ' + rowsToApply.length + ' câu sẵn sàng cập nhật.'
+      });
+    }
+
+    // NON-DRYRUN: GHI CÓ CƠ CHẾ PHỤC HỒI TỰ ĐỘNG (BEFORE-IMAGE ROLLBACK BẢO ĐẢM TÍNH NGUYÊN TỬ)
+    const beforeImages = [];
+    for (let b = 0; b < rowsToApply.length; b++) {
+      const item = rowsToApply[b];
+      const origRow = sheet.getRange(item.rowIndex, 1, 1, item.rowData.length).getValues()[0];
+      beforeImages.push({
+        rowIndex: item.rowIndex,
+        rowData: origRow
+      });
+    }
+
+    let appliedCount = 0;
+    let writeErr = null;
+    try {
+      for (let a = 0; a < rowsToApply.length; a++) {
+        const item = rowsToApply[a];
+        sheet.getRange(item.rowIndex, 1, 1, item.rowData.length).setValues([item.rowData]);
+        appliedCount++;
+      }
+      SpreadsheetApp.flush();
+    } catch (err) {
+      writeErr = err;
+    }
+
+    if (writeErr) {
+      // TỰ ĐỘNG PHỤC HỒI (ROLLBACK) VÀ XÁC MINH ĐỐI CHIẾU ĐỌC LẠI (READ-BACK VERIFIED ROLLBACK)
+      let rollbackVerifiedCount = 0;
+      const rollbackFailedRows = [];
+
+      for (let r = 0; r < appliedCount; r++) {
+        const rollbackItem = beforeImages[r];
+        try {
+          sheet.getRange(rollbackItem.rowIndex, 1, 1, rollbackItem.rowData.length).setValues([rollbackItem.rowData]);
+          SpreadsheetApp.flush();
+
+          // Đọc lại từ Sheet để xác minh khớp trước khi tăng restoredCount
+          const readBackRow = sheet.getRange(rollbackItem.rowIndex, 1, 1, rollbackItem.rowData.length).getValues()[0];
+          let matches = Boolean(readBackRow && readBackRow.length === rollbackItem.rowData.length);
+          if (matches) {
+            for (let c = 0; c < rollbackItem.rowData.length; c++) {
+              const valA = readBackRow[c];
+              const valB = rollbackItem.rowData[c];
+              const isBlankA = (valA === null || valA === undefined || valA === '');
+              const isBlankB = (valB === null || valB === undefined || valB === '');
+              if (isBlankA && isBlankB) {
+                continue; // cả hai đều rỗng/trống
+              }
+              if (isBlankA !== isBlankB) {
+                matches = false;
+                break;
+              }
+              if (valA !== valB && String(valA) !== String(valB)) {
+                matches = false;
+                break;
+              }
+            }
+          }
+
+          if (matches) {
+            rollbackVerifiedCount++;
+          } else {
+            rollbackFailedRows.push({
+              rowIndex: rollbackItem.rowIndex,
+              reason: 'ReadBackMismatch',
+              expected: rollbackItem.rowData,
+              actual: readBackRow
+            });
+          }
+        } catch (rbErr) {
+          rollbackFailedRows.push({
+            rowIndex: rollbackItem.rowIndex,
+            reason: 'RollbackWriteFailed',
+            error: rbErr.toString()
+          });
+        }
+      }
+
+      const allRolledBack = (rollbackFailedRows.length === 0 && rollbackVerifiedCount === appliedCount);
+      const errorCode = allRolledBack ? 'TransactionWriteFailedAndRolledBack' : 'TransactionWriteFailedRollbackIncomplete';
+
+      return jsonOut({
+        ok: false,
+        success: false,
+        error: errorCode,
+        failedAtRowIndex: appliedCount + 1,
+        attemptedCount: appliedCount,
+        restoredCount: rollbackVerifiedCount,
+        rollbackVerifiedCount: rollbackVerifiedCount,
+        rollbackFailedRows: rollbackFailedRows,
+        originalError: writeErr.toString(),
+        msg: allRolledBack
+          ? 'Gặp lỗi trong quá trình ghi tại dòng ' + (appliedCount + 1) + '. Đã tự động phục hồi và xác minh đối chiếu đọc lại thành công ' + rollbackVerifiedCount + '/' + appliedCount + ' dòng về nguyên trạng.'
+          : 'CẢNH BÁO NGUY HIỂM: Gặp lỗi ghi tại dòng ' + (appliedCount + 1) + ' VÀ phục hồi (rollback) thất bại trên ' + rollbackFailedRows.length + ' dòng! Đã xác minh phục hồi: ' + rollbackVerifiedCount + '/' + appliedCount + ' dòng.'
+      });
+    }
+
+    return jsonOut({
+      ok: true,
+      success: true,
+      dryRun: false,
+      targetSheetName: targetSheetName,
+      appliedRowsCount: rowsToApply.length,
+      repairedQuestionCount: willRepairQuestion,
+      repairedOptionsCount: willRepairOptions,
+      repairedAnswerCount: willRepairAnswer,
+      repairedTaxonomyCount: willRepairTaxonomy,
+      msg: 'Đã cập nhật an toàn ' + rowsToApply.length + ' câu trên sheet ' + targetSheetName
+    });
+  } catch (err) {
+    return jsonOut({ ok: false, error: err.toString() });
+  } finally {
+    if (lockAcquired && lock && typeof lock.releaseLock === 'function') {
+      try {
+        lock.releaseLock();
+      } catch (relErr) {}
+    }
+  }
+}
+
+// ── HÀM NỘI BỘ CHỈ ĐỌC: KIỂM KÊ TOÀN BỘ SHEET CỘT 22–37 (KHÔNG LỘ NỘI DUNG, KHÔNG CÔNG KHAI) ──
+function inspectFullSheetDuplicateColumns(targetSheetNameOrObj) {
+  try {
+    let sheetName = 'NganHang';
+    if (typeof targetSheetNameOrObj === 'string') {
+      sheetName = targetSheetNameOrObj.trim();
+    } else if (targetSheetNameOrObj && typeof targetSheetNameOrObj === 'object') {
+      sheetName = String(targetSheetNameOrObj.sheetName || 'NganHang').trim();
+    }
+
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = ss.getSheetByName(sheetName);
+    if (!sheet) {
+      return { ok: false, error: 'SheetNotFound', msg: 'Không tìm thấy sheet: ' + sheetName };
+    }
+
+    const lastRow = sheet.getLastRow();
+    const lastCol = sheet.getLastColumn();
+
+    if (lastRow < 1 || lastCol < 1) {
+      return { ok: false, error: 'EmptySheet', msg: 'Sheet rỗng' };
+    }
+
+    const headerRow = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+    const headerNames = headerRow.map(function(h, i) {
+      return { colNumber: i + 1, header: String(h || '').trim() };
+    });
+
+    const duplicateColStart = 22;
+    const duplicateColEnd = Math.min(lastCol, 37);
+
+    const columnStats = {};
+    for (let c = duplicateColStart; c <= duplicateColEnd; c++) {
+      columnStats[c] = {
+        colNumber: c,
+        header: headerRow[c - 1] !== undefined ? String(headerRow[c - 1]).trim() : '',
+        nonEmptyCount: 0
+      };
+    }
+
+    const rowsWithData = [];
+    let identicalToCanonicalCount = 0;
+    let differentFromCanonicalCount = 0;
+    let dataConcatenation = '';
+
+    if (lastRow >= 2 && duplicateColEnd >= duplicateColStart) {
+      const fullRangeValues = sheet.getRange(2, 1, lastRow - 1, lastCol).getValues();
+
+      for (let r = 0; r < fullRangeValues.length; r++) {
+        const rowNum = r + 2;
+        const rowData = fullRangeValues[r];
+        const idVal = String(rowData[0] || '').trim();
+
+        let rowHasDataInDupCols = false;
+        const dupColumnsSummary = [];
+
+        for (let c = duplicateColStart; c <= duplicateColEnd; c++) {
+          const colIdx0 = c - 1;
+          const cellVal = rowData[colIdx0];
+          const isBlank = (cellVal === null || cellVal === undefined || cellVal === '');
+
+          if (!isBlank) {
+            const cellStr = String(cellVal);
+            dataConcatenation += 'r' + rowNum + 'c' + c + ':' + cellStr + ';';
+            columnStats[c].nonEmptyCount++;
+            rowHasDataInDupCols = true;
+
+            const canonicalCol = c - 16;
+            const canonicalVal = (canonicalCol >= 1 && canonicalCol <= lastCol)
+              ? rowData[canonicalCol - 1]
+              : '';
+
+            const isCanonicalBlank = (canonicalVal === null || canonicalVal === undefined || canonicalVal === '');
+            const isIdentical = (!isCanonicalBlank && (cellVal === canonicalVal || String(cellVal) === String(canonicalVal)));
+
+            if (isIdentical) {
+              identicalToCanonicalCount++;
+            } else {
+              differentFromCanonicalCount++;
+            }
+
+            // CHỈ LƯU METADATA CỘT & TRẠNG THÁI TRÙNG/KHÁC, TUYỆT ĐỐI KHÔNG LƯU NỘI DUNG THÂN CÂU, PHƯƠNG ÁN HAY LỜI GIẢI
+            dupColumnsSummary.push({
+              colNumber: c,
+              header: columnStats[c].header,
+              canonicalCol: canonicalCol,
+              isIdentical: isIdentical
+            });
+          }
+        }
+
+        if (rowHasDataInDupCols) {
+          rowsWithData.push({
+            rowNumber: rowNum,
+            id: idVal,
+            columnsWithData: dupColumnsSummary
+          });
+        }
+      }
+    }
+
+    let sha256Hash = '';
+    if (typeof Utilities !== 'undefined' && Utilities.computeDigest) {
+      const rawBytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, dataConcatenation, Utilities.Charset.UTF_8);
+      sha256Hash = rawBytes.map(function(byte) {
+        const v = (byte < 0 ? byte + 256 : byte).toString(16);
+        return v.length === 1 ? '0' + v : v;
+      }).join('');
+    } else if (typeof crypto !== 'undefined' && crypto.createHash) {
+      sha256Hash = crypto.createHash('sha256').update(dataConcatenation, 'utf8').digest('hex');
+    }
+
+    return {
+      ok: true,
+      readOnly: true,
+      targetSheetName: sheetName,
+      totalRows: lastRow,
+      totalCols: lastCol,
+      dataRowsCount: Math.max(0, lastRow - 1),
+      headerNames: headerNames,
+      duplicateColumnsRange: {
+        startCol: duplicateColStart,
+        endCol: duplicateColEnd,
+        totalColsInRange: duplicateColEnd >= duplicateColStart ? (duplicateColEnd - duplicateColStart + 1) : 0
+      },
+      columnStats: Object.values(columnStats),
+      rowsWithDataCount: rowsWithData.length,
+      rowsWithData: rowsWithData, // Chỉ chứa rowNumber, ID, colNumber, header, isIdentical (0 ô nội dung ngân hàng)
+      comparisonWithCanonical: {
+        identicalCount: identicalToCanonicalCount,
+        differentCount: differentFromCanonicalCount,
+        totalNonEmptyCells: identicalToCanonicalCount + differentFromCanonicalCount
+      },
+      sha256HashOfColumns22To37: sha256Hash
+    };
+  } catch (err) {
+    return { ok: false, error: err.toString() };
+  }
+}
+
+// ── HÀM ĐIỀU HÀNH NỘI BỘ XÁC THỰC: CHẠY TRỰC TIẾP TRÊN CẢ NGANHANG & STAGING ──
+function runAuthenticatedFullSheetInspection() {
+  const resultNganHang = inspectFullSheetDuplicateColumns('NganHang');
+  const resultStaging = inspectFullSheetDuplicateColumns('NganHang_Staging_20260914_104227');
+
+  const report = {
+    executedAt: new Date().toISOString(),
+    nganHang: resultNganHang,
+    nganHangStaging: resultStaging,
+    bothMatch: Boolean(
+      resultNganHang && resultStaging &&
+      resultNganHang.ok === true &&
+      resultStaging.ok === true &&
+      resultNganHang.totalRows === resultStaging.totalRows &&
+      resultNganHang.totalCols === resultStaging.totalCols &&
+      resultNganHang.sha256HashOfColumns22To37 === resultStaging.sha256HashOfColumns22To37 &&
+      resultNganHang.rowsWithDataCount === resultStaging.rowsWithDataCount &&
+      resultNganHang.comparisonWithCanonical.identicalCount === resultStaging.comparisonWithCanonical.identicalCount &&
+      resultNganHang.comparisonWithCanonical.differentCount === resultStaging.comparisonWithCanonical.differentCount
+    )
+  };
+
+  Logger.log(JSON.stringify(report, null, 2));
+  return report;
+}
+
 // ═════════════════════════════════════════════════════════════════════════════
 // ENDPOINTS QUẢN LÝ HẠN MỨC HỌC THỬ (TRIAL LIMIT) SERVER-SIDE XÁC THỰC PHIÊN BẢO MẬT
 // - Xác thực phiên đăng nhập bằng HMAC Token (không tin SĐT do client tự gửi)
@@ -2734,67 +4969,6 @@ function normalizeSearchText(value) {
 // - Khóa ScriptLock chống race condition (hai yêu cầu đồng thời từ 2 tab/thiết bị không tạo quá 2 lượt)
 // - Đồng bộ dùng chung giữa nhiều thiết bị, fail-closed khi không có quyền/mất mạng
 // ═════════════════════════════════════════════════════════════════════════════
-
-function getAuthSecret() {
-  const secret = PropertiesService.getScriptProperties().getProperty('AUTH_SECRET');
-  if (!secret || !secret.trim()) {
-    throw new Error('AUTH_SECRET_NOT_CONFIGURED');
-  }
-  return secret.trim();
-}
-
-function generateUserToken(sdt, userMeta) {
-  const secret = getAuthSecret();
-  const cleanSdt = normSdt(sdt);
-  const now = Date.now();
-  const issuedAt = now;
-
-  // Hạn phiên tối đa 7 ngày, nhưng không sống lâu hơn trạng thái tài khoản hợp lệ
-  let duration = 7 * 24 * 60 * 60 * 1000;
-  if (userMeta && userMeta.trialExpiry && Number(userMeta.trialExpiry) > now) {
-    const remainTrial = Number(userMeta.trialExpiry) - now;
-    if (remainTrial < duration) {
-      duration = remainTrial;
-    }
-  }
-  const expiresAt = now + duration;
-  const nonce = Utilities.getUuid().replace(/-/g, '').slice(0, 16);
-  const raw = cleanSdt + ':' + issuedAt + ':' + expiresAt + ':' + nonce;
-  const sig = Utilities.base64EncodeWebSafe(
-    Utilities.computeHmacSha256Signature(raw, secret)
-  );
-  return Utilities.base64EncodeWebSafe(raw + ':' + sig);
-}
-
-function verifyUserToken(token) {
-  if (!token) return null;
-  const secret = getAuthSecret(); // Ném AUTH_SECRET_NOT_CONFIGURED nếu thiếu
-  try {
-    const decoded = Utilities.newBlob(Utilities.base64DecodeWebSafe(token)).getDataAsString();
-    const parts = decoded.split(':');
-    if (parts.length !== 5) return null;
-    const sdt = parts[0];
-    const issuedAt = Number(parts[1]);
-    const expiresAt = Number(parts[2]);
-    const nonce = parts[3];
-    const sig = parts[4];
-
-    const now = Date.now();
-    if (isNaN(issuedAt) || isNaN(expiresAt)) return null;
-    if (now > expiresAt) return null; // Token đã hết hạn
-    if (issuedAt > now + 60000) return null; // Token từ tương lai
-
-    const raw = sdt + ':' + issuedAt + ':' + expiresAt + ':' + nonce;
-    const expectedSig = Utilities.base64EncodeWebSafe(
-      Utilities.computeHmacSha256Signature(raw, secret)
-    );
-    if (sig !== expectedSig) return null;
-    return sdt;
-  } catch (e) {
-    if (e.message === 'AUTH_SECRET_NOT_CONFIGURED') throw e;
-    return null;
-  }
-}
 
 function getVietnamDateString(d) {
   try {
@@ -2810,6 +4984,19 @@ function getVietnamDateString(d) {
     const day = String(vnDate.getDate()).padStart(2, '0');
     return y + '-' + m + '-' + day;
   }
+}
+
+function normalizeDateStr(val) {
+  if (!val) return '';
+  const s = String(val).trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  try {
+    const d = (val instanceof Date) ? val : new Date(val);
+    if (!isNaN(d.getTime())) {
+      return Utilities.formatDate(d, 'Asia/Saigon', 'yyyy-MM-dd');
+    }
+  } catch(e) {}
+  return s;
 }
 
 // POST: Lấy trạng thái hạn mức bài mới của học sinh (BẢO VỆ BẰNG TOKEN PHIÊN TRONG BODY)
@@ -2850,13 +5037,13 @@ function getTrialLimit(data) {
   const now = Date.now();
   const isValidTrial = (loaiTK === 'vip' || loaiTK === 'trial') && trialExpiry > now;
 
-  // 2. Đọc bảng TrialActivity
+  // 2. Lấy hoạt động học thử từ sheet TrialActivity
   const actSheet = getOrCreate('TrialActivity', ['sdt','mabai','dateStr','thoigian','deviceId','hoten']);
   const actRows = sheetToJson(actSheet);
   const userActs = actRows.filter(function(r) { return sameTaiKhoan(r.sdt, hs); });
 
   const todayVN = getVietnamDateString();
-  const todayActs = userActs.filter(function(r) { return String(r.dateStr) === todayVN; });
+  const todayActs = userActs.filter(function(r) { return normalizeDateStr(r.dateStr) === todayVN; });
   const dailyCount = todayActs.length;
   const maxDaily = 2;
 
@@ -2864,7 +5051,7 @@ function getTrialLimit(data) {
     return {
       key: String(r.mabai || '').trim(),
       mabai: String(r.mabai || '').trim(),
-      date: String(r.dateStr || '').trim(),
+      date: normalizeDateStr(r.dateStr),
       timestamp: r.thoigian ? new Date(r.thoigian).getTime() : Date.now()
     };
   });
@@ -2937,59 +5124,166 @@ function startTrialLesson(data) {
       return jsonOut({ ok: false, reason: 'invalid_account', msg: 'Tài khoản không phải trial hợp lệ còn hạn' });
     }
 
-    // 2. Đọc bảng TrialActivity
+    // 2. Đọc bảng TrialActivity để đếm SỐ BÀI ĐÃ HOÀN THÀNH HÔM NAY (chỉ tính bài đã học xong)
     const actSheet = getOrCreate('TrialActivity', ['sdt','mabai','dateStr','thoigian','deviceId','hoten']);
-    const actRows = sheetToJson(actSheet);
-
-    // Kiểm tra bài đã từng bắt đầu chưa (chống tính trùng)
-    const alreadyStarted = actRows.some(function(r) {
-      return sameTaiKhoan(r.sdt, sdt) && String(r.mabai || '').trim() === mabai;
-    });
-
+    const actVals = actSheet.getDataRange().getValues();
+    let alreadyCompleted = false;
+    let countCompletedToday = 0;
     const todayVN = getVietnamDateString();
-    const countToday = actRows.filter(function(r) {
-      return sameTaiKhoan(r.sdt, sdt) && String(r.dateStr) === todayVN;
-    }).length;
 
-    if (alreadyStarted) {
+    if (actVals.length > 1) {
+      const actHeaders = actVals[0].map(function(h){ return String(h||'').toLowerCase().trim(); });
+      const sIdx = actHeaders.indexOf('sdt');
+      const mIdx = actHeaders.indexOf('mabai');
+      const dIdx = actHeaders.indexOf('datestr');
+      for (let i = 1; i < actVals.length; i++) {
+        if (sameTaiKhoan(actVals[i][sIdx], sdt)) {
+          if (String(actVals[i][mIdx] || '').trim() === mabai) {
+            alreadyCompleted = true;
+          }
+          if (normalizeDateStr(actVals[i][dIdx]) === todayVN) {
+            countCompletedToday++;
+          }
+        }
+      }
+    }
+
+    // Bài ĐÃ TỪNG HOÀN THÀNH: ôn tập thoải mái, không giới hạn
+    if (alreadyCompleted) {
       return jsonOut({
         ok: true,
         isNew: false,
-        alreadyStarted: true,
-        dailyCount: countToday,
-        remaining: Math.max(0, 2 - countToday)
+        alreadyCompleted: true,
+        dailyCompletedCount: countCompletedToday,
+        remaining: Math.max(0, 2 - countCompletedToday)
       });
     }
 
-    // Nếu là bài mới: kiểm tra hạn mức 2 bài/ngày
-    if (countToday >= 2) {
+    // Bài MỚI: nếu hôm nay ĐÃ HOÀN THÀNH ĐỦ 2 BÀI thì mới chặn bài mới thứ 3
+    if (countCompletedToday >= 2) {
       return jsonOut({
         ok: false,
         reason: 'trial_limit',
-        msg: 'Hôm nay em đã dùng đủ 2/2 bài học mới theo hạn mức học thử.',
-        dailyCount: countToday,
+        msg: 'Hôm nay em đã hoàn thành đủ 2/2 bài học mới theo hạn mức học thử. Lượt học mới sẽ tự động mở lại vào 00:00 ngày mai.',
+        dailyCompletedCount: countCompletedToday,
         maxDaily: 2,
         remaining: 0
       });
     }
 
-    // Ghi nhận bài mới
-    appendRowNamed(actSheet, {
-      sdt: sdt,
-      mabai: mabai,
-      dateStr: todayVN,
-      thoigian: new Date().toISOString(),
-      deviceId: String(data.deviceId || ''),
-      hoten: String(data.hoten || (userRow ? userRow.hoten : ''))
-    });
-
+    // Học sinh chưa hoàn thành đủ 2 bài: CHO PHÉP VÀO HỌC BÀI NÀY
+    // QUAN TRỌNG: TUYỆT ĐỐI KHÔNG append vào TrialActivity ở đây vì học sinh mới nhấp vào mở bài, chưa học xong!
     return jsonOut({
       ok: true,
       isNew: true,
-      dailyCount: countToday + 1,
-      remaining: Math.max(0, 2 - (countToday + 1))
+      alreadyCompleted: false,
+      dailyCompletedCount: countCompletedToday,
+      remaining: Math.max(0, 2 - countCompletedToday)
     });
 
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// POST: Ghi nhận bài học thử ĐÃ HỌC XONG (HOÀN THÀNH) - CHỈ TÍNH HẠN MỨC TẠI ĐÂY
+function completeTrialLesson(data) {
+  const token = (data && (data.token || data.authToken)) || '';
+  let authSdt = null;
+  if (token) {
+    try { authSdt = verifyUserToken(token); } catch(e){}
+  }
+  const clientSdt = String(data.sdt || '').trim();
+  const sdt = authSdt || clientSdt;
+  if (!sdt) return jsonOut({ ok: false, error: 'Unauthorized', msg: 'Thiếu thông tin tài khoản' });
+
+  const mabai = String(data.mabai || data.lesson || data.key || '').trim();
+  if (!mabai) return jsonOut({ ok: false, msg: 'Thiếu mã bài học' });
+
+  const lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(10000);
+  } catch(e) {
+    return jsonOut({ ok: false, msg: 'Hệ thống đang bận, vui lòng thử lại sau' });
+  }
+
+  try {
+    const actSheet = getOrCreate('TrialActivity', ['sdt','mabai','dateStr','thoigian','deviceId','hoten']);
+    const actVals = actSheet.getDataRange().getValues();
+    const todayVN = getVietnamDateString();
+    let alreadyCompleted = false;
+    let countCompletedToday = 0;
+
+    if (actVals.length > 1) {
+      const actHeaders = actVals[0].map(function(h){ return String(h||'').toLowerCase().trim(); });
+      const sIdx = actHeaders.indexOf('sdt');
+      const mIdx = actHeaders.indexOf('mabai');
+      const dIdx = actHeaders.indexOf('datestr');
+      for (let i = 1; i < actVals.length; i++) {
+        if (sameTaiKhoan(actVals[i][sIdx], sdt)) {
+          if (String(actVals[i][mIdx] || '').trim() === mabai) {
+            alreadyCompleted = true;
+          }
+          if (normalizeDateStr(actVals[i][dIdx]) === todayVN) {
+            countCompletedToday++;
+          }
+        }
+      }
+    }
+
+    if (!alreadyCompleted) {
+      appendRowNamed(actSheet, {
+        sdt: sdt,
+        mabai: mabai,
+        dateStr: "'" + todayVN,
+        thoigian: new Date().toISOString(),
+        deviceId: String(data.deviceId || ''),
+        hoten: String(data.hoten || data.ten || '')
+      });
+      countCompletedToday++;
+    }
+
+    return jsonOut({
+      ok: true,
+      completed: true,
+      mabai: mabai,
+      dailyCompletedCount: countCompletedToday,
+      remaining: Math.max(0, 2 - countCompletedToday)
+    });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// POST: Tự động dọn dẹp các bản ghi thử nghiệm trong TrialActivity (yêu cầu adminKey)
+function clearTrialActivity(data) {
+  if (!requireAdmin(data && data.adminKey)) {
+    return jsonOut({ ok: false, msg: 'Unauthorized: sai hoặc thiếu adminKey' });
+  }
+  const lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(10000);
+  } catch(e) {
+    return jsonOut({ ok: false, msg: 'Hệ thống đang bận, vui lòng thử lại sau' });
+  }
+
+  try {
+    const sheet = getOrCreate('TrialActivity', ['sdt','mabai','dateStr','thoigian','deviceId','hoten']);
+    const lastRow = sheet.getLastRow();
+    let deleted = 0;
+    if (lastRow > 1) {
+      deleted = lastRow - 1;
+      sheet.deleteRows(2, lastRow - 1);
+    }
+    // Xóa cache
+    try {
+      const cache = CacheService.getScriptCache();
+      if (cache && data && data.sdt) {
+        cache.remove('trial_usr_' + normSdt(data.sdt));
+      }
+    } catch(ce) {}
+
+    return jsonOut({ ok: true, deleted: deleted });
   } finally {
     lock.releaseLock();
   }

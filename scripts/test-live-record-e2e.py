@@ -14,8 +14,12 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
-PORT = 8899
-server = socketserver.TCPServer(('127.0.0.1', PORT), CustomHandler)
+class ReusableTCPServer(socketserver.TCPServer):
+    allow_reuse_address = True
+
+# Sử dụng cổng 0 để hệ điều hành cấp phát cổng động khả dụng
+server = ReusableTCPServer(('127.0.0.1', 0), CustomHandler)
+PORT = server.server_address[1]
 t = threading.Thread(target=server.serve_forever, daemon=True)
 t.start()
 print(f'Server test started at http://127.0.0.1:{PORT}')
@@ -105,7 +109,17 @@ try:
         browser.close()
 
 finally:
-    server.shutdown()
+    try:
+        server.shutdown()
+    except Exception:
+        pass
+    try:
+        server.server_close()
+    except Exception:
+        pass
+    if t.is_alive():
+        t.join(timeout=2)
+    print(f'Server test on port {PORT} stopped and closed.')
 
 print('\nE2E PLAYWRIGHT RESULTS:')
 for r in results:
