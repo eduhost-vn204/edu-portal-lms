@@ -53,6 +53,7 @@ function doPost(e) {
     if (action === 'getliverecordadmin' || action === 'get_live_record_admin') return getLiveRecordAdmin(data);
     if (action === 'saveliverecord' || action === 'save_live_record') return saveLiveRecord(data);
     if (action === 'deleteliverecord' || action === 'delete_live_record') return deleteLiveRecord(data);
+    if (action === 'selftest_liverecord' || action === 'selftestliverecord') return runLiveRecordSelfTest();
     if (action === 'getvideocauhoiadmin' || action === 'get_video_cau_hoi_admin') return getVideoCauHoiAdmin(data);
     if (action === 'getbaitaptracnghiemadmin' || action === 'get_bai_tap_trac_nghiem_admin') return getBaiTapTracNghiemAdmin(data);
     if (action === 'getquestionstats' || action === 'get_question_stats') return getQuestionStats(data);
@@ -1172,6 +1173,54 @@ function deleteLiveRecord(data) {
   if (rowIdx) sheet.deleteRow(rowIdx);
   triggerStaticRefresh();
   return jsonOut({ ok: true });
+}
+
+function runLiveRecordSelfTest() {
+  const adminKey = getAdminKey();
+  if (!adminKey) {
+    return jsonOut({ ok: false, msg: 'ADMIN_KEY is not configured in Script Properties' });
+  }
+  const testMaBai = 'LIVE_SMOKETEST_' + Date.now();
+  try {
+    const getAdminRes = getLiveRecordAdmin({ adminKey: adminKey });
+    const getAdminJson = JSON.parse(getAdminRes.getContent());
+    if (!getAdminJson || !getAdminJson.ok) {
+      return jsonOut({ ok: false, step: 'getliverecordadmin', msg: 'getliverecordadmin failed' });
+    }
+
+    const saveRes = saveLiveRecord({
+      adminKey: adminKey,
+      maBai: testMaBai,
+      TenBai: 'Smoke Test Draft Live Record',
+      KhoaHoc: 'VLXT',
+      Chuong: 'CHƯƠNG 1',
+      TrangThai: 'draft',
+      ThuTuBai: 9999
+    });
+    const saveJson = JSON.parse(saveRes.getContent());
+    if (!saveJson || !saveJson.ok) {
+      return jsonOut({ ok: false, step: 'saveliverecord', msg: 'saveliverecord failed' });
+    }
+
+    const pubRes = getLiveRecord({});
+    const pubList = JSON.parse(pubRes.getContent());
+    const leaked = Array.isArray(pubList) && pubList.some(r => (r.MaBai || r.maBai) === testMaBai);
+    if (leaked) {
+      deleteLiveRecord({ adminKey: adminKey, maBai: testMaBai });
+      return jsonOut({ ok: false, step: 'liverecord_public_isolation', msg: 'Draft record leaked to public API!' });
+    }
+
+    const delRes = deleteLiveRecord({ adminKey: adminKey, maBai: testMaBai });
+    const delJson = JSON.parse(delRes.getContent());
+    if (!delJson || !delJson.ok) {
+      return jsonOut({ ok: false, step: 'deleteliverecord', msg: 'deleteliverecord failed' });
+    }
+
+    return jsonOut({ ok: true, passed: true, step: 'completed', testMaBai: testMaBai });
+  } catch (err) {
+    try { deleteLiveRecord({ adminKey: adminKey, maBai: testMaBai }); } catch(e) {}
+    return jsonOut({ ok: false, error: err.message });
+  }
 }
 
 // ── Lịch Live (Quản lý Lịch Live trong Admin) ──────────────────
