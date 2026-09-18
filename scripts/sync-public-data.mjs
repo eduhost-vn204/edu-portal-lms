@@ -30,8 +30,8 @@ async function fetchJson(type, attempts = 3, params = {}, timeoutMs = 120_000) {
   throw lastError;
 }
 
-async function fetchOptional(type) {
-  try { return await fetchJson(type, 2, {}, 30_000); }
+async function fetchOptional(type, attempts = 2, params = {}, timeoutMs = 30_000) {
+  try { return await fetchJson(type, attempts, params, timeoutMs); }
   catch (error) { console.warn(`Bỏ qua ${type}, giữ dữ liệu cũ: ${error.message}`); return null; }
 }
 
@@ -48,7 +48,7 @@ async function writeJson(file, value) {
 const [lessonData, configData, quizData, liveData, examData, settingsData, guideData, teachingScopeData] = await Promise.all([
   fetchJson('baihoc'),
   fetchJson('khoaconfig'),
-  fetchOptional('baitaptracnghiem'),
+  fetchOptional('baitaptracnghiem', 1, {}, 150_000),
   fetchJson('lichlive'),
   fetchJson('danhsachde'),
   fetchOptional('settings'),
@@ -89,32 +89,48 @@ if (teachingScopeData) await writeJson(path.join(dataDir, 'teachingscope.json'),
 
 const examRows = rowsOf(examData, ['data', 'danhsachde']);
 
-// FIX 19/8: truoc day, neu quizData KHAC null nhung quizRows rong (0 dong -
-// vi du GAS tra ve mang rong do loi tam thoi, KHONG phai do fetchOptional bat
-// loi mang), code cu van chay tiep vao khoi duoi va XOA SACH toan bo file
-// quiz-*.json + ghi quiz-index.json rong - lam MAT toan bo cau hoi luyen tap
-// dang hien co tren web hoc sinh dù nguon that su khong loi han. Gio coi
-// truong hop nay GIONG HET fetch that bai: bo qua, giu nguyen file cu.
-if (quizData && quizRows.length === 0) {
-  console.warn('⚠️  baitaptracnghiem: nguồn trả về RỖNG (0 dòng) — GIỮ NGUYÊN toàn bộ file quiz-*.json và quiz-index.json cũ, KHÔNG xoá.');
-} else if (quizData) {
-  // FIX (Codex review 19/8): plan/apply tach rieng (scripts/quiz-publish.mjs) -
-  // neu buildQuizGrouping phat hien canh bao (migration-in-progress/alias-
-  // collision/duplicate-id) thi KHONG ghi bo du lieu moi (co kha nang sai) de,
-  // chi ghi quiz-warnings.json de bao cho admin. Khi an toan de xuat ban, ghi
-  // HET file moi + index moi TRUOC, chi don dep file cu KHONG CON DUNG toi SAU
-  // khi da ghi thanh cong (xem chi tiet trong quiz-publish.mjs).
+// Tự động bổ sung câu hỏi từ cột BaiTap của bài học nếu sheet BaiTapTracNghiem bị thiếu/timeout
+for (const lesson of lessons) {
+  const maBai = String(lesson.MaBai || '').trim();
+  if (!maBai) continue;
+  const hasInQuizRows = quizRows.some(r => String(r.baiKey || '').trim() === maBai);
+  if (!hasInQuizRows && lesson.BaiTap) {
+    try {
+      const items = typeof lesson.BaiTap === 'string' ? JSON.parse(lesson.BaiTap) : lesson.BaiTap;
+      if (Array.isArray(items) && items.length > 0) {
+        items.forEach((it, idx) => {
+          quizRows.push({
+            baiKey: maBai,
+            thuTu: idx + 1,
+            type: it.type || 'mc',
+            question: it.q || it.question || '',
+            optA: it.A || it.optA || '',
+            optB: it.B || it.optB || '',
+            optC: it.C || it.optC || '',
+            optD: it.D || it.optD || '',
+            correct: it.correct || it.ans || ''
+          });
+        });
+      }
+    } catch(e) {}
+  }
+}
+
+if (quizRows.length > 0) {
   const buildVersion = Date.now().toString(36);
   const plan = planQuizPublish(lessons, quizRows, { buildVersion });
   if (plan.action === 'blocked') {
     console.warn(`⚠️  Phát hiện ${plan.warnings.length} cảnh báo khi gộp câu hỏi luyện tập — KHÔNG xuất bản dữ liệu mới, GIỮ NGUYÊN toàn bộ quiz-*.json và quiz-index.json cũ:`);
     for (const w of plan.warnings) console.warn('   -', JSON.stringify(w));
+  } else {
+    await applyQuizPublishPlan(plan, {
+      quizDir,
+      quizIndexFile: path.join(dataDir, 'quiz-index.json'),
+      quizWarningsFile: path.join(dataDir, 'quiz-warnings.json')
+    });
   }
-  await applyQuizPublishPlan(plan, {
-    quizDir,
-    quizIndexFile: path.join(dataDir, 'quiz-index.json'),
-    quizWarningsFile: path.join(dataDir, 'quiz-warnings.json')
-  });
+} else {
+  console.warn('⚠️  Không có câu hỏi luyện tập nào — GIỮ NGUYÊN toàn bộ file quiz-*.json và quiz-index.json cũ.');
 }
 
 console.log(`Đã đồng bộ ${lessons.length} bài học, ${configs.length} cấu hình, ${quizRows.length} câu hỏi, ${liveRows.length} lịch live và ${examRows.length} đề.`);
