@@ -45,7 +45,7 @@ async function writeJson(file, value) {
   await writeFile(file, `${JSON.stringify(value)}\n`, 'utf8');
 }
 
-const [lessonData, configData, quizData, liveData, examData, settingsData, guideData, teachingScopeData] = await Promise.all([
+const [lessonData, configData, quizData, liveData, examData, settingsData, guideData, teachingScopeData, liveRecordData] = await Promise.all([
   fetchJson('baihoc'),
   fetchJson('khoaconfig'),
   fetchOptional('baitaptracnghiem', 1, {}, 150_000),
@@ -53,12 +53,18 @@ const [lessonData, configData, quizData, liveData, examData, settingsData, guide
   fetchJson('danhsachde'),
   fetchOptional('settings'),
   fetchOptional('huongdan'),
-  fetchOptional('teachingscope')
+  fetchOptional('teachingscope'),
+  fetchOptional('liverecord')
 ]);
 
 const rawLessons = rowsOf(lessonData, ['baihoc', 'data']);
 // Draft/Hidden Lesson Contract: Tuyệt đối không đưa bài draft hoặc archived vào dữ liệu tĩnh công khai
 const lessons = rawLessons.filter(l => {
+  const st = (l?.TrangThai || l?.trangthai || l?.status || 'published').toString().trim().toLowerCase();
+  return st === 'published';
+});
+const rawLiveRecords = rowsOf(liveRecordData, ['liverecord', 'data', 'baihoc']);
+const liveRecords = rawLiveRecords.filter(l => {
   const st = (l?.TrangThai || l?.trangthai || l?.status || 'published').toString().trim().toLowerCase();
   return st === 'published';
 });
@@ -71,6 +77,7 @@ if (!lessons.length) throw new Error('Không nhận được dữ liệu BaiHoc;
 
 await mkdir(quizDir, { recursive: true });
 await writeJson(path.join(dataDir, 'baihoc.json'), lessons);
+await writeJson(path.join(dataDir, 'live-record.json'), liveRecords);
 // FIX (Codex review 19/8): khoaconfig/lichlive/danhsachde KHONG con dung guard
 // "rong thi giu file cu" nua. Rong o 3 loai nay CO THE la trang thai hop le that
 // (vd giao vien xoa het lich live tuan nay, xoa het de thi cu) - neu am tham giu
@@ -133,4 +140,4 @@ if (quizRows.length > 0) {
   console.warn('⚠️  Không có câu hỏi luyện tập nào — GIỮ NGUYÊN toàn bộ file quiz-*.json và quiz-index.json cũ.');
 }
 
-console.log(`Đã đồng bộ ${lessons.length} bài học, ${configs.length} cấu hình, ${quizRows.length} câu hỏi, ${liveRows.length} lịch live và ${examRows.length} đề.`);
+console.log(`Đã đồng bộ ${lessons.length} bài học, ${liveRecords.length} buổi live, ${configs.length} cấu hình, ${quizRows.length} câu hỏi, ${liveRows.length} lịch live và ${examRows.length} đề.`);
