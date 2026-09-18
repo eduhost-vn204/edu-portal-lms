@@ -159,6 +159,39 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 18/09/2026 — Triển Khai & Nghiệm Thu Hoàn Tất Tính Năng "Live & Xem Lại" (Chế Độ Công Khai 100%, Không Bắt Buộc Đăng Nhập, Đồng Bộ Workflow, Kiểm Thử Link & Fail-Closed)
+
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_100%_PENDING_MERGE_AND_GAS_DEPLOY` (Toàn bộ mã, kiểm thử logic/DOM/E2E, dọn sạch placeholder, cập nhật sync workflow đã xong; CHƯA merge `main` và CHƯA deploy GAS theo đúng rào chắn an toàn).
+- **Hành vi mới đã kiểm chứng**:
+  1. **Chế độ Guest Access công khai 100% (`live-record.html`)**:
+     - Học sinh / khách vãng lai không cần tài khoản vẫn mở được trang, duyệt danh sách buổi live, xem video ghi lại, bấm link tài liệu chuẩn bị và bấm link vào phòng live.
+     - Loại bỏ hoàn toàn redirect về `login.html`, không áp dụng Trial/VIP/cấu hình khóa học để khóa Live.
+     - Không thu thập SĐT, lớp hay thông tin cá nhân; nút đăng nhập là tùy chọn ở header.
+     - Cơ chế Fail-Closed: Khách chưa đăng nhập tuyệt đối không gọi `saveProgress`/`saveLiveProgress` hay gửi bất kỳ request mạng nào lên server (0 network requests khi khách xem).
+     - Link phòng live (`a.btn-enter-live`) và link tài liệu (`a.btn-prep-doc`) được render đầy đủ thuộc tính `target="_blank"` và `rel="noopener noreferrer"`, trỏ đúng URL thật.
+     - Giao diện Live Card động theo thời gian: UPCOMING (chờ phát sóng, hiện đếm ngược & nút xem tài liệu), HAPPENING (đang diễn ra, nút đỏ Vào phòng Live), RECORDED (đã ghi lại, nhúng video YouTube/Drive player).
+  2. **Dọn sạch dữ liệu phát hành (`data/live-record.json`)**:
+     - Đã dọn sạch 100% dữ liệu mẫu và link placeholder, khởi tạo sạch `[]` cho cả Student và Admin.
+     - Khi chưa có dữ liệu backend, trang hiển thị trạng thái rỗng thân thiện: *"Chưa có chuyên đề Live & Xem lại nào được phát hành. Lịch phát sóng và video ghi lại mới nhất sẽ sớm được thầy Trường cập nhật!"*.
+  3. **Tích hợp đồng bộ tự động (`scripts/sync-public-data.mjs`)**:
+     - Bổ sung `fetchOptional('liverecord')` vào workflow định kỳ 15 phút hiện có (`.github/workflows/refresh-data.yml`).
+     - Tự động lọc các buổi live có `TrangThai === 'published'` và xuất ra `data/live-record.json`.
+     - Tuyệt đối không tạo thêm workflow chạy song song.
+  4. **Kiểm thử nghiệm thu tự động (Regression Suite)**:
+     - `scripts/test-live-record-guest.mjs`: 11/11 tests PASS (HTML structure, no redirect, gate hidden, data clean, access open, live states, link attributes, fail-closed network).
+     - `scripts/test-live-record-e2e.py`: 3/3 scenarios PASS (Playwright Chrome Guest Home, Link Clickable & Validity, Mobile Responsive View).
+     - `scripts/test-quiz-merge.mjs`: 6/6 tests PASS.
+     - `scripts/test-quiz-publish.mjs`: 12/12 tests PASS.
+     - `scripts/test-trial-soft-unlock.mjs`: 22/22 tests PASS.
+- **Điều phải giữ nguyên**:
+  - Toàn bộ hệ thống Khóa học hiện tại (`baihoc.html`, `quan-ly-bai-hoc.html`, sheet `BaiHoc`, `khoaconfig.json`, giới hạn Trial 2 bài/ngày) hoàn toàn độc lập và được bảo toàn nguyên vẹn.
+  - Không deploy Google Apps Script production và không merge vào `main` khi chưa có sự xác nhận của Thầy.
+- **Việc còn lại**:
+  - Thầy kiểm tra hai Pull Request (`feat/student-live-record` trên LMS và `feat/admin-live-record` trên Console).
+  - Sau khi Thầy duyệt: Merge PR vào `main`, tạo sheet `LiveRecord` trên Google Sheets production và deploy Google Apps Script với các route `liverecord`.
+
 ### 15/09/2026 — Triển Khai Chính Thức (Production): Mở Bài Học Kèm Gợi Ý Bài Nền Tảng & Giới Hạn Học Thử 2 Bài/Ngày Trên Cả Backend Version 154, Admin Console và Student LMS
 
 - **Người thực hiện**: Antigravity AI Coordinator

@@ -1205,7 +1205,7 @@ function renderHome(){
                 <option value="progress" ${homeState.sort==='progress'?'selected':''}>Tiến độ cao nhất</option>
             </select>
         </div>`;
-    if(!list.length){ h+=`<div class="empty"><i class="fa-solid fa-box-open"></i><p>${homeState.tab==='mine'?'Em chưa bắt đầu khóa nào. Hãy chọn một khóa để học!':'Chưa có khóa học nào.'}</p></div>`; }
+    if(!list.length){ h+=`<div class="empty"><i class="fa-solid fa-satellite-dish" style="font-size:36px;color:var(--blue);margin-bottom:12px;opacity:.6"></i><p style="font-weight:700;font-size:16px">${homeState.tab==='mine'?'Em chưa xem buổi Live nào. Hãy chọn một chuyên đề bên tab Tất cả!':'Chưa có chuyên đề Live & Xem lại nào được phát hành.'}</p><p style="color:var(--sub);font-size:13.5px;margin-top:4px">Lịch phát sóng và video ghi lại mới nhất sẽ sớm được thầy Trường cập nhật!</p></div>`; }
     else{
         const ccHTML=c=>{
             const pct=coursePct(c),w=courseWatched(c),nw=courseNew(c);
@@ -3726,109 +3726,8 @@ function init(){
     boot();
 }
 
-/* ═══════════════════════════════════════════
-   DỮ LIỆU MẪU: 4 CHƯƠNG VẬT LÝ 12
-   (Thầy điền link YouTube thật vào cột Video
-    và VideoGiai trong Google Sheets)
-═══════════════════════════════════════════ */
-const Q_C1B1 = [
-    {q:'Nội năng của một vật là tổng:',A:'Động năng chuyển động của vật',B:'Thế năng hấp dẫn của vật',C:'Động năng và thế năng tương tác của các phân tử cấu tạo nên vật',D:'Nhiệt lượng mà vật nhận được',ans:'C'},
-    {q:'Cách nào sau đây làm thay đổi nội năng của vật bằng cách <b>thực hiện công</b>?',A:'Đun nóng vật bằng ngọn lửa',B:'Nhúng vật vào nước nóng',C:'Cọ xát vật vào mặt nhám',D:'Đặt vật lên bếp điện',ans:'C'},
-    {q:'Đơn vị của nhiệt dung riêng là:',A:'J',B:'J/kg',C:'J/(kg·K)',D:'W/m²',ans:'C'},
-    {q:'Nhiệt lượng vật thu vào được tính theo công thức nào?',A:'Q = m/c·Δt',B:'Q = mc·Δt',C:'Q = c·Δt/m',D:'Q = mc/Δt',ans:'B'}
-];
-const Q_C1B2 = [
-    {q:'Nguyên lý I nhiệt động lực học phát biểu:',A:'Nhiệt chỉ truyền từ nơi lạnh sang nơi nóng',B:'Độ biến thiên nội năng bằng tổng nhiệt lượng và công mà hệ nhận',C:'Entropy luôn tăng',D:'Không thể chế tạo động cơ vĩnh cửu',ans:'B'},
-    {q:'Trong quá trình đẳng tích (thể tích không đổi), công do khí thực hiện là:',A:'Dương',B:'Âm',C:'Bằng 0',D:'Bằng nhiệt lượng nhận vào',ans:'C'},
-    {q:'Theo nguyên lý II nhiệt động lực học, nhiệt không thể tự truyền từ:',A:'Vật có nhiệt độ cao hơn sang thấp hơn',B:'Vật có nhiệt độ thấp hơn sang cao hơn',C:'Vật cứng sang vật lỏng',D:'Khí sang lỏng',ans:'B'}
-];
-const Q_C2B1 = [
-    {q:'Định luật Boyle-Mariotte áp dụng cho quá trình nào?',A:'Đẳng nhiệt (T = const)',B:'Đẳng tích (V = const)',C:'Đẳng áp (p = const)',D:'Đoạn nhiệt',ans:'A'},
-    {q:'Trong quá trình đẳng nhiệt, nếu thể tích khí giảm 2 lần thì áp suất:',A:'Giảm 2 lần',B:'Tăng 2 lần',C:'Không đổi',D:'Tăng 4 lần',ans:'B'},
-    {q:'Biểu thức định luật Boyle-Mariotte là:',A:'p/T = const',B:'V/T = const',C:'pV = const',D:'pT = const',ans:'C'},
-    {q:'Đồ thị nào biểu diễn quá trình đẳng nhiệt trên hệ trục (p, V)?',A:'Đường thẳng qua gốc tọa độ',B:'Đường hyperbol',C:'Đường thẳng song song trục V',D:'Đường elip',ans:'B'}
-];
-const Q_C2B2 = [
-    {q:'Phương trình trạng thái khí lý tưởng là:',A:'pV = nRT',B:'p/V = nRT',C:'pVT = nR',D:'pV/T = const',ans:'A'},
-    {q:'Đối với một lượng khí nhất định, đại lượng nào không đổi khi trạng thái thay đổi?',A:'Áp suất',B:'Thể tích',C:'Nhiệt độ',D:'pV/T',ans:'D'},
-    {q:'Ở 0°C tức là bao nhiêu Kelvin?',A:'0 K',B:'100 K',C:'273 K',D:'373 K',ans:'C'}
-];
-const Q_C3B1 = [
-    {q:'Từ trường tồn tại ở đâu?',A:'Chỉ trong nam châm',B:'Chỉ xung quanh dây dẫn mang điện',C:'Xung quanh nam châm và dây dẫn mang điện',D:'Khắp nơi trong không gian',ans:'C'},
-    {q:'Đơn vị của cảm ứng từ B là:',A:'T (Tesla)',B:'A/m',C:'Wb (Weber)',D:'H (Henry)',ans:'A'},
-    {q:'Lực từ tác dụng lên dây dẫn mang điện đặt song song với đường cảm ứng từ có giá trị:',A:'Cực đại',B:'Cực tiểu (bằng 0)',C:'F = BIL',D:'F = BIL/2',ans:'B'}
-];
-const Q_C3B2 = [
-    {q:'Lực Lorentz tác dụng lên hạt điện tích chuyển động trong từ trường có đặc điểm:',A:'Cùng hướng chuyển động',B:'Ngược hướng chuyển động',C:'Vuông góc với vận tốc và cảm ứng từ',D:'Song song với cảm ứng từ',ans:'C'},
-    {q:'Công thức lực Lorentz là:',A:'F = qvB sinα',B:'F = qvB cosα',C:'F = qB/v',D:'F = mv²/r',ans:'A'},
-    {q:'Khi hạt điện tích chuyển động trong từ trường đều với vận tốc vuông góc với B, quỹ đạo là:',A:'Đường thẳng',B:'Đường parabol',C:'Đường tròn',D:'Đường xoắn ốc',ans:'C'}
-];
-const Q_C4B1 = [
-    {q:'Hạt nhân nguyên tử ${}^{A}_{Z}X$ có bao nhiêu proton?',A:'A',B:'Z',C:'A - Z',D:'A + Z',ans:'B'},
-    {q:'Số neutron trong hạt nhân ${}^{238}_{92}U$ là:',A:'92',B:'238',C:'146',D:'330',ans:'C'},
-    {q:'Đồng vị là những nguyên tử của cùng một nguyên tố có:',A:'Cùng số neutron, khác số proton',B:'Cùng số proton, khác số neutron',C:'Cùng số khối A',D:'Cùng khối lượng',ans:'B'}
-];
-const Q_C4B2 = [
-    {q:'Phóng xạ alpha ($\\alpha$) là hiện tượng hạt nhân phát ra:',A:'Electron',B:'Photon',C:'Hạt nhân Helium ${}^{4}_{2}He$',D:'Positron',ans:'C'},
-    {q:'Chu kì bán rã T là thời gian để:',A:'Tất cả hạt nhân phân rã',B:'Một nửa số hạt nhân phân rã',C:'Hoạt độ phóng xạ về 0',D:'Khối lượng chất tăng gấp đôi',ans:'B'},
-    {q:'Sau 3 chu kì bán rã, phần trăm số hạt nhân còn lại là:',A:'25%',B:'12.5%',C:'50%',D:'6.25%',ans:'B'}
-];
-const Q_C4B3 = [
-    {q:'Năng lượng liên kết hạt nhân là:',A:'Năng lượng để phá vỡ hạt nhân thành các nucleon riêng lẻ',B:'Năng lượng do hạt nhân phát ra',C:'Động năng của các nucleon',D:'Năng lượng hạt nhân hấp thụ từ môi trường',ans:'A'},
-    {q:'Phản ứng hạt nhân nào giải phóng năng lượng lớn nhất tính trên một đơn vị khối lượng?',A:'Phân hạch hạt nhân nặng',B:'Phóng xạ beta',C:'Nhiệt hạch (tổng hợp hạt nhân nhẹ)',D:'Phóng xạ alpha',ans:'C'},
-    {q:'Năng lượng liên kết riêng là:',A:'Năng lượng liên kết / số khối A',B:'Năng lượng liên kết × số khối',C:'Năng lượng liên kết / số proton',D:'Tổng khối lượng các nucleon',ans:'A'}
-];
-
-const DEMO_ROWS = [
-    // ═══ VẬT LÝ 12 ═══
-    // ── Chương 1: Vật lý nhiệt ──
-    {KhoaHoc:'Vật Lý 12', MoTaKhoa:'4 chương trọng tâm: Nhiệt động lực học · Khí lý tưởng · Từ trường · Hạt nhân. Chuẩn bị kỹ cho kỳ thi THPT.', AnhKhoa:'⚛️',
-     Chuong:'Chương 1: Vật lý nhiệt', TenBai:'Bài 1: Nhiệt năng và nội năng',
-     Video:'', VideoGiai:'', BaiTap:JSON.stringify(Q_C1B1), MoTaBai:'Nội năng là tổng động năng và thế năng tương tác của các phân tử. Công thức nhiệt lượng: $Q = mc\\Delta t$', NgayDang:'01/05/2026'},
-    {KhoaHoc:'Vật Lý 12', Chuong:'Chương 1: Vật lý nhiệt', TenBai:'Bài 2: Các nguyên lý nhiệt động lực học',
-     Video:'', VideoGiai:'', BaiTap:JSON.stringify(Q_C1B2), MoTaBai:'Nguyên lý I: $\\Delta U = Q + A$. Nguyên lý II: nhiệt không tự truyền từ lạnh sang nóng.', NgayDang:'03/05/2026'},
-    {KhoaHoc:'Vật Lý 12', Chuong:'Chương 1: Vật lý nhiệt', TenBai:'Bài 3: Bài tập tổng hợp Nhiệt động lực học',
-     Video:'', VideoGiai:'', BaiTap:'', MoTaBai:'Tổng hợp các dạng bài tập vận dụng nguyên lý I và II. Rèn kỹ năng tính toán.', NgayDang:'05/05/2026'},
-
-    // ── Chương 2: Khí lý tưởng ──
-    {KhoaHoc:'Vật Lý 12', Chuong:'Chương 2: Khí lý tưởng', TenBai:'Bài 1: Định luật Boyle-Mariotte (đẳng nhiệt)',
-     Video:'', VideoGiai:'', BaiTap:JSON.stringify(Q_C2B1), MoTaBai:'Quá trình đẳng nhiệt: $p_1V_1 = p_2V_2$. Đồ thị (p, V) là đường hyperbol.', NgayDang:'08/05/2026'},
-    {KhoaHoc:'Vật Lý 12', Chuong:'Chương 2: Khí lý tưởng', TenBai:'Bài 2: Định luật Charles & Gay-Lussac',
-     Video:'', VideoGiai:'', BaiTap:'', MoTaBai:'Đẳng tích: $p/T = \\text{const}$. Đẳng áp: $V/T = \\text{const}$.', NgayDang:'10/05/2026'},
-    {KhoaHoc:'Vật Lý 12', Chuong:'Chương 2: Khí lý tưởng', TenBai:'Bài 3: Phương trình trạng thái khí lý tưởng',
-     Video:'', VideoGiai:'', BaiTap:JSON.stringify(Q_C2B2), MoTaBai:'Phương trình tổng quát: $\\dfrac{p_1V_1}{T_1} = \\dfrac{p_2V_2}{T_2}$. Phương trình Mendeleev-Clapeyron: $pV = nRT$.', NgayDang:'12/05/2026'},
-    {KhoaHoc:'Vật Lý 12', Chuong:'Chương 2: Khí lý tưởng', TenBai:'Bài 4: Bài tập đồ thị và ứng dụng',
-     Video:'', VideoGiai:'', BaiTap:'', MoTaBai:'Nhận dạng quá trình qua đồ thị. Giải bài toán khí thực tiễn: bình chứa, lốp xe, bóng bay...', NgayDang:'14/05/2026'},
-
-    // ── Chương 3: Từ trường ──
-    {KhoaHoc:'Vật Lý 12', Chuong:'Chương 3: Từ trường', TenBai:'Bài 1: Từ trường và cảm ứng từ',
-     Video:'', VideoGiai:'', BaiTap:JSON.stringify(Q_C3B1), MoTaBai:'Từ trường tồn tại xung quanh nam châm và dây dẫn mang điện. Quy tắc bàn tay phải.', NgayDang:'16/05/2026'},
-    {KhoaHoc:'Vật Lý 12', Chuong:'Chương 3: Từ trường', TenBai:'Bài 2: Lực từ và lực Lorentz',
-     Video:'', VideoGiai:'', BaiTap:JSON.stringify(Q_C3B2), MoTaBai:'Lực từ: $F = BIL\\sin\\alpha$. Lực Lorentz: $F = qvB\\sin\\alpha$.', NgayDang:'18/05/2026'},
-    {KhoaHoc:'Vật Lý 12', Chuong:'Chương 3: Từ trường', TenBai:'Bài 3: Cảm ứng điện từ: Định luật Faraday',
-     Video:'', VideoGiai:'', BaiTap:'', MoTaBai:'Từ thông: $\\Phi = BS\\cos\\alpha$. Suất điện động cảm ứng: $e = -\\dfrac{\\Delta\\Phi}{\\Delta t}$.', NgayDang:'20/05/2026'},
-
-    // ── Chương 4: Hạt nhân nguyên tử ──
-    {KhoaHoc:'Vật Lý 12', Chuong:'Chương 4: Hạt nhân nguyên tử', TenBai:'Bài 1: Cấu tạo hạt nhân: Đồng vị',
-     Video:'', VideoGiai:'', BaiTap:JSON.stringify(Q_C4B1), MoTaBai:'Hạt nhân ${}^A_ZX$ có Z proton, (A−Z) neutron. Đồng vị có cùng Z, khác A.', NgayDang:'22/05/2026'},
-    {KhoaHoc:'Vật Lý 12', Chuong:'Chương 4: Hạt nhân nguyên tử', TenBai:'Bài 2: Phóng xạ: Chu kì bán rã',
-     Video:'', VideoGiai:'', BaiTap:JSON.stringify(Q_C4B2), MoTaBai:'Phóng xạ $\\alpha,\\,\\beta^-,\\,\\beta^+,\\,\\gamma$. Định luật phân rã: $N = N_0 \\cdot 2^{-t/T}$.', NgayDang:'24/05/2026'},
-    {KhoaHoc:'Vật Lý 12', Chuong:'Chương 4: Hạt nhân nguyên tử', TenBai:'Bài 3: Năng lượng liên kết: Phản ứng hạt nhân',
-     Video:'', VideoGiai:'', BaiTap:JSON.stringify(Q_C4B3), MoTaBai:'Độ hụt khối $\\Delta m$. Năng lượng liên kết: $E_{lk} = \\Delta m \\cdot c^2$.', NgayDang:'26/05/2026'},
-    {KhoaHoc:'Vật Lý 12', Chuong:'Chương 4: Hạt nhân nguyên tử', TenBai:'Bài 4: Phân hạch · Nhiệt hạch · Ứng dụng',
-     Video:'', VideoGiai:'', BaiTap:'', MoTaBai:'Lò phản ứng hạt nhân. Bom nguyên tử và bom nhiệt hạch. Năng lượng tái tạo từ hạt nhân.', NgayDang:'28/05/2026'},
-
-    // ═══ VẬT LÝ 11 (placeholder) ═══
-    {KhoaHoc:'Vật Lý 11', MoTaKhoa:'Điện học & Từ học lớp 11: Đang xây dựng nội dung.', AnhKhoa:'🔌',
-     Chuong:'Chương 1: Điện trường', TenBai:'Bài 1: Điện tích: Định luật Coulomb',
-     Video:'', VideoGiai:'', BaiTap:'', MoTaBai:'$F = k\\dfrac{|q_1 q_2|}{r^2}$. Hằng số điện: $k = 9\\times10^9$ N·m²/C².', NgayDang:'01/04/2026'},
-
-
-    // ═══ VẬT LÝ 10 (placeholder) ═══
-    {KhoaHoc:'Vật Lý 10', MoTaKhoa:'Cơ học & Nhiệt học lớp 10: Đang xây dựng nội dung.', AnhKhoa:'🚀',
-     Chuong:'Chương 1: Động học', TenBai:'Bài 1: Chuyển động thẳng đều',
-     Video:'', VideoGiai:'', BaiTap:'', MoTaBai:'Vận tốc trung bình: $v = s/t$. Phương trình: $x = x_0 + vt$.', NgayDang:'01/04/2026'},
-];
+// Dữ liệu LiveRecord: lấy trực tiếp từ data/live-record.json hoặc Google Sheets backend
+const DEMO_ROWS = [];
 
 window.addEventListener('DOMContentLoaded', init);
 </script>
