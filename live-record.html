@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khóa Học | Vật Lý Xuân Trường</title>
+    <title>Live & Xem Lại | Vật Lý Xuân Trường</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
@@ -437,6 +437,87 @@
             12%  { opacity:1; }
             100% { transform:translate(var(--dx,0px),-170px) rotate(var(--rot,0deg)) scale(1); opacity:0; }
         }
+
+        /* ═══ LIVE RECORD SPECIALIZED STYLES ═══ */
+        .live-info-card {
+            background: linear-gradient(135deg, rgba(11,132,243,0.05), rgba(220,38,38,0.05));
+            border: 1.5px solid var(--line);
+            border-radius: 16px;
+            padding: 18px 22px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+        .live-status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 800;
+        }
+        .live-status-pill.upcoming {
+            background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe;
+        }
+        .live-status-pill.happening {
+            background: #fef2f2; color: #dc2626; border: 1px solid #fecaca;
+            animation: livePulseAnim 1.5s infinite;
+        }
+        .live-status-pill.recorded {
+            background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0;
+        }
+        @keyframes livePulseAnim {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(220,38,38,0.4); }
+            50% { transform: scale(1.02); box-shadow: 0 0 0 6px rgba(220,38,38,0); }
+        }
+        .live-time-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .live-time-icon {
+            width: 42px; height: 42px; border-radius: 12px;
+            background: var(--card); border: 1.5px solid var(--line);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; color: var(--blue); flex-shrink: 0;
+        }
+        .live-action-btns {
+            display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+        }
+        .btn-enter-live {
+            background: #dc2626; color: #fff !important; border: none;
+            border-radius: 50px; padding: 10px 20px; font-size: 14px; font-weight: 800;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+            text-decoration: none; box-shadow: 0 4px 14px rgba(220,38,38,0.25);
+            transition: all 0.2s;
+        }
+        .btn-enter-live:hover {
+            background: #b91c1c; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(220,38,38,0.35);
+        }
+        .btn-prep-doc {
+            background: var(--card); color: var(--blue) !important;
+            border: 1.5px solid var(--blue); border-radius: 50px;
+            padding: 9px 18px; font-size: 13.5px; font-weight: 700;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+            text-decoration: none; transition: all 0.15s;
+        }
+        .btn-prep-doc:hover { background: rgba(11,132,243,0.08); }
+        .live-waiting-box {
+            text-align: center; padding: 36px 20px; background: var(--card);
+            border: 1.5px dashed var(--line); border-radius: 16px; margin: 16px 0 20px;
+        }
+        .live-waiting-box i.fa-satellite-dish {
+            font-size: 42px; color: var(--blue); opacity: 0.8; margin-bottom: 12px;
+        }
+        .live-countdown-text {
+            font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 700;
+            color: #dc2626; margin: 10px 0;
+        }
+
 </style>
   <script src="auth.js?v=7"></script>
   <script src="trial-manager.js?v=1"></script>
@@ -487,11 +568,12 @@
         </a>
         <div class="nav">
             <a id="nav-home" href="index.html"><i class="fa-solid fa-house" style="font-size:12px"></i> <span>Trang chủ</span></a>
+            <a href="baihoc.html"><i class="fa-solid fa-graduation-cap" style="font-size:12px"></i> <span>Khóa Học</span></a>
+            <a href="live-record.html" class="active" style="color:#dc2626;font-weight:700;background:rgba(220,38,38,.08)"><i class="fa-solid fa-satellite-dish" style="font-size:12px"></i> <span>Live & Xem Lại</span></a>
             <a href="phong-thi-thu.html"><i class="fa-solid fa-clipboard-check" style="font-size:12px"></i> <span>Phòng Thi Thử</span></a>
             <a href="danhsach-ly12.html"><i class="fa-solid fa-file-lines" style="font-size:12px"></i> <span>Phòng Kiểm Tra</span></a>
             <a href="dua-top.html" style="color:#fbbf24;font-weight:700"><i class="fa-solid fa-crown" style="font-size:12px"></i> <span>Đua Top</span></a>
             <a href="solo.html" style="color:#f472b6;font-weight:700"><i class="fa-solid fa-khanda" style="font-size:12px"></i> <span>Solo</span></a>
-            <a href="live-record.html" style="color:#dc2626;font-weight:700"><i class="fa-solid fa-satellite-dish" style="font-size:12px"></i> <span>Live & Xem Lại</span></a>
             <a href="huongdan.html"><i class="fa-solid fa-compass" style="font-size:12px"></i> <span>Hướng Dẫn</span></a>
             <div id="vlxt-nav-user-area"></div>
         </div>
@@ -546,6 +628,43 @@ function isTestAccount(){
     if(!HS || HS.sdt==null || HS.sdt==='') return false;
     const norm = s => String(s).replace(/^0+/, '');
     return TEST_ACCOUNTS.some(t => norm(t) === norm(HS.sdt));
+}
+
+
+/* ═══ LIVE STATE HELPER ═══ */
+function formatLiveDate(dStr){
+    if(!dStr) return '';
+    try {
+        const d = new Date(dStr);
+        if(isNaN(d.getTime())) return dStr;
+        const pad = n => String(n).padStart(2, '0');
+        const dayNames = ['Chủ Nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'];
+        const dayName = dayNames[d.getDay()];
+        return `${dayName}, ${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} lúc ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }catch(e){ return dStr; }
+}
+
+function getLiveStatus(lesson){
+    const hasRecord = !!(lesson.videoghilai || (lesson.video && !lesson.linklive));
+    if(hasRecord) return { code: 'RECORDED', label: 'Đã có video xem lại', pillClass: 'recorded', icon: 'fa-circle-check' };
+    if(!lesson.ngaygiolive) {
+        if(lesson.video) return { code: 'RECORDED', label: 'Đã có video xem lại', pillClass: 'recorded', icon: 'fa-circle-check' };
+        return { code: 'UPCOMING', label: 'Chờ lịch live', pillClass: 'upcoming', icon: 'fa-clock' };
+    }
+    const tLive = new Date(lesson.ngaygiolive).getTime();
+    const now = Date.now();
+    if(isNaN(tLive)) {
+        return { code: 'UPCOMING', label: 'Sắp phát sóng', pillClass: 'upcoming', icon: 'fa-clock' };
+    }
+    const diff = tLive - now;
+    // Live kéo dài khoảng 2.5 tiếng kể từ giờ bắt đầu
+    if(diff <= 15*60*1000 && diff >= -150*60*1000){
+        return { code: 'HAPPENING', label: '🔴 LIVE ĐANG DIỄN RA', pillClass: 'happening', icon: 'fa-tower-broadcast' };
+    }
+    if(diff > 15*60*1000){
+        return { code: 'UPCOMING', label: 'Sắp phát sóng', pillClass: 'upcoming', icon: 'fa-calendar-days' };
+    }
+    return { code: 'WAITING_RECORD', label: 'Chờ đăng video xem lại', pillClass: 'upcoming', icon: 'fa-hourglass-half' };
 }
 
 /* ═══════════════════════════════════════════
@@ -665,7 +784,7 @@ function renderWho(){ const w=$('#who'); if(w) w.innerHTML=HS?`<i class="fa-soli
 /* ═══════════════════════════════════════════
    TẢI DỮ LIỆU
 ═══════════════════════════════════════════ */
-const _LC_KEY='vlxt_lessons_cache', _LC_TTL=7*24*60*60*1000;
+const _LC_KEY='vlxt_live_records_cache', _LC_TTL=7*24*60*60*1000;
 function _lcSave(rows){ try{ localStorage.setItem(_LC_KEY,JSON.stringify({ts:Date.now(),rows})); }catch(e){} }
 function _lcLoad(){ try{ const c=JSON.parse(localStorage.getItem(_LC_KEY)||'null'); if(c&&Date.now()-c.ts<_LC_TTL) return c.rows; }catch(e){} return null; }
 function _lcClear(){ try{ localStorage.removeItem(_LC_KEY); }catch(e){} }
@@ -685,14 +804,14 @@ function isPublicLesson(x){
 }
 
 async function _fetchFromSheets(){
-    const data=await fetchJsonTimeout(APPS_SCRIPT_URL+'?type=baihoc',8000);
+    const data=await fetchJsonTimeout(APPS_SCRIPT_URL+'?type=liverecord',8000);
     const rows=Array.isArray(data)?data:(data.baihoc||data.data||[]);
     return rows.filter(x=>field(x,['khoahoc','khoa','course','mon']).toString().trim() && isPublicLesson(x));
 }
 async function fetchLessons(){
     const cached=_lcLoad();
     try{
-        const data=await fetchJsonTimeout('data/baihoc.json',3000,{cache:'no-cache'});
+        const data=await fetchJsonTimeout('data/live-record.json',3000,{cache:'no-cache'});
         const valid=(Array.isArray(data)?data:(data.baihoc||data.data||[]))
             .filter(x=>field(x,['khoahoc','khoa','course','mon']).toString().trim() && isPublicLesson(x));
         if(valid.length){ USING_DEMO=false; _lcSave(valid); return valid; }
@@ -730,17 +849,9 @@ async function loadLessonQuiz(key,lesson){
     const meta=QUIZ_INDEX&&QUIZ_INDEX.lessons&&QUIZ_INDEX.lessons[key];
     if(meta){
         try{
-            const rows=await fetchJsonTimeout(meta.file,4000,{cache:'no-cache'});
+            const rows=await fetchJsonTimeout(meta.file,2000,{cache:'no-cache'});
             lesson.baitap=mapQuizRows(Array.isArray(rows)?rows:[]);
         }catch(e){ console.warn('Chưa tải được bài tập của bài '+key+':',e); }
-    } else if(!(lesson.baitap && lesson.baitap.length)){
-        try{
-            const res=await fetchJsonTimeout(`${APPS_SCRIPT_URL}?type=baitaptracnghiem&bai=${encodeURIComponent(key)}`,4000,{cache:'no-cache'});
-            const rows=res&&(res.data||(Array.isArray(res)?res:[]));
-            if(Array.isArray(rows)&&rows.length>0){
-                lesson.baitap=mapQuizRows(rows);
-            }
-        }catch(e){ console.warn('Chưa tải được bài tập từ GAS bài '+key+':',e); }
     }
     lesson._quizLoaded=true;
 }
@@ -748,12 +859,12 @@ async function loadLessonQuiz(key,lesson){
 async function fetchProgress(){
     WATCHED=new Set();
     if(!HS||USING_DEMO){
-        try{ (JSON.parse(localStorage.getItem('vlxt_demo_watched')||'[]')).forEach(k=>WATCHED.add(k)); }catch(e){}
+        try{ (JSON.parse(localStorage.getItem('vlxt_live_demo_watched')||'[]')).forEach(k=>WATCHED.add(k)); }catch(e){}
         return;
     }
     // Đọc localStorage trước (tức thì, không mất khi reload)
     if(HS && HS.sdt){
-        try{ (JSON.parse(localStorage.getItem('vlxt_watched_'+HS.sdt)||'[]')).forEach(k=>WATCHED.add(k)); }catch(e){}
+        try{ (JSON.parse(localStorage.getItem('vlxt_live_watched_'+HS.sdt)||'[]')).forEach(k=>WATCHED.add(k)); }catch(e){}
     }
     try{
         // QUAN TRỌNG: fetch THẲNG (không qua cachedFetch) — tiến độ dùng để MỞ KHOÁ bài học,
@@ -775,7 +886,7 @@ async function fetchProgress(){
         arr.forEach(it=>{ const k=(typeof it==='string')?it:(it.lesson || field(it,['lesson','bai','key'])); if(k) WATCHED.add(k.toString()); });
         // Chỉ cập nhật localStorage nếu GAS trả về dữ liệu mới (không ghi đè nếu GAS trả về ít hơn)
         if(HS && HS.sdt && WATCHED.size >= prevSize){
-            try{ localStorage.setItem('vlxt_watched_'+HS.sdt, JSON.stringify([...WATCHED])); }catch(e){}
+            try{ localStorage.setItem('vlxt_live_watched_'+HS.sdt, JSON.stringify([...WATCHED])); }catch(e){}
         }
     }catch(e){
         console.warn('Chưa đọc tiến độ (fetch thẳng lỗi, thử lại qua cache):',e);
@@ -835,12 +946,23 @@ function buildCourses(rows){
         const mb = field(row,['mabai']).toString().trim();
         const legKey = [cname,chname,lname].join(SEP);
         const stableKey = mb || legKey;
+        const liveTime = field(row,['ngaygiolive','giolive','livetime','thoigianlive']).toString().trim();
+        const liveUrl = field(row,['linklive','liveurl','phonglive','phong']).toString().trim();
+        const docLiveUrl = field(row,['tailieulive','tailieuphonglive','docliveurl','tailieutruoc']).toString().trim();
+        const recordUrl = field(row,['videoghilai','videorecord','recordurl','xemlai']).toString().trim();
+        let finalVid = field(row,['video','youtube','link','url','lienket']).toString().trim();
+        if(!finalVid && recordUrl) finalVid = recordUrl;
+
         ch.lessons.push({
             key: stableKey,
             mabai: mb,
             legacyKey: legKey,
             name:lname,
-            video:field(row,['video','youtube','link','url','lienket']).toString().trim(),
+            ngaygiolive: liveTime,
+            linklive: liveUrl,
+            tailieulive: docLiveUrl,
+            videoghilai: recordUrl,
+            video: finalVid,
             videogiai:field(row,['videogiai','videochua','videogiangiai','chua','giai']).toString().trim(),
             desc:field(row,['motabai','noidung','ghichu','desc']).toString().trim(),
             pdf:field(row,['pdf','PDF','pdfbaitap','tailieu']).toString().trim(),
@@ -1015,7 +1137,7 @@ function markWatched(key){
     // Luôn lưu localStorage theo sdt để không mất khi reload
     if(HS && HS.sdt){
         try{
-            const lk='vlxt_watched_'+HS.sdt;
+            const lk='vlxt_live_watched_'+HS.sdt;
             const s=JSON.parse(localStorage.getItem(lk)||'[]');
             if(!s.includes(key)){ s.push(key); localStorage.setItem(lk,JSON.stringify(s)); }
         }catch(e){}
@@ -1026,8 +1148,8 @@ function markWatched(key){
     if(typeof TrialManager !== 'undefined' && TrialManager.isValidTrialUser(_curUser) && info){
         TrialManager.recordTrialLessonCompleted(_curUser, info.lesson, info.course.name);
     }
-    if(USING_DEMO){ localStorage.setItem('vlxt_demo_watched',JSON.stringify([...WATCHED])); toast('<i class="fa-solid fa-circle-check"></i> Đã lưu (chế độ demo)','ok'); return; }
-    const payload={action:'saveProgress',sdt:HS.sdt,ten:HS.ten,lop:HS.lop,khoa:info?info.course.name:'',lesson:key,mabai:info?(info.lesson.mabai||key):key,ngay:new Date().toLocaleDateString('vi-VN')};
+    if(USING_DEMO){ localStorage.setItem('vlxt_live_demo_watched',JSON.stringify([...WATCHED])); toast('<i class="fa-solid fa-circle-check"></i> Đã lưu (chế độ demo)','ok'); return; }
+    const payload={action:'saveLiveProgress',sdt:HS.sdt,ten:HS.ten,lop:HS.lop,khoa:info?info.course.name:'',lesson:key,mabai:info?(info.lesson.mabai||key):key,ngay:new Date().toLocaleDateString('vi-VN')};
     queueProgress(payload);
     toast('<i class="fa-solid fa-circle-check"></i> Xuất sắc! Đã hoàn thành bài học. Đang đồng bộ...','ok');
     syncPendingProgress(true);
@@ -1458,12 +1580,18 @@ function renderCourse(name){
             const _isLimit = _locked && _blk.reason === 'trial_limit';
             const _isEmpty = _locked && _blk.reason === 'empty';
             const _clickAttr = `handleOpenLesson('${c.name.replace(/'/g,"\\'")}', '${l.key.replace(/'/g,"\\'")}')`;
-            const _statusText = done ? '✓ Đã xem' : _locked ? (_isEmpty ? 'Chưa cập nhật' : (_isLimit ? '⏳ Hết lượt hôm nay' : '🔒 Khoá')) : 'Chưa xem';
-            const _iconClass = done ? 'fa-circle-check' : _locked ? (_isEmpty ? 'fa-clock' : (_isLimit ? 'fa-hourglass-half' : 'fa-lock')) : (noVideo ? 'fa-clock' : 'fa-play');
+            const liveSt = getLiveStatus(l);
+            let liveBadge = '';
+            if(liveSt.code === 'HAPPENING') liveBadge = '<span class="badge-live-now" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:800;margin-left:6px;display:inline-flex;align-items:center;gap:4px">🔴 LIVE</span>';
+            else if(liveSt.code === 'UPCOMING') liveBadge = '<span class="badge-live-soon" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;margin-left:6px;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-clock" style="font-size:9px"></i> ' + (l.ngaygiolive ? formatLiveDate(l.ngaygiolive) : 'Sắp Live') + '</span>';
+            else if(liveSt.code === 'RECORDED') liveBadge = '<span class="badge-live-rec" style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;margin-left:6px;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-video" style="font-size:9px"></i> Xem lại</span>';
+
+            const _statusText = done ? '✓ Đã xem' : _locked ? (_isEmpty ? 'Chưa cập nhật' : (_isLimit ? '⏳ Hết lượt hôm nay' : '🔒 Khoá')) : (liveSt.code === 'HAPPENING' ? '🔴 Đang Live' : 'Chưa xem');
+            const _iconClass = done ? 'fa-circle-check' : _locked ? (_isEmpty ? 'fa-clock' : (_isLimit ? 'fa-hourglass-half' : 'fa-lock')) : (liveSt.code === 'HAPPENING' ? 'fa-tower-broadcast' : (noVideo ? 'fa-clock' : 'fa-play'));
             h+=`<div class="lesson-row ${done?'watched':''} ${_locked?'is-locked':''}" onclick="${_clickAttr}">
-                <div class="lesson-ic"><i class="fa-solid ${_iconClass}"></i></div>
+                <div class="lesson-ic" style="${liveSt.code==='HAPPENING'?'color:#dc2626':''}"><i class="fa-solid ${_iconClass}"></i></div>
                 <div class="lesson-info">
-                    <div class="lesson-name"><span class="lesson-session-num">Buổi ${sn}</span> ${esc(l.name)}${isNew?'<span class="badge-new">MỚI</span>':''}${noVideo?'<span class="badge-soon"><i class="fa-solid fa-clock" style="font-size:9px"></i> Sắp có</span>':''}${(l.baitap&&l.baitap.length)||Number(l._quizCount)>0?'<span style="margin-left:6px;font-size:10.5px;background:rgba(11,132,243,.1);color:var(--blue);border-radius:10px;padding:2px 7px;font-weight:700"><i class="fa-solid fa-pen-to-square" style="font-size:9px"></i> Quiz</span>':''}</div>
+                    <div class="lesson-name"><span class="lesson-session-num">Buổi ${sn}</span> ${esc(l.name)}${liveBadge}${(l.baitap&&l.baitap.length)||Number(l._quizCount)>0?'<span style="margin-left:6px;font-size:10.5px;background:rgba(11,132,243,.1);color:var(--blue);border-radius:10px;padding:2px 7px;font-weight:700"><i class="fa-solid fa-pen-to-square" style="font-size:9px"></i> Quiz</span>':''}</div>
                     ${l.date?`<div class="lesson-date"><i class="fa-regular fa-calendar"></i> ${esc(l.date)}</div>`:''}
                 </div>
                 <div class="lesson-status">${_statusText}</div>
@@ -1546,12 +1674,47 @@ function renderLesson(key){
     // Tính số buổi của bài này trong khoá dựa trên định danh ổn định
     const _lsn_session = getLessonSessionNum(lesson, idx + 1);
 
-    // Video player — YouTube IFrame API hoặc Google Drive embed
-    const videoHtml = vtype==='youtube'
-        ? `<div class="ratio"><div id="yt-player"></div></div>`
-        : vtype==='drive'
-        ? `<div class="ratio"><iframe id="drive-player" src="https://drive.google.com/file/d/${did}/preview" allow="autoplay; encrypted-media" allowfullscreen style="border:0;width:100%;height:100%;position:absolute;inset:0"></iframe></div>`
-        : `<div class="ratio"><div class="no-video"><i class="fa-brands fa-youtube" style="font-size:40px;opacity:.4"></i><div style="font-size:14px;margin-top:8px">Video sẽ được thêm sớm</div></div></div>`;
+    const liveSt = getLiveStatus(lesson);
+    let liveCardHtml = `
+        <div class="live-info-card">
+            <div class="live-time-wrap">
+                <div class="live-time-icon"><i class="fa-solid ${liveSt.icon}"></i></div>
+                <div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                        <span class="live-status-pill ${liveSt.pillClass}"><i class="fa-solid ${liveSt.icon}"></i> ${liveSt.label}</span>
+                    </div>
+                    <div style="font-size:13.5px;color:var(--text);font-weight:600">
+                        ${lesson.ngaygiolive ? 'Lịch phát sóng: <b>' + formatLiveDate(lesson.ngaygiolive) + '</b>' : 'Chuyên đề học tập trực tuyến'}
+                    </div>
+                </div>
+            </div>
+            <div class="live-action-btns">
+                ${(liveSt.code==='HAPPENING' && lesson.linklive) ? `<a href="${lesson.linklive}" target="_blank" class="btn-enter-live"><i class="fa-solid fa-tower-broadcast"></i> Vào xem Live ngay</a>` : ''}
+                ${lesson.tailieulive ? `<a href="${lesson.tailieulive}" target="_blank" class="btn-prep-doc"><i class="fa-solid fa-file-pdf"></i> Tài liệu chuẩn bị trước Live</a>` : ''}
+            </div>
+        </div>`;
+
+    // Video player — Khung hiển thị Live hoặc Video ghi lại
+    const videoHtml = (vtype==='none' && (liveSt.code==='UPCOMING' || liveSt.code==='HAPPENING'))
+        ? `<div class="live-waiting-box">
+                <i class="fa-solid fa-satellite-dish" style="font-size:42px;color:var(--blue);margin-bottom:12px"></i>
+                <h3 style="font-size:19px;font-weight:800;margin-bottom:8px">${liveSt.code==='HAPPENING'?'🔴 Buổi Live đang diễn ra trực tiếp!':'Buổi Live sắp diễn ra'}</h3>
+                <p style="color:var(--sub);font-size:14px;max-width:540px;margin:0 auto 16px;line-height:1.6">
+                    ${liveSt.code==='HAPPENING'
+                        ? 'Thầy Xuân Trường đang phát sóng trực tiếp. Hãy bấm nút dưới đây để vào phòng học tương tác ngay!'
+                        : (lesson.ngaygiolive ? 'Phiên live sẽ bắt đầu lúc <strong>' + formatLiveDate(lesson.ngaygiolive) + '</strong>. Em hãy tải tài liệu chuẩn bị trước để cùng thầy giải đề nhé!' : 'Lịch phát sóng chi tiết sẽ được cập nhật sớm.')
+                    }
+                </p>
+                <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap">
+                    ${(lesson.linklive)?`<a href="${lesson.linklive}" target="_blank" class="btn-enter-live"><i class="fa-solid fa-tower-broadcast"></i> Vào phòng Live ngay</a>`:''}
+                    ${lesson.tailieulive?`<a href="${lesson.tailieulive}" target="_blank" class="btn-prep-doc"><i class="fa-solid fa-file-pdf"></i> Tải tài liệu chuẩn bị</a>`:''}
+                </div>
+           </div>`
+        : (vtype==='youtube'
+            ? `<div class="ratio"><div id="yt-player"></div></div>`
+            : vtype==='drive'
+            ? `<div class="ratio"><iframe id="drive-player" src="https://drive.google.com/file/d/${did}/preview" allow="autoplay; encrypted-media" allowfullscreen style="border:0;width:100%;height:100%;position:absolute;inset:0"></iframe></div>`
+            : `<div class="ratio"><div class="no-video"><i class="fa-brands fa-youtube" style="font-size:40px;opacity:.4"></i><div style="font-size:14px;margin-top:8px">Video bài giảng ghi lại sẽ được thầy cập nhật sau buổi live</div></div></div>`);
 
     // ── Sidebar: build flat list để check lock ──
     const isSideLocked = (lkey) => {
@@ -1736,6 +1899,7 @@ function renderLesson(key){
         </div>
         <div class="player-layout">
             <div class="lesson-main">
+                ${liveCardHtml}
                 <div class="video-sticky-wrap">${videoTabsHtml}</div>
                 <div id="vq-holder-anchor"></div>
                 <div class="lesson-detail">
@@ -3682,7 +3846,7 @@ async function boot(){
     }
     // Đọc tiến độ từ cache localStorage ngay để WATCHED có sẵn dữ liệu tức thì
     if(HS && HS.sdt){
-        try{ (JSON.parse(localStorage.getItem('vlxt_watched_'+HS.sdt)||'[]')).forEach(k=>WATCHED.add(k)); }catch(e){}
+        try{ (JSON.parse(localStorage.getItem('vlxt_live_watched_'+HS.sdt)||'[]')).forEach(k=>WATCHED.add(k)); }catch(e){}
     }
     const [rows] = await Promise.all([fetchLessons(), fetchKhoaConfig(), fetchQuizIndex()]);
     COURSES=buildCourses(rows);
