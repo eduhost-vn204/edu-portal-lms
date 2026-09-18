@@ -518,6 +518,7 @@
             color: #dc2626; margin: 10px 0;
         }
 
+  #gate { display: none !important; }
 </style>
   <script src="auth.js?v=7"></script>
   <script src="trial-manager.js?v=1"></script>
@@ -528,14 +529,8 @@
   <script src="device-id.js?v=1"></script>
   <script src="ho-tro-chat.js?v=1"></script>
   <script>
-    // Auth guard — chạy trước khi trang load
-    (function(){
-      var u = null;
-      try { u = JSON.parse(localStorage.getItem('vlxt_user_v2')||'null'); } catch(e){}
-      if (!u) {
-        window.location.replace('login.html?from=' + encodeURIComponent(location.pathname + location.search));
-      }
-    })();
+    // Tab Live & Xem Lại là KHU VỰC CÔNG KHAI 100%:
+    // Không yêu cầu đăng nhập, không redirect khách sang login.html
   </script>
   <script src="cache.js?v=5"></script>
   <script src="nhiem-vu.js?v=6"></script>
@@ -779,7 +774,15 @@ function saveIdentity(){
     $('#gate').style.display='none'; boot();
 }
 function changeIdentity(){ if(!confirm('Đổi sang thông tin học sinh khác?')) return; localStorage.removeItem(LS_HS); location.reload(); }
-function renderWho(){ const w=$('#who'); if(w) w.innerHTML=HS?`<i class="fa-solid fa-user"></i> <b>${esc(HS.ten)}</b>`:''; }
+function renderWho(){
+    const w=$('#who');
+    if(w) w.innerHTML=HS?`<i class="fa-solid fa-user"></i> <b>${esc(HS.ten)}</b>`:'';
+    const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
+    const navArea = document.getElementById('vlxt-nav-user-area');
+    if(!user && navArea && !navArea.hasChildNodes()){
+        navArea.innerHTML = `<a href="login.html?from=${encodeURIComponent(location.pathname+location.search+location.hash)}" style="font-size:12.5px;font-weight:700;color:var(--blue);display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;border:1px solid rgba(11,132,243,.25);background:rgba(11,132,243,.06);text-decoration:none;"><i class="fa-solid fa-right-to-bracket"></i> <span>Đăng nhập</span></a>`;
+    }
+}
 
 /* ═══════════════════════════════════════════
    TẢI DỮ LIỆU
@@ -858,14 +861,12 @@ async function loadLessonQuiz(key,lesson){
 
 async function fetchProgress(){
     WATCHED=new Set();
-    if(!HS||USING_DEMO){
-        try{ (JSON.parse(localStorage.getItem('vlxt_live_demo_watched')||'[]')).forEach(k=>WATCHED.add(k)); }catch(e){}
+    if(!HS || !HS.sdt || USING_DEMO){
+        try{ (JSON.parse(localStorage.getItem('vlxt_live_guest_watched')||localStorage.getItem('vlxt_live_demo_watched')||'[]')).forEach(k=>WATCHED.add(k)); }catch(e){}
         return;
     }
     // Đọc localStorage trước (tức thì, không mất khi reload)
-    if(HS && HS.sdt){
-        try{ (JSON.parse(localStorage.getItem('vlxt_live_watched_'+HS.sdt)||'[]')).forEach(k=>WATCHED.add(k)); }catch(e){}
-    }
+    try{ (JSON.parse(localStorage.getItem('vlxt_live_watched_'+HS.sdt)||'[]')).forEach(k=>WATCHED.add(k)); }catch(e){}
     try{
         // QUAN TRỌNG: fetch THẲNG (không qua cachedFetch) — tiến độ dùng để MỞ KHOÁ bài học,
         // nếu dùng cachedFetch (stale-while-revalidate) có thể trả dữ liệu CŨ tới gần 24h,
@@ -1059,53 +1060,22 @@ function lessonHasContent(l){
 //    KHÔNG khoá để học sinh vào xem PDF/bài tập tạm thời, nhưng gây lỗi bài trống bị tự động
 //    tính "Đã hoàn thành" sau 30s — nay khoá hẳn cho đơn giản và đúng thực tế).
 // Đã xem rồi thì luôn được xem lại, không bao giờ khoá ngược.
+// Tab Live & Xem Lại là KHU VỰC CÔNG KHAI:
+// Toàn bộ các buổi live (sắp live, đang live, đã ghi lại) đều mở tự do 100%,
+// không áp dụng khoá học vượt theo thứ tự và không áp dụng giới hạn Trial.
 function isLessonBlocked(course, key){
-    if(isTestAccount()) return {blocked:false}; // tài khoản test: luôn mở, không khoá thứ tự
-    const flat = flatLessons(course);
-    const idx = flat.findIndex(l => l.key === key);
-    if(idx < 0) return {blocked:false};
-    if(WATCHED.has(key)) return {blocked:false};
-    if(!lessonHasContent(flat[idx])) return {blocked:true, reason:'empty'};
-
-    const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
-    const isPremium = (typeof TrialManager !== 'undefined' && typeof TrialManager.isPremiumUser === 'function')
-        ? TrialManager.isPremiumUser(user)
-        : (user && String(user.loaiTK || '').toLowerCase() === 'premium');
-
-    // 1) Tài khoản Premium (trả phí): giữ nguyên quy tắc tuần tự nghiêm ngặt
-    if(isPremium){
-        if(idx > 0 && !WATCHED.has(flat[idx-1].key)) return {blocked:true, reason:'sequence'};
-        return {blocked:false};
-    }
-
-    // 2) Tài khoản Trial hợp lệ (chỉ loaiTK=vip và trialExpiry > Date.now()):
-    //    Được hưởng cơ chế mở mềm (soft unlock) kèm giới hạn 2 bài mới/ngày theo giờ VN
-    const isValidTrial = (typeof TrialManager !== 'undefined' && typeof TrialManager.isValidTrialUser === 'function')
-        ? TrialManager.isValidTrialUser(user)
-        : (typeof TrialManager !== 'undefined' && typeof TrialManager.isTrialUser === 'function' ? TrialManager.isTrialUser(user) : false);
-
-    if(isValidTrial && typeof TrialManager !== 'undefined'){
-        const sdt = (HS && HS.sdt) ? String(HS.sdt) : (user && user.sdt ? String(user.sdt) : '');
-        const access = TrialManager.canAccessTrialLesson(sdt, flat[idx], COURSES, WATCHED);
-        if(!access.allowed){
-            return {blocked:true, reason:access.reason, trialInfo:access};
-        }
-        return {blocked:false, trialInfo:access};
-    }
-
-    // 3) Free hoặc Trial hết hạn: KHÔNG được mở mềm 2 bài/ngày, giữ nguyên quy tắc khóa tuần tự hiện hành
-    if(idx > 0 && !WATCHED.has(flat[idx-1].key)) return {blocked:true, reason:'sequence'};
     return {blocked:false};
 }
 
 /* ═══════════════════════════════════════════
    ĐÁNH DẤU ĐÃ HỌC
 ═══════════════════════════════════════════ */
-const _PROGRESS_QUEUE_KEY='vlxt_progress_queue_v1';
+const _PROGRESS_QUEUE_KEY='vlxt_live_progress_queue_v1';
 let _progressSyncing=false;
 function readProgressQueue(){ try{ return JSON.parse(localStorage.getItem(_PROGRESS_QUEUE_KEY)||'[]'); }catch(e){ return []; } }
 function writeProgressQueue(items){ try{ localStorage.setItem(_PROGRESS_QUEUE_KEY,JSON.stringify(items)); }catch(e){} }
 function queueProgress(payload){
+    if(!payload || !payload.sdt) return; // Tuyệt đối không lưu hàng đợi nếu chưa có SĐT
     const items=readProgressQueue().filter(x=>!(x.sdt===payload.sdt&&x.lesson===payload.lesson));
     items.push(payload); writeProgressQueue(items);
 }
@@ -1117,9 +1087,11 @@ function handleProgressResponse(res){
 }
 async function syncPendingProgress(showSuccess){
     if(_progressSyncing||!navigator.onLine) return;
+    if(!HS || !HS.sdt) return; // Khách chưa đăng nhập: không gửi request đồng bộ
+    let items=readProgressQueue().filter(x=>x && x.sdt);
+    if(!items.length) return;
     _progressSyncing=true;
     try{
-        let items=readProgressQueue();
         while(items.length){
             const payload=items[0];
             const res=await fetchJsonTimeout(APPS_SCRIPT_URL,30000,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
@@ -1134,24 +1106,28 @@ window.addEventListener('online',()=>syncPendingProgress(false));
 function markWatched(key){
     if(WATCHED.has(key)) return;
     WATCHED.add(key);
-    // Luôn lưu localStorage theo sdt để không mất khi reload
-    if(HS && HS.sdt){
+
+    // 1. Chế độ Khách (chưa đăng nhập): chỉ lưu cục bộ ở máy, TUYỆT ĐỐI KHÔNG gửi request lên máy chủ
+    if(!HS || !HS.sdt){
         try{
-            const lk='vlxt_live_watched_'+HS.sdt;
-            const s=JSON.parse(localStorage.getItem(lk)||'[]');
-            if(!s.includes(key)){ s.push(key); localStorage.setItem(lk,JSON.stringify(s)); }
+            const s=JSON.parse(localStorage.getItem('vlxt_live_guest_watched')||'[]');
+            if(!s.includes(key)){ s.push(key); localStorage.setItem('vlxt_live_guest_watched',JSON.stringify(s)); }
         }catch(e){}
+        toast('<i class="fa-solid fa-circle-check"></i> Đã hoàn thành buổi học!','ok');
+        return;
     }
+
+    // 2. Chế độ Người dùng đã đăng nhập: lưu localStorage theo SĐT và đồng bộ tiến độ
+    try{
+        const lk='vlxt_live_watched_'+HS.sdt;
+        const s=JSON.parse(localStorage.getItem(lk)||'[]');
+        if(!s.includes(key)){ s.push(key); localStorage.setItem(lk,JSON.stringify(s)); }
+    }catch(e){}
     const info=findLesson(key);
-    // Ghi nhận hoàn thành bài học cho TrialManager (tính vào hạn mức 2 bài hoàn thành/ngày)
-    const _curUser = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
-    if(typeof TrialManager !== 'undefined' && TrialManager.isValidTrialUser(_curUser) && info){
-        TrialManager.recordTrialLessonCompleted(_curUser, info.lesson, info.course.name);
-    }
     if(USING_DEMO){ localStorage.setItem('vlxt_live_demo_watched',JSON.stringify([...WATCHED])); toast('<i class="fa-solid fa-circle-check"></i> Đã lưu (chế độ demo)','ok'); return; }
     const payload={action:'saveLiveProgress',sdt:HS.sdt,ten:HS.ten,lop:HS.lop,khoa:info?info.course.name:'',lesson:key,mabai:info?(info.lesson.mabai||key):key,ngay:new Date().toLocaleDateString('vi-VN')};
     queueProgress(payload);
-    toast('<i class="fa-solid fa-circle-check"></i> Xuất sắc! Đã hoàn thành bài học. Đang đồng bộ...','ok');
+    toast('<i class="fa-solid fa-circle-check"></i> Xuất sắc! Đã hoàn thành buổi live. Đang đồng bộ...','ok');
     syncPendingProgress(true);
 }
 
@@ -1491,45 +1467,6 @@ if (typeof window !== 'undefined') window.triggerTrial = triggerTrial;
 if (typeof global !== 'undefined') global.triggerTrial = triggerTrial;
 
 function handleOpenLesson(courseName, lessonKey){
-    const course = findCourse(courseName);
-    const info = findLesson(lessonKey);
-    if(!course || !info) {
-        go('#lesson/' + encodeURIComponent(lessonKey));
-        return;
-    }
-    const lesson = info.lesson;
-    const blk = isLessonBlocked(course, lessonKey);
-
-    if(blk.blocked){
-        if(blk.reason === 'empty'){
-            toast('⏳ Em đã học kịp tiến độ rồi — qua Đua Top luyện tập thêm nhé! 🏆', 'err');
-            return;
-        }
-        if(blk.reason === 'trial_limit'){
-            showTrialLimitModal(course, lesson, blk.trialInfo);
-            return;
-        }
-        toast('🔒 Hoàn thành bài trước để mở khoá bài này!', 'err');
-        return;
-    }
-
-    const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
-    const isTrial = (typeof TrialManager !== 'undefined' && typeof TrialManager.isValidTrialUser === 'function')
-        ? TrialManager.isValidTrialUser(user)
-        : (typeof TrialManager !== 'undefined' && typeof TrialManager.isTrialUser === 'function' ? TrialManager.isTrialUser(user) : (user && String(user.loaiTK || '').toLowerCase() !== 'premium'));
-
-    const sdt = (HS && HS.sdt) ? String(HS.sdt) : '';
-    if(isTrial && !WATCHED.has(lessonKey) && typeof TrialManager !== 'undefined'){
-        const isDismissed = TrialManager.isPrereqWarningDismissed(sdt, lessonKey);
-        if(!isDismissed){
-            const unfinished = TrialManager.getUnfinishedPrerequisites(lesson, COURSES, WATCHED);
-            if(unfinished.length > 0){
-                showTrialPrereqModal(course, lesson, unfinished);
-                return;
-            }
-        }
-    }
-
     go('#lesson/' + encodeURIComponent(lessonKey));
 }
 
@@ -1539,7 +1476,7 @@ function handleOpenLesson(courseName, lessonKey){
 function renderCourse(name){
     const c=findCourse(name);
     if(!c){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-circle-question"></i><p>Không tìm thấy khóa học.</p><p><a onclick="go('#home')">← Về trang chủ</a></p></div>`; return; }
-    if(!canAccess(c.name)){ showUpgrade(c.name); return; }
+    // Live & Xem lại là công khai 100%, không chặn canAccess
     const pct=coursePct(c),w=courseWatched(c);
     const thumb=c.img&&/^https?:|^data:/.test(c.img)?`<img src="${esc(c.img)}" alt="">`:(c.img||'📘');
     const grpCrumb=c.group?'<span class="sep">›</span><a onclick="go(\'#home\')">'+esc(c.group)+'</a>':'';
@@ -1575,10 +1512,6 @@ function renderCourse(name){
             const done=WATCHED.has(l.key); const isNew=daysAgo(l.date)<=NEW_DAYS;
             const noVideo = !l.video;
             const sn = _sessionMap.get(l.key);
-            const _blk = isLessonBlocked(c, l.key);
-            const _locked = _blk.blocked;
-            const _isLimit = _locked && _blk.reason === 'trial_limit';
-            const _isEmpty = _locked && _blk.reason === 'empty';
             const _clickAttr = `handleOpenLesson('${c.name.replace(/'/g,"\\'")}', '${l.key.replace(/'/g,"\\'")}')`;
             const liveSt = getLiveStatus(l);
             let liveBadge = '';
@@ -1586,9 +1519,9 @@ function renderCourse(name){
             else if(liveSt.code === 'UPCOMING') liveBadge = '<span class="badge-live-soon" style="background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;margin-left:6px;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-clock" style="font-size:9px"></i> ' + (l.ngaygiolive ? formatLiveDate(l.ngaygiolive) : 'Sắp Live') + '</span>';
             else if(liveSt.code === 'RECORDED') liveBadge = '<span class="badge-live-rec" style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;margin-left:6px;display:inline-flex;align-items:center;gap:4px"><i class="fa-solid fa-video" style="font-size:9px"></i> Xem lại</span>';
 
-            const _statusText = done ? '✓ Đã xem' : _locked ? (_isEmpty ? 'Chưa cập nhật' : (_isLimit ? '⏳ Hết lượt hôm nay' : '🔒 Khoá')) : (liveSt.code === 'HAPPENING' ? '🔴 Đang Live' : 'Chưa xem');
-            const _iconClass = done ? 'fa-circle-check' : _locked ? (_isEmpty ? 'fa-clock' : (_isLimit ? 'fa-hourglass-half' : 'fa-lock')) : (liveSt.code === 'HAPPENING' ? 'fa-tower-broadcast' : (noVideo ? 'fa-clock' : 'fa-play'));
-            h+=`<div class="lesson-row ${done?'watched':''} ${_locked?'is-locked':''}" onclick="${_clickAttr}">
+            const _statusText = done ? '✓ Đã xem' : (liveSt.code === 'HAPPENING' ? '🔴 Đang Live' : 'Chưa xem');
+            const _iconClass = done ? 'fa-circle-check' : (liveSt.code === 'HAPPENING' ? 'fa-tower-broadcast' : (noVideo ? 'fa-clock' : 'fa-play'));
+            h+=`<div class="lesson-row ${done?'watched':''}" onclick="${_clickAttr}">
                 <div class="lesson-ic" style="${liveSt.code==='HAPPENING'?'color:#dc2626':''}"><i class="fa-solid ${_iconClass}"></i></div>
                 <div class="lesson-info">
                     <div class="lesson-name"><span class="lesson-session-num">Buổi ${sn}</span> ${esc(l.name)}${liveBadge}${(l.baitap&&l.baitap.length)||Number(l._quizCount)>0?'<span style="margin-left:6px;font-size:10.5px;background:rgba(11,132,243,.1);color:var(--blue);border-radius:10px;padding:2px 7px;font-weight:700"><i class="fa-solid fa-pen-to-square" style="font-size:9px"></i> Quiz</span>':''}</div>
@@ -1609,47 +1542,7 @@ function renderLesson(key){
     const info=findLesson(key);
     if(!info){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-circle-question"></i><p>Không tìm thấy bài học.</p><p><a onclick="go('#home')">← Về trang chủ</a></p></div>`; return; }
     const {course,chapter,lesson}=info;
-    // Chặn "học vượt" kể cả khi vào thẳng bằng link/hash — không chỉ chặn ở danh sách bài
-    const _blkCheck = isLessonBlocked(course, key);
-    if(_blkCheck.blocked){
-        const _isEmpty = _blkCheck.reason==='empty';
-        const _isLimit = _blkCheck.reason==='trial_limit';
-        let _msg = 'Em cần hoàn thành bài trước để mở khoá bài này.';
-        let _icon = 'fa-lock';
-        if(_isEmpty){
-            _msg = 'Em đã học kịp tiến độ rồi — qua Đua Top luyện tập thêm trong lúc chờ nhé!';
-            _icon = 'fa-hourglass-half';
-        } else if(_isLimit){
-            _msg = 'Em đã dùng hết 2/2 bài học mới hôm nay theo hạn mức học thử. Lượt học mới sẽ tự động mở lại vào 00:00 ngày mai (theo giờ Việt Nam). Em vẫn có thể ôn tập các bài đã học bên dưới.';
-            _icon = 'fa-hourglass-half';
-        }
-        app().innerHTML=`<div class="empty">
-            <i class="fa-solid ${_icon}" style="font-size:34px;opacity:.5;color:${_isLimit?'#f59e0b':'inherit'}"></i>
-            <p style="margin-top:10px;font-weight:700">${esc(lesson.name)}</p>
-            <p style="color:var(--sub)">${_msg}</p>
-            <p style="margin-top:14px">
-                ${_isEmpty?`<a onclick="window.location.href='dua-top.html'" style="cursor:pointer;font-weight:700;color:#fbbf24">🏆 Vào Đua Top</a>&nbsp;&nbsp;·&nbsp;&nbsp;`:''}<a onclick="go('#course/${encodeURIComponent(course.name)}')">← Về danh sách bài học</a>
-            </p>
-        </div>`;
-        return;
-    }
-
-    // Tài khoản học thử: BẮT BUỘC chờ server cấp quyền trước khi tải quiz/video (Pessimistic / Fail-closed)
-    // Tuyệt đối KHÔNG dùng danh sách vlxt_trial_confirmed_<sdt> trong localStorage làm bằng chứng cấp quyền
-    const _curUser = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
-    const _isTrial = typeof TrialManager !== 'undefined' && TrialManager.isValidTrialUser(_curUser);
-    const _sessionGranted = (typeof window !== 'undefined' && window._trialGrantedLessons && window._trialGrantedLessons.has(key));
-    const _isGrantedInMemory = _isTrial && (_sessionGranted || window._trialActiveGrantedLesson === key);
-
-    if(_isTrial && !_isGrantedInMemory){
-        app().innerHTML = `<div class="empty" id="trial-verifying">
-            <i class="fa-solid fa-spinner fa-spin" style="font-size:34px;color:var(--blue)"></i>
-            <p style="margin-top:14px;font-weight:700">${esc(lesson.name)}</p>
-            <p style="color:var(--sub)">Đang xác thực quyền học thử từ máy chủ...</p>
-        </div>`;
-        triggerTrial(_curUser, lesson, course.name, key);
-        return;
-    }
+    // Live & Xem lại là 100% công khai, không khoá học vượt hay giới hạn trial cho khách/học sinh
 
     const _quizMeta=QUIZ_INDEX&&QUIZ_INDEX.lessons&&QUIZ_INDEX.lessons[key];
     const _needsQuizLoad = !lesson._quizLoaded && !lesson._quizLoading && (_quizMeta || !(lesson.baitap && lesson.baitap.length));
@@ -3776,59 +3669,20 @@ function isStarted(courseName){
 }
 
 function canAccess(courseName){
-    const cfg = KHOACONFIG[courseName];
-    if(!cfg) return true;
-    if(cfg.trangThai === 'closed') return false;
-    if(cfg.daKhaiGiang === false) return false; // chưa khai giảng → khoá
-    const allowed = (cfg.loaiTK||'free,vip,premium').split(',').map(s=>s.trim());
-    const user = JSON.parse(localStorage.getItem('vlxt_user_v2')||'null');
-    const tier = (user && user.loaiTK) || 'free';
-    return allowed.includes(tier);
+    // Live & Xem lại là 100% công khai, bất kỳ ai cũng có quyền truy cập
+    return true;
 }
 
 function tierLabel(courseName){
-    const cfg = KHOACONFIG[courseName];
-    if(!cfg || cfg.trangThai === 'closed') return '🔒 Khoá học chưa mở';
-    if(cfg.daKhaiGiang === false) return '🔜 Sắp khai giảng';
-    const allowed = (cfg.loaiTK||'free,vip,premium').split(',').map(s=>s.trim());
-    const user = JSON.parse(localStorage.getItem('vlxt_user_v2')||'null');
-    const tier = (user && user.loaiTK) || 'free';
-    if(allowed.includes(tier)) return '';
-    if(allowed.every(t=>t==='premium')) return '💎 Cần tài khoản Premium';
-    if(allowed.some(t=>t==='vip'||t==='premium') && !allowed.includes('free')) return '⭐ Cần tài khoản VIP trở lên';
-    return '🔒 Không có quyền truy cập';
+    return '';
 }
 
 /* ═══════════════════════════════════════════
    KIỂM TRA QUYỀN TRUY CẬP
 ═══════════════════════════════════════════ */
 function showUpgrade(courseName){
-    const msg = tierLabel(courseName);
-    const cfg = KHOACONFIG[courseName];
-    if(cfg && cfg.daKhaiGiang === false){
-        app().innerHTML=`<div class="empty">
-            <i class="fa-solid fa-clock" style="font-size:40px;color:#f59e0b;margin-bottom:16px"></i>
-            <p style="font-size:18px;font-weight:700">Khoá học sắp khai giảng</p>
-            <p style="color:var(--sub)">Thầy Trường sẽ thông báo khi khoá học bắt đầu. Theo dõi nhóm Zalo để cập nhật!</p>
-            <p><a onclick="go('#home')" style="cursor:pointer;color:var(--blue)">← Về danh sách khoá học</a></p>
-        </div>`;
-        return;
-    }
-    if(cfg && cfg.trangThai==='closed'){
-        app().innerHTML=`<div class="empty">
-            <i class="fa-solid fa-lock" style="font-size:40px;color:#ef4444;margin-bottom:16px"></i>
-            <p style="font-size:18px;font-weight:700">Khoá học chưa mở</p>
-            <p style="color:var(--muted)">Thầy Trường sẽ thông báo khi khoá học bắt đầu. Theo dõi nhóm Zalo để cập nhật!</p>
-            <p><a onclick="go('#home')" style="cursor:pointer;color:var(--blue)">← Về danh sách khoá học</a></p>
-        </div>`;
-    } else {
-        app().innerHTML=`<div class="empty">
-            <i class="fa-solid fa-crown" style="font-size:40px;color:#d97706;margin-bottom:16px"></i>
-            <p style="font-size:18px;font-weight:700">${msg}</p>
-            <p style="color:var(--muted)">Liên hệ thầy Trường qua Zalo để nâng cấp tài khoản và truy cập khoá học này.</p>
-            <p><a onclick="go('#home')" style="cursor:pointer;color:var(--blue)">← Về danh sách khoá học</a></p>
-        </div>`;
-    }
+    // Live & Xem lại không bao giờ hiện bảng nâng cấp
+    return;
 }
 
 /* ═══════════════════════════════════════════
@@ -3836,17 +3690,16 @@ function showUpgrade(courseName){
 ═══════════════════════════════════════════ */
 async function boot(){
     renderWho();
-    // Chạy ngầm làm mới thông tin tài khoản và hạn mức học thử, không chặn UI render
-    if(typeof vlxtRefreshUser === 'function'){
+    // Chạy ngầm làm mới thông tin tài khoản nếu người dùng đã đăng nhập (tùy chọn)
+    const _u = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
+    if(_u && _u.sdt && typeof vlxtRefreshUser === 'function'){
         vlxtRefreshUser().then(function(){ if(_coursesReady) route(); }).catch(function(e){ console.warn('Làm mới tài khoản chạy nền:', e); });
-    }
-    if(typeof TrialManager !== 'undefined' && typeof TrialManager.fetchTrialLimitServer === 'function' && HS && HS.sdt){
-        const _u = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
-        TrialManager.fetchTrialLimitServer(_u || String(HS.sdt)).then(function(){ if(_coursesReady) route(); }).catch(function(e){ console.warn('Làm mới hạn mức trial chạy nền:', e); });
     }
     // Đọc tiến độ từ cache localStorage ngay để WATCHED có sẵn dữ liệu tức thì
     if(HS && HS.sdt){
         try{ (JSON.parse(localStorage.getItem('vlxt_live_watched_'+HS.sdt)||'[]')).forEach(k=>WATCHED.add(k)); }catch(e){}
+    } else {
+        try{ (JSON.parse(localStorage.getItem('vlxt_live_guest_watched')||'[]')).forEach(k=>WATCHED.add(k)); }catch(e){}
     }
     const [rows] = await Promise.all([fetchLessons(), fetchKhoaConfig(), fetchQuizIndex()]);
     COURSES=buildCourses(rows);
@@ -3859,14 +3712,17 @@ async function boot(){
     _coursesReady = true;
     if(_coursesReadyResolve) _coursesReadyResolve(COURSES);
     route();
-    syncPendingProgress(false);
-    fetchProgress().then(function(){ route(); });
+    // Chỉ đồng bộ và tải tiến độ từ server nếu người dùng đã đăng nhập
+    if(HS && HS.sdt){
+        syncPendingProgress(false);
+        fetchProgress().then(function(){ route(); });
+    }
 }
 function init(){
     loadIdentity();
-    // Auth guard ở đầu trang đã redirect về login.html nếu chưa đăng nhập
-    // => gate không bao giờ cần hiện nữa; luôn ẩn và boot
-    $('#gate').style.display='none';
+    // Live là khu vực công khai: gate luôn ẩn
+    const gate = $('#gate');
+    if(gate) gate.style.display='none';
     boot();
 }
 
