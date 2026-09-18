@@ -1195,3 +1195,37 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
   * `test-quiz-merge.mjs` & `test-quiz-publish.mjs`: **18/18 PASS**.
   * Cú pháp JS trong `baihoc.html`: Hợp lệ 100%, có thẻ `</html>`.
   * Rà soát secret: **100% Sạch (0 secret)**.
+
+#### 18/09/2026 — Phát Hành Bài 14 (Phương Trình Claperon – Mendeleev) Chuẩn Quy Trình XPS 2k9 Ở Trạng Thái Draft
+
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Nhánh thực hiện**: `codex/publish-lesson-14`
+- **Mã bài**: `B4f80e5e236f5` (Thứ tự bài: 7, Chương 2 – Khí lí tưởng, Bài nền tảng: `B24bbd84d8ea9` - Bài 13)
+- **Trạng thái**: `draft` (tuân thủ hợp đồng: giữ trạng thái draft trên backend để Thầy kiểm tra trước khi chuyển sang public)
+- **Học liệu xuất bản**:
+  * Video Lý thuyết (YouTube Unlisted): `https://www.youtube.com/watch?v=4y0KSoiBLhM`
+  * Video Giải bài tập (YouTube Unlisted): `https://www.youtube.com/watch?v=3iOWdHNpYCQ`
+  * PDF Lý thuyết (Drive công khai): `https://drive.google.com/file/d/16ih2Hi8KLvDwALvxrmM5wyvLCTOkDDZk/view?usp=sharing`
+  * PDF Bài tập áp dụng (Drive công khai): `https://drive.google.com/file/d/1V5GSYzaVyv732Y4yyoeuNO6RnxzIidXE/view?usp=sharing`
+  * PDF Bài tập luyện tập (Drive công khai): `https://drive.google.com/file/d/1zHveGUY3p6fUVhq6agGYi1XTT29AwH2e/view?usp=sharing`
+  * 20 câu hỏi dừng video kèm timestamp thật trích xuất từ audio và video slide.
+  * 20 câu trắc nghiệm luyện tập trích xuất đầy đủ công thức toán học và bảng đáp án chuẩn.
+- **File thay đổi**:
+  * `data/b14-applied-questions.json`: 20 câu hỏi dừng video kèm timestamp thật.
+  * `data/b14-practice-questions.json`: 20 câu bài tập luyện tập đầy đủ đề, đáp án.
+  * `data/b14-drive-pdfs.json`: 3 file PDF Google Drive.
+  * `data/quizzes/quiz-cfcb271437c78ae05fe1.json`: 20 câu hỏi luyện tập content-addressed hash chuẩn của Bài 14.
+  * `data/quiz-index.json`: Thêm entry bài B14 `B4f80e5e236f5` với `count: 20`.
+  * `data/baihoc.json`: Cập nhật bản ghi draft B14 với đầy đủ 2 video YouTube unlisted, 3 PDF Drive, 20 câu inline `BaiTap` dự phòng.
+  * `PROJECT_STATE.md`: Cập nhật sổ bàn giao dự án.
+- **Backend Google Apps Script / Google Sheets**:
+  * Đã gọi `savebaihoc` cập nhật bản ghi B14 ở trạng thái `draft`.
+  * Đã gọi `savevideocauhoi` lưu 20 câu dừng video kèm timestamp thật.
+  * Đã gọi `savebaitaptracnghiem` lưu 20 câu bài tập luyện tập.
+  * Read-back validation qua `getbaihocadmin`, `getvideocauhoiadmin`, `getbaitaptracnghiemadmin` đạt 100% PASS.
+- **Kết quả kiểm thử**:
+  * `test-lesson-checklist.mjs 14`: **7/7 CỔNG PASS 100%**.
+  * `test-quiz-publish.mjs`: **12/12 PASS**.
+  * Rà soát secret: **100% Sạch (0 secret rò rỉ)**.
+

@@ -1,0 +1,182 @@
+[
+  {
+    "num": 1,
+    "question": "Người ta ghi chép rằng tại cửa sông Amazon đã tìm thấy một thỏi vàng thiên nhiên có khối lượng 62,3 kg. Nếu khối lượng mol của vàng là 197 g/mol thì số mol của thỏi vàng này là",
+    "optA": "316 mol.",
+    "optB": "132 mol.",
+    "optC": "457 mol.",
+    "optD": "477 mol.",
+    "correct": "A"
+  },
+  {
+    "num": 2,
+    "question": "Một bình dung tích 4 lít ban đầu chứa khí ở áp suất p1=840 mmHg, tổng khối lượng của bình và khí là m1=546 g. Cho một phần khí thoát ra từ từ để nhiệt độ không đổi, khi tổng khối lượng của bình và khí còn lại là m2=543 g thì áp suất của khí trong bình là p2=735 mmHg. Tìm khối lượng riêng của khí trong bình ở trạng thái sau.",
+    "optA": "5,25 g/l.",
+    "optB": "0,75 g/l",
+    "optC": "136,5 g/l.",
+    "optD": "6,0 g/l.",
+    "correct": "A"
+  },
+  {
+    "num": 3,
+    "question": "Người ta bơm không khí áp suất 1 atm, vào bình có dung tích 10 lít. Biết mỗi lần bơm, bơm được 250 cm3 không khí. Trước khi bơm đã có không khí 1 atm trong bình và trong khi bơm nhiệt độ không khí không đổi. Tính áp suất khí trong bình sau 50 lần bơm.",
+    "optA": "1,45 atm.",
+    "optB": "4,25 atm.",
+    "optC": "2,85 atm .",
+    "optD": "2,25 atm .",
+    "correct": "D"
+  },
+  {
+    "num": 4,
+    "question": "Một học sinh dùng bơm tay để bơm không khí vào một quả bóng cao su có thể tích là 3 lít, với áp suất không khí là 105 N/m2. Xung quanh của bơm có chiều cao là 42 cm, đường kính xi lanh là 5 cm. Hỏi học sinh đó phải bơm bao nhiêu lần để không khí trong bóng có áp suất 5⋅105 N/m2, biết trong quá trình bơm nhiệt độ không thay đổi, trước khi bơm trong quả bóng đã có không khí có áp suất 105 N/m2.",
+    "optA": "6 lần",
+    "optB": "16 lần",
+    "optC": "15 lần",
+    "optD": "10 lần",
+    "correct": "C"
+  },
+  {
+    "num": 5,
+    "question": "Một bơm tay có chiều cao h=50 cm, đường kính d=5 cm. Người ta dùng bơm này để đưa không khí vào trong săm xe đạp (chưa có không khí). Biết thời gian mỗi lần bơm là 2,5 s và áp suất bằng áp suất khí quyển bằng 105 N/m2; trong khi bơm xem như nhiệt độ của không khí không đổi. Hỏi phải bơm bao lâu để đưa vào săm 7 lít khí có áp suất 5⋅105 N/m2?",
+    "optA": "67 s.",
+    "optB": "32 s.",
+    "optC": "89 s.",
+    "optD": "121 s.",
+    "correct": "C"
+  },
+  {
+    "num": 6,
+    "question": "Một bình đựng khí có dung tích V1=6⋅10-3 m3 chứa khí ở áp suất p1=2,75⋅106 Pa. Người ta dùng khí trong bình để thổi các quả bóng bay (nhờ van xả khí) sao cho bóng có thể tích V0=3,3⋅10-3 m3 và khí trong bóng có áp suất p2=1,1⋅105 Pa. Nếu coi nhiệt độ của khí không đổi thì số lượng bóng thổi được là",
+    "optA": "50 quả bóng.",
+    "optB": "48 quả bóng.",
+    "optC": "52 quả bóng.",
+    "optD": "43 quả bóng.",
+    "correct": "D"
+  },
+  {
+    "num": 7,
+    "question": "Một chai bằng thép có dung tích 50 lít chứa khí hyđro ở áp suất 5 MPa và nhiệt độ 37∘C. Dùng chai này bơm được bao nhiêu quả bóng bay biết dung tích mỗi quả 10 lít? Biết áp suất mỗi quả là 1,05⋅105 Pa, nhiệt độ khí trong bóng bay là 14∘C. Nhiệt độ khí trong bình sau khi bơm là 27∘C.",
+    "optA": "200 quả.",
+    "optB": "250 quả.",
+    "optC": "237 quả.",
+    "optD": "215 quả.",
+    "correct": "D"
+  },
+  {
+    "num": 8,
+    "question": "Một bình bằng thép có dung tích 50 lít chứa helium ở áp suất 5 MPa và nhiệt độ là 35∘C. Dùng bình này bơm được bao nhiêu quả bóng bay? Biết dung tích mỗi quả là 10 lít, áp suất mỗi quả là 1,04⋅105 Pa, nhiệt độ khí trong bóng bay là 12∘C. Sau khi bơm, nhiệt độ của khí trong bình là 12∘C.",
+    "optA": "200",
+    "optB": "212",
+    "optC": "217",
+    "optD": "214",
+    "correct": "C"
+  },
+  {
+    "num": 9,
+    "question": "Một bình đựng khí có dung tích 6 lít đựng khí áp suất 2,41⋅106 Pa. Người ta dùng khí trong bình để thổi các quả bóng bay sao cho bóng có thể tích 2 lít và khí trong bóng có áp suất 1,00⋅105 Pa. Nếu coi nhiệt độ của khí không đổi thì số lượng bóng thổi là bao nhiêu?",
+    "optA": "69 quả.",
+    "optB": "50 quả.",
+    "optC": "37 quả.",
+    "optD": "78 quả.",
+    "correct": "A"
+  },
+  {
+    "num": 10,
+    "question": "Một bình bằng thép dung tích 30 lít chứa khí Hiđrô ở áp suất 6 MPa và nhiệt độ 37∘C. Dùng bình này bơm được bao nhiêu quả bóng bay dung tích mỗi quả 1,6 lít, áp suất và nhiệt độ khí trong mỗi quả bóng là 1,05⋅105 Pa và 16∘C. Tính số quả bóng bơm được biết rằng nhiệt độ khí trong bình sau khi bơm là 16∘C.",
+    "optA": "900 quả.",
+    "optB": "980 quả.",
+    "optC": "920 quả.",
+    "optD": "955 quả.",
+    "correct": "B"
+  },
+  {
+    "num": 11,
+    "question": "Ở một số sự kiện ngoài trời, người ta thường dùng khí Helium (He) để bơm vào các quả bóng bay làm cho chúng có thể bay lên không trung. Trong buổi lễ tổng kết năm học 2023 - 2024, khối 12 của một trường THPT có 187 học sinh và cần có tối thiểu mỗi học sinh một quả để thả, coi các quả bóng được bơm với cùng thể tích 2,0 lít và áp suất 1,25⋅105 Pa. Nhà cung cấp đã mang đến một số bình khí Helium dung tích 6 lít và áp suất 5,00⋅105 Pa. Coi nhiệt độ khí không đổi trong quá trình bơm. Để bơm đủ 187 quả bóng cho học sinh thì cần tối thiểu bao nhiêu bình Helium nói trên?",
+    "optA": "10 bình.",
+    "optB": "8 bình.",
+    "optC": "21 bình.",
+    "optD": "16 bình.",
+    "correct": "C"
+  },
+  {
+    "num": 12,
+    "question": "Một bình oxy cao áp có áp suất 1,3⋅107 Pa và thể tích 30 lít. Mỗi ngày cần lấy ra từ bình một lượng khí có thể tích 400 lít ở áp suất 105 Pa. Coi nhiệt độ khí không thay đổi. Để đảm bảo áp suất của oxy trong bình không nhỏ hơn 106 Pa thì lượng oxy trong bình có thể sử dụng trong",
+    "optA": "3 ngày.",
+    "optB": "6 ngày.",
+    "optC": "9 ngày.",
+    "optD": "12 ngày.",
+    "correct": "C"
+  },
+  {
+    "num": 13,
+    "question": "Áp suất lốp là một thông số quan trọng phải lưu tâm để lái xe an toàn. Thể tích lốp của một ô tô là 25 lít và phạm vi áp suất lốp an toàn là từ 2,4 atm đến 3,0 atm. Sau khi ô tô chạy một thời gian, người lái xe thấy áp suất lốp giảm xuống 2,0 atm nên sử dụng máy bơm không khí trên xe có tốc độ bơm là 0,5 lít khí ở áp suất 1,0 atm mỗi giây. Bỏ qua sự thay đổi thể tích lốp và nhiệt độ khí. Khoảng thời gian bơm không khí để đưa áp suất lốp về mức an toàn là",
+    "optA": "từ 120 s đến 150 s.",
+    "optB": "từ 60 s đến 75 s.",
+    "optC": "từ 40 s đến 100 s.",
+    "optD": "từ 20 s đến 50 s.",
+    "correct": "D"
+  },
+  {
+    "num": 14,
+    "question": "Một chiếc khinh khí cầu có thể tích là 2,00⋅103 m3, không khí ở trong khí cầu được làm nóng bằng một ngọn lửa (hình vẽ). Ở mặt đất, áp suất khí quyển là 1,010⋅105 Pa, không khí trong khinh khí cầu được làm nóng đến nhiệt độ 102∘C. Khinh khí cầu bay lên đến độ cao mà áp suất khí quyển giảm xuống còn 0,912⋅105 Pa. Để duy trì độ cao ổn định, nhiệt độ không khí bên trong khinh khí cầu phải được điều chỉnh lên đến 119∘C và một lượng khí trong khinh khí cầu bị thoát ra ngoài trong quá trình di chuyển. Biết khối lượng mol của không khí là 29,0 g/mol. Áp suất không khí bên trong khoang chứa khí của khinh khí cầu",
+    "optA": "bằng áp suất khí quyển bên ngoài.",
+    "optB": "nhỏ hơn áp suất khí quyển bên ngoài.",
+    "optC": "lớn hơn áp suất khí quyển bên ngoài.",
+    "optD": "tỉ lệ thuận với nhiệt độ bên trong khí cầu.",
+    "correct": "A"
+  },
+  {
+    "num": 15,
+    "question": "Một chiếc khinh khí cầu có thể tích là 2,00⋅103 m3, không khí ở trong khí cầu được làm nóng bằng một ngọn lửa (hình vẽ). Ở mặt đất, áp suất khí quyển là 1,010⋅105 Pa, không khí trong khinh khí cầu được làm nóng đến nhiệt độ 102∘C. Khinh khí cầu bay lên đến độ cao mà áp suất khí quyển giảm xuống còn 0,912⋅105 Pa. Để duy trì độ cao ổn định, nhiệt độ không khí bên trong khinh khí cầu phải được điều chỉnh lên đến 119∘C và một lượng khí trong khinh khí cầu bị thoát ra ngoài trong quá trình di chuyển. Biết khối lượng mol của không khí là 29,0 g/mol. Lượng không khí thoát ra ngoài trong quá trình di chuyển của khinh khí cầu như trên có khối lượng bằng",
+    "optA": "256 kg.",
+    "optB": "156 kg.",
+    "optC": "156.10³ kg .",
+    "optD": "256.10³ kg .",
+    "correct": "A"
+  },
+  {
+    "num": 16,
+    "question": "Một lượng khí lí tưởng có khối lượng m, số mol n, khối lượng mol M, áp suất p, thể tích V và nhiệt độ tuyệt đối T. Phương trình Clapeyron viết cho khối lượng khí này là",
+    "optA": "pV=nMRT.",
+    "optB": "pV=mRT.",
+    "optC": "pV=MRT.",
+    "optD": "pV=nRT.",
+    "correct": "D"
+  },
+  {
+    "num": 17,
+    "question": "Khối lượng riêng của oxygen ở điều kiện tiêu chuẩn là 1,43 kg/m3. Khối lượng khí oxygen ở trong bình kín thể tích 10 l, áp suất 150 atm, nhiệt độ 0∘C là",
+    "optA": "1,5 kg.",
+    "optB": "2,514 kg.",
+    "optC": "2,145 kg.",
+    "optD": "1,625 kg.",
+    "correct": "C"
+  },
+  {
+    "num": 18,
+    "question": "Một bọt khí nhỏ, nổi lên từ đáy hồ, khi đến mặt nước thì thể tích của nó tăng gấp 1,3 lần. Biết trọng lượng riêng của nước là d=104 N/m3, áp suất khí quyển là p0=105 N/m2. Coi nhiệt độ của nước ở các điểm là như nhau. Độ sâu của đáy hồ là",
+    "optA": "1 m.",
+    "optB": "2 m.",
+    "optC": "3 m.",
+    "optD": "4 m.",
+    "correct": "C"
+  },
+  {
+    "num": 19,
+    "question": "Người ta dùng bơm có pit-tông diện tích đáy 8 cm2 và khoảng chạy 25 cm bơm một quả bóng. Ban đầu quả bóng chứa không khí ở áp suất khí quyển p0=105 Pa và có thể tích là V0=1500 cm3. Sau 10 lần bơm thì thể tích của quả bóng là 2000 cm3. Coi quá trình bơm nhiệt độ không đổi. Áp suất khí trong quả bóng sau khi bơm là",
+    "optA": "105 Pa.",
+    "optB": "7,5⋅104 Pa.",
+    "optC": "1,75⋅104 Pa.",
+    "optD": "1,75⋅105 Pa.",
+    "correct": "D"
+  },
+  {
+    "num": 20,
+    "question": "Một phòng trống có kích thước 5,0 m×10,0 m×3,0 m. Lúc đầu, không khí trong phòng ở điều kiện tiêu chuẩn (nhiệt độ 0∘C và áp suất 105 Pa và có khối lượng mol là 29 g/mol). Biết 1 mol khí ở điều kiện chuẩn luôn chiếm thể tích 22,4 lıˊt. Khối lượng không khí có trong phòng là",
+    "optA": "194,2 kg.",
+    "optB": "214,3 kg.",
+    "optC": "217,5 kg.",
+    "optD": "187,5 kg.",
+    "correct": "A"
+  }
+]
