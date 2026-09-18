@@ -190,7 +190,7 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
   - Không deploy Google Apps Script production và không merge vào `main` khi chưa có sự xác nhận của Thầy.
 - **Việc còn lại**:
   - Thầy kiểm tra hai Pull Request (`feat/student-live-record` trên LMS và `feat/admin-live-record` trên Console).
-  - Sau khi Thầy duyệt: Merge PR vào `main`, tạo sheet `LiveRecord` trên Google Sheets production và deploy Google Apps Script với các route `liverecord`.
+  - Sau khi Thầy duyệt: Merge PR vào `main`, tạo sheet `LiveRecord` trên Google Sheets production với đúng 19 cột header chuẩn `LIVERECORD_COLS` (hoặc để hàm `getOrCreate` tự động tạo) và deploy Google Apps Script từ nguồn `src/Mã.js` qua `clasp push` (đã đồng bộ vào `apps-script-CAPNHAT.txt`).
 
 ### 15/09/2026 — Triển Khai Chính Thức (Production): Mở Bài Học Kèm Gợi Ý Bài Nền Tảng & Giới Hạn Học Thử 2 Bài/Ngày Trên Cả Backend Version 154, Admin Console và Student LMS
 
