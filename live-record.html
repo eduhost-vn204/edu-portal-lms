@@ -1585,10 +1585,10 @@ function renderLesson(key){
                     </div>
                 </div>
             </div>
+            ${(liveSt.code==='HAPPENING' && lesson.linklive) ? `
             <div class="live-action-btns">
-                ${(liveSt.code==='HAPPENING' && lesson.linklive) ? `<a href="${lesson.linklive}" target="_blank" class="btn-enter-live"><i class="fa-solid fa-tower-broadcast"></i> Vào xem Live ngay</a>` : ''}
-                ${lesson.tailieulive ? `<a href="${lesson.tailieulive}" target="_blank" class="btn-prep-doc"><i class="fa-solid fa-file-pdf"></i> Tài liệu chuẩn bị trước Live</a>` : ''}
-            </div>
+                <a href="${lesson.linklive}" target="_blank" class="btn-enter-live"><i class="fa-solid fa-tower-broadcast"></i> Vào xem Live ngay</a>
+            </div>` : ''}
         </div>`;
 
     // Video player — Khung hiển thị Live hoặc Video ghi lại
@@ -1599,13 +1599,10 @@ function renderLesson(key){
                 <p style="color:var(--sub);font-size:14px;max-width:540px;margin:0 auto 16px;line-height:1.6">
                     ${liveSt.code==='HAPPENING'
                         ? 'Thầy Xuân Trường đang phát sóng trực tiếp. Hãy bấm nút dưới đây để vào phòng học tương tác ngay!'
-                        : (lesson.ngaygiolive ? 'Phiên live sẽ bắt đầu lúc <strong>' + formatLiveDate(lesson.ngaygiolive) + '</strong>. Em hãy tải tài liệu chuẩn bị trước để cùng thầy giải đề nhé!' : 'Lịch phát sóng chi tiết sẽ được cập nhật sớm.')
+                        : (lesson.ngaygiolive ? 'Phiên live sẽ bắt đầu lúc <strong>' + formatLiveDate(lesson.ngaygiolive) + '</strong>. Em hãy xem tài liệu buổi live ở tab bên dưới để cùng thầy giải đề nhé!' : 'Lịch phát sóng chi tiết sẽ được cập nhật sớm.')
                     }
                 </p>
-                <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap">
-                    ${(lesson.linklive)?`<a href="${lesson.linklive}" target="_blank" class="btn-enter-live"><i class="fa-solid fa-tower-broadcast"></i> Vào phòng Live ngay</a>`:''}
-                    ${lesson.tailieulive?`<a href="${lesson.tailieulive}" target="_blank" class="btn-prep-doc"><i class="fa-solid fa-file-pdf"></i> Tải tài liệu chuẩn bị</a>`:''}
-                </div>
+                ${(lesson.linklive)?`<div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap"><a href="${lesson.linklive}" target="_blank" class="btn-enter-live"><i class="fa-solid fa-tower-broadcast"></i> Vào phòng Live ngay</a></div>`:''}
            </div>`
         : (vtype==='youtube'
             ? `<div class="ratio"><div id="yt-player"></div></div>`
