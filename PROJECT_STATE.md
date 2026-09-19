@@ -1245,3 +1245,16 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
   * Playwright E2E: Đã mở drawer kiểm tra thực tế trên `tai-khoan-hoc-sinh.html` và chụp ảnh form tinh gọn trên `quan-ly-live.html` thành công 100%.
   * `git diff --check`: **0 lỗi whitespace, 0 secret rò rỉ**.
 
+#### 19/09/2026 15:45 — Loại Bỏ Nút Tài Liệu Trùng Lặp Ở Thẻ Card Trên Đầu Video (`live-record.html`)
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Pull Request**: [#14 (eduhost-vn204/edu-portal-lms)](https://github.com/eduhost-vn204/edu-portal-lms/pull/14) (Merged: `bccf5ab`).
+- **Nội dung xử lý**:
+  * Đã loại bỏ hoàn toàn nút `Tài liệu chuẩn bị trước Live` (`.btn-prep-doc`) khỏi thanh thẻ thông tin live card và hộp chờ `live-waiting-box`.
+  * Tránh tình trạng học sinh thấy nút ở trên lẫn tab ở dưới và bấm tải hai lần.
+  * Tài liệu buổi live được tập trung duy nhất ở Tab "Tài liệu & Bài tập buổi Live" bên dưới video (có nhúng PDF và nút tải file).
+- **Kết quả nghiệm thu**:
+  * Workflow GitHub Pages deploy: Run `35432826639` (SUCCESS trong 20s).
+  * Đã kiểm thử trực tiếp website thật `https://vatlyxuantruong.io.vn/live-record.html#lesson/LIVE_4a2f4113c5`: Nút ở trên card đã biến mất 100%, giao diện sạch đẹp.
+
+
