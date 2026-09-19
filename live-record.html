@@ -953,6 +953,10 @@ function buildCourses(rows){
         const recordUrl = field(row,['videoghilai','videorecord','recordurl','xemlai']).toString().trim();
         let finalVid = field(row,['video','youtube','link','url','lienket']).toString().trim();
         if(!finalVid && recordUrl) finalVid = recordUrl;
+        const pdfUrl = field(row,['pdf','PDF','pdfbaitap','tailieu']).toString().trim();
+        const finalDocUrl = docLiveUrl || pdfUrl;
+        const finalPdfUrl = pdfUrl || docLiveUrl;
+        const finalRecordUrl = recordUrl || finalVid;
 
         ch.lessons.push({
             key: stableKey,
@@ -961,12 +965,12 @@ function buildCourses(rows){
             name:lname,
             ngaygiolive: liveTime,
             linklive: liveUrl,
-            tailieulive: docLiveUrl,
-            videoghilai: recordUrl,
+            tailieulive: finalDocUrl,
+            videoghilai: finalRecordUrl,
             video: finalVid,
             videogiai:field(row,['videogiai','videochua','videogiangiai','chua','giai']).toString().trim(),
             desc:field(row,['motabai','noidung','ghichu','desc']).toString().trim(),
-            pdf:field(row,['pdf','PDF','pdfbaitap','tailieu']).toString().trim(),
+            pdf: finalPdfUrl,
             pdflt:field(row,['pdflythuyet','pdflt','pdf_lythuyet','lythuyet','pdflt2']).toString().trim(),
             pdfluyentap:field(row,['pdfluyentap','pdf_luyentap','luyentapthem','pdfluyentapthem']).toString().trim(),
             bainentang:field(row,['bainentang','bainen','prerequisites','prereq','nentang']).toString().trim(),
@@ -1662,9 +1666,9 @@ function renderLesson(key){
     }
     if(lesson.pdf){
         const _idBt = driveId(lesson.pdf);
-        _lessonTabs.push({ key:'baitap-pdf', label:'Bài tập áp dụng trong video', icon:'fa-file-pdf', html:
+        _lessonTabs.push({ key:'baitap-pdf', label:'Tài liệu & Bài tập buổi Live', icon:'fa-file-pdf', html:
             `${_idBt?`<div class="pdf-embed-box"><iframe src="https://drive.google.com/file/d/${_idBt}/preview" allow="autoplay"></iframe></div>`:''}
-            <a class="pdf-embed-dl" href="${lesson.pdf}" target="_blank" rel="noopener" style="background:rgba(239,68,68,.1);color:#ef4444"><i class="fa-solid fa-arrow-up-right-from-square"></i> Mở/tải file PDF bài tập</a>` });
+            <a class="pdf-embed-dl" href="${lesson.pdf}" target="_blank" rel="noopener" style="background:rgba(239,68,68,.1);color:#ef4444"><i class="fa-solid fa-arrow-up-right-from-square"></i> Mở/tải file PDF buổi Live</a>` });
     }
     // Tách riêng: tài liệu luyện tập thêm (khác với bài tập áp dụng trong video ở trên)
     if(lesson.pdfluyentap){
