@@ -1223,3 +1223,25 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
   * `test-quiz-merge.mjs` & `test-quiz-publish.mjs`: **18/18 PASS**.
   * Cú pháp JS trong `baihoc.html`: Hợp lệ 100%, có thẻ `</html>`.
   * Rà soát secret: **100% Sạch (0 secret)**.
+
+#### 19/09/2026 — Đồng Bộ Menu Sidebar Admin Toàn Diện & Tinh Gọn Cấu Hình Live & Xem Lại
+
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Nhánh thực hiện**:
+  * Admin: `fix/admin-sidebar-and-simplified-live-form` (`b3769f9`)
+  * Student: `fix/student-live-unified-resource` (`b1abc18`)
+- **Vấn đề đã xử lý triệt để**:
+  1. **Menu Sidebar Admin chập chờn / lúc thấy lúc không**: Đã chèn mục `<a href="quan-ly-live.html" class="drawer-item" data-module="liverecord"><i class="fa-solid fa-satellite-dish" style="color:#dc2626"></i><span>Live & Xem lại</span></a>` vào toàn bộ 10 file HTML còn thiếu (`tai-khoan-hoc-sinh.html`, `pham-vi-giang-day.html`, `phong-thi-thu.html`, `phong-kiem-tra.html`, `ngan-hang-de.html`, `ket-qua-thi.html`, `lich-live.html`, `dieu-khien-live.html`, `ho-tro-hoc-tap.html`, `huong-dan-he-thong.html`). Đảm bảo 13/13 file HTML có menu Live đồng nhất 100%.
+  2. **Trùng lặp 2 lần cấu hình trong form Live & giao diện**:
+     - Trong `quan-ly-live.html`: Bỏ hoàn toàn khung viền xanh `#0b84f3` tách rời; loại bỏ 2 ô dư thừa `f-live-doc` và `f-live-record`.
+     - Tích hợp 2 trường đặc thù buổi Live (`f-live-time` - Ngày giờ live, `f-live-link` - Link phòng live) trực tiếp vào luồng form bài học.
+     - Video xem lại sau live dùng chung ô `f-video` (Link Video YouTube); Tài liệu chuẩn bị live dùng chung ô `f-pdf` (Link PDF Bài tập). Hàm lưu tự động map sang backend `VideoGhiLai` và `TaiLieuLive`, giữ toàn vẹn schema 19 cột.
+     - Phía Student (`live-record.html`): Tự động fallback thống nhất `tailieulive` từ `pdf` và `videoghilai` từ `video`. Cập nhật nhãn tab PDF thành "Tài liệu & Bài tập buổi Live" trực quan, không còn bị lệch hay lặp tài liệu.
+- **Kết quả kiểm thử & xác minh**:
+  * `test-sidebar-consistency.mjs`: **13/13 HTML files PASS**.
+  * `test-admin-form-safety.mjs`: **8/8 PASS**.
+  * `test-live-record-guest.mjs`: **11/11 PASS**.
+  * Playwright E2E: Đã mở drawer kiểm tra thực tế trên `tai-khoan-hoc-sinh.html` và chụp ảnh form tinh gọn trên `quan-ly-live.html` thành công 100%.
+  * `git diff --check`: **0 lỗi whitespace, 0 secret rò rỉ**.
+
