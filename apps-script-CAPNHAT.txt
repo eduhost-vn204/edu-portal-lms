@@ -2972,7 +2972,18 @@ function getBaiTapTracNghiem(bai) {
   if (bai) {
     rows = rows.filter(function(r){ return String(r.baiKey) === String(bai); });
   } else {
-    rows = rows.filter(function(r){ return isLessonPublished(r.baiKey); });
+    // Tối ưu: Đọc danh sách bài published 1 lần duy nhất thay vì lặp O(N) gây timeout
+    const bhSheet = ss.getSheetByName('BaiHoc');
+    const bhRows = bhSheet ? sheetToJson(bhSheet) : [];
+    const pubKeys = {};
+    bhRows.forEach(function(b) {
+      const st = normalizeLessonStatus(b.TrangThai || b.trangThai);
+      if (st === 'published') {
+        if (b.MaBai) pubKeys[String(b.MaBai).trim()] = true;
+        if (b.TenBai) pubKeys[String(b.TenBai).trim()] = true;
+      }
+    });
+    rows = rows.filter(function(r){ return !!pubKeys[String(r.baiKey).trim()]; });
   }
   rows.sort(function(a,b){ return (Number(a.thuTu)||0) - (Number(b.thuTu)||0); });
   return jsonOut({ data: rows });

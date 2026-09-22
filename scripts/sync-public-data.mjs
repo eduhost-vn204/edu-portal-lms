@@ -96,30 +96,39 @@ if (teachingScopeData) await writeJson(path.join(dataDir, 'teachingscope.json'),
 
 const examRows = rowsOf(examData, ['data', 'danhsachde']);
 
-// Tự động bổ sung câu hỏi từ cột BaiTap của bài học nếu sheet BaiTapTracNghiem bị thiếu/timeout
+// Tự động bổ sung/thay thế câu hỏi từ cột BaiTap của bài học nếu sheet BaiTapTracNghiem bị thiếu/timeout/cắt cụt
 for (const lesson of lessons) {
   const maBai = String(lesson.MaBai || '').trim();
   if (!maBai) continue;
-  const hasInQuizRows = quizRows.some(r => String(r.baiKey || '').trim() === maBai);
-  if (!hasInQuizRows && lesson.BaiTap) {
+  let parsedBaiTap = [];
+  if (lesson.BaiTap) {
     try {
       const items = typeof lesson.BaiTap === 'string' ? JSON.parse(lesson.BaiTap) : lesson.BaiTap;
-      if (Array.isArray(items) && items.length > 0) {
-        items.forEach((it, idx) => {
-          quizRows.push({
-            baiKey: maBai,
-            thuTu: idx + 1,
-            type: it.type || 'mc',
-            question: it.q || it.question || '',
-            optA: it.A || it.optA || '',
-            optB: it.B || it.optB || '',
-            optC: it.C || it.optC || '',
-            optD: it.D || it.optD || '',
-            correct: it.correct || it.ans || ''
-          });
-        });
-      }
+      if (Array.isArray(items)) parsedBaiTap = items;
     } catch(e) {}
+  }
+  const existingRows = quizRows.filter(r => String(r.baiKey || '').trim() === maBai);
+  if (parsedBaiTap.length > 0 && existingRows.length < parsedBaiTap.length) {
+    // Loại bỏ các dòng bị cắt cụt do timeout
+    for (let i = quizRows.length - 1; i >= 0; i--) {
+      if (String(quizRows[i].baiKey || '').trim() === maBai) {
+        quizRows.splice(i, 1);
+      }
+    }
+    // Nạp đầy đủ bộ câu hỏi từ BaiTap
+    parsedBaiTap.forEach((it, idx) => {
+      quizRows.push({
+        baiKey: maBai,
+        thuTu: idx + 1,
+        type: it.type || 'mc',
+        question: it.q || it.question || '',
+        optA: it.A || it.optA || '',
+        optB: it.B || it.optB || '',
+        optC: it.C || it.optC || '',
+        optD: it.D || it.optD || '',
+        correct: it.correct || it.ans || ''
+      });
+    });
   }
 }
 
