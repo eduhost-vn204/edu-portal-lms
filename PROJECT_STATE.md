@@ -1257,4 +1257,32 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
   * Workflow GitHub Pages deploy: Run `35432826639` (SUCCESS trong 20s).
   * Đã kiểm thử trực tiếp website thật `https://vatlyxuantruong.io.vn/live-record.html#lesson/LIVE_4a2f4113c5`: Nút ở trên card đã biến mất 100%, giao diện sạch đẹp.
 
+#### 22/09/2026 — Phát Hành Chuẩn Hóa Bài 15 (Áp Suất Khí Lí Tưởng & Động Năng Phân Tử) Trạng Thái DRAFT, Phòng Vệ 4 Lớp
 
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Nhánh thực hiện**: `codex/publish-lesson-15` (bắt đầu từ `upstream/main` tại commit `9678c9c`).
+- **Nội dung thực hiện**:
+  1. **Khảo sát học liệu & bóc tách video**:
+     * Phát hiện file `Bài 15. Luyện tập.mp4` trùng lặp bitwise với `Bài 15. Lý thuyết.mp4`.
+     * Qua nghe và rà soát transcript âm thanh (phút 57:44-58:14): Thầy giảng lý thuyết (00:00-27:55) và trực tiếp chữa toàn bộ 20 câu trắc nghiệm áp dụng (27:55-58:19) trong video 1. Thầy dặn dò: phần luyện tập Thầy up đề và form để học sinh tự luyện tập, không có video chữa riêng.
+     * Do đó, không upload trùng lặp video luyện tập, giữ `VideoGiai: ""` chuẩn xác theo thiết kế bài giảng của Thầy (tương tự Bài 14).
+  2. **Video & PDF**:
+     * Upload `Bài 15. Lý thuyết.mp4` (58m19s) lên YouTube Unlisted: `https://www.youtube.com/watch?v=G5VY69bSwww` (oEmbed xác thực 100%).
+     * Xuất 3 bản PDF từ Word và upload Google Drive công khai:
+       - `PDFLyThuyet`: `https://drive.google.com/file/d/1PIHs8W2TttehNskGl5rjqeJyZOMDga6w/view?usp=sharing`
+       - `PDF` (Áp dụng): `https://drive.google.com/file/d/1BEPxHpNsw0hGV8C2HswsnbOlHtSVHnQs/view?usp=sharing`
+       - `PDFLuyenTap`: `https://drive.google.com/file/d/1Ox12Qz0iWCT0kC3ai4dVWyVGbyTBlhIO/view?usp=sharing`
+  3. **20 Câu hỏi dừng video kèm Timestamp thật**:
+     * Trích xuất chính xác 20 mốc thời gian tăng dần từ transcript Whisper (1683s, 1694s, 1714s, 1844s, 1865s, 1890s, 2037s, 2053s, 2111s, 2170s, 2388s, 2730s, 2823s, 3032s, 3097s, 3172s, 3216s, 3340s, 3381s, 3418s).
+     * Nạp vào bảng `VideoCauHoi` backend qua action `savevideocauhoi` (count: 20).
+  4. **20 Câu trắc nghiệm luyện tập 2 lớp**:
+     * Trích xuất đầy đủ 20 câu hỏi luyện tập kèm công thức toán OMML và đáp án chuẩn vào `data/quizzes/quiz-92f8cd16e15a257cfc9d.json`.
+     * Cập nhật `data/quiz-index.json` trỏ tới file quiz mới với `count: 20`.
+     * Lưu trữ dự phòng đồng thời vào cột `BaiTap` trong `data/baihoc.json` và bảng `BaiTapTracNghiem` backend qua `savebaitaptracnghiem` (count: 20).
+  5. **Bản ghi Bài học & An toàn**:
+     * Bản ghi `BaiHoc` trên backend và local được lưu giữ ở trạng thái **`draft`** (`MaBai: 'Bf5228f7e1791'`, `ThuTuBai: 8`, `BaiNenTang: 'B4f80e5e236f5'`).
+  6. **Kết quả kiểm thử**:
+     * `test-lesson-checklist.mjs 15 --gas`: **7/7 CỔNG PASS 100%**.
+     * Đối soát read-back trực tiếp qua Admin API: `BaiHoc` (draft), `VideoCauHoi` (20 câu), `BaiTapTracNghiem` (20 câu) khớp 100%.
+     * Rà soát secret: **100% Sạch (0 secret rò rỉ)**.
