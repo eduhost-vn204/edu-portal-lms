@@ -1121,7 +1121,7 @@ function renderHome(){
                 ? (w > 0 ? '<span class="cc-status-badge started"><i class="fa-solid fa-circle-play"></i> Đang khai giảng</span>' : '<span class="cc-status-badge new-course"><i class="fa-solid fa-star"></i> Đang khai giảng</span>')
                 : '<span class="cc-status-badge coming"><i class="fa-solid fa-clock"></i> Sắp khai giảng</span>';
             // Chỉ hiện status badge nếu có config (tránh hiện nhầm cho khoá không cần quản lý)
-            const _showStatus = !!KHOACONFIG[c.name];
+            const _showStatus = !!getCourseConfig(c.name);
             const _lockBadge = _lockMsg ? `<div class="cc-lock-badge">${_lockMsg}</div>` : '';
             const _onclick = _access ? `go('#course/${encodeURIComponent(c.name)}')` : `showUpgrade('${c.name.replace(/'/g,"\\'")}')`;
             return `<div class="course-card${_lockCls}" onclick="${_onclick}">
@@ -1371,6 +1371,10 @@ if (typeof global !== 'undefined') global.triggerTrial = triggerTrial;
 function handleOpenLesson(courseName, lessonKey){
     const course = findCourse(courseName);
     const info = findLesson(lessonKey);
+    if(course && !canAccess(course.name)){
+        showUpgrade(course.name);
+        return;
+    }
     if(!course || !info) {
         go('#lesson/' + encodeURIComponent(lessonKey));
         return;
@@ -1481,6 +1485,7 @@ function renderLesson(key){
     const info=findLesson(key);
     if(!info){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-circle-question"></i><p>Không tìm thấy bài học.</p><p><a onclick="go('#home')">← Về trang chủ</a></p></div>`; return; }
     const {course,chapter,lesson}=info;
+    if(course && !canAccess(course.name)){ showUpgrade(course.name); return; }
     // Chặn "học vượt" kể cả khi vào thẳng bằng link/hash — không chỉ chặn ở danh sách bài
     const _blkCheck = isLessonBlocked(course, key);
     if(_blkCheck.blocked){
@@ -3576,63 +3581,120 @@ if(localStorage.getItem('vlxt_theme')==='dark') document.body.classList.add('dar
 
 let KHOACONFIG = {}; // { courseName: { trangThai, loaiTK, hienThi, thuTu, daKhaiGiang } }
 
+function applyKhoaConfig(arr){
+    if(!Array.isArray(arr)) return false;
+    let changed = false;
+    arr.forEach(c => {
+        if(!c || !c.khoaHoc) return;
+        const prev = KHOACONFIG[c.khoaHoc];
+        const next = {
+            trangThai:    c.trangThai || 'open',
+            loaiTK:       (c.loaiTK || 'free,vip,premium').toLowerCase(),
+            hienThi:      c.hienThi !== 'false' && c.hienThi !== false,
+            thuTu:        (c.thuTu !== undefined && c.thuTu !== '') ? Number(c.thuTu) : 999,
+            daKhaiGiang:  c.daKhaiGiang === true || c.daKhaiGiang === 'true'
+        };
+        if(!prev || JSON.stringify(prev) !== JSON.stringify(next)){
+            KHOACONFIG[c.khoaHoc] = next;
+            changed = true;
+        }
+    });
+    return changed;
+}
+
 async function fetchKhoaConfig(){
+    // 1. Tải tức thì từ localStorage nếu có để không bị giật giao diện (0ms)
+    try{
+        const local = JSON.parse(localStorage.getItem('vlxt_khoaconfig_v2') || 'null');
+        if(Array.isArray(local) && local.length) applyKhoaConfig(local);
+    }catch(e){}
+
+    // 2. Tải nhanh từ JSON tĩnh GitHub Pages
     try{
         const d = await fetchJsonTimeout('data/khoaconfig.json',3000,{cache:'no-cache'});
         const arr = Array.isArray(d) ? d : (d.data || []);
-        arr.forEach(c => {
-            KHOACONFIG[c.khoaHoc] = {
-                trangThai:    c.trangThai || 'open',
-                loaiTK:       c.loaiTK || 'free,vip,premium',
-                hienThi:      c.hienThi !== 'false' && c.hienThi !== false,
-                thuTu:        (c.thuTu !== undefined && c.thuTu !== '') ? Number(c.thuTu) : 999,
-                daKhaiGiang:  c.daKhaiGiang === true || c.daKhaiGiang === 'true'
-            };
-        });
-    }catch(e){ console.warn('fetchKhoaConfig lỗi:', e); }
+        if(arr.length){
+            applyKhoaConfig(arr);
+            try{ localStorage.setItem('vlxt_khoaconfig_v2', JSON.stringify(arr)); }catch(e){}
+        }
+    }catch(e){ console.warn('fetchKhoaConfig tĩnh lỗi:', e); }
+
+    // 3. Tải ngầm bất đồng bộ từ Google Apps Script (Stale-While-Revalidate)
+    // Để khi Thầy cập nhật trạng thái/phân quyền trên Admin, web học sinh tự động nhận diện mà không cần chờ GitHub cron
+    fetchJsonTimeout(APPS_SCRIPT_URL + '?type=khoaconfig&_t=' + Date.now(), 6000).then(function(gasData){
+        const arr = Array.isArray(gasData) ? gasData : (gasData && gasData.data);
+        if(Array.isArray(arr) && arr.length){
+            const changed = applyKhoaConfig(arr);
+            try{ localStorage.setItem('vlxt_khoaconfig_v2', JSON.stringify(arr)); }catch(e){}
+            if(changed && _coursesReady){
+                route();
+            }
+        }
+    }).catch(function(err){ console.warn('Cập nhật KhoaConfig ngầm từ GAS:', err); });
+}
+
+function getCourseConfig(courseName){
+    if(!courseName) return null;
+    if(KHOACONFIG[courseName]) return KHOACONFIG[courseName];
+    const norm = String(courseName).trim().toLowerCase();
+    for(const [k, v] of Object.entries(KHOACONFIG)){
+        if(k.trim().toLowerCase() === norm) return v;
+        const di = k.lastIndexOf(' - ');
+        const kdname = (di > 0 ? k.slice(0, di) : k).trim().toLowerCase();
+        if(kdname === norm) return v;
+        const normDi = courseName.lastIndexOf(' - ');
+        const courseDname = (normDi > 0 ? courseName.slice(0, normDi) : courseName).trim().toLowerCase();
+        if(kdname === courseDname) return v;
+    }
+    return null;
 }
 
 function isVisible(courseName){
-    const cfg = KHOACONFIG[courseName];
+    const cfg = getCourseConfig(courseName);
     if(!cfg) return true; // default visible
     return cfg.hienThi !== false;
 }
 
 // Trả về số thứ tự của khoá, dùng để sort
 function courseOrder(courseName){
-    const cfg = KHOACONFIG[courseName];
+    const cfg = getCourseConfig(courseName);
     return cfg ? cfg.thuTu : 999;
 }
 
 // Khoá đã khai giảng chưa? (teacher marked as started)
 function isStarted(courseName){
-    const cfg = KHOACONFIG[courseName];
+    const cfg = getCourseConfig(courseName);
     if(!cfg) return true; // default: accessible if no config
     return cfg.daKhaiGiang === true;
 }
 
 function canAccess(courseName){
-    const cfg = KHOACONFIG[courseName];
+    const cfg = getCourseConfig(courseName);
     if(!cfg) return true;
     if(cfg.trangThai === 'closed') return false;
     if(cfg.daKhaiGiang === false) return false; // chưa khai giảng → khoá
-    const allowed = (cfg.loaiTK||'free,vip,premium').split(',').map(s=>s.trim());
-    const user = JSON.parse(localStorage.getItem('vlxt_user_v2')||'null');
-    const tier = (user && user.loaiTK) || 'free';
+    const allowed = (cfg.loaiTK||'free,vip,premium').split(',').map(s=>s.trim().toLowerCase());
+    const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
+    const tier = String((user && user.loaiTK) || 'free').trim().toLowerCase();
     return allowed.includes(tier);
 }
 
 function tierLabel(courseName){
-    const cfg = KHOACONFIG[courseName];
+    const cfg = getCourseConfig(courseName);
     if(!cfg || cfg.trangThai === 'closed') return '🔒 Khoá học chưa mở';
+    const allowed = (cfg.loaiTK||'free,vip,premium').split(',').map(s=>s.trim().toLowerCase());
+    const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
+    const tier = String((user && user.loaiTK) || 'free').trim().toLowerCase();
+
+    // 1) Ưu tiên kiểm tra điều kiện phân hạng tài khoản trước
+    if(!allowed.includes(tier)){
+        if(allowed.every(t=>t==='premium')) return '💎 Cần tài khoản Premium';
+        if(allowed.some(t=>t==='vip'||t==='premium') && !allowed.includes('free')) return '⭐ Cần tài khoản VIP trở lên';
+        return '🔒 Không có quyền truy cập';
+    }
+    // 2) Đã đạt điều kiện phân hạng nhưng khoá chưa khai giảng
     if(cfg.daKhaiGiang === false) return '🔜 Sắp khai giảng';
-    const allowed = (cfg.loaiTK||'free,vip,premium').split(',').map(s=>s.trim());
-    const user = JSON.parse(localStorage.getItem('vlxt_user_v2')||'null');
-    const tier = (user && user.loaiTK) || 'free';
-    if(allowed.includes(tier)) return '';
-    if(allowed.every(t=>t==='premium')) return '💎 Cần tài khoản Premium';
-    if(allowed.some(t=>t==='vip'||t==='premium') && !allowed.includes('free')) return '⭐ Cần tài khoản VIP trở lên';
-    return '🔒 Không có quyền truy cập';
+    return '';
 }
 
 /* ═══════════════════════════════════════════
@@ -3640,7 +3702,22 @@ function tierLabel(courseName){
 ═══════════════════════════════════════════ */
 function showUpgrade(courseName){
     const msg = tierLabel(courseName);
-    const cfg = KHOACONFIG[courseName];
+    const cfg = getCourseConfig(courseName);
+    const allowed = ((cfg && cfg.loaiTK) || 'free,vip,premium').split(',').map(s=>s.trim().toLowerCase());
+    const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
+    const tier = String((user && user.loaiTK) || 'free').trim().toLowerCase();
+
+    // Nếu chưa đủ phân hạng tài khoản -> luôn hiện thông báo nâng hạng
+    if(!allowed.includes(tier)){
+        app().innerHTML=`<div class="empty">
+            <i class="fa-solid fa-crown" style="font-size:40px;color:#d97706;margin-bottom:16px"></i>
+            <p style="font-size:18px;font-weight:700">${msg || '💎 Cần tài khoản Premium'}</p>
+            <p style="color:var(--muted)">Liên hệ thầy Trường qua Zalo để nâng cấp tài khoản và truy cập khoá học này.</p>
+            <p><a onclick="go('#home')" style="cursor:pointer;color:var(--blue)">← Về danh sách khoá học</a></p>
+        </div>`;
+        return;
+    }
+    // Nếu đã đủ phân hạng nhưng chưa khai giảng
     if(cfg && cfg.daKhaiGiang === false){
         app().innerHTML=`<div class="empty">
             <i class="fa-solid fa-clock" style="font-size:40px;color:#f59e0b;margin-bottom:16px"></i>

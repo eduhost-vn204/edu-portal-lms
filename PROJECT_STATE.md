@@ -1257,4 +1257,22 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
   * Workflow GitHub Pages deploy: Run `35432826639` (SUCCESS trong 20s).
   * Đã kiểm thử trực tiếp website thật `https://vatlyxuantruong.io.vn/live-record.html#lesson/LIVE_4a2f4113c5`: Nút ở trên card đã biến mất 100%, giao diện sạch đẹp.
 
+#### 23/09/2026 — Sửa Lỗi Khoá Học GĐ2 Đặt "Chỉ Premium" Nhưng Tài Khoản VIP/Free Vẫn Xem Được
+- **Người thực hiện**: Antigravity
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Nhánh thực hiện**: `fix/course-tier-premium-check`
+- **File thay đổi**:
+  * `data/khoaconfig.json`: Đồng bộ bản ghi cấu hình khoá GĐ2 từ Google Sheets (`loaiTK: "premium"`, `hienThi: "true"`, `thuTu: 9`, `daKhaiGiang: false`).
+  * `baihoc.html`:
+    1. Cải tiến `fetchKhoaConfig()` theo mô hình Stale-While-Revalidate: tải tức thì từ `localStorage` (0ms) -> tải nhanh file tĩnh `data/khoaconfig.json` (3s) -> tải ngầm bất đồng bộ từ Google Apps Script (`APPS_SCRIPT_URL + '?type=khoaconfig'`). Khi Thầy đổi trên Admin, học sinh sẽ nhận cấu hình mới nhất ngay mà không phụ thuộc vào chu kỳ cron GitHub Actions.
+    2. Viết hàm `getCourseConfig(courseName)` chuẩn hoá tra cứu linh hoạt theo cả tên đầy đủ (`c.name`), tên hiển thị (`c.dname`), case-insensitive và trim khoảng trắng.
+    3. Cập nhật `canAccess(courseName)`: chuẩn hoá tier chữ thường; khóa nghiêm ngặt khi `loaiTK: 'premium'` (VIP và Free không thể truy cập).
+    4. Cập nhật `tierLabel(courseName)`: ưu tiên kiểm tra phân hạng tài khoản trước khi kiểm tra `daKhaiGiang`. Học sinh VIP/Free xem khoá Premium luôn thấy rõ `💎 Cần tài khoản Premium`. Học sinh Premium xem khoá chưa khai giảng sẽ thấy `🔜 Sắp khai giảng`.
+    5. Cập nhật `showUpgrade(courseName)`: phân biệt rõ ràng giữa thông báo yêu cầu nâng hạng và thông báo chờ khai giảng.
+    6. Thêm chốt chặn phòng thủ đa tầng trong `handleOpenLesson` và `renderLesson`: học sinh không thể mở bài học khi chưa đủ quyền truy cập khoá.
+- **Kết quả kiểm thử**:
+  * Unit test mô phỏng phân quyền: Free và VIP bị chặn 100% (báo `💎 Cần tài khoản Premium`), Premium mở được khi khai giảng.
+  * Cú pháp JavaScript: 100% hợp lệ (`node --check`).
+  * Thẻ đóng `</html>`: Đầy đủ, toàn vẹn.
+
 
