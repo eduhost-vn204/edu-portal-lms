@@ -815,9 +815,11 @@ async function fetchLessons(){
     const cached=_lcLoad();
     try{
         const data=await fetchJsonTimeout('data/live-record.json',3000,{cache:'no-cache'});
-        const valid=(Array.isArray(data)?data:(data.baihoc||data.data||[]))
-            .filter(x=>field(x,['khoahoc','khoa','course','mon']).toString().trim() && isPublicLesson(x));
-        if(valid.length){ USING_DEMO=false; _lcSave(valid); return valid; }
+        if(Array.isArray(data) || (data && (data.baihoc || data.data))){
+            const raw = Array.isArray(data) ? data : (data.baihoc || data.data || []);
+            const valid = raw.filter(x=>field(x,['khoahoc','khoa','course','mon']).toString().trim() && isPublicLesson(x));
+            USING_DEMO=false; _lcSave(valid); return valid;
+        }
     }catch(e){ console.warn('Chưa tải được JSON bài học:',e); }
     if(cached){
         const publicCached=(Array.isArray(cached)?cached:[]).filter(isPublicLesson);
@@ -825,7 +827,7 @@ async function fetchLessons(){
     }
     try{
         const valid=await _fetchFromSheets();
-        if(valid.length){ USING_DEMO=false; _lcSave(valid); return valid; }
+        if(Array.isArray(valid)){ USING_DEMO=false; _lcSave(valid); return valid; }
     }catch(e){ console.warn('GAS bài học không phản hồi:',e); }
     USING_DEMO=true; return DEMO_ROWS.filter(isPublicLesson);
 }
@@ -1480,6 +1482,7 @@ function handleOpenLesson(courseName, lessonKey){
 function renderCourse(name){
     const c=findCourse(name);
     if(!c){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-circle-question"></i><p>Không tìm thấy khóa học.</p><p><a onclick="go('#home')">← Về trang chủ</a></p></div>`; return; }
+    if(!isVisible(c.name)){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-eye-slash"></i><p>Khóa học hiện đang tạm ẩn.</p><p><a onclick="go('#home')">← Về danh sách khóa học</a></p></div>`; return; }
     // Live & Xem lại là công khai 100%, không chặn canAccess
     const pct=coursePct(c),w=courseWatched(c);
     const thumb=c.img&&/^https?:|^data:/.test(c.img)?`<img src="${esc(c.img)}" alt="">`:(c.img||'📘');
