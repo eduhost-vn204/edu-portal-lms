@@ -53,3 +53,61 @@
     }
   }catch(e){}
 })();
+/* === TELEMETRY & BEHAVIOR TRACKING === */
+(function(){
+  if (window.vlxtTelemetryInited) return;
+  window.vlxtTelemetryInited = true;
+  
+  const page = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  const pageLoadTime = Date.now();
+  let isFirstClick = !sessionStorage.getItem('vlxt_first_click_done');
+  let hasLoggedSkip = false;
+
+  document.addEventListener('click', function(e){
+    try {
+      let link = e.target.closest('a[href]');
+      if (link) {
+        const href = link.getAttribute('href');
+        if (href && !href.startsWith('#') && !href.startsWith('javascript:')) {
+          const isOrganic = !link.classList.contains('btn-next') && !link.classList.contains('system-suggested');
+          const prefix = isOrganic ? 'T? do' : '�? xu?t';
+          
+          if (isFirstClick && page === 'index.html') {
+            sessionStorage.setItem('vlxt_first_click_done', 'true');
+            isFirstClick = false;
+            window.vlxtLog('Click HUD d?u ti�n', prefix + ' -> ' + href);
+          }
+        }
+      }
+
+      let tabBtn = e.target.closest('.lt-tab-btn, .tab-btn');
+      if (tabBtn) {
+        const tabName = tabBtn.textContent.trim();
+        if (page === 'baihoc.html' && (tabName.toLowerCase().includes('b�i t?p') || tabName.toLowerCase().includes('tr?c nghi?m'))) {
+           const timeSinceLoad = Date.now() - pageLoadTime;
+           if (timeSinceLoad < 60000 && !hasLoggedSkip) { 
+               hasLoggedSkip = true;
+               window.vlxtLog('Nh?y c�c b�i t?p', 'Sau ' + Math.round(timeSinceLoad/1000) + 's t? l�c m? b�i');
+           }
+        }
+      }
+    } catch(err) {}
+  });
+
+  let activeTime = 0;
+  let lastTick = Date.now();
+  const updateActiveTime = () => {
+     if (!document.hidden) {
+        activeTime += (Date.now() - lastTick);
+     }
+     lastTick = Date.now();
+  };
+  document.addEventListener('visibilitychange', () => { updateActiveTime(); });
+  window.addEventListener('beforeunload', () => {
+     updateActiveTime();
+     const seconds = Math.round(activeTime / 1000);
+     if (seconds >= 30) {
+        window.vlxtLog('Th?i gian d?ng', page + ' | ' + seconds + ' gi�y');
+     }
+  });
+})();
