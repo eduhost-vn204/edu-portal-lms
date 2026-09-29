@@ -1555,7 +1555,8 @@ function renderLesson(key){
     const _lsn_session = getLessonSessionNum(lesson, idx + 1);
 
     // Video player — YouTube IFrame API hoặc Google Drive embed
-    const overlayHtml = !done && (lesson.baitap && lesson.baitap.length > 0) ? `
+    const _hasOverlay = !done && (lesson.baitap && lesson.baitap.length > 0);
+    const overlayHtml = _hasOverlay ? `
     <div id="learning-path-overlay" style="position:absolute; inset:0; background:rgba(13, 17, 23, 0.95); backdrop-filter:blur(10px); z-index:20; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; border-radius:12px; padding:20px; box-shadow:inset 0 0 0 1.5px rgba(255,255,255,0.1); transition: opacity 0.3s ease;">
        <h3 style="margin-bottom:12px;font-size:19px;color:#fff;font-weight:800"><i class="fa-solid fa-map-location-dot" style="color:#3b82f6;margin-right:8px"></i>Bạn muốn bắt đầu bài học thế nào?</h3>
        <p style="color:#94a3b8;margin-bottom:24px;font-size:14px;max-width:350px">Cá nhân hoá luồng học để đạt hiệu quả cao nhất!</p>
@@ -1566,9 +1567,9 @@ function renderLesson(key){
     </div>` : '';
 
     const videoHtml = vtype==='youtube'
-        ? `<div class="ratio">${overlayHtml}<div id="yt-player"></div></div>`
+        ? `<div class="ratio">${overlayHtml}<div id="yt-player" style="width:100%;height:100%;background:#0d1117" onclick="if(!_ytPlayer) startLearningPath('theory')"></div></div>`
         : vtype==='drive'
-        ? `<div class="ratio">${overlayHtml}<iframe id="drive-player" src="https://drive.google.com/file/d/${did}/preview" allow="autoplay; encrypted-media" allowfullscreen style="border:0;width:100%;height:100%;position:absolute;inset:0"></iframe></div>`
+        ? `<div class="ratio">${overlayHtml}${_hasOverlay ? '<div id="drive-player" style="width:100%;height:100%;background:#0d1117"></div>' : `<iframe id="drive-player" src="https://drive.google.com/file/d/${did}/preview" allow="autoplay; encrypted-media" allowfullscreen style="border:0;width:100%;height:100%;position:absolute;inset:0"></iframe>` }</div>`
         : `<div class="ratio"><div class="no-video"><i class="fa-brands fa-youtube" style="font-size:40px;opacity:.4"></i><div style="font-size:14px;margin-top:8px">Video sẽ được thêm sớm</div></div></div>`;
 
     // ── Sidebar: build flat list để check lock ──
@@ -1798,10 +1799,12 @@ function renderLesson(key){
     // Đếm ngược thời gian làm bài (nếu thầy đặt giới hạn phút cho bài này)
     if(_lessonHasQuiz && _lessonQuizMinutes > 0 && !done) startQuizTimer(key, _lessonQuizMinutes);
     else clearQuizTimer();
-    // Khởi động player theo loại video
-    if(vtype==='youtube') initYTPlayer(vid, key);
-    else if(vtype==='drive') initDrivePlayer(did, key);
-    else initNonePlayer(key, lesson); // Slide/PDF/text: auto-mark sau 30s (chỉ khi đã có nội dung)
+    // Khởi động player theo loại video (chỉ khởi động nếu không có overlay chờ học sinh chọn)
+    if(!_hasOverlay){
+        if(vtype==='youtube') initYTPlayer(vid, key);
+        else if(vtype==='drive') initDrivePlayer(did, key);
+        else initNonePlayer(key, lesson); // Slide/PDF/text: auto-mark sau 30s (chỉ khi đã có nội dung)
+    }
 }
 
 
@@ -2439,19 +2442,25 @@ window.startLearningPath = function(mode){
         ov.style.opacity = '0';
         setTimeout(() => { ov.style.display = 'none'; }, 300);
     }
+    const info = findLesson(_lessonCurrentKey);
+    const lVid = info && info.lesson ? ytId(info.lesson.video) : null;
+    const lDid = info && info.lesson ? driveId(info.lesson.video) : null;
+    const lVtype = info && info.lesson ? videoType(info.lesson.video) : 'none';
+
     if(mode === 'theory'){
         if(window.vlxtLog) window.vlxtLog('Luồng học', 'Học bài bản (Video trước)');
-        try {
-            if(_ytPlayer && typeof _ytPlayer.playVideo === 'function') {
-                _ytPlayer.playVideo();
+        if(lVtype === 'youtube' && lVid){
+            initYTPlayer(lVid, _lessonCurrentKey, true /* autoPlay */);
+        } else if(lVtype === 'drive' && lDid){
+            const dBox = document.getElementById('drive-player');
+            if(dBox){
+                dBox.outerHTML = `<iframe id="drive-player" src="https://drive.google.com/file/d/${lDid}/preview" allow="autoplay; encrypted-media" allowfullscreen style="border:0;width:100%;height:100%;position:absolute;inset:0"></iframe>`;
             }
-        } catch(e){}
-        setTimeout(() => {
-            if(typeof _vqTryAutoResume === 'function') _vqTryAutoResume();
-        }, 500);
+            initDrivePlayer(lDid, _lessonCurrentKey);
+        }
     } else if(mode === 'quiz'){
         if(window.vlxtLog) window.vlxtLog('Luồng học', 'Thử sức ngay (Quiz trước)');
-        // DỪNG HẲN VIDEO — không để phát ngầm gây khó chịu
+        // Dừng video nếu đang có
         try {
             if(_ytPlayer && typeof _ytPlayer.pauseVideo === 'function') {
                 _ytPlayer.pauseVideo();
@@ -2489,6 +2498,14 @@ function switchVideoTab(tabKey, silent){
     const wasActive = bar.querySelector(`.lt-tab-btn[data-vtab="${tabKey}"]`)?.classList.contains('active');
     bar.querySelectorAll('.lt-tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.vtab===tabKey));
     bar.querySelectorAll('.lt-tab-pane').forEach(p=>p.classList.toggle('active', p.dataset.vpane===tabKey));
+    // Nếu học sinh quay lại xem video bài học lý thuyết mà player chưa được dựng thì dựng ngay
+    if(tabKey === 'baihoc' && !_ytPlayer){
+        const info = findLesson(_lessonCurrentKey);
+        if(info && info.lesson){
+            const vid = ytId(info.lesson.video);
+            if(vid) initYTPlayer(vid, _lessonCurrentKey, false);
+        }
+    }
     if(!silent) return;
     if(!wasActive && tabKey==='chuabai') toast('<i class="fa-solid fa-lightbulb"></i> Đã chuyển sang Video chữa bài ở trên ⬆','ok');
 }
@@ -2546,7 +2563,7 @@ function initDrivePlayer(did, key){
     }, 3 * 60 * 1000); // 3 phút
 }
 
-function initYTPlayer(vid, key){
+function initYTPlayer(vid, key, shouldAutoPlay){
     _ytCurrentKey = key;
     _ytAutoMarked = WATCHED.has(key);
     if(_ytTrackInterval){ clearInterval(_ytTrackInterval); _ytTrackInterval = null; }
@@ -2560,7 +2577,7 @@ function initYTPlayer(vid, key){
             width: '100%',
             height: '100%',
             playerVars:{
-                autoplay: 0,
+                autoplay: shouldAutoPlay ? 1 : 0,
                 rel: 0,
                 modestbranding: 1,
                 iv_load_policy: 3,
@@ -2568,17 +2585,12 @@ function initYTPlayer(vid, key){
             },
             events:{
                 onReady: function(e){
-                    const ov = document.getElementById('learning-path-overlay');
-                    if(ov && ov.style.display !== 'none'){
-                        try{ e.target.pauseVideo(); }catch(err){}
+                    if(shouldAutoPlay){
+                        try{ e.target.playVideo(); }catch(err){}
+                        if(typeof _vqTryAutoResume === 'function') _vqTryAutoResume();
                     }
                 },
                 onStateChange: function(e){
-                    const ov = document.getElementById('learning-path-overlay');
-                    if(ov && ov.style.display !== 'none' && e.data === YT.PlayerState.PLAYING){
-                        try{ e.target.pauseVideo(); }catch(err){}
-                        return;
-                    }
                     if(e.data === YT.PlayerState.PLAYING){
                         _startTracking();
                         _vqOnPlaying();
