@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
@@ -1465,5 +1465,42 @@ function vlxtOpenNhiemVuFromHome(){
 })();
 </script>
 <script src="hoat-dong.js?v=1"></script>
+<script>
+// CÁ NHÂN HÓA HUD (Dựa trên lịch sử Telemetry)
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        const u = JSON.parse(localStorage.getItem('vlxt_user_v2'));
+        if (!u || !u.sdt) return;
+        
+        const logs = {
+            'baihoc': Number(localStorage.getItem('vlxt_actlog_baihoc.html_'+u.sdt)||0),
+            'danhsach-ly12': Number(localStorage.getItem('vlxt_actlog_danhsach-ly12.html_'+u.sdt)||0),
+            'dua-top': Number(localStorage.getItem('vlxt_actlog_dua-top.html_'+u.sdt)||0)
+        };
+        const max = Math.max(logs.baihoc, logs['danhsach-ly12'], logs['dua-top']);
+        if (max > 0) {
+            let fav = Object.keys(logs).find(k => logs[k] === max);
+            // Đẩy tính năng yêu thích nhất lên, tạo hiệu ứng Gamification
+            const btn = document.querySelector(.btn-outline[href^=""]) || document.querySelector(.feat-link[href^=""]);
+            if (btn) {
+                btn.innerHTML = <i class="fa-solid fa-wand-magic-sparkles" style="color:#fbbf24; margin-right:6px"></i> Dành riêng cho em;
+                btn.style.background = 'linear-gradient(135deg, rgba(245,158,11,0.1), rgba(234,88,12,0.1))';
+                btn.style.border = '1.5px solid #f59e0b';
+                btn.style.color = '#f59e0b';
+                btn.style.fontWeight = '800';
+                btn.style.transform = 'scale(1.02)';
+                btn.style.boxShadow = '0 4px 15px rgba(245,158,11,0.15)';
+                // Đưa thẻ chứa nó lên đầu tiên của grid
+                const card = btn.closest('.feat-card');
+                if (card && card.parentNode) {
+                    card.parentNode.insertBefore(card, card.parentNode.firstChild);
+                    card.style.border = '1.5px solid rgba(245,158,11,0.4)';
+                }
+            }
+        }
+    } catch(e){}
+});
+</script>
 </body>
+
 </html>
