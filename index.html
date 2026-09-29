@@ -1498,5 +1498,31 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch(e){}
 });
 </script>
+<!-- THANH TEST NHANH DÀNH CHO THẦY NGHIỆM THU -->
+<div id="vlxt-hud-demo-bar" style="position:fixed;bottom:24px;left:24px;z-index:999999;background:rgba(15,23,42,0.95);backdrop-filter:blur(10px);border:1.5px solid #3b82f6;border-radius:14px;padding:12px 18px;display:flex;align-items:center;gap:10px;box-shadow:0 12px 30px rgba(0,0,0,0.6);font-family:'Plus Jakarta Sans',sans-serif">
+    <span style="font-size:12.5px;font-weight:700;color:#93c5fd"><i class="fa-solid fa-flask" style="color:#60a5fa;margin-right:6px"></i>Test Cá nhân hóa HUD:</span>
+    <button onclick="demoSetFav('danhsach-ly12')" style="padding:7px 14px;border-radius:8px;border:none;background:linear-gradient(135deg,#f59e0b,#ea580c);color:#fff;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(245,158,11,0.3)">⭐ Giả lập thích Thi Thử</button>
+    <button onclick="demoSetFav('baihoc')" style="padding:7px 14px;border-radius:8px;border:none;background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(59,130,246,0.3)">📚 Giả lập thích Bài Học</button>
+    <button onclick="demoResetFav()" style="padding:7px 12px;border-radius:8px;border:1px solid #475569;background:#1e293b;color:#cbd5e1;font-size:12px;cursor:pointer">↺ Reset</button>
+</div>
+<script>
+function demoSetFav(page){
+    const u = JSON.parse(localStorage.getItem('vlxt_user_v2') || '{"sdt":"0904537176"}');
+    const sdt = u.sdt || '0904537176';
+    localStorage.setItem('vlxt_actlog_baihoc.html_' + sdt, '0');
+    localStorage.setItem('vlxt_actlog_danhsach-ly12.html_' + sdt, '0');
+    localStorage.setItem('vlxt_actlog_dua-top.html_' + sdt, '0');
+    localStorage.setItem('vlxt_actlog_' + page + '.html_' + sdt, '99999999');
+    location.reload();
+}
+function demoResetFav(){
+    const u = JSON.parse(localStorage.getItem('vlxt_user_v2') || '{"sdt":"0904537176"}');
+    const sdt = u.sdt || '0904537176';
+    localStorage.removeItem('vlxt_actlog_baihoc.html_' + sdt);
+    localStorage.removeItem('vlxt_actlog_danhsach-ly12.html_' + sdt);
+    localStorage.removeItem('vlxt_actlog_dua-top.html_' + sdt);
+    location.reload();
+}
+</script>
 </body>
 </html>
