@@ -1560,8 +1560,8 @@ function renderLesson(key){
        <h3 style="margin-bottom:12px;font-size:19px;color:#fff;font-weight:800"><i class="fa-solid fa-map-location-dot" style="color:#3b82f6;margin-right:8px"></i>Bạn muốn bắt đầu bài học thế nào?</h3>
        <p style="color:#94a3b8;margin-bottom:24px;font-size:14px;max-width:350px">Cá nhân hoá luồng học để đạt hiệu quả cao nhất!</p>
        <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
-          <button class="btn-primary" style="background:#0f172a;padding:12px 20px;border-radius:12px;font-size:14.5px;cursor:pointer;border:1.5px solid #334155;color:#fff;font-weight:700;transition:all 0.2s" onclick="event.preventDefault(); event.stopPropagation(); const ov = document.getElementById('learning-path-overlay'); ov.style.pointerEvents='none'; ov.style.opacity='0'; setTimeout(()=>ov.style.display='none', 400); if(window._ytPlayer && typeof window._ytPlayer.playVideo === 'function') window._ytPlayer.playVideo(); if(window.vlxtLog) window.vlxtLog('Luồng học', 'Học bài bản (Video trước)')"><i class="fa-solid fa-graduation-cap" style="color:#3b82f6"></i> Học Bài Bản</button>
-          <button class="btn-primary" style="background:linear-gradient(135deg, #f59e0b, #ea580c);padding:12px 20px;border-radius:12px;font-size:14.5px;cursor:pointer;border:none;color:#fff;font-weight:700;transition:transform 0.2s" onclick="event.preventDefault(); event.stopPropagation(); const ov = document.getElementById('learning-path-overlay'); ov.style.pointerEvents='none'; ov.style.opacity='0'; setTimeout(()=>ov.style.display='none', 400); if(window._ytPlayer && typeof window._ytPlayer.pauseVideo === 'function') window._ytPlayer.pauseVideo(); switchLessonTab('quiz'); setTimeout(()=>{ document.getElementById('lesson-tabs-block')?.scrollIntoView({behavior:'smooth', block:'start'}); }, 100); if(window.vlxtLog) window.vlxtLog('Luồng học', 'Thử sức ngay (Quiz trước)')"><i class="fa-solid fa-bolt"></i> Thử Sức Ngay</button>
+          <button type="button" class="btn-primary" style="background:#0f172a;padding:12px 20px;border-radius:12px;font-size:14.5px;cursor:pointer;border:1.5px solid #334155;color:#fff;font-weight:700;transition:all 0.2s" onclick="event.preventDefault(); event.stopPropagation(); startLearningPath('theory')"><i class="fa-solid fa-graduation-cap" style="color:#3b82f6"></i> Học Bài Bản</button>
+          <button type="button" class="btn-primary" style="background:linear-gradient(135deg, #f59e0b, #ea580c);padding:12px 20px;border-radius:12px;font-size:14.5px;cursor:pointer;border:none;color:#fff;font-weight:700;transition:transform 0.2s" onclick="event.preventDefault(); event.stopPropagation(); startLearningPath('quiz')"><i class="fa-solid fa-bolt"></i> Thử Sức Ngay</button>
        </div>
     </div>` : '';
 
@@ -2431,13 +2431,55 @@ function onVideoComplete(key){
     }
 }
 
+/* ── Luồng học cá nhân hoá: Học bài bản vs Thử sức ngay ── */
+window.startLearningPath = function(mode){
+    const ov = document.getElementById('learning-path-overlay');
+    if(ov){
+        ov.style.pointerEvents = 'none';
+        ov.style.opacity = '0';
+        setTimeout(() => { ov.style.display = 'none'; }, 300);
+    }
+    if(mode === 'theory'){
+        if(window.vlxtLog) window.vlxtLog('Luồng học', 'Học bài bản (Video trước)');
+        try {
+            if(_ytPlayer && typeof _ytPlayer.playVideo === 'function') {
+                _ytPlayer.playVideo();
+            }
+        } catch(e){}
+        setTimeout(() => {
+            if(typeof _vqTryAutoResume === 'function') _vqTryAutoResume();
+        }, 500);
+    } else if(mode === 'quiz'){
+        if(window.vlxtLog) window.vlxtLog('Luồng học', 'Thử sức ngay (Quiz trước)');
+        // DỪNG HẲN VIDEO — không để phát ngầm gây khó chịu
+        try {
+            if(_ytPlayer && typeof _ytPlayer.pauseVideo === 'function') {
+                _ytPlayer.pauseVideo();
+            }
+        } catch(e){}
+        // Chuyển sang tab Quiz (giữ nguyên tab video ở trên, không nhảy sang Video chữa bài đang khoá)
+        switchLessonTab('quiz', true);
+        // Cuộn thẳng xuống phần làm trắc nghiệm
+        setTimeout(() => {
+            const qBlock = document.getElementById('quiz-block') || document.getElementById('lesson-tabs-block');
+            if(qBlock){
+                qBlock.scrollIntoView({behavior:'smooth', block:'start'});
+            }
+        }, 120);
+    }
+};
+
 /* ── Chuyển tab trong khối "Tài liệu lý thuyết / Tài liệu bài tập / Luyện tập trắc nghiệm" ── */
-function switchLessonTab(tabKey){
+function switchLessonTab(tabKey, skipVideoSwitch){
     document.querySelectorAll('#lesson-tabs-block .lt-tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tabKey));
     document.querySelectorAll('#lesson-tabs-block .lt-tab-pane').forEach(p=>p.classList.toggle('active', p.dataset.pane===tabKey));
-    // Thông minh: bấm vào "PDF luyện tập thêm" hoặc "Luyện tập trắc nghiệm" thì tự nhảy
-    // tab video ở trên sang "Video chữa bài luyện tập" luôn (nếu bài có video chữa bài).
-    if(tabKey==='luyentap-pdf' || tabKey==='quiz') switchVideoTab('chuabai', true);
+    // Thông minh: chỉ tự nhảy tab video ở trên sang "Video chữa bài luyện tập" nếu video chữa bài ĐÃ MỞ KHOÁ
+    if(!skipVideoSwitch && (tabKey==='luyentap-pdf' || tabKey==='quiz')){
+        const sBox = document.getElementById('solution-video-box');
+        if(sBox && !sBox.classList.contains('is-locked')){
+            switchVideoTab('chuabai', true);
+        }
+    }
 }
 
 /* ── Chuyển tab video ở trên: "Video bài học lí thuyết" / "Video chữa bài luyện tập" ── */
@@ -2518,13 +2560,25 @@ function initYTPlayer(vid, key){
             width: '100%',
             height: '100%',
             playerVars:{
+                autoplay: 0,
                 rel: 0,
                 modestbranding: 1,
                 iv_load_policy: 3,
                 cc_load_policy: 0
             },
             events:{
+                onReady: function(e){
+                    const ov = document.getElementById('learning-path-overlay');
+                    if(ov && ov.style.display !== 'none'){
+                        try{ e.target.pauseVideo(); }catch(err){}
+                    }
+                },
                 onStateChange: function(e){
+                    const ov = document.getElementById('learning-path-overlay');
+                    if(ov && ov.style.display !== 'none' && e.data === YT.PlayerState.PLAYING){
+                        try{ e.target.pauseVideo(); }catch(err){}
+                        return;
+                    }
                     if(e.data === YT.PlayerState.PLAYING){
                         _startTracking();
                         _vqOnPlaying();
@@ -2663,6 +2717,8 @@ function loadVideoQuiz(key, vtype){
 // để lần gọi tiếp theo (lúc HS bấm play, _vqOnPlaying) tự thử lại.
 function _vqTryAutoResume(){
     if(_vqResumeDone) return;
+    const ov = document.getElementById('learning-path-overlay');
+    if(ov && ov.style.display !== 'none') return; // Chờ học sinh chọn luồng xong mới tự động resume
     if(!_vqData.length || !_ytPlayer || typeof _ytPlayer.seekTo !== 'function') return;
     _vqResumeDone = true;
     let leadingAnswered = 0;
