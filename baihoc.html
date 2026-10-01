@@ -437,6 +437,431 @@
             12%  { opacity:1; }
             100% { transform:translate(var(--dx,0px),-170px) rotate(var(--rot,0deg)) scale(1); opacity:0; }
         }
+
+        /* ═══ MÔ PHỎNG 3D TƯƠNG TÁC BÊN PHẢI BÀI GIẢNG (THREE.JS WEBGL) ═══ */
+        .sim-sidebar-card {
+            background: var(--card);
+            border: 1.5px solid var(--line);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+        }
+        body.dark .sim-sidebar-card {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+            border-color: #30363d;
+        }
+        .sim-card-header {
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--card2);
+            border-bottom: 1.5px solid var(--line);
+            gap: 10px;
+        }
+        .sim-card-title-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+        .sim-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--blue);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .sim-card-title {
+            font-size: 13.5px;
+            font-weight: 800;
+            color: var(--text);
+            line-height: 1.35;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sim-expand-btn {
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--sub);
+            border-radius: 6px;
+            padding: 5px 9px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+        .sim-expand-btn:hover {
+            color: var(--blue);
+            border-color: var(--blue);
+            background: rgba(11,132,243,0.08);
+        }
+
+        /* Vùng Canvas 3D */
+        .sim-canvas-box {
+            width: 100%;
+            height: 320px;
+            background: #070D1E;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1.5px solid var(--line);
+            cursor: grab;
+        }
+        .sim-canvas-box:active {
+            cursor: grabbing;
+        }
+        .sim-loading-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #94a3b8;
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        /* HUD bên trong Canvas - Nền hoàn toàn trong suốt để không che khuất mô hình 3D */
+        .sim-legend-overlay {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.95), 0 0 8px rgba(0,0,0,0.9) !important;
+        }
+        .sim-hud-hint {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: transparent;
+            border: none;
+            padding: 4px 6px;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: #cbd5e1;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.95);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 2;
+        }
+        .sim-pulse-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10B981;
+            animation: pulse-dot 1.5s infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.35; transform: scale(0.85); }
+        }
+
+        .sim-hud-force {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            padding: 4px 6px;
+            text-align: right;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.95);
+            pointer-events: none;
+            z-index: 2;
+        }
+        .sim-hud-f-val {
+            color: #f87171;
+            font-size: 13px;
+            font-weight: 800;
+            line-height: 1.2;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.95);
+        }
+        .sim-hud-f-sub {
+            color: #e2e8f0;
+            font-size: 10.5px;
+            font-weight: 700;
+            margin-top: 1px;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.95);
+        }
+
+        .sim-hud-stats {
+            position: absolute;
+            bottom: 8px;
+            left: 10px;
+            background: transparent;
+            border: none;
+            padding: 4px 6px;
+            font-size: 11.5px;
+            color: #f1f5f9;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.95);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 2;
+        }
+        .sim-dot {
+            color: #64748b;
+        }
+
+        /* Thanh nút điều khiển 3D */
+        .sim-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 12px;
+            background: var(--card);
+            flex-wrap: wrap;
+        }
+        .sim-btn {
+            flex: 1;
+            padding: 7px 10px;
+            border-radius: 8px;
+            border: 1px solid var(--line);
+            background: var(--card2);
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: all 0.15s ease;
+            font-family: inherit;
+        }
+        .sim-btn:hover {
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+        .sim-btn.active {
+            background: var(--blue) !important;
+            color: #fff !important;
+            border-color: var(--blue) !important;
+        }
+        .sim-btn-icon {
+            flex: 0 0 auto;
+            padding: 7px 10px;
+        }
+
+        /* Khung công thức / Khái niệm bản chất vật lý dưới mô phỏng */
+        .sim-formula-box {
+            padding: 9px 12px 11px;
+            background: rgba(11,132,243,0.06);
+            border-top: 1px solid var(--line);
+            font-size: 12.5px;
+            line-height: 1.5;
+        }
+        .sim-formula-tag {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--blue);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 3px;
+        }
+        .sim-formula-desc {
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--text);
+            line-height: 1.55;
+        }
+        .sim-formula-desc strong {
+            color: var(--blue);
+        }
+        .sim-formula-math {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text);
+            text-align: center;
+        }
+        .sim-formula-math .katex-display {
+            margin: 4px 0 !important;
+        }
+
+        /* Dải tab chuyển cảnh mô hình đa hiện tượng */
+        .sim-subtabs-strip {
+            display: flex;
+            align-items: center;
+            background: var(--card2);
+            padding: 5px 6px;
+            gap: 4px;
+            border-bottom: 1.5px solid var(--line);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .sim-subtab-btn {
+            flex: 1;
+            padding: 6px 4px;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 6px;
+            border: 1px solid var(--line);
+            background: var(--card);
+            color: var(--sub);
+            cursor: pointer;
+            white-space: nowrap;
+            text-align: center;
+            transition: all 0.15s ease;
+            font-family: inherit;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sim-subtab-btn:hover {
+            color: var(--text);
+            border-color: var(--blue);
+        }
+        .sim-subtab-btn.active {
+            background: var(--blue);
+            color: #ffffff;
+            border-color: var(--blue);
+            box-shadow: 0 2px 6px rgba(11,132,243,0.3);
+        }
+
+        .sim-modal-content .sim-subtabs-strip {
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .sim-modal-content .sim-subtab-btn {
+            background: rgba(30, 41, 59, 0.85);
+            color: #94a3b8;
+            border-color: rgba(255,255,255,0.12);
+        }
+        .sim-modal-content .sim-subtab-btn:hover {
+            color: #f1f5f9;
+            border-color: var(--blue);
+        }
+        .sim-modal-content .sim-subtab-btn.active {
+            background: var(--blue);
+            color: #ffffff;
+            border-color: var(--blue);
+        }
+        #sim-modal-formula-box {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+        #sim-modal-formula-box .sim-formula-desc {
+            color: #e2e8f0;
+        }
+
+        /* ═══ MODAL PHÓNG TO TOÀN MÀN HÌNH ═══ */
+        .sim-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 99996;
+            background: rgba(7, 13, 30, 0.88);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .sim-modal-overlay.active {
+            display: flex;
+        }
+        .sim-modal-content {
+            background: #0B132B;
+            border: 2px solid #334155;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 1300px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+        }
+        .sim-modal-header {
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1.5px solid #1E293B;
+            background: #0F172A;
+        }
+        .sim-modal-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            font-weight: 800;
+            color: #F8FAFC;
+        }
+        .sim-modal-close {
+            background: #1E293B;
+            border: 1px solid #334155;
+            color: #94A3B8;
+            border-radius: 8px;
+            padding: 7px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s;
+        }
+        .sim-modal-close:hover {
+            color: #FFF;
+            background: #EF4444;
+            border-color: #EF4444;
+        }
+        .sim-modal-body {
+            position: relative;
+            flex: 1;
+            background: #070D1E;
+            overflow: hidden;
+        }
+        .sim-modal-canvas {
+            width: 100%;
+            height: 100%;
+        }
+        .sim-modal-hud-left {
+            position: absolute;
+            bottom: 16px;
+            left: 20px;
+            background: transparent;
+            border: none;
+            padding: 4px 8px;
+            font-size: 13.5px;
+            color: #F1F5F9;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.95);
+            pointer-events: none;
+            display: flex;
+            gap: 14px;
+        }
+        .sim-modal-hud-right {
+            position: absolute;
+            top: 52px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            padding: 4px 8px;
+            text-align: right;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.95);
+            pointer-events: none;
+        }
+        .sim-modal-footer {
+            padding: 12px 24px;
+            background: #0F172A;
+            border-top: 1.5px solid #1E293B;
+        }
 </style>
   <script src="auth.js?v=7"></script>
   <script src="trial-manager.js?v=1"></script>
@@ -458,6 +883,7 @@
   </script>
   <script src="cache.js?v=5"></script>
   <script src="nhiem-vu.js?v=6"></script>
+  <script src="simulations/sim-registry.js?v=1"></script>
 </head>
 <body>
 
@@ -1041,6 +1467,7 @@ function markWatched(key){
 function go(hash){ if(location.hash===hash) route(); else location.hash=hash; }
 window.addEventListener('hashchange',route);
 function route(){
+    if(typeof SimRegistry !== 'undefined') SimRegistry.unmount();
     window._trialActiveGrantedLesson = null;
     // Reset khung trang về mặc định — renderLesson() sẽ tự nới rộng (wide-lesson) nếu cần
     app().className = 'container';
@@ -1735,6 +2162,60 @@ function renderLesson(key){
     else if(_hasQuiz) _doneLabel='Làm đúng ≥90% bài tập luyện tập để hoàn thành';
     else _doneLabel='Tự động lưu sau 30 giây';
 
+    // ── Mô phỏng 3D tương tác (Three.js WebGL) ──
+    let simCardHtml = '';
+    const _hasSim = (typeof SimRegistry !== 'undefined' && SimRegistry.hasSimulation(lesson.key || lesson.name, lesson));
+    if(_hasSim){
+        const simCfg = SimRegistry.getConfig(lesson.key || lesson.name, lesson);
+        simCardHtml = `
+        <div class="sim-sidebar-card" id="sim-sidebar-card">
+            <div class="sim-card-header">
+                <div class="sim-card-title-wrap">
+                    <div class="sim-card-title" title="${esc(simCfg.title)}"><i class="fa-solid fa-cube" style="color:var(--blue);margin-right:6px"></i>${esc(simCfg.title)}</div>
+                </div>
+                <button type="button" class="sim-expand-btn" onclick="openSimModal()" title="Phóng to toàn màn hình">
+                    <i class="fa-solid fa-expand"></i> Phóng to
+                </button>
+            </div>
+            <div class="sim-canvas-box" id="sim-canvas-container">
+                <div class="sim-loading-placeholder" id="sim-loading-placeholder">
+                    <i class="fa-solid fa-spinner fa-spin"></i> Đang tải mô hình 3D...
+                </div>
+                <div class="sim-hud-hint">
+                    <span class="sim-pulse-dot"></span>
+                    <span>Xoay 360° · Cuộn để zoom</span>
+                </div>
+                <div class="sim-hud-force" id="sim-hud-impact">
+                    <div class="sim-hud-f-val" id="sim-hud-force">${esc(simCfg.initialForce || 'Đang đo...')}</div>
+                    <div class="sim-hud-f-sub" id="sim-hud-sub">${esc(simCfg.deltaPText || '')}</div>
+                </div>
+                <div class="sim-hud-stats">
+                    <span id="sim-hud-temp" style="color:#38bdf8;font-weight:700">${esc(simCfg.hudStat1 || 'T = 300 K')}</span>
+                    <span class="sim-dot">•</span>
+                    <span id="sim-hud-count-wrap"><b id="sim-hud-count" style="color:#fbbf24">${esc(simCfg.hudStat2 || '0')}</b></span>
+                </div>
+            </div>
+            <div class="sim-toolbar" id="sim-toolbar-inline">
+                <button type="button" id="sim-btn-slow" class="sim-btn" onclick="toggleSimSlowMo()">
+                    <span>⏱️</span> <span id="sim-lbl-slow">${esc(simCfg.btnSlowLabel || 'Xem chậm')}</span>
+                </button>
+                <button type="button" id="sim-btn-temp" class="sim-btn" onclick="toggleSimTemp()">
+                    <span>🔥</span> <span id="sim-lbl-temp">${esc(simCfg.btnTempLabel || 'Nhiệt T (600K)')}</span>
+                </button>
+                <button type="button" id="sim-btn-hero" class="sim-btn" onclick="toggleSimHero()">
+                    <span>🎯</span> <span id="sim-lbl-hero">${esc(simCfg.btnHeroLabel || 'Tương tác')}</span>
+                </button>
+                <button type="button" class="sim-btn sim-btn-icon" onclick="resetSimCam()" title="Đặt lại góc">
+                    <span>🔄</span>
+                </button>
+            </div>
+            <div class="sim-formula-box">
+                <div class="sim-formula-tag">${esc(simCfg.formulaTag || 'Bản chất vật lý cốt lõi:')}</div>
+                <div class="sim-formula-desc">${simCfg.conceptText ? simCfg.conceptText : (simCfg.formulaCore ? `<div class="sim-formula-math">$$${simCfg.formulaCore}$$</div>` : '')}</div>
+            </div>
+        </div>`;
+    }
+
     app().classList.add('wide-lesson'); // bài học hiển thị gần hết chiều ngang màn hình
     app().innerHTML=`
         <div class="crumb">
@@ -1773,10 +2254,15 @@ function renderLesson(key){
                 </div>
                 ${tabsBlockHtml}
             </div>
-            <div class="lesson-sidebar"><div id="vq-holder"></div><div id="side-list-wrap">${side}</div></div>
+            <div class="lesson-sidebar">
+                ${simCardHtml}
+                <div id="vq-holder"></div>
+                <div id="side-list-wrap">${side}</div>
+            </div>
         </div>`;
     renderMath(app());
     _vqPositionHolder();
+    if(_hasSim) initLessonSimulation(lesson, key);
     // Lưu context bài hiện tại
     _lessonCurrentKey = key;
     _lessonHasQuiz = !!(lesson.baitap && lesson.baitap.length > 0);
@@ -1793,6 +2279,224 @@ function renderLesson(key){
     else if(vtype==='drive') initDrivePlayer(did, key);
     else initNonePlayer(key, lesson); // Slide/PDF/text: auto-mark sau 30s (chỉ khi đã có nội dung)
 }
+
+/* ═══════════════════════════════════════════
+   BỘ ĐIỀU KHIỂN MÔ PHỎNG 3D VẬT LÝ
+═══════════════════════════════════════════ */
+function ensureSimModalDom(){
+    if(document.getElementById('sim-modal-overlay')) return;
+    const div = document.createElement('div');
+    div.id = 'sim-modal-overlay';
+    div.className = 'sim-modal-overlay';
+    div.innerHTML = `
+        <div class="sim-modal-content">
+            <div class="sim-modal-header">
+                <div class="sim-modal-title">
+                    <i class="fa-solid fa-cube" style="color:var(--blue);font-size:18px"></i>
+                    <span id="sim-modal-name">Mô phỏng 3D</span>
+                </div>
+                <button type="button" class="sim-modal-close" onclick="closeSimModal()"><i class="fa-solid fa-xmark"></i> Đóng</button>
+            </div>
+            <div class="sim-modal-body">
+                <div id="sim-modal-canvas" class="sim-modal-canvas"></div>
+                <div class="sim-modal-hud-left">
+                    <div><strong id="sim-modal-hud-temp" style="color:#38bdf8">T = 300 K</strong></div>
+                    <div><strong id="sim-modal-hud-count" style="color:#fbbf24">Trạng thái</strong></div>
+                </div>
+                <div class="sim-modal-hud-right" id="sim-modal-hud-right">
+                    <div style="font-size:15px;font-weight:800;color:#f87171" id="sim-modal-hud-force">Đang tải...</div>
+                    <div style="font-size:12px;color:#cbd5e1" id="sim-modal-hud-sub"></div>
+                </div>
+            </div>
+            <div class="sim-modal-footer">
+                <div class="sim-toolbar" style="max-width:680px;margin:0 auto">
+                    <button type="button" id="sim-modal-btn-slow" class="sim-btn" onclick="toggleSimModalSlowMo()">
+                        <span>⏱️</span> <span id="sim-modal-lbl-slow">Xem chậm</span>
+                    </button>
+                    <button type="button" id="sim-modal-btn-temp" class="sim-btn" onclick="toggleSimModalTemp()">
+                        <span>🔥</span> <span id="sim-modal-lbl-temp">Nhiệt T (600K)</span>
+                    </button>
+                    <button type="button" id="sim-modal-btn-hero" class="sim-btn" onclick="toggleSimModalHero()">
+                        <span>🎯</span> <span id="sim-modal-lbl-hero">Tương tác</span>
+                    </button>
+                    <button type="button" class="sim-btn sim-btn-icon" onclick="resetSimModalCam()" title="Đặt lại góc">
+                        <span>🔄</span>
+                    </button>
+                </div>
+                <div class="sim-formula-box" id="sim-modal-formula-box" style="margin-top:10px;border-radius:10px;max-width:760px;margin-left:auto;margin-right:auto">
+                    <div class="sim-formula-tag" id="sim-modal-formula-tag">Bản chất vật lý cốt lõi:</div>
+                    <div class="sim-formula-desc" id="sim-modal-formula-desc"></div>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(div);
+}
+
+async function initLessonSimulation(lesson, key){
+    if(typeof SimRegistry === 'undefined') return;
+    const cfg = SimRegistry.getConfig(lesson.key || lesson.name, lesson);
+    if(!cfg) return;
+
+    ensureSimModalDom();
+
+    const container = document.getElementById('sim-canvas-container');
+    if(!container) return;
+
+    try {
+        await SimRegistry.loadAndMount(container, cfg, {
+            onCollision: function(count, isHero){
+                const cntEl = document.getElementById('sim-hud-count');
+                const fEl = document.getElementById('sim-hud-force');
+                if(cntEl && typeof count === 'number') cntEl.textContent = count;
+                if(fEl && isHero){
+                    fEl.textContent = 'F ≈ ' + (1.8 + Math.random() * 1.2).toFixed(1) + ' × 10⁻²¹ N';
+                }
+            }
+        });
+        const ph = document.getElementById('sim-loading-placeholder');
+        if(ph) ph.style.display = 'none';
+        renderMath(container.parentElement);
+    } catch(err){
+        console.error('Lỗi khởi tạo mô hình 3D:', err);
+        const ph = document.getElementById('sim-loading-placeholder');
+        if(ph) ph.innerHTML = '<span style="color:#ef4444">Không thể tải mô hình 3D.</span>';
+    }
+}
+
+window.toggleSimSlowMo = function(){
+    if(typeof SimRegistry === 'undefined') return;
+    const inst = SimRegistry.getCurrentInstance();
+    if(!inst) return;
+    const isSlow = inst.toggleSlowMo();
+    const btn = document.getElementById('sim-btn-slow');
+    const lbl = document.getElementById('sim-lbl-slow');
+    if(btn) btn.classList.toggle('active', isSlow);
+    if(lbl) lbl.textContent = isSlow ? 'Bình thường' : 'Xem chậm';
+};
+
+window.toggleSimTemp = function(){
+    if(typeof SimRegistry === 'undefined') return;
+    const inst = SimRegistry.getCurrentInstance();
+    if(!inst) return;
+    const isHot = inst.toggleTemp();
+    const btn = document.getElementById('sim-btn-temp');
+    const lbl = document.getElementById('sim-lbl-temp');
+    const tempHud = document.getElementById('sim-hud-temp');
+    if(btn) btn.classList.toggle('active', isHot);
+    if(lbl) lbl.textContent = isHot ? 'Hạ nhiệt (300K)' : 'Nhiệt T (600K)';
+    if(tempHud){
+        tempHud.textContent = isHot ? 'T = 600 K (Nóng)' : 'T = 300 K';
+        tempHud.style.color = isHot ? '#f59e0b' : '#38bdf8';
+    }
+};
+
+window.toggleSimHero = function(){
+    if(typeof SimRegistry === 'undefined') return;
+    const inst = SimRegistry.getCurrentInstance();
+    if(!inst) return;
+    const heroOnly = inst.toggleMode();
+    const btn = document.getElementById('sim-btn-hero');
+    const lbl = document.getElementById('sim-lbl-hero');
+    if(btn) btn.classList.toggle('active', heroOnly);
+    if(lbl) lbl.textContent = heroOnly ? 'Hiện cả khối khí' : '1 Hạt tiêu điểm';
+};
+
+window.resetSimCam = function(){
+    if(typeof SimRegistry === 'undefined') return;
+    const inst = SimRegistry.getCurrentInstance();
+    if(inst) inst.resetCamera();
+};
+
+window.openSimModal = function(){
+    if(typeof SimRegistry === 'undefined') return;
+    const info = findLesson(_lessonCurrentKey);
+    if(!info) return;
+    const cfg = SimRegistry.getConfig(info.lesson.key || info.lesson.name, info.lesson);
+    if(!cfg) return;
+    ensureSimModalDom();
+    const titleEl = document.getElementById('sim-modal-name');
+    if(titleEl) titleEl.textContent = cfg.title || info.lesson.name;
+
+    // Cập nhật nhãn và HUD modal theo config bài học
+    const mHudForce = document.getElementById('sim-modal-hud-force');
+    const mHudSub = document.getElementById('sim-modal-hud-sub');
+    const mHudTemp = document.getElementById('sim-modal-hud-temp');
+    const mHudCount = document.getElementById('sim-modal-hud-count');
+    const mBtnSlow = document.getElementById('sim-modal-lbl-slow');
+    const mBtnTemp = document.getElementById('sim-modal-lbl-temp');
+    const mBtnHero = document.getElementById('sim-modal-lbl-hero');
+    const mTag = document.getElementById('sim-modal-formula-tag');
+    const mDesc = document.getElementById('sim-modal-formula-desc');
+
+    if(mHudForce) mHudForce.textContent = cfg.initialForce || '';
+    if(mHudSub) mHudSub.textContent = cfg.deltaPText || '';
+    if(mHudTemp) mHudTemp.textContent = cfg.hudStat1 || 'T = 300 K';
+    if(mHudCount) mHudCount.textContent = cfg.hudStat2 || '';
+    if(mBtnSlow) mBtnSlow.textContent = cfg.btnSlowLabel || 'Xem chậm';
+    if(mBtnTemp) mBtnTemp.textContent = cfg.btnTempLabel || 'Nhiệt T (600K)';
+    if(mBtnHero) mBtnHero.textContent = cfg.btnHeroLabel || 'Tương tác';
+
+    if(mTag) mTag.textContent = cfg.formulaTag || 'Bản chất vật lý cốt lõi:';
+    if(mDesc) {
+        mDesc.innerHTML = cfg.conceptText ? cfg.conceptText : (cfg.formulaCore ? `<div class="sim-formula-math">$$${cfg.formulaCore}$$</div>` : '');
+        renderMath(mDesc);
+    }
+
+    SimRegistry.openModal(cfg);
+};
+
+window.closeSimModal = function(){
+    if(typeof SimRegistry === 'undefined') return;
+    SimRegistry.closeModal();
+};
+
+window.toggleSimModalSlowMo = function(){
+    if(typeof SimRegistry === 'undefined') return;
+    const inst = SimRegistry.getModalInstance();
+    if(!inst) return;
+    const isSlow = inst.toggleSlowMo();
+    const btn = document.getElementById('sim-modal-btn-slow');
+    if(btn) {
+        btn.classList.toggle('active', isSlow);
+        btn.textContent = isSlow ? '⏱️ Bình thường' : '⏱️ Xem chậm';
+    }
+};
+
+window.toggleSimModalTemp = function(){
+    if(typeof SimRegistry === 'undefined') return;
+    const inst = SimRegistry.getModalInstance();
+    if(!inst) return;
+    const isHot = inst.toggleTemp();
+    const btn = document.getElementById('sim-modal-btn-temp');
+    const tempHud = document.getElementById('sim-modal-hud-temp');
+    if(btn) {
+        btn.classList.toggle('active', isHot);
+        btn.textContent = isHot ? '🔥 Hạ nhiệt (300K)' : '🔥 Tăng nhiệt T (600K)';
+    }
+    if(tempHud){
+        tempHud.textContent = isHot ? 'T = 600 K (Nóng)' : 'T = 300 K';
+        tempHud.style.color = isHot ? '#f59e0b' : '#38bdf8';
+    }
+};
+
+window.toggleSimModalHero = function(){
+    if(typeof SimRegistry === 'undefined') return;
+    const inst = SimRegistry.getModalInstance();
+    if(!inst) return;
+    const heroOnly = inst.toggleMode();
+    const btn = document.getElementById('sim-modal-btn-hero');
+    if(btn) {
+        btn.classList.toggle('active', heroOnly);
+        btn.textContent = heroOnly ? '🎯 Hiện cả khối khí' : '🎯 1 Hạt tiêu điểm';
+    }
+};
+
+window.resetSimModalCam = function(){
+    if(typeof SimRegistry === 'undefined') return;
+    const inst = SimRegistry.getModalInstance();
+    if(inst) inst.resetCamera();
+};
 
 
 /* ═══════════════════════════════════════════
