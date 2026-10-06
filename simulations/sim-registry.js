@@ -53,20 +53,14 @@
     "Bfb85fde44802": { // B3
       id: "b3_nhietdo_thangdo",
       lessonNum: 3,
-      title: "MÔ HÌNH 3D: THANG NHIỆT ĐỘ KELVIN & CHUYỂN ĐỘNG NHIỆT",
-      scriptUrl: "simulations/sim-nhiet-chuyen-the.js",
-      className: "SimNhietChuyenThe",
-      mode: "solid",
-      formulaTag: "Liên hệ thang nhiệt Kelvin & Celsius:",
-      formulaCore: "T(K) = t(^\\circ C) + 273{,}15",
-      deltaPText: "Nhiệt độ đo động năng chuyển động nhiệt",
-      initialForce: "Độ không tuyệt đối (0 K: hạt đứng yên)",
-      hudStat1: "T = 150 K (-123°C)",
-      hudStat2: "Nhiệt kế Kelvin",
-      btnSlowLabel: "Xem chậm",
-      btnTempLabel: "Tăng nhiệt độ",
-      btnHeroLabel: "Đổi thể chất",
-      description: "Nhiệt độ tuyệt đối là số đo động năng chuyển động nhiệt hỗn loạn của các hạt vi mô cấu tạo nên chất."
+      title: "MÔ HÌNH 3D: NHIỆT ĐỘ – THANG ĐO KELVIN, CELSIUS & NHIỆT KẾ",
+      scriptUrl: "simulations/sim-b03-nhietdo.js",
+      className: "SimB03NhietDo",
+      deltaPText: "Chuyển động nhiệt vi mô (0 K) · So sánh 3 thang đo · Sự nở vì nhiệt",
+      initialForce: "❄️ 0 K (Độ không tuyệt đối)",
+      hudStat1: "T = 300 K (26,85°C)",
+      hudStat2: "Thang đo & Nhiệt kế",
+      description: "Mô hình 3D tương tác chuẩn kiến thức Bài 3: 1) Bản chất nhiệt độ & Độ không tuyệt đối 0 K (hạt đứng yên hoàn toàn); 2) So sánh trực quan 3 thang đo Celsius - Kelvin - Fahrenheit; 3) Cấu tạo và nguyên tắc hoạt động của nhiệt kế chất lỏng (sự nở vì nhiệt)."
     },
     "Bfc4552a2a3b2": { // B4
       id: "b4_nhietdungrieng",
@@ -975,17 +969,17 @@
   let currentModalInstance = null;
 
   return {
-    // Chỉ kích hoạt mô phỏng 3D cho các bài đã được Thầy nghiệm thu và chỉ đạo chuẩn kiến thức (Bài 1, Bài 2 và Bài 15)
+    // Chỉ kích hoạt mô phỏng 3D cho các bài đã được Thầy nghiệm thu và chỉ đạo chuẩn kiến thức (Bài 1, Bài 2, Bài 3 và Bài 15)
     hasSimulation: function (keyOrName, lessonData) {
       const config = findConfig(keyOrName, lessonData);
       if (!config) return false;
-      return (config.lessonNum === 1 || config.lessonNum === 2 || config.lessonNum === 15 || config.id === 'b1_cautrucchat' || config.id === 'b2_chuyenthe' || config.id === 'b15_apsuat_mhdhpt');
+      return (config.lessonNum === 1 || config.lessonNum === 2 || config.lessonNum === 3 || config.lessonNum === 15 || config.id === 'b1_cautrucchat' || config.id === 'b2_chuyenthe' || config.id === 'b3_nhietdo_thangdo' || config.id === 'b15_apsuat_mhdhpt');
     },
 
     getConfig: function (keyOrName, lessonData) {
       const config = findConfig(keyOrName, lessonData);
       if (!config) return null;
-      if (config.lessonNum === 1 || config.lessonNum === 2 || config.lessonNum === 15 || config.id === 'b1_cautrucchat' || config.id === 'b2_chuyenthe' || config.id === 'b15_apsuat_mhdhpt') {
+      if (config.lessonNum === 1 || config.lessonNum === 2 || config.lessonNum === 3 || config.lessonNum === 15 || config.id === 'b1_cautrucchat' || config.id === 'b2_chuyenthe' || config.id === 'b3_nhietdo_thangdo' || config.id === 'b15_apsuat_mhdhpt') {
         return config;
       }
       return null;

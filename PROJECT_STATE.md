@@ -159,7 +159,53 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
-### 01/10/2026 (16:05) — Hoàn Thiện Mô Hình 3D Thí Nghiệm Brown: Phân Biệt Rõ Rệt Nước vs Khí & Bổ Sung Bảng Chú Thích Trực Quan
+### 06/10/2026 (10:30) — Hoàn Thành & Tích Hợp Mô Hình 3D Bài 3: Nhiệt Độ – Thang Nhiệt Độ – Nhiệt Kế (3 Mô Hình Chuẩn Giáo Án)
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_PHYSICS_AND_VISUALS_PASS` (Kiểm thử tự động Playwright chụp 7 ảnh nghiệm thu chuẩn xác).
+- **Nội dung điều chỉnh theo 3 Lý thuyết trọng tâm của Thầy**:
+  1. **Mô hình 1: Bản chất Nhiệt độ & Độ không tuyệt đối (0 Kelvin)**:
+     - Nhiệt độ đặc trưng cho mức độ chuyển động nhiệt hỗn loạn (động năng trung bình $\overline{E_d} = \frac{3}{2}kT$) của các phân tử vi mô.
+     - Tại $T = 0\,\text{K}$ (Độ không tuyệt đối, $-273{,}15^\circ\text{C}$): Phân tử DỪNG CHUYỂN ĐỘNG HOÀN TOÀN ($v = 0, \overline{E_d} = 0$), đứng yên 100%, màu xanh băng tuyết (`#38bdf8`), vector vận tốc bằng 0.
+     - Khi $T$ tăng ($0\,\text{K} \to 600\,\text{K}$): Hạt bay hỗn loạn, tốc độ tỉ lệ $v \propto \sqrt{T}$, màu sắc đổi từ xanh băng $\to$ vàng $\to$ cam $\to$ đỏ rực lửa.
+     - Có vector vận tốc $\vec{v}$ (ArrowHelper) và vệt quỹ đạo vàng kim loại theo dõi 1 hạt tiêu điểm (Brownian/Thermal trail).
+     - Controls: 6 nút mốc nhanh (`0 K Tuyệt đối`, `77 K Nitơ`, `273 K Đá tan`, `300 K Phòng`, `373 K Sôi`, `600 K Nóng`), slider $0 - 600\,\text{K}$, toggles hiện vector và vệt hạt.
+  2. **Mô hình 2: So sánh 3 Thang đo (Celsius - Kelvin - Fahrenheit)**:
+     - 3 cây cột nhiệt kế khổng lồ đặt song song trong không gian 3D: Celsius (°C), Kelvin (K), Fahrenheit (°F) với ống thủy tinh trong suốt và chất lỏng đỏ dâng hạ đồng bộ.
+     - Đường dóng ngang phát sáng kết nối mốc nhiệt độ tức thời kèm 3 thẻ số hiển thị đồng thời công thức:
+       + Độ không tuyệt đối: $0\,\text{K} \leftrightarrow -273{,}15^\circ\text{C} \leftrightarrow -459{,}67^\circ\text{F}$
+       + Điểm gặp nhau đặc biệt: $-40^\circ\text{C} = -40^\circ\text{F}$ (Kelvin = $233{,}15\,\text{K}$)
+       + Nước đá đang tan: $0^\circ\text{C} = 273{,}15\,\text{K} = 32^\circ\text{F}$
+       + Thân nhiệt bình thường: $37^\circ\text{C} = 310{,}15\,\text{K} = 98{,}6^\circ\text{F}$
+       + Nước sôi (1 atm): $100^\circ\text{C} = 373{,}15\,\text{K} = 212^\circ\text{F}$
+     - Nổi bật tính chất sư phạm: Khoảng chia $\Delta T (\text{K}) = \Delta t (^\circ\text{C})$, trong khi thang Fahrenheit chia 180 độ giữa đá tan và nước sôi.
+     - Controls: 5 nút mốc nhanh, slider nhiệt độ $-273{,}15^\circ\text{C} \to 120^\circ\text{C}$, 3 thẻ số lớn.
+  3. **Mô hình 3: Cấu tạo Nhiệt kế Chất lỏng & Sự nở vì nhiệt**:
+     - Cốc thí nghiệm chứa môi trường nhiệt độ ($0^\circ\text{C} \to 100^\circ\text{C}$) cắm nhiệt kế thủy tinh; cột chất lỏng dâng lên hạ xuống đúng vạch chia độ.
+     - **Kính lúp vi mô (Micro Magnifier Lens)** phóng to bầu nhiệt kế: Hiển thị trực tiếp các phân tử chất lỏng trong bầu dãn nở khoảng cách ra xa nhau khi nhận nhiệt $\to$ giải thích trực quan bản chất sự nở vì nhiệt của chất lỏng!
+     - Controls: 4 nút môi trường (`Cốc đá lạnh 0°C`, `Phòng 25°C`, `Nước ấm 50°C`, `Nước sôi 100°C`), slider nhiệt độ $0 - 100^\circ\text{C}$.
+- **Files cập nhật**:
+  - `simulations/sim-b03-nhietdo.js` (tạo mới file mô hình Bài 3 với class `SimB03NhietDo`).
+  - `simulations/sim-registry.js` (đăng ký `Bfb85fde44802` với `SimB03NhietDo`, bật quyền hiển thị trong `hasSimulation` và `getConfig`).
+  - `test_b03_simulation.py` (script kiểm thử tự động Playwright).
+- **Ảnh nghiệm thu**:
+  - `b03_m1_zero_kelvin.png`: Mô hình 1 ở 0 K (phân tử đứng yên hoàn toàn).
+  - `b03_m1_hot_temp.png`: Mô hình 1 ở 373 K (chuyển động nhiệt hỗn loạn nhanh, vector v vươn dài).
+  - `b03_m2_intersect_minus40.png`: Mô hình 2 tại điểm gặp nhau $-40^\circ\text{C} = -40^\circ\text{F}$.
+  - `b03_m2_boil_100c.png`: Mô hình 2 tại $100^\circ\text{C} = 373{,}15\,\text{K} = 212^\circ\text{F}$.
+  - `b03_m3_thermometer_ice_0c.png`: Mô hình 3 cốc đá lạnh $0^\circ\text{C}$ (phân tử sít nhau).
+  - `b03_m3_thermometer_boil_100c.png`: Mô hình 3 cốc nước sôi $100^\circ\text{C}$ (phân tử dãn nở, cột dâng cao).
+  - `b03_modal_fullscreen.png`: Chế độ modal toàn màn hình hoạt động hoàn hảo.
+
+### 06/10/2026 (09:45) — Hoàn Thiện Mô Hình 3D Bài 2: Lực Tương Tác Phân Tử & Sự Chuyển Thể Của Nước
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_PHYSICS_AND_VISUALS_PASS` (Commit `23b5e74` đã push lên `upstream/main` và `origin/main`).
+- **Nội dung hoàn thành**:
+  1. Mô hình 1: Khảo sát khoảng cách $r$ ($r = r_0$, $r < r_0$, $r > r_0$) tĩnh đúng bản chất, không dao động, không đồ thị mini.
+  2. Mô hình 2: Chuyển thể của Nước (-50°C đến 150°C) với 3 chế độ "Cấp nhiệt", "Tỏa nhiệt", "Dừng lại"; khắc phục triệt để lỗi không bấm dừng được khi đang cấp/tỏa nhiệt; đường biểu diễn 130°C cao hơn hẳn 100°C.
+  3. Mô hình 3: 6 quá trình chuyển thể thực tế trên một khối vật chất (Nóng chảy, Đông đặc, Hóa hơi, Ngưng tụ, Thăng hoa, Ngưng kết).
+  4. Đã ẩn triệt để ô kiến thức công thức vật lý ở dưới theo yêu cầu của Thầy.
 - **Người thực hiện**: Antigravity AI Coordinator
 - **Người nhận bàn giao**: Thầy Xuân Trường & Codex
 - **Trạng thái**: `VERIFIED_PHYSICS_AND_VISUALS_PASS` (Đã chạy kiểm thử tự động Playwright chụp 4 ảnh nghiệm thu chuẩn xác).
