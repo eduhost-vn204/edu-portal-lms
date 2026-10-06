@@ -643,12 +643,17 @@
             align-items: center;
             justify-content: center;
             gap: 5px;
-            transition: all 0.15s ease;
-            font-family: inherit;
+            transition: all 0.15s;
+            user-select: none;
+            white-space: nowrap;
         }
         .sim-btn:hover {
             border-color: var(--blue);
+            background: rgba(11,132,243,0.08);
             color: var(--blue);
+        }
+        .sim-btn:active {
+            transform: scale(0.98);
         }
         .sim-btn.active {
             background: var(--blue) !important;
@@ -823,8 +828,8 @@
             border-color: #EF4444;
         }
         .sim-modal-body {
-            position: relative;
             flex: 1;
+            position: relative;
             background: #070D1E;
             overflow: hidden;
         }
@@ -915,7 +920,8 @@
             <a id="nav-home" href="index.html"><i class="fa-solid fa-house" style="font-size:12px"></i> <span>Trang chủ</span></a>
             <a href="phong-thi-thu.html"><i class="fa-solid fa-clipboard-check" style="font-size:12px"></i> <span>Phòng Thi Thử</span></a>
             <a href="danhsach-ly12.html"><i class="fa-solid fa-file-lines" style="font-size:12px"></i> <span>Phòng Kiểm Tra</span></a>
-            <a href="dua-top.html" style="color:#fbbf24;font-weight:700"><i class="fa-solid fa-crown" style="font-size:12px"></i> <span>Đua Top</span></a>
+            <a href="dau-thuong.html" style="color:#00f0ff;font-weight:700;margin-right:20px"><i class="fa-solid fa-khanda" style="font-size:12px"></i> <span>Đấu Thường</span></a>
+            <a href="dua-top.html" style="color:#fbbf24;font-weight:700"><i class="fa-solid fa-crown" style="font-size:12px"></i> <span>Đấu Hạng</span></a>
             <a href="solo.html" style="color:#f472b6;font-weight:700"><i class="fa-solid fa-khanda" style="font-size:12px"></i> <span>Solo</span></a>
             <a href="live-record.html" style="color:#dc2626;font-weight:700"><i class="fa-solid fa-satellite-dish" style="font-size:12px"></i> <span>Live & Xem Lại</span></a>
             <a href="huongdan.html"><i class="fa-solid fa-compass" style="font-size:12px"></i> <span>Hướng Dẫn</span></a>
@@ -1119,11 +1125,9 @@ async function fetchLessons(){
     const cached=_lcLoad();
     try{
         const data=await fetchJsonTimeout('data/baihoc.json',3000,{cache:'no-cache'});
-        if(Array.isArray(data) || (data && (data.baihoc || data.data))){
-            const raw = Array.isArray(data) ? data : (data.baihoc || data.data || []);
-            const valid = raw.filter(x=>field(x,['khoahoc','khoa','course','mon']).toString().trim() && isPublicLesson(x));
-            USING_DEMO=false; _lcSave(valid); return valid;
-        }
+        const valid=(Array.isArray(data)?data:(data.baihoc||data.data||[]))
+            .filter(x=>field(x,['khoahoc','khoa','course','mon']).toString().trim() && isPublicLesson(x));
+        if(valid.length){ USING_DEMO=false; _lcSave(valid); return valid; }
     }catch(e){ console.warn('Chưa tải được JSON bài học:',e); }
     if(cached){
         const publicCached=(Array.isArray(cached)?cached:[]).filter(isPublicLesson);
@@ -1131,7 +1135,7 @@ async function fetchLessons(){
     }
     try{
         const valid=await _fetchFromSheets();
-        if(Array.isArray(valid)){ USING_DEMO=false; _lcSave(valid); return valid; }
+        if(valid.length){ USING_DEMO=false; _lcSave(valid); return valid; }
     }catch(e){ console.warn('GAS bài học không phản hồi:',e); }
     USING_DEMO=true; return DEMO_ROWS.filter(isPublicLesson);
 }
@@ -1174,10 +1178,12 @@ async function loadLessonQuiz(key,lesson){
 }
 
 async function fetchProgress(){
+    const prevSnapshot = [...WATCHED].sort().join(',');
     WATCHED=new Set();
     if(!HS||USING_DEMO){
         try{ (JSON.parse(localStorage.getItem('vlxt_demo_watched')||'[]')).forEach(k=>WATCHED.add(k)); }catch(e){}
-        return;
+        const newSnapshot = [...WATCHED].sort().join(',');
+        return prevSnapshot !== newSnapshot;
     }
     // Đọc localStorage trước (tức thì, không mất khi reload)
     if(HS && HS.sdt){
@@ -1187,34 +1193,27 @@ async function fetchProgress(){
         // QUAN TRỌNG: fetch THẲNG (không qua cachedFetch) — tiến độ dùng để MỞ KHOÁ bài học,
         // nếu dùng cachedFetch (stale-while-revalidate) có thể trả dữ liệu CŨ tới gần 24h,
         // khiến bài đã hoàn thành hiện lại là "chưa xong" và học sinh bị chặn học vượt oan.
-        // (Bug thật 27/7: HS hoàn thành B1 hôm trước, hôm sau vào lại bị bắt "học lại" mới
-        // được mở B2 — do dữ liệu tiến độ nạp lên bị cache cũ.)
         const r=await fetch(APPS_SCRIPT_URL+'?type=tiendo&hs='+encodeURIComponent(HS.sdt)+'&t='+Date.now());
         const data=await r.json();
         const arr=Array.isArray(data)?data:(data.tiendo||data.data||[]);
         const prevSize = WATCHED.size;
-        // QUAN TRỌNG: KHÔNG dùng field(it,['lesson',...]) ở đây — sheet TienDo có
-        // cột CŨ "Lesson" (viết hoa, luôn rỗng, còn sót từ trước khi đổi schema 21/7)
-        // đứng TRƯỚC cột MỚI "lesson" (viết thường, chứa giá trị thật) trong thứ tự
-        // cột. field() so khớp không phân biệt hoa/thường nên bắt trúng "Lesson"
-        // rỗng trước, trả về '' -> bỏ sót MỌI dòng tiến độ. Đây là nguyên nhân THẬT
-        // khiến HS đổi máy/trình duyệt mới (không có cache cục bộ) bị mất sạch tiến
-        // độ dù server có đủ dữ liệu — ưu tiên đọc thẳng it.lesson trước.
         arr.forEach(it=>{ const k=(typeof it==='string')?it:(it.lesson || field(it,['lesson','bai','key'])); if(k) WATCHED.add(k.toString()); });
         // Chỉ cập nhật localStorage nếu GAS trả về dữ liệu mới (không ghi đè nếu GAS trả về ít hơn)
         if(HS && HS.sdt && WATCHED.size >= prevSize){
             try{ localStorage.setItem('vlxt_watched_'+HS.sdt, JSON.stringify([...WATCHED])); }catch(e){}
         }
+        const newSnapshot = [...WATCHED].sort().join(',');
+        return prevSnapshot !== newSnapshot;
     }catch(e){
         console.warn('Chưa đọc tiến độ (fetch thẳng lỗi, thử lại qua cache):',e);
-        // Fallback: nếu fetch thẳng lỗi (mất mạng tạm thời), thử cachedFetch để ít nhất
-        // có dữ liệu (dù có thể hơi cũ) thay vì để trống hoàn toàn — vẫn tốt hơn WATCHED rỗng.
         try{
             const r2=await cachedFetch(APPS_SCRIPT_URL+'?type=tiendo&hs='+encodeURIComponent(HS.sdt)+'&t='+Date.now());
             const data2=await r2.json();
             const arr2=Array.isArray(data2)?data2:(data2.tiendo||data2.data||[]);
             arr2.forEach(it=>{ const k=(typeof it==='string')?it:field(it,['lesson','bai','key']); if(k) WATCHED.add(k.toString()); });
-        }catch(e2){ console.warn('Fallback cache cũng lỗi:',e2); }
+            const newSnapshot = [...WATCHED].sort().join(',');
+            return prevSnapshot !== newSnapshot;
+        }catch(e2){ console.warn('Fallback cache cũng lỗi:',e2); return false; }
     }
 }
 
@@ -1361,7 +1360,7 @@ function lessonHasContent(l){
 // Chặn "học vượt":
 // 1) Bài TRƯỚC chưa hoàn thành → khoá (reason 'sequence').
 // 2) Bài trống hoàn toàn (chưa cập nhật gì) → khoá luôn (reason 'empty'), hướng học sinh
-//    sang Đua Top luyện tập trong lúc chờ thầy soạn bài — SỬA 11/8/2026 (trước đây cố tình
+//    sang Đấu Hạng luyện tập trong lúc chờ thầy soạn bài — SỬA 11/8/2026 (trước đây cố tình
 //    KHÔNG khoá để học sinh vào xem PDF/bài tập tạm thời, nhưng gây lỗi bài trống bị tự động
 //    tính "Đã hoàn thành" sau 30s — nay khoá hẳn cho đơn giản và đúng thực tế).
 // Đã xem rồi thì luôn được xem lại, không bao giờ khoá ngược.
@@ -1464,11 +1463,13 @@ function markWatched(key){
 /* ═══════════════════════════════════════════
    ROUTER
 ═══════════════════════════════════════════ */
+let _lastRouteHash = null;
 function go(hash){ if(location.hash===hash) route(); else location.hash=hash; }
 window.addEventListener('hashchange',route);
-function route(){
-    if(typeof SimRegistry !== 'undefined') SimRegistry.unmount();
+function route(options){
+    const opts = options || {};
     window._trialActiveGrantedLesson = null;
+    if(typeof SimRegistry !== 'undefined') SimRegistry.unmount();
     // Reset khung trang về mặc định — renderLesson() sẽ tự nới rộng (wide-lesson) nếu cần
     app().className = 'container';
 
@@ -1492,12 +1493,20 @@ function route(){
     }
 
     const h=decodeURIComponent(location.hash||'#home');
+    const isNavChange = (_lastRouteHash !== h);
+    _lastRouteHash = h;
+
     const nh=$('#nav-home'); if(nh) nh.classList.toggle('active',h==='#home'||h==='');
     if(h.startsWith('#course/')) renderCourse(h.slice(8));
     else if(h.startsWith('#lesson/')) renderLesson(h.slice(8));
     else if(h==='#live'){ renderLiveLesson(); if(typeof vlxtAutoShowGuide==='function') vlxtAutoShowGuide('live'); }
-    else { renderHome(); if(typeof vlxtAutoShowGuide==='function') vlxtAutoShowGuide('baihoc'); }
-    window.scrollTo({top:0,behavior:'smooth'});
+    else { renderHome(); if(isNavChange && typeof vlxtAutoShowGuide==='function') vlxtAutoShowGuide('baihoc'); }
+
+    // Chỉ cuộn lên đầu trang khi người dùng thực sự chuyển sang trang/hash khác
+    // Tuyệt đối không giật cuộn màn hình khi các tiến trình nền cập nhật dữ liệu (silent update)
+    if(isNavChange && !opts.silent){
+        window.scrollTo({top:0,behavior:'smooth'});
+    }
 }
 
 /* ═══════════════════════════════════════════
@@ -1550,7 +1559,7 @@ function renderHome(){
                 ? (w > 0 ? '<span class="cc-status-badge started"><i class="fa-solid fa-circle-play"></i> Đang khai giảng</span>' : '<span class="cc-status-badge new-course"><i class="fa-solid fa-star"></i> Đang khai giảng</span>')
                 : '<span class="cc-status-badge coming"><i class="fa-solid fa-clock"></i> Sắp khai giảng</span>';
             // Chỉ hiện status badge nếu có config (tránh hiện nhầm cho khoá không cần quản lý)
-            const _showStatus = !!getCourseConfig(c.name);
+            const _showStatus = !!KHOACONFIG[c.name];
             const _lockBadge = _lockMsg ? `<div class="cc-lock-badge">${_lockMsg}</div>` : '';
             const _onclick = _access ? `go('#course/${encodeURIComponent(c.name)}')` : `showUpgrade('${c.name.replace(/'/g,"\\'")}')`;
             return `<div class="course-card${_lockCls}" onclick="${_onclick}">
@@ -1572,11 +1581,16 @@ function renderHome(){
         });
         if(solo.length){ h+='<div class="grid">'; solo.forEach(c=>{ h+=ccHTML(c); }); h+='</div>'; }
     }
+    // Virtual diffing: Nếu nội dung HTML sinh ra giống hệt giao diện đang hiển thị -> Bỏ qua, không chạm DOM
+    if(app().__lastRenderedHomeHtml === h && app().firstElementChild){
+        return;
+    }
+    app().__lastRenderedHomeHtml = h;
     app().innerHTML=h; renderMath(app());
 }
-function setTab(t){ homeState.tab=t; renderHome(); }
-function setSort(s){ homeState.sort=s; renderHome(); }
-let _sT; function onSearch(v){ homeState.q=v; clearTimeout(_sT); _sT=setTimeout(renderHome,180); }
+function setTab(t){ homeState.tab=t; if(app()) app().__lastRenderedHomeHtml = ''; renderHome(); }
+function setSort(s){ homeState.sort=s; if(app()) app().__lastRenderedHomeHtml = ''; renderHome(); }
+let _sT; function onSearch(v){ homeState.q=v; clearTimeout(_sT); _sT=setTimeout(function(){ if(app()) app().__lastRenderedHomeHtml = ''; renderHome(); },180); }
 
 /* ═══════════════════════════════════════════
    MODAL: BÀI NỀN TẢNG (PREREQUISITES) & HẠN MỨC HỌC THỬ (TRIAL LIMIT)
@@ -1800,10 +1814,6 @@ if (typeof global !== 'undefined') global.triggerTrial = triggerTrial;
 function handleOpenLesson(courseName, lessonKey){
     const course = findCourse(courseName);
     const info = findLesson(lessonKey);
-    if(course && !canAccess(course.name)){
-        showUpgrade(course.name);
-        return;
-    }
     if(!course || !info) {
         go('#lesson/' + encodeURIComponent(lessonKey));
         return;
@@ -1813,7 +1823,7 @@ function handleOpenLesson(courseName, lessonKey){
 
     if(blk.blocked){
         if(blk.reason === 'empty'){
-            toast('⏳ Em đã học kịp tiến độ rồi — qua Đua Top luyện tập thêm nhé! 🏆', 'err');
+            toast('⏳ Em đã học kịp tiến độ rồi — qua Đấu Hạng luyện tập thêm nhé! 🏆', 'err');
             return;
         }
         if(blk.reason === 'trial_limit'){
@@ -1850,7 +1860,6 @@ function handleOpenLesson(courseName, lessonKey){
 function renderCourse(name){
     const c=findCourse(name);
     if(!c){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-circle-question"></i><p>Không tìm thấy khóa học.</p><p><a onclick="go('#home')">← Về trang chủ</a></p></div>`; return; }
-    if(!isVisible(c.name)){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-eye-slash"></i><p>Khóa học hiện đang tạm ẩn.</p><p><a onclick="go('#home')">← Về danh sách khóa học</a></p></div>`; return; }
     if(!canAccess(c.name)){ showUpgrade(c.name); return; }
     const pct=coursePct(c),w=courseWatched(c);
     const thumb=c.img&&/^https?:|^data:/.test(c.img)?`<img src="${esc(c.img)}" alt="">`:(c.img||'📘');
@@ -1905,6 +1914,11 @@ function renderCourse(name){
         });
         h+=`</div></div>`;
     });
+    // Virtual diffing cho danh sách bài học: nếu HTML không đổi thì giữ nguyên DOM
+    if(app().__lastRenderedCourseHtml === h && app().firstElementChild){
+        return;
+    }
+    app().__lastRenderedCourseHtml = h;
     app().innerHTML=h; renderMath(app());
 }
 
@@ -1915,7 +1929,6 @@ function renderLesson(key){
     const info=findLesson(key);
     if(!info){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-circle-question"></i><p>Không tìm thấy bài học.</p><p><a onclick="go('#home')">← Về trang chủ</a></p></div>`; return; }
     const {course,chapter,lesson}=info;
-    if(course && !canAccess(course.name)){ showUpgrade(course.name); return; }
     // Chặn "học vượt" kể cả khi vào thẳng bằng link/hash — không chỉ chặn ở danh sách bài
     const _blkCheck = isLessonBlocked(course, key);
     if(_blkCheck.blocked){
@@ -1924,7 +1937,7 @@ function renderLesson(key){
         let _msg = 'Em cần hoàn thành bài trước để mở khoá bài này.';
         let _icon = 'fa-lock';
         if(_isEmpty){
-            _msg = 'Em đã học kịp tiến độ rồi — qua Đua Top luyện tập thêm trong lúc chờ nhé!';
+            _msg = 'Em đã học kịp tiến độ rồi — qua Đấu Hạng luyện tập thêm trong lúc chờ nhé!';
             _icon = 'fa-hourglass-half';
         } else if(_isLimit){
             _msg = 'Em đã dùng hết 2/2 bài học mới hôm nay theo hạn mức học thử. Lượt học mới sẽ tự động mở lại vào 00:00 ngày mai (theo giờ Việt Nam). Em vẫn có thể ôn tập các bài đã học bên dưới.';
@@ -1935,7 +1948,7 @@ function renderLesson(key){
             <p style="margin-top:10px;font-weight:700">${esc(lesson.name)}</p>
             <p style="color:var(--sub)">${_msg}</p>
             <p style="margin-top:14px">
-                ${_isEmpty?`<a onclick="window.location.href='dua-top.html'" style="cursor:pointer;font-weight:700;color:#fbbf24">🏆 Vào Đua Top</a>&nbsp;&nbsp;·&nbsp;&nbsp;`:''}<a onclick="go('#course/${encodeURIComponent(course.name)}')">← Về danh sách bài học</a>
+                ${_isEmpty?`<a onclick="window.location.href='dua-top.html'" style="cursor:pointer;font-weight:700;color:#fbbf24">🏆 Vào Đấu Hạng</a>&nbsp;&nbsp;·&nbsp;&nbsp;`:''}<a onclick="go('#course/${encodeURIComponent(course.name)}')">← Về danh sách bài học</a>
             </p>
         </div>`;
         return;
@@ -2162,7 +2175,7 @@ function renderLesson(key){
     else if(_hasQuiz) _doneLabel='Làm đúng ≥90% bài tập luyện tập để hoàn thành';
     else _doneLabel='Tự động lưu sau 30 giây';
 
-    // ── Mô phỏng 3D tương tác (Three.js WebGL) ──
+    // ── Mô phỏng 3D tương tác (Three.js WebGL) phủ 100% bài học ──
     let simCardHtml = '';
     const _hasSim = (typeof SimRegistry !== 'undefined' && SimRegistry.hasSimulation(lesson.key || lesson.name, lesson));
     if(_hasSim){
@@ -2195,7 +2208,7 @@ function renderLesson(key){
                     <span id="sim-hud-count-wrap"><b id="sim-hud-count" style="color:#fbbf24">${esc(simCfg.hudStat2 || '0')}</b></span>
                 </div>
             </div>
-            <div class="sim-toolbar" id="sim-toolbar-inline">
+            <div class="sim-toolbar">
                 <button type="button" id="sim-btn-slow" class="sim-btn" onclick="toggleSimSlowMo()">
                     <span>⏱️</span> <span id="sim-lbl-slow">${esc(simCfg.btnSlowLabel || 'Xem chậm')}</span>
                 </button>
@@ -2205,14 +2218,15 @@ function renderLesson(key){
                 <button type="button" id="sim-btn-hero" class="sim-btn" onclick="toggleSimHero()">
                     <span>🎯</span> <span id="sim-lbl-hero">${esc(simCfg.btnHeroLabel || 'Tương tác')}</span>
                 </button>
-                <button type="button" class="sim-btn sim-btn-icon" onclick="resetSimCam()" title="Đặt lại góc">
+                <button type="button" class="sim-btn sim-btn-icon" onclick="resetSimCam()" title="Đặt lại góc nhìn">
                     <span>🔄</span>
                 </button>
             </div>
-            <div class="sim-formula-box">
-                <div class="sim-formula-tag">${esc(simCfg.formulaTag || 'Bản chất vật lý cốt lõi:')}</div>
-                <div class="sim-formula-desc">${simCfg.conceptText ? simCfg.conceptText : (simCfg.formulaCore ? `<div class="sim-formula-math">$$${simCfg.formulaCore}$$</div>` : '')}</div>
-            </div>
+            ${(simCfg.conceptText || simCfg.formulaCore || simCfg.formulaTag) ? `
+            <div class="sim-formula-box" id="sim-formula-box">
+                <div class="sim-formula-tag" id="sim-formula-tag">${esc(simCfg.formulaTag || 'Bản chất vật lý cốt lõi:')}</div>
+                <div class="sim-formula-desc" id="sim-formula-desc">${simCfg.conceptText ? simCfg.conceptText : (simCfg.formulaCore ? `<div class="sim-formula-math">$$${simCfg.formulaCore}$$</div>` : '')}</div>
+            </div>` : ''}
         </div>`;
     }
 
@@ -2437,10 +2451,15 @@ window.openSimModal = function(){
     if(mBtnTemp) mBtnTemp.textContent = cfg.btnTempLabel || 'Nhiệt T (600K)';
     if(mBtnHero) mBtnHero.textContent = cfg.btnHeroLabel || 'Tương tác';
 
-    if(mTag) mTag.textContent = cfg.formulaTag || 'Bản chất vật lý cốt lõi:';
-    if(mDesc) {
-        mDesc.innerHTML = cfg.conceptText ? cfg.conceptText : (cfg.formulaCore ? `<div class="sim-formula-math">$$${cfg.formulaCore}$$</div>` : '');
-        renderMath(mDesc);
+    const mFBox = document.getElementById('sim-modal-formula-box');
+    const hasFormula = !!(cfg.conceptText || cfg.formulaCore || cfg.formulaTag);
+    if(mFBox) mFBox.style.display = hasFormula ? '' : 'none';
+    if(hasFormula) {
+        if(mTag) mTag.textContent = cfg.formulaTag || 'Bản chất vật lý cốt lõi:';
+        if(mDesc) {
+            mDesc.innerHTML = cfg.conceptText ? cfg.conceptText : (cfg.formulaCore ? `<div class="sim-formula-math">$$${cfg.formulaCore}$$</div>` : '');
+            renderMath(mDesc);
+        }
     }
 
     SimRegistry.openModal(cfg);
@@ -4288,120 +4307,63 @@ if(localStorage.getItem('vlxt_theme')==='dark') document.body.classList.add('dar
 
 let KHOACONFIG = {}; // { courseName: { trangThai, loaiTK, hienThi, thuTu, daKhaiGiang } }
 
-function applyKhoaConfig(arr){
-    if(!Array.isArray(arr)) return false;
-    let changed = false;
-    arr.forEach(c => {
-        if(!c || !c.khoaHoc) return;
-        const prev = KHOACONFIG[c.khoaHoc];
-        const next = {
-            trangThai:    c.trangThai || 'open',
-            loaiTK:       (c.loaiTK || 'free,vip,premium').toLowerCase(),
-            hienThi:      c.hienThi !== 'false' && c.hienThi !== false,
-            thuTu:        (c.thuTu !== undefined && c.thuTu !== '') ? Number(c.thuTu) : 999,
-            daKhaiGiang:  c.daKhaiGiang === true || c.daKhaiGiang === 'true'
-        };
-        if(!prev || JSON.stringify(prev) !== JSON.stringify(next)){
-            KHOACONFIG[c.khoaHoc] = next;
-            changed = true;
-        }
-    });
-    return changed;
-}
-
 async function fetchKhoaConfig(){
-    // 1. Tải tức thì từ localStorage nếu có để không bị giật giao diện (0ms)
-    try{
-        const local = JSON.parse(localStorage.getItem('vlxt_khoaconfig_v2') || 'null');
-        if(Array.isArray(local) && local.length) applyKhoaConfig(local);
-    }catch(e){}
-
-    // 2. Tải nhanh từ JSON tĩnh GitHub Pages
     try{
         const d = await fetchJsonTimeout('data/khoaconfig.json',3000,{cache:'no-cache'});
         const arr = Array.isArray(d) ? d : (d.data || []);
-        if(arr.length){
-            applyKhoaConfig(arr);
-            try{ localStorage.setItem('vlxt_khoaconfig_v2', JSON.stringify(arr)); }catch(e){}
-        }
-    }catch(e){ console.warn('fetchKhoaConfig tĩnh lỗi:', e); }
-
-    // 3. Tải ngầm bất đồng bộ từ Google Apps Script (Stale-While-Revalidate)
-    // Để khi Thầy cập nhật trạng thái/phân quyền trên Admin, web học sinh tự động nhận diện mà không cần chờ GitHub cron
-    fetchJsonTimeout(APPS_SCRIPT_URL + '?type=khoaconfig&_t=' + Date.now(), 6000).then(function(gasData){
-        const arr = Array.isArray(gasData) ? gasData : (gasData && gasData.data);
-        if(Array.isArray(arr) && arr.length){
-            const changed = applyKhoaConfig(arr);
-            try{ localStorage.setItem('vlxt_khoaconfig_v2', JSON.stringify(arr)); }catch(e){}
-            if(changed && _coursesReady){
-                route();
-            }
-        }
-    }).catch(function(err){ console.warn('Cập nhật KhoaConfig ngầm từ GAS:', err); });
-}
-
-function getCourseConfig(courseName){
-    if(!courseName) return null;
-    if(KHOACONFIG[courseName]) return KHOACONFIG[courseName];
-    const norm = String(courseName).trim().toLowerCase();
-    for(const [k, v] of Object.entries(KHOACONFIG)){
-        if(k.trim().toLowerCase() === norm) return v;
-        const di = k.lastIndexOf(' - ');
-        const kdname = (di > 0 ? k.slice(0, di) : k).trim().toLowerCase();
-        if(kdname === norm) return v;
-        const normDi = courseName.lastIndexOf(' - ');
-        const courseDname = (normDi > 0 ? courseName.slice(0, normDi) : courseName).trim().toLowerCase();
-        if(kdname === courseDname) return v;
-    }
-    return null;
+        arr.forEach(c => {
+            KHOACONFIG[c.khoaHoc] = {
+                trangThai:    c.trangThai || 'open',
+                loaiTK:       c.loaiTK || 'free,vip,premium',
+                hienThi:      c.hienThi !== 'false' && c.hienThi !== false,
+                thuTu:        (c.thuTu !== undefined && c.thuTu !== '') ? Number(c.thuTu) : 999,
+                daKhaiGiang:  c.daKhaiGiang === true || c.daKhaiGiang === 'true'
+            };
+        });
+    }catch(e){ console.warn('fetchKhoaConfig lỗi:', e); }
 }
 
 function isVisible(courseName){
-    const cfg = getCourseConfig(courseName);
+    const cfg = KHOACONFIG[courseName];
     if(!cfg) return true; // default visible
     return cfg.hienThi !== false;
 }
 
 // Trả về số thứ tự của khoá, dùng để sort
 function courseOrder(courseName){
-    const cfg = getCourseConfig(courseName);
+    const cfg = KHOACONFIG[courseName];
     return cfg ? cfg.thuTu : 999;
 }
 
 // Khoá đã khai giảng chưa? (teacher marked as started)
 function isStarted(courseName){
-    const cfg = getCourseConfig(courseName);
+    const cfg = KHOACONFIG[courseName];
     if(!cfg) return true; // default: accessible if no config
     return cfg.daKhaiGiang === true;
 }
 
 function canAccess(courseName){
-    const cfg = getCourseConfig(courseName);
+    const cfg = KHOACONFIG[courseName];
     if(!cfg) return true;
     if(cfg.trangThai === 'closed') return false;
     if(cfg.daKhaiGiang === false) return false; // chưa khai giảng → khoá
-    const allowed = (cfg.loaiTK||'free,vip,premium').split(',').map(s=>s.trim().toLowerCase());
-    const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
-    const tier = String((user && user.loaiTK) || 'free').trim().toLowerCase();
+    const allowed = (cfg.loaiTK||'free,vip,premium').split(',').map(s=>s.trim());
+    const user = JSON.parse(localStorage.getItem('vlxt_user_v2')||'null');
+    const tier = (user && user.loaiTK) || 'free';
     return allowed.includes(tier);
 }
 
 function tierLabel(courseName){
-    const cfg = getCourseConfig(courseName);
+    const cfg = KHOACONFIG[courseName];
     if(!cfg || cfg.trangThai === 'closed') return '🔒 Khoá học chưa mở';
-    const allowed = (cfg.loaiTK||'free,vip,premium').split(',').map(s=>s.trim().toLowerCase());
-    const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
-    const tier = String((user && user.loaiTK) || 'free').trim().toLowerCase();
-
-    // 1) Ưu tiên kiểm tra điều kiện phân hạng tài khoản trước
-    if(!allowed.includes(tier)){
-        if(allowed.every(t=>t==='premium')) return '💎 Cần tài khoản Premium';
-        if(allowed.some(t=>t==='vip'||t==='premium') && !allowed.includes('free')) return '⭐ Cần tài khoản VIP trở lên';
-        return '🔒 Không có quyền truy cập';
-    }
-    // 2) Đã đạt điều kiện phân hạng nhưng khoá chưa khai giảng
     if(cfg.daKhaiGiang === false) return '🔜 Sắp khai giảng';
-    return '';
+    const allowed = (cfg.loaiTK||'free,vip,premium').split(',').map(s=>s.trim());
+    const user = JSON.parse(localStorage.getItem('vlxt_user_v2')||'null');
+    const tier = (user && user.loaiTK) || 'free';
+    if(allowed.includes(tier)) return '';
+    if(allowed.every(t=>t==='premium')) return '💎 Cần tài khoản Premium';
+    if(allowed.some(t=>t==='vip'||t==='premium') && !allowed.includes('free')) return '⭐ Cần tài khoản VIP trở lên';
+    return '🔒 Không có quyền truy cập';
 }
 
 /* ═══════════════════════════════════════════
@@ -4409,22 +4371,7 @@ function tierLabel(courseName){
 ═══════════════════════════════════════════ */
 function showUpgrade(courseName){
     const msg = tierLabel(courseName);
-    const cfg = getCourseConfig(courseName);
-    const allowed = ((cfg && cfg.loaiTK) || 'free,vip,premium').split(',').map(s=>s.trim().toLowerCase());
-    const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
-    const tier = String((user && user.loaiTK) || 'free').trim().toLowerCase();
-
-    // Nếu chưa đủ phân hạng tài khoản -> luôn hiện thông báo nâng hạng
-    if(!allowed.includes(tier)){
-        app().innerHTML=`<div class="empty">
-            <i class="fa-solid fa-crown" style="font-size:40px;color:#d97706;margin-bottom:16px"></i>
-            <p style="font-size:18px;font-weight:700">${msg || '💎 Cần tài khoản Premium'}</p>
-            <p style="color:var(--muted)">Liên hệ thầy Trường qua Zalo để nâng cấp tài khoản và truy cập khoá học này.</p>
-            <p><a onclick="go('#home')" style="cursor:pointer;color:var(--blue)">← Về danh sách khoá học</a></p>
-        </div>`;
-        return;
-    }
-    // Nếu đã đủ phân hạng nhưng chưa khai giảng
+    const cfg = KHOACONFIG[courseName];
     if(cfg && cfg.daKhaiGiang === false){
         app().innerHTML=`<div class="empty">
             <i class="fa-solid fa-clock" style="font-size:40px;color:#f59e0b;margin-bottom:16px"></i>
@@ -4458,11 +4405,21 @@ async function boot(){
     renderWho();
     // Chạy ngầm làm mới thông tin tài khoản và hạn mức học thử, không chặn UI render
     if(typeof vlxtRefreshUser === 'function'){
-        vlxtRefreshUser().then(function(){ if(_coursesReady) route(); }).catch(function(e){ console.warn('Làm mới tài khoản chạy nền:', e); });
+        const oldUserJson = JSON.stringify(typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
+        vlxtRefreshUser().then(function(u){ 
+            if(_coursesReady){
+                const newUserJson = JSON.stringify(u || (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null'))));
+                if(oldUserJson !== newUserJson){
+                    route({ silent: true });
+                }
+            }
+        }).catch(function(e){ console.warn('Làm mới tài khoản chạy nền:', e); });
     }
     if(typeof TrialManager !== 'undefined' && typeof TrialManager.fetchTrialLimitServer === 'function' && HS && HS.sdt){
         const _u = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
-        TrialManager.fetchTrialLimitServer(_u || String(HS.sdt)).then(function(){ if(_coursesReady) route(); }).catch(function(e){ console.warn('Làm mới hạn mức trial chạy nền:', e); });
+        TrialManager.fetchTrialLimitServer(_u || String(HS.sdt)).then(function(res){ 
+            if(_coursesReady && res && res.changed) route({ silent: true }); 
+        }).catch(function(e){ console.warn('Làm mới hạn mức trial chạy nền:', e); });
     }
     // Đọc tiến độ từ cache localStorage ngay để WATCHED có sẵn dữ liệu tức thì
     if(HS && HS.sdt){
@@ -4480,7 +4437,9 @@ async function boot(){
     if(_coursesReadyResolve) _coursesReadyResolve(COURSES);
     route();
     syncPendingProgress(false);
-    fetchProgress().then(function(){ route(); });
+    fetchProgress().then(function(hasChanged){ 
+        if(hasChanged) route({ silent: true }); 
+    });
 }
 function init(){
     loadIdentity();

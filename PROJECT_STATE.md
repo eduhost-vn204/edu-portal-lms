@@ -1570,3 +1570,15 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
   - `b01_m1_liquid_bottom.png` & `b01_m2_liquid_bottom.png`: Cập nhật thể lỏng rơi và định vị sát đáy hộp theo phản hồi của Thầy.
   - `b01_m3_box_water.png`, `b01_m3_box_air.png` & `b01_m3_confined_box_after_run.png`: Đóng kín toàn bộ phân tử trong Hộp 3D, kiểm thử chạy liên tục hạt không bị bay mất.
 
+#### 06/10/2026 — Triển Khai Chính Thức Mô Hình 3D Bài 2 Lên Production Website
+
+- **Người thực hiện**: Antigravity
+- **Người duyệt & Chỉ đạo**: Thầy Xuân Trường ("okee đc rồi đảy lên wed đi tiếp tục làm bài 3")
+- **File cập nhật**: `simulations/sim-b02-chuyenthe.js`, `simulations/sim-registry.js`, `baihoc.html`
+- **Bám sát 3 mô hình & chỉ đạo của Thầy**:
+  1. *Mô hình 1 — Khoảng cách r & Lực tương tác*: 3 nút cốt lõi ($r = r_0$ cân bằng $F=0$, $r < r_0$ lực đẩy, $r > r_0$ lực hút), thanh kéo $r$, vector 3D sắc nét, bỏ đồ thị mini và dao động tự do.
+  2. *Mô hình 2 — Nước chuyển thể (-50°C -> 150°C)*: 3 chế độ (Cấp nhiệt, Tỏa nhiệt, Dừng quan sát); nút Dừng cực nhạy không bị trượt khi đang chạy nhiệt; 5 mốc nhảy nhanh (-20°, 0°, 30°, 100°, 130°); đồ thị $T(t)$ mốc $130^\circ\text{C}$ vọt cao rõ rệt; 72 phân tử $H_2O$ chuyển động 3 thể.
+  3. *Mô hình 3 — 6 Quá trình chuyển thể thực tế*: Lưới 3x2 gồm 6 nút (Nóng chảy, Hóa hơi, Thăng hoa, Đông đặc, Ngưng tụ, Ngưng kết) trên khối chất thật đặt trong khay thí nghiệm; Thăng hoa và Ngưng kết không qua thể lỏng.
+  4. *Giao diện tối ưu*: Ẩn toolbar mặc định cũ và ẩn hoàn toàn ô kiến thức ở dưới theo đúng yêu cầu của Thầy.
+
+

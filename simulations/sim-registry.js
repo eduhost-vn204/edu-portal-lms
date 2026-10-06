@@ -38,20 +38,17 @@
     "B04e20f0ec67d": { // B2
       id: "b2_chuyenthe",
       lessonNum: 2,
-      title: "MÔ HÌNH 3D: LỰC LIÊN KẾT & SỰ CHUYỂN THỂ (RẮN - LỎNG - KHÍ)",
-      scriptUrl: "simulations/sim-nhiet-chuyen-the.js",
-      className: "SimNhietChuyenThe",
-      mode: "liquid",
-      formulaTag: "Nhiệt nóng chảy & Hóa hơi:",
-      formulaCore: "Q = \\lambda m \\quad ; \\quad Q = L m",
-      deltaPText: "Chuyển đổi trạng thái tập hợp của chất",
-      initialForce: "💧 Thể Lỏng (Trượt hỗn loạn)",
-      hudStat1: "T = 300 K",
-      hudStat2: "Lực liên kết: Trung bình",
-      btnSlowLabel: "Xem chậm",
-      btnTempLabel: "Chuyển thể",
-      btnHeroLabel: "Đổi thể chất",
-      description: "Khi cung cấp nhiệt lượng, lực liên kết phân tử bị kéo dãn và phá vỡ: Rắn tan chảy thành Lỏng, Lỏng hóa hơi thành Khí."
+      title: "MÔ HÌNH 3D: LỰC TƯƠNG TÁC PHÂN TỬ & SỰ CHUYỂN THỂ",
+      scriptUrl: "simulations/sim-b02-chuyenthe.js",
+      className: "SimB02ChuyenThe",
+      deltaPText: "Khoảng cách r quyết định lực liên kết & Nước chuyển thể (-50°C -> 150°C)",
+      initialForce: "📏 r = r₀ (VTCB bền: Hợp lực F = 0)",
+      hudStat1: "T = -20°C",
+      hudStat2: "Rắn · Lỏng · Khí",
+      btnSlowLabel: "Cấp nhiệt",
+      btnTempLabel: "Tỏa nhiệt",
+      btnHeroLabel: "Dừng lại",
+      description: "Mô hình 3D tương tác chuẩn kiến thức Bài 2: 1) Khảo sát lực đẩy, lực hút và hợp lực theo khoảng cách r giữa hai phân tử (r < r₀, r = r₀, r > r₀); 2) Sự chuyển thể của Nước từ -50°C đến 150°C (Cấp nhiệt, Tỏa nhiệt, Dừng; nhiệt độ không đổi khi nóng chảy và sôi); 3) Trực quan 6 quá trình chuyển thể thực tế trên một khối vật chất."
     },
     "Bfb85fde44802": { // B3
       id: "b3_nhietdo_thangdo",
@@ -978,17 +975,17 @@
   let currentModalInstance = null;
 
   return {
-    // Chỉ kích hoạt mô phỏng 3D cho các bài đã được Thầy nghiệm thu và chốt chuẩn kiến thức (Bài 1 và Bài 15)
+    // Chỉ kích hoạt mô phỏng 3D cho các bài đã được Thầy nghiệm thu và chỉ đạo chuẩn kiến thức (Bài 1, Bài 2 và Bài 15)
     hasSimulation: function (keyOrName, lessonData) {
       const config = findConfig(keyOrName, lessonData);
       if (!config) return false;
-      return (config.lessonNum === 1 || config.lessonNum === 15 || config.id === 'b1_cautrucchat' || config.id === 'b15_apsuat_mhdhpt');
+      return (config.lessonNum === 1 || config.lessonNum === 2 || config.lessonNum === 15 || config.id === 'b1_cautrucchat' || config.id === 'b2_chuyenthe' || config.id === 'b15_apsuat_mhdhpt');
     },
 
     getConfig: function (keyOrName, lessonData) {
       const config = findConfig(keyOrName, lessonData);
       if (!config) return null;
-      if (config.lessonNum === 1 || config.lessonNum === 15 || config.id === 'b1_cautrucchat' || config.id === 'b15_apsuat_mhdhpt') {
+      if (config.lessonNum === 1 || config.lessonNum === 2 || config.lessonNum === 15 || config.id === 'b1_cautrucchat' || config.id === 'b2_chuyenthe' || config.id === 'b15_apsuat_mhdhpt') {
         return config;
       }
       return null;
