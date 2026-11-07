@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Đua Top — Vật Lý Xuân Trường</title>
+  <title>Đấu Hạng — Vật Lý Xuân Trường</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -398,7 +398,7 @@
 <!-- HERO -->
 <div class="hero">
   <div class="hero-icon">🏆</div>
-  <h1 class="hero-title">Chế độ Đua Top</h1>
+  <h1 class="hero-title">Chế độ Đấu Hạng</h1>
   <p class="hero-sub">Trả lời câu hỏi, ghi điểm theo độ khó, leo thẳng lên Bảng Vàng.<br>Mỗi câu chỉ tính điểm một lần — câu khó cho điểm cao hơn.</p>
 </div>
 
@@ -947,7 +947,7 @@
     }
 
     var picked = theory.slice(0, numTheory).concat(calc.slice(0, numCalc));
-    console.log('Đua Top - Tổng câu Tinh hợp lệ:', filtered.length, '| Câu chưa làm:', newQuestions.length, '| Chọn Lý thuyết:', numTheory, '| Chọn Tính toán:', numCalc);
+    console.log('Đấu Hạng - Tổng câu Tinh hợp lệ:', filtered.length, '| Câu chưa làm:', newQuestions.length, '| Chọn Lý thuyết:', numTheory, '| Chọn Tính toán:', numCalc);
     console.log('👉 BẤM VÀO MŨI TÊN BÊN CẠNH ĐỂ XEM CHI TIẾT TOÀN BỘ ' + filtered.length + ' CÂU HỎI THẬT:', filtered);
     window.__DEBUG_POOL = filtered; // Expose for teacher to verify
     
@@ -967,22 +967,24 @@
     renderQuestion();
   };
 
-  // Mốc LP tối thiểu để mở khoá Đua Top
-  var MIN_LP_DUATOP = 25;
+  // Mốc LP tối thiểu để mở khoá Đấu Hạng
+  var MIN_LP_DUATOP = 200;
 
   function showLockedScreen(lp) {
     var pct = Math.max(0, Math.min(100, Math.round(lp / MIN_LP_DUATOP * 100)));
     arena.innerHTML =
       '<div class="empty-box" style="text-align:center;padding:40px 20px">' +
         '<div style="font-size:44px;margin-bottom:10px">🔒</div>' +
-        '<h3>Chưa mở khoá Đua Top</h3>' +
+        '<h3>Chưa mở khoá Đấu Hạng</h3>' +
         '<p style="color:#8b949e;margin:10px 0 16px">Học thêm bài để đạt <strong>' + MIN_LP_DUATOP + ' LP</strong> ' +
-        '(hiện có ' + lp + ' LP) là mở khoá được chế độ Đua Top nhé!</p>' +
+        '(hiện có ' + lp + ' LP) là mở khoá được chế độ Đấu Hạng nhé!</p>' +
         '<div style="max-width:260px;margin:0 auto 18px;height:10px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden">' +
         '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,#0072ff,#00f0ff)"></div>' +
         '</div>' +
+        '<a href="dau-thuong.html" style="display:inline-block;padding:10px 22px;border-radius:10px;' +
+        'background:linear-gradient(135deg,#0072ff,#00f0ff);color:#fff;font-weight:700;text-decoration:none;margin-right:10px">Vào Đấu thường ⚔️</a>' +
         '<a href="baihoc.html" style="display:inline-block;padding:10px 22px;border-radius:10px;' +
-        'background:linear-gradient(135deg,#0072ff,#00f0ff);color:#fff;font-weight:700;text-decoration:none">Học ngay →</a>' +
+        'background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--text);font-weight:700;text-decoration:none">Học ngay →</a>' +
       '</div>';
   }
 
@@ -1030,7 +1032,7 @@
               '<div style="font-size:44px;margin-bottom:12px">📚</div>' +
               '<h3>Chưa có câu hỏi trong phạm vi bài học đang mở</h3>' +
               '<p style="color:var(--sub);margin:8px auto 20px;max-width:440px;line-height:1.6">' +
-              'Đua Top chỉ phát các câu hỏi <strong>đã qua kiểm duyệt (Tinh)</strong> thuộc phạm vi bài học (<strong>' + scopeDesc + '</strong>). Thầy đang liên tục cập nhật ngân hàng câu hỏi nhé!' +
+              'Đấu Hạng chỉ phát các câu hỏi <strong>đã qua kiểm duyệt (Tinh)</strong> thuộc phạm vi bài học (<strong>' + scopeDesc + '</strong>). Thầy đang liên tục cập nhật ngân hàng câu hỏi nhé!' +
               '</p>' +
               '<a href="baihoc.html" class="btn-primary" style="display:inline-block;text-decoration:none;padding:12px 24px;border-radius:10px;background:linear-gradient(135deg,#0072ff,#00f0ff);color:#fff;font-weight:700">Vào học bài giảng →</a>' +
             '</div>';

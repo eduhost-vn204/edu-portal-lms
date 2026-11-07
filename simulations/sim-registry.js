@@ -65,56 +65,38 @@
     "Bfc4552a2a3b2": { // B4
       id: "b4_nhietdungrieng",
       lessonNum: 4,
-      title: "MÔ HÌNH 3D: NHIỆT DUNG RIÊNG & TRAO ĐỔI NHIỆT",
-      scriptUrl: "simulations/sim-nhiet-chuyen-the.js",
-      className: "SimNhietChuyenThe",
-      mode: "liquid",
-      formulaTag: "Nhiệt lượng truyền trong trao đổi nhiệt:",
-      formulaCore: "Q = m c \\Delta t",
-      deltaPText: "Năng lượng làm tăng động năng phân tử",
-      initialForce: "Truyền năng lượng nhiệt Q",
-      hudStat1: "T = 300 K",
-      hudStat2: "Q = mcΔt",
-      btnSlowLabel: "Xem chậm",
-      btnTempLabel: "Cấp nhiệt Q",
-      btnHeroLabel: "Đổi thể chất",
-      description: "Cung cấp nhiệt lượng Q làm tăng nội năng và vận tốc chuyển động nhiệt hỗn loạn của hệ các phân tử."
+      title: "MÔ HÌNH 3D: NHIỆT DUNG RIÊNG – NÓNG CHẢY RIÊNG – HOÁ HƠI RIÊNG",
+      scriptUrl: "simulations/sim-b04-nhietdung.js",
+      className: "SimB04NhietDung",
+      deltaPText: "Q = mcΔT (Nhiệt dung) · Q = λm (Nóng chảy) · Q = Lm (Hoá hơi)",
+      initialForce: "⚖️ So sánh c (Nước vs Dầu)",
+      hudStat1: "Nước 25°C | Dầu 25°C",
+      hudStat2: "Nhiệt dung riêng c",
+      description: "Mô hình 3D tương tác chuẩn kiến thức Bài 4: 1) Thí nghiệm so sánh nhiệt dung riêng c (Nước vs Dầu ăn) & Cân bằng nhiệt Qtỏa = Qthu; 2) Bản chất vi mô của nhiệt nóng chảy riêng λ (phá vỡ mạng tinh thể, T không đổi ở 0°C); 3) Bản chất vi mô của nhiệt hoá hơi riêng L (thắng lực hút phân tử, bứt phá bay hơi, T không đổi ở 100°C) & Đồ thị 5 giai đoạn."
     },
     "Be5b72ccf1261": { // B5
       id: "b5_noinang_ndlh1",
       lessonNum: 5,
       title: "MÔ HÌNH 3D: NỘI NĂNG & ĐỊNH LUẬT I NHIỆT ĐỘNG LỰC HỌC",
-      scriptUrl: "simulations/sim-khi-ly-tuong.js",
-      className: "SimKhiLyTuong",
-      mode: "general",
-      formulaTag: "Định luật I Nhiệt động lực học:",
-      formulaCore: "\\Delta U = Q + A",
-      deltaPText: "Độ biến thiên nội năng = Nhiệt + Công",
-      initialForce: "p ≈ 1.00 atm",
-      hudStat1: "T = 300 K",
-      hudStat2: "0 va chạm",
-      btnSlowLabel: "Xem chậm",
-      btnTempLabel: "Cấp nhiệt Q",
-      btnHeroLabel: "Nén thực hiện công A",
-      description: "Độ biến thiên nội năng của khối khí bằng tổng công A thực hiện lên khối khí và nhiệt lượng Q khối khí nhận được."
+      scriptUrl: "simulations/sim-b05-noinang.js",
+      className: "SimB05NoiNang",
+      deltaPText: "Độ biến thiên nội năng: ΔU = A + Q (Quy ước dấu)",
+      initialForce: "⚛️ U = f(T, V)",
+      hudStat1: "T = 300 K | V chuẩn",
+      hudStat2: "Khí thực (Eđ + Et)",
+      description: "Mô hình 3D tương tác chuẩn kiến thức Bài 5: 1) Bản chất nội năng U = f(T, V) (Khí thực vs Khí lí tưởng); 2) Hai cách làm biến đổi nội năng (Thực hiện công A biến cơ năng thành nội năng vs Truyền nhiệt Q); 3) Định luật I NĐLH ΔU = A + Q với 4 kịch bản quy ước dấu kinh điển."
     },
     "B0d8e14bf80dd": { // B6
       id: "b6_dongconhiet",
       lessonNum: 6,
-      title: "MÔ HÌNH 3D: ĐỘNG CƠ NHIỆT & CHU TRÌNH PISTON",
-      scriptUrl: "simulations/sim-khi-ly-tuong.js",
-      className: "SimKhiLyTuong",
-      mode: "general",
-      formulaTag: "Hiệu suất động cơ nhiệt:",
-      formulaCore: "H = \\frac{|A'|}{Q_1} = \\frac{Q_1 - Q_2}{Q_1} \\le \\frac{T_1 - T_2}{T_1}",
-      deltaPText: "Chuyển hóa nhiệt năng thành cơ năng",
-      initialForce: "Xilanh sinh công",
-      hudStat1: "T₁ = 600 K (Nóng)",
-      hudStat2: "Sinh công A'",
-      btnSlowLabel: "Xem chậm",
-      btnTempLabel: "Nguồn nhiệt T₁",
-      btnHeroLabel: "Chu trình Piston",
-      description: "Động cơ nhiệt nhận nhiệt lượng Q1 từ nguồn nóng, sinh công cơ học A' đẩy piston và thải nhiệt lượng Q2 cho nguồn lạnh."
+      title: "MÔ HÌNH 3D: ĐỘNG CƠ NHIỆT – ĐỒ THỊ NHIỆT",
+      scriptUrl: "simulations/sim-b06-dongconhiet.js",
+      className: "SimB06DongCoNhiet",
+      deltaPText: "A = Q₁ - Q₂ · Động cơ 4 kỳ · Đồ thị nhiệt T(t)",
+      initialForce: "⚙️ Động cơ nhiệt & Bánh đà",
+      hudStat1: "T₁ = 600K | T₂ = 300K",
+      hudStat2: "Hiệu suất H = 40%",
+      description: "Mô hình 3D tương tác chuẩn kiến thức Bài 6: 1) Nguyên lý động cơ nhiệt & Hiệu suất H (Nguồn nóng Q1 -> Sinh công A quay bánh đà -> Thải nhiệt Q2 ra nguồn lạnh); 2) Mặt cắt động cơ đốt trong 4 kỳ (Hút, Nén, Nổ sinh công, Xả); 3) Đồ thị nhiệt độ T-t (Kết tinh có đoạn nằm ngang ở 0°C vs Vô định hình) & Đồ thị Cân bằng nhiệt."
     },
     "Ba7a539a4d488": { // B7
       id: "b7_tongon_nhiet1",
@@ -969,17 +951,17 @@
   let currentModalInstance = null;
 
   return {
-    // Chỉ kích hoạt mô phỏng 3D cho các bài đã được Thầy nghiệm thu và chỉ đạo chuẩn kiến thức (Bài 1, Bài 2, Bài 3 và Bài 15)
+    // Chỉ kích hoạt mô phỏng 3D cho các bài đã được Thầy nghiệm thu và chỉ đạo chuẩn kiến thức (Bài 1, Bài 2, Bài 3, Bài 4, Bài 5, Bài 6 và Bài 15)
     hasSimulation: function (keyOrName, lessonData) {
       const config = findConfig(keyOrName, lessonData);
       if (!config) return false;
-      return (config.lessonNum === 1 || config.lessonNum === 2 || config.lessonNum === 3 || config.lessonNum === 15 || config.id === 'b1_cautrucchat' || config.id === 'b2_chuyenthe' || config.id === 'b3_nhietdo_thangdo' || config.id === 'b15_apsuat_mhdhpt');
+      return (config.lessonNum === 1 || config.lessonNum === 2 || config.lessonNum === 3 || config.lessonNum === 4 || config.lessonNum === 5 || config.lessonNum === 6 || config.lessonNum === 15 || config.id === 'b1_cautrucchat' || config.id === 'b2_chuyenthe' || config.id === 'b3_nhietdo_thangdo' || config.id === 'b4_nhietdungrieng' || config.id === 'b5_noinang_ndlh1' || config.id === 'b6_dongconhiet' || config.id === 'b15_apsuat_mhdhpt');
     },
 
     getConfig: function (keyOrName, lessonData) {
       const config = findConfig(keyOrName, lessonData);
       if (!config) return null;
-      if (config.lessonNum === 1 || config.lessonNum === 2 || config.lessonNum === 3 || config.lessonNum === 15 || config.id === 'b1_cautrucchat' || config.id === 'b2_chuyenthe' || config.id === 'b3_nhietdo_thangdo' || config.id === 'b15_apsuat_mhdhpt') {
+      if (config.lessonNum === 1 || config.lessonNum === 2 || config.lessonNum === 3 || config.lessonNum === 4 || config.lessonNum === 5 || config.lessonNum === 6 || config.lessonNum === 15 || config.id === 'b1_cautrucchat' || config.id === 'b2_chuyenthe' || config.id === 'b3_nhietdo_thangdo' || config.id === 'b4_nhietdungrieng' || config.id === 'b5_noinang_ndlh1' || config.id === 'b6_dongconhiet' || config.id === 'b15_apsuat_mhdhpt') {
         return config;
       }
       return null;

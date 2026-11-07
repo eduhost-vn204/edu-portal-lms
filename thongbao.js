@@ -219,8 +219,8 @@
 
           if (realConTro >= xps.length) {
             return {
-              html: '<a class="vlxt-tb-item" href="dua-top.html"><div class="t">🏆 Đua Top</div>' +
-                '<div class="m">Đã hoàn thành mọi bài hiện có — vào Đua Top để rinh điểm!</div>' +
+              html: '<a class="vlxt-tb-item" href="dua-top.html"><div class="t">🏆 Đấu Hạng</div>' +
+                '<div class="m">Đã hoàn thành mọi bài hiện có — vào Đấu Hạng để rinh điểm!</div>' +
                 (nv.chuoiDung ? '<div class="s">🔥 Chuỗi ' + Number(nv.chuoiDung) + ' ngày</div>' : '') +
                 teacherLine + '</a>',
               urgent: false

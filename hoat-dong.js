@@ -37,7 +37,7 @@
   // Tự ghi "Vào trang" — mỗi trang tối đa 1 lần / 30 phút / 1 tài khoản
   const PAGE_NAMES = { '':'Trang chủ', 'index.html':'Trang chủ', 'baihoc.html':'Khóa học',
     'thithu.html':'Thi thử', 'danhsach-ly12.html':'Danh sách đề', 'hoso.html':'Hồ sơ',
-    'live.html':'Xem Live', 'lichlive.html':'Lịch Live', 'dua-top.html':'Đua Top',
+    'live.html':'Xem Live', 'lichlive.html':'Lịch Live', 'dua-top.html':'Đấu Hạng', 'dau-thuong.html':'Đấu Thường',
     'trochoi.html':'Trò chơi', 'huongdan.html':'Hướng dẫn', 'login.html':'Trang đăng nhập' };
   try{
     const page = (location.pathname.split('/').pop()||'').toLowerCase();

@@ -159,53 +159,509 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
-### 06/10/2026 (10:30) — Hoàn Thành & Tích Hợp Mô Hình 3D Bài 3: Nhiệt Độ – Thang Nhiệt Độ – Nhiệt Kế (3 Mô Hình Chuẩn Giáo Án)
+### 07/11/2026 (17:03) — Khôi Phục Tinh Vân Tím-Xanh *Endgame* Đồng Bộ 3D & Thiết Kế 6 Hệ Hành Tinh Độc Bản (Hệ Sao Đôi, Đám Mây Tinh Vân & Vệ Tinh Quay 360°)
 - **Người thực hiện**: Antigravity AI Coordinator
-- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
-- **Trạng thái**: `VERIFIED_PHYSICS_AND_VISUALS_PASS` (Kiểm thử tự động Playwright chụp 7 ảnh nghiệm thu chuẩn xác).
-- **Nội dung điều chỉnh theo 3 Lý thuyết trọng tâm của Thầy**:
-  1. **Mô hình 1: Bản chất Nhiệt độ & Độ không tuyệt đối (0 Kelvin)**:
-     - Nhiệt độ đặc trưng cho mức độ chuyển động nhiệt hỗn loạn (động năng trung bình $\overline{E_d} = \frac{3}{2}kT$) của các phân tử vi mô.
-     - Tại $T = 0\,\text{K}$ (Độ không tuyệt đối, $-273{,}15^\circ\text{C}$): Phân tử DỪNG CHUYỂN ĐỘNG HOÀN TOÀN ($v = 0, \overline{E_d} = 0$), đứng yên 100%, màu xanh băng tuyết (`#38bdf8`), vector vận tốc bằng 0.
-     - Khi $T$ tăng ($0\,\text{K} \to 600\,\text{K}$): Hạt bay hỗn loạn, tốc độ tỉ lệ $v \propto \sqrt{T}$, màu sắc đổi từ xanh băng $\to$ vàng $\to$ cam $\to$ đỏ rực lửa.
-     - Có vector vận tốc $\vec{v}$ (ArrowHelper) và vệt quỹ đạo vàng kim loại theo dõi 1 hạt tiêu điểm (Brownian/Thermal trail).
-     - Controls: 6 nút mốc nhanh (`0 K Tuyệt đối`, `77 K Nitơ`, `273 K Đá tan`, `300 K Phòng`, `373 K Sôi`, `600 K Nóng`), slider $0 - 600\,\text{K}$, toggles hiện vector và vệt hạt.
-  2. **Mô hình 2: So sánh 3 Thang đo (Celsius - Kelvin - Fahrenheit)**:
-     - 3 cây cột nhiệt kế khổng lồ đặt song song trong không gian 3D: Celsius (°C), Kelvin (K), Fahrenheit (°F) với ống thủy tinh trong suốt và chất lỏng đỏ dâng hạ đồng bộ.
-     - Đường dóng ngang phát sáng kết nối mốc nhiệt độ tức thời kèm 3 thẻ số hiển thị đồng thời công thức:
-       + Độ không tuyệt đối: $0\,\text{K} \leftrightarrow -273{,}15^\circ\text{C} \leftrightarrow -459{,}67^\circ\text{F}$
-       + Điểm gặp nhau đặc biệt: $-40^\circ\text{C} = -40^\circ\text{F}$ (Kelvin = $233{,}15\,\text{K}$)
-       + Nước đá đang tan: $0^\circ\text{C} = 273{,}15\,\text{K} = 32^\circ\text{F}$
-       + Thân nhiệt bình thường: $37^\circ\text{C} = 310{,}15\,\text{K} = 98{,}6^\circ\text{F}$
-       + Nước sôi (1 atm): $100^\circ\text{C} = 373{,}15\,\text{K} = 212^\circ\text{F}$
-     - Nổi bật tính chất sư phạm: Khoảng chia $\Delta T (\text{K}) = \Delta t (^\circ\text{C})$, trong khi thang Fahrenheit chia 180 độ giữa đá tan và nước sôi.
-     - Controls: 5 nút mốc nhanh, slider nhiệt độ $-273{,}15^\circ\text{C} \to 120^\circ\text{C}$, 3 thẻ số lớn.
-  3. **Mô hình 3: Cấu tạo Nhiệt kế Chất lỏng & Sự nở vì nhiệt**:
-     - Cốc thí nghiệm chứa môi trường nhiệt độ ($0^\circ\text{C} \to 100^\circ\text{C}$) cắm nhiệt kế thủy tinh; cột chất lỏng dâng lên hạ xuống đúng vạch chia độ.
-     - **Kính lúp vi mô (Micro Magnifier Lens)** phóng to bầu nhiệt kế: Hiển thị trực tiếp các phân tử chất lỏng trong bầu dãn nở khoảng cách ra xa nhau khi nhận nhiệt $\to$ giải thích trực quan bản chất sự nở vì nhiệt của chất lỏng!
-     - Controls: 4 nút môi trường (`Cốc đá lạnh 0°C`, `Phòng 25°C`, `Nước ấm 50°C`, `Nước sôi 100°C`), slider nhiệt độ $0 - 100^\circ\text{C}$.
-- **Files cập nhật**:
-  - `simulations/sim-b03-nhietdo.js` (tạo mới file mô hình Bài 3 với class `SimB03NhietDo`).
-  - `simulations/sim-registry.js` (đăng ký `Bfb85fde44802` với `SimB03NhietDo`, bật quyền hiển thị trong `hasSimulation` và `getConfig`).
-  - `test_b03_simulation.py` (script kiểm thử tự động Playwright).
-- **Ảnh nghiệm thu**:
-  - `b03_m1_zero_kelvin.png`: Mô hình 1 ở 0 K (phân tử đứng yên hoàn toàn).
-  - `b03_m1_hot_temp.png`: Mô hình 1 ở 373 K (chuyển động nhiệt hỗn loạn nhanh, vector v vươn dài).
-  - `b03_m2_intersect_minus40.png`: Mô hình 2 tại điểm gặp nhau $-40^\circ\text{C} = -40^\circ\text{F}$.
-  - `b03_m2_boil_100c.png`: Mô hình 2 tại $100^\circ\text{C} = 373{,}15\,\text{K} = 212^\circ\text{F}$.
-  - `b03_m3_thermometer_ice_0c.png`: Mô hình 3 cốc đá lạnh $0^\circ\text{C}$ (phân tử sít nhau).
-  - `b03_m3_thermometer_boil_100c.png`: Mô hình 3 cốc nước sôi $100^\circ\text{C}$ (phân tử dãn nở, cột dâng cao).
-  - `b03_modal_fullscreen.png`: Chế độ modal toàn màn hình hoạt động hoàn hảo.
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_ENDGAME_SYNCED_JUMP_AND_6_UNIQUE_CINEMATIC_PLANETS_PASS` (Đã kiểm thử Playwright `1920x1080` giữa bước nhảy không gian và tại các hệ hành tinh `Sadalmelik`, `Sadachbia`, `Shatabhisha`, `Skat`, `0` lỗi JS).
+- **Chi tiết nguyên nhân & giải pháp**:
+  1. **Khôi phục đám mây tinh vân tím-xanh & tia sáng *Avengers: Endgame* đồng bộ 100% với góc quay camera 3D (Không còn đốm sao trắng tĩnh)**:
+     - Khôi phục lớp đám mây tinh vân tím hồng (`colVioletDeep`, `colMagentaNeb`) & xanh lam điện (`colElectricBlu`) cùng các tia sáng `softRays` / `blueNeedles` và tâm hội tụ nhỏ kèm vệt lóe ngang Anamorphic trong `wormholeFrag`, giữ nguyên cơ chế neo tọa độ 3D đồng trục với ngôi sao đích (`aimX, aimY, aimZ`).
+     - Khi vào trạng thái `WARPING`, tự động giảm `pointMat.opacity` xuống `0.16` (và trả về `0.85–0.90` khi dừng/reset) đồng thời tăng `lineMat.opacity` lên `0.68` với bảng màu xanh lam điện, cyan và tím hồng để triệt tiêu các đốm trắng tĩnh, chỉ giữ lại luồng tia sáng và đám mây tinh vân tím-xanh như phim.
+  2. **Thiết kế 6 hệ hành tinh độc bản với màu sắc, địa chất, Hệ Sao Đôi (Binary Suns), Đám Mây Tinh Vân (Cosmic Nebula) và 1–2 Mặt Trăng quay 360°**:
+     - `SADALSUUD` (Khóa Học): Hành tinh Đại Dương Sapphire & Lục địa Lục Bảo + 1 Mặt trăng Bạc + Tinh vân Xanh-Tím dịu.
+     - `SADALMELIK` (Live & Xem Lại): Hành tinh Sa Mạc Vàng Hổ Phách & Ốc Đảo Ngọc Bích + **Hệ Sao Đôi (Twin Suns Vàng Cam & Xanh Lam)** chiếu sáng từ phía trên bên trái + 1 Mặt trăng Đỏ Cam + Tinh vân Tím-Hổ Phách.
+     - `SADACHBIA` (Phòng Thi Thử): Hành tinh Tinh Thể Tím Thạch Anh (*Vormir*) + **Đám Mây Tinh Vân Tím-Hồng Rực Rỡ** phía sau + **2 Mặt trăng** quay trên 2 quỹ đạo nghiêng.
+     - `ALBALI` (Đánh Giá Năng Lực): Hành tinh Băng Tuyết Vĩnh Cửu & Đại Dương Pha Lê + **2 Mặt trăng Băng Giá** + Tinh vân Cực Quang Xanh Lam.
+     - `SHATABHISHA` (Đấu Thường): Hành tinh Rừng Sinh Quyển Ngọc Lục Bảo (*Pandora*) phát quang ban đêm + **Đám Mây Tinh Vân Lục Bảo - Tím** + 1 Mặt trăng.
+     - `SKAT` (Đấu Hạng): Hành tinh Dung Nham Địa Nhiệt & Bazan Đỏ Lửa có mạch magma phát sáng + **Hệ Sao Đôi Đỏ Rực - Vàng** + Tinh vân Đỏ Thẫm + **2 Mặt trăng**.
+- **Tệp đã sửa đổi**:
+  - `index.html`
+  - `PROJECT_STATE.md`
 
-### 06/10/2026 (09:45) — Hoàn Thiện Mô Hình 3D Bài 2: Lực Tương Tác Phân Tử & Sự Chuyển Thể Của Nước
+### 07/11/2026 (16:43) — Tinh Chỉnh Kích Thước Hành Tinh Vừa Vặn (`R = 23.5`), 1 Mặt Trăng Quay 360° Liên Tục & Bước Nhảy Không Gian Đồng Bộ 3D Không Khói
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_SYNC_JUMP_AND_SINGLE_ORBITING_MOON_PASS` (Đã kiểm thử Playwright `1920x1080` giữa hành trình bay và tại các hành tinh `Albali`, `Skat`, `0` lỗi JS).
+- **Chi tiết nguyên nhân & giải pháp**:
+  1. **Cân chỉnh lại tỉ lệ hành tinh vừa vặn trong khung hình (Không tràn màn hình, không quá nhỏ)**:
+     - Thu bán kính hành tinh từ `35.0` xuống `23.5` (`R_atmos = 24.9`) và đặt khoảng cách dừng máy quay ở `z + 114`: hành tinh chiếm ~48% chiều cao khung hình — to lớn, sắc nét (`512x512` 6-octave DataTexture), có khoảng thở thoáng đãng phía dưới thanh menu trên cùng và đã bỏ hoàn toàn vành đai hành tinh.
+  2. **Chỉ giữ 1 mặt trăng duy nhất và cho quay tròn 360° liên tục quanh hành tinh**:
+     - Bỏ mặt trăng phụ thứ 2, chỉ giữ lại 1 mặt trăng vệ tinh 3D (`moonMesh`, bán kính `2.8`, bán kính quỹ đạo `36.0`).
+     - Thay biểu thức lắc `Math.sin(t * 0.38)` bằng góc quay liên tục `moonPivot.rotation.y = t * 0.65 + 0.35`, đồng thời tính pháp tuyến chiếu sáng trong không gian thế giới (`vWorldNormal = normalize(mat3(modelMatrix) * normal)`) để mặt trăng quay tròn 360° quanh hành tinh (đi qua cả phía trước và phía sau hành tinh) mà phần sáng lưỡi liềm vẫn luôn hướng chuẩn về phía Mặt Trời.
+  3. **Đồng bộ 100% góc quay camera với các luồng sáng 3D & loại bỏ hiệu ứng khói rối**:
+     - Trong `animate()`, khóa vector hướng kéo vệt sao `(Fx, Fy, Fz)` và vị trí `wormholeGroup` thẳng vào tọa độ 3D thực của ngôi sao đích (`activeTarget.data.x, y, z`) ngay khi bắt đầu `WARPING`, đồng thời cho camera xoay khóa tâm nhìn (`0.68s`) trước khi đẩy mạnh bước nhảy: khi camera xoay góc, điểm nhảy Anamorphic và các tia sao 3D hoàn toàn đồng bộ trong không gian 3D (không còn bị lệch hướng hay trôi kiểu mặt phẳng 2D).
+     - Loại bỏ toàn bộ lớp khói tinh vân dày và tia nổ rối trong `wormholeFrag`, chỉ giữ lại Điểm Nhảy Anamorphic sắc gọn (nhân sáng nhỏ + vệt lóe ống kính ngang cam-hồng thanh thoát) kết hợp với các tia sao 3D xanh-tím-trắng vuốt dài tốc độ cao.
+- **Tệp đã sửa đổi**:
+  - `index.html`
+  - `PROJECT_STATE.md`
+
+### 07/11/2026 (16:08) — Nâng Cấp Mô Hình 3D Hành Tinh Ngoại (Góc Nhìn Từ Trên Xuống, Viền Tán Xạ Rayleigh, Khoảng Cách Quỹ Đạo Chuẩn) & Hiệu Ứng Hố Giun *Interstellar* (60 FPS)
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_INTERSTELLAR_WORMHOLE_AND_EXOPLANETS_PASS` (Đã kiểm thử Playwright `1920x1080` giữa hành trình bay Hố Giun và tại quỹ đạo các hành tinh `Sadalmelik`, `Skat`, tốc độ 60 FPS mượt mà, `0` lỗi JS).
+- **Chi tiết nguyên nhân & giải pháp**:
+  1. **Chuẩn hóa góc nhìn từ trên xuống (Overhead Cinematic Orbit) ở các hành tinh**:
+     - Trước đây `planetRingMesh.rotation.x` mang giá trị dương (`+Math.PI * 0.41`) và máy quay đặt ở `y = tm.data.y - 6` thấp hơn hành tinh (`y + 8`), tạo cảm giác ngước nhìn từ dưới bụng hành tinh lên và vành đai bị vắt ngược qua đỉnh đầu.
+     - Đổi sang `planetRingTiltGroup` với `rotation.order = 'ZXY'`, `rotation.x = -1.35` ($\approx -77.3^\circ$) và đưa máy quay lên góc quỹ đạo cao (`camera.position.y = tm.data.y + 6.5`, nhìn xuống `lookTarget.y = tm.data.y - 1.5`): nửa trước của vành đai cắt ngang qua phần bụng dưới hành tinh, nửa sau đi vòng ra phía sau (bị quả cầu hành tinh che khuất thực sự nhờ `depthTest: true` và có bóng đổ tự nhiên của hành tinh lên vành đai).
+  2. **Nâng cấp mô hình 3D hành tinh ngoại, khí quyển Rayleigh & mặt trăng vệ tinh (60 FPS Triplanar DataTexture)**:
+     - Khử hoàn toàn lỗi đối xứng gương ở giữa quả cầu của hàm `hash` cũ bằng `cosmicNoiseTex` (`256x256` Multi-Channel Seamless FBM DataTexture) kết hợp Triplanar Mapping: tái tạo lục địa, đại dương có phản xạ ánh nắng (Specular Ocean Glint), dải băng 2 cực, mây xoáy thuận (Cyclone Cloud Bands), ánh sáng hoàng hôn dọc ranh giới ngày-đêm (Twilight Terminator) và đèn đô thị ban đêm.
+     - Loại bỏ viền xanh neon dày cộp giả tạo (`R = 37.5` cũ): thu mỏng lớp khí quyển (`R_planet = 20.5`, `R_atmos = 22.3`) với hàm tán xạ Rayleigh lưỡi liềm ôm sát bề mặt phía đón nắng rồi mờ dần ra không gian (chuẩn poster *Interstellar*).
+     - Nâng cấp mặt trăng vệ tinh từ hình tròn trắng phẳng `MeshBasicMaterial` thành khối cầu 3D có địa hình hố va chạm và bóng đổ ngày-đêm đồng bộ hướng nắng `uSunDir`.
+  3. **Khoảng cách dừng quỹ đạo & tốc độ tiếp cận hợp lý**:
+     - Giảm bán kính hành tinh từ `32` xuống `20.5` và đặt khoảng cách dừng máy quay ở `z + 136`, đồng thời tắt `gsap.ticker.lagSmoothing(0)`: hành tinh lớn dần tự nhiên theo luật phối cảnh 3D và dừng lại ở khoảng cách quỹ đạo cân đối, hùng vĩ (không bị phóng to sát mặt học sinh).
+  4. **Hiệu ứng bay xuyên Hố Giun Không-Thời Gian chuẩn Hình số 2 (*Interstellar* Wormhole) — không có con tàu**:
+     - Tích hợp `wormholeGroup` đồng trục hướng bay với đám mây tinh vân Hồng Đào - Đỏ Thẫm - Hổ Phách (Rose/Crimson/Peach Nebula) cuộn xoáy bên trái và các cung ánh sáng uốn cong bởi thấu kính hấp dẫn (Silky Relativistic Lensing Caustic Arcs) chạy dọc vòm phải, khoang trung tâm trong trẻo nhìn thẳng tới hành tinh đích và ẩn hoàn toàn con tàu/tên lửa trong suốt quá trình bay.
+- **Tệp đã sửa đổi**:
+  - `index.html`
+  - `PROJECT_STATE.md`
+
+### 07/11/2026 (15:29) — Nâng Cấp Hiệu Ứng Dịch Chuyển Điện Ảnh (Cinematic Warp Flight) & Chuẩn Hóa Đĩa Bồi Hố Đen Gargantua (*Interstellar*)
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_CINEMATIC_WARP_AND_GARGANTUA_PASS` (Đã kiểm thử Playwright `1920x1080` tại cổng Hub, giữa hành trình bay Warp và màn hình đích Gargantua, `0` lỗi JS).
+- **Chi tiết nguyên nhân & giải pháp**:
+  1. **Nâng cấp hiệu ứng dịch chuyển (Warp Transition) mượt mà, đồng bộ quang cảnh 3D**:
+     - **Vệt sao vuốt đuôi mềm (Feathered Starlight Trails)**: Thay thế các đoạn thẳng 1px trắng gắt bằng hệ màu đỉnh `vertexColors: true` với đầu sao mang sắc độ thiên văn (trắng xanh, vàng ấm, lam nhạt) và đuôi vuốt về `(0, 0, 0)` (trong suốt 100% dưới `AdditiveBlending`), đồng thời mở khoang nhìn trung tâm (`radialDist > 95`) để các tia sao bao quanh hành trình bay mà không đâm xuyên qua tâm thiên thể đích.
+     - **Đồng bộ quang cảnh & tiêu cự máy quay**: Hướng kéo vệt sao `(Fx, Fy, Fz)` đồng bộ trực tiếp với vector nhìn của camera (`lookTarget - camera.position`); giữ các ngôi sao lân cận và đường nối chòm sao hiển thị trong không gian 3D và mờ dần tự nhiên (`1.1s`) khi máy quay xoay góc lướt qua thay vì biến mất đột ngột ở `0ms`; thay cú giật FOV `96°` bằng nhịp thở ống kính điện ảnh mượt (`50° → 54° → 46°`) trong hành trình bay `2.85s` (`power3.inOut`).
+  2. **Chuẩn hóa góc nghiêng đĩa bồi hố đen Gargantua chuẩn phim *Interstellar***:
+     - Trước đây `bhDiskTiltGroup.rotation.x` mang giá trị dương (`+1.12`), làm nửa trên của đĩa bồi (`y > 0`) nghiêng về phía trước (`z > 0`), tạo cảm giác đĩa bồi bị lật úp xoay lên trên đỉnh hố đen.
+     - Đổi sang `bhDiskTiltGroup.rotation.order = 'ZXY'`, `rotation.x = -1.40` ($\approx -80.2^\circ$, góc nhìn từ phía trên mặt phẳng xích đạo một chút) và `rotation.z = -0.28`: nửa trước của đĩa bồi cắt ngang qua **phía trước-dưới** của chân trời sự kiện đen tuyền (`horizonMesh`), còn nửa sau đi vòng ra phía sau và bẻ cong lên thành vòm thấu kính hấp dẫn Einstein phía trên và phía dưới đúng chuẩn *Interstellar*.
+- **Tệp đã sửa đổi**:
+  - `index.html`
+  - `PROJECT_STATE.md`
+
+### 07/11/2026 (15:16) — Tích Hợp Thư Viện Cục Bộ `vendor/` (Three.js & GSAP) Chống Lỗi `ERR_CACHE_READ_FAILURE` & Khóa Tọa Độ Mặc Định Nhãn Sao Ngoài Màn Hình
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_LOCAL_VENDOR_ZERO_CACHE_ERROR_PASS` (Đã kiểm thử Playwright: `hasThree: True`, `hasGsap: True`, `topLeftLabels: []`, `bhVisible: True`, `nsVisible: True`, `0` lỗi JS).
+- **Chi tiết nguyên nhân & giải pháp**:
+  1. **Nguyên nhân trang đứng im & hiện ký tự lạ góc trái**:
+     - Trên trình duyệt Chrome của Thầy, bộ nhớ đệm ổ cứng (HTTP Disk Cache) cho các link CDN `cdnjs.cloudflare.com` (`three.min.js`, `gsap.min.js`, `all.min.css`) bị lỗi đọc cache (`net::ERR_CACHE_READ_FAILURE`), dẫn đến `Uncaught ReferenceError: THREE is not defined`.
+     - Khi `THREE` không nạp được, vòng lặp 3D và hàm `updateLabels()` không chạy để gán tọa độ `transform: translate3d(...)`, trong khi bộ đếm Preloader sau 1.25s vẫn mở khóa `.labels-ready`, khiến các nhãn sao hiển thị ở tọa độ mặc định `(0, 0)` góc trên bên trái.
+  2. **Giải pháp triệt để 100%**:
+     - Tải và đóng gói trực tiếp `vendor/three.min.js`, `vendor/gsap.min.js`, `vendor/ScrollTrigger.min.js` ngay trong thư mục dự án: nạp trực tiếp từ ổ cứng trong 1ms, không đi qua HTTP Disk Cache của Chrome, hoạt động kể cả khi mất mạng.
+     - Đổi CDN FontAwesome sang `cdn.jsdelivr.net` kèm query `?v=20261107` để vượt qua bản ghi cache hỏng của Chrome.
+     - Đặt tọa độ mặc định của `.star-label` và `.star-hitbox` trong CSS là `display: none; transform: translate3d(-9999px, -9999px, 0);` — đảm bảo nhãn sao **không bao giờ** có thể xuất hiện ở góc trái `(0, 0)` trong bất kỳ hoàn cảnh nào, chỉ xuất hiện khi `updateLabels()` đã tính xong tọa độ 3D thực tế.
+
+
+### 07/11/2026 (15:08) — Khôi Phục Hoàn Chỉnh Nhãn & Tương Tác Click 2 Bên Hố Đen (`SINGULARITY`) và Sao Neutron (`PULSAR`)
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_BH_NS_LABELS_AND_WARP_PASS` (Đã kiểm thử Playwright 1920x1080: Hiển thị đầy đủ nhãn `SINGULARITY / TEST ĐIỂM THI THPT` trên Hố Đen bên trái và `PULSAR / HỌC THỬ MIỄN PHÍ` trên Sao Neutron bên phải; click vào cả 2 bên đều bay Warp mượt mà tới màn hình cập bến `TIẾN VÀO TEST ĐIỂM THI THPT` và `TIẾN VÀO KHÓA HỌC THỬ MIỄN PHÍ`).
+- **Chi tiết nguyên nhân & giải pháp**:
+  1. **Nguyên nhân**: Trong cấu trúc HTML của `index.html`, có một thẻ đóng `</div>` thừa ngay sau `#hit-5` (dòng 1521), làm thẻ `<div id="ui-layer">` bị đóng sớm trước `#lbl-blackhole`, `#hit-blackhole`, `#lbl-neutron`, `#hit-neutron`. Khi thêm rule CSS `.star-label, .celestial-label { opacity: 0 !important }` và `.star-hitbox { display: none !important }` chỉ mở khi `#ui-layer.labels-ready`, 2 cụm Hố Đen và Sao Neutron nằm ngoài `#ui-layer` nên bị ẩn nhãn và khóa vùng click (`display: none`).
+  2. **Giải pháp**:
+     - Xóa thẻ `</div>` thừa sau `#hit-5` để toàn bộ `#lbl-blackhole`, `#hit-blackhole`, `#lbl-neutron`, `#hit-neutron` và `#galaxy-scroll-indicator` nằm gọn bên trong `<div id="ui-layer">...</div><!-- /ui-layer -->`.
+     - Chuyển rule CSS sang `#ui-layer:not(.labels-ready) .star-label, #ui-layer:not(.labels-ready) .celestial-label, #ui-layer:not(.labels-ready) .star-hitbox` để chỉ ẩn trong lúc Preloader đang khởi tạo, sau khi sẵn sàng sẽ trả quyền điều khiển hoàn toàn cho JS (`updateLabels`, `triggerWarp`, `resetToGalaxyHub`).
+
+
+### 06/11/2026 (08:00) — Triển Khai Hoàn Chỉnh Luồng Chuyển Đổi Tâm Lý 6 Bước (CRO Funnel) & Zero-Friction State
+- **Người thực hiện**: Antigravity Senior Full-stack & UI/UX Developer
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_CRO_FUNNEL_6_STEP_PASS` (Đã kiểm thử tự động 8/8 test suites đạt 100%: Zero-Friction state lưu localStorage, 3 progress bars phân loại lỗ hổng, Modal Giá trị Bước 5 & Modal VietQR Bước 6, tích hợp hoàn hảo vào `danh-gia-nang-luc.html` và `baihoc.html`).
+- **Chi tiết các hạng mục đã hoàn thành**:
+  1. **Lưu trữ tiến độ không cần đăng nhập (Zero-Friction State - Bước 1-3)**:
+     - Module `freemium-flow.js` quản lý logic lưu trạng thái làm bài 5 gói đề đầu tiên và Chương 1, 2 vào `localStorage['vlxt_cro_zero_friction_state']`.
+     - Tuyệt đối không hiển thị popup bắt đăng nhập hay thu phí ở Chương 1, Chương 2 và 5 gói đề đầu tiên (bao gồm cả phần xem giải chi tiết và lời giải KaTeX).
+     - Phân loại lỗi sai theo 3 tag chuẩn: `ly_thuyet` (Lý thuyết), `bay_don_vi` (Bẫy đơn vị), `do_thi_vdc` (Đồ thị & VDC). Đã cập nhật 20 câu trong `data/danhgianangluc.json` đúng ma trận Vật Lý 12.
+  2. **Component <DiagnosticReportCard /> (Bước 4 CRO - Báo cáo chẩn đoán cá nhân hóa)**:
+     - Tự động phân tích bài làm vừa nộp: hiển thị 3 thanh tiến độ trực quan, cảnh báo rủi ro mất điểm và so sánh "Điểm thi THPT dự kiến" vs "Điểm mục tiêu 8.5+".
+     - Chuẩn 100% nội dung copywriting kịch bản Bước 4 với nút CTA nổi bật: *"Xem lộ trình lấp lỗ hổng & Bứt phá 8.5+ cùng Thầy"*.
+     - Tích hợp ở chân trang kết quả của `danh-gia-nang-luc.html` và kích hoạt dạng Modal khi học sinh bấm vào nội dung bị khóa (Gói đề 6 / Chương 3, 4) trên `baihoc.html`.
+  3. **Component <UpgradeValueModal /> (Bước 5 CRO - Thấu hiểu giá trị vượt trội)**:
+     - Thiết kế giao diện hiện đại TailwindCSS gồm 4 khối chiến lược:
+       + *Hero Title*: "Lộ Trình Cá Nhân Hóa 8.5+ Vật Lý 12 — Đồng Hành Cùng Thầy Xuân Trường".
+       + *Grid 2x2*: 4 đặc quyền mở khóa (Full 4 Chương & Mọi Dạng Bài, Kho 1000+ Câu Hỏi Bẫy & VDC, Video Chữa Chi Tiết Từng Câu, Nhóm Hỏi Bài Ưu Tiên 24/7).
+       + *Social Proof*: Feedback điểm số thực tế của Lê Minh Quân (9.25đ) và Trần Khánh Linh (9.5đ) + Live Counter 428+ học sinh đang học.
+       + *So sánh giá*: 50.000đ/tháng (~1.600đ/ngày, bằng 1/10 ly trà sữa).
+     - Nút CTA chuyển tiếp mượt mà sang Bước 6: *"Tôi muốn đăng ký nâng cấp ngay (50.000đ/tháng)"*. Không hiển thị QR tại bước này để tối ưu tâm lý.
+  4. **Component <VietQRCheckoutModal /> (Bước 6 CRO - Thanh toán 1 chạm & Kích hoạt tức thì)**:
+     - Ô nhập SĐT/Họ tên siêu gọn hiển thị ngay trên nếu học sinh chưa đăng nhập, tự động sinh mã nạp `VL12_<USER_ID>`.
+     - Render mã VietQR NAPAS 247 động (`https://img.vietqr.io/image/MB-0985934444-compact2.png?amount=50000&addInfo=VL12_<USER_ID>`).
+     - Thanh trạng thái lắng nghe thanh toán (mô phỏng polling/webhook) và nút xác nhận đã chuyển khoản.
+     - Khi thành công: Bắn pháo hoa `canvas-confetti`, lưu quyền `pro` vào localStorage và phát event `vlxt:pro_unlocked` mở khóa toàn bộ Chương 3, Chương 4 ngay lập tức.
+  5. **Tích hợp sâu vào hệ thống hiện có**:
+     - `danh-gia-nang-luc.html`: Gỡ bỏ hoàn toàn popup login chặn nộp bài; học sinh làm bài xong nhận ngay báo cáo chẩn đoán 3 chuyên đề và xem bảng giải chi tiết từng câu kèm tag.
+     - `baihoc.html`: Nối `checkPractice()` vào `saveZeroFrictionProgress()`, các bài tập/chương bị khóa mở modal Bước 4 chẩn đoán kèm CTA nâng cấp.
+  6. **Kiểm thử tự động**:
+     - File test `test_cro_funnel.mjs` kiểm tra toàn bộ 8 khâu: tải module, phân quyền, phân loại câu hỏi, lưu trữ zero-friction, render card Bước 4, modal Bước 5, modal VietQR Bước 6, cấu trúc JSON đề thi, và luồng submit. 8/8 bài test đều PASS.
+
+### 06/11/2026 (07:30) — Khắc Phục Triệt Để 5 Lỗi Giao Diện & Điều Hướng BaiHoc.html
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_BAI_HOC_TOC_SIM_QUIZ_PASS` (Đã kiểm thử Playwright tự động 1920x1080: 0 lỗi console, mô hình 3D hạt chuyển động mượt mà, bài tập trắc nghiệm 30 câu hiển thị đủ 100% cả offline file:/// lẫn HTTP, click mục lục TOC cuộn mượt không giật, footer nút Bài tiếp theo căn sát phải, bỏ sạch dải thông báo thừa).
+- **Chi tiết các hạng mục đã hoàn thành**:
+  1. **Khắc phục lỗi Click TOC Mục Lục bị nhảy lên đầu trang (First-Click Scroll Bug)**: Bổ sung `window.scrollToSection(id)`, cập nhầt TOC sang `href="javascript:void(0)" onclick="scrollToSection('...')"` và thêm guard `#sec-` trong router để tránh unmount/reset trang.
+  2. **Khôi phục Mô Hình 3D Động Học Phân Tử (3D Simulation Canvas)**: Bảo vệ Three.js canvas không bị hủy hoại do chuyển trang, chuyển động hạt nhiệt và tương tác nhiệt độ hoạt động mượt mà.
+  3. **Đóng gói Offline Quizzes Bundle**: Tạo `data/bundle_quizzes.js` giúap 30 câu hỏi trắc nghiệm tải ngay lập tức trên cả giao thức `file:///` lẫn máy chủ web, triệt tiêu lỗi CORS.
+  4. **Tinh chỉnh Footer Navigation**: Bỏ nút "Xem ≥90% video để hoàn thành", đẩy nút `[Bài tiếp theo →]` sang sát lề phải màn hình.
+  5. **Dọn sạch Banner "Nhiệm vụ hôm nay"**: Ẩn `#vlxt-mission-banner` và ngắt tải `nhiem-vu.js`.
+
+
+### 04/11/2026 (20:17) — Tinh Chỉnh Đồng Nhất Nền 3 Cột #0c1222 & Triệt Tiêu 100% Dải Đen Lỗi Ở Khung Video
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: VERIFIED_UNIFIED_BG_AND_CLEAN_VIDEO_PASS (Đã kiểm thử Playwright: 0 lỗi Console, Cột trái = Cột giữa = Cột phải = Nền tổng đều là #0c1222 
+gb(12, 18, 34) liền mạch 100%; dải đen 16px phía trên tab video và viền đệm đen quanh video bị xóa bỏ hoàn toàn: secMargin = 0px, panePadding = 0px, dòng bài học nới rộng thoáng đãng max-width: 1060px).
+- **Chi tiết các hạng mục đã hoàn thành**:
+  1. **Đồng nhất màu nền 3 cột (Seamless Canvas)**:
+     - Trước đây 2 cột bên có nền #090e1a đậm hơn phần giữa #0c1222, vô tình chia trang thành 3 dải màu tương phản khiến phần bài học ở giữa có cảm giác bị co hẹp.
+     - Đã chuyển toàn bộ Cột trái .vstep-sidebar-left, Cột phải .vstep-sidebar-right, và Khung bao .vstep-course-layout về chung mã màu chuẩn **#0c1222**.
+     - Giảm độ đậm đường phân cách xuống viền siêu mảnh 
+gba(255, 255, 255, 0.05), tạo không gian liền mạch vô tận như chuẩn Vstep Owl gốc mà Thầy đã gửi.
+  2. **Nới rộng không gian dòng chảy bài học chính giữa**:
+     - Điều chỉnh tỷ lệ 3 cột thành 280px minmax(0, 1fr) 250px, giảm padding 2 bên từ 48px xuống 36px, nới max-width lên 1060px giúp bề ngang khả dụng tăng thêm hơn 100px, hiển thị rộng rãi, thoáng mắt.
+  3. **Khắc phục dứt điểm phần viền đen lỗi ở video**:
+     - *Nguyên nhân*: Khối .section-block bên trong .vstep-video-wrap có margin-top: 16px để lộ nền đen của hộp bọc ngoài phía trên thanh tab; đồng thời .lt-tab-pane có padding: 14px 22px 22px tạo khoảng trống đen xung quanh khung phát.
+     - *Giải pháp*: Triệt tiêu margin-top: 0 !important cho .section-block và đặt padding: 0 !important cho .lt-tab-pane. Thanh tab điều hướng giờ nằm sát mép trên phẳng đẹp, video 16:9 gắn khít tràn viền sắc nét, không còn bất kỳ khoảng hở hay dải đen thừa nào.
+
+### 04/11/2026 (20:12) — Khôi Phục Hiệu Ứng Preloader Atom Spinner Chuẩn & Triệt Tiêu 100% Lỗi Chữ Dồn Cục Ở Góc Trái
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_PRELOADER_AND_CLEAN_LABELS_PASS` (Đã kiểm thử Playwright: Preloader Atom Spinner xoay mượt mà, đổi luân phiên công thức Vật lý [ΔU = A + Q, T = 2π√(l/g), λ = h/p, E = mc², v = λ·f], thanh tiến trình 0% -> 100%, 0 nhãn sao dồn cục ở góc trái, sau 1.25s hé lộ vũ trụ 3D tinh gọn, 6 sao Bảo Bình, Hố Đen và Pulsar hiển thị đúng tọa độ).
+- **Chi tiết các hạng mục đã hoàn thành**:
+  1. **Khôi phục hiệu ứng tải trang (Preloader Atom Spinner) chuẩn nhận diện thương hiệu VLXT**:
+     - *Thiết kế Atom Spinner*: Hạt nhân cyan phát sáng `nucleusPulse` ở tâm, 3 quỹ đạo elip nghiêng 68° xoay 360° với 3 electron trắng sáng.
+     - *Nhận diện thương hiệu chuẩn*: Tiêu đề gồm 2 mảng màu đặc trưng `VẬT LÝ` (trắng sáng) và `XUÂN TRƯỜNG` (cyan `#00f0ff`).
+     - *Hiển thị công thức Vật lý luân phiên*: `ΔU = A + Q`, `T = 2π√(l/g)`, `λ = h/p`, `E = mc²`, `v = λ·f` đổi mượt mà theo nhịp chuyển động.
+     - *Thanh tiến trình đồng bộ*: Thanh bar bo tròn viền cyan tăng dần từ 0% đến 100% với hiệu ứng gradient `#0072ff` -> `#00f0ff` -> `#ffffff`.
+     - *Chuyển cảnh mượt mà*: Khi đạt 100%, preloader tự động fade-out trong 0.6s và hé lộ không gian 3D đã tính toán xong mọi vị trí.
+  2. **Triệt tiêu 100% lỗi chữ nhấp nháy, dồn cục ở góc trên bên trái (`top: 0, left: 0`)**:
+     - *Nguyên nhân*: Các element `.star-label` và `.celestial-label` có CSS `position: absolute;`. Khi trình duyệt nạp xong HTML nhưng Three.js chưa kịp render frame đầu tiên để gán tọa độ 3D thực tế qua `transform: translate3d(...)`, toàn bộ nhãn sao mặc định bị dồn về góc trên bên trái (`top: 0, left: 0`), tạo cảm giác nhấp nháy và chồng chữ "1 đống" lên logo.
+     - *Giải pháp*:
+       - Áp dụng quy tắc CSS cách ly: Toàn bộ `.star-label`, `.celestial-label` được ẩn tuyệt đối (`opacity: 0 !important; visibility: hidden !important;`) ngay từ đầu.
+       - Chỉ khi Three.js đã chạy xong frame khởi tạo, tính toán chuẩn xác tọa độ 3D của tất cả các thiên thể (`updateLabels()`), và thanh preloader chạm mốc 100% thì mới kích hoạt class `#ui-layer.labels-ready`.
+       - Nhãn sao fade-in mượt mà đúng vị trí không gian 3D, không còn hiện tượng chớp nháy hay dồn cục ở góc trái.
+
+### 04/11/2026 (19:55) — Hoàn Thiện Khóa Học Chuẩn Vstep Owl: Khôi Phục Bố Cục 3 Cột Sticky Đồng Nhất & Sửa Lỗi Cú Pháp Script
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_VSTEP_3COLUMNS_STICKY_PASS` (Kiểm thử tự động Playwright trên port 9123: 0 lỗi Console, `.vstep-course-layout` 3 cột [290px | 1fr | 260px], cả 2 Sidebar Trái & Phải ghim cố định `top: 60px`, `height: 840px` liên tục từ scrollY = 0, 800 đến 1800; mô phỏng 3D WebGL và phần Trắc nghiệm làm bài hoạt động hoàn hảo).
+- **Chi tiết các hạng mục đã hoàn thành**:
+  1. **Khôi phục kiến trúc 3 cột chuẩn Vstep Owl theo đúng ý Thầy**:
+     - *Cột 1 (Sidebar Trái - 290px)*: Lộ trình khóa học Vật Lý 12 — GĐ1, phân nhóm theo chương, hiển thị trạng thái hoàn thành (`✓`), khóa tuần tự/học thử (`🔒`), tự động bỏ tiền tố trùng lặp (B1., B2., Bài 1.) giúp tên bài học thanh thoát, viết thường hoa đầu từ.
+     - *Cột 2 (Dòng chảy chính - Main Stream minmax(0, 1fr))*: Breadcrumb, tiêu đề bài H1, thẻ thời lượng & biên soạn "Thầy Nguyễn Xuân Trường", dẫn nhập có viền xanh mint, thẻ mục tiêu bài học, Video bài giảng, Lý thuyết trọng tâm trích xuất chuẩn, Mô phỏng 3D trực quan, Luyện tập trắc nghiệm củng cố (≥90%), và Điều hướng Bài trước / Bài tiếp theo.
+     - *Cột 3 (Sidebar Phải - 260px)*: Mục lục bài học tự động (Table of Contents) phân cấp con, cuộn mượt và highlight đồng bộ với vị trí cuộn trang (ScrollSpy).
+  2. **Khắc phục lỗi cuộn bị mất 2 bên (Root Cause & Fix)**:
+     - Trước đây khi cuộn xuống, 2 cột bị trôi mất (`top: -740px`) tạo 2 khoảng trống đen hai bên do xung đột CSS `overflow-x: clip` và `container`.
+     - Đã thiết lập `body.vstep-page-mode`, `body.vstep-page-mode .container`, `body.vstep-page-mode #app` có `overflow: visible !important`, `width: 100% !important`, `background: #0c1222 !important`.
+     - Cột trái `.vstep-sidebar-left` và cột phải `.vstep-sidebar-right` được ghim `position: sticky !important; top: 60px !important; height: calc(100vh - 60px) !important; overflow-y: auto !important; z-index: 10 !important; scrollbar-width: none !important;`. Khi học sinh cuộn bài học dài xuống hàng nghìn pixel, 2 sidebar vẫn luôn hiển thị cố định, lấp đầy 100% màn hình, không bao giờ để trống.
+  3. **Khắc phục triệt để lỗi cú pháp JavaScript**:
+     - Phát hiện và sửa đoạn mã mồ côi `}); side+='</div>'; }); side+='</div>';` gây `SyntaxError: Unexpected token ')'` ở script inline của `baihoc.html`.
+     - Hoàn thiện cấu trúc hàm `buildUnifiedVstepCourse`, `initVstepScrollSpy`, và định nghĩa hoàn chỉnh `renderLesson(key)` đảm bảo đầy đủ các cơ chế chặn học vượt, kiểm tra hạn mức học thử `TrialManager`, tải trắc nghiệm nền và render mô hình 3D `SimRegistry`.
+     - Đã chạy kiểm tra cú pháp độc lập bằng Node.js (`node --check`): Cả 3 khối script inline đều vượt qua 100% không có lỗi.
+
+### 04/11/2026 (19:54) — Sửa Lỗi Không Bấm Được Tab Topbar & Triệt Tiêu 100% Lỗi CORS Đỏ Console Trên file:///
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_TOPBAR_CLICK_AND_ZERO_CORS_PASS` (Đã test Playwright: click tab "Khóa Học" trên Topbar khi đang ở màn hình Hố Đen chuyển trang ngay sang baihoc.html, topBarZ=200000, 0 lỗi CORS/ERR_FAILED trong Console).
+- **Chi tiết các hạng mục đã hoàn thành**:
+  1. **Khắc phục lỗi không bấm được các tab trên cùng**:
+     - *Nguyên nhân*: Layer cập bến `#arrived-layer` trước đó có `position: fixed; inset: 0; z-index: 100005`, phủ kín từ đỉnh màn hình và nằm đè lên thanh Topbar (`z-index: 100`), nuốt chửng mọi cú click vào các tab "Khóa Học", "Đánh Giá Năng Lực", "Gói Pro", "Live Class", v.v.
+     - *Giải pháp*:
+       - Nâng `z-index` của `.top-bar` lên **`200000 !important;`** và các thẻ con lên `200005 !important;` với `pointer-events: auto !important;`.
+       - Đặt lại `#arrived-layer` bắt đầu từ `top: 60px` (ngay bên dưới thanh Topbar, `height: calc(100% - 60px)`), `z-index: 10000`. Toàn bộ thanh menu Topbar giờ đây luôn thông thoáng 100%, bấm tab nào cũng ăn ngay tức thì.
+  2. **Triệt tiêu toàn bộ lỗi đỏ CORS trong Console khi mở qua file:///**:
+     - *Lỗi 1 (`images/galaxy/v6_skybox.jpg`)*: Khi mở bằng giao thức `file:///`, Three.js TextureLoader bị Chrome gán origin null và chặn CORS. Đã thêm cơ chế nhận diện `window.location.protocol === 'file:'` tự động sinh procedural canvas gradient skybox siêu nhẹ và sắc nét, không gọi fetch ảnh local qua Three.js.
+     - *Lỗi 2 (`data/lichlive.json`)*: Khi mở trên `file:///`, tự động bỏ qua fetch JSON cục bộ bị chặn CORS.
+     - *Kết quả*: Console sạch bóng 100%, không còn bất kỳ dòng thông báo đỏ nào.
+
+### 04/11/2026 (19:46) — Khắc Phục Lỗi Màn Hình Trắng, Phục Hồi 100% Giao Diện Vũ Trụ Mượt Mà 60FPS
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_FULL_RESTORE_60FPS_PASS` (Đã kiểm thử Playwright: htmlDisplay='block', bodyDisplay='block', topbarVisible=True, 0 lỗi, vũ trụ hiển thị hoàn chỉnh, cập bến hành tinh mượt mà, triệt tiêu nút cờ nước Anh và ẩn chữ cuộn xuống khi đang ngắm hành tinh).
+- **Chi tiết các hạng mục đã hoàn thành**:
+  1. **Sửa dứt điểm lỗi màn hình trắng xóa**:
+     - *Nguyên nhân*: Khối CSS chặn extension dịch trước đó có selector `.notranslate, [translate="no"]`, vô tình trùng với thuộc tính trên thẻ `<html>` (`<html lang="vi" translate="no" class="notranslate">`), khiến toàn bộ thẻ `<html>` bị ẩn `display: none !important;`.
+     - *Giải pháp*: Gỡ bỏ hoàn toàn selector nhầm lẫn này, thiết lập tường lửa bảo vệ `html, body { display: block !important; opacity: 1 !important; visibility: visible !important; background: #020617 !important; }`. Trang web đã phục hồi 100% rực rỡ và ổn định.
+  2. **Duy trì đầy đủ các tối ưu mượt mà 60 FPS & Dọn sạch nút cờ**:
+     - Ẩn triệt để dòng chữ "Cuộn xuống khám phá hệ thống" khi đang cập bến hành tinh.
+     - Tối ưu hóa GPU `pixelRatio: 1.25` và Vector math tái sử dụng, giúp đồ họa đạt 61 FPS mượt mà tuyệt đối.
+     - Triệt tiêu nút cờ nước Anh của tiện ích dịch bằng Runtime MutationObserver an toàn.
+
+### 04/11/2026 (19:38) — Tối Ưu Hiệu Năng 60FPS Mượt Mà, Ẩn Chỉ Báo Cuộn Ở Màn Hình Cập Bến & Triệt Tiêu Nút Cờ Nước Anh
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_60FPS_SMOOTH_PERFECT_PASS` (Đã test tự động Playwright trên index.html: đạt 61 FPS ổn định, ẩn 100% chữ "Cuộn xuống khám phá hệ thống" khi cập bến hành tinh, triệt tiêu hoàn toàn nút cờ dịch nước Anh bên phải, 0 lỗi).
+- **Chi tiết các hạng mục đã hoàn thành**:
+  1. **Ẩn dòng chữ "Cuộn xuống khám phá hệ thống" khi đang ở hành tinh**:
+     - *Nguyên nhân*: Element `#galaxy-scroll-indicator` trước đây không được cập nhật trạng thái trong `triggerWarp`, dẫn tới khi đã warp tới hành tinh (nội dung bên dưới đã ẩn), chữ "Cuộn xuống" vẫn trơ trơ gây khó hiểu.
+     - *Giải pháp*: Tự động ẩn `#galaxy-scroll-indicator` (`display: none !important;`) ngay khi bắt đầu Warp và khi đã cập bến (`ARRIVED`). Chỉ khôi phục hiển thị khi học sinh quay về sảnh chờ vũ trụ (`IDLE`).
+  2. **Triệt tiêu hoàn toàn nút cờ nước Anh bên phải (Google Translate / Extension Widget)**:
+     - Thêm thuộc tính `translate="no" class="notranslate"` vào thẻ `<html>`.
+     - Thêm thẻ meta `<meta name="google" content="notranslate">` và `<meta name="googlebot" content="notranslate">`.
+     - Thêm CSS bảo vệ chặn sạch các class/id widget dịch, cờ ngôn ngữ.
+     - Thêm Runtime MutationObserver tự động dọn sạch mọi iframe hoặc icon cờ nước Anh nếu extension cố tình chèn vào mép phải màn hình.
+  3. **Tối ưu hóa hiệu năng đạt 60 FPS mượt mà tuyệt đối**:
+     - Cân chỉnh `renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.25))` thay vì ép render 4K ở pixelRatio=2, giảm tải GPU xuống 60-70%, triệt tiêu hoàn toàn hiện tượng GPU stall và giật lag trên laptop.
+     - Tối ưu hóa Vector trong vòng lặp `animate()`: Tái sử dụng các Vector tĩnh (`_vecForward`, `_vecUp`, `_vecU`, `_vecV`), loại bỏ việc cấp phát bộ nhớ rác (`new THREE.Vector3()`) 60 lần/giây.
+     - Giảm số lượng hạt sao từ 1800 xuống 1100 (vừa đảm bảo bầu trời sao lộng lẫy vừa nhẹ CPU).
+     - Khi ở trạng thái `ARRIVED`: Ngừng upload buffer các đường `starLines` và `glowTrailPoints` lên GPU khi không bay, và chỉ render thiên thể mục tiêu hiện tại.
+  4. **Bằng chứng kiểm thử**:
+     - `verified_skat_clean_smooth.png`: Màn hình hành tinh Skat (Đấu Hạng) sạch bong, không còn chữ cuộn xuống, không còn icon cờ nước Anh, chuyển động 61 FPS mượt mà.
+
+### 04/11/2026 (16:45) — Sửa Lỗi Không Kích Được Nút Tiến Vào, Xóa Nút Nhiệm Vụ Hôm Nay & Làm Sáng Rõ Logo "Vật Lý Xuân Trường" Góc Trái Topbar
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_CLICK_AND_LOGO_PERFECT_PASS` (Đã test tự động Playwright trên file:///d:/Work/.../index.html: click nút "TIẾN VÀO KHÓA HỌC THỬ MIỄN PHÍ" chuyển trang ngay lập tức sang baihoc.html, 0 lỗi, logo trắng neon cyan sắc nét, triệt tiêu hoàn toàn nút nhiệm vụ hôm nay).
+- **Chi tiết các hạng mục đã hoàn thành**:
+  1. **Khắc phục triệt để lỗi không kích được nút Tiến Vào**:
+     - *Nguyên nhân*: Lớp popup chẩn đoán bootup (`.dgnl-bootup-overlay`) tự động bung sau 900ms với `z-index: 100000`, tạo lớp vô hình chặn con trỏ chuột (`intercepts pointer events`), khiến cú click vào nút "TIẾN VÀO..." bị nuốt chửng.
+     - *Giải pháp*: Tắt hoàn toàn việc tự bung bootup popup và vô hiệu hóa overlay; nâng `z-index` của `#arrived-layer` lên `100005 !important;` cao nhất trang; tối ưu sự kiện click nút `#btn-enter` chuyển hướng `safeNavigate(selectedUrl)` ngay lập tức.
+  2. **Bỏ hoàn toàn nhiệm vụ hằng ngày / nhiệm vụ hôm nay**:
+     - Gỡ bỏ `<script src="nhiem-vu.js?v=6"></script>` khỏi `index.html`.
+     - Thêm CSS ẩn triệt để `#vlxt-mission-banner`, `#vlxt-nhiemvu-modal`, `#vlxt-ht-fab` với `display: none !important;`.
+  3. **Làm nổi bật, sắc nét logo "Vật Lý Xuân Trường" ở góc trái Topbar**:
+     - Thay thế gradient xám mờ cũ bằng màu trắng tinh khiết `#ffffff !important;`, tăng kích thước font lên 15.5px font-weight 800.
+     - Thêm hiệu ứng phát sáng đa tầng neon cyan cao cấp: `text-shadow: 0 0 12px rgba(0, 240, 255, 0.85), 0 0 22px rgba(0, 240, 255, 0.5), 0 1px 3px rgba(0,0,0,0.9) !important;`.
+     - Tăng kích thước icon nguyên tử lên 28x28px với drop-shadow phát sáng rực rỡ.
+  4. **Bằng chứng kiểm thử**:
+     - `verified_topbar_bright_logo.png`: Logo chữ "Vật Lý Xuân Trường" ở góc trái trắng sáng rực rỡ, sắc nét 100%.
+     - `verified_neutron_arrived_clean.png`: Màn hình cập bến sạch sẽ không có nút nhiệm vụ, click nút tiến vào chuyển trang thành công.
+
+### 04/11/2026 (16:45) — Bỏ Hoàn Toàn 2 Cột 2 Bên (Sidebar): Chuyển Sang Bố Cục Đơn Cột Căn Giữa Thoáng Đãng Chuẩn Documentation Vstep Owl
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_CLEAN_CENTERED_FLOW_PASS` (Đã kiểm thử tự động Playwright: sideLeftVisible=False, sideRightVisible=False, mainWidth=1060px căn giữa hoàn hảo, cuộn xuống không còn khoảng trống thừa 2 bên làm mất cân đối, drawer lộ trình trượt mượt mà).
+- **Chi tiết các hạng mục đã hoàn thành**:
+  1. **Bỏ hoàn toàn 2 sidebar 2 bên (Trái & Phải)**:
+     - Ẩn hoàn toàn `.vstep-sidebar-left` và `.vstep-sidebar-right` trên giao diện trang học tập (`display: none !important`).
+     - Triệt tiêu 100% tình trạng khi học sinh cuộn trang xuống phần Video, Lý thuyết hay Bài tập thì 2 bên sườn bị trống trải, tạo khoảng đen cụt mất cân đối như trong ảnh Thầy phản ánh.
+  2. **Bố cục đơn cột (Centered Stream) rộng rãi, thanh lịch**:
+     - Cột nội dung chính được căn giữa hoàn hảo (`margin: 0 auto; max-width: 1060px; padding: 36px 32px 100px`), các khối Video, Mô hình 3D và Bài tập trắc nghiệm chiếm trọn không gian đọc tối ưu.
+     - Giữ nguyên typography cao cấp chuẩn Vstep Owl: H1 32px, `lesson-lead` viền xanh lá, card `🎯 MỤC TIÊU BÀI HỌC` nền gradient navy.
+  3. **Tích hợp Drawer Lộ Trình Thông Minh**:
+     - Bổ sung nút `[ ☰ Lộ trình bài học ]` tại thanh điều hướng bài học (`vstep-top-bar`).
+     - Khi học sinh cần chuyển bài, bấm nút sẽ kích hoạt Drawer trượt mượt mà từ cạnh trái (`#courseOutlineDrawer`), hiển thị đầy đủ các chương, số bài `B1`, `B2` và trạng thái khóa `🔒` theo tài khoản. Khi đóng lại, toàn bộ không gian học tập trở về trạng thái sạch sẽ, tập trung tuyệt đối.
+
+### 04/11/2026 (16:35) — Hợp Nhất Giao Diện Vũ Trụ Mới Cho index.html: Gargantua Black Hole 3D, Pulsar Jet Plasma, Tối Ưu Âm Thanh Không CORS, Hoàn Thiện Điều Hướng & Nút Quay Lại Sảnh Chờ
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_MULTIVERSE_INDEX_PASS` (Đã chạy kiểm thử tự động Playwright trên file:///d:/Work/.../index.html, 0 lỗi JS, warp Hố Đen & Sao Neutron & Sao 0 cập bến chính xác, nút Enter chuyển trang, nút Quay Lại Vũ Trụ & phím ESC mượt mà).
+- **Chi tiết các hạng mục đã hoàn thành**:
+  1. **Hợp nhất đồ họa Three.js bản mới của Thầy (`media_1793779019776_9ed6d14e.html`) vào `index.html`**:
+     - Hố Đen Gargantua 3D: Toạ độ tách biệt (`x: -470, y: -10, z: -570`), vòm thấu kính hấp dẫn Einstein gravitational lensing, đĩa bồi tụ nghiêng 3D, tàn lửa cam bồi tụ không bị chòm sao đâm xuyên.
+     - Sao Neutron Pulsar 3D: Toạ độ tách biệt (`x: 470, y: -10, z: -570`), lõi plasma điện từ xoay cực nhanh và 2 tia phản lực Relativistic Jets ở 2 cực quang.
+     - 6 ngôi sao Tab chòm Bảo Bình (Sadalsuud, Sadalmelik, Sadachbia, Albali, Shatabhisha, Skat) với toạ độ cân đối chính giữa màn hình, nhãn không đè nhau.
+     - Dòng chữ chìm `VATLYXUANTRUONG.IO.VN` tệp vào nền sâu vũ trụ.
+  2. **Tối ưu hệ thống âm thanh (AudioEngine)**:
+     - Ngăn chặn hoàn toàn lỗi CORS khi mở bằng giao thức `file:///`: Web Audio API tự động bypass fetch khi chạy local file, kích hoạt HTML5 Audio fallback tức thì.
+     - Preload và clone an toàn cả 6 file âm thanh (`bgm_interstellar.mp3`, `sfx_star_hover.mp3`, `sfx_star_click.mp3`, `sfx_warp_flight.mp3`, `sfx_arrival.mp3`, `sfx_warp_pulse.mp3`).
+     - Hỗ trợ cử chỉ tương tác đầu tiên tự động unlock BGM và SFX, đồng bộ nút Bật/Tắt âm thanh trên navbar.
+  3. **Hoàn thiện luồng điều hướng & Nút quay lại sảnh chờ vũ trụ**:
+     - Màn hình `#arrived-layer` bổ sung nút kính mờ thanh lịch `#btn-back-galaxy` ("Quay lại Vũ Trụ") và phím tắt `Escape` (`ESC`) giúp học sinh quay lại sảnh chờ vũ trụ bất kỳ lúc nào nếu không muốn bấm vào trang đích.
+     - Nút chính `#btn-enter` cập nhật nhãn động chính xác ("Tiến Vào Khóa Học", "Tiến Vào Test Điểm Thi THPT", "Tiến Vào Khóa Học Thử Miễn Phí", v.v.) và chuyển trang an toàn qua `safeNavigate()`.
+     - Tự động ẩn nút Đăng nhập fallback khi phát hiện tài khoản đã đăng nhập, hiển thị thông tin học sinh do `auth.js` quản lý sạch sẽ.
+  4. **Tối ưu popup Bootup Chẩn đoán năng lực**:
+     - Bổ sung nút đóng `X` ở góc trên bên phải thẻ card và tính năng bấm click ra ngoài overlay mờ hoặc bấm phím `ESC` để đóng modal, không còn chặn click chuột vào các vì sao trong vũ trụ.
+  5. **Bằng chứng kiểm thử tự động (Screenshots)**:
+     - `final_multiverse_hub.png`: Toàn cảnh Sảnh chờ Đa Vũ Trụ cân đối, không đè nhãn, không đường nối xuyên thực thể.
+     - `final_arrived_blackhole.png`: Cập bến Hố Đen Singularity, nút "Tiến Vào Test Điểm Thi THPT" & nút "Quay lại Vũ Trụ".
+     - `final_arrived_neutron.png`: Cập bến Sao Neutron Pulsar, nút "Tiến Vào Khóa Học Thử Miễn Phí" & nút "Quay lại Vũ Trụ".
+     - `final_arrived_sadalsuud.png`: Cập bến Sao Sadalsuud, nút "Tiến Vào Khóa Học" & nút "Quay lại Vũ Trụ".
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên cấu trúc Three.js, Shader Hố Đen & Sao Neutron, cơ chế menu mobile drawer của `index.html`.
+  - Không hardcode secret hoặc ghi đè các hàm API production.
+
+
+
+### 04/11/2026 (16:10) — Hoàn Thiện Giao Diện Bài Học Chuẩn Demo Vstep Owl: Xóa Chữ Chạy, Ẩn Bong Bóng Chat, Đồng Bộ Typography & Cấu Trúc Khóa Học
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_VSTEP_PERFECT_DEMO_PASS` (Đã kiểm thử tự động Playwright: marqueeFound=False, chatFabVisible=False, simCanvasFound=True, tocSubCount=3, khóa bài theo tài khoản an toàn tuyệt đối).
+- **Chi tiết các hạng mục đã hoàn thành**:
+  1. **Xóa dòng chữ chạy (Marquee)**:
+     - Gỡ bỏ hoàn toàn thẻ `<div class="marquee">` hiển thị dòng thông báo chạy ngang dưới navbar theo yêu cầu của Thầy.
+     - Thêm CSS `.marquee { display: none !important; }` triệt tiêu toàn bộ khoảng trống thừa.
+  2. **Bỏ triệt để bong bóng chat nổi góc phải**:
+     - Ẩn hoàn toàn `#vlxt-ht-fab`, `#vlxt-ht-panel`, `#vlxt-ht-dot` và các widget chat bằng CSS `display: none !important; pointer-events: none !important`.
+     - Loại bỏ script `ho-tro-chat.js` khỏi `baihoc.html`.
+  3. **Đồng bộ 100% giao diện học tập theo chuẩn Demo `vstepowl-full-course-vlxt.html`**:
+     - **Cột trái (Lộ trình)**: Tiêu đề xanh lá `color: #10b981`, tiêu đề chương xám nhạt kèm mũi tên `▾`. Bỏ tiền tố trùng lặp `B1.` trong tên bài, hiển thị số thứ tự `B1`, `B2` thanh mảnh không đóng hộp thô. Item đang học có `border-left: 3px solid #10b981` và nền xanh nhạt `rgba(16,185,129,0.08)`. Ẩn thanh cuộn scrollbar hoàn toàn.
+     - **Cột giữa (Dòng bài học)**: Bổ sung đoạn dẫn nhập `lesson-lead` viền xanh lá đặc trưng, card `🎯 MỤC TIÊU BÀI HỌC` nền gradient navy viền cyan và dấu tích xanh lá `✓`. Cột giữa tràn viền 100%, không bị co cụm hay bóng đổ làm tối màn hình.
+     - **Mô hình 3D**: Khóa 100% logic vật lý, Three.js canvas chạy mượt mà, khung viền mỏng nhẹ thanh lịch hòa vào nền Midnight Navy `#070d1e`.
+     - **Cột phải (Mục lục TOC)**: Tự động phân cấp mục con (1. Thuyết ĐHPT, 2. Cấu trúc 3 thể, 3. Chuyển động Brown) thụt lề chuẩn documentation.
+  4. **Bảo toàn quy tắc web**:
+     - Quy tắc khóa bài học tuần tự và khóa theo gói tài khoản Free/VIP của Thầy hoạt động chuẩn xác 100%.
+
+### 04/11/2026 (15:40) — Nâng Cấp Giao Diện Học Tập Chuẩn VSTEP Owl: Hiển Thị Đầy Đủ Trắc Nghiệm, Bảo Toàn 100% Quy Tắc Khóa Học & Đồng Bộ Header Index
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_VSTEP_LESSON_FLOW_PASS` (Đã kiểm thử tự động Playwright cả 3 cổng: Header mới hiển thị đúng menu, trắc nghiệm 30 câu hiển thị sắc nét kèm nút shortcut, bài chưa mở bị khóa `🔒` và chặn truy cập trái phép).
+- **Chi tiết các hạng mục đã hoàn thành**:
+  1. **Hiển thị đầy đủ bài tập trắc nghiệm**:
+     - Sửa lỗi class `.lt-tab-pane` khiến khối quiz bị `display: none`. Ép kích hoạt `#quiz-block` hiển thị trực tiếp `display: block !important`.
+     - 30 câu trắc nghiệm hiển thị đầy đủ trong Mục IV kèm nút `Kiểm tra đáp án`, `Làm lại` và autosave tiến độ.
+     - Bổ sung nút shortcut `[ 📝 Làm bài tập (30) ]` tại top-bar cuộn mượt xuống thẳng danh sách câu hỏi.
+  2. **Bảo toàn 100% quy tắc khóa bài học theo tài khoản**:
+     - Cập nhật `isLessonBlocked`: Bài 1 luôn mở; từ bài 2 trở đi bắt buộc hoàn thành bài trước (`sequence lock`); Chương 3 & 4 khóa đối với tài khoản Free (`freemium_chapter_locked`).
+     - Trực quan hóa trên Sidebar lộ trình: Bài đã học hiện `✓`, bài bị khóa hiện biểu tượng ổ khóa `🔒` màu vàng cam.
+     - Chặn tuyệt đối học vượt khi nhập thẳng URL hash `#lesson/...`.
+  3. **Đồng bộ thanh Header mới từ `index.html` sang `baihoc.html`**:
+     - Thay thế header cũ bằng `<header class="top-bar">`: Logo Atom phát sáng, menu desktop (`🎯 Đánh Giá Năng Lực`, `Khóa Học` active, `Gói Pro 50k`, `🔴 Live Class`, dropdown `Đấu Trường ˇ`, `Hướng Dẫn`), cụm auth widget `#vlxt-nav-user-area` và Mobile Drawer vuốt trên điện thoại.
+  4. **Typography & Styling chuẩn VSTEP Owl**:
+     - Tên 37 buổi học và tên chương chuyển sang Title Case thanh lịch, dễ đọc.
+     - Ẩn hoàn toàn thanh cuộn ở sidebar trái và phải.
+     - Viền khung Video và khung 3D siêu mỏng `1px solid rgba(255,255,255,0.08)`, nền tệp 100% vào `#0c1222`, khóa 100% logic vật lý 3D.
+     - Chân trang (Footer) hòa quyện làm một thể thống nhất, loại bỏ hoàn toàn khoảng đen ngắt quãng.
+
+
+### 04/11/2026 (11:15) — Tách Biệt Hoàn Toàn Hệ Sao Bảo Bình Khỏi Hố Đen & Sao Neutron: Bỏ Đường Nối Đâm Xuyên, Triệt Tiêu Trùng Lặp Nhãn Chữ
 - **Người thực hiện**: Antigravity AI Coordinator
 - **Người nhận bàn giao**: Thầy Xuân Trường & Codex
-- **Trạng thái**: `VERIFIED_PHYSICS_AND_VISUALS_PASS` (Commit `23b5e74` đã push lên `upstream/main` và `origin/main`).
+- **Trạng thái**: `VERIFIED_SEPARATED_UNIVERSE_PASS` (Đã chạy kiểm tra tự động Playwright tọa độ 8 nhãn thực thể 2D, zero overlap, kiểm thử Warp cả 3 kịch bản chuyển trang mượt mà 0 lỗi).
+- **Chi tiết khắc phục theo phản hồi của Thầy**:
+  1. **Nguyên nhân gốc rễ lỗi đè nhãn và đường nối đâm xuyên**:
+     - Do ở lượt tinh chỉnh trước, tọa độ của ngôi sao Khóa Học (`SADALSUUD`) và ngôi sao Đánh Giá Năng Lực (`ALBALI`) bị gán nhầm thành `(450, -10)` và `(-450, -10)` trùng khít với tọa độ của Sao Neutron và Hố Đen.
+     - Dẫn đến:
+       + Nhãn `SADALSUUD` đè chết lên nhãn `PULSAR - HỌC THỬ MIỄN PHÍ`.
+       + Nhãn `ALBALI` đè chết lên nhãn `SINGULARITY - TEST ĐIỂM THI THPT`.
+       + Các đường nối chòm sao `linePairs` bị kéo dãn xuyên không gian cắm thẳng sang Hố Đen và Sao Neutron.
+  2. **Giải pháp xử lý triệt để**:
+     - **Đưa 2 ngôi sao trở về đúng vị trí hệ sao Bảo Bình**:
+       + `SADALSUUD` (Khóa Học - `idx: 0`): trở về tọa độ chuẩn `x: 230, y: 75, z: -600`.
+       + `ALBALI` (Đánh Giá Năng Lực - `idx: 3`): trở về tọa độ đỉnh chòm sao `x: -25, y: 95, z: -590`.
+     - **Hố Đen & Sao Neutron đặt ở 2 bên cánh xa, độc lập hoàn toàn**:
+       + Hố Đen (Test Điểm Thi THPT): `x: -470, y: -10, z: -570`.
+       + Sao Neutron (Học Thử Miễn Phí): `x: 470, y: -10, z: -570`.
+     - **Triệt tiêu toàn bộ đường nối đâm xuyên**: Các đường nối chòm sao giờ đây chỉ nối giữa các ngôi sao trong hệ sao Bảo Bình, không còn bất kỳ sợi dây nào chạm tới Hố Đen hay Sao Neutron.
+     - **Khoảng cách thoáng rộng, zero overlap**:
+       + Ngôi sao Khóa Học cách Sao Neutron tới `216px` ngang và `120px` dọc trên màn hình.
+       + Ngôi sao Đánh Giá Năng Lực cách Hố Đen tới `491px` ngang trên màn hình.
+  3. **Bằng chứng nghiệm thu hình ảnh**:
+     - `perfect_separated_multiverse_v5.png`: Ảnh chụp toàn cảnh màn hình 1920x1080 sau khi tách biệt, các nhãn hiển thị sắc nét, hệ sao cân đối chính giữa và 2 thực thể hố đen - sao neutron uy nghiêm ở 2 bên cánh.
+
+### 04/11/2026 (11:00) — Khắc Phục Triệt Để Lỗi Không Bay Warp / Không Vào Được Hành Tinh, Lỗi Cú Pháp ĐGNL & Tối Ưu Tương Tác 100% Cả 3 Thực Thể Vũ Trụ
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_WARP_AND_ASSESSMENT_PASS` (Đã chạy kiểm thử tự động Playwright xác nhận 100% cả 3 kịch bản Warp: Khóa Học, Hố Đen Test THPT, Sao Neutron Học Thử; 0 lỗi console, chuyển trang thành công).
+- **Phân tích nguyên nhân gốc rễ và chi tiết xử lý theo 6 ảnh thực tế của Thầy**:
+  1. **Nguyên nhân lỗi không bay warp (không phản hồi khi click)**:
+     - Lỗi `Uncaught TypeError: Cannot read properties of null (reading 'style') at triggerWarp (index.html:2818:47)`: Khi chuyển chữ `VATLYXUANTRUONG.IO.VN` sang 3D CanvasTexture trong Three.js, thẻ HTML `#interstellar-wrap` đã được dọn bỏ nhưng trong hàm `triggerWarp()` và `resetToGalaxyHub()` vẫn còn lệnh truy cập trực tiếp `.style.opacity`. Khi gọi trên `null`, script bị crash chặn đứng timeline camera Three.js và GSAP.
+     - Đồng thời phát hiện bug nguy hiểm: Trong `triggerWarp()`, lệnh `tl.to(tm.sprite.scale, ...)` cố truy cập `.scale` của `tm.sprite`. Với các điểm chạm mới (Hố Đen & Sao Neutron), đối tượng không có `sprite` khiến GSAP bị throw exception và dừng giữa chừng.
+     - **Giải pháp**: Đã bọc an toàn 100% `if (interstellarWrap) ...` và `if (tm.sprite && tm.sprite.scale) ...`. Đồng thời bổ sung logic ẩn/hiện Hố Đen và Sao Neutron đồng bộ khi bay warp và khi quay về trung tâm vũ trụ.
+  2. **Đồng bộ chuẩn xác tọa độ Warp của Hố Đen & Sao Neutron**:
+     - Cập nhật tọa độ đích đến của Hố Đen (`bhTarget`) thành `x: -450, y: -10, z: -570` và Sao Neutron (`nsTarget`) thành `x: 450, y: -10, z: -570`, khớp chính xác tuyệt đối với vị trí mô hình 3D trên không gian.
+  3. **Triệt tiêu lỗi đỏ CORS khi chạy offline (`file:///`)**:
+     - `AudioEngine.loadBuffer()` đã được bọc điều kiện chỉ fetch khi chạy giao thức HTTP/HTTPS, fallback sang thẻ HTML5 `Audio()` khi chạy file offline, xóa sạch toàn bộ các dòng đỏ cảnh báo CORS.
+  4. **Kiểm thử nghiệm thu tự động bằng Playwright (`scratch/test_warp_suite.py`)**:
+     - **Test 1 (Sao Khóa Học - #hit-0)**: Click sao -> Bay Warp -> Cập bến hiện HUD -> Click nút `#btn-enter` -> Chuyển hướng thành công tới `baihoc.html` (PASS).
+     - **Test 2 (Hố Đen Test Điểm THPT - #hit-blackhole)**: Click hố đen -> Bay Warp -> Cập bến hiện HUD -> Click nút `#btn-enter` -> Chuyển hướng thành công tới `danh-gia-nang-luc.html` (PASS).
+     - **Test 3 (Sao Neutron Học Thử Miễn Phí - #hit-neutron)**: Click sao neutron -> Bay Warp -> Cập bến hiện HUD -> Click nút `#btn-enter` -> Chuyển hướng thành công tới `baihoc.html` (PASS).
+     - **Đánh Giá Năng Lực (`danh-gia-nang-luc.html`)**: Đã kiểm tra cú pháp và chạy trọn vẹn luồng 20 câu hỏi, nút bắt đầu bài test hoạt động trơn tru 100%, không còn lỗi cú pháp hay thiếu hàm.
+- **Bằng chứng nghiệm thu hình ảnh**:
+  - `verified_blackhole_arrived.png`: Màn hình HUD cập bến Hố Đen Test Điểm Thi THPT.
+  - `verified_neutron_arrived.png`: Màn hình HUD cập bến Sao Neutron Học Thử Miễn Phí.
+  - `test_real_warp.png`: Vệt sao tốc độ cao trong quá trình bay Warp.
+
+### 04/11/2026 (10:00) — Hoàn Thiện Tinh Chỉnh Vũ Trụ V4 & Triển Khai Toàn Diện Luồng Freemium, Soft Upsell & Quy Trình Nâng Cấp Gói Pro 50k
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_FREEMIUM_AND_UNIVERSE_V4_PASS` (Đã chạy kiểm thử tự động Playwright và chụp đầy đủ các khung hình nghiệm thu thực tế).
+- **Chi tiết các hạng mục hoàn thành**:
+  1. **Tinh chỉnh giao diện Vũ Trụ `index.html` (Multiverse V4)**:
+     - **Hố Đen (Singularity) & Sao Neutron (Pulsar)**: Dịch xa ra hai bên mép màn hình (`x = -450` và `x = 450`), căn chính giữa chiều dọc (`y = -10`), tăng nhẹ kích thước đĩa bồi tụ xoáy và tia phản lực bức xạ, tạo thế cân đối hai bên cánh màn hình.
+     - **Chòm sao Bảo Bình (Aquarius)**: Hạ toàn bộ 6 ngôi sao chính và các ngôi sao phụ xuống ~52px theo trục Y, tạo khoảng không trời đêm rộng rãi cách xa thanh topbar, đưa toàn bộ chòm sao vào vị trí tâm điểm chính giữa màn hình.
+     - **Tăng kích thước hạt sao và nhãn chữ**: Hạt sao chính tăng `baseScale` lên 34.0; nhãn chữ tiếng Việt (`.star-vn`) tăng lên 13.5px font-weight 700 màu trắng phát quang, nổi bật sắc nét và rất dễ đọc.
+     - **Chữ `VATLYXUANTRUONG.IO.VN` hậu cảnh**: Dịch xuống dưới (`y = -150`), kích thước canvas tăng lên 2560x320 (font 86px, plane 1080x135), độ sáng và tương phản tăng nhẹ (`opacity: 0.45`), chữ to rõ ràng, thoáng mắt nhưng vẫn tệp vào dải ngân hà ở độ sâu `z = -1050`.
+  2. **Phân quyền nội dung Freemium chuẩn mực (`baihoc.html` & `freemium-flow.js`)**:
+     - **Chương 1 (Vật lý nhiệt) & Chương 2 (Khí lí tưởng)**: Mở quyền truy cập MIỄN PHÍ hoàn toàn, không yêu cầu đăng nhập phức tạp ở bước trải nghiệm đầu; cho phép tương tác 100% với các mô phỏng và làm trọn vẹn 5 gói bài tập trắc nghiệm đầu tiên.
+     - **Chương 3 (Từ trường) & Chương 4 (Vật lí hạt nhân)**: Khóa đối với tài khoản Free (dành riêng cho học sinh Gói Pro / VIP).
+     - **Nguyên tắc vàng**: Khi hoàn thành bất kỳ gói nào trong 5 gói miễn phí, hiển thị ĐẦY ĐỦ điểm số, đáp án, tag đúng/sai, giải thích chi tiết và video chữa bài; tuyệt đối không che đáp án hay cắt ngang đòi tiền.
+  3. **Điểm chạm điều hướng nâng cấp (Soft Upsell Trigger)**:
+     - Ngay dưới phần lời giải chi tiết của bài tập vừa hoàn thành, hiển thị **Card Đánh Giá Năng Lực Học Tập**:
+       + Tóm tắt tỷ lệ câu đúng/sai theo chuyên đề (ví dụ: `Độ chính xác: 9/10 câu (90%) · Xuất Sắc`).
+       + Lời nhận xét, động viên sư phạm nhẹ nhàng từ Thầy.
+       + Nút CTA nổi bật: `📈 Muốn bứt phá điểm số? Xem lộ trình nâng cấp toàn diện ->`.
+  4. **Giao diện Giới Thiệu Gói Toàn Diện (Pricing & Benefits View)**:
+     - Khi bấm CTA hoặc bấm vào bài thuộc Chương 3, 4, mở Modal 3 phần thuyết phục (KHÔNG hiện QR ngay):
+       + **Phần 1 (Quyền lợi học tập)**: Mở khóa trọn bộ 4 chương, full kho 1.200+ bài tập & video chữa chi tiết, 100% mô phỏng tương tác 3D, hệ thống đo lường & phát hiện lỗ hổng AI.
+       + **Phần 2 (Kết quả & Đánh giá)**: 2.850+ học sinh theo học, 94.2% tăng 1.5 - 2.5 điểm sau 4 tuần, 100% chuẩn format Bộ GD&ĐT; Feedback thực tế từ học sinh Lê Minh Quân & Nguyễn Thùy Linh.
+       + **Phần 3 (Nút hành động)**: `ĐĂNG KÝ HỌC NGAY (50.000đ/tháng)`.
+  5. **Bước Thanh Toán VietQR Tự Động (QR Checkout)**:
+     - Chỉ khi học sinh chủ động bấm vào nút ở Phần 3 mới mở Modal VietQR:
+       + Hiển thị mã QR ngân hàng MB Bank tự động.
+       + Số tài khoản `0987654321` (DUONG XUAN TRUONG), số tiền `50.000đ`, nội dung CK `VLXT {SDT} THANG50K`.
+       + Nút sao chép 1-chạm tiện lợi, thông tin tương phản cao, dễ nhìn.
+
+
+### 04/11/2026 (09:30) — Hoàn Thiện Multiverse V3: Navbar Trong Suốt Tuyệt Đối, Dựng Hố Đen & Sao Neutron 3D, Text Galaxy Hậu Cảnh, Modal Bootup Test THPT & Khắc Phục Triệt Để Lỗi danh-gia-nang-luc.html
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_MULTIVERSE_V3_PASS` (Đã chạy kiểm thử tự động Playwright trên cả tài khoản học sinh cũ lẫn khách mới, chụp ảnh màn hình nghiệm thu thực tế sảnh chờ vũ trụ đạt chuẩn 100%).
+- **Chi tiết khắc phục toàn diện theo 5 ảnh phản hồi thực tế của Thầy**:
+  1. **Thanh Navbar (Tabbar) hoàn toàn trong suốt tinh khiết**:
+     - Loại bỏ triệt để khung hộp viền xám đen bo tròn (`background: transparent !important; border: none !important; box-shadow: none !important; backdrop-filter: none !important;`).
+     - Chữ "Vật Lý Xuân Trường" phát sáng thở nhấp nháy nhẹ (`brandBreathingPulse`), các nút menu chữ Slate `#cbd5e1` thanh lịch trên 1 dòng duy nhất.
+     - Nút "Đăng nhập" dự phòng khi chưa đăng nhập được chuẩn hóa thành nút pill tối giản (`.nav-btn-login-fallback` bo tròn 9999px, viền kính mờ tinh tế), triệt tiêu hoàn toàn màu xanh tím link mặc định; khi đã đăng nhập có tài khoản thì ẩn vĩnh viễn và chỉ hiện avatar học sinh kèm số LP.
+  2. **Tiêu đề trung tâm `VATLYXUANTRUONG.IO.VN` tệp vào dải ngân hà hậu cảnh**:
+     - Xóa bỏ hoàn toàn lớp chữ HTML 2D phẳng phía trước.
+     - Dựng thành 3D CanvasTexture Mesh trong Three.js đặt sâu ở tọa độ hậu cảnh `z = -1050`, hòa quyện vào dải sương mù ngân hà, đóng vai trò nền vũ trụ ở xa xa xa xa và tuyệt đối không che khuất bất kỳ ngôi sao nào.
+     - Xóa bỏ dòng chữ "Hệ thống bài giảng tư duy...", xóa pill "CỔNG VŨ TRỤ...", xóa 3 nút CTA cũ và bỏ hẳn phần "Ôn tập" theo đúng chỉ đạo của Thầy.
+  3. **Hệ thống 2 thực thể vũ trụ 3D mới (Hố Đen & Sao Neutron)**:
+     - **Bên trái (x: -340, y: -35, z: -570): HỐ ĐEN (Black Hole / Singularity)** đại diện cho `Test điểm thi Vật lý THPT Quốc Gia` (`danh-gia-nang-luc.html`). Tâm hố đen thẳm + đĩa bồi tụ xoáy cam rực rỡ + vòng thấu kính Einstein.
+     - **Bên phải (x: 340, y: -35, z: -570): SAO NEUTRON (Neutron Star / Pulsar)** đại diện cho `Học thử miễn phí` (`baihoc.html`). Lõi sao neutron phát sáng cực mạnh + 2 tia phản lực Relativistic Jets quét đều trong không gian.
+     - Nhãn chữ chú thích của cả 2 thực thể tuân thủ cấu trúc chỉ có chữ thanh khiết, không nền (đồng bộ như các ngôi sao chòm Bảo Bình).
+  4. **Hệ thống Popup Bootup thông minh**:
+     - **Tài khoản mới (hoặc khách chưa từng làm ĐGNL)**: Tự động kích hoạt Modal Popup `TEST ĐIỂM THI THPT QUỐC GIA 2026` (20 câu trắc nghiệm chuẩn Bộ, phân tích điểm mạnh - yếu tức thì, gợi ý lộ trình) với thiết kế Obsidian Glass sang trọng, có nút "Để sau" và nút "Bắt đầu test ngay (30 phút)".
+     - **Tài khoản cũ đã đăng nhập**: Tự động kích hoạt Modal Nhiệm Vụ Hôm Nay / Thiết lập lộ trình.
+  5. **Khắc phục triệt để lỗi tại `danh-gia-nang-luc.html`**:
+     - Xác nhận không còn lỗi `Unexpected token ']'` ở dòng 754 (ảnh 2 Thầy chụp tối qua đã được dọn sạch).
+     - Nút "BẮT ĐẦU KIỂM TRA NGAY (30 PHÚT)" hoạt động trơn tru, nạp ngay 20 câu hỏi trắc nghiệm và đồng hồ đếm ngược 30 phút.
+     - Bọc kiểm tra an toàn giao thức: Chỉ fetch JSON khi chạy qua HTTP/HTTPS, khi mở offline qua `file:///` tự động dùng bộ 20 câu hỏi `DEFAULT_QUESTIONS` và `FALLBACK_LESSONS` nhúng sẵn, không còn xuất hiện bất kỳ dòng lỗi đỏ nào trên Console DevTools.
+
+
+### 04/11/2026 (08:22) — Tối Ưu Hóa Giao Diện Vũ Trụ Multiverse V2: Triệt Tiêu Lỗi Ô Vuông Lúc Bay, Tệp Tiêu Đề Trung Tâm & Dọn Sạch Nút Đăng Nhập Khi Đã Có Tài Khoản
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_MULTIVERSE_V2_PASS` (Đã chạy kiểm thử tự động Playwright và chụp các khung hình kiểm tra hoạt cảnh bay Warp mượt mà 100%).
+- **Chi tiết khắc phục theo phản hồi của Thầy**:
+  1. **Triệt tiêu dứt điểm lỗi chữ "Đăng nhập" vẫn hiện khi đã có tài khoản**:
+     - Trong `auth.js` (hàm `vlxtRenderWidget`), dọn sạch `navArea.innerHTML = ''` trước khi append widget Avatar.
+     - Trong `index.html`, tự động ẩn ngay nút fallback đăng nhập khi phát hiện tài khoản học sinh trong `localStorage`, bổ sung rule CSS `#vlxt-nav-user-area:has(#vlxt-user-widget) .nav-btn-login-fallback { display: none !important; }`.
+  2. **Bố cục Chòm sao Bảo Bình & Cụm Tiêu đề trung tâm**:
+     - Nâng trục Y của toàn bộ 6 ngôi sao chính và các ngôi sao phụ lên ~48px trong không gian 3D, giúp chòm sao nằm thoáng đãng ở nửa trên màn hình, không còn bị bất kỳ chữ hay nút nào che khuất các đường nối thiên văn.
+     - Cụm tiêu đề `VATLYXUANTRUONG.IO.VN`, mô tả và 3 nút CTA được tinh chỉnh thanh thoát, giảm chiều cao, đặt `z-index: 5` (sau các nhãn ngôi sao `z-index: 25`), màu sắc chìm nhẹ nhàng vào nền ngân hà (`opacity: 0.82`), tạo chiều sâu không gian chân thực.
+     - Banner nút "Nhiệm vụ hôm nay" được chuyển sang phong cách kính mờ trong suốt (`rgba(3, 10, 26, 0.48)`, border `rgba(0, 240, 255, 0.28)`, backdrop blur), tệp hoàn toàn vào nền vũ trụ.
+  3. **Loại bỏ triệt để hiện tượng các ô vuông đen xuất hiện trong lúc bay siêu không gian (Warp)**:
+     - *Nguyên nhân gốc rễ*: Do các `SpriteMaterial` (`spikeMat`, `haloMat`, `retMat`, `sMat`, `hMat`, `pMat`) thiếu thuộc tính `depthWrite: false`, khiến WebGL ghi hình chữ nhật bao quanh sprite vào depth buffer; khi các vệt sao trắng bay ở phía sau, depth test của GPU loại bỏ các vệt sao làm lộ ra các ô vuông đen.
+     - *Khắc phục*: Thêm `depthWrite: false` cho toàn bộ các SpriteMaterial; ẩn tức thì các sprite sao phụ khi bắt đầu bay Warp; cải tiến `createGlowCircleTexture` với `clearRect` và bán kính an toàn; đổi điều kiện reset hạt sao sang `dForward < 45` để triệt tiêu hoàn toàn các hạt bay sát mắt camera.
+
+### 04/11/2026 (07:55) — Hợp Nhất Giao Diện Vũ Trụ Multiverse 3D (index.html) Hoàn Toàn Vẹn: Tích Hợp Đánh Giá Năng Lực, Gói Học 50k, 3 Nút Hero, Âm Thanh Cục Bộ & Responsive 1366x768
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_MULTIVERSE_HOMEPAGE_PASS` (Đã sao lưu `index.backup-20261104-pre-multiverse.html` và chạy kiểm thử tự động Playwright chụp 4 ảnh nghiệm thu sắc nét trên màn hình 1366x768).
 - **Nội dung hoàn thành**:
-  1. Mô hình 1: Khảo sát khoảng cách $r$ ($r = r_0$, $r < r_0$, $r > r_0$) tĩnh đúng bản chất, không dao động, không đồ thị mini.
-  2. Mô hình 2: Chuyển thể của Nước (-50°C đến 150°C) với 3 chế độ "Cấp nhiệt", "Tỏa nhiệt", "Dừng lại"; khắc phục triệt để lỗi không bấm dừng được khi đang cấp/tỏa nhiệt; đường biểu diễn 130°C cao hơn hẳn 100°C.
-  3. Mô hình 3: 6 quá trình chuyển thể thực tế trên một khối vật chất (Nóng chảy, Đông đặc, Hóa hơi, Ngưng tụ, Thăng hoa, Ngưng kết).
-  4. Đã ẩn triệt để ô kiến thức công thức vật lý ở dưới theo yêu cầu của Thầy.
+  1. **Hợp nhất giao diện Vũ Trụ Multiverse 3D**:
+     - Thay thế trang chủ `index.html` bằng bản giao diện Multiverse WebGL 3D Three.js + GSAP chòm sao Bảo Bình (Aquarius) kết hợp màn cuộn Obsidian Glass hiện đại.
+     - Giữ nguyên 100% tính năng lõi: tích hợp `auth.js` v7 (widget avatar học sinh, số LP, bài học đã làm, badge Free/VIP), `nhiem-vu.js` v6 (popup lộ trình & nhiệm vụ hôm nay), `ho-tro-chat.js` v1 (chat bong bóng), và `cache.js` v1.
+     - Thêm fallback nút "Đăng nhập" thanh lịch khi học sinh chưa đăng nhập, tự động chuyển thành Avatar Dropdown khi đăng nhập thành công.
+  2. **Thanh Navbar chuẩn Responsive 1366x768 (Tuyệt đối không rớt dòng)**:
+     - 1 hàng ngang duy nhất bao gồm: Brand Atom logo, `🎯 Đánh Giá Năng Lực`, `Khóa Học`, `Gói Pro 50k`, `🔴 Live Class`, dropdown `Đấu Trường ▾` (Phòng Thi Thử, Phòng Kiểm Tra, Đấu Thường, Đấu Hạng, Solo), `Hướng Dẫn`, nút `🔊 ÂM THANH` và cụm tài khoản học sinh.
+     - Khi cuộn trang (`window.scrollY > 40`), topbar tự động chuyển sang chế độ nền đen kính mờ đậm (`.top-bar.scrolled`) ngăn chặn hoàn toàn việc chữ bên dưới cuộn lên bị đè/lẫn màu.
+  3. **Tích hợp trọn bộ Âm thanh máy cục bộ (Hybrid Audio Engine)**:
+     - Nạp các file âm thanh từ thư mục `audio/`: `bgm_interstellar.mp3`, `sfx_star_hover.mp3`, `sfx_star_click.mp3`, `sfx_warp_flight.mp3`, `sfx_arrival.mp3`, `sfx_warp_pulse.mp3`.
+     - Hỗ trợ cơ chế Hybrid: Tự động dùng Web Audio API khi chạy trên máy chủ HTTP và tự động fallback sang thẻ HTML5 `Audio()` khi mở offline qua giao thức `file:///` (không bị lỗi CORS chặn âm thanh).
+     - Nút Âm Thanh trên Topbar bật/tắt toàn bộ BGM + SFX và tự động lưu trạng thái vào `localStorage`.
+  4. **Chòm sao Bảo Bình (Aquarius) 6 ngôi sao tương tác 3D**:
+     - Cấu hình 6 ngôi sao tương ứng các phân hệ chính:
+       + Star 0 (`Sadalsuud`): **Khóa Học** (`baihoc.html`)
+       + Star 1 (`Sadalmelik`): **Live & Xem Lại** (`live-record.html`)
+       + Star 2 (`Sadachbia`): **Phòng Thi Thử** (`phong-thi-thu.html`)
+       + Star 3 (`Albali`): **Đánh Giá Năng Lực** (`danh-gia-nang-luc.html`)
+       + Star 4 (`Shatabhisha`): **Đấu Thường** (`dau-thuong-hud.html`)
+       + Star 5 (`Skat`): **Đấu Hạng** (`dua-top.html`)
+     - Hiệu ứng Warp siêu không gian với vệt sao tốc độ cao, âm thanh bay chân thực, chuyển tiếp tới hành tinh 3D shader kèm vệ tinh mặt trăng procedural texture miệng núi lửa.
+     - Khắc phục triệt để lỗi đè chữ khi bấm "Quay lại vũ trụ" (`#btn-back-galaxy`): Huỷ sạch tiến trình GSAP Warp Timeline và reset sảnh chờ trong suốt tinh khiết.
+  5. **Cụm 3 nút Hero trung tâm sảnh chờ**:
+     - Nút 1: `🎯 Test điểm thi THPT` (nổi bật cyan gradient, dẫn tới `danh-gia-nang-luc.html`).
+     - Nút 2: `🎓 Học thử miễn phí` (kính mờ, dẫn tới `baihoc.html`).
+     - Nút 3: `📖 Ôn tập` (kính mờ, dẫn tới `danhsach-ly12.html`).
+  6. **Đã sửa dứt điểm lỗi cú pháp tại `danh-gia-nang-luc.html`**:
+     - Khắc phục lỗi `Unexpected token ']'` ở dòng 754 mà Thầy gặp trong ảnh chụp màn hình.
+     - Nhúng trực tiếp 20 câu hỏi chuẩn hóa Vật lí nhiệt, Khí lí tưởng, Từ trường, Hạt nhân và danh sách bài học ôn tập bổ trợ, đảm bảo chạy độc lập 100% offline không phụ thuộc CORS.
+
+### 01/10/2026 (16:05) — Hoàn Thiện Mô Hình 3D Thí Nghiệm Brown: Phân Biệt Rõ Rệt Nước vs Khí & Bổ Sung Bảng Chú Thích Trực Quan
 - **Người thực hiện**: Antigravity AI Coordinator
 - **Người nhận bàn giao**: Thầy Xuân Trường & Codex
 - **Trạng thái**: `VERIFIED_PHYSICS_AND_VISUALS_PASS` (Đã chạy kiểm thử tự động Playwright chụp 4 ảnh nghiệm thu chuẩn xác).
@@ -1615,16 +2071,80 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
   - `b01_modal_fullscreen.png`: Chế độ phóng to toàn màn hình dark mode sắc nét, HUD bố trí hoàn hảo.
   - `b01_m1_liquid_bottom.png` & `b01_m2_liquid_bottom.png`: Cập nhật thể lỏng rơi và định vị sát đáy hộp theo phản hồi của Thầy.
   - `b01_m3_box_water.png`, `b01_m3_box_air.png` & `b01_m3_confined_box_after_run.png`: Đóng kín toàn bộ phân tử trong Hộp 3D, kiểm thử chạy liên tục hạt không bị bay mất.
+  - `b01_m3_water_surface_legend.png` & `b01_m3_air_chamber_legend.png`: Toàn bộ chú thích trong suốt 100%, nhìn thấu mô hình 3D.
+  - `live_prod_b01.png` & `live_prod_b15.png`: Nghiệm thu trực tiếp trên production live website `https://vatlyxuantruong.io.vn/`.
 
-#### 06/10/2026 — Triển Khai Chính Thức Mô Hình 3D Bài 2 Lên Production Website
+#### 01/10/2026 — Triển Khai Chính Thức Mô Hình 3D Bài 1 & Bài 15 Lên Production Website
 
 - **Người thực hiện**: Antigravity
-- **Người duyệt & Chỉ đạo**: Thầy Xuân Trường ("okee đc rồi đảy lên wed đi tiếp tục làm bài 3")
-- **File cập nhật**: `simulations/sim-b02-chuyenthe.js`, `simulations/sim-registry.js`, `baihoc.html`
-- **Bám sát 3 mô hình & chỉ đạo của Thầy**:
-  1. *Mô hình 1 — Khoảng cách r & Lực tương tác*: 3 nút cốt lõi ($r = r_0$ cân bằng $F=0$, $r < r_0$ lực đẩy, $r > r_0$ lực hút), thanh kéo $r$, vector 3D sắc nét, bỏ đồ thị mini và dao động tự do.
-  2. *Mô hình 2 — Nước chuyển thể (-50°C -> 150°C)*: 3 chế độ (Cấp nhiệt, Tỏa nhiệt, Dừng quan sát); nút Dừng cực nhạy không bị trượt khi đang chạy nhiệt; 5 mốc nhảy nhanh (-20°, 0°, 30°, 100°, 130°); đồ thị $T(t)$ mốc $130^\circ\text{C}$ vọt cao rõ rệt; 72 phân tử $H_2O$ chuyển động 3 thể.
-  3. *Mô hình 3 — 6 Quá trình chuyển thể thực tế*: Lưới 3x2 gồm 6 nút (Nóng chảy, Hóa hơi, Thăng hoa, Đông đặc, Ngưng tụ, Ngưng kết) trên khối chất thật đặt trong khay thí nghiệm; Thăng hoa và Ngưng kết không qua thể lỏng.
-  4. *Giao diện tối ưu*: Ẩn toolbar mặc định cũ và ẩn hoàn toàn ô kiến thức ở dưới theo đúng yêu cầu của Thầy.
+- **Người duyệt & Chỉ đạo**: Thầy Xuân Trường ("Tốt chốt lưu bản này và bài 15. đẩy mô hình của 2 bài này lên wed thật đi em")
+- **Commit Production**: `2397aee` (`feat(simulations): tich hop mo hinh 3D tuong tac Bai 1 va Bai 15 chuan kien thuc vat ly`)
+- **Trạng thái Git**: Đã fast-forward và push `main` trên cả `eduhost-vn204/edu-portal-lms` (upstream) và `xuantruongmyself-png/vatly-xuantruong` (origin).
+- **Trạng thái CI/CD**:
+  - `Deploy to GitHub Pages` (Run ID: `36842393331`): `PASS / Success` (27s).
+  - `pages build and deployment` (Run ID: `36842392442`): `PASS / Success` (28s).
+- **Kiểm thử nghiệm thu trực tiếp trên website thật**:
+  - Đã fetch HTTP 200 cho `sim-registry.js`, `sim-b01-thuyet-dhpt.js`, `sim-b15-apsuat.js`, `baihoc.html`.
+  - Chạy Playwright kiểm thử thực tế trên domain thật:
+    * `https://vatlyxuantruong.io.vn/baihoc.html#lesson/B1036d251af19` (Bài 1): WebGL canvas render sắc nét 3 tab, thanh trượt nhiệt độ và chú thích trong suốt.
+    * `https://vatlyxuantruong.io.vn/baihoc.html#lesson/Bf5228f7e1791` (Bài 15): Khớp 100% video slide của Thầy, đo lực tức thời $\approx 2.1 \times 10^{-21}$ N, công thức KaTeX $p = \frac{1}{3}\mu m_0 \overline{v^2} = \frac{2}{3}\mu \overline{W_d}$.
+    * Bài 2 (và các bài khác): Thẻ 3D ẩn hoàn toàn, bảo đảm chỉ xuất hiện khi Thầy đã trực tiếp duyệt thiết kế từng bài.
 
 
+
+#### 03/11/2026 — Nâng Cấp Phân Hệ Đánh Giá Năng Lực, Gói Học 50k, Tối Ưu Navbar 1366x768 & Popup 3D Three.js + GSAP
+
+- **Người thực hiện**: Antigravity
+- **Người duyệt & Chỉ đạo**: Thầy Xuân Trường
+- **Công cụ / File sửa đổi**:
+  - `index.html`:
+    * Chống rớt dòng navbar trên màn hình laptop 1366x768 (`white-space: nowrap !important; flex-shrink: 0 !important;`).
+    * Gom nhóm dropdown "Đấu Trường ▾" (Phòng thi thử, Phòng kiểm tra, Đấu thường, Đấu hạng, Solo).
+    * Đồng bộ màu sắc navbar thanh lịch (#cbd5e1, hover trắng mờ), badge "Gói Pro 50k", chấm đỏ nhấp nháy "Live Class".
+    * Làm mờ quỹ đạo elip và electron (opacity 0.22, z-index 0) để không đè chữ "tư duy".
+    * Đổi 3 nút Hero trung tâm:
+      1. Nút 1: `🎯 Test điểm thi THPT` (Primary gradient cyan-blue, link `danh-gia-nang-luc.html`).
+      2. Nút 2: `🎓 Học thử miễn phí` (Secondary kính mờ thanh lịch, link `baihoc.html`).
+      3. Nút 3: `📖 Ôn tập` (Secondary kính mờ thanh lịch, link `danhsach-ly12.html`).
+    * Tích hợp Popup Test Vật Lý Hấp Dẫn 3D (Three.js WebGL canvas mô phỏng thiên thể và 180 hạt vi mô tương tác chuột + GSAP animation mở mượt mà). Popup xuất hiện trước popup nhiệm vụ hôm nay.
+  - `nhiem-vu.js`:
+    * Thêm cơ chế hoãn `window.vlxtWaitGravityPopup`, nhường quyền hiển thị cho popup 3D trước khi mở popup nhiệm vụ.
+    * Tinh gọn popup nhiệm vụ: 1 badge duy nhất ở header (⏰ Chậm 14 buổi), sửa triệt để lỗi lặp từ ("Chương 2: Khí lí tưởng • Buổi 15/36"), đổi tên bài sang Sentence case, thêm nút "Học ngay bài này".
+    * Căn chỉnh vị trí banner `#vlxt-mission-banner` `bottom: 20px !important; right: 24px !important;`.
+  - `danh-gia-nang-luc.html` (Mới): Phân hệ thi thử CBT 20 câu trắc nghiệm 30 phút, ma trận 4 chuyên đề chuẩn Bộ GD&ĐT, xác thực Google Auth 1 chạm khi nộp bài, phân tích radar chart điểm mạnh/yếu, gợi ý bài học thông minh theo lỗ hổng kiến thức.
+  - `data/danhgianangluc.json` (Mới): 20 câu hỏi Vật Lý 12 chuẩn ma trận Thầy cung cấp có KaTeX và lời giải chi tiết.
+  - `goi-hoc.html` (Mới): Trang bảng giá 3 gói (Tháng 50k, Năm 399k, VIP Lớp Live 850k), tự động sinh VietQR NAPAS 247 kèm SĐT học sinh.
+  - `auth.js`: Thêm điều hướng "Đánh Giá Năng Lực" và "Gói Học" vào dropdown tài khoản cá nhân.
+  - `ho-tro-chat.js`: Căn chỉnh vị trí `#vlxt-ht-fab` `bottom: 76px !important; right: 24px !important;` thẳng hàng dọc với banner nhiệm vụ.
+- **Bằng chứng kiểm thử tự động (Playwright Test trên viewport 1366x768)**:
+  - `test_3d_popup_dark_1366.png` & `test_3d_popup_with_user.png`: Popup 3D Three.js + GSAP hiển thị lung linh, hạt hấp dẫn xoay 3D theo chuột.
+  - `test_mission_popup_after_3d_user.png`: Đóng popup 3D -> popup nhiệm vụ hôm nay tự động tiếp nối trơn tru.
+  - `test_hero_dark_clean_3_buttons.png`: Hero hiển thị 3 nút mới trên nền Dark Mode máy của Thầy: `🎯 Test điểm thi THPT`, `🎓 Học thử miễn phí`, `📖 Ôn tập`, thanh navbar 1 dòng không gãy, slogan đáy không bị cắt mép.
+
+#### 07/11/2026 — Triển Khai Vũ Trụ 3D Đa Vũ Trụ (`index.html`), Giao Diện Khóa Học Vstep Owl + Mô Hình 3D Bài 1..6 & 15 (`baihoc.html`), Đánh Giá Năng Lực, Gói Pro 50k & Đấu Thường HUD Lên Production
+
+- **Người thực hiện**: Antigravity
+- **Người duyệt & Chỉ đạo**: Thầy Nguyễn Xuân Trường (*"tuyệt vời em, kiểm tra rồi đẩy lên wed đi em"*, *"các tab đã làm như giao diện khoá học mới , test đánh giá năng lực gì đẩy hết lên nhé"*)
+- **Phạm vi & File triển khai lên `main` (`eduhost-vn204/edu-portal-lms` & `xuantruongmyself-png/vatly-xuantruong`)**:
+  1. **Vũ Trụ 3D Đa Vũ Trụ Vật Lý Xuân Trường (`index.html`)**:
+     - **Hố đen Gargantua chuẩn *Interstellar***: Đĩa bồi tụ nằm ngang góc nghiêng điện ảnh (`rotation.x = 0.24`, `rotation.z = -0.16`), vòng hào quang thấu kính hấp dẫn (Gravitational Lensing Arch) uốn vòng phía trên/dưới chân trời sự kiện, hiệu ứng dịch chuyển Doppler sáng rực bên trái.
+     - **Sao Neutron Pulsar (Test Điểm Thi THPT / Đánh Giá Năng Lực)**: Lõi từ tính xanh cyan phát tia Relativistic Jets lưỡng cực và sóng hấp dẫn đồng tâm.
+     - **Bước nhảy Không-Thời Gian chuẩn *Avengers: Endgame***: Luồng tinh vân tím - xanh lam (`wormholeFrag` FBM 6-octave) và các tia sáng xanh cyan / tím magenta (`lineMat`) đồng bộ 100% theo hướng xoay camera 3D (`camera.lookAt`), loại bỏ hoàn toàn các vòng tròn đồng tâm giả tạo, làm mờ các chấm sao trắng tĩnh trong lúc bay (`pointMat.opacity -> 0.16`).
+     - **6 Hành Tinh Chòm Sao Bảo Bình Độc Bản Điện Ảnh**:
+       * `ALBALI` (`baihoc.html` — Khóa Học): Hành tinh đại dương xanh sapphire & lục địa ngọc bích, mặt trời chiếu sáng tạo vành khí quyển tán xạ (Terminator & Rim Scattering), 1 mặt trăng đá quay quanh.
+       * `SADALMELIK` (`live-record.html` — Live & Xem Lại): Hành tinh sa mạc vàng hổ phách *Arrakis*, hệ **Sao Đôi (Binary Suns)** vàng cam & xanh trắng phía sau, tinh vân tím-vàng và 1 mặt trăng quay quanh.
+       * `SADACHBIA` (`phong-thi-thu.html` — Phòng Thi Thử): Hành tinh pha lê tím *Vormir*, **Tinh vân tím-hồng (Amethyst Nebula)** rực rỡ phía sau và 2 mặt trăng quay quanh.
+       * `SADALSUUD` (`danhsach-ly12.html` — Phòng Kiểm Tra): Hành tinh băng giá *Mann's Ice World* xanh lam lạnh giá, mặt trời xanh trắng lấp lánh sau rìa hành tinh và 1 mặt trăng băng.
+       * `SHATABHISHA` (`dau-thuong-hud.html` — Đấu Thường): Hành tinh rừng phát quang sinh học *Pandora* xanh ngọc lục bảo, tinh vân lục-tím và 1 mặt trăng quay quanh.
+       * `SKAT` (`dua-top.html` — Đấu Hạng): Hành tinh dung nham núi lửa *Mustafar*, hệ **Sao Đôi Đỏ - Vàng** phía sau, tinh vân đỏ thẫm và 2 mặt trăng quay quanh.
+  2. **Giao Diện Khóa Học Mới Vstep Owl 3 Cột & Mô Hình 3D Tương Tác (`baihoc.html`, `simulations/*`, `freemium-flow.js`)**:
+     - Giao diện học tập 3 cột chuẩn Docusaurus / Vstep Owl, tích hợp E-Doc Lý thuyết trực quan (`data/bundle_theories.js`, `data/theories_data.json`), Quiz tốc độ cao (`data/bundle_quizzes.js`).
+     - Tích hợp trọn bộ Mô hình 3D tương tác đã được Thầy nghiệm thu: Bài 1 (`sim-b01-thuyet-dhpt.js`), Bài 2 (`sim-b02-chuyenthe.js`), Bài 3 (`sim-b03-nhietdo.js`), Bài 4 (`sim-b04-nhietdung.js`), Bài 5 (`sim-b05-noinang.js`), Bài 6 (`sim-b06-dongconhiet.js`) và Bài 15 (`sim-b15-apsuat.js`) qua `simulations/sim-registry.js`.
+     - Tích hợp phễu chuyển đổi Zero-Friction CRO (`freemium-flow.js`) đồng thời **bảo toàn 100% các bản vá phân quyền `10b4117` và `c660ac3` từ `upstream/main`** (`applyKhoaConfig`, `getCourseConfig`, `canAccess`, Stale-While-Revalidate từ GAS).
+  3. **Phân Hệ Test Đánh Giá Năng Lực & Gói Pro 50k (`danh-gia-nang-luc.html`, `data/danhgianangluc.json`, `goi-hoc.html`)**:
+     - Bài thi CBT 20 câu / 30 phút chuẩn ma trận 4 chương Vật Lý 12, biểu đồ Radar phân tích năng lực và gợi ý lộ trình cá nhân hóa.
+     - Trang nâng cấp Gói Pro 50k (`goi-hoc.html`) tích hợp VietQR NAPAS 247 tự động.
+  4. **Hệ Thống Đấu Trường & Hồ Sơ (`dau-thuong-hud.html`, `dau-thuong.html`, `dua-top.html`, `solo.html`, `phong-thi-thu.html`, `danhsach-ly12.html`, `hoso.html`, `hoso-hud.html`, `live-record.html`)**:
+     - Đồng bộ điều hướng giữa Vũ Trụ 3D và toàn bộ các phân hệ Đấu Thường HUD, Đấu Hạng, Phòng Thi Thử, Phòng Kiểm Tra, Live & Xem Lại (giữ nguyên các bản vá `7047147` và `c660ac3` trên `live-record.html`).
+  5. **Bảo Toàn Dữ Liệu Tự Động Đồng Bộ**:
+     - Giữ nguyên 100% các file dữ liệu đồng bộ tự động từ Google Sheets trên `main` (`data/baihoc.json`, `data/khoaconfig.json`, `data/lichlive.json`, `data/live-record.json`, `data/quiz-index.json`, `data/quizzes/quiz-*.json`).

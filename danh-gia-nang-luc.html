@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đánh Giá Năng Lực Vật Lý 12 · Miễn Phí | Vật Lý Xuân Trường</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=DM+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://accounts.google.com/gsi/client" defer></script>
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --blue: #0b84f3;
+            --cyan: #00f0ff;
+            --green: #10b981;
+            --yellow: #f59e0b;
+            --red: #ef4444;
+            --purple: #8b5cf6;
+            --bg: #0d1117;
+            --bg-card: rgba(22, 27, 34, 0.95);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed; inset: 0; z-index: 0;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(11, 132, 243, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.08) 0%, transparent 45%),
+                #0d1117;
+            pointer-events: none;
+        }
+
+        /* ─── NAVBAR ─── */
+        .navbar {
+            position: sticky; top: 0; left: 0; right: 0; z-index: 200;
+            height: 60px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px;
+            background: rgba(13, 17, 23, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-left { display: flex; align-items: center; gap: 20px; }
+        .nav-logo {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 15px; font-weight: 800; color: #fff; text-decoration: none;
+        }
+        .nav-tag {
+            font-size: 11px; font-weight: 800; color: #000;
+            background: var(--cyan); padding: 2px 8px; border-radius: 6px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .nav-right { display: flex; align-items: center; gap: 14px; }
+        .nav-links-sub { display: flex; gap: 16px; margin-left: 12px; }
+        .nav-links-sub a {
+            color: var(--text-muted); text-decoration: none; font-size: 13.5px; font-weight: 600;
+            transition: color 0.15s;
+        }
+        .nav-links-sub a:hover { color: #fff; }
+        @media(max-width: 768px){ .nav-links-sub { display: none; } }
+
+        /* ─── CONTAINER ─── */
+        .container {
+            position: relative; z-index: 1;
+            max-width: 960px; width: 100%; margin: 0 auto;
+            padding: 24px 16px 60px; flex: 1;
+        }
+
+        /* ─── SCREEN 1: INTRO ─── */
+        .intro-hero {
+            text-align: center; padding: 40px 16px 30px;
+        }
+        .intro-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 16px; border-radius: 30px;
+            background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3);
+            color: var(--cyan); font-size: 13px; font-weight: 700; margin-bottom: 18px;
+        }
+        .intro-title {
+            font-size: clamp(28px, 5vw, 42px); font-weight: 900; line-height: 1.2;
+            color: #fff; margin-bottom: 14px;
+        }
+        .intro-title span {
+            background: linear-gradient(135deg, #00f0ff 0%, #0b84f3 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .intro-desc {
+            font-size: 16px; color: var(--text-muted); max-width: 680px; margin: 0 auto 30px; line-height: 1.6;
+        }
+
+        .features-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px; margin-bottom: 36px; text-align: left;
+        }
+        .feature-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 14px; padding: 20px;
+        }
+        .feature-icon {
+            width: 42px; height: 42px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; margin-bottom: 12px;
+        }
+        .feature-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+        .feature-sub { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+
+        .btn-start {
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            background: linear-gradient(135deg, #0b84f3 0%, #00f0ff 100%);
+            color: #04101e; font-size: 17px; font-weight: 800;
+            padding: 16px 36px; border-radius: 14px; border: none; cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.3);
+            transition: transform 0.15s, box-shadow 0.15s; text-decoration: none;
+        }
+        .btn-start:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(0, 240, 255, 0.4); }
+
+        /* ─── SCREEN 2: QUIZ ─── */
+        .quiz-view { display: none; }
+        .quiz-header {
+            display: flex; align-items: center; justify-content: space-between;
+            background: var(--bg-card); border: 1px solid var(--border);
+            padding: 14px 20px; border-radius: 14px; margin-bottom: 20px;
+        }
+        .quiz-progress-text { font-size: 14px; font-weight: 700; color: #fff; }
+        .quiz-timer {
+            font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 800;
+            background: rgba(11, 132, 243, 0.15); border: 1px solid rgba(11, 132, 243, 0.3);
+            color: var(--cyan); padding: 5px 12px; border-radius: 8px;
+            display: flex; align-items: center; gap: 6px;
+        }
+
+        .question-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 18px; padding: 26px 24px; margin-bottom: 24px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+        }
+        .question-meta {
+            display: flex; gap: 10px; align-items: center; margin-bottom: 14px;
+        }
+        .badge-topic {
+            font-size: 11.5px; font-weight: 700; padding: 3px 10px; border-radius: 6px;
+            background: rgba(139, 92, 246, 0.2); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        .badge-level {
+            font-size: 11.5px; font-weight: 700; padding: 3px 8px; border-radius: 6px;
+            background: rgba(245, 158, 11, 0.2); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        .question-stem {
+            font-size: 17px; font-weight: 600; line-height: 1.6; color: #fff; margin-bottom: 22px;
+        }
+
+        .options-list { display: flex; flex-direction: column; gap: 12px; }
+        .option-item {
+            display: flex; align-items: center; padding: 14px 18px; border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03); border: 1.5px solid rgba(255, 255, 255, 0.08);
+            cursor: pointer; transition: all 0.15s; font-size: 15px; color: #cbd5e1;
+        }
+        .option-item:hover {
+            background: rgba(11, 132, 243, 0.08); border-color: rgba(11, 132, 243, 0.4); color: #fff;
+        }
+        .option-item.selected {
+            background: rgba(0, 240, 255, 0.12); border-color: var(--cyan); color: #fff;
+            box-shadow: 0 0 16px rgba(0, 240, 255, 0.2);
+        }
+
+        .quiz-nav-actions {
+            display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 24px;
+        }
+        .btn-quiz-nav {
+            padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 700;
+            background: rgba(255, 255, 255, 0.07); color: #fff; border: 1px solid var(--border);
+            cursor: pointer; transition: background 0.15s; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-quiz-nav:hover { background: rgba(255, 255, 255, 0.15); }
+        .btn-submit-test {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #fff; border: none; padding: 12px 28px; border-radius: 10px;
+            font-size: 15px; font-weight: 800; cursor: pointer;
+            box-shadow: 0 4px 18px rgba(16, 185, 129, 0.3);
+        }
+
+        /* Question palette grid */
+        .palette-wrap {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 14px; padding: 18px; margin-top: 24px;
+        }
+        .palette-title { font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 12px; }
+        .palette-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+        .palette-btn {
+            width: 38px; height: 38px; border-radius: 8px; border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.04); color: #94a3b8; font-size: 13px; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+        .palette-btn.answered { background: rgba(11, 132, 243, 0.25); border-color: var(--blue); color: #fff; }
+        .palette-btn.current { border-color: var(--cyan); color: var(--cyan); font-weight: 800; transform: scale(1.08); }
+
+        /* ─── SCREEN 3: LOGIN GATE MODAL ─── */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0; z-index: 9999;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+            align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-box {
+            background: #111827; border: 1.5px solid rgba(0, 240, 255, 0.3);
+            border-radius: 20px; max-width: 460px; width: 100%; padding: 32px 28px;
+            text-align: center; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 240, 255, 0.1);
+        }
+        .modal-icon {
+            font-size: 42px; margin-bottom: 16px;
+            filter: drop-shadow(0 0 16px rgba(0, 240, 255, 0.5));
+        }
+        .modal-title { font-size: 21px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+        .modal-sub { font-size: 14px; color: #94a3b8; line-height: 1.5; margin-bottom: 24px; }
+        .google-auth-btn-wrap {
+            display: flex; justify-content: center; margin-bottom: 16px; min-height: 44px;
+        }
+
+        /* ─── SCREEN 4: DIAGNOSTIC REPORT ─── */
+        .report-view { display: none; }
+        .score-hero-card {
+            background: linear-gradient(135deg, rgba(11, 132, 243, 0.12) 0%, rgba(0, 240, 255, 0.08) 100%);
+            border: 1.5px solid rgba(0, 240, 255, 0.3); border-radius: 20px;
+            padding: 36px 24px; text-align: center; margin-bottom: 28px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+        }
+        .score-big {
+            font-size: clamp(48px, 8vw, 72px); font-weight: 900; color: #fff;
+            line-height: 1; margin-bottom: 8px;
+        }
+        .score-big span { font-size: 24px; color: var(--cyan); font-weight: 700; }
+        .score-rank {
+            display: inline-block; font-size: 15px; font-weight: 800; padding: 6px 18px; border-radius: 20px;
+            margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .score-rank.poor { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+        .score-rank.average { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+        .score-rank.good { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+        .score-rank.excellent { background: rgba(0, 240, 255, 0.2); color: var(--cyan); border: 1px solid rgba(0, 240, 255, 0.4); }
+        .score-summary-text { font-size: 15px; color: #cbd5e1; max-width: 640px; margin: 0 auto; line-height: 1.6; }
+
+        /* Breakdown topics */
+        .breakdown-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 18px; padding: 24px; margin-bottom: 28px;
+        }
+        .card-heading {
+            font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 18px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .topic-row { margin-bottom: 16px; }
+        .topic-row:last-child { margin-bottom: 0; }
+        .topic-info { display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+        .topic-name { color: #fff; }
+        .topic-score { color: var(--cyan); }
+        .progress-bar-bg {
+            height: 10px; border-radius: 6px; background: rgba(255, 255, 255, 0.08); overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%; border-radius: 6px; background: linear-gradient(90deg, #0b84f3, #00f0ff);
+            transition: width 0.8s ease-out;
+        }
+
+        /* Pedagogical Advice */
+        .advice-card {
+            background: rgba(139, 92, 246, 0.08); border: 1px solid rgba(139, 92, 246, 0.25);
+            border-radius: 18px; padding: 24px; margin-bottom: 28px;
+        }
+        .advice-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        .advice-item {
+            font-size: 14.5px; line-height: 1.6; color: #e2e8f0; display: flex; gap: 10px;
+        }
+        .advice-item i { color: #a78bfa; margin-top: 4px; flex-shrink: 0; }
+
+        /* Lesson Recommendations */
+        .recom-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px; margin-top: 14px;
+        }
+        .recom-item {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);
+            border-radius: 14px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .recom-item:hover { border-color: var(--cyan); transform: translateY(-3px); }
+        .recom-tag { font-size: 11px; font-weight: 700; color: var(--cyan); text-transform: uppercase; margin-bottom: 6px; }
+        .recom-name { font-size: 14.5px; font-weight: 700; color: #fff; margin-bottom: 14px; line-height: 1.4; }
+        .btn-recom-go {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            background: rgba(11, 132, 243, 0.2); border: 1px solid rgba(11, 132, 243, 0.4);
+            color: #60a5fa; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 700;
+            text-decoration: none; transition: background 0.15s;
+        }
+        .btn-recom-go:hover { background: #0b84f3; color: #fff; }
+
+        /* Bottom CTA */
+        .report-bottom-cta {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.15) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 18px;
+            padding: 24px; text-align: center; margin-top: 30px;
+        }
+        .cta-btn-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+    
+        /* Review Questions List (Zero-Friction Value First) */
+        .review-q-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 14px;
+        }
+        .review-q-item.is-correct { border-left: 4px solid #10b981; }
+        .review-q-item.is-wrong { border-left: 4px solid #ef4444; }
+        .review-q-top {
+            display: flex; justify-content: space-between; align-items: center;
+            gap: 10px; margin-bottom: 10px; flex-wrap: wrap;
+        }
+        .review-q-badges { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .badge-cro-tag {
+            font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 6px; text-transform: uppercase;
+        }
+        .badge-cro-tag.ly_thuyet { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge-cro-tag.bay_don_vi { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-cro-tag.do_thi_vdc { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+        .review-q-status { font-size: 12px; font-weight: 800; }
+        .review-q-status.ok { color: #34d399; }
+        .review-q-status.err { color: #f87171; }
+        .review-q-stem { font-size: 15px; color: #fff; font-weight: 600; line-height: 1.6; margin-bottom: 12px; }
+        .review-ans-row {
+            font-size: 13.5px; padding: 8px 12px; border-radius: 8px; margin-bottom: 6px;
+        }
+        .review-ans-row.user-pick { background: rgba(239, 68, 68, 0.12); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.25); }
+        .review-ans-row.correct-pick { background: rgba(16, 185, 129, 0.12); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.25); }
+        .review-explain-box {
+            margin-top: 10px; padding: 10px 14px; border-radius: 10px;
+            background: rgba(11, 132, 243, 0.08); border: 1px solid rgba(11, 132, 243, 0.2);
+            font-size: 13px; color: #cbd5e1; line-height: 1.5;
+        }
+
+    </style>
+    <script src="auth.js?v=7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <script src="freemium-flow.js"></script>
+</head>
+<body>
+
+<!-- ─── NAVBAR ─── -->
+<nav class="navbar">
+    <div class="nav-left">
+        <a href="index.html" class="nav-logo">
+            <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+                <circle cx="14" cy="14" r="2.8" fill="#0b84f3"/>
+                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.3" fill="none" opacity="0.7"/>
+                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.3" fill="none" opacity="0.5" transform="rotate(60 14 14)"/>
+                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.3" fill="none" opacity="0.5" transform="rotate(-60 14 14)"/>
+            </svg>
+            Vật Lý Xuân Trường
+        </a>
+        <span class="nav-tag">FREE TEST</span>
+        <div class="nav-links-sub">
+            <a href="baihoc.html">Khóa Học</a>
+            <a href="phong-thi-thu.html">Phòng Thi Thử</a>
+            <a href="goi-hoc.html" style="color:#f59e0b;font-weight:700">⭐ Bảng Giá Gói Học</a>
+        </div>
+    </div>
+    <div class="nav-right">
+        <div id="vlxt-nav-user-area"></div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <!-- ═══ SCREEN 1: INTRO ═══ -->
+    <div id="screen-intro" class="intro-hero">
+        <div class="intro-badge">
+            <i class="fa-solid fa-sparkles"></i> Khảo sát trình độ hoàn toàn miễn phí
+        </div>
+        <h1 class="intro-title">ĐÁNH GIÁ NĂNG LỰC <span>VẬT LÝ 12</span></h1>
+        <p class="intro-desc">
+            Bài kiểm tra chuẩn đoán 20 câu trắc nghiệm được thiết kế theo ma trận 4 chuyên đề trọng tâm: 
+            <strong>Vật lí nhiệt, Khí lí tưởng, Từ trường và Hạt nhân</strong>. 
+            Giúp bạn biết chính xác mình đang ở mức mấy điểm, phát hiện lỗ hổng kiến thức và nhận lộ trình cải thiện cá nhân hóa ngay lập tức!
+        </p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon" style="background: rgba(11, 132, 243, 0.15); color: #0b84f3;"><i class="fa-solid fa-bolt"></i></div>
+                <div class="feature-title">20 Câu Trắc Nghiệm</div>
+                <div class="feature-sub">Bao quát từ Nhận biết, Thông hiểu đến Vận dụng cao chuẩn format mới.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="background: rgba(0, 240, 255, 0.15); color: #00f0ff;"><i class="fa-solid fa-chart-pie"></i></div>
+                <div class="feature-title">Phân Tích Lỗ Hổng</div>
+                <div class="feature-sub">Báo cáo chi tiết điểm mạnh - yếu theo từng chuyên đề Vật lý 12.</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;"><i class="fa-solid fa-graduation-cap"></i></div>
+                <div class="feature-title">Chỉ Dẫn Học Tập</div>
+                <div class="feature-sub">Gợi ý chính xác bài giảng video và tài liệu cần ôn ngay trên web.</div>
+            </div>
+        </div>
+
+        <button class="btn-start" onclick="startAssessment()">
+            <i class="fa-solid fa-play"></i> BẮT ĐẦU KIỂM TRA NGAY (30 PHÚT)
+        </button>
+    </div>
+
+    <!-- ═══ SCREEN 2: QUIZ ═══ -->
+    <div id="screen-quiz" class="quiz-view">
+        <div class="quiz-header">
+            <div class="quiz-progress-text" id="quiz-progress-label">Câu hỏi 1 / 20</div>
+            <div class="quiz-timer">
+                <i class="fa-regular fa-clock"></i> <span id="timer-display">30:00</span>
+            </div>
+        </div>
+
+        <div class="question-card" id="question-card-container">
+            <!-- Dynamic question rendered here -->
+        </div>
+
+        <div class="quiz-nav-actions">
+            <button class="btn-quiz-nav" onclick="prevQuestion()"><i class="fa-solid fa-arrow-left"></i> Câu trước</button>
+            <button class="btn-submit-test" onclick="confirmSubmit()"><i class="fa-solid fa-check-double"></i> Nộp Bài & Xem Điểm</button>
+            <button class="btn-quiz-nav" onclick="nextQuestion()">Câu tiếp <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+
+        <!-- Palette -->
+        <div class="palette-wrap">
+            <div class="palette-title">DANH SÁCH CÂU HỎI</div>
+            <div class="palette-grid" id="palette-container"></div>
+        </div>
+    </div>
+
+    <!-- ═══ SCREEN 3: LOGIN GATE MODAL ═══ -->
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-icon">🎯</div>
+            <h3 class="modal-title">Bạn Đã Hoàn Thành Bài Thi!</h3>
+            <p class="modal-sub">
+                Để bảo lưu kết quả, xem chi tiết <strong>điểm số, biểu đồ phân tích năng lực</strong> và nhận <strong>lộ trình cải thiện điểm số</strong>, vui lòng đăng nhập bằng tài khoản Google (Gmail).
+            </p>
+            <div class="google-auth-btn-wrap" id="google-signin-btn-slot"></div>
+            <p style="font-size: 12px; color: #64748b; margin-top: 14px;">
+                Đăng nhập miễn phí 100% · Thông tin được bảo mật an toàn
+            </p>
+        </div>
+    </div>
+
+        <!-- ═══ SCREEN 4: DIAGNOSTIC REPORT (BƯỚC 4 CRO) ═══ -->
+    <div id="screen-report" class="report-view">
+        <!-- Component <DiagnosticReportCard /> Slot -->
+        <div id="cro-diagnostic-card-slot"></div>
+
+        <!-- Chi tiết bài làm & Lời giải 20 câu (Zero-Friction Value First) -->
+        <div class="breakdown-card" style="margin-top: 24px;">
+            <div class="card-heading" style="justify-content:space-between;flex-wrap:wrap;gap:10px;">
+                <span><i class="fa-solid fa-list-check" style="color:var(--cyan)"></i> BẢNG ĐỐI SOÁT ĐÁP ÁN &amp; LỜI GIẢI CHI TIẾT TỪ THẦY</span>
+                <span id="res-detail-filter-summary" style="font-size:13px;font-weight:600;color:var(--text-muted)"></span>
+            </div>
+            <div id="question-review-list-container"></div>
+        </div>
+
+        <!-- Pedagogical Recommendations -->
+        <div class="breakdown-card" style="margin-top: 24px;">
+            <div class="card-heading"><i class="fa-solid fa-circle-play" style="color:#60a5fa"></i> BÀI GIẢNG ĐỀ XUẤT CẦN ÔN NGAY TRÊN WEB</div>
+            <p style="font-size: 13.5px; color: var(--text-muted);">Hệ thống tự động lọc ra các bài học tương ứng với các lỗ hổng kiến thức em vừa mắc phải:</p>
+            <div class="recom-grid" id="recom-grid-container"></div>
+        </div>
+
+        <!-- Bottom CTA dẫn sang Bước 5 -->
+        <div class="report-bottom-cta">
+            <h3 style="font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 8px;">
+                Bứt Phá 8.5+ Kì Thi THPT Cùng Thầy Xuân Trường
+            </h3>
+            <p style="font-size: 14px; color: #cbd5e1; max-width: 620px; margin: 0 auto 16px;">
+                Đồng hành cùng Thầy làm chủ bản chất, phản xạ mọi dạng bẫy đề thi mới Bộ GD&amp;ĐT chỉ với <strong>50.000đ/tháng</strong> (1.600đ/ngày).
+            </p>
+            <button type="button" class="btn-start" onclick="FreemiumFlow.openUpgradeValueModal('Lộ trình bứt phá 8.5+ môn Vật lý 12')" style="border:none;cursor:pointer;">
+                <i class="fa-solid fa-arrow-trend-up"></i> Xem lộ trình lấp lỗ hổng &amp; Bứt phá 8.5+ cùng Thầy <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+<script>
+// 20 cau hoi mac dinh nhung san giup trang chay tron tru 100% offline va qua file:/// scheme
+const DEFAULT_QUESTIONS = [{"id":1,"topic":"Vật lí nhiệt","level":"NB","tag":"ly_thuyet","question":"Trong hệ đơn vị SI, đơn vị chuẩn của nhiệt độ là gì?","options":["A. Kelvin ($K$)","B. Độ Celsius ($^\\circ C$)","C. Độ Fahrenheit ($^\\circ F$)","D. Joule ($J$)"],"answer":0,"explain":"Trong hệ SI, đơn vị đo nhiệt độ là Kelvin (kí hiệu là $K$). Độ Celsius ($^\\circ C$) là đơn vị thông dụng nhưng không phải đơn vị cơ bản của hệ SI."},{"id":2,"topic":"Vật lí nhiệt","level":"NB","tag":"ly_thuyet","question":"Công thức tính nhiệt lượng cần cung cấp để làm nóng chảy hoàn toàn một khối chất rắn kết tinh ở nhiệt độ nóng chảy là:","options":["A. $Q = mc\\Delta t$","B. $Q = \\lambda m$","C. $Q = Lm$","D. $Q = \\frac{\\lambda}{m}$"],"answer":1,"explain":"Nhiệt lượng nóng chảy được tính bằng tích của nhiệt nóng chảy riêng $\\lambda$ và khối lượng $m$: $Q = \\lambda m$."},{"id":3,"topic":"Vật lí nhiệt","level":"TH","tag":"bay_don_vi","question":"Nhiệt độ của một vật giảm đi $15^\\circ C$. Trong thang nhiệt độ Kelvin, độ giảm nhiệt độ của vật đó là bao nhiêu?","options":["A. $288\\text{ K}$","B. $15\\text{ K}$","C. $258\\text{ K}$","D. $150\\text{ K}$"],"answer":1,"explain":"Độ biến thiên nhiệt độ trong thang Celsius bằng độ biến thiên nhiệt độ trong thang Kelvin: $\\Delta T (\\text{K}) = \\Delta t (^\\circ C) = 15\\text{ K}$."},{"id":4,"topic":"Vật lí nhiệt","level":"TH","tag":"bay_don_vi","question":"Cần cung cấp nhiệt lượng bao nhiêu để đun nóng $2\\text{ kg}$ nước từ $25^\\circ C$ lên $100^\\circ C$? Biết nhiệt dung riêng của nước là $4200\\text{ J/(kg.K)}$.","options":["A. $630\\text{ kJ}$","B. $840\\text{ kJ}$","C. $315\\text{ kJ}$","D. $210\\text{ kJ}$"],"answer":0,"explain":"Áp dụng công thức $Q = mc\\Delta t = 2 \\times 4200 \\times (100 - 25) = 630000\\text{ J} = 630\\text{ kJ}$."},{"id":5,"topic":"Vật lí nhiệt","level":"VD","tag":"bay_don_vi","question":"Thả một cục nước đá có khối lượng $0,2\\text{ kg}$ ở $0^\\circ C$ vào $0,5\\text{ kg}$ nước ở $40^\\circ C$. Biết nhiệt nóng chảy riêng của nước đá là $\\lambda = 3,34 \\times 10^5\\text{ J/kg}$ và nhiệt dung riêng của nước là $c = 4200\\text{ J/(kg.K)}$. Nhiệt độ của hệ khi cân bằng nhiệt gần nhất với giá trị nào?","options":["A. $5,7^\\circ C$","B. $12,4^\\circ C$","C. $0^\\circ C$","D. $8,2^\\circ C$"],"answer":0,"explain":"Nhiệt lượng nước tỏa ra khi hạ về $0^\\circ C$: $Q_{tỏa\\max} = 0,5 \\times 4200 \\times 40 = 84000\\text{ J}$. Nhiệt lượng đá cần để tan hết: $Q_{tan} = 0,2 \\times 3,34 \\times 10^5 = 66800\\text{ J}$. Vì $Q_{tỏa\\max} > Q_{tan}$ nên đá tan hết. Phương trình cân bằng: $66800 + 0,2 \\times 4200 \\times t = 0,5 \\times 4200 \\times (40 - t) \\Rightarrow t \\approx 5,85^\\circ C$ (gần $5,7^\\circ C$ nhất)."},{"id":6,"topic":"Khí lí tưởng","level":"NB","tag":"ly_thuyet","question":"Quá trình biến đổi trạng thái trong đó nhiệt độ tuyệt đối của một lượng khí xác định được giữ không đổi gọi là quá trình gì?","options":["A. Đẳng áp","B. Đẳng tích","C. Đẳng nhiệt","D. Đoạn nhiệt"],"answer":2,"explain":"Quá trình biến đổi trạng thái khi nhiệt độ không đổi ($T = \\text{const}$) được gọi là quá trình đẳng nhiệt."},{"id":7,"topic":"Khí lí tưởng","level":"NB","tag":"ly_thuyet","question":"Phương trình trạng thái của khí lí tưởng (Clapeyron) đối với một lượng khí xác định có biểu thức nào sau đây?","options":["A. $\\frac{pV}{T} = \\text{hằng số}$","B. $\\frac{pT}{V} = \\text{hằng số}$","C. $pVT = \\text{hằng số}$","D. $\\frac{V}{pT} = \\text{hằng số}$"],"answer":0,"explain":"Đối với một lượng khí lí tưởng xác định, tích của áp suất và thể tích chia cho nhiệt độ tuyệt đối là một hằng số: $\\frac{pV}{T} = \\text{const}$."},{"id":8,"topic":"Khí lí tưởng","level":"TH","tag":"bay_don_vi","question":"Một khối khí lí tưởng thực hiện quá trình nén đẳng nhiệt từ thể tích $6\\text{ lít}$ xuống còn $2\\text{ lít}$. Nếu áp suất ban đầu là $1,5\\text{ atm}$ thì áp suất lúc sau là bao nhiêu?","options":["A. $0,5\\text{ atm}$","B. $3,0\\text{ atm}$","C. $4,5\\text{ atm}$","D. $6,0\\text{ atm}$"],"answer":2,"explain":"Theo định luật Boyle: $p_1V_1 = p_2V_2 \\Rightarrow p_2 = \\frac{1,5 \\times 6}{2} = 4,5\\text{ atm}$."},{"id":9,"topic":"Khí lí tưởng","level":"TH","tag":"bay_don_vi","question":"Một bình kín có dung tích không đổi chứa khí lí tưởng ở nhiệt độ $27^\\circ C$ và áp suất $2\\text{ atm}$. Khi đun nóng khí lên tới $177^\\circ C$ thì áp suất khí trong bình là:","options":["A. $3\\text{ atm}$","B. $13,1\\text{ atm}$","C. $4\\text{ atm}$","D. $2,5\\text{ atm}$"],"answer":0,"explain":"Đổi sang độ Kelvin: $T_1 = 27 + 273 = 300\\text{ K}$, $T_2 = 177 + 273 = 450\\text{ K}$. Quá trình đẳng tích: $\\frac{p_1}{T_1} = \\frac{p_2}{T_2} \\Rightarrow p_2 = 2 \\times \\frac{450}{300} = 3\\text{ atm}$."},{"id":10,"topic":"Khí lí tưởng","level":"VDC","tag":"do_thi_vdc","question":"Một mol khí lí tưởng thực hiện chu trình khép kín $1 \\rightarrow 2 \\rightarrow 3 \\rightarrow 1$ trên hệ tọa độ $(p, T)$: Quá trình $1 \\rightarrow 2$ là đẳng áp ($T_2 = 2T_1$); quá trình $2 \\rightarrow 3$ là đẳng tích ($p_3 = 0,5p_2$); quá trình $3 \\rightarrow 1$ là đẳng nhiệt. Tỉ số thể tích cực đại và thể tích cực tiểu của khối khí trong chu trình này bằng bao nhiêu?","options":["A. $2$","B. $4$","C. $1,5$","D. $3$"],"answer":0,"explain":"Từ $1 \\rightarrow 2$ đẳng áp: $\\frac{V_2}{V_1} = \\frac{T_2}{T_1} = 2 \\Rightarrow V_2 = 2V_1$. Quá trình $2 \\rightarrow 3$ đẳng tích nên $V_3 = V_2 = 2V_1$. Quá trình $3 \\rightarrow 1$ đẳng nhiệt nén từ $V_3 = 2V_1$ về $V_1$. Vậy $\\frac{V_{\\max}}{V_{\\min}} = \\frac{V_2}{V_1} = 2$."},{"id":11,"topic":"Từ trường","level":"NB","tag":"ly_thuyet","question":"Đơn vị của cảm ứng từ $B$ trong hệ SI là gì?","options":["A. Weber ($\\text{Wb}$)","B. Tesla ($\\text{T}$)","C. Henry ($\\text{H}$)","D. Volt ($\\text{V}$)"],"answer":1,"explain":"Trong hệ SI, đơn vị của cảm ứng từ là Tesla ($\\text{T}$), còn Weber ($\\text{Wb}$) là đơn vị của từ thông."},{"id":12,"topic":"Từ trường","level":"TH","tag":"ly_thuyet","question":"Một đoạn dây dẫn thẳng dài $0,5\\text{ m}$ mang dòng điện $I = 4\\text{ A}$ đặt vuông góc với các đường sức từ của một từ trường đều có độ lớn cảm ứng từ $B = 0,2\\text{ T}$. Độ lớn lực từ tác dụng lên đoạn dây là:","options":["A. $0,4\\text{ N}$","B. $0,2\\text{ N}$","C. $4,0\\text{ N}$","D. $0\\text{ N}$"],"answer":0,"explain":"Áp dụng công thức lực từ: $F = BIl\\sin 90^\\circ = 0,2 \\times 4 \\times 0,5 \\times 1 = 0,4\\text{ N}$."},{"id":13,"topic":"Từ trường","level":"TH","tag":"bay_don_vi","question":"Một khung dây phẳng diện tích $20\\text{ cm}^2$ đặt trong từ trường đều $B = 0,1\\text{ T}$, mặt phẳng khung dây hợp với vectơ cảm ứng từ góc $30^\\circ$. Từ thông qua khung dây là:","options":["A. $10^{-4}\\text{ Wb}$","B. $1,73 \\times 10^{-4}\\text{ Wb}$","C. $2 \\times 10^{-4}\\text{ Wb}$","D. $10^{-2}\\text{ Wb}$"],"answer":0,"explain":"Mặt phẳng khung hợp với $\\vec{B}$ góc $30^\\circ$ nên góc giữa pháp tuyến $\\vec{n}$ và $\\vec{B}$ là $\\alpha = 60^\\circ$. Từ thông $\\Phi = BS\\cos 60^\\circ = 0,1 \\times (20 \\times 10^{-4}) \\times 0,5 = 10^{-4}\\text{ Wb}$."},{"id":14,"topic":"Từ trường","level":"VD","tag":"bay_don_vi","question":"Một khung dây dẫn gồm $100$ vòng, diện tích mỗi vòng là $50\\text{ cm}^2$, đặt vuông góc với đường sức của từ trường đều. Trong khoảng thời gian $\\Delta t = 0,05\\text{ s}$, cảm ứng từ giảm đều từ $0,4\\text{ T}$ về $0,1\\text{ T}$. Độ lớn suất điện động cảm ứng xuất hiện trong khung là:","options":["A. $3\\text{ V}$","B. $1,5\\text{ V}$","C. $30\\text{ V}$","D. $0,3\\text{ V}$"],"answer":0,"explain":"Độ lớn suất điện động cảm ứng: $e_c = N \\frac{|\\Delta B| \\cdot S}{\\Delta t} = 100 \\times \\frac{(0,4 - 0,1) \\times 50 \\times 10^{-4}}{0,05} = 3\\text{ V}$."},{"id":15,"topic":"Từ trường","level":"VD","tag":"do_thi_vdc","question":"Một thanh dẫn điện MN dài $l = 40\\text{ cm}$ chuyển động tịnh tiến với vận tốc $v = 5\\text{ m/s}$ trên hai thanh ray song song trong từ trường đều $B = 0,5\\text{ T}$ vuông góc với mặt phẳng hai ray. Hai đầu thanh ray nối với điện trở $R = 2\\text{ }\\Omega$, bỏ qua điện trở thanh và ray. Cường độ dòng điện cảm ứng chạy qua $R$ là:","options":["A. $0,5\\text{ A}$","B. $1,0\\text{ A}$","C. $2,0\\text{ A}$","D. $0,25\\text{ A}$"],"answer":0,"explain":"Suất điện động cảm ứng trên thanh chuyển động: $e_c = Blv = 0,5 \\times 0,4 \\times 5 = 1\\text{ V}$. Cường độ dòng điện: $I = \\frac{e_c}{R} = \\frac{1}{2} = 0,5\\text{ A}$."},{"id":16,"topic":"Vật lí hạt nhân","level":"NB","tag":"ly_thuyet","question":"Hạt nhân nguyên tử $_{Z}^{A}X$ được cấu tạo bởi:","options":["A. $Z$ proton và $A$ neutron","B. $Z$ proton và $(A - Z)$ neutron","C. $A$ proton và $Z$ electron","D. $(A - Z)$ proton và $Z$ neutron"],"answer":1,"explain":"Hạt nhân $_{Z}^{A}X$ có tổng số nucleon là $A$, trong đó có $Z$ hạt proton và $N = A - Z$ hạt neutron."},{"id":17,"topic":"Vật lí hạt nhân","level":"TH","tag":"bay_don_vi","question":"Hạt nhân Carbon $_{6}^{12}\\text{C}$ có độ hụt khối $\\Delta m = 0,099\\text{ amu}$. Biết $1\\text{ amu} \\cdot c^2 = 931,5\\text{ MeV}$. Năng lượng liên kết của hạt nhân $_{6}^{12}\\text{C}$ gần nhất với giá trị nào?","options":["A. $92,22\\text{ MeV}$","B. $7,68\\text{ MeV}$","C. $15,37\\text{ MeV}$","D. $111,78\\text{ MeV}$"],"answer":0,"explain":"Năng lượng liên kết: $W_{lk} = \\Delta m \\cdot c^2 = 0,099 \\times 931,5 \\approx 92,22\\text{ MeV}$."},{"id":18,"topic":"Vật lí hạt nhân","level":"TH","tag":"ly_thuyet","question":"Một chất phóng xạ có chu kì bán rã $T = 8\\text{ ngày}$. Ban đầu có $100\\text{ g}$ chất phóng xạ này, sau $24\\text{ ngày}$ khối lượng chất phóng xạ còn lại là:","options":["A. $33,3\\text{ g}$","B. $25,0\\text{ g}$","C. $12,5\\text{ g}$","D. $87,5\\text{ g}$"],"answer":2,"explain":"Áp dụng định luật phóng xạ: $m = m_0 \\cdot 2^{-\\frac{t}{T}} = 100 \\times 2^{-\\frac{24}{8}} = 100 \\times 2^{-3} = 12,5\\text{ g}$."},{"id":19,"topic":"Vật lí hạt nhân","level":"VD","tag":"bay_don_vi","question":"Cho phản ứng hạt nhân: $_{1}^{2}\\text{H} + _{1}^{3}\\text{H} \\rightarrow _{2}^{4}\\text{He} + _{0}^{1}\\text{n}$. Biết khối lượng các hạt nhân: $m_{\\text{D}} = 2,0135\\text{ amu}$, $m_{\\text{T}} = 3,0160\\text{ amu}$, $m_{\\text{He}} = 4,0015\\text{ amu}$, $m_{\\text{n}} = 1,0087\\text{ amu}$ và $1\\text{ amu} \\cdot c^2 = 931,5\\text{ MeV}$. Phản ứng này tỏa hay thu bao nhiêu năng lượng?","options":["A. Tỏa $17,98\\text{ MeV}$","B. Thu $17,98\\text{ MeV}$","C. Tỏa $15,24\\text{ MeV}$","D. Thu $15,24\\text{ MeV}$"],"answer":0,"explain":"Tổng khối lượng trước phản ứng: $m_{tr} = 2,0135 + 3,0160 = 5,0295\\text{ amu}$. Tổng khối lượng sau: $m_{sau} = 4,0015 + 1,0087 = 5,0102\\text{ amu}$. Vì $m_{tr} > m_{sau}$ nên phản ứng tỏa năng lượng: $\\Delta E = (5,0295 - 5,0102) \\times 931,5 \\approx 17,98\\text{ MeV}$."},{"id":20,"topic":"Vật lí hạt nhân","level":"VDC","tag":"do_thi_vdc","question":"Chất phóng xạ Poloni $_{84}^{210}\\text{Po}$ phát ra tia $\\alpha$ và biến đổi thành chì $_{82}^{206}\\text{Pb}$ với chu kì bán rã $138\\text{ ngày}$. Mẫu chất ban đầu chỉ chứa $_{84}^{210}\\text{Po}$ nguyên chất. Sau bao lâu thì tỉ số khối lượng giữa chì tạo thành và Poloni còn lại trong mẫu bằng $0,6865$?","options":["A. $105\\text{ ngày}$","B. $138\\text{ ngày}$","C. $276\\text{ ngày}$","D. $95\\text{ ngày}$"],"answer":0,"explain":"Tỉ số khối lượng: $\\frac{m_{\\text{Pb}}}{m_{\\text{Po}}} = \\frac{A_{\\text{Pb}}}{A_{\\text{Po}}}(2^{\\frac{t}{T}} - 1) = \\frac{206}{210}(2^{\\frac{t}{138}} - 1) = 0,6865 \\Rightarrow 2^{\\frac{t}{138}} - 1 \\approx 0,7 \\Rightarrow 2^{\\frac{t}{138}} = 1,7 \\Rightarrow t = 138 \\times \\log_2(1,7) \\approx 105,8\\text{ ngày}$."}];
+
+let questions = [...DEFAULT_QUESTIONS];
+let userAnswers = {};
+let currentIndex = 0;
+let timerSeconds = 1800; // 30 mins
+let timerInterval = null;
+const FALLBACK_LESSONS = [{"MaBai": "B04e20f0ec67d", "TenBai": "B2. LỰC LIÊN KẾT VÀ SỰ CHUYỂN THỂ CỦA CHẤT", "Chuong": "CHƯƠNG 1 – VẬT LÝ NHIỆT"}, {"MaBai": "Bfb85fde44802", "TenBai": "B3. NHIỆT ĐỘ – THANG NHIỆT ĐỘ – NHIỆT KẾ", "Chuong": "CHƯƠNG 1 – VẬT LÝ NHIỆT"}, {"MaBai": "B5d320f0a8875", "TenBai": "B9. MÔ HÌNH ĐỘNG HỌC PHÂN TỬ CHẤT KHÍ - KHÍ LÝ TƯỞNG", "Chuong": "Chương 2 – Khí lí tưởng"}, {"MaBai": "B4ca24b64572f", "TenBai": "B11. ĐỊNH LUẬT BOYLE – QUÁ TRÌNH ĐẲNG NHIỆT", "Chuong": "Chương 2 – Khí lí tưởng"}, {"MaBai": "Bce1e3725b0e5", "TenBai": "B21. TỪ TRƯỜNG", "Chuong": "Chương 3 – Từ trường"}, {"MaBai": "Bc71adbcb4dce", "TenBai": "B22. CẢM ỨNG TỪ - LỰC TỪ", "Chuong": "Chương 3 – Từ trường"}, {"MaBai": "B394ede55a127", "TenBai": "B31. CẤU TẠO HẠT NHÂN NGUYÊN TỬ", "Chuong": "Chương 4 – Vật lí hạt nhân"}, {"MaBai": "B600c414815cd", "TenBai": "B32. NĂNG LƯỢNG LIÊN KẾT HẠT NHÂN", "Chuong": "Chương 4 – Vật lí hạt nhân"}];
+let allLessons = [...FALLBACK_LESSONS];
+
+// Khởi chạy khi tải trang
+document.addEventListener('DOMContentLoaded', async () => {
+    // 1. Render auth widget
+    if (typeof vlxtGetUser === 'function') {
+        const u = vlxtGetUser();
+        if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(u);
+    }
+
+    // 2. Tải câu hỏi từ data/danhgianangluc.json (chỉ fetch khi HTTP/HTTPS để tránh đỏ console trên file://)
+    if (window.location.protocol.startsWith('http')) {
+        try {
+            const res = await fetch('data/danhgianangluc.json');
+            if (res.ok) {
+                const fetched = await res.json();
+                if (Array.isArray(fetched) && fetched.length > 0) {
+                    questions = fetched;
+                }
+            }
+        } catch (e) {
+            console.log('Dùng câu hỏi nhúng sẵn DEFAULT_QUESTIONS');
+        }
+
+        // 3. Tải danh sách bài học để phục vụ gợi ý
+        try {
+            const resLesson = await fetch('data/baihoc.json');
+            allLessons = await resLesson.json();
+        } catch (e) {
+            console.warn('Không tải được data/baihoc.json', e);
+        }
+    } else {
+        console.log('Chế độ file:/// scheme: Đã nạp 20 câu hỏi DEFAULT_QUESTIONS và bài học FALLBACK_LESSONS đầy đủ 100%.');
+    }
+});
+
+function startAssessment() {
+    if (!questions || questions.length === 0) {
+        alert('Đang tải dữ liệu câu hỏi, vui lòng thử lại sau vài giây!');
+        return;
+    }
+    document.getElementById('screen-intro').style.display = 'none';
+    document.getElementById('screen-quiz').style.display = 'block';
+    currentIndex = 0;
+    renderPalette();
+    renderQuestion(currentIndex);
+    startTimer();
+}
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        timerSeconds--;
+        if (timerSeconds <= 0) {
+            clearInterval(timerInterval);
+            timerSeconds = 0;
+            confirmSubmit();
+        }
+        const m = Math.floor(timerSeconds / 60);
+        const s = timerSeconds % 60;
+        document.getElementById('timer-display').textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }, 1000);
+}
+
+function renderPalette() {
+    const p = document.getElementById('palette-container');
+    p.innerHTML = '';
+    questions.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `palette-btn ${idx === currentIndex ? 'current' : ''} ${userAnswers[idx] !== undefined ? 'answered' : ''}`;
+        btn.textContent = idx + 1;
+        btn.onclick = () => goToQuestion(idx);
+        p.appendChild(btn);
+    });
+}
+
+function renderQuestion(idx) {
+    currentIndex = idx;
+    const q = questions[idx];
+    document.getElementById('quiz-progress-label').textContent = `Câu hỏi ${idx + 1} / ${questions.length}`;
+
+    const container = document.getElementById('question-card-container');
+    const selectedAns = userAnswers[idx];
+
+    let optionsHtml = '';
+    q.options.forEach((opt, oIdx) => {
+        const isSel = selectedAns === oIdx;
+        optionsHtml += `
+            <div class="option-item ${isSel ? 'selected' : ''}" onclick="selectOption(${idx}, ${oIdx})">
+                ${opt}
+            </div>
+        `;
+    });
+
+    container.innerHTML = `
+        <div class="question-meta">
+            <span class="badge-topic">${q.topic}</span>
+            <span class="badge-level">${q.level}</span>
+        </div>
+        <div class="question-stem">${q.question}</div>
+        <div class="options-list">${optionsHtml}</div>
+    `;
+
+    renderPalette();
+
+    // KaTeX render
+    if (window.renderMathInElement) {
+        try {
+            renderMathInElement(container, {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$', right: '$', display: false }
+                ],
+                throwOnError: false
+            });
+        } catch(e) {}
+    }
+}
+
+function selectOption(qIdx, oIdx) {
+    userAnswers[qIdx] = oIdx;
+    renderQuestion(qIdx);
+}
+
+function prevQuestion() {
+    if (currentIndex > 0) renderQuestion(currentIndex - 1);
+}
+function nextQuestion() {
+    if (currentIndex < questions.length - 1) renderQuestion(currentIndex + 1);
+}
+function goToQuestion(idx) {
+    renderQuestion(idx);
+}
+
+function confirmSubmit() {
+    const answeredCount = Object.keys(userAnswers).length;
+    if (answeredCount < questions.length) {
+        const ok = confirm(`Bạn mới làm ${answeredCount}/${questions.length} câu. Bạn có chắc chắn muốn nộp bài để xem phân tích năng lực không?`);
+        if (!ok) return;
+    }
+    clearInterval(timerInterval);
+
+    // ZERO-FRICTION STATE: Tuyệt đối không hiển thị popup bắt đăng nhập hay đòi tiền!
+    const user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null'));
+    processAndShowReport(user || { hoten: 'Học sinh trải nghiệm', sdt: 'FREE', loaiTK: 'free' });
+}
+
+function processAndShowReport(user) {
+    document.getElementById('screen-quiz').style.display = 'none';
+    const reportScreen = document.getElementById('screen-report');
+    if (reportScreen) reportScreen.style.display = 'block';
+
+    let correctTotal = 0;
+    const topicStats = {};
+    const wrongIndices = [];
+    const tagStats = {
+        ly_thuyet: { total: 0, correct: 0, wrong: 0, pct: 0 },
+        bay_don_vi: { total: 0, correct: 0, wrong: 0, pct: 0 },
+        do_thi_vdc: { total: 0, correct: 0, wrong: 0, pct: 0 }
+    };
+
+    questions.forEach((q, idx) => {
+        const tag = q.tag || (typeof FreemiumFlow !== 'undefined' ? FreemiumFlow.classifyQuestion(q) : 'ly_thuyet');
+        if (tagStats[tag]) tagStats[tag].total++;
+
+        if (!topicStats[q.topic]) {
+            topicStats[q.topic] = { total: 0, correct: 0 };
+        }
+        topicStats[q.topic].total++;
+
+        if (userAnswers[idx] === q.answer) {
+            correctTotal++;
+            topicStats[q.topic].correct++;
+            if (tagStats[tag]) tagStats[tag].correct++;
+        } else {
+            wrongIndices.push(idx);
+            if (tagStats[tag]) tagStats[tag].wrong++;
+        }
+    });
+
+    Object.keys(tagStats).forEach(t => {
+        const it = tagStats[t];
+        it.pct = it.total > 0 ? Math.round((it.correct / it.total) * 100) : 100;
+    });
+
+    const finalScore = ((correctTotal / questions.length) * 10).toFixed(1);
+    const rawScore = Number(finalScore);
+    let predictedScore = 0;
+    if (rawScore >= 9.5) predictedScore = 9.25;
+    else if (rawScore >= 8.5) predictedScore = 8.5;
+    else if (rawScore >= 7.0) predictedScore = 7.25;
+    else if (rawScore >= 5.0) predictedScore = 6.0;
+    else predictedScore = Math.max(3.5, Number((rawScore * 0.85 + 0.5).toFixed(1)));
+
+    // 1. Lưu tiến độ Zero-Friction vào localStorage
+    if (typeof FreemiumFlow !== 'undefined') {
+        FreemiumFlow.saveZeroFrictionProgress({
+            lessonKey: 'danh_gia_nang_luc_20c',
+            title: 'Đánh giá năng lực Vật Lý 12 Toàn Diện (20 câu)',
+            packetOrder: 1,
+            questions: questions,
+            wrongIndices: wrongIndices,
+            correct: correctTotal,
+            total: questions.length
+        });
+    }
+
+    try {
+        localStorage.setItem('vlxt_danhgianangluc_result', JSON.stringify({
+            score: finalScore,
+            correct: correctTotal,
+            total: questions.length,
+            predictedScore: predictedScore,
+            targetScore: 8.5,
+            tagStats: tagStats,
+            timestamp: Date.now()
+        }));
+    } catch(e) {}
+
+    // 2. Render Component <DiagnosticReportCard /> (Bước 4)
+    const cardSlot = document.getElementById('cro-diagnostic-card-slot');
+    if (cardSlot && typeof FreemiumFlow !== 'undefined') {
+        cardSlot.innerHTML = '';
+        FreemiumFlow.renderDiagnosticReportCard(cardSlot, {
+            total: questions.length,
+            correct: correctTotal,
+            score10: finalScore,
+            predictedScore: predictedScore,
+            targetScore: 8.5,
+            tagStats: tagStats
+        });
+    }
+
+    // 3. Render chi tiết 20 câu hỏi (Đáp án của em, đáp án đúng & Lời giải KaTeX)
+    renderQuestionReviewList(wrongIndices);
+
+    // 4. Render bài giảng đề xuất từ Thầy
+    const weakTopics = Object.keys(topicStats).filter(t => (topicStats[t].correct / topicStats[t].total) < 0.7);
+    renderRecommendations(weakTopics, finalScore);
+
+    // Cuộn lên đầu phần báo cáo mượt mà
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderQuestionReviewList(wrongIndices) {
+    const container = document.getElementById('question-review-list-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const filterSummary = document.getElementById('res-detail-filter-summary');
+    if (filterSummary) {
+        filterSummary.textContent = `Đúng ${questions.length - wrongIndices.length}/${questions.length} câu · Sai ${wrongIndices.length} câu`;
+    }
+
+    const tagLabels = {
+        ly_thuyet: 'Lý thuyết',
+        bay_don_vi: 'Bẫy đơn vị',
+        do_thi_vdc: 'Đồ thị & VDC'
+    };
+
+    questions.forEach((q, idx) => {
+        const isWrong = wrongIndices.includes(idx);
+        const userChoice = userAnswers[idx];
+        const hasAnswered = userChoice !== undefined;
+        const tag = q.tag || 'ly_thuyet';
+
+        const item = document.createElement('div');
+        item.className = `review-q-item ${isWrong ? 'is-wrong' : 'is-correct'}`;
+
+        const letters = ['A', 'B', 'C', 'D'];
+        const userLetter = hasAnswered ? letters[userChoice] : 'Chưa làm';
+        const correctLetter = letters[q.answer];
+
+        item.innerHTML = `
+            <div class="review-q-top">
+                <div class="review-q-badges">
+                    <span style="font-size:13px;font-weight:800;color:#fff;">Câu ${idx + 1}</span>
+                    <span class="badge-topic">${q.topic}</span>
+                    <span class="badge-cro-tag ${tag}">${tagLabels[tag] || tag}</span>
+                </div>
+                <div class="review-q-status ${isWrong ? 'err' : 'ok'}">
+                    ${isWrong ? '<i class="fa-solid fa-xmark"></i> Làm sai' : '<i class="fa-solid fa-check"></i> Làm đúng'}
+                </div>
+            </div>
+            <div class="review-q-stem">${q.question}</div>
+            
+            <div class="review-ans-row ${isWrong ? 'user-pick' : 'correct-pick'}">
+                <strong>Đáp án của em:</strong> ${userLetter}. ${hasAnswered ? q.options[userChoice] : '<em>(Bỏ trống)</em>'}
+            </div>
+            ${isWrong ? `
+            <div class="review-ans-row correct-pick">
+                <strong>Đáp án đúng:</strong> ${correctLetter}. ${q.options[q.answer]}
+            </div>` : ''}
+
+            <div class="review-explain-box">
+                💡 <strong>Lời giải chi tiết:</strong> ${q.explain}
+            </div>
+        `;
+
+        container.appendChild(item);
+    });
+
+    if (window.renderMathInElement) {
+        try {
+            renderMathInElement(container, {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$', right: '$', display: false }
+                ],
+                throwOnError: false
+            });
+        } catch(e) {}
+    }
+}
+
+function renderRecommendations(weakTopics, score) {
+    const container = document.getElementById('recom-grid-container');
+    container.innerHTML = '';
+
+    let matchedLessons = [];
+
+    // Nếu điểm dưới 5: Gợi ý chuỗi lấy gốc
+    if (score < 5.0) {
+        matchedLessons = allLessons.filter(l => l.KhoaHoc && l.KhoaHoc.includes('LẤY GỐC')).slice(0, 4);
+    }
+
+    // Nếu vẫn còn ít bài hoặc điểm khá: gợi ý theo chuyên đề yếu
+    if (matchedLessons.length < 3 && weakTopics.length > 0) {
+        const topicFiltered = allLessons.filter(l => {
+            return weakTopics.some(wt => (l.Chuong && l.Chuong.toLowerCase().includes(wt.toLowerCase())));
+        }).slice(0, 4);
+        matchedLessons = matchedLessons.concat(topicFiltered);
+    }
+
+    // Fallback: Nếu không match thì lấy các bài nền tảng
+    if (matchedLessons.length === 0) {
+        matchedLessons = allLessons.slice(0, 4);
+    }
+
+    // Deduplicate
+    const unique = [];
+    const seen = new Set();
+    for (const l of matchedLessons) {
+        if (!seen.has(l.MaBai)) {
+            seen.add(l.MaBai);
+            unique.push(l);
+        }
+    }
+
+    unique.slice(0, 4).forEach(l => {
+        const card = document.createElement('div');
+        card.className = 'recom-item';
+        card.innerHTML = `
+            <div>
+                <div class="recom-tag">${l.Chuong || 'Vật Lý 12'}</div>
+                <div class="recom-name">${l.TenBai}</div>
+            </div>
+            <a href="baihoc.html?course=${encodeURIComponent(l.KhoaHoc || '')}" class="btn-recom-go">
+                <i class="fa-solid fa-play"></i> Xem Bài Giảng Ngay
+            </a>
+        `;
+        container.appendChild(card);
+    });
+}
+</script>
+
+</body>
+</html>

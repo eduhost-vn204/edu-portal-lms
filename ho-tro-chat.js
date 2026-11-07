@@ -32,7 +32,7 @@
     var s = document.createElement('style');
     s.id = 'vlxt-ht-css';
     s.textContent = [
-      '#vlxt-ht-fab{position:fixed;bottom:92px;right:20px;z-index:99982;',
+      '#vlxt-ht-fab{position:fixed;bottom:76px !important;right:24px !important;z-index:99982;',
       'width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;',
       'background:linear-gradient(135deg,#0072ff,#00f0ff);color:#fff;font-size:22px;',
       'display:flex;align-items:center;justify-content:center;',

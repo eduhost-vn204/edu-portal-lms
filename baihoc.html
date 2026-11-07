@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="data/bundle_theories.js"></script>
+    <script src="data/bundle_quizzes.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
@@ -211,6 +213,343 @@
         .pdf-embed-box { position:relative; width:100%; height:min(78vh,900px); border-radius:12px; overflow:hidden; border:1.5px solid var(--line); background:var(--card2); }
         .pdf-embed-box iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
         .pdf-embed-dl { display:inline-flex; align-items:center; gap:8px; margin-top:14px; padding:10px 18px; border-radius:10px; font-weight:700; text-decoration:none; font-size:14px; }
+
+        /* ── E-DOC READER CHUẨN VSTEP OWL / DOCUSAURUS ── */
+        .edoc-wrap {
+            background: #0c1222;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 22px;
+            color: #f1f5f9;
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            margin-bottom: 16px;
+        }
+        .edoc-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 12px 18px;
+            background: #111c37;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            margin-bottom: 22px;
+        }
+        .edoc-modes {
+            display: flex;
+            background: rgba(0,0,0,0.3);
+            padding: 3px;
+            border-radius: 8px;
+            gap: 4px;
+        }
+        .edoc-mbtn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .edoc-mbtn.active {
+            background: #10b981;
+            color: #022c22;
+            font-weight: 700;
+        }
+        .edoc-dlbtn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(16,185,129,0.1);
+            color: #10b981;
+            border: 1px solid #10b981;
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .edoc-dlbtn:hover {
+            background: #10b981;
+            color: #042f2e;
+        }
+        .edoc-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 250px;
+            gap: 26px;
+            position: relative;
+        }
+        @media(max-width: 960px){
+            .edoc-layout { grid-template-columns: 1fr; }
+            .edoc-toc { display: none !important; }
+        }
+        .edoc-article h1.edoc-title {
+            font-size: 25px;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.3;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+        .edoc-meta {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+        .edoc-tag {
+            background: rgba(56,189,248,0.12);
+            color: #38bdf8;
+            border: 1px solid rgba(56,189,248,0.25);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        .edoc-lead {
+            font-size: 15.5px;
+            line-height: 1.75;
+            color: #cbd5e1;
+            border-left: 3px solid #10b981;
+            padding-left: 16px;
+            margin-bottom: 24px;
+        }
+        .edoc-goals {
+            background: linear-gradient(135deg, rgba(17,28,55,0.9), rgba(15,23,43,0.98));
+            border: 1px solid rgba(56,189,248,0.25);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 26px;
+        }
+        .edoc-goals-title {
+            color: #38bdf8;
+            font-weight: 700;
+            font-size: 13.5px;
+            letter-spacing: 0.05em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .edoc-goals-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-left: 0 !important;
+        }
+        .edoc-goals-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 14px;
+            color: #e2e8f0;
+            line-height: 1.6;
+            margin-bottom: 0 !important;
+        }
+        .edoc-check {
+            color: #10b981;
+            font-weight: 900;
+            font-size: 14px;
+            line-height: 1.2;
+        }
+        .edoc-article h2 {
+            font-size: 19px;
+            font-weight: 800;
+            color: #fff;
+            margin-top: 34px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            scroll-margin-top: 70px;
+        }
+        .edoc-h2-num {
+            background: #10b981;
+            color: #042f2e;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+        .edoc-article h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #38bdf8;
+            margin-top: 22px;
+            margin-bottom: 10px;
+            scroll-margin-top: 70px;
+        }
+        .edoc-article p {
+            font-size: 15px;
+            line-height: 1.72;
+            color: #e2e8f0;
+            margin-bottom: 1.25rem;
+        }
+        .edoc-article strong {
+            color: #ffffff;
+            font-weight: 700;
+        }
+        .edoc-article ul {
+            padding-left: 18px;
+            margin-bottom: 1.25rem;
+        }
+        .edoc-article ul li {
+            font-size: 14.5px;
+            line-height: 1.7;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+        }
+        .edoc-callout {
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin: 20px 0;
+            border-left: 4px solid;
+            font-size: 14px;
+            line-height: 1.65;
+        }
+        .edoc-callout-header {
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .edoc-callout.tip {
+            background: rgba(16,185,129,0.08);
+            border-color: #10b981;
+            color: #e2e8f0;
+        }
+        .edoc-callout.tip .edoc-callout-header { color: #10b981; }
+        .edoc-callout.trap {
+            background: rgba(244,63,94,0.08);
+            border-color: #f43f5e;
+            color: #e2e8f0;
+        }
+        .edoc-callout.trap .edoc-callout-header { color: #f43f5e; }
+        .edoc-callout.note {
+            background: rgba(56,189,248,0.08);
+            border-color: #38bdf8;
+            color: #e2e8f0;
+        }
+        .edoc-callout.note .edoc-callout-header { color: #38bdf8; }
+        .edoc-formula {
+            background: linear-gradient(135deg, #0f1c38, #0d1527);
+            border: 1px solid rgba(16,185,129,0.25);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+            text-align: center;
+            position: relative;
+        }
+        .edoc-formula-badge {
+            position: absolute;
+            top: -10px;
+            left: 18px;
+            background: #10b981;
+            color: #042f2e;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        .edoc-formula-math {
+            font-size: 18px;
+            margin: 8px 0 10px;
+            color: #fff;
+        }
+        .edoc-formula-sub {
+            font-size: 12.5px;
+            color: #94a3b8;
+            border-top: 1px dashed rgba(255,255,255,0.1);
+            padding-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px;
+        }
+        .edoc-table-wrap {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .edoc-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            text-align: left;
+        }
+        .edoc-table th {
+            background: #131f3b;
+            color: #38bdf8;
+            font-weight: 700;
+            padding: 12px 14px;
+            border-bottom: 2px solid rgba(255,255,255,0.08);
+            white-space: nowrap;
+        }
+        .edoc-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            color: #cbd5e1;
+            line-height: 1.55;
+        }
+        .edoc-table tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+        .edoc-table tr:hover { background: rgba(16,185,129,0.04); }
+        .edoc-toc {
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            padding-left: 14px;
+            border-left: 1px solid rgba(255,255,255,0.08);
+        }
+        .edoc-toc-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #94a3b8;
+            margin-bottom: 12px;
+        }
+        .edoc-toc-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding-left: 0 !important;
+        }
+        .edoc-toc-link {
+            display: block;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 12.5px;
+            line-height: 1.4;
+            padding: 5px 8px;
+            border-radius: 6px;
+            transition: all 0.15s;
+        }
+        .edoc-toc-link:hover { color: #fff; background: rgba(255,255,255,0.05); }
+        .edoc-toc-sub { padding-left: 16px; font-size: 11.5px; }
+
 
         .pq-block { margin-bottom:22px; padding-bottom:22px; border-bottom:1px solid var(--line); }
         .pq-block:last-child { margin-bottom:0; padding-bottom:0; border-bottom:none; }
@@ -867,27 +1206,1028 @@
             background: #0F172A;
             border-top: 1.5px solid #1E293B;
         }
+
+        /* ══ THANH ĐIỀU HƯỚNG TOP-BAR MỚI ĐỒNG BỘ VỚI INDEX ══ */
+    .top-bar {
+      position: sticky; top: 0; left: 0; right: 0;
+      height: 60px;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 clamp(16px, 3.2vw, 42px);
+      background: rgba(8, 14, 28, 0.95) !important;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.2) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+    }
+    .nav-left-wrap {
+      display: flex; align-items: center; gap: clamp(10px, 1.4vw, 24px);
+      flex-shrink: 0;
+    }
+    .nav-brand-logo {
+      display: flex; align-items: center; gap: 9px;
+      text-decoration: none; color: #ffffff;
+      font-size: 14.5px; font-weight: 800; letter-spacing: 0.5px;
+      white-space: nowrap !important; flex-shrink: 0;
+    }
+    .logo-atom-icon {
+      width: 26px; height: 26px; flex-shrink: 0;
+      filter: drop-shadow(0 0 6px #00f0ff);
+    }
+    .brand-glow-text {
+      background: linear-gradient(180deg, #ffffff 0%, #e0f2fe 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .nav-menu-links {
+      display: flex; align-items: center; gap: clamp(4px, 0.6vw, 12px);
+      flex-shrink: 0;
+    }
+    .nav-menu-links a, .nav-dropdown-btn {
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+      width: auto !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      font-size: 13.5px !important;
+      font-weight: 500 !important;
+      color: #cbd5e1 !important;
+      text-decoration: none !important;
+      padding: 6px 12px !important;
+      border-radius: 8px !important;
+      transition: all 0.15s ease !important;
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .nav-menu-links a:hover, .nav-dropdown-btn:hover {
+      color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+    }
+    .nav-menu-links a.nav-item-active {
+      color: #38bdf8 !important;
+      background: rgba(56, 189, 248, 0.12) !important;
+      border: 1px solid rgba(56, 189, 248, 0.3) !important;
+      font-weight: 700 !important;
+    }
+    .nav-item-pro {
+      color: #e2e8f0 !important;
+    }
+    .nav-pro-badge {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 5px;
+      letter-spacing: 0.3px;
+    }
+    .nav-live-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #ef4444;
+      box-shadow: 0 0 8px #ef4444;
+      display: inline-block;
+      animation: navLiveBlink 1.5s infinite ease-in-out;
+      flex-shrink: 0;
+    }
+    @keyframes navLiveBlink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .nav-dropdown {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .nav-dropdown-content {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0b1329;
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      border-radius: 14px;
+      padding: 8px;
+      min-width: 220px;
+      box-shadow: 0 16px 45px rgba(0,0,0,0.85), 0 0 20px rgba(0, 240, 255, 0.1);
+      z-index: 1100;
+      animation: navDropIn 0.16s ease-out;
+    }
+    @keyframes navDropIn {
+      from { opacity: 0; transform: translate(-50%, -6px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+    .nav-dropdown:hover .nav-dropdown-content { display: block; }
+    .nav-dropdown-content a {
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      padding: 9px 12px !important;
+      border-radius: 8px !important;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      color: #cbd5e1 !important;
+      text-decoration: none !important;
+      white-space: nowrap !important;
+      transition: all 0.12s !important;
+    }
+    .nav-dropdown-content a:hover {
+      background: rgba(0, 240, 255, 0.1) !important;
+      color: #00f0ff !important;
+    }
+    .nav-right-wrap {
+      display: flex; align-items: center; gap: 10px;
+      flex-shrink: 0;
+    }
+    .nav-hamburger {
+      display: none;
+      background: transparent; border: none;
+      color: #cbd5e1; font-size: 20px; cursor: pointer;
+      padding: 6px;
+    }
+    @media (max-width: 1024px) {
+      .nav-menu-links { display: none; }
+      .nav-hamburger { display: block; }
+    }
+    .nav-drawer-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px); z-index: 99990;
+    }
+    .nav-drawer {
+      position: fixed; top: 0; left: 0; bottom: 0; width: 280px; max-width: 85vw;
+      background: #060d1f; border-right: 1px solid rgba(0, 240, 255, 0.25);
+      z-index: 99995; padding: 20px; display: flex; flex-direction: column;
+      transform: translateX(-100%); transition: transform 0.3s ease;
+      box-shadow: 10px 0 40px rgba(0,0,0,0.8);
+    }
+    .nav-drawer.open { transform: translateX(0); }
+    .nav-drawer-head {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 24px; padding-bottom: 14px;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+    }
+    .nav-drawer-close {
+      background: transparent; border: none; color: #94a3b8; font-size: 18px; cursor: pointer;
+    }
+    .nav-drawer-links {
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .nav-drawer-links a {
+      color: #cbd5e1; text-decoration: none; font-size: 14px; font-weight: 600;
+      padding: 10px 12px; border-radius: 8px; transition: all 0.15s;
+    }
+    .nav-drawer-links a:hover, .nav-drawer-links a.active {
+      color: #38bdf8; background: rgba(56, 189, 248, 0.12);
+    }
+
+    /* ══ NÚT LÀM BÀI TẬP VÀ HIỂN THỊ CÂU HỎI TRẮC NGHIỆM ══ */
+    .vstep-quiz-jump-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(11, 132, 243, 0.15);
+        color: #38bdf8;
+        border: 1px solid rgba(56, 189, 248, 0.4);
+        padding: 6px 14px;
+        border-radius: 8px;
+        font-size: 12.5px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .vstep-quiz-jump-btn:hover {
+        background: #0b84f3;
+        color: #ffffff;
+        box-shadow: 0 0 14px rgba(11, 132, 243, 0.5);
+    }
+    #vstep-quiz-mount .lt-tab-pane,
+    #vstep-quiz-mount #quiz-block {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        border: none !important;
+    }
+    .vstep-quiz-wrap {
+        background: #0f172a !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 14px !important;
+        padding: 24px 28px !important;
+        margin: 24px 0 32px !important;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35) !important;
+    }
+    .vstep-quiz-wrap .pq-block {
+        background: rgba(255, 255, 255, 0.02) !important;
+        border: 1px solid rgba(255, 255, 255, 0.06) !important;
+        border-radius: 10px !important;
+        padding: 16px 18px !important;
+        margin-bottom: 18px !important;
+    }
+    .vstep-quiz-wrap .pq-text {
+        font-size: 15px !important;
+        color: #f1f5f9 !important;
+        line-height: 1.6 !important;
+        font-weight: 600 !important;
+    }
+    .vstep-quiz-wrap .pq-opts label.pq-opt {
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 8px !important;
+        padding: 10px 14px !important;
+        color: #cbd5e1 !important;
+        background: rgba(255, 255, 255, 0.03) !important;
+        transition: all 0.15s ease !important;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+        cursor: pointer;
+    }
+    .vstep-quiz-wrap .pq-opts label.pq-opt:hover {
+        background: rgba(56, 189, 248, 0.08) !important;
+        border-color: rgba(56, 189, 248, 0.3) !important;
+        color: #fff !important;
+    }
+    .vstep-quiz-wrap .quiz-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 24px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .vstep-quiz-wrap .btn-check {
+        background: #10b981;
+        color: #042f2e;
+        border: none;
+        padding: 11px 24px;
+        border-radius: 8px;
+        font-weight: 800;
+        font-size: 14px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s;
+    }
+    .vstep-quiz-wrap .btn-check:hover {
+        background: #059669;
+        color: #fff;
+    }
+    .vstep-quiz-wrap .btn-reset {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #cbd5e1;
+        padding: 11px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .vstep-quiz-wrap .btn-reset:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+    }
+
+    /* ══ TRẠNG THÁI KHÓA BÀI HỌC TRÊN SIDEBAR ══ */
+    .vstep-lesson-item.is-locked {
+        opacity: 0.62;
+    }
+    .vstep-lesson-item.is-locked:hover {
+        opacity: 0.95;
+        background: rgba(245, 158, 11, 0.08) !important;
+        color: #fbbf24 !important;
+    }
+    .vstep-status-tag {
+        margin-left: auto;
+        font-size: 11px;
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .vstep-status-tag.done {
+        color: #10b981;
+        font-weight: 800;
+        font-size: 12px;
+    }
+    .vstep-status-tag.lock {
+        font-size: 11px;
+        opacity: 0.85;
+    }
+
+/* ── BỐ CỤC 3 CỘT ĐỒNG NHẤT CHUẨN VSTEP OWL / DOCUSAURUS ── */
+        html {
+            overflow-x: clip !important;
+            overflow-y: visible !important;
+        }
+        body {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: #0c1222 !important;
+            overflow-x: clip !important;
+            overflow-y: visible !important;
+        }
+
+        /* Ẩn hoàn toàn dòng chữ chạy marquee theo yêu cầu của Thầy */
+        .marquee, div.marquee {
+            display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        /* Ẩn hoàn toàn bong bóng chat tin nhắn theo yêu cầu của Thầy */
+        #vlxt-ht-fab, #vlxt-ht-panel, #vlxt-ht-dot, [id^="vlxt-ht-"],
+        #ho-tro-chat-root, .chat-bubble, #chat-bubble, .chat-widget, 
+        [class*="ho-tro-chat"], [id*="ho-tro-chat"],
+        #vlxt-mission-banner, #vlxt-nv-card, #vlxt-nv-overlay, 
+        [id^="vlxt-mission-"], [id^="vlxt-nv-"], .vlxt-mission-banner {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        /* Khung container chiếm trọn vẹn 100% chiều ngang màn hình (Full Bleed) */
+        body.vstep-page-mode footer {
+            display: none !important;
+        }
+        body.vstep-page-mode .container,
+        body.vstep-page-mode .container.wide-lesson,
+        body.vstep-page-mode #app {
+            max-width: 100% !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: #0c1222 !important;
+            overflow: visible !important;
+        }
+
+        /* ══ BỐ CỤC 3 CỘT ĐẲNG CẤP CHUẨN DEMO VSTEP OWL ══ */
+        .vstep-course-layout {
+            display: grid !important;
+            grid-template-columns: 280px minmax(0, 1fr) 250px !important;
+            min-height: calc(100vh - 60px) !important;
+            width: 100% !important;
+            background: #0c1222 !important;
+            position: relative !important;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+            box-shadow: none !important;
+        }
+
+        @media (max-width: 1200px) {
+            .vstep-course-layout {
+                grid-template-columns: 260px minmax(0, 1fr) !important;
+            }
+            .vstep-sidebar-right {
+                display: none !important;
+            }
+        }
+        @media (max-width: 860px) {
+            .vstep-course-layout {
+                grid-template-columns: 1fr !important;
+            }
+            .vstep-sidebar-left {
+                display: none !important;
+            }
+        }
+
+        /* ── CỘT TRÁI: LỘ TRÌNH BÀI HỌC (STICKY CỐ ĐỊNH, ĐỒNG NHẤT NỀN #0c1222) ── */
+        .vstep-sidebar-left {
+            display: block !important;
+            background: #0c1222 !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+            border-left: none !important;
+            height: calc(100vh - 60px) !important;
+            position: sticky !important;
+            top: 60px !important;
+            overflow-y: auto !important;
+            padding: 20px 16px 60px !important;
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+            box-shadow: none !important;
+            z-index: 10 !important;
+        }
+        .vstep-sidebar-left::-webkit-scrollbar { display: none !important; }
+
+        .vstep-side-head {
+            font-size: 12px !important;
+            font-weight: 800 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.08em !important;
+            color: #10b981 !important;
+            margin-bottom: 16px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            padding: 0 4px !important;
+        }
+        .vstep-chap-group { margin-bottom: 20px !important; }
+        .vstep-chap-title {
+            font-size: 13.5px !important;
+            font-weight: 700 !important;
+            color: #cbd5e1 !important;
+            padding: 8px 10px !important;
+            border-radius: 8px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            letter-spacing: -0.01em !important;
+            cursor: pointer !important;
+            transition: background 0.15s !important;
+        }
+        .vstep-chap-title:hover {
+            background: rgba(255, 255, 255, 0.04) !important;
+            color: #fff !important;
+        }
+        .vstep-lesson-list {
+            list-style: none !important;
+            padding-left: 6px !important;
+            margin-top: 4px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 2px !important;
+        }
+        .vstep-lesson-item {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            color: #94a3b8 !important;
+            text-decoration: none !important;
+            font-size: 13px !important;
+            padding: 7px 10px !important;
+            border-radius: 6px !important;
+            cursor: pointer !important;
+            transition: all 0.15s ease !important;
+            line-height: 1.4 !important;
+            border-left: 3px solid transparent !important;
+        }
+        .vstep-lesson-item:hover { 
+            color: #fff !important; 
+            background: rgba(255, 255, 255, 0.04) !important; 
+        }
+        .vstep-lesson-item.active {
+            color: #10b981 !important;
+            font-weight: 700 !important;
+            background: rgba(16, 185, 129, 0.08) !important;
+            border-left: 3px solid #10b981 !important;
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
+        }
+        .vstep-lesson-item.done { color: #cbd5e1 !important; }
+        .vstep-lesson-item.is-locked { opacity: 0.62 !important; }
+        .vstep-lesson-item.is-locked:hover {
+            opacity: 0.95 !important;
+            background: rgba(245, 158, 11, 0.08) !important;
+            color: #fbbf24 !important;
+        }
+        .vstep-num-pill {
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            color: inherit !important;
+            background: transparent !important;
+            padding: 0 !important;
+            min-width: 18px !important;
+            opacity: 0.8 !important;
+            border: none !important;
+            flex-shrink: 0 !important;
+        }
+        .vstep-item-title {
+            flex: 1 !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+        .vstep-status-tag {
+            margin-left: auto !important;
+            font-size: 11px !important;
+            flex-shrink: 0 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .vstep-status-tag.done { color: #10b981 !important; font-weight: 800 !important; font-size: 12px !important; }
+        .vstep-status-tag.lock { font-size: 11px !important; opacity: 0.85 !important; }
+
+        /* ── CỘT GIỮA: DÒNG CHẢY BÀI HỌC RỘNG RÃI, LIỀN MẠCH #0c1222 ── */
+        .vstep-main-stream {
+            padding: 24px 36px 80px !important;
+            max-width: 1060px !important;
+            margin: 0 auto !important;
+            width: 100% !important;
+            background: #0c1222 !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+        @media (max-width: 768px) {
+            .vstep-main-stream {
+                padding: 20px 18px 60px !important;
+            }
+        }
+
+        .vstep-top-bar {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            flex-wrap: wrap !important;
+            gap: 12px !important;
+            margin-bottom: 20px !important;
+        }
+        .vstep-crumb {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            font-size: 13px !important;
+            color: #64748b !important;
+        }
+        .vstep-crumb a { color: #94a3b8 !important; text-decoration: none !important; cursor: pointer !important; transition: color 0.15s !important; }
+        .vstep-crumb a:hover { color: #10b981 !important; }
+
+        .vstep-quiz-jump-btn {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            background: rgba(56, 189, 248, 0.12) !important;
+            color: #38bdf8 !important;
+            border: 1px solid rgba(56, 189, 248, 0.3) !important;
+            padding: 6px 14px !important;
+            border-radius: 8px !important;
+            font-size: 12.5px !important;
+            font-weight: 700 !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease !important;
+        }
+        .vstep-quiz-jump-btn:hover {
+            background: #0284c7 !important;
+            color: #ffffff !important;
+        }
+
+        .vstep-dl-btn {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            background: rgba(16, 185, 129, 0.08) !important;
+            color: #10b981 !important;
+            border: 1px solid #10b981 !important;
+            padding: 6px 14px !important;
+            border-radius: 8px !important;
+            font-size: 12.5px !important;
+            font-weight: 700 !important;
+            text-decoration: none !important;
+            transition: all 0.2s !important;
+        }
+        .vstep-dl-btn:hover { background: #10b981 !important; color: #042f2e !important; }
+
+        .vstep-h1 {
+            font-size: 32px !important;
+            font-weight: 800 !important;
+            color: #fff !important;
+            line-height: 1.25 !important;
+            letter-spacing: -0.025em !important;
+            margin-bottom: 12px !important;
+        }
+        .vstep-meta {
+            display: flex !important;
+            gap: 16px !important;
+            flex-wrap: wrap !important;
+            align-items: center !important;
+            font-size: 13.5px !important;
+            color: #94a3b8 !important;
+            margin-bottom: 24px !important;
+        }
+        .vstep-meta-badge {
+            background: rgba(56, 189, 248, 0.12) !important;
+            color: #38bdf8 !important;
+            border: 1px solid rgba(56, 189, 248, 0.25) !important;
+            padding: 3px 10px !important;
+            border-radius: 6px !important;
+            font-weight: 600 !important;
+            font-size: 12.5px !important;
+        }
+
+        /* Đoạn dẫn nhập (Lesson Lead) viền xanh lá chuẩn demo */
+        .vstep-lead {
+            font-size: 16.5px !important;
+            line-height: 1.75 !important;
+            color: #cbd5e1 !important;
+            border-left: 3px solid #10b981 !important;
+            padding-left: 18px !important;
+            margin-bottom: 30px !important;
+        }
+
+        /* Card Mục tiêu bài học */
+        .vstep-goals {
+            background: linear-gradient(135deg, rgba(17, 28, 55, 0.8), rgba(15, 23, 43, 0.95)) !important;
+            border: 1px solid rgba(56, 189, 248, 0.25) !important;
+            border-radius: 14px !important;
+            padding: 20px 24px !important;
+            margin-bottom: 36px !important;
+            box-shadow: none !important;
+        }
+        .vstep-goals-title {
+            color: #38bdf8 !important;
+            font-weight: 700 !important;
+            font-size: 14px !important;
+            letter-spacing: 0.05em !important;
+            margin-bottom: 12px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
+        .vstep-goals-list {
+            list-style: none !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 10px !important;
+            padding-left: 0 !important;
+        }
+        .vstep-goals-list li {
+            display: flex !important;
+            align-items: flex-start !important;
+            gap: 10px !important;
+            font-size: 14.5px !important;
+            color: #e2e8f0 !important;
+            line-height: 1.6 !important;
+        }
+        .vstep-check-ic { 
+            color: #10b981 !important; 
+            font-weight: 900 !important; 
+            font-size: 15px !important; 
+            line-height: 1.2 !important;
+        }
+
+        /* Headings dòng bài */
+        .vstep-main-stream h2 {
+            font-size: 22px !important;
+            font-weight: 800 !important;
+            color: #fff !important;
+            margin-top: 48px !important;
+            margin-bottom: 18px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            letter-spacing: -0.015em !important;
+            scroll-margin-top: 80px !important;
+        }
+        .vstep-h2-badge {
+            background: #10b981 !important;
+            color: #042f2e !important;
+            width: 28px !important;
+            height: 28px !important;
+            border-radius: 8px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 14px !important;
+            font-weight: 800 !important;
+            flex-shrink: 0 !important;
+        }
+        .vstep-main-stream h3 {
+            font-size: 17px !important;
+            font-weight: 700 !important;
+            color: #38bdf8 !important;
+            margin-top: 26px !important;
+            margin-bottom: 12px !important;
+            scroll-margin-top: 80px !important;
+        }
+        .vstep-main-stream p {
+            color: #e2e8f0 !important;
+            font-size: 15.5px !important;
+            line-height: 1.74 !important;
+            margin-bottom: 16px !important;
+        }
+        .vstep-main-stream ul {
+            padding-left: 20px !important;
+            margin-bottom: 18px !important;
+            color: #cbd5e1 !important;
+            font-size: 15px !important;
+            line-height: 1.7 !important;
+        }
+        .vstep-main-stream ul li { margin-bottom: 8px !important; }
+
+        /* Callout mẹo & lưu ý */
+        .edoc-callout {
+            border-radius: 12px !important;
+            padding: 16px 20px !important;
+            margin: 24px 0 !important;
+            font-size: 14.5px !important;
+            line-height: 1.68 !important;
+            border-left: 4px solid !important;
+        }
+        .edoc-callout.tip {
+            background: rgba(16, 185, 129, 0.08) !important;
+            border-color: #10b981 !important;
+            color: #e2e8f0 !important;
+        }
+        .edoc-callout.tip .edoc-callout-header { color: #10b981 !important; }
+        .edoc-callout.trap {
+            background: rgba(244, 63, 94, 0.08) !important;
+            border-color: #f43f5e !important;
+            color: #e2e8f0 !important;
+        }
+        .edoc-callout.trap .edoc-callout-header { color: #f43f5e !important; }
+        .edoc-callout-header {
+            font-weight: 700 !important;
+            font-size: 13.5px !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.04em !important;
+            margin-bottom: 6px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+        }
+
+        /* Video wrap tinh chỉnh mỏng nhẹ, hòa vào nền, triệt tiêu 100% dải đen thừa */
+        .vstep-video-wrap {
+            margin: 20px 0 28px !important;
+            border-radius: 12px !important;
+            overflow: hidden !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            background: #0c1222 !important;
+            box-shadow: none !important;
+        }
+        .vstep-video-wrap .section-block {
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            background: transparent !important;
+            border-radius: 0 !important;
+        }
+        .vstep-video-wrap .lt-tabs-bar {
+            background: #111c37 !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            padding: 8px 14px !important;
+            display: flex !important;
+            gap: 8px !important;
+            margin: 0 !important;
+        }
+        .vstep-video-wrap .lt-tab-btn {
+            background: transparent !important;
+            border: none !important;
+            color: #94a3b8 !important;
+            padding: 6px 14px !important;
+            border-radius: 6px !important;
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            transition: all 0.2s !important;
+        }
+        .vstep-video-wrap .lt-tab-btn.active {
+            background: #10b981 !important;
+            color: #022c22 !important;
+            font-weight: 700 !important;
+        }
+        .vstep-video-wrap .lt-tab-pane {
+            padding: 0 !important;
+            margin: 0 !important;
+            background: #000 !important;
+        }
+        .vstep-video-wrap .video-box {
+            border: none !important;
+            border-radius: 0 !important;
+            background: #000 !important;
+            box-shadow: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .vstep-video-wrap .ratio {
+            border-radius: 0 !important;
+            margin: 0 !important;
+        }
+
+        .vstep-sim-wrap {
+            background: #070d1e !important;
+            border: 1px solid rgba(56, 189, 248, 0.25) !important;
+            border-radius: 14px !important;
+            overflow: hidden !important;
+            margin: 24px 0 36px !important;
+            box-shadow: none !important;
+        }
+        .vstep-sim-wrap .sim-sidebar-card {
+            border: none !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+        }
+        .vstep-sim-wrap .sim-card-header {
+            background: #0f172a !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            padding: 12px 20px !important;
+        }
+        .vstep-sim-wrap .sim-card-title {
+            color: #38bdf8 !important;
+            font-weight: 700 !important;
+            font-size: 14px !important;
+        }
+        .vstep-sim-wrap .sim-canvas-box {
+            background: #070d1e !important;
+            border: none !important;
+            height: 380px !important;
+        }
+        .vstep-sim-wrap .sim-toolbar {
+            background: #090e1a !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+            padding: 12px 20px !important;
+        }
+
+        /* ── CỘT PHẢI: MỤC LỤC BÀI HỌC (STICKY CỐ ĐỊNH, ĐỒNG NHẤT NỀN #0c1222) ── */
+        .vstep-sidebar-right {
+            display: block !important;
+            background: #0c1222 !important;
+            border-left: 1px solid rgba(255, 255, 255, 0.05) !important;
+            border-right: none !important;
+            height: calc(100vh - 60px) !important;
+            position: sticky !important;
+            top: 60px !important;
+            overflow-y: auto !important;
+            padding: 24px 18px 60px !important;
+            scrollbar-width: none !important;
+            box-shadow: none !important;
+            z-index: 10 !important;
+        }
+        .vstep-sidebar-right::-webkit-scrollbar { display: none !important; }
+
+        .vstep-toc-head {
+            font-size: 12px !important;
+            font-weight: 800 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.08em !important;
+            color: #64748b !important;
+            margin-bottom: 14px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+        }
+        .vstep-toc-list {
+            list-style: none !important;
+            padding-left: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 3px !important;
+        }
+        .vstep-toc-item a {
+            display: block !important;
+            color: #94a3b8 !important;
+            text-decoration: none !important;
+            font-size: 13px !important;
+            line-height: 1.45 !important;
+            padding: 6px 10px !important;
+            border-radius: 6px !important;
+            transition: all 0.15s !important;
+        }
+        .vstep-toc-item:hover a {
+            color: #fff !important;
+            background: rgba(255, 255, 255, 0.04) !important;
+        }
+        .vstep-toc-item.active a {
+            color: #10b981 !important;
+            font-weight: 700 !important;
+            background: rgba(16, 185, 129, 0.08) !important;
+            border-left: 2px solid #10b981 !important;
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
+        }
+        .vstep-toc-item.vstep-toc-sub a {
+            padding-left: 22px !important;
+            font-size: 12px !important;
+            color: #64748b !important;
+        }
+        .vstep-toc-item.vstep-toc-sub:hover a { color: #cbd5e1 !important; }
+        .vstep-toc-item.vstep-toc-sub.active a {
+            color: #10b981 !important;
+            background: transparent !important;
+            border-left: none !important;
+            font-weight: 700 !important;
+        }
+
+        /* Bài tập Quiz Mount & Options full-width */
+        .vstep-quiz-wrap {
+            margin: 20px 0 26px !important;
+            width: 100% !important;
+        }
+        #vstep-quiz-mount .lt-tab-pane {
+            display: block !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+        #vstep-quiz-mount .quiz-question-card,
+        #vstep-quiz-mount .quiz-item-box,
+        #vstep-quiz-mount .quiz-card {
+            background: #0f172a !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border-radius: 14px !important;
+            padding: 22px !important;
+            margin: 20px 0 26px !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        #vstep-quiz-mount .quiz-option,
+        #vstep-quiz-mount label.quiz-opt {
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            background: rgba(255, 255, 255, 0.03) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            padding: 12px 16px !important;
+            border-radius: 8px !important;
+            font-size: 14.5px !important;
+            color: #cbd5e1 !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            margin-bottom: 8px !important;
+            cursor: pointer !important;
+            transition: all 0.15s !important;
+        }
+        #vstep-quiz-mount .quiz-option:hover,
+        #vstep-quiz-mount label.quiz-opt:hover {
+            background: rgba(16, 185, 129, 0.08) !important;
+            border-color: #10b981 !important;
+            color: #fff !important;
+        }
+
+        /* Footer điều hướng bài học liền mạch */
+        .vstep-footer-nav {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            flex-wrap: wrap !important;
+            gap: 12px !important;
+            margin-top: 50px !important;
+            padding-top: 24px !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+        }
+        .vstep-nav-btn {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            background: #111c37 !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            color: #fff !important;
+            padding: 10px 20px !important;
+            border-radius: 10px !important;
+            font-size: 14px !important;
+            font-weight: 700 !important;
+            text-decoration: none !important;
+            cursor: pointer !important;
+            transition: all 0.2s !important;
+        }
+        .vstep-nav-btn:hover {
+            border-color: #10b981 !important;
+            color: #10b981 !important;
+        }
+        .vstep-nav-btn.primary {
+            background: #10b981 !important;
+            color: #042f2e !important;
+            border-color: #10b981 !important;
+        }
+        .vstep-nav-btn.primary:hover {
+            background: #059669 !important;
+        }
+        .vstep-end-brand {
+            margin-top: 40px !important;
+            padding-top: 20px !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.04) !important;
+            font-size: 13px !important;
+            color: #64748b !important;
+            text-align: center !important;
+            letter-spacing: 0.02em !important;
+        }
 </style>
   <script src="auth.js?v=7"></script>
   <script src="trial-manager.js?v=1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="freemium-flow.js"></script>
   <script src="xephang-fx.js?v=1"></script>
   <script src="thongbao.js?v=2"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <script src="device-id.js?v=1"></script>
-  <script src="ho-tro-chat.js?v=1"></script>
   <script>
-    // Auth guard — chạy trước khi trang load
+        // Auth guard — Hỗ trợ Freemium: Cho phép trải nghiệm Chương 1 & 2 không bắt buộc đăng nhập
     (function(){
       var u = null;
       try { u = JSON.parse(localStorage.getItem('vlxt_user_v2')||'null'); } catch(e){}
       if (!u) {
-        window.location.replace('login.html?from=' + encodeURIComponent(location.pathname + location.search));
+        var guestUser = { hoten: 'Học sinh trải nghiệm', sdt: 'FREE', lop: '12', loaiTK: 'free' };
+        try { localStorage.setItem('vlxt_user_v2', JSON.stringify(guestUser)); } catch(e){}
       }
     })();
   </script>
   <script src="cache.js?v=5"></script>
-  <script src="nhiem-vu.js?v=6"></script>
+  <!-- <script src="nhiem-vu.js?v=6"></script> -->
   <script src="simulations/sim-registry.js?v=1"></script>
 </head>
 <body>
@@ -906,30 +2246,75 @@
         </div>
     </div>
 
-    <header>
-        <a class="logo" href="index.html">
-            <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
-                <circle cx="14" cy="14" r="2.8" fill="#0b84f3"/>
-                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.3" fill="none" opacity="0.7"/>
-                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.3" fill="none" opacity="0.5" transform="rotate(60 14 14)"/>
-                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.3" fill="none" opacity="0.5" transform="rotate(-60 14 14)"/>
-            </svg>
-            Vật Lý Xuân Trường
+    <header class="top-bar" id="main-top-bar">
+      <div class="nav-left-wrap">
+        <button class="nav-hamburger" id="navHamburgerBtn" aria-label="Mở menu" onclick="toggleNavDrawer(true)">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <a href="index.html" class="nav-brand-logo" title="Trang chủ Vật Lý Xuân Trường">
+          <svg class="logo-atom-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="2.8" fill="#00f0ff"/>
+            <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#00f0ff" stroke-width="1.3" fill="none" opacity="0.75"/>
+            <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#38bdf8" stroke-width="1.3" fill="none" opacity="0.55" transform="rotate(60 14 14)"/>
+            <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#38bdf8" stroke-width="1.3" fill="none" opacity="0.55" transform="rotate(-60 14 14)"/>
+          </svg>
+          <span class="brand-glow-text">Vật Lý Xuân Trường</span>
         </a>
-        <div class="nav">
-            <a id="nav-home" href="index.html"><i class="fa-solid fa-house" style="font-size:12px"></i> <span>Trang chủ</span></a>
-            <a href="phong-thi-thu.html"><i class="fa-solid fa-clipboard-check" style="font-size:12px"></i> <span>Phòng Thi Thử</span></a>
-            <a href="danhsach-ly12.html"><i class="fa-solid fa-file-lines" style="font-size:12px"></i> <span>Phòng Kiểm Tra</span></a>
-            <a href="dau-thuong.html" style="color:#00f0ff;font-weight:700;margin-right:20px"><i class="fa-solid fa-khanda" style="font-size:12px"></i> <span>Đấu Thường</span></a>
-            <a href="dua-top.html" style="color:#fbbf24;font-weight:700"><i class="fa-solid fa-crown" style="font-size:12px"></i> <span>Đấu Hạng</span></a>
-            <a href="solo.html" style="color:#f472b6;font-weight:700"><i class="fa-solid fa-khanda" style="font-size:12px"></i> <span>Solo</span></a>
-            <a href="live-record.html" style="color:#dc2626;font-weight:700"><i class="fa-solid fa-satellite-dish" style="font-size:12px"></i> <span>Live & Xem Lại</span></a>
-            <a href="huongdan.html"><i class="fa-solid fa-compass" style="font-size:12px"></i> <span>Hướng Dẫn</span></a>
-            <div id="vlxt-nav-user-area"></div>
-        </div>
-    </header>
-    <div class="marquee"><span>⚡ Xem video trên máy tính để trải nghiệm tốt nhất · Hệ thống tự lưu tiến độ sau mỗi bài học · Chúc các em học tốt và đạt điểm cao!</span></div>
 
+        <!-- MENU DESKTOP ĐỒNG BỘ VỚI INDEX MỚI -->
+        <nav class="nav-menu-links">
+          <a href="danh-gia-nang-luc.html">🎯 Đánh Giá Năng Lực</a>
+          <a href="baihoc.html" class="nav-item-active">Khóa Học</a>
+          <a href="goi-hoc.html" class="nav-item-pro">Gói Pro <span class="nav-pro-badge">50k</span></a>
+          <a href="live-record.html"><span class="nav-live-dot"></span> Live Class</a>
+          <div class="nav-dropdown">
+            <button type="button" class="nav-dropdown-btn">Đấu Trường <i class="fa-solid fa-chevron-down" style="font-size:9px;opacity:0.6"></i></button>
+            <div class="nav-dropdown-content">
+              <a href="phong-thi-thu.html"><i class="fa-solid fa-clipboard-check" style="color:#00f0ff;width:18px"></i> Phòng Thi Thử (Chuẩn Bộ)</a>
+              <a href="danhsach-ly12.html"><i class="fa-solid fa-file-pen" style="color:#34d399;width:18px"></i> Phòng Kiểm Tra (Theo bài)</a>
+              <a href="dau-thuong-hud.html"><i class="fa-solid fa-khanda" style="color:#38bdf8;width:18px"></i> Đấu Thường (PvP)</a>
+              <a href="dua-top.html"><i class="fa-solid fa-crown" style="color:#fbbf24;width:18px"></i> Đấu Hạng (Đua Top)</a>
+              <a href="solo.html"><i class="fa-solid fa-crosshairs" style="color:#f472b6;width:18px"></i> Solo (1vs1)</a>
+            </div>
+          </div>
+          <a href="huongdan.html">Hướng Dẫn</a>
+        </nav>
+      </div>
+
+      <div class="nav-right-wrap">
+        <!-- Auth widget hiển thị thông tin học sinh do auth.js tự render -->
+        <div id="vlxt-nav-user-area" data-vlxt-nav="dark"><a href="login.html" class="nav-btn-login-fallback"><i class="fa-solid fa-arrow-right-to-bracket" style="font-size:11px;margin-right:2px"></i><span>Đăng nhập</span></a></div>
+      </div>
+    </header>
+
+    <!-- MOBILE DRAWER CHO ĐIỆN THOẠI -->
+    <div class="nav-drawer-overlay" id="navDrawerOverlay" onclick="toggleNavDrawer(false)"></div>
+    <aside class="nav-drawer" id="navDrawer">
+      <div class="nav-drawer-head">
+        <div class="nav-brand-logo">
+          <svg class="logo-atom-icon" viewBox="0 0 28 28" fill="none">
+            <circle cx="14" cy="14" r="2.8" fill="#00f0ff"/>
+            <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#00f0ff" stroke-width="1.3" fill="none" opacity="0.75"/>
+            <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#38bdf8" stroke-width="1.3" fill="none" opacity="0.55" transform="rotate(60 14 14)"/>
+          </svg>
+          <span class="brand-glow-text">Vật Lý Xuân Trường</span>
+        </div>
+        <button class="nav-drawer-close" onclick="toggleNavDrawer(false)">✕</button>
+      </div>
+      <div class="nav-drawer-links">
+        <a href="index.html">🏠 Trang chủ</a>
+        <a href="danh-gia-nang-luc.html">🎯 Đánh Giá Năng Lực</a>
+        <a href="baihoc.html" class="active">📚 Khóa Học</a>
+        <a href="goi-hoc.html">💎 Gói Pro (50k)</a>
+        <a href="live-record.html">🔴 Live Class</a>
+        <a href="phong-thi-thu.html">📝 Phòng Thi Thử (Chuẩn Bộ)</a>
+        <a href="danhsach-ly12.html">📄 Phòng Kiểm Tra (Theo bài)</a>
+        <a href="dau-thuong-hud.html">⚔️ Đấu Thường (PvP)</a>
+        <a href="dua-top.html">🏆 Đấu Hạng (Đua Top)</a>
+        <a href="solo.html">🎯 Solo (1vs1)</a>
+        <a href="huongdan.html">🧭 Hướng Dẫn</a>
+      </div>
+    </aside>
     <main class="container" id="app">
         <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p style="margin-top:12px">Đang tải khóa học...</p></div>
     </main>
@@ -1006,14 +2391,14 @@ function pqSafe(s){
     // THEM 1 LAN NUA thanh "&amp;lt;" (hien loi chu "&lt;" tren man hinh thay vi dau <). Gio kiem
     // tra them "co entity HTML san khong" truoc khi quyet dinh escape, tranh escape 2 lan.
     if(!/<\/?[a-zA-Z][^>]*>/.test(s) && !/&(#\d+|#x[0-9a-fA-F]+|[a-zA-Z]+);/.test(s)) return esc(s);
-    return s.replace(/<script[\s\S]*?(<\/script>|$)/gi,'')
+    return s.replace(new RegExp('<script[\\s\\S]*?(<\\/script>|$)', 'gi'), '')
             .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*')/gi,'')
             .replace(/<img\b(?![^<]*>)[\s\S]*$/i,'')
             .replace(/(^|[\s>])[A-Za-z0-9+\/]{400,}={0,2}(?=$|[\s<])/g,'$1');
 }
 function field(row,names){ for(const k in row){ const nk=norm(k); for(const n of names){ if(nk===norm(n)) return row[k]; } } return ''; }
 function toast(msg,type){ const t=$('#toast'); t.className='toast show '+(type||''); t.innerHTML=msg; clearTimeout(t._t); t._t=setTimeout(()=>t.className='toast',2600); }
-function renderMath(el){ if(typeof renderMathInElement==='function'){ try{ renderMathInElement(el,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]}); }catch(e){} } }
+function renderMath(el){ if(typeof renderMathInElement==='function'){ try{ renderMathInElement(el,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]}); }catch(e){} } }
 /* Chuẩn hoá vài lỗi công thức hay gặp khi bóc từ Word/MathType (giống hệt bản
    dùng cho trang thi thử thithu.html — trước đây trang bài học KHÔNG có, nên
    câu hỏi trong "Luyện tập trắc nghiệm"/"Câu hỏi trong video" hiển thị công
@@ -1125,9 +2510,11 @@ async function fetchLessons(){
     const cached=_lcLoad();
     try{
         const data=await fetchJsonTimeout('data/baihoc.json',3000,{cache:'no-cache'});
-        const valid=(Array.isArray(data)?data:(data.baihoc||data.data||[]))
-            .filter(x=>field(x,['khoahoc','khoa','course','mon']).toString().trim() && isPublicLesson(x));
-        if(valid.length){ USING_DEMO=false; _lcSave(valid); return valid; }
+        if(Array.isArray(data) || (data && (data.baihoc || data.data))){
+            const raw = Array.isArray(data) ? data : (data.baihoc || data.data || []);
+            const valid = raw.filter(x=>field(x,['khoahoc','khoa','course','mon']).toString().trim() && isPublicLesson(x));
+            USING_DEMO=false; _lcSave(valid); return valid;
+        }
     }catch(e){ console.warn('Chưa tải được JSON bài học:',e); }
     if(cached){
         const publicCached=(Array.isArray(cached)?cached:[]).filter(isPublicLesson);
@@ -1135,7 +2522,7 @@ async function fetchLessons(){
     }
     try{
         const valid=await _fetchFromSheets();
-        if(valid.length){ USING_DEMO=false; _lcSave(valid); return valid; }
+        if(Array.isArray(valid)){ USING_DEMO=false; _lcSave(valid); return valid; }
     }catch(e){ console.warn('GAS bài học không phản hồi:',e); }
     USING_DEMO=true; return DEMO_ROWS.filter(isPublicLesson);
 }
@@ -1144,8 +2531,16 @@ async function fetchLessons(){
 // toàn bộ sheet BaiTapTracNghiem như trước.
 let QUIZ_INDEX={lessons:{}};
 async function fetchQuizIndex(){
-    try{ QUIZ_INDEX=await fetchJsonTimeout('data/quiz-index.json',3000,{cache:'no-cache'}); }
-    catch(e){ QUIZ_INDEX={lessons:{}}; console.warn('Chưa tải được chỉ mục bài tập:',e); }
+    if(window._QUIZ_INDEX_BUNDLE && window._QUIZ_INDEX_BUNDLE.lessons){
+        QUIZ_INDEX = window._QUIZ_INDEX_BUNDLE;
+    }
+    try{
+        const fetched = await fetchJsonTimeout('data/quiz-index.json',3000,{cache:'no-cache'});
+        if(fetched && fetched.lessons) QUIZ_INDEX = fetched;
+    }catch(e){
+        if(!QUIZ_INDEX || !QUIZ_INDEX.lessons) QUIZ_INDEX={lessons:{}};
+        console.warn('Chưa tải được chỉ mục bài tập trực tiếp:',e);
+    }
 }
 function mapQuizRows(rows){
     return (rows||[]).sort((a,b)=>(Number(a.thuTu)||0)-(Number(b.thuTu)||0)).map(rw=>({
@@ -1159,6 +2554,11 @@ function mapQuizRows(rows){
 }
 async function loadLessonQuiz(key,lesson){
     if(lesson._quizLoaded) return;
+    if(window._QUIZZES_BUNDLE && window._QUIZZES_BUNDLE[key]){
+        lesson.baitap = mapQuizRows(window._QUIZZES_BUNDLE[key]);
+        lesson._quizLoaded = true;
+        return;
+    }
     const meta=QUIZ_INDEX&&QUIZ_INDEX.lessons&&QUIZ_INDEX.lessons[key];
     if(meta){
         try{
@@ -1365,44 +2765,46 @@ function lessonHasContent(l){
 //    tính "Đã hoàn thành" sau 30s — nay khoá hẳn cho đơn giản và đúng thực tế).
 // Đã xem rồi thì luôn được xem lại, không bao giờ khoá ngược.
 function isLessonBlocked(course, key){
-    if(isTestAccount()) return {blocked:false}; // tài khoản test: luôn mở, không khoá thứ tự
+    if(isTestAccount()) return {blocked:false}; // tài khoản test: luôn mở
     const flat = flatLessons(course);
     const idx = flat.findIndex(l => l.key === key);
     if(idx < 0) return {blocked:false};
-    if(WATCHED.has(key)) return {blocked:false};
+    if(WATCHED.has(key)) return {blocked:false}; // bài đã hoàn thành luôn mở xem lại không giới hạn
     if(!lessonHasContent(flat[idx])) return {blocked:true, reason:'empty'};
 
     const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
-    const isPremium = (typeof TrialManager !== 'undefined' && typeof TrialManager.isPremiumUser === 'function')
-        ? TrialManager.isPremiumUser(user)
-        : (user && String(user.loaiTK || '').toLowerCase() === 'premium');
+    const isPaid = (typeof FreemiumFlow !== 'undefined')
+        ? FreemiumFlow.isPaidUser(user)
+        : (user && (user.loaiTK === 'premium' || user.loaiTK === 'pro' || (user.loaiTK === 'vip' && Number(user.trialExpiry||0) > Date.now())));
 
-    // 1) Tài khoản Premium (trả phí): giữ nguyên quy tắc tuần tự nghiêm ngặt
-    if(isPremium){
-        if(idx > 0 && !WATCHED.has(flat[idx-1].key)) return {blocked:true, reason:'sequence'};
-        return {blocked:false};
-    }
+    const targetLesson = flat[idx];
+    const chapterName = targetLesson.chapter || targetLesson.Chuong || '';
 
-    // 2) Tài khoản Trial hợp lệ (chỉ loaiTK=vip và trialExpiry > Date.now()):
-    //    Được hưởng cơ chế mở mềm (soft unlock) kèm giới hạn 2 bài mới/ngày theo giờ VN
-    const isValidTrial = (typeof TrialManager !== 'undefined' && typeof TrialManager.isValidTrialUser === 'function')
-        ? TrialManager.isValidTrialUser(user)
-        : (typeof TrialManager !== 'undefined' && typeof TrialManager.isTrialUser === 'function' ? TrialManager.isTrialUser(user) : false);
-
-    if(isValidTrial && typeof TrialManager !== 'undefined'){
-        const sdt = (HS && HS.sdt) ? String(HS.sdt) : (user && user.sdt ? String(user.sdt) : '');
-        const access = TrialManager.canAccessTrialLesson(sdt, flat[idx], COURSES, WATCHED);
-        if(!access.allowed){
-            return {blocked:true, reason:access.reason, trialInfo:access};
+    // 1. Phân quyền chương: Chương 3 và 4 KHÓA ĐỐI VỚI TÀI KHOẢN FREE (yêu cầu Gói Pro 50k)
+    if(!isPaid && typeof FreemiumFlow !== 'undefined'){
+        if(!FreemiumFlow.isChapterFree(chapterName)){
+            return { blocked: true, reason: 'freemium_chapter_locked', chapterName: chapterName };
         }
-        return {blocked:false, trialInfo:access};
     }
 
-    // 3) Free hoặc Trial hết hạn: KHÔNG được mở mềm 2 bài/ngày, giữ nguyên quy tắc khóa tuần tự hiện hành
-    if(idx > 0 && !WATCHED.has(flat[idx-1].key)) return {blocked:true, reason:'sequence'};
-    return {blocked:false};
-}
+    // 2. Quy tắc học tuần tự: Phải hoàn thành bài trước để mở khóa bài tiếp theo
+    // Bài đầu tiên của khóa (idx === 0) luôn mở cho mọi tài khoản
+    if(idx > 0 && !WATCHED.has(flat[idx-1].key)){
+        // Nếu bài trước chưa học xong, bài này bị khóa
+        return { blocked: true, reason: 'sequence', prevLesson: flat[idx-1] };
+    }
 
+    // 3. Tài khoản học thử TrialManager (nếu chưa mua gói Pro)
+    if(!isPaid && typeof TrialManager !== 'undefined'){
+        const sdt = (HS && HS.sdt) ? String(HS.sdt) : (user && user.sdt ? String(user.sdt) : '');
+        const access = TrialManager.canAccessTrialLesson(sdt, targetLesson, COURSES, WATCHED);
+        if(!access.allowed){
+            return { blocked: true, reason: access.reason, trialInfo: access };
+        }
+    }
+
+    return { blocked: false };
+}
 /* ═══════════════════════════════════════════
    ĐÁNH DẤU ĐÃ HỌC
 ═══════════════════════════════════════════ */
@@ -1471,7 +2873,7 @@ function route(options){
     window._trialActiveGrantedLesson = null;
     if(typeof SimRegistry !== 'undefined') SimRegistry.unmount();
     // Reset khung trang về mặc định — renderLesson() sẽ tự nới rộng (wide-lesson) nếu cần
-    app().className = 'container';
+    app().className = 'container'; document.body.classList.remove('vstep-page-mode');
 
     // Chuẩn hóa nếu URL dùng ? thay vì # (ví dụ: ?lesson/..., ?lesson=..., ?openLesson=...)
     if(location.search){
@@ -1493,6 +2895,10 @@ function route(options){
     }
 
     const h=decodeURIComponent(location.hash||'#home');
+    if(h.startsWith('#sec-')){
+        if(typeof scrollToSection === 'function') scrollToSection(h.slice(1));
+        return;
+    }
     const isNavChange = (_lastRouteHash !== h);
     _lastRouteHash = h;
 
@@ -1559,7 +2965,7 @@ function renderHome(){
                 ? (w > 0 ? '<span class="cc-status-badge started"><i class="fa-solid fa-circle-play"></i> Đang khai giảng</span>' : '<span class="cc-status-badge new-course"><i class="fa-solid fa-star"></i> Đang khai giảng</span>')
                 : '<span class="cc-status-badge coming"><i class="fa-solid fa-clock"></i> Sắp khai giảng</span>';
             // Chỉ hiện status badge nếu có config (tránh hiện nhầm cho khoá không cần quản lý)
-            const _showStatus = !!KHOACONFIG[c.name];
+            const _showStatus = !!getCourseConfig(c.name);
             const _lockBadge = _lockMsg ? `<div class="cc-lock-badge">${_lockMsg}</div>` : '';
             const _onclick = _access ? `go('#course/${encodeURIComponent(c.name)}')` : `showUpgrade('${c.name.replace(/'/g,"\\'")}')`;
             return `<div class="course-card${_lockCls}" onclick="${_onclick}">
@@ -1814,6 +3220,10 @@ if (typeof global !== 'undefined') global.triggerTrial = triggerTrial;
 function handleOpenLesson(courseName, lessonKey){
     const course = findCourse(courseName);
     const info = findLesson(lessonKey);
+    if(course && !canAccess(course.name)){
+        showUpgrade(course.name);
+        return;
+    }
     if(!course || !info) {
         go('#lesson/' + encodeURIComponent(lessonKey));
         return;
@@ -1822,6 +3232,18 @@ function handleOpenLesson(courseName, lessonKey){
     const blk = isLessonBlocked(course, lessonKey);
 
     if(blk.blocked){
+        if(blk.reason === 'freemium_chapter_locked'){
+            if(typeof FreemiumFlow !== 'undefined') {
+                FreemiumFlow.openDiagnosticModal('Chương 3 & 4: Mở Khóa Mục Tiêu 8.5+');
+            }
+            return;
+        }
+        if(blk.reason === 'freemium_quiz_limit'){
+            if(typeof FreemiumFlow !== 'undefined') {
+                FreemiumFlow.openDiagnosticModal('Mở Khóa Toàn Bộ 1.200+ Bài Tập & Đề Thi Phân Hóa 8.5+ (Gói số 6 trở đi)');
+            }
+            return;
+        }
         if(blk.reason === 'empty'){
             toast('⏳ Em đã học kịp tiến độ rồi — qua Đấu Hạng luyện tập thêm nhé! 🏆', 'err');
             return;
@@ -1830,9 +3252,8 @@ function handleOpenLesson(courseName, lessonKey){
             showTrialLimitModal(course, lesson, blk.trialInfo);
             return;
         }
-        toast('🔒 Hoàn thành bài trước để mở khoá bài này!', 'err');
-        return;
-    }
+        if(typeof FreemiumFlow !== 'undefined') {
+            FreemiumFlow.openBenefitsModal('Nâng Cấp Gói Pro (50k) Để Mở Khóa Trọn Vẹn'); } else { toast('🔒 Nâng cấp Gói Pro (50k) để mở khoá nội dung này!', 'err'); } return; }
 
     const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
     const isTrial = (typeof TrialManager !== 'undefined' && typeof TrialManager.isValidTrialUser === 'function')
@@ -1860,6 +3281,7 @@ function handleOpenLesson(courseName, lessonKey){
 function renderCourse(name){
     const c=findCourse(name);
     if(!c){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-circle-question"></i><p>Không tìm thấy khóa học.</p><p><a onclick="go('#home')">← Về trang chủ</a></p></div>`; return; }
+    if(!isVisible(c.name)){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-eye-slash"></i><p>Khóa học hiện đang tạm ẩn.</p><p><a onclick="go('#home')">← Về danh sách khóa học</a></p></div>`; return; }
     if(!canAccess(c.name)){ showUpgrade(c.name); return; }
     const pct=coursePct(c),w=courseWatched(c);
     const thumb=c.img&&/^https?:|^data:/.test(c.img)?`<img src="${esc(c.img)}" alt="">`:(c.img||'📘');
@@ -1925,10 +3347,560 @@ function renderCourse(name){
 /* ═══════════════════════════════════════════
    VIEW: BÀI HỌC (VIDEO + QUIZ + VIDEO CHỮA)
 ═══════════════════════════════════════════ */
+
+// ── BỘ HIỂN THỊ E-DOC CHUẨN VSTEP OWL CHO BÀI HỌC VẬT LÝ ──
+window.switchDocMode = function(mode){
+    const web = document.getElementById('edoc-web-pane');
+    const pdf = document.getElementById('edoc-pdf-pane');
+    const bWeb = document.getElementById('btn-edoc-web');
+    const bPdf = document.getElementById('btn-edoc-pdf');
+    if(!web || !pdf) return;
+    if(mode === 'web'){
+        web.style.display = 'block';
+        pdf.style.display = 'none';
+        if(bWeb) bWeb.classList.add('active');
+        if(bPdf) bPdf.classList.remove('active');
+    } else {
+        web.style.display = 'none';
+        pdf.style.display = 'block';
+        if(bPdf) bPdf.classList.add('active');
+        if(bWeb) bWeb.classList.remove('active');
+    }
+};
+
+function buildLessonDocReader(lesson, idLt){
+    const isLesson1 = (lesson.mabai === 'B1036d251af19' || lesson.thutubai === 1 || lesson.thutubai === '1' || (lesson.name && lesson.name.includes('B1.')));
+    
+    // Nếu chưa có bản Web Doc chuyên biệt: fallback hiển thị iframe PDF như cũ
+    if(!isLesson1){
+        return `${idLt ? `<div class="pdf-embed-box"><iframe src="https://drive.google.com/file/d/${idLt}/preview" allow="autoplay"></iframe></div>` : ''}
+        <a class="pdf-embed-dl" href="${lesson.pdflt}" target="_blank" rel="noopener" style="background:rgba(11,132,243,.1);color:var(--blue)"><i class="fa-solid fa-arrow-up-right-from-square"></i> Mở/tải file PDF lý thuyết</a>`;
+    }
+
+    // BẢN E-DOC WEB NATIVE CHUẨN VSTEP OWL CHO BÀI 1
+    return `
+    <div class="edoc-wrap">
+        <!-- Action Bar: Switch mode & Download -->
+        <div class="edoc-bar">
+            <div class="edoc-modes">
+                <button class="edoc-mbtn active" id="btn-edoc-web" onclick="switchDocMode('web')">📖 Bản Web Trực Quan</button>
+                <button class="edoc-mbtn" id="btn-edoc-pdf" onclick="switchDocMode('pdf')">📄 Xem File PDF Gốc</button>
+            </div>
+            <a class="edoc-dlbtn" href="${lesson.pdflt || 'https://drive.google.com/file/d/18KfqohlCv9I3hOPVWg53dMY8R5IOdiyn/view'}" target="_blank" rel="noopener">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Tải PDF In Ấn (Google Drive)
+            </a>
+        </div>
+
+        <!-- Khung PDF iframe khi học sinh chọn xem file PDF gốc -->
+        <div id="edoc-pdf-pane" style="display:none">
+            <div class="pdf-embed-box">
+                <iframe src="https://drive.google.com/file/d/${idLt || '18KfqohlCv9I3hOPVWg53dMY8R5IOdiyn'}/preview" allow="autoplay"></iframe>
+            </div>
+        </div>
+
+        <!-- Bản Web Doc Trực Quan -->
+        <div id="edoc-web-pane" class="edoc-layout">
+            <article class="edoc-article">
+                <h1 class="edoc-title">Bài 1: Mô Hình Động Học Phân Tử — Cấu Trúc Của Chất</h1>
+                <div class="edoc-meta">
+                    <span class="edoc-tag">Chuyên đề Lý thuyết trọng tâm</span>
+                    <span>⏱ Thời gian đọc: ~6 phút</span>
+                    <span style="color:#38bdf8;font-weight:700">👨‍🏫 Biên soạn: Thầy Nguyễn Xuân Trường</span>
+                </div>
+
+                <p class="edoc-lead">
+                    Nắm vững các luận điểm cốt lõi của thuyết động học phân tử, bản chất cấu trúc vi mô của 3 thể Rắn – Lỏng – Khí, và cách giải thích chính xác các hiện tượng nhiệt trong đề thi THPT Quốc Gia mới.
+                </p>
+
+                <!-- Mục tiêu bài học -->
+                <div class="edoc-goals">
+                    <div class="edoc-goals-title">🎯 MỤC TIÊU BÀI HỌC</div>
+                    <ul class="edoc-goals-list">
+                        <li>
+                            <span class="edoc-check">✓</span>
+                            <span>Trình bày được <strong>3 nội dung cơ bản</strong> của thuyết động học phân tử chất.</span>
+                        </li>
+                        <li>
+                            <span class="edoc-check">✓</span>
+                            <span>Nêu được đặc điểm cấu trúc vi mô (khoảng cách, lực liên kết, chuyển động) của chất ở <strong>thể rắn, lỏng, khí</strong>.</span>
+                        </li>
+                        <li>
+                            <span class="edoc-check">✓</span>
+                            <span>Giải thích được bản chất chuyển động Brown và các hiện tượng khuếch tán thực tế.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Mục I -->
+                <h2 id="b1-sec-1"><span class="edoc-h2-num">I</span> Thuyết Động Học Phân Tử Chất</h2>
+                <p>Thuyết động học phân tử giải thích tính chất nhiệt của các chất dựa trên cấu trúc vi mô và sự chuyển động hỗn loạn của các hạt cấu tạo nên chúng.</p>
+                
+                <h3 id="b1-sec-1-1">1. Các nội dung cơ bản</h3>
+                <ul>
+                    <li>Các chất đều được cấu tạo từ các hạt riêng biệt gọi là <strong>phân tử hoặc nguyên tử</strong>. Giữa các phân tử luôn có <strong>khoảng cách</strong>.</li>
+                    <li>Các phân tử chuyển động <strong>không ngừng, hỗn loạn</strong> (gọi là <em>chuyển động nhiệt</em>). Nhiệt độ của vật càng cao thì tốc độ chuyển động nhiệt của các phân tử càng lớn.</li>
+                    <li>Giữa các phân tử đồng thời có <strong>lực hút</strong> và <strong>lực đẩy</strong> phân tử. Độ lớn của các lực này phụ thuộc vào khoảng cách giữa chúng.</li>
+                </ul>
+
+                <div class="edoc-callout tip">
+                    <div class="edoc-callout-header">💡 Mẹo ghi nhớ của Thầy</div>
+                    <div>Chuyển động nhiệt là chuyển động <strong>vĩnh cửu</strong> và <strong>hỗn loạn</strong>. Chỉ khi nhiệt độ đạt tới <strong>độ không tuyệt đối</strong> ($0\text{ K}$ hay $-273{,}15^\circ\text{C}$) thì chuyển động nhiệt mới hoàn toàn ngừng lại theo lý thuyết cổ điển!</div>
+                </div>
+
+                <h3 id="b1-sec-1-2">2. Lực tương tác phân tử</h3>
+                <p>Khi khoảng cách giữa các phân tử rất nhỏ ($r < r_0$), <strong>lực đẩy chiếm ưu thế</strong>. Khi khoảng cách giữa các phân tử lớn ($r > r_0$), <strong>lực hút chiếm ưu thế</strong>. Khi khoảng cách rất lớn ($r \gg r_0$), lực tương tác phân tử coi như bằng không.</p>
+
+                <div class="edoc-formula">
+                    <span class="edoc-formula-badge">Quy luật tương tác</span>
+                    <div class="edoc-formula-math">$F_{\text{tt}} = F_{\text{hút}} + F_{\text{đẩy}}$</div>
+                    <div class="edoc-formula-sub">
+                        <span>$r = r_0$: $F_{\text{tt}} = 0$ (Vị trí cân bằng)</span>
+                        <span>$r < r_0$: $F_{\text{đẩy}} > F_{\text{hút}}$</span>
+                        <span>$r > r_0$: $F_{\text{hút}} > F_{\text{đẩy}}$</span>
+                    </div>
+                </div>
+
+                <!-- Mục II -->
+                <h2 id="b1-sec-2"><span class="edoc-h2-num">II</span> Cấu Trúc Vi Mô Của Thể Rắn, Lỏng, Khí</h2>
+                <p>Mọi chất thông thường trên Trái Đất tồn tại ở 3 thể cơ bản. Sự khác biệt về thể xuất phát từ <strong>khoảng cách</strong> và <strong>lực liên kết</strong> giữa các phân tử:</p>
+
+                <div class="edoc-table-wrap">
+                    <table class="edoc-table">
+                        <thead>
+                            <tr>
+                                <th>Đặc điểm vi mô</th>
+                                <th>Thể Rắn (Solid)</th>
+                                <th>Thể Lỏng (Liquid)</th>
+                                <th>Thể Khí (Gas)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Khoảng cách phân tử</strong></td>
+                                <td>Rất nhỏ (cỡ kích thước hạt)</td>
+                                <td>Lớn hơn thể rắn, nhỏ hơn thể khí</td>
+                                <td>Rất lớn (gấp hàng chục lần kích thước hạt)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Lực liên kết</strong></td>
+                                <td><strong>Rất mạnh</strong>, giữ hạt ở vị trí xác định</td>
+                                <td>Tương đối mạnh, nhỏ hơn thể rắn</td>
+                                <td><strong>Rất yếu</strong> (coi như không đáng kể)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Chuyển động nhiệt</strong></td>
+                                <td>Dao động quanh <strong>VTCB cố định</strong></td>
+                                <td>Dao động quanh VTCB <strong>tạm thời</strong> rồi nhảy dời</td>
+                                <td>Hỗn loạn hoàn toàn về <strong>mọi phía</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Hình dạng & Thể tích</strong></td>
+                                <td>Xác định cả hình dạng & thể tích</td>
+                                <td>Thể tích xác định, hình dạng của bình chứa</td>
+                                <td>Không có hình dạng & thể tích riêng</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="edoc-callout trap">
+                    <div class="edoc-callout-header">⚠️ Bẫy đề thi THPT QG hay gặp</div>
+                    <div>Đề bài thường lừa: <em>"Các phân tử chất lỏng không có vị trí cân bằng"</em>. <strong>Đây là mệnh đề SAI!</strong> Phân tử chất lỏng <strong>CÓ</strong> vị trí cân bằng, nhưng vị trí này <strong>chỉ tạm thời</strong>, sau một khoảng thời gian ngắn hạt sẽ nhảy sang vị trí cân bằng mới.</div>
+                </div>
+
+                <!-- Mục III -->
+                <h2 id="b1-sec-3"><span class="edoc-h2-num">III</span> Chuyển Động Brown & Hiện Tượng Khuếch Tán</h2>
+                <p>Chuyển động Brown là bằng chứng thực nghiệm trực quan và thuyết phục nhất khẳng định sự tồn tại của phân tử và tính chất chuyển động nhiệt không ngừng:</p>
+
+                <h3 id="b1-sec-3-1">1. Bản chất chuyển động Brown</h3>
+                <p>Năm 1827, nhà thực vật học Robert Brown khi quan sát các hạt phấn hoa trong nước dưới kính hiển vi đã phát hiện các hạt này <strong>chuyển động hỗn loạn không ngừng theo quỹ đạo gấp khúc</strong>.</p>
+                <p><strong>Nguyên nhân:</strong> Do các phân tử nước xung quanh liên tục va chạm không đồng đều từ mọi phía vào hạt phấn hoa.</p>
+
+                <div class="edoc-callout note">
+                    <div class="edoc-callout-header">📌 Điểm then chốt cần nhớ</div>
+                    <div>Bản thân hạt phấn hoa không tự chuyển động! Chuyển động của hạt phấn hoa là <strong>hệ quả gián tiếp</strong> của việc bị các phân tử môi trường va đập bất đối xứng.</div>
+                </div>
+            </article>
+
+            <!-- Mục lục bên phải -->
+            <aside class="edoc-toc">
+                <div class="edoc-toc-title">📑 MỤC LỤC BÀI HỌC</div>
+                <ul class="edoc-toc-list">
+                    <li><a class="edoc-toc-link" href="#b1-sec-1">I. Thuyết Động Học Phân Tử</a></li>
+                    <li><a class="edoc-toc-link edoc-toc-sub" href="#b1-sec-1-1">1. Nội dung cơ bản</a></li>
+                    <li><a class="edoc-toc-link edoc-toc-sub" href="#b1-sec-1-2">2. Lực tương tác phân tử</a></li>
+                    <li><a class="edoc-toc-link" href="#b1-sec-2">II. Cấu Trúc Rắn - Lỏng - Khí</a></li>
+                    <li><a class="edoc-toc-link" href="#b1-sec-3">III. Chuyển Động Brown</a></li>
+                    <li><a class="edoc-toc-link edoc-toc-sub" href="#b1-sec-3-1">1. Bản chất chuyển động</a></li>
+                </ul>
+            </aside>
+        </div>
+    </div>`;
+}
+
+
+// ── TRÌNH DỰNG GIAO DIỆN KHÓA HỌC 3 CỘT ĐỒNG NHẤT CHUẨN VSTEP OWL ──
+function getLessonNumber(lesson){
+    if(lesson.thutubai && !isNaN(lesson.thutubai)) return parseInt(lesson.thutubai, 10);
+    const m = (lesson.name || '').match(/B(?:ài)?\s*(\d+)/i) || (lesson.mabai || '').match(/B(\d+)/i);
+    if(m) return parseInt(m[1], 10);
+    return null;
+}
+
+// Bản đồ Title Case chuẩn Docusaurus / Vstep Owl cho toàn bộ khóa học
+const VLXT_LESSON_TITLES = {
+    1: { short: "B1. Mô hình ĐHPT & Cấu trúc chất", h1: "Bài 1: Mô Hình Động Học Phân Tử — Cấu Trúc Của Chất" },
+    2: { short: "B2. Lực liên kết & Sự chuyển thể", h1: "Bài 2: Lực Liên Kết Phân Tử & Sự Chuyển Thể Của Chất" },
+    3: { short: "B3. Thang nhiệt độ & Nhiệt kế", h1: "Bài 3: Nhiệt Độ — Thang Nhiệt Độ — Nhiệt Kế" },
+    4: { short: "B4. Nhiệt dung riêng & Đo nhiệt", h1: "Bài 4: Nhiệt Dung Riêng — Nóng Chảy Riêng — Hoá Hơi Riêng" },
+    5: { short: "B5. Nội năng & Định luật 1 NĐLH", h1: "Bài 5: Nội Năng & Định Luật I Nhiệt Động Lực Học" },
+    6: { short: "B6. Động cơ nhiệt & Đồ thị nhiệt", h1: "Bài 6: Động Cơ Nhiệt & Đồ Thị Nhiệt" },
+    7: { short: "B7. Tổng ôn Chương 1 (Phần 1)", h1: "Bài 7: Tổng Ôn Chương I — Vật Lý Nhiệt (Phần 1)" },
+    8: { short: "B8. Tổng ôn Chương 1 (Phần 2)", h1: "Bài 8: Tổng Ôn Chương I — Vật Lý Nhiệt (Phần 2)" },
+    9: { short: "B9. Mô hình ĐHPT chất khí", h1: "Bài 9: Mô Hình Động Học Phân Tử Chất Khí — Khí Lý Tưởng" },
+    10: { short: "B10. Phương trình trạng thái khí", h1: "Bài 10: Phương Trình Trạng Thái Khí Lý Tưởng" },
+    11: { short: "B11. Định luật Boyle (Đẳng nhiệt)", h1: "Bài 11: Định Luật Boyle — Quá Trình Đẳng Nhiệt" },
+    12: { short: "B12. Định luật Charles (Đẳng áp)", h1: "Bài 12: Định Luật Charles — Quá Trình Đẳng Áp" },
+    13: { short: "B13. Định luật Gay-Lussac (Đẳng tích)", h1: "Bài 13: Định Luật Gay-Lussac — Quá Trình Đẳng Tích" },
+    14: { short: "B14. Phương trình Clapeyron – Mendeleev", h1: "Bài 14: Phương Trình Clapeyron – Mendeleev" },
+    15: { short: "B15. Áp suất theo mô hình ĐHPT", h1: "Bài 15: Áp Suất Theo Mô Hình ĐHPT — Quan Hệ Động Năng & Nhiệt Độ" },
+    16: { short: "B16. Đồ thị khí lý tưởng", h1: "Bài 16: Đồ Thị Khí Lý Tưởng & Kỹ Thuật Biến Đổi Chu Trình" },
+    17: { short: "B17. Định luật 1 NĐLH cho các đẳng quá trình", h1: "Bài 17: Định Luật I Nhiệt Động Lực Học Cho Các Đẳng Quá Trình" },
+    18: { short: "B18. Tổng ôn Chương 2 (Phần 1)", h1: "Bài 18: Tổng Ôn Chương II — Khí Lý Tưởng (Phần 1)" },
+    19: { short: "B19. Tổng ôn Chương 2 (Phần 2)", h1: "Bài 19: Tổng Ôn Chương II — Khí Lý Tưởng (Phần 2)" },
+    21: { short: "B21. Từ trường", h1: "Bài 21: Từ Trường & Đường Sức Từ" },
+    22: { short: "B22. Cảm ứng từ & Lực từ", h1: "Bài 22: Cảm Ứng Từ & Lực Từ Tác Dụng Lên Dây Dẫn" },
+    23: { short: "B23. Từ thông", h1: "Bài 23: Từ Thông & Ý Nghĩa Vật Lý" },
+    24: { short: "B24. Hiện tượng cảm ứng điện từ & Lenz", h1: "Bài 24: Hiện Tượng Cảm Ứng Điện Từ — Định Luật Lenz" },
+    25: { short: "B25. Suất điện động cảm ứng & Faraday", h1: "Bài 25: Suất Điện Động Cảm Ứng — Định Luật Faraday" },
+    26: { short: "B26. Dòng điện xoay chiều & Máy phát", h1: "Bài 26: Dòng Điện Xoay Chiều — Máy Phát Điện Xoay Chiều" },
+    27: { short: "B27. Ứng dụng hiện tượng cảm ứng điện từ", h1: "Bài 27: Ứng Dụng Hiện Tượng Cảm Ứng Điện Từ" },
+    28: { short: "B28. Điện từ trường & Sóng điện từ", h1: "Bài 28: Điện Từ Trường & Sóng Điện Từ" },
+    29: { short: "B29. Tổng ôn Chương 3 (Phần 1)", h1: "Bài 29: Tổng Ôn Chương III — Từ Trường (Phần 1)" },
+    30: { short: "B30. Tổng ôn Chương 3 (Phần 2)", h1: "Bài 30: Tổng Ôn Chương III — Từ Trường (Phần 2)" },
+    31: { short: "B31. Cấu tạo hạt nhân nguyên tử", h1: "Bài 31: Cấu Tạo Hạt Nhân Nguyên Tử & Độ Hụt Khối" },
+    32: { short: "B32. Năng lượng liên kết hạt nhân", h1: "Bài 32: Năng Lượng Liên Kết & Năng Lượng Liên Kết Riêng" },
+    33: { short: "B33. Phản ứng hạt nhân", h1: "Bài 33: Phản Ứng Hạt Nhân & Các Định Luật Bảo Toàn" },
+    34: { short: "B34. Hiện tượng phóng xạ", h1: "Bài 34: Hiện Tượng Phóng Xạ & Định Luật Phóng Xạ" },
+    35: { short: "B35. Đồ thị phóng xạ & Ứng dụng", h1: "Bài 35: Đồ Thị Phóng Xạ — Ứng Dụng Hiện Tượng Phóng Xạ" },
+    36: { short: "B36. Tổng ôn Chương 4 (Phần 1)", h1: "Bài 36: Tổng Ôn Chương IV — Vật Lý Hạt Nhân (Phần 1)" },
+    37: { short: "B37. Tổng ôn Chương 4 (Phần 2)", h1: "Bài 37: Tổng Ôn Chương IV — Vật Lý Hạt Nhân (Phần 2)" }
+};
+
+const VLXT_CHAPTER_TITLES = {
+    "CHƯƠNG 1 – VẬT LÝ NHIỆT": "Chương 1: Vật Lý Nhiệt",
+    "CHƯƠNG 1 - VẬT LÝ NHIỆT": "Chương 1: Vật Lý Nhiệt",
+    "Chương 1 – Vật lý nhiệt": "Chương 1: Vật Lý Nhiệt",
+    "CHƯƠNG 2 – KHÍ LÍ TƯỞNG": "Chương 2: Khí Lí Tưởng",
+    "CHƯƠNG 2 - KHÍ LÍ TƯỞNG": "Chương 2: Khí Lí Tưởng",
+    "Chương 2 – Khí lí tưởng": "Chương 2: Khí Lí Tưởng",
+    "CHƯƠNG 3 – TỪ TRƯỜNG": "Chương 3: Từ Trường",
+    "CHƯƠNG 3 - TỪ TRƯỜNG": "Chương 3: Từ Trường",
+    "Chương 3 – Từ trường": "Chương 3: Từ Trường",
+    "CHƯƠNG 4 – VẬT LÍ HẠT NHÂN": "Chương 4: Vật Lí Hạt Nhân",
+    "CHƯƠNG 4 - VẬT LÍ HẠT NHÂN": "Chương 4: Vật Lí Hạt Nhân",
+    "Chương 4 – Vật lí hạt nhân": "Chương 4: Vật Lí Hạt Nhân",
+    "VẬT LÍ 10": "Chuyên Đề Vật Lí 10",
+    "VẬT LÍ 11": "Chuyên Đề Vật Lí 11"
+};
+
+function formatChapterTitle(name){
+    if(!name) return '';
+    return VLXT_CHAPTER_TITLES[name] || name;
+}
+
+function formatLessonDisplayTitle(lesson){
+    const lNum = getLessonNumber(lesson);
+    if(lNum && VLXT_LESSON_TITLES[lNum]) {
+        return VLXT_LESSON_TITLES[lNum].short;
+    }
+    let name = lesson.name || '';
+    if(name === name.toUpperCase()){
+        name = name.toLowerCase().replace(/(^|[\s+&–-])\S/g, function(l){ return l.toUpperCase(); });
+    }
+    return name;
+}
+
+function getLessonH1Title(lesson, thData){
+    const lNum = getLessonNumber(lesson);
+    if(lNum && VLXT_LESSON_TITLES[lNum]) {
+        return VLXT_LESSON_TITLES[lNum].h1;
+    }
+    if(thData && thData.title) return thData.title;
+    let name = lesson.name || '';
+    if(name === name.toUpperCase()){
+        name = name.toLowerCase().replace(/(^|[\s+&–-])\S/g, function(l){ return l.toUpperCase(); });
+    }
+    return name;
+}
+
+function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
+    const { videoHtml, videoTabsHtml, simCardHtml, _hasSim, flat, idx, prev, next, done, _doneLabel, _hasQuiz, _lessonSessionNum } = opts;
+    const lNum = getLessonNumber(lesson);
+    const thData = (window._THEORIES_DATA || {})[lNum];
+
+    // Đảm bảo body ở chế độ VSTEP Unified (nền midnight navy #0c1222, tràn viền 100%)
+    document.body.classList.add('vstep-page-mode');
+
+    // CỘT 1: LỘ TRÌNH KHÓA HỌC (SIDEBAR TRÁI - CHUẨN DEMO VSTEP OWL)
+    let leftNav = `<div class="vstep-side-head">📚 LỘ TRÌNH VẬT LÝ 12 — GĐ1</div>`;
+    course.chapters.forEach((ch, ci) => {
+        const chapTitle = formatChapterTitle(ch.name);
+        leftNav += `<div class="vstep-chap-group">
+            <div class="vstep-chap-title">
+                <span>${esc(chapTitle)}</span>
+                <span>▾</span>
+            </div>
+            <ul class="vstep-lesson-list">`;
+        ch.lessons.forEach(l => {
+            const isAct = (l.key === key);
+            const isD = WATCHED.has(l.key);
+            const sNum = getLessonSessionNum(l, '');
+            let displayTitle = formatLessonDisplayTitle(l);
+
+            // Bỏ tiền tố trùng lặp B1., B2., B1:, Bài 1. để tên bài gọn gàng thanh thoát như demo
+            if(sNum) {
+                const rx = new RegExp('^B(ài)?\\s*' + sNum + '[.:\\s-]+', 'i');
+                displayTitle = displayTitle.replace(rx, '').trim();
+            }
+
+            // Kiểm tra trạng thái khóa bài học theo tài khoản & tuần tự
+            const blk = isLessonBlocked(course, l.key);
+            const isLocked = blk.blocked;
+            const clickCall = `handleOpenLesson('${course.name.replace(/'/g,"\\'")}', '${l.key.replace(/'/g,"\\'")}')`;
+
+            let statusBadge = '';
+            if(isD) {
+                statusBadge = '<span class="vstep-status-tag done" title="Đã hoàn thành">✓</span>';
+            } else if(isLocked) {
+                statusBadge = '<span class="vstep-status-tag lock" title="Bài học bị khóa">🔒</span>';
+            }
+
+            leftNav += `<li class="vstep-lesson-item ${isAct ? 'active' : ''} ${isD ? 'done' : ''} ${isLocked ? 'is-locked' : ''}" onclick="${clickCall}">
+                <span class="vstep-num-pill">${sNum ? 'B' + sNum : '•'}</span>
+                <span class="vstep-item-title">${esc(displayTitle)}</span>
+                ${statusBadge}
+            </li>`;
+        });
+        leftNav += `</ul></div>`;
+    });
+
+    // CỘT 2: DÒNG CHẢY BÀI HỌC LIỀN MẠCH
+    const tocItems = [];
+
+    // Header & Meta
+    const h1Title = getLessonH1Title(lesson, thData);
+    const chapBread = formatChapterTitle(chapter.name);
+
+    let stream = `
+        <div class="vstep-top-bar">
+            <div class="vstep-crumb">
+                <a onclick="go('#home')">Khóa học</a> <span>›</span>
+                <a onclick="go('#course/${encodeURIComponent(course.name)}')">${esc(course.name)}</a> <span>›</span>
+                <span style="color:#fff">${esc(chapBread)}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                <button class="vstep-drawer-btn" onclick="toggleCourseOutline(true)">
+                    <i class="fa-solid fa-list-ul"></i> Lộ trình bài học
+                </button>
+                ${(lesson.baitap && lesson.baitap.length) ? `
+                    <button class="vstep-quiz-jump-btn" onclick="scrollToQuiz()">
+                        <i class="fa-solid fa-pen-to-square"></i> Làm bài tập (${lesson.baitap.length})
+                    </button>
+                ` : ''}
+                ${lesson.pdflt || lesson.pdf ? `
+                    <a class="vstep-dl-btn" href="${lesson.pdflt || lesson.pdf}" target="_blank" rel="noopener">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Tải PDF In Ấn
+                    </a>
+                ` : ''}
+            </div>
+        </div>
+        <h1 class="vstep-h1">${esc(h1Title)}</h1>
+        <div class="vstep-meta">
+            <span class="vstep-meta-badge">Buổi ${_lessonSessionNum || 1} / ${course.total}</span>
+            <span>⏱ Thời lượng: ~25 phút học</span>
+            <span style="color:#38bdf8;font-weight:700">👨‍🏫 Biên soạn: Thầy Nguyễn Xuân Trường</span>
+        </div>
+    `;
+
+    // Đoạn dẫn nhập (Lesson Lead) có viền xanh lá đặc trưng của demo Vstep Owl
+    let leadText = '';
+    if(thData && thData.lead){
+        leadText = thData.lead;
+    } else if(lesson.desc && lesson.desc.length > 20){
+        leadText = lesson.desc;
+    } else if(lNum === 1){
+        leadText = 'Nắm vững các luận điểm cốt lõi của thuyết động học phân tử, cấu trúc vi mô của 3 thể Rắn – Lỏng – Khí, quan sát trực quan với mô phỏng 3D chuyển động nhiệt và chinh phục các câu hỏi bẫy trong đề thi mới.';
+    } else if(thData && thData.goals && thData.goals.length){
+        leadText = `Nắm vững trọng tâm: ${thData.goals.slice(0, 2).join(' ')} kết hợp quan sát trực quan và chinh phục các câu hỏi trong đề thi THPT Quốc Gia.`;
+    }
+
+    if(leadText){
+        stream += `<p class="vstep-lead">${esc(leadText)}</p>`;
+    }
+
+    // Goals (Card Mục tiêu bài học)
+    const goalsList = (thData && thData.goals && thData.goals.length) ? thData.goals : (lesson.desc ? [lesson.desc] : []);
+    if(goalsList.length){
+        stream += `
+        <div class="vstep-goals">
+            <div class="vstep-goals-title">🎯 MỤC TIÊU BÀI HỌC</div>
+            <ul class="vstep-goals-list">
+                ${goalsList.map(g => `<li><span class="vstep-check-ic">✓</span><span>${esc(g)}</span></li>`).join('')}
+            </ul>
+        </div>`;
+    }
+
+    // Mục I: Video bài giảng
+    if(lesson.video){
+        tocItems.push({ id: 'sec-video', title: 'I. Video Bài Giảng' });
+        stream += `
+        <h2 id="sec-video"><span class="vstep-h2-badge">I</span> Video Bài Giảng Của Thầy</h2>
+        <div class="vstep-video-wrap">
+            ${videoTabsHtml || `<div class="video-box">${videoHtml}</div>`}
+        </div>`;
+    }
+
+    // Mục II: Lý thuyết trọng tâm
+    let secNumRoman = lesson.video ? 'II' : 'I';
+    tocItems.push({ id: 'sec-theory', title: `${secNumRoman}. Lý Thuyết Trọng Tâm` });
+    stream += `<h2 id="sec-theory"><span class="vstep-h2-badge">${secNumRoman}</span> Lý Thuyết Trọng Tâm</h2>`;
+
+    if(thData && thData.sections && thData.sections.length){
+        thData.sections.forEach((sec, si) => {
+            if(sec.title && !sec.title.startsWith('I.')){
+                stream += `<h3 style="color:#38bdf8;margin-top:20px">${esc(sec.title)}</h3>`;
+            }
+            (sec.subsections || []).forEach((sub, subi) => {
+                const subId = `sec-sub-${si}-${subi}`;
+                if(sub.title){
+                    tocItems.push({ id: subId, title: sub.title, isSub: true });
+                    stream += `<h3 id="${subId}" style="color:#38bdf8;font-size:16.5px;margin-top:22px;scroll-margin-top:80px">${esc(sub.title)}</h3>`;
+                }
+                (sub.paragraphs || []).forEach(pText => {
+                    const isTip = pText.toLowerCase().includes('lưu ý') || pText.toLowerCase().includes('mẹo');
+                    const isTrap = pText.toLowerCase().includes('bẫy') || pText.toLowerCase().includes('sai lầm');
+                    if(isTip){
+                        stream += `<div class="edoc-callout tip"><div class="edoc-callout-header">💡 Lưu ý quan trọng</div><div>${pText}</div></div>`;
+                    } else if(isTrap){
+                        stream += `<div class="edoc-callout trap"><div class="edoc-callout-header">⚠️ Bẫy đề thi hay gặp</div><div>${pText}</div></div>`;
+                    } else {
+                        stream += `<p>${pText}</p>`;
+                    }
+                });
+                if(sub.bullets && sub.bullets.length){
+                    stream += `<ul>${sub.bullets.map(b => `<li>${b}</li>`).join('')}</ul>`;
+                }
+            });
+        });
+    } else if(lesson.pdflt){
+        const idLt = driveId(lesson.pdflt);
+        stream += `<div class="pdf-embed-box" style="margin:20px 0"><iframe src="https://drive.google.com/file/d/${idLt}/preview" allow="autoplay"></iframe></div>`;
+    }
+
+    // Mục III: Mô phỏng 3D trực quan (nếu có)
+    if(_hasSim){
+        secNumRoman = (secNumRoman === 'II' ? 'III' : 'II');
+        tocItems.push({ id: 'sec-sim3d', title: `${secNumRoman}. Mô Phỏng 3D Trực Quan` });
+        stream += `
+        <h2 id="sec-sim3d"><span class="vstep-h2-badge">${secNumRoman}</span> Mô Phỏng 3D Trực Quan: Cấu Trúc Hạt</h2>
+        <p style="color:#cbd5e1">Em có thể tương tác trực tiếp với mô hình 3D dưới đây: xoay 360°, đổi trạng thái và quan sát chuyển động hạt:</p>
+        <div class="vstep-sim-wrap">${simCardHtml}</div>`;
+    }
+
+    // Mục IV: Luyện tập trắc nghiệm (nếu có)
+    if(_hasQuiz){
+        secNumRoman = (secNumRoman === 'III' ? 'IV' : (secNumRoman === 'II' ? 'III' : 'II'));
+        tocItems.push({ id: 'sec-quiz', title: `${secNumRoman}. Luyện Tập Trắc Nghiệm` });
+        stream += `
+        <h2 id="sec-quiz"><span class="vstep-h2-badge">${secNumRoman}</span> Luyện Tập Trắc Nghiệm Củng Cố</h2>
+        <div class="vstep-quiz-wrap">
+            <div id="vstep-quiz-mount"></div>
+        </div>`;
+    }
+
+    // Footer Navigation
+    stream += `
+        <div class="vstep-footer-nav">
+            <button class="vstep-nav-btn" onclick="${prev ? `go('#lesson/${encodeURIComponent(prev.key)}')` : ''}" ${prev ? '' : 'style="visibility:hidden"'}>
+                ← Bài trước
+            </button>
+            <button class="vstep-nav-btn primary" onclick="${next ? `go('#lesson/${encodeURIComponent(next.key)}')` : ''}" ${next ? '' : 'disabled'}>
+                Bài tiếp theo →
+            </button>
+        </div>
+        <div class="vstep-end-brand">
+            © Vật Lý Xuân Trường: Học là phải hiểu bản chất!
+        </div>
+    `;
+
+    // CỘT 3: MỤC LỤC BÀI HỌC (SIDEBAR PHẢI - CÓ PHÂN CẤP CON)
+    let rightToc = `<div class="vstep-toc-head">📑 MỤC LỤC BÀI HỌC</div><ul class="vstep-toc-list" id="vstepTocList">`;
+    tocItems.forEach((t, ti) => {
+        const subCls = t.isSub ? 'vstep-toc-sub' : '';
+        rightToc += `<li class="vstep-toc-item ${subCls} ${ti === 0 ? 'active' : ''}" data-target="${t.id}" onclick="scrollToSection('${t.id}')"><a href="javascript:void(0)" onclick="event.preventDefault(); event.stopPropagation(); scrollToSection('${t.id}')">${esc(t.title)}</a></li>`;
+    });
+    rightToc += `</ul>`;
+
+    return `
+    <div class="vstep-course-layout">
+        <aside class="vstep-sidebar-left">${leftNav}</aside>
+        <main class="vstep-main-stream">${stream}</main>
+        <aside class="vstep-sidebar-right">${rightToc}</aside>
+    </div>`;
+}
+
+function initVstepScrollSpy(){
+    const sections = document.querySelectorAll('h2[id], h3[id]');
+    const tocItems = document.querySelectorAll('.vstep-toc-item');
+    if(!sections.length || !tocItems.length) return;
+
+    function updateToc(){
+        let current = '';
+        const scrollPos = window.scrollY + 140;
+        sections.forEach(sec => {
+            if(scrollPos >= sec.offsetTop){
+                current = sec.getAttribute('id');
+            }
+        });
+        tocItems.forEach(item => {
+            item.classList.remove('active');
+            if(item.getAttribute('data-target') === current){
+                item.classList.add('active');
+            }
+        });
+    }
+
+    if(window._vstepScrollSpyHandler){
+        window.removeEventListener('scroll', window._vstepScrollSpyHandler);
+    }
+    window._vstepScrollSpyHandler = updateToc;
+    window.addEventListener('scroll', updateToc, { passive: true });
+    updateToc();
+}
+
+window.scrollToSection = function(id){
+    const el = document.getElementById(id);
+    if(!el) return;
+    const headerOffset = 70;
+    const elementPosition = el.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+    });
+};
+
+/* ═══════════════════════════════════════════
+   VIEW: BÀI HỌC (CHUẨN VSTEP OWL 3 CỘT ĐỒNG NHẤT)
+═══════════════════════════════════════════ */
 function renderLesson(key){
     const info=findLesson(key);
     if(!info){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-circle-question"></i><p>Không tìm thấy bài học.</p><p><a onclick="go('#home')">← Về trang chủ</a></p></div>`; return; }
     const {course,chapter,lesson}=info;
+    if(course && !canAccess(course.name)){ showUpgrade(course.name); return; }
     // Chặn "học vượt" kể cả khi vào thẳng bằng link/hash — không chỉ chặn ở danh sách bài
     const _blkCheck = isLessonBlocked(course, key);
     if(_blkCheck.blocked){
@@ -1937,7 +3909,7 @@ function renderLesson(key){
         let _msg = 'Em cần hoàn thành bài trước để mở khoá bài này.';
         let _icon = 'fa-lock';
         if(_isEmpty){
-            _msg = 'Em đã học kịp tiến độ rồi — qua Đấu Hạng luyện tập thêm trong lúc chờ nhé!';
+            _msg = 'Em đã học kịp tiến độ rồi — qua Đua Top luyện tập thêm trong lúc chờ nhé!';
             _icon = 'fa-hourglass-half';
         } else if(_isLimit){
             _msg = 'Em đã dùng hết 2/2 bài học mới hôm nay theo hạn mức học thử. Lượt học mới sẽ tự động mở lại vào 00:00 ngày mai (theo giờ Việt Nam). Em vẫn có thể ôn tập các bài đã học bên dưới.';
@@ -1948,14 +3920,13 @@ function renderLesson(key){
             <p style="margin-top:10px;font-weight:700">${esc(lesson.name)}</p>
             <p style="color:var(--sub)">${_msg}</p>
             <p style="margin-top:14px">
-                ${_isEmpty?`<a onclick="window.location.href='dua-top.html'" style="cursor:pointer;font-weight:700;color:#fbbf24">🏆 Vào Đấu Hạng</a>&nbsp;&nbsp;·&nbsp;&nbsp;`:''}<a onclick="go('#course/${encodeURIComponent(course.name)}')">← Về danh sách bài học</a>
+                ${_isEmpty?`<a onclick="window.location.href='dua-top.html'" style="cursor:pointer;font-weight:700;color:#fbbf24">👉 Vào Đua Top</a>&nbsp;&nbsp;•&nbsp;&nbsp;`:''}<a onclick="go('#course/${encodeURIComponent(course.name)}')">← Về danh sách bài học</a>
             </p>
         </div>`;
         return;
     }
 
     // Tài khoản học thử: BẮT BUỘC chờ server cấp quyền trước khi tải quiz/video (Pessimistic / Fail-closed)
-    // Tuyệt đối KHÔNG dùng danh sách vlxt_trial_confirmed_<sdt> trong localStorage làm bằng chứng cấp quyền
     const _curUser = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
     const _isTrial = typeof TrialManager !== 'undefined' && TrialManager.isValidTrialUser(_curUser);
     const _sessionGranted = (typeof window !== 'undefined' && window._trialGrantedLessons && window._trialGrantedLessons.has(key));
@@ -1971,27 +3942,29 @@ function renderLesson(key){
         return;
     }
 
-    const _quizMeta=QUIZ_INDEX&&QUIZ_INDEX.lessons&&QUIZ_INDEX.lessons[key];
+    if(window._QUIZZES_BUNDLE && window._QUIZZES_BUNDLE[key] && (!lesson.baitap || !lesson.baitap.length)){
+        lesson.baitap = mapQuizRows(window._QUIZZES_BUNDLE[key]);
+        lesson._quizLoaded = true;
+    }
+    const _quizMeta=(window._QUIZZES_BUNDLE && window._QUIZZES_BUNDLE[key]) || (QUIZ_INDEX&&QUIZ_INDEX.lessons&&QUIZ_INDEX.lessons[key]);
     const _needsQuizLoad = !lesson._quizLoaded && !lesson._quizLoading && (_quizMeta || !(lesson.baitap && lesson.baitap.length));
     if(_needsQuizLoad){
         lesson._quizLoading=true;
         app().innerHTML=`<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p style="margin-top:12px">Đang mở bài học...</p></div>`;
         loadLessonQuiz(key,lesson).finally(()=>{
             lesson._quizLoading=false;
-            const curHash = decodeURIComponent(location.hash || '');
-            if(curHash === '#lesson/' + key || curHash === '#lesson/' + encodeURIComponent(key)) renderLesson(key);
+            renderLesson(key);
         });
         return;
     }
     if(lesson._quizLoading) return;
 
     window._triggerTrialStart = null;
-    try{ if(typeof vlxtLog==='function' && HS && HS.sdt){ const _lk='vlxt_seen_'+HS.sdt+'_'+key; if(Date.now()-Number(localStorage.getItem(_lk)||0)>10*60*1000){ localStorage.setItem(_lk,String(Date.now())); vlxtLog('Xem bài học', lesson.name+' · '+course.name); } } }catch(e){}
+    try{ if(typeof vlxtLog==='function' && HS && HS.sdt){ const _lk='vlxt_seen_'+HS.sdt+'_'+key; if(Date.now()-Number(localStorage.getItem(_lk)||0)>10*60*1000){ localStorage.setItem(_lk,String(Date.now())); vlxtLog('Xem bài học', lesson.name+' — '+course.name); } } }catch(e){}
     const flat=flatLessons(course); const idx=flat.findIndex(l=>l.key===key);
     const prev=idx>0?flat[idx-1]:null, next=idx<flat.length-1?flat[idx+1]:null;
     const vid=ytId(lesson.video); const did=driveId(lesson.video); const vtype=videoType(lesson.video); const done=WATCHED.has(key);
     const pct=coursePct(course), w=courseWatched(course);
-    // Tính số buổi của bài này trong khoá dựa trên định danh ổn định
     const _lsn_session = getLessonSessionNum(lesson, idx + 1);
 
     // Video player — YouTube IFrame API hoặc Google Drive embed
@@ -2001,56 +3974,12 @@ function renderLesson(key){
         ? `<div class="ratio"><iframe id="drive-player" src="https://drive.google.com/file/d/${did}/preview" allow="autoplay; encrypted-media" allowfullscreen style="border:0;width:100%;height:100%;position:absolute;inset:0"></iframe></div>`
         : `<div class="ratio"><div class="no-video"><i class="fa-brands fa-youtube" style="font-size:40px;opacity:.4"></i><div style="font-size:14px;margin-top:8px">Video sẽ được thêm sớm</div></div></div>`;
 
-    // ── Sidebar: build flat list để check lock ──
-    const isSideLocked = (lkey) => {
-        if(isTestAccount()) return false;           // tài khoản test: luôn mở
-        return isLessonBlocked(course, lkey).blocked;
-    };
-
-    // ── Sidebar: toàn bộ khóa học ──
-    let side=`<div class="side-list">
-        <div class="side-hd">
-            <div class="side-hd-title"><i class="fa-solid fa-graduation-cap" style="color:var(--blue)"></i> ${esc(course.name)}</div>
-            <div class="side-hd-prog">${pct}% hoàn thành · ${w}/${course.total} bài</div>
-            <div class="bar" style="margin-top:4px"><i style="width:${pct}%"></i></div>
-        </div>`;
-    // Đánh số buổi cho sidebar (xuyên suốt khoá) dựa trên định danh ổn định
-    let _sideFallbackNum = 0;
-    const _sideSessionMap = new Map();
-    course.chapters.forEach(ch => ch.lessons.forEach(l => { _sideSessionMap.set(l.key, getLessonSessionNum(l, ++_sideFallbackNum)); }));
-
-    course.chapters.forEach((ch,ci)=>{
-        const cw=ch.lessons.filter(l=>WATCHED.has(l.key)).length;
-        side+=`<div class="side-chap">
-            <div class="side-chap-name">
-                <span class="side-chap-num">${ci+1}</span>
-                ${esc(ch.name)}
-                <span class="side-chap-cnt">${cw}/${ch.lessons.length}</span>
-            </div>`;
-        ch.lessons.forEach(l=>{
-            const d=WATCHED.has(l.key); const active=l.key===key;
-            const _lk=isSideLocked(l.key);
-            const _sn=_sideSessionMap.get(l.key);
-            const _sClick=`handleOpenLesson('${course.name.replace(/'/g,"\\'")}', '${l.key.replace(/'/g,"\\'")}')`;
-            const _noVid = !l.video;
-            side+=`<div class="side-item ${active?'active':''} ${d?'done':''} ${_lk?'si-locked':''}" onclick="${_sClick}">
-                <span class="si-ic"><i class="fa-solid ${d?'fa-circle-check':_lk?'fa-lock':(_noVid?'fa-clock':'fa-circle-play')}"></i></span>
-                <span class="si-name"><span style="font-size:10px;font-weight:800;opacity:.6;margin-right:3px">B${_sn}.</span>${esc(l.name)}${!_lk&&_noVid?'<span class="badge-soon" style="margin-left:5px">Sắp có</span>':''}</span>
-                ${!_lk&&l.baitap&&l.baitap.length?'<i class="fa-solid fa-pen-to-square" style="font-size:10px;color:var(--blue);opacity:.6"></i>':''}
-            </div>`;
-        });
-        side+='</div>';
-    });
-    side+='</div>';
-
     // ── Tabs: Tài liệu lý thuyết / Tài liệu bài tập / Luyện tập trắc nghiệm ──
     // (gộp 3 khối trước đây xếp chồng thành 1 khối kiểu tab, đỡ chiếm chỗ + học sinh chọn đúng thứ cần xem)
     const _lessonTabs = [];
     if(lesson.pdflt){
         const _idLt = driveId(lesson.pdflt);
-        _lessonTabs.push({ key:'lythuyet', label:'Tài liệu lý thuyết', icon:'fa-file-pdf', html:
-            `${_idLt?`<div class="pdf-embed-box"><iframe src="https://drive.google.com/file/d/${_idLt}/preview" allow="autoplay"></iframe></div>`:''}
-            <a class="pdf-embed-dl" href="${lesson.pdflt}" target="_blank" rel="noopener" style="background:rgba(11,132,243,.1);color:var(--blue)"><i class="fa-solid fa-arrow-up-right-from-square"></i> Mở/tải file PDF lý thuyết</a>` });
+        _lessonTabs.push({ key:'lythuyet', label:'Tài liệu lý thuyết', icon:'fa-file-lines', html: buildLessonDocReader(lesson, _idLt) });
     }
     if(lesson.pdf){
         const _idBt = driveId(lesson.pdf);
@@ -2231,49 +4160,35 @@ function renderLesson(key){
     }
 
     app().classList.add('wide-lesson'); // bài học hiển thị gần hết chiều ngang màn hình
-    app().innerHTML=`
-        <div class="crumb">
-            <a onclick="go('#home')">Khóa học</a><span class="sep">›</span>
-            <a onclick="go('#course/${encodeURIComponent(course.name)}')">${esc(course.name)}</a>
-            <span class="sep">›</span><span class="cur">${esc(lesson.name)}</span>
-        </div>
-        <div class="player-layout">
-            <div class="lesson-main">
-                <div class="video-sticky-wrap">${videoTabsHtml}</div>
-                <div id="vq-holder-anchor"></div>
-                <div class="lesson-detail">
-                    <div style="font-size:12px;font-weight:800;color:var(--blue);opacity:.7;margin-bottom:5px;letter-spacing:.04em">BUỔI ${_lsn_session}/${course.total}</div>
-                    <h1>${esc(lesson.name)}</h1>
-                    <div class="ld-sub">
-                        <i class="fa-solid fa-folder-open" style="color:var(--blue)"></i> ${esc(chapter.name)}
-                        ${lesson.date?' &nbsp;·&nbsp; <i class="fa-regular fa-calendar"></i> '+esc(lesson.date):''}
-                    </div>
-                    ${lesson.desc?`<div class="ld-desc">${lesson.desc}</div>`:''}
-                    <div class="ld-actions">
-                        <span class="btn btn-done ${done?'is-done':''}" id="done-btn" style="cursor:default;user-select:none">
-                            <i class="fa-solid ${done?'fa-circle-check':'fa-hourglass-half'}"></i>
-                            ${_doneLabel}
-                        </span>
-                        ${(!done && _hasQuiz) ? '<button class="btn-quiz-goto" onclick="scrollToQuiz()"><i class="fa-solid fa-pen-to-square"></i> Làm bài tập</button>' : ''}
-                        <button class="btn btn-nav" onclick="${prev?`go('#lesson/${encodeURIComponent(prev.key)}')`:''}" ${prev?'':'disabled'}>
-                            <i class="fa-solid fa-arrow-left"></i> Bài trước
-                        </button>
-                        <button class="btn btn-nav ${(!done&&next)?'locked':''} ${done&&next?'unlocked':''}" id="btn-next-lesson"
-                            data-href="${next?`#lesson/${encodeURIComponent(next.key)}`:''}"
-                            onclick="${next&&done?`goNextLessonWithReview('#lesson/${encodeURIComponent(next.key)}')`:''}"
-                            ${(next&&done)?'':'disabled'}>
-                            ${done&&next?'':'<i class="fa-solid fa-lock" style="font-size:11px"></i> '}Bài tiếp <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-                ${tabsBlockHtml}
-            </div>
-            <div class="lesson-sidebar">
-                ${simCardHtml}
-                <div id="vq-holder"></div>
-                <div id="side-list-wrap">${side}</div>
-            </div>
-        </div>`;
+    app().innerHTML = buildUnifiedVstepCourse(course, chapter, lesson, key, {
+        videoHtml,
+        videoTabsHtml,
+        simCardHtml,
+        _hasSim,
+        flat,
+        idx,
+        prev,
+        next,
+        done,
+        _doneLabel,
+        _hasQuiz,
+        _lessonSessionNum: _lsn_session
+    });
+    // Mount trắc nghiệm vào đúng vị trí của dòng bài học nếu có quiz
+    const quizMount = document.getElementById('vstep-quiz-mount');
+    if(quizMount && tabsBlockHtml){
+        // Di chuyển phần trắc nghiệm vào mount và đảm bảo hiển thị 100%
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = tabsBlockHtml;
+        const qContent = tempDiv.querySelector('#quiz-block') || tempDiv.querySelector('[data-pane="quiz"]');
+        if(qContent){
+            qContent.classList.add('active');
+            qContent.style.display = 'block';
+            quizMount.innerHTML = '';
+            quizMount.appendChild(qContent);
+        }
+    }
+    initVstepScrollSpy();
     renderMath(app());
     _vqPositionHolder();
     if(_hasSim) initLessonSimulation(lesson, key);
@@ -2625,9 +4540,7 @@ async function renderLiveLesson(){
     const _lessonTabs = [];
     if(lesson.pdflt){
         const _idLt = driveId(lesson.pdflt);
-        _lessonTabs.push({ key:'lythuyet', label:'Tài liệu lý thuyết', icon:'fa-file-pdf', html:
-            `${_idLt?`<div class="pdf-embed-box"><iframe src="https://drive.google.com/file/d/${_idLt}/preview" allow="autoplay"></iframe></div>`:''}
-            <a class="pdf-embed-dl" href="${lesson.pdflt}" target="_blank" rel="noopener" style="background:rgba(11,132,243,.1);color:var(--blue)"><i class="fa-solid fa-arrow-up-right-from-square"></i> Mở/tải file PDF lý thuyết</a>` });
+        _lessonTabs.push({ key:'lythuyet', label:'Tài liệu lý thuyết', icon:'fa-file-lines', html: buildLessonDocReader(lesson, _idLt) });
     }
     if(lesson.pdf){
         const _idBt = driveId(lesson.pdf);
@@ -2774,51 +4687,35 @@ async function renderLiveLesson(){
     else _doneLabel='Tự động lưu sau 30 giây';
 
     app().classList.add('wide-lesson');
-    app().innerHTML=`
-        <div class="crumb">
-            <a onclick="go('#home')">Khóa học</a><span class="sep">›</span>
-            <a onclick="go('#course/${encodeURIComponent(course.name)}')">${esc(course.name)}</a>
-            <span class="sep">›</span><span class="cur">${esc(lesson.name)}</span>
-        </div>
-        <div class="player-layout">
-            <div class="lesson-main">
-                <div class="video-sticky-wrap">${videoTabsHtml}</div>
-                <div id="vq-holder-anchor"></div>
-                <div class="lesson-detail">
-                    <div style="font-size:12px;font-weight:800;color:var(--blue);opacity:.7;margin-bottom:5px;letter-spacing:.04em">BUỔI ${_lsn_session}/${course.total}</div>
-                    <h1>${esc(lesson.name)} <span class="lv-live-tag" id="lv-live-tag" style="display:none"><i class="fa-solid fa-tower-broadcast"></i> LIVE</span></h1>
-                    <div class="ld-sub">
-                        <i class="fa-solid fa-folder-open" style="color:var(--blue)"></i> ${esc(chapter.name)}
-                        ${lesson.date?' &nbsp;·&nbsp; <i class="fa-regular fa-calendar"></i> '+esc(lesson.date):''}
-                    </div>
-                    ${lesson.desc?`<div class="ld-desc">${lesson.desc}</div>`:''}
-                    <div class="ld-actions">
-                        <span class="btn btn-done ${done?'is-done':''}" id="done-btn" style="cursor:default;user-select:none">
-                            <i class="fa-solid ${done?'fa-circle-check':'fa-hourglass-half'}"></i>
-                            ${_doneLabel}
-                        </span>
-                        ${(!done && _hasQuiz) ? '<button class="btn-quiz-goto" onclick="scrollToQuiz()"><i class="fa-solid fa-pen-to-square"></i> Làm bài tập</button>' : ''}
-                        <button class="btn btn-nav" onclick="${prev?`go('#lesson/${encodeURIComponent(prev.key)}')`:''}" ${prev?'':'disabled'}>
-                            <i class="fa-solid fa-arrow-left"></i> Bài trước
-                        </button>
-                        <button class="btn btn-nav" onclick="${next?`go('#lesson/${encodeURIComponent(next.key)}')`:''}" ${next?'':'disabled'}>
-                            Bài tiếp <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-                ${tabsBlockHtml}
-            </div>
-            <div class="lesson-sidebar">
-                <div id="sidebar-tab-nav">
-                    <button class="lt-tab-btn active" data-stab="chat" onclick="switchSidebarTab('chat')"><i class="fa-solid fa-comments"></i> Bình luận trực tiếp</button>
-                    <button class="lt-tab-btn" data-stab="list" onclick="switchSidebarTab('list')"><i class="fa-solid fa-list-ul"></i> Danh sách bài học</button>
-                    <button class="lt-tab-btn" id="sidebar-tab-cungthay-btn" data-stab="cungthay" onclick="switchSidebarTab('cungthay')" style="display:none"><i class="fa-solid fa-chalkboard-user"></i> Làm bài cùng thầy</button>
-                </div>
-                <div id="vq-holder">${liveChatHtml}</div>
-                <div id="cungthay-holder"></div>
-                <div id="side-list-wrap">${side}</div>
-            </div>
-        </div>`;
+    app().innerHTML = buildUnifiedVstepCourse(course, chapter, lesson, key, {
+        videoHtml,
+        videoTabsHtml,
+        simCardHtml,
+        _hasSim,
+        flat,
+        idx,
+        prev,
+        next,
+        done,
+        _doneLabel,
+        _hasQuiz,
+        _lessonSessionNum: _lsn_session
+    });
+    // Mount trắc nghiệm vào đúng vị trí của dòng bài học nếu có quiz
+    const quizMount = document.getElementById('vstep-quiz-mount');
+    if(quizMount && tabsBlockHtml){
+        // Di chuyển phần trắc nghiệm vào mount và đảm bảo hiển thị 100%
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = tabsBlockHtml;
+        const qContent = tempDiv.querySelector('#quiz-block') || tempDiv.querySelector('[data-pane="quiz"]');
+        if(qContent){
+            qContent.classList.add('active');
+            qContent.style.display = 'block';
+            quizMount.innerHTML = '';
+            quizMount.appendChild(qContent);
+        }
+    }
+    initVstepScrollSpy();
     renderMath(app());
     _sidebarActiveTab = 'chat';
     _vqPositionHolder();
@@ -4240,6 +6137,21 @@ function checkPractice(key,force){
         warnEl.innerHTML = `<i class="fa-solid fa-rotate-left"></i><span>Chưa đủ điểm (cần ≥90%, tức từ ${neededCount}/${qs.length} câu trở lên). Thử lại nhé!</span>`;
         toast('<i class="fa-solid fa-triangle-exclamation"></i> Cần đúng ≥90% để đạt phần này. Cố lên!' + _vgReminder,'err');
     }
+
+    // ── KÍCH HOẠT SOFT UPSELL TRIGGER: CARD ĐÁNH GIÁ NĂNG LỰC HỌC TẬP (BƯỚC 4 CRO) ──
+    if (typeof FreemiumFlow !== 'undefined') {
+        const _order = FreemiumFlow.getQuizPacketOrder(currentCourse, decodeURIComponent(key));
+        FreemiumFlow.saveZeroFrictionProgress({
+            lessonKey: decodeURIComponent(key),
+            title: info.lesson.name || 'Bài tập trắc nghiệm',
+            packetOrder: _order,
+            questions: qs,
+            wrongIndices: wrongThisAttempt,
+            correct: correct,
+            total: qs.length
+        });
+        FreemiumFlow.renderUpsellCard(info.lesson, correct, qs.length);
+    }
 }
 
 function scrollToQuiz(){
@@ -4307,63 +6219,120 @@ if(localStorage.getItem('vlxt_theme')==='dark') document.body.classList.add('dar
 
 let KHOACONFIG = {}; // { courseName: { trangThai, loaiTK, hienThi, thuTu, daKhaiGiang } }
 
+function applyKhoaConfig(arr){
+    if(!Array.isArray(arr)) return false;
+    let changed = false;
+    arr.forEach(c => {
+        if(!c || !c.khoaHoc) return;
+        const prev = KHOACONFIG[c.khoaHoc];
+        const next = {
+            trangThai:    c.trangThai || 'open',
+            loaiTK:       (c.loaiTK || 'free,vip,premium').toLowerCase(),
+            hienThi:      c.hienThi !== 'false' && c.hienThi !== false,
+            thuTu:        (c.thuTu !== undefined && c.thuTu !== '') ? Number(c.thuTu) : 999,
+            daKhaiGiang:  c.daKhaiGiang === true || c.daKhaiGiang === 'true'
+        };
+        if(!prev || JSON.stringify(prev) !== JSON.stringify(next)){
+            KHOACONFIG[c.khoaHoc] = next;
+            changed = true;
+        }
+    });
+    return changed;
+}
+
 async function fetchKhoaConfig(){
+    // 1. Tải tức thì từ localStorage nếu có để không bị giật giao diện (0ms)
+    try{
+        const local = JSON.parse(localStorage.getItem('vlxt_khoaconfig_v2') || 'null');
+        if(Array.isArray(local) && local.length) applyKhoaConfig(local);
+    }catch(e){}
+
+    // 2. Tải nhanh từ JSON tĩnh GitHub Pages
     try{
         const d = await fetchJsonTimeout('data/khoaconfig.json',3000,{cache:'no-cache'});
         const arr = Array.isArray(d) ? d : (d.data || []);
-        arr.forEach(c => {
-            KHOACONFIG[c.khoaHoc] = {
-                trangThai:    c.trangThai || 'open',
-                loaiTK:       c.loaiTK || 'free,vip,premium',
-                hienThi:      c.hienThi !== 'false' && c.hienThi !== false,
-                thuTu:        (c.thuTu !== undefined && c.thuTu !== '') ? Number(c.thuTu) : 999,
-                daKhaiGiang:  c.daKhaiGiang === true || c.daKhaiGiang === 'true'
-            };
-        });
-    }catch(e){ console.warn('fetchKhoaConfig lỗi:', e); }
+        if(arr.length){
+            applyKhoaConfig(arr);
+            try{ localStorage.setItem('vlxt_khoaconfig_v2', JSON.stringify(arr)); }catch(e){}
+        }
+    }catch(e){ console.warn('fetchKhoaConfig tĩnh lỗi:', e); }
+
+    // 3. Tải ngầm bất đồng bộ từ Google Apps Script (Stale-While-Revalidate)
+    // Để khi Thầy cập nhật trạng thái/phân quyền trên Admin, web học sinh tự động nhận diện mà không cần chờ GitHub cron
+    fetchJsonTimeout(APPS_SCRIPT_URL + '?type=khoaconfig&_t=' + Date.now(), 6000).then(function(gasData){
+        const arr = Array.isArray(gasData) ? gasData : (gasData && gasData.data);
+        if(Array.isArray(arr) && arr.length){
+            const changed = applyKhoaConfig(arr);
+            try{ localStorage.setItem('vlxt_khoaconfig_v2', JSON.stringify(arr)); }catch(e){}
+            if(changed && _coursesReady){
+                route();
+            }
+        }
+    }).catch(function(err){ console.warn('Cập nhật KhoaConfig ngầm từ GAS:', err); });
+}
+
+function getCourseConfig(courseName){
+    if(!courseName) return null;
+    if(KHOACONFIG[courseName]) return KHOACONFIG[courseName];
+    const norm = String(courseName).trim().toLowerCase();
+    for(const [k, v] of Object.entries(KHOACONFIG)){
+        if(k.trim().toLowerCase() === norm) return v;
+        const di = k.lastIndexOf(' - ');
+        const kdname = (di > 0 ? k.slice(0, di) : k).trim().toLowerCase();
+        if(kdname === norm) return v;
+        const normDi = courseName.lastIndexOf(' - ');
+        const courseDname = (normDi > 0 ? courseName.slice(0, normDi) : courseName).trim().toLowerCase();
+        if(kdname === courseDname) return v;
+    }
+    return null;
 }
 
 function isVisible(courseName){
-    const cfg = KHOACONFIG[courseName];
+    const cfg = getCourseConfig(courseName);
     if(!cfg) return true; // default visible
     return cfg.hienThi !== false;
 }
 
 // Trả về số thứ tự của khoá, dùng để sort
 function courseOrder(courseName){
-    const cfg = KHOACONFIG[courseName];
+    const cfg = getCourseConfig(courseName);
     return cfg ? cfg.thuTu : 999;
 }
 
 // Khoá đã khai giảng chưa? (teacher marked as started)
 function isStarted(courseName){
-    const cfg = KHOACONFIG[courseName];
+    const cfg = getCourseConfig(courseName);
     if(!cfg) return true; // default: accessible if no config
     return cfg.daKhaiGiang === true;
 }
 
 function canAccess(courseName){
-    const cfg = KHOACONFIG[courseName];
+    const cfg = getCourseConfig(courseName);
     if(!cfg) return true;
     if(cfg.trangThai === 'closed') return false;
     if(cfg.daKhaiGiang === false) return false; // chưa khai giảng → khoá
-    const allowed = (cfg.loaiTK||'free,vip,premium').split(',').map(s=>s.trim());
-    const user = JSON.parse(localStorage.getItem('vlxt_user_v2')||'null');
-    const tier = (user && user.loaiTK) || 'free';
+    const allowed = (cfg.loaiTK||'free,vip,premium').split(',').map(s=>s.trim().toLowerCase());
+    const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
+    const tier = String((user && user.loaiTK) || 'free').trim().toLowerCase();
     return allowed.includes(tier);
 }
 
 function tierLabel(courseName){
-    const cfg = KHOACONFIG[courseName];
+    const cfg = getCourseConfig(courseName);
     if(!cfg || cfg.trangThai === 'closed') return '🔒 Khoá học chưa mở';
+    const allowed = (cfg.loaiTK||'free,vip,premium').split(',').map(s=>s.trim().toLowerCase());
+    const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
+    const tier = String((user && user.loaiTK) || 'free').trim().toLowerCase();
+
+    // 1) Ưu tiên kiểm tra điều kiện phân hạng tài khoản trước
+    if(!allowed.includes(tier)){
+        if(allowed.every(t=>t==='premium')) return '💎 Cần tài khoản Premium';
+        if(allowed.some(t=>t==='vip'||t==='premium') && !allowed.includes('free')) return '⭐ Cần tài khoản VIP trở lên';
+        return '🔒 Không có quyền truy cập';
+    }
+    // 2) Đã đạt điều kiện phân hạng nhưng khoá chưa khai giảng
     if(cfg.daKhaiGiang === false) return '🔜 Sắp khai giảng';
-    const allowed = (cfg.loaiTK||'free,vip,premium').split(',').map(s=>s.trim());
-    const user = JSON.parse(localStorage.getItem('vlxt_user_v2')||'null');
-    const tier = (user && user.loaiTK) || 'free';
-    if(allowed.includes(tier)) return '';
-    if(allowed.every(t=>t==='premium')) return '💎 Cần tài khoản Premium';
-    if(allowed.some(t=>t==='vip'||t==='premium') && !allowed.includes('free')) return '⭐ Cần tài khoản VIP trở lên';
-    return '🔒 Không có quyền truy cập';
+    return '';
 }
 
 /* ═══════════════════════════════════════════
@@ -4371,7 +6340,22 @@ function tierLabel(courseName){
 ═══════════════════════════════════════════ */
 function showUpgrade(courseName){
     const msg = tierLabel(courseName);
-    const cfg = KHOACONFIG[courseName];
+    const cfg = getCourseConfig(courseName);
+    const allowed = ((cfg && cfg.loaiTK) || 'free,vip,premium').split(',').map(s=>s.trim().toLowerCase());
+    const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
+    const tier = String((user && user.loaiTK) || 'free').trim().toLowerCase();
+
+    // Nếu chưa đủ phân hạng tài khoản -> luôn hiện thông báo nâng hạng
+    if(!allowed.includes(tier)){
+        app().innerHTML=`<div class="empty">
+            <i class="fa-solid fa-crown" style="font-size:40px;color:#d97706;margin-bottom:16px"></i>
+            <p style="font-size:18px;font-weight:700">${msg || '💎 Cần tài khoản Premium'}</p>
+            <p style="color:var(--muted)">Liên hệ thầy Trường qua Zalo để nâng cấp tài khoản và truy cập khoá học này.</p>
+            <p><a onclick="go('#home')" style="cursor:pointer;color:var(--blue)">← Về danh sách khoá học</a></p>
+        </div>`;
+        return;
+    }
+    // Nếu đã đủ phân hạng nhưng chưa khai giảng
     if(cfg && cfg.daKhaiGiang === false){
         app().innerHTML=`<div class="empty">
             <i class="fa-solid fa-clock" style="font-size:40px;color:#f59e0b;margin-bottom:16px"></i>
@@ -4557,5 +6541,35 @@ window.addEventListener('DOMContentLoaded', init);
 </script>
 <script src="hoat-dong.js?v=1"></script>
 <script src="huongdan-popup.js?v=1"></script>
+<script>
+// ── TIỆN ÍCH ĐIỀU HƯỚNG DRAWER & CUỘN BÀI TẬP ──
+function toggleNavDrawer(open){
+    const d = document.getElementById('navDrawer');
+    const o = document.getElementById('navDrawerOverlay');
+    if(d) d.classList.toggle('open', open);
+    if(o) o.style.display = open ? 'block' : 'none';
+}
+function scrollToQuiz(){
+    const el = document.getElementById('sec-quiz') || document.getElementById('vstep-quiz-mount');
+    if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+
+window.toggleCourseOutline = function(open){
+    const d = document.getElementById('courseOutlineDrawer');
+    const b = document.getElementById('courseOutlineBackdrop');
+    if(d) d.classList.toggle('open', open);
+    if(b) b.style.display = open ? 'block' : 'none';
+}
+
+  // Lắng nghe sự kiện kích hoạt Pro thành công từ CRO Checkout
+  window.addEventListener('vlxt:pro_unlocked', function(e) {
+      try {
+          toast('<i class="fa-solid fa-crown"></i> Gói Pro 50k đã kích hoạt thành công! Đã mở khóa toàn bộ 4 chương.', 'ok');
+          if (typeof renderAllCourses === 'function') renderAllCourses();
+          setTimeout(() => location.reload(), 1500);
+      } catch(err) {}
+  });
+</script>
 </body>
 </html>

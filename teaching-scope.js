@@ -1,6 +1,6 @@
 /**
  * TEACHING SCOPE UTILITIES — Vật Lý Xuân Trường
- * Quản lý và lọc câu hỏi theo phạm vi giảng dạy cho Đua Top, Solo và Luyện tập.
+ * Quản lý và lọc câu hỏi theo phạm vi giảng dạy cho Đấu Hạng, Solo và Luyện tập.
  * Tuân thủ nghiêm ngặt tiêu chuẩn an toàn Production.
  */
 (function(root, factory) {

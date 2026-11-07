@@ -144,10 +144,15 @@ function vlxtRenderWidget(user){
     +'<button type="button" class="vlxt-theme-btn" id="vlxt-theme-btn" onclick="vlxtToggleTheme(event)">'+_themeLabel+'</button>'
     +'<div class="vlxt-nav-links">'
     +'<a href="index.html" class="vlxt-nav-link">🏠 Trang chủ</a>'
+    +'<a href="danh-gia-nang-luc.html" class="vlxt-nav-link" style="color:#00f0ff;font-weight:700">🎯 Đánh Giá Năng Lực (Free)</a>'
+
+    +'<a href="goi-hoc.html" class="vlxt-nav-link" style="color:#fbbf24;font-weight:700">⭐ Gói Học & Bảng Giá (50k)</a>'
+
     +'<a href="baihoc.html" class="vlxt-nav-link">📚 Kh\xf3a học</a>'
     +'<a href="phong-thi-thu.html" class="vlxt-nav-link">📋 Ph\xf2ng thi thử</a>'
     +'<a href="danhsach-ly12.html" class="vlxt-nav-link">📝 Ph\xf2ng kiểm tra</a>'
-    +'<a href="dua-top.html" class="vlxt-nav-link" style="color:#fbbf24;font-weight:700">🏆 Đua Top</a>'
+    +'<a href="dau-thuong.html" class="vlxt-nav-link" style="color:#00f0ff;font-weight:700">⚔️ Đấu Thường</a>'
+    +'<a href="dua-top.html" class="vlxt-nav-link" style="color:#fbbf24;font-weight:700">🏆 Đấu Hạng</a>'
     +'<a href="solo.html" class="vlxt-nav-link" style="color:#f472b6;font-weight:700">⚔️ Solo</a>'
     +'<a href="live.html" class="vlxt-nav-link" style="color:#dc2626;font-weight:700">📡 Live</a>'
     +'<a href="huongdan.html" class="vlxt-nav-link">🧭 Hướng dẫn</a>'
@@ -157,6 +162,7 @@ function vlxtRenderWidget(user){
     +'</div>';
 
   if(navArea){
+    navArea.innerHTML = ''; // Dọn sạch fallback đăng nhập
     var inlineCSS=[
       '#vlxt-user-widget{position:relative;font-family:\'Inter\',system-ui,sans-serif;}',
       '#vlxt-avatar-btn{display:flex;align-items:center;gap:8px;padding:5px 12px 5px 6px;background:rgba(0,114,255,0.08);border:1.5px solid rgba(0,114,255,0.25);border-radius:50px;cursor:pointer;user-select:none;transition:all 0.15s;}',

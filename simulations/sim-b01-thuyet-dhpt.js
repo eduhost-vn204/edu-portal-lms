@@ -62,7 +62,7 @@
 
       // 1. Three.js Scene
       this.scene = new THREE.Scene();
-      this.scene.background = new THREE.Color(0x070d1e);
+      this.scene.background = new THREE.Color(0x0c1222);
 
       // 2. Camera
       this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);

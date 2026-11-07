@@ -38,6 +38,27 @@
       .replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/[^a-z0-9]/g, '');
   }
 
+  
+  // ─── Format chuẩn cho Chương và Tên Bài (Sentence case, chống lặp từ) ───
+  function formatChapterClean(ch) {
+    if (!ch) return '';
+    var s = String(ch).trim();
+    s = s.replace(/^(chương|chuong)\s*/i, '').trim();
+    return 'Chương ' + s;
+  }
+
+  function toCleanSentenceCase(str) {
+    if (!str) return '';
+    var s = String(str).trim();
+    var m = s.match(/^([A-Za-z0-9]+[\.\:]\s*)(.*)$/);
+    if (m) {
+      var prefix = m[1].toUpperCase();
+      var rest = m[2];
+      return prefix + rest.charAt(0).toUpperCase() + rest.slice(1).toLowerCase();
+    }
+    return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+  }
+
   function fieldOf(row, names) {
     for (var k in row) {
       var nk = normKey(k);
@@ -108,7 +129,7 @@
     // (b) bài CHƯA có video nhưng đã nằm trong phạm vi thầy ĐÃ DẠY TỚI (i <=
     // teacherIdx) — học sinh thực sự chưa học nội dung này, chỉ là thầy chưa
     // kịp up video, KHÔNG được coi là "đã xong" (bug cũ: học sinh mới toanh
-    // cũng bị đẩy thẳng Đua Top nếu cả khoá chưa có video nào).
+    // cũng bị đẩy thẳng Đấu Hạng nếu cả khoá chưa có video nào).
     // Bài chưa có video mà thầy CHƯA dạy tới (i > teacherIdx, nội dung tương
     // lai chưa sẵn sàng) thì vẫn bỏ qua, không chặn tiến độ.
     for (var i = 0; i < xps.length; i++) {
@@ -161,6 +182,25 @@
       '.nv-sub{font-size:clamp(13px,1.15vw,15px);color:#8b949e;margin-bottom:clamp(12px,2vh,18px);line-height:1.45;}',
 
       /* Khối bài học thầy đang dạy & bài em đang học */
+      
+      '.nv-head-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:4px;padding-right:36px;}',
+      '.nv-badge-header{font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.3px;white-space:nowrap;}',
+      '.nv-badge-header.warn{background:rgba(245,158,11,.15);color:#fbbf24;border:1px solid rgba(245,158,11,.35);}',
+      '.nv-badge-header.ok{background:rgba(16,185,129,.15);color:#34d399;border:1px solid rgba(16,185,129,.35);}',
+      '.nv-clean-card{border-radius:14px;padding:14px 18px;margin-bottom:12px;transition:all .15s ease;}',
+      '.nv-clean-card.my-lesson{background:rgba(0,240,255,.05);border:1.5px solid rgba(0,240,255,.25);}',
+      '.nv-clean-card.teacher-lesson{background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.2);}',
+      '.nv-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}',
+      '.nv-card-tag{font-size:11px;font-weight:800;letter-spacing:.05em;}',
+      '.nv-card-tag.cyan{color:#00f0ff;}',
+      '.nv-card-tag.amber{color:#fbbf24;}',
+      '.nv-lesson-meta-tag{font-size:11.5px;color:#8b949e;font-weight:600;}',
+      '.nv-card-name{font-size:15.5px;font-weight:700;color:#f1f5f9;line-height:1.4;margin-bottom:3px;}',
+      '.nv-card-sub{font-size:12.5px;color:#94a3b8;margin-bottom:10px;}',
+      '.btn-nv-action-play{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#0b84f3,#00f0ff);color:#04101e;font-size:13px;font-weight:700;padding:6px 14px;border-radius:8px;border:none;cursor:pointer;transition:transform .15s;}',
+      '.btn-nv-action-play:hover{transform:translateY(-1px);}',
+      '#vlxt-mission-banner{bottom:20px !important;right:24px !important;padding:9px 16px !important;height:auto !important;line-height:1.4 !important;}',
+    
       '.nv-teacher-card{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);',
       'border-radius:12px;padding:clamp(10px,1.6vh,14px) clamp(12px,1.8vw,18px);margin-bottom:clamp(8px,1.4vh,12px);}',
       '.nv-teacher-tag{font-size:11px;color:#f59e0b;font-weight:700;letter-spacing:.05em;margin-bottom:4px;}',
@@ -329,8 +369,6 @@
     var lesson  = xps[conTro] || null;
     var dlDays  = daysLeft();
 
-    // Tìm vị trí thầy đang dạy trong lộ trình XPS (cần tính TRƯỚC "chậm bao nhiêu buổi"
-    // để giới hạn lịch tự đặt không vượt quá nội dung thầy ĐÃ dạy tới — xem bên dưới).
     var teacherIdx = -1;
     if (teachingKey) {
       for (var ti = 0; ti < xps.length; ti++) {
@@ -339,100 +377,105 @@
       }
     }
 
-    // Tính học chậm so với lịch tự đặt (nhịp buổi/tuần do em chọn).
-    // Giới hạn "expected" (vị trí lẽ ra phải đạt tới) KHÔNG được vượt quá vị trí
-    // thầy đang dạy (teacherIdx) — nếu không, khi em chọn nhịp nhanh hơn tốc độ
-    // thầy dạy thực tế, hệ thống sẽ báo "chậm" rất nhiều buổi dù nội dung đó thầy
-    // còn CHƯA dạy/CHƯA có video, gây hiểu lầm và nản (bug 19/7: thầy mới dạy đến
-    // buổi 2 mà hệ thống báo em chậm 6 buổi dù em chỉ chậm thầy 1 buổi).
     var nhip      = Number(nv.nhipHoc) || 5;
     var startD    = nv.startDate || today();
     var daysPast  = Math.max(0, Math.floor((new Date() - new Date(startD)) / 86400000));
-    // Dùng CÙNG đơn vị "vị trí" (index) như khối so-sánh-với-thầy bên dưới
-    // (diff = teacherIdx - conTro) để 2 con số hiển thị luôn khớp nhau — không
-    // dùng teacherIdx+1 (số buổi đã dạy) vì sẽ lệch 1 buổi so với khối kia.
     var paceCap   = teacherIdx >= 0 ? teacherIdx : total;
     var expected  = Math.min(Math.floor(daysPast / 7 * nhip), total, paceCap);
     var cham      = Math.max(0, expected - conTro);
 
-    // Khối "Thầy đang dạy đến" + chiến lược
-    var teacherHtml = '';
+    // Badge duy nhất trên header
+    var headerBadge = '';
     if (teacherIdx >= 0) {
-      var tLesson = xps[teacherIdx];
-      var diff    = conTro - teacherIdx; // dương = em trước thầy, âm = em chậm hơn thầy
-      var strategyText;
-      if (diff > 0) {
-        strategyText = '🚀 Em đang học <strong>trước thầy ' + diff + ' buổi</strong> — rất tốt! Ôn lại phần đã học để nắm chắc hơn.';
+      var diff = conTro - teacherIdx;
+      if (diff < 0) {
+        headerBadge = '<span class="nv-badge-header warn">⏰ Chậm ' + (-diff) + ' buổi</span>';
       } else if (diff === 0) {
-        strategyText = '✅ Em đang học <strong>đúng tiến độ thầy</strong> — giữ vững nhịp này nhé!';
-      } else if (diff >= -5) {
-        strategyText = '⏰ Em chậm hơn thầy <strong>' + (-diff) + ' buổi</strong> — cố học thêm ' + (-diff) + ' buổi để theo kịp!';
+        headerBadge = '<span class="nv-badge-header ok">✅ Đúng tiến độ</span>';
       } else {
-        strategyText = '⚡ Em chậm hơn thầy <strong>' + (-diff) + ' buổi</strong> — cần tăng tốc ngay, học bù nhiều buổi/ngày!';
+        headerBadge = '<span class="nv-badge-header ok">🚀 Nhanh hơn ' + diff + ' buổi</span>';
       }
-      teacherHtml =
-        '<div class="nv-teacher-card">' +
-          '<div class="nv-teacher-tag">📍 THẦY ĐANG DẠY ĐẾN</div>' +
-          '<div class="nv-teacher-name">' + (tLesson.TenBai || '') + '</div>' +
-          '<div class="nv-teacher-meta">' +
-            (tLesson.KhoaHoc || '') + ' · Chương ' + (tLesson.Chuong || '?') + ' · Buổi ' + (teacherIdx + 1) + '/' + total +
+    } else if (cham > 0) {
+      headerBadge = '<span class="nv-badge-header warn">⏰ Chậm ' + cham + ' buổi</span>';
+    } else {
+      headerBadge = '<span class="nv-badge-header ok">✅ Đúng tiến độ</span>';
+    }
+
+    // THẺ 1: BÀI HỌC TIẾP THEO CỦA EM
+    var lessonCardHtml = '';
+    if (lesson) {
+      var chapClean = formatChapterClean(lesson.Chuong);
+      var nameClean = toCleanSentenceCase(lesson.TenBai);
+      lessonCardHtml = 
+        '<div class="nv-clean-card my-lesson">' +
+          '<div class="nv-card-head">' +
+            '<span class="nv-card-tag cyan">📌 BÀI HỌC TIẾP THEO CỦA EM</span>' +
+            '<span class="nv-lesson-meta-tag">Buổi ' + (conTro + 1) + '/' + total + '</span>' +
           '</div>' +
-          '<div class="nv-teacher-strategy">' + strategyText + '</div>' +
+          '<div class="nv-card-name">' + nameClean + '</div>' +
+          '<div class="nv-card-sub">' + chapClean + '</div>' +
+          '<div class="nv-card-action">' +
+            '<button type="button" class="btn-nv-action-play" onclick="vlxtGoStudy()"><i class="fa-solid fa-play"></i> Học ngay bài này</button>' +
+          '</div>' +
+        '</div>';
+    } else {
+      lessonCardHtml = 
+        '<div class="nv-clean-card my-lesson">' +
+          '<div class="nv-card-name" style="color:#34d399">🎉 Chúc mừng em đã hoàn thành toàn bộ lộ trình!</div>' +
         '</div>';
     }
 
-    var lessonHtml = lesson
-      ? ('<div class="nv-lesson-card">' +
-          '<div class="nv-lesson-tag">📌 EM HỌC ĐẾN BÀI NÀY</div>' +
-          '<div class="nv-lesson-name">📖 ' + (lesson.TenBai || 'Buổi học') + '</div>' +
-          '<div class="nv-lesson-meta">Chương ' + (lesson.Chuong || '?') + ' · ' + (lesson.KhoaHoc || '') + '</div>' +
-          (lesson.MoTaBai ? '<div class="nv-lesson-meta" style="margin-top:3px">' + lesson.MoTaBai + '</div>' : '') +
-         '</div>')
-      : '<div class="nv-lesson-card"><div class="nv-lesson-name" style="color:#34d399">🎉 Hoàn thành lộ trình!</div></div>';
-
-    var chamChip = cham > 0
-      ? '<span class="nv-chip warn" title="So với lịch tự đặt của em (nhịp ' + nhip + ' buổi/tuần), không phải so với thầy">⏰ Chậm ' + cham + ' buổi (lịch riêng của em)</span>'
-      : '<span class="nv-chip ok">✅ Đúng lịch riêng của em</span>';
-
-    var actionBtn = lesson
-      ? '<button class="nv-btn nv-btn-primary" onclick="vlxtGoStudy()">Học ngay →</button>'
-      : '<button class="nv-btn nv-btn-primary" onclick="window.location.href=\'dua-top.html\'">Vào Đua Top 🏆</button>';
+    // THẺ 2: TIẾN ĐỘ LỚP CỦA THẦY
+    var teacherCardHtml = '';
+    if (teacherIdx >= 0) {
+      var tLesson = xps[teacherIdx];
+      var tChapClean = formatChapterClean(tLesson.Chuong);
+      var tNameClean = toCleanSentenceCase(tLesson.TenBai);
+      teacherCardHtml = 
+        '<div class="nv-clean-card teacher-lesson">' +
+          '<div class="nv-card-head">' +
+            '<span class="nv-card-tag amber">📍 TIẾN ĐỘ LỚP CỦA THẦY</span>' +
+            '<span class="nv-lesson-meta-tag">Buổi ' + (teacherIdx + 1) + '/' + total + '</span>' +
+          '</div>' +
+          '<div class="nv-card-name">' + tNameClean + '</div>' +
+          '<div class="nv-card-sub">' + tChapClean + '</div>' +
+        '</div>';
+    }
 
     openOverlay(
-      '<div class="nv-title">📋 Nhiệm vụ hôm nay</div>' +
-      '<div class="nv-sub">' + today() + (lesson ? ' · ' + (lesson.KhoaHoc || '') : '') + ' · Buổi ' + (conTro + 1) + '/' + total + ' · Còn ' + dlDays + ' ngày đến thi</div>' +
-      teacherHtml +
-      lessonHtml +
-      '<div class="nv-chips">' + chamChip +
-        (streakToday ? '<span class="nv-chip ok">Đã hoàn thành hôm qua — ' + (typeof vlxtStreakFireHTML === 'function' ? vlxtStreakFireHTML(Number(nv.chuoiDung) || 0) : ('🔥 Chuỗi ' + (Number(nv.chuoiDung) || 0) + ' ngày')) + '!</span>' : '') +
+      '<div class="nv-head-row">' +
+        '<div class="nv-title">Nhiệm Vụ Hôm Nay</div>' +
+        headerBadge +
       '</div>' +
+      '<div class="nv-sub">Lộ trình XPS 2k9 · Còn ' + dlDays + ' ngày nữa đến kỳ thi tốt nghiệp</div>' +
+      lessonCardHtml +
+      teacherCardHtml +
       '<div class="nv-progress-wrap">' +
-        '<div class="nv-progress-label"><span>Tiến độ XPS 2k9</span><span>' + pct + '%</span></div>' +
+        '<div class="nv-progress-label"><span>Tiến độ hoàn thành của em</span><span style="color:#00f0ff;font-weight:700">' + pct + '%</span></div>' +
         '<div class="nv-progress-bar"><div class="nv-progress-fill" style="width:' + pct + '%"></div></div>' +
       '</div>' +
-      (cham > 0 ? '<div style="font-size:12px;color:#fbbf24;margin-bottom:6px">💡 Có thể làm bù nhiều buổi/ngày để đuổi kịp.</div>' : '') +
       '<div class="nv-btn-row">' +
-        '<button class="nv-btn nv-btn-secondary" onclick="vlxtCloseNhiemVu()">Tắt</button>' +
-        actionBtn +
+        '<button class="nv-btn nv-btn-secondary" onclick="vlxtCloseNhiemVu()">Đóng</button>' +
+        '<button class="nv-btn nv-btn-primary" onclick="vlxtGoStudy()"><i class="fa-solid fa-play"></i> Bắt đầu học ngay</button>' +
       '</div>'
     );
   }
 
-  // ─── 3. Đua Top đã mở khoá ───────────────────────────────
+  // ─── 3. Đấu Hạng đã mở khoá ───────────────────────────────
   function showDuaTopUnlocked(nv, user) {
     injectCSS();
     openOverlay(
       '<div style="text-align:center">' +
         '<div style="font-size:clamp(36px,5vh,48px);margin-bottom:8px">🏆</div>' +
-        '<div class="nv-title" style="justify-content:center;padding-right:0">Đua Top đã mở khoá!</div>' +
+        '<div class="nv-title" style="justify-content:center;padding-right:0">Đấu Hạng đã mở khoá!</div>' +
         '<div class="nv-sub" style="text-align:center">Em đã hoàn thành tốt nhiệm vụ hôm nay,<br>giờ là lúc leo Bảng Vàng!</div>' +
         '<div class="nv-chips" style="justify-content:center">' +
-          '<span class="nv-chip ok">Tổng điểm Đua Top: ' + (nv.tongDiemDuaTop || 0) + ' LP</span>' +
+          '<span class="nv-chip ok">Tổng điểm Đấu Hạng: ' + (nv.tongDiemDuaTop || 0) + ' LP</span>' +
           (nv.chuoiDung ? '<span class="nv-chip">' + (typeof vlxtStreakFireHTML === 'function' ? vlxtStreakFireHTML(Number(nv.chuoiDung)) : ('🔥 Chuỗi ' + Number(nv.chuoiDung) + ' ngày')) + '</span>' : '') +
         '</div>' +
         '<div class="nv-btn-row" style="margin-top:16px">' +
           '<button class="nv-btn nv-btn-secondary" onclick="vlxtCloseNhiemVu()">Để sau</button>' +
-          '<button class="nv-btn nv-btn-primary" onclick="window.location.href=\'dua-top.html\'">Vào Đua Top 🚀</button>' +
+          '<button class="nv-btn nv-btn-primary" onclick="window.location.href=\'dua-top.html\'">Vào Đấu Hạng 🚀</button>' +
         '</div>' +
       '</div>'
     );
@@ -449,7 +492,7 @@
     var total   = xps ? xps.length : 0;
     var isDone  = total > 0 && conTro >= total;
     var lesson  = (xps && !isDone) ? xps[conTro] : null;
-    var title   = isDone ? 'Chế độ Đua Top' : 'Nhiệm vụ hôm nay';
+    var title   = isDone ? 'Chế độ Đấu Hạng' : 'Nhiệm vụ hôm nay';
     var sub     = isDone ? 'Leo Bảng Vàng ngay!' : (lesson ? lesson.TenBai : 'Buổi ' + (conTro + 1) + '/' + total);
 
     var ban = document.createElement('div');
@@ -579,7 +622,7 @@
         if (isTrangChu()) showMissionPopup(_state.nv, _state.xps, _state.user, _state.teachingKey, false);
         else showMissionBanner(_state.nv, _state.xps);
       } else if (oldBanner) {
-        // Vừa bắt kịp tiến độ → cập nhật lại banner (vd chuyển sang "Chế độ Đua Top")
+        // Vừa bắt kịp tiến độ → cập nhật lại banner (vd chuyển sang "Chế độ Đấu Hạng")
         oldBanner.remove();
         showMissionBanner(_state.nv, _state.xps);
       }
@@ -640,7 +683,13 @@
 
       if (nv.lastMissionDate === todayS || localShown) {
         if (realConTro < xps.length) {
-          if (isTrangChu()) showMissionPopup(nv, xps, user, teachingKey, false);
+          if (isTrangChu()) {
+            if (window.vlxtWaitGravityPopup) {
+              window._pendingMissionCall = function() { showMissionPopup(nv, xps, user, teachingKey, false); };
+            } else {
+              showMissionPopup(nv, xps, user, teachingKey, false);
+            }
+          }
           else showMissionBanner(nv, xps);
         } else {
           showMissionBanner(nv, xps);
@@ -649,9 +698,9 @@
       }
 
       // ─── Chuỗi ngày liên tục (chuoiDung) ─────────────────────
-      // Đua Top là ĐỀ XUẤT THEO NGÀY, không phải mở khoá vĩnh viễn:
+      // Đấu Hạng là ĐỀ XUẤT THEO NGÀY, không phải mở khoá vĩnh viễn:
       // mỗi ngày quay lại, nếu học sinh đã tiến bộ (xem xong bài được giao)
-      // kể từ lần ghé thăm gần nhất → tăng chuỗi +1 và hiện đề xuất Đua Top
+      // kể từ lần ghé thăm gần nhất → tăng chuỗi +1 và hiện đề xuất Đấu Hạng
       // hôm đó. Bỏ lỡ (không tiến bộ trong ngày liền trước, hoặc bỏ cách
       // ≥1 ngày không vào) → reset chuỗi về 0.
       var prevDateStr = nv.lastMissionDate || '';
@@ -670,7 +719,7 @@
       nv.lastMissionDate = todayS;
       nv.chuoiDung = newStreak;
 
-      // Hiện popup — Đua Top chỉ bật màn hình chúc mừng vào đúng ngày vừa
+      // Hiện popup — Đấu Hạng chỉ bật màn hình chúc mừng vào đúng ngày vừa
       // hoàn thành nhiệm vụ VÀ đã xem hết mọi bài hiện có; nếu đã ở trạng
       // thái "hết bài" từ trước (không có gì mới hôm nay) thì chỉ hiện banner
       // nhắc nhẹ, tránh lặp lại popup ăn mừng mỗi ngày.
@@ -680,7 +729,13 @@
       } else if (realConTro >= xps.length) {
         showMissionBanner(nv, xps);
       } else {
-        if (isTrangChu()) showMissionPopup(nv, xps, user, teachingKey, streakToday);
+        if (isTrangChu()) {
+            if (window.vlxtWaitGravityPopup) {
+              window._pendingMissionCall = function() { showMissionPopup(nv, xps, user, teachingKey, streakToday); };
+            } else {
+              showMissionPopup(nv, xps, user, teachingKey, streakToday);
+            }
+          }
         else showMissionBanner(nv, xps);
       }
 

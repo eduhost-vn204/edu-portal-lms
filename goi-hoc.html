@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng Giá & Gói Học · Vật Lý Xuân Trường</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=DM+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --blue: #0b84f3;
+            --cyan: #00f0ff;
+            --green: #10b981;
+            --yellow: #f59e0b;
+            --purple: #8b5cf6;
+            --bg: #0d1117;
+            --bg-card: rgba(22, 27, 34, 0.95);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed; inset: 0; z-index: 0;
+            background:
+                radial-gradient(circle at 20% 15%, rgba(11, 132, 243, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 80% 85%, rgba(0, 240, 255, 0.08) 0%, transparent 45%),
+                #0d1117;
+            pointer-events: none;
+        }
+
+        /* ─── NAVBAR ─── */
+        .navbar {
+            position: sticky; top: 0; left: 0; right: 0; z-index: 200;
+            height: 60px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px;
+            background: rgba(13, 17, 23, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-left { display: flex; align-items: center; gap: 20px; }
+        .nav-logo {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 15px; font-weight: 800; color: #fff; text-decoration: none;
+        }
+        .nav-links-sub { display: flex; gap: 16px; margin-left: 12px; }
+        .nav-links-sub a {
+            color: var(--text-muted); text-decoration: none; font-size: 13.5px; font-weight: 600;
+            transition: color 0.15s;
+        }
+        .nav-links-sub a:hover { color: #fff; }
+        @media(max-width: 768px){ .nav-links-sub { display: none; } }
+
+        /* ─── CONTAINER ─── */
+        .container {
+            position: relative; z-index: 1;
+            max-width: 1080px; width: 100%; margin: 0 auto;
+            padding: 36px 16px 80px; flex: 1;
+        }
+
+        /* ─── HEADER ─── */
+        .header-section { text-align: center; margin-bottom: 44px; }
+        .badge-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 16px; border-radius: 30px;
+            background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #fbbf24; font-size: 13px; font-weight: 700; margin-bottom: 16px;
+        }
+        .header-title {
+            font-size: clamp(30px, 5vw, 44px); font-weight: 900; color: #fff; line-height: 1.2; margin-bottom: 12px;
+        }
+        .header-title span {
+            background: linear-gradient(135deg, #00f0ff 0%, #0b84f3 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .header-desc { font-size: 16px; color: var(--text-muted); max-width: 640px; margin: 0 auto; line-height: 1.6; }
+
+        /* ─── PRICING TIERS ─── */
+        .pricing-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 24px; align-items: stretch;
+        }
+
+        .pricing-card {
+            background: var(--bg-card); border: 1.5px solid var(--border);
+            border-radius: 22px; padding: 32px 26px; display: flex; flex-direction: column;
+            justify-content: space-between; position: relative;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+        }
+        .pricing-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 240, 255, 0.4);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Featured tier */
+        .pricing-card.featured {
+            border-color: var(--cyan);
+            background: linear-gradient(180deg, rgba(11, 132, 243, 0.08) 0%, rgba(22, 27, 34, 0.98) 100%);
+            box-shadow: 0 12px 36px rgba(0, 240, 255, 0.15);
+        }
+        .featured-tag {
+            position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(135deg, #0b84f3, #00f0ff); color: #04101e;
+            font-size: 11.5px; font-weight: 800; padding: 4px 14px; border-radius: 20px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        .plan-header { margin-bottom: 22px; }
+        .plan-name { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+        .plan-sub { font-size: 13.5px; color: var(--text-muted); line-height: 1.4; }
+
+        .plan-price-wrap {
+            display: flex; align-items: baseline; gap: 6px; margin: 20px 0 24px;
+        }
+        .plan-price { font-size: 40px; font-weight: 900; color: #fff; font-family: 'DM Mono', monospace; }
+        .plan-cycle { font-size: 14px; color: var(--text-muted); font-weight: 600; }
+
+        .features-list { list-style: none; display: flex; flex-direction: column; gap: 13px; margin-bottom: 30px; }
+        .features-list li {
+            display: flex; gap: 10px; font-size: 14.5px; color: #cbd5e1; line-height: 1.45;
+        }
+        .features-list li i {
+            color: var(--cyan); font-size: 14px; margin-top: 3px; flex-shrink: 0;
+        }
+
+        .btn-select-plan {
+            width: 100%; padding: 14px; border-radius: 12px; border: none;
+            font-size: 15px; font-weight: 800; cursor: pointer;
+            transition: all 0.2s; font-family: inherit; display: inline-flex;
+            align-items: center; justify-content: center; gap: 8px; text-decoration: none;
+        }
+        .btn-select-plan.primary {
+            background: linear-gradient(135deg, #0b84f3 0%, #00f0ff 100%);
+            color: #04101e; box-shadow: 0 8px 24px rgba(0, 240, 255, 0.25);
+        }
+        .btn-select-plan.primary:hover {
+            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.4); transform: translateY(-2px);
+        }
+        .btn-select-plan.secondary {
+            background: rgba(255, 255, 255, 0.08); color: #fff; border: 1px solid var(--border);
+        }
+        .btn-select-plan.secondary:hover { background: rgba(255, 255, 255, 0.15); }
+
+        /* ─── PAYMENT MODAL (VIETQR) ─── */
+        .payment-modal {
+            display: none; position: fixed; inset: 0; z-index: 9999;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+            align-items: center; justify-content: center; padding: 16px;
+        }
+        .payment-box {
+            background: #111827; border: 1.5px solid rgba(0, 240, 255, 0.3);
+            border-radius: 22px; max-width: 500px; width: 100%; padding: 28px 24px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7); position: relative;
+            max-height: 90vh; overflow-y: auto;
+        }
+        .modal-close-btn {
+            position: absolute; top: 16px; right: 16px; background: none; border: none;
+            color: var(--text-muted); font-size: 18px; cursor: pointer; width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center; border-radius: 8px;
+        }
+        .modal-close-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+        .payment-head { text-align: center; margin-bottom: 20px; }
+        .payment-title { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+        .payment-sub { font-size: 13.5px; color: var(--text-muted); }
+
+        .qr-frame {
+            background: #fff; border-radius: 14px; padding: 14px;
+            width: fit-content; margin: 0 auto 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+        .qr-image { width: 220px; height: 220px; display: block; object-fit: contain; }
+
+        .bank-details-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);
+            border-radius: 14px; padding: 16px; margin-bottom: 20px;
+        }
+        .detail-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 13.5px;
+        }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-label { color: var(--text-muted); }
+        .detail-val { font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
+        .btn-copy {
+            background: rgba(255, 255, 255, 0.1); border: none; color: var(--cyan);
+            padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer;
+        }
+        .btn-copy:hover { background: rgba(0, 240, 255, 0.2); }
+
+        .btn-confirm-pay {
+            width: 100%; padding: 14px; border-radius: 12px; border: none;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #fff; font-size: 15px; font-weight: 800; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        /* ─── FAQ SECTION ─── */
+        .faq-section { margin-top: 60px; }
+        .faq-title { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 20px; text-align: center; }
+        .faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .faq-item {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 14px; padding: 18px;
+        }
+        .faq-q { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+        .faq-a { font-size: 13.5px; color: var(--text-muted); line-height: 1.5; }
+    </style>
+    <script src="auth.js?v=7"></script>
+</head>
+<body>
+
+<!-- ─── NAVBAR ─── -->
+<nav class="navbar">
+    <div class="nav-left">
+        <a href="index.html" class="nav-logo">
+            <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+                <circle cx="14" cy="14" r="2.8" fill="#0b84f3"/>
+                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.3" fill="none" opacity="0.7"/>
+                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.3" fill="none" opacity="0.5" transform="rotate(60 14 14)"/>
+                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.3" fill="none" opacity="0.5" transform="rotate(-60 14 14)"/>
+            </svg>
+            Vật Lý Xuân Trường
+        </a>
+        <div class="nav-links-sub">
+            <a href="baihoc.html">Khóa Học</a>
+            <a href="danh-gia-nang-luc.html" style="color:var(--cyan);font-weight:700">🎯 Đánh Giá Năng Lực (Free)</a>
+            <a href="phong-thi-thu.html">Phòng Thi Thử</a>
+        </div>
+    </div>
+    <div class="nav-right">
+        <div id="vlxt-nav-user-area"></div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <!-- ─── HEADER ─── -->
+    <div class="header-section">
+        <div class="badge-pill"><i class="fa-solid fa-gem"></i> Đầu Tư Cho Điểm 9+ Vật Lý 12</div>
+        <h1 class="header-title">CHỌN GÓI HỌC <span>PHÙ HỢP VỚI BẠN</span></h1>
+        <p class="header-desc">Học bài giảng video độc quyền, giải bộ 20 câu trắc nghiệm dừng video theo từng bài và rèn luyện kỹ năng thực chiến cùng Thầy Xuân Trường.</p>
+    </div>
+
+    <!-- ─── PRICING TIERS ─── -->
+    <div class="pricing-grid">
+
+        <!-- GÓI 1: THEO THÁNG (50K) -->
+        <div class="pricing-card">
+            <div class="plan-header">
+                <div class="plan-name">Gói Tháng Linh Hoạt</div>
+                <div class="plan-sub">Trải nghiệm toàn bộ bài giảng video và trắc nghiệm tương tác từng tháng một.</div>
+            </div>
+            <div class="plan-price-wrap">
+                <div class="plan-price">50.000đ</div>
+                <div class="plan-cycle">/ tháng</div>
+            </div>
+            <ul class="features-list">
+                <li><i class="fa-solid fa-circle-check"></i> <span>Mở khóa 100% <strong>41 bài giảng video chuyên sâu</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Tương tác hệ thống <strong>20 câu dừng video</strong> mỗi bài</span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Tải toàn bộ <strong>PDF lý thuyết & bài tập</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Ôn tập không giới hạn trên cả Web và Điện thoại</span></li>
+            </ul>
+            <button class="btn-select-plan secondary" onclick="openPayment('THANG50K', 'Gói Tháng Linh Hoạt', 50000)">
+                <i class="fa-solid fa-qrcode"></i> Đăng Ký Gói 50k / Tháng
+            </button>
+        </div>
+
+        <!-- GÓI 2: THEO NĂM (TIẾT KIỆM) -->
+        <div class="pricing-card featured">
+            <div class="featured-tag">ĐƯỢC CHỌN NHIỀU NHẤT ⭐</div>
+            <div class="plan-header">
+                <div class="plan-name">Trọn Khóa Cả Năm (XPS 2k9)</div>
+                <div class="plan-sub">Đồng hành trọn vẹn cả năm học cho đến ngày bước vào phòng thi tốt nghiệp.</div>
+            </div>
+            <div class="plan-price-wrap">
+                <div class="plan-price">399.000đ</div>
+                <div class="plan-cycle">/ cả năm (~33k/tháng)</div>
+            </div>
+            <ul class="features-list">
+                <li><i class="fa-solid fa-circle-check"></i> <span>Toàn bộ quyền lợi của <strong>Gói Tháng</strong> trọn năm học</span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Mở khóa toàn bộ <strong>Phòng Thi Thử CBT chuẩn cấu trúc Bộ</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Khóa học cấp tốc <strong>Tổng ôn & Luyện đề về đích</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Huy hiệu <strong>VIP Member</strong> trên bảng xếp hạng Đấu Hạng</span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Tiết kiệm <strong>35% học phí</strong> so với đăng ký từng tháng</span></li>
+            </ul>
+            <button class="btn-select-plan primary" onclick="openPayment('NAM399K', 'Gói Trọn Năm XPS 2k9', 399000)">
+                <i class="fa-solid fa-bolt"></i> Nhận Ưu Đãi Trọn Khóa (399k)
+            </button>
+        </div>
+
+        <!-- GÓI 3: LỚP ONLINE CÙNG THẦY -->
+        <div class="pricing-card">
+            <div class="plan-header">
+                <div class="plan-name">Lớp Online Cùng Thầy (VIP)</div>
+                <div class="plan-sub">Học tương tác trực tiếp hàng tuần cùng Thầy Xuân Trường và đội ngũ trợ giảng.</div>
+            </div>
+            <div class="plan-price-wrap">
+                <div class="plan-price">850.000đ</div>
+                <div class="plan-cycle">/ khóa học</div>
+            </div>
+            <ul class="features-list">
+                <li><i class="fa-solid fa-circle-check"></i> <span>Bao gồm toàn bộ quyền lợi của <strong>Gói Trọn Năm</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Học trực tiếp qua <strong>Google Meet/Zoom 2-3 buổi/tuần</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Hỏi đáp bài tập <strong>1-1 với Thầy & Trợ giảng</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Kiểm tra định kỳ và sửa bài cá nhân hóa chi tiết</span></li>
+            </ul>
+            <button class="btn-select-plan secondary" onclick="openPayment('VIP850K', 'Lớp Online Cùng Thầy (VIP)', 850000)">
+                <i class="fa-solid fa-user-tie"></i> Đăng Ký Lớp Cùng Thầy
+            </button>
+        </div>
+
+    </div>
+
+    <!-- ─── FAQ ─── -->
+    <div class="faq-section">
+        <h2 class="faq-title">CÂU HỎI THƯỜNG GẶP</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <div class="faq-q">Sau khi chuyển khoản bao lâu thì tài khoản được kích hoạt?</div>
+                <div class="faq-a">Sau khi bạn quét mã VietQR chuyển khoản với đúng nội dung, hệ thống sẽ kích hoạt tài khoản trong vòng 5 - 15 phút. Bạn chỉ cần tải lại trang là học được ngay.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Em có thể học trên điện thoại được không?</div>
+                <div class="faq-a">Hoàn toàn được! Website Vật Lý Xuân Trường được tối ưu mượt mà 100% cho cả iPhone, Android, iPad và Máy tính.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Gói 50k/tháng có bị tự động trừ tiền tháng sau không?</div>
+                <div class="faq-a">Không. Bạn chuyển khoản tháng nào sẽ được sử dụng tháng đó, hoàn toàn chủ động, không có cơ chế tự động trừ tiền trong thẻ hay tài khoản của bạn.</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ─── VIETQR PAYMENT MODAL ─── -->
+<div id="payment-modal" class="payment-modal">
+    <div class="payment-box">
+        <button class="modal-close-btn" onclick="closePayment()"><i class="fa-solid fa-xmark"></i></button>
+
+        <div class="payment-head">
+            <h3 class="payment-title" id="modal-plan-name">Thanh Toán Gói Học</h3>
+            <p class="payment-sub">Quét mã VietQR bằng bất kỳ App Ngân hàng hoặc MoMo</p>
+        </div>
+
+        <div class="qr-frame">
+            <img id="vietqr-image" class="qr-image" src="" alt="Mã VietQR Chuyển Khoản">
+            <div style="font-size:12px;font-weight:700;color:#0b84f3;margin-top:8px;">NAPAS 247 · TỰ ĐỘNG ĐIỀN THÔNG TIN</div>
+        </div>
+
+        <div class="bank-details-card">
+            <div class="detail-row">
+                <span class="detail-label">Ngân hàng</span>
+                <span class="detail-val" id="bank-name-val">MB BANK (Quân Đội)</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Chủ tài khoản</span>
+                <span class="detail-val" id="bank-owner-val">DƯƠNG XUÂN TRƯỜNG</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Số tài khoản</span>
+                <span class="detail-val">
+                    <span id="bank-acc-val">0987654321</span>
+                    <button class="btn-copy" onclick="copyText('bank-acc-val')">Copy</button>
+                </span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Số tiền</span>
+                <span class="detail-val" style="color:#10b981">
+                    <span id="bank-amount-val">50.000đ</span>
+                    <button class="btn-copy" onclick="copyAmount()">Copy</button>
+                </span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Nội dung CK</span>
+                <span class="detail-val" style="color:var(--cyan)">
+                    <span id="bank-memo-val">VLXT HS01 THANG50K</span>
+                    <button class="btn-copy" onclick="copyText('bank-memo-val')">Copy</button>
+                </span>
+            </div>
+        </div>
+
+        <button class="btn-confirm-pay" onclick="handlePayDone()">
+            <i class="fa-solid fa-circle-check"></i> Tôi Đã Chuyển Khoản Thành Công
+        </button>
+        <p style="font-size:12px;color:#94a3b8;text-align:center;margin-top:10px;">
+            Hỗ trợ nhanh qua Zalo Thầy: <strong>0987.654.321</strong> (24/7)
+        </p>
+    </div>
+</div>
+
+<script>
+// Cấu hình thông tin tài khoản ngân hàng của Thầy
+// (Thầy có thể cập nhật STK và Tên Ngân Hàng thật bất kỳ lúc nào)
+const PAYMENT_CONFIG = {
+    bankId: 'MB', // MB, VCB, TCB, VPB, TPB, BIDV, etc.
+    accountNo: '0987654321', // STK Thầy
+    accountName: 'DUONG XUAN TRUONG',
+    template: 'compact2'
+};
+
+let currentAmount = 50000;
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (typeof vlxtGetUser === 'function') {
+        const u = vlxtGetUser();
+        if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(u);
+    }
+});
+
+function openPayment(code, planName, amount) {
+    const user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
+    const sdt = user ? (user.sdt || user.email.split('@')[0]) : 'HOCSINH';
+    
+    currentAmount = amount;
+    const memo = `VLXT ${sdt} ${code}`.replace(/[^a-zA-Z0-9 ]/g, '').toUpperCase();
+
+    document.getElementById('modal-plan-name').textContent = `Thanh Toán: ${planName}`;
+    document.getElementById('bank-acc-val').textContent = PAYMENT_CONFIG.accountNo;
+    document.getElementById('bank-owner-val').textContent = PAYMENT_CONFIG.accountName;
+    document.getElementById('bank-amount-val').textContent = amount.toLocaleString('vi-VN') + 'đ';
+    document.getElementById('bank-memo-val').textContent = memo;
+
+    // Sinh link VietQR chuẩn
+    const qrUrl = `https://img.vietqr.io/image/${PAYMENT_CONFIG.bankId}-${PAYMENT_CONFIG.accountNo}-${PAYMENT_CONFIG.template}.png?amount=${amount}&addInfo=${encodeURIComponent(memo)}&accountName=${encodeURIComponent(PAYMENT_CONFIG.accountName)}`;
+    document.getElementById('vietqr-image').src = qrUrl;
+
+    document.getElementById('payment-modal').style.display = 'flex';
+}
+
+function closePayment() {
+    document.getElementById('payment-modal').style.display = 'none';
+}
+
+function copyText(elemId) {
+    const txt = document.getElementById(elemId).textContent;
+    navigator.clipboard.writeText(txt).then(() => {
+        alert('Đã sao chép: ' + txt);
+    }).catch(() => {
+        alert('Nội dung: ' + txt);
+    });
+}
+
+function copyAmount() {
+    navigator.clipboard.writeText(String(currentAmount)).then(() => {
+        alert('Đã sao chép số tiền: ' + currentAmount.toLocaleString('vi-VN') + 'đ');
+    });
+}
+
+function handlePayDone() {
+    alert('Cảm ơn bạn! Hệ thống đã ghi nhận yêu cầu. Tài khoản của bạn sẽ được kích hoạt ngay sau khi tiền về (thường 5 - 15 phút). Nếu cần gấp, bạn có thể gửi ảnh bill qua Zalo cho Thầy nhé!');
+    closePayment();
+}
+</script>
+
+</body>
+</html>

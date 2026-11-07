@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hồ Sơ Học Sinh | Vật Lý Xuân Trường</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script defer src="auth.js?v=7"></script>
+  <script src="xephang-fx.js?v=1"></script>
+  <script defer src="thongbao.js?v=2"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="device-id.js?v=1"></script>
+  <script src="ho-tro-chat.js?v=1"></script>
+  <script src="ban-be.js?v=4"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #0b84f3;
+      --black: #0f0f0f;
+      --gray: #555;
+      --gray2: #888;
+      --border: #e5e5e5;
+      --bg: #ffffff;
+      --bg2: #f5f7fa;
+      --gold: #f59e0b;
+      --green: #10b981;
+      --red: #ef4444;
+    }
+    body {
+      background: var(--bg2);
+      color: var(--black);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-size: 15px; font-weight: 700; color: var(--black);
+      text-decoration: none; display: flex; align-items: center; gap: 8px;
+    }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a {
+      font-size: 14px; font-weight: 500; color: var(--gray);
+      text-decoration: none; transition: color 0.15s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--blue); }
+    @media (max-width: 640px) { .nav-links { display: none; } }
+
+    /* ── MAIN ── */
+    .page { max-width: 880px; margin: 0 auto; padding: 80px 16px 40px; }
+
+    /* ── PROFILE CARD ── */
+    .profile-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .avatar-big {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: #0b84f3;
+      color: #fff; font-size: 26px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .profile-info h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+    .profile-info p { font-size: 14px; color: var(--gray); }
+    .rank-badge {
+      margin-left: auto;
+      display: flex; flex-direction: column; align-items: center;
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border: 2px solid #f59e0b;
+      border-radius: 14px;
+      padding: 12px 20px;
+      flex-shrink: 0;
+    }
+    .rank-name { font-size: 18px; font-weight: 900; color: #92400e; }
+    .rank-sub { font-size: 12px; font-weight: 700; opacity: .7; margin-left: 2px; }
+    .rank-lp { font-size: 13px; color: #b45309; margin-top: 2px; }
+    @media (max-width: 540px) {
+      .profile-card { flex-wrap: wrap; }
+      .rank-badge { margin-left: 0; width: 100%; align-items: flex-start; flex-direction: row; align-items: center; gap: 12px; }
+    }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      text-align: center;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    }
+    .stat-val { font-size: 26px; font-weight: 900; }
+    .stat-val.lp  { color: var(--blue); }
+    .stat-val.done { color: var(--green); }
+    .stat-val.score { color: var(--gold); }
+    .stat-lbl { font-size: 12px; color: var(--gray2); margin-top: 4px; font-weight: 500; }
+    @media (max-width: 480px) {
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .stat-card:last-child { grid-column: span 2; }
+    }
+    /* ─── MOBILE NAV ─── */
+    @media (max-width: 600px) {
+      .navbar { padding: 0 14px; }
+      .nav-logo { font-size: 0 !important; gap: 0 !important; }
+      .nav-logo svg { width: 24px; height: 24px; flex-shrink: 0; }
+      #vlxt-avatar-name { display: none !important; }
+      .page { padding-top: 70px; }
+    }
+    @media (max-width: 400px) {
+      .stats-row { grid-template-columns: 1fr; }
+      .stat-card:last-child { grid-column: span 1; }
+      .tabs-bar { flex-wrap: wrap; }
+      .tab-btn { font-size: 12px; padding: 7px 8px; }
+    }
+
+    /* ── TABS ── */
+    .tabs-bar {
+      display: flex; gap: 4px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 20px;
+    }
+    .tab-btn {
+      flex: 1; padding: 9px 12px;
+      border: none; background: transparent;
+      border-radius: 8px;
+      font-size: 14px; font-weight: 600; color: var(--gray);
+      cursor: pointer; transition: all 0.15s;
+      font-family: inherit;
+    }
+    .tab-btn.active {
+      background: var(--black); color: #fff;
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── SECTION CARD ── */
+    .section-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    }
+    .section-head {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      font-size: 15px; font-weight: 700;
+    }
+
+    /* ── TIEN DO ── */
+    .progress-list { padding: 0; }
+    .progress-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 20px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    .progress-item:last-child { border-bottom: none; }
+    .progress-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green); flex-shrink: 0;
+    }
+    .progress-name { flex: 1; color: var(--black); font-weight: 500; }
+    .progress-khoa { font-size: 12px; color: var(--gray2); }
+    .empty-msg {
+      padding: 40px 20px; text-align: center;
+      color: var(--gray2); font-size: 14px;
+    }
+
+    /* ── DIEM THI ── */
+    .score-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 20px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    .score-item:last-child { border-bottom: none; }
+    .score-circle {
+      width: 44px; height: 44px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 800; flex-shrink: 0;
+    }
+    .score-circle.high  { background: #d1fae5; color: #065f46; }
+    .score-circle.mid   { background: #fef3c7; color: #92400e; }
+    .score-circle.low   { background: #fee2e2; color: #991b1b; }
+    .score-info { flex: 1; }
+    .score-info .score-date { font-size: 12px; color: var(--gray2); margin-top: 2px; }
+    .score-info .score-name { font-weight: 600; }
+
+    /* ── LEADERBOARD ── */
+    .lb-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 20px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    .lb-row:last-child { border-bottom: none; }
+    .lb-row.me { background: #eff6ff; }
+    .lb-row.profile-link { cursor: pointer; transition: background .15s, transform .15s; }
+    .lb-row.profile-link:hover { background: rgba(11,132,243,.07); transform: translateX(2px); }
+    .lb-rank {
+      width: 28px; text-align: center;
+      font-size: 15px; font-weight: 800;
+      color: var(--gray2); flex-shrink: 0;
+    }
+    .lb-rank.top1 { color: #f59e0b; }
+    .lb-rank.top2 { color: #9ca3af; }
+    .lb-rank.top3 { color: #b45309; }
+    .lb-name { flex: 1; font-weight: 600; }
+    .lb-class { font-size: 12px; color: var(--gray2); }
+    .lb-lp { font-size: 16px; font-weight: 800; color: var(--blue); }
+    .lb-lp-lbl { font-size: 11px; color: var(--gray2); }
+
+    /* ── RANK TIERS ── */
+    .rank-info-row {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .rank-chip {
+      padding: 4px 12px; border-radius: 20px;
+      font-size: 12px; font-weight: 700;
+    }
+    .rank-iron   { background:#f1f5f9; color:#475569; }
+    .rank-bronze { background:#fef3c7; color:#92400e; }
+    .rank-silver { background:#e2e8f0; color:#334155; }
+    .rank-gold   { background:#fef9c3; color:#b45309; }
+    .rank-plat   { background:#d1fae5; color:#065f46; }
+    .rank-diamond{ background:#ede9fe; color:#5b21b6; }
+
+    /* ── LOADING ── */
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.2s infinite;
+      border-radius: 8px;
+    }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+  
+    /* ─── DARK MODE ───
+       Rất nhiều phần tử (progress-name, lb-class, stat-lbl, profile-info p, ...) dùng
+       trực tiếp var(--black)/var(--gray)/var(--gray2)/var(--border) là các biến CHỈ có
+       giá trị sáng cố định, không hề được định nghĩa lại khi bật dark mode → chữ tối
+       (#0f0f0f) nằm trên nền tối (#0d1117) gần như không đọc được. Định nghĩa lại NGAY
+       CÁC BIẾN này khi body.dark thay vì phải vá từng class lẻ tẻ (dễ sót). */
+    body.dark {
+      --black:#e6edf3; --gray:#9aa4af; --gray2:#8b949e;
+      --border:#30363d; --bg:#0d1117; --bg2:#0d1117;
+      background:#0d1117; color:#e6edf3;
+    }
+    /* .tab-btn.active dùng background:var(--black) làm nút "chọn" màu đen chữ trắng —
+       nếu để --black đổi thành màu sáng ở trên thì nút này sẽ thành nền sáng + chữ trắng
+       (mất chữ). Ghi đè riêng để nút active luôn tương phản tốt ở cả 2 chế độ. */
+    body.dark .tab-btn.active { background:#e6edf3; color:#0d1117; }
+    body.dark .navbar { background:rgba(13,17,23,0.95); border-color:#30363d; }
+    body.dark .nav-logo, body.dark .nav-links a { color:#e6edf3; }
+    body.dark .card, body.dark .profile-card, body.dark .section-card { background:#161b22; border-color:#30363d; }
+    body.dark h1, body.dark h2, body.dark h3 { color:#e6edf3; }
+    body.dark label { color:#8b949e; }
+    body.dark input, body.dark select { background:#0d1117; border-color:#30363d; color:#e6edf3; }
+    body.dark .stat-value { color:#e6edf3; }
+    body.dark .stat-label, body.dark .meta, body.dark .sub { color:#8b949e; }
+    body.dark .btn-secondary { background:#161b22; border-color:#30363d; color:#e6edf3; }
+    body.dark a:not(.nav-logo):not(.btn) { color:#58a6ff; }
+    /* .lb-row.me (dòng highlight vị trí của mình trong bảng xếp hạng) hardcode nền xanh rất nhạt
+       (#eff6ff) chỉ hợp nền sáng — ở dark mode chữ sáng (#e6edf3) rơi trên nền gần trắng này
+       gần như không đọc được. Đổi thành lớp phủ xanh mờ trên nền tối cho tương phản tốt. */
+    body.dark .lb-row.me { background: rgba(88,166,255,.15); }
+    .theme-toggle { background:none;border:none;cursor:pointer;padding:7px 10px;border-radius:8px;color:#555;font-size:15px;display:inline-flex;align-items:center;transition:color .15s; }
+    .theme-toggle:hover { color:#111; }
+    body.dark .theme-toggle { color:#8b949e; }
+    body.dark .theme-toggle:hover { color:#e6edf3; }
+
+    /* ─── MOBILE HAMBURGER MENU (giống YouTube) ─── */
+    .nav-hamburger {
+        display: none; background: none; border: none; cursor: pointer;
+        width: 38px; height: 38px; align-items: center; justify-content: center;
+        border-radius: 8px; color: var(--black); font-size: 19px; flex: none;
+    }
+    .nav-hamburger:hover { background: rgba(11,132,243,0.08); }
+    body.dark .nav-hamburger { color: #e6edf3; }
+    body.dark .nav-hamburger:hover { background: rgba(0,240,255,0.08); }
+
+    .nav-drawer-overlay {
+        position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 998;
+        opacity: 0; visibility: hidden; transition: opacity .25s ease;
+    }
+    .nav-drawer-overlay.open { opacity: 1; visibility: visible; }
+
+    .nav-drawer {
+        position: fixed; top: 0; left: 0; bottom: 0; width: 268px; max-width: 80vw;
+        background: #fff; z-index: 999; transform: translateX(-100%);
+        transition: transform .28s cubic-bezier(.16,1,.3,1);
+        display: flex; flex-direction: column; box-shadow: 4px 0 28px rgba(0,0,0,0.18);
+        overflow-y: auto;
+    }
+    .nav-drawer.open { transform: translateX(0); }
+    body.dark .nav-drawer { background: #161b22; }
+
+    .nav-drawer-head {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 16px 16px; border-bottom: 1px solid var(--border); flex: none;
+    }
+    .nav-drawer-head .ndh-brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 14.5px; color: var(--black); }
+    body.dark .nav-drawer-head .ndh-brand { color: #e6edf3; }
+    body.dark .nav-drawer-head { border-color: #30363d; }
+    .nav-drawer-close {
+        background: none; border: none; cursor: pointer; font-size: 17px; color: var(--gray);
+        width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex: none;
+    }
+    .nav-drawer-close:hover { background: rgba(0,0,0,0.06); }
+    body.dark .nav-drawer-close { color: #8b949e; }
+    body.dark .nav-drawer-close:hover { background: rgba(255,255,255,0.08); }
+
+    .nav-drawer-links { display: flex; flex-direction: column; padding: 8px; }
+    .nav-drawer-links a {
+        display: flex; align-items: center; gap: 14px; padding: 13px 14px; border-radius: 10px;
+        color: var(--black); text-decoration: none; font-size: 15px; font-weight: 600;
+    }
+    .nav-drawer-links a i { width: 20px; text-align: center; font-size: 16px; color: var(--gray2); }
+    .nav-drawer-links a:hover, .nav-drawer-links a.active { background: rgba(11,132,243,0.08); color: var(--blue); }
+    .nav-drawer-links a:hover i, .nav-drawer-links a.active i { color: var(--blue); }
+    body.dark .nav-drawer-links a { color: #e6edf3; }
+    body.dark .nav-drawer-links a:hover, body.dark .nav-drawer-links a.active { background: rgba(0,240,255,0.08); }
+    body.nav-drawer-locked { overflow: hidden; }
+    @media (max-width: 640px) { .nav-hamburger { display: inline-flex; } }
+
+/* ══════════════════════════════════════════════════════════════
+   VŨ TRỤ 5: ĐÀI QUAN SÁT TINH TÚ (OBSERVATORY HUD - SKAT)
+   ══════════════════════════════════════════════════════════════ */
+:root {
+  --obs-gold: #fbbf24;
+  --obs-amber: #f59e0b;
+  --obs-purple: #c084fc;
+  --obs-cyan: #38bdf8;
+  --obs-card: rgba(14, 10, 30, 0.65);
+  --obs-card-hover: rgba(22, 16, 48, 0.8);
+  --obs-border: rgba(192, 132, 252, 0.25);
+  --obs-border-gold: rgba(251, 191, 36, 0.5);
+  --obs-glow: rgba(168, 85, 247, 0.35);
+}
+
+body {
+  background: #030208 !important;
+  color: #f8fafc !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+  min-height: 100vh !important;
+  position: relative !important;
+  overflow-x: hidden !important;
+}
+
+#canvas-observatory-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hud-header, .page {
+  position: relative;
+  z-index: 10;
+}
+
+/* ─── HUD HEADER ─── */
+.hud-header {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  background: rgba(4, 2, 12, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(192, 132, 252, 0.2);
+  padding: 16px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.hud-header-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.hud-back-btn {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #fef08a;
+  background: rgba(28, 16, 48, 0.65);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  padding: 8px 20px;
+  border-radius: 100px;
+  backdrop-filter: blur(12px);
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
+}
+.hud-back-btn i {
+  color: var(--obs-gold);
+  font-size: 12px;
+  transition: transform 0.2s ease;
+}
+.hud-back-btn:hover {
+  background: rgba(88, 28, 135, 0.6);
+  border-color: var(--obs-gold);
+  box-shadow: 0 0 25px rgba(251, 191, 36, 0.5);
+  transform: translateX(-3px);
+  color: #fff;
+}
+.hud-world-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(22, 12, 42, 0.6);
+  border: 1px solid rgba(192, 132, 252, 0.3);
+  padding: 6px 16px;
+  border-radius: 100px;
+  backdrop-filter: blur(8px);
+}
+.world-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fbbf24;
+  box-shadow: 0 0 10px #fbbf24, 0 0 20px rgba(251, 191, 36, 0.9);
+  animation: pulseGoldDot 2s infinite ease-in-out;
+}
+@keyframes pulseGoldDot {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.4); opacity: 1; }
+}
+.world-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #fef08a;
+}
+.world-sep { color: rgba(255,255,255,0.3); font-size: 11px; }
+.world-sub {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: rgba(254, 240, 138, 0.85);
+}
+.hud-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hud-mode-btn {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #fef08a;
+  background: rgba(24, 14, 46, 0.6);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  padding: 7px 16px;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.hud-mode-btn:hover {
+  background: rgba(88, 28, 135, 0.5);
+  border-color: var(--obs-gold);
+  color: #fff;
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+}
+
+/* ─── MAIN CONTENT RE-STYLING (AERO-GLASS) ─── */
+.profile-card {
+  background: var(--obs-card) !important;
+  border: 1px solid var(--obs-border) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border-radius: 24px !important;
+  padding: 32px 36px !important;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(192, 132, 252, 0.08) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+.profile-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--obs-purple), var(--obs-gold), transparent);
+}
+.profile-info h2 {
+  color: #ffffff !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 22px !important;
+  font-weight: 800 !important;
+}
+.profile-info p {
+  color: #cbd5e1 !important;
+}
+.avatar-big {
+  background: linear-gradient(135deg, #7c3aed 0%, #d97706 100%) !important;
+  box-shadow: 0 0 25px rgba(124, 58, 237, 0.5) !important;
+  border: 2px solid rgba(255, 255, 255, 0.4) !important;
+}
+.rank-badge {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(124, 58, 237, 0.25)) !important;
+  border: 1.5px solid var(--obs-gold) !important;
+  backdrop-filter: blur(12px) !important;
+  border-radius: 18px !important;
+  padding: 14px 24px !important;
+  box-shadow: 0 0 30px rgba(245, 158, 11, 0.3) !important;
+}
+.rank-name {
+  color: #fbbf24 !important;
+  font-family: 'Orbitron', monospace !important;
+  text-shadow: 0 0 14px rgba(251, 191, 36, 0.6) !important;
+}
+.rank-sub { color: #fef08a !important; }
+.rank-lp { color: #e2e8f0 !important; font-weight: 700 !important; }
+
+/* Stats cards */
+.stat-card {
+  background: var(--obs-card) !important;
+  border: 1px solid var(--obs-border) !important;
+  backdrop-filter: blur(16px) !important;
+  border-radius: 18px !important;
+  padding: 22px !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+  transition: all 0.25s ease !important;
+}
+.stat-card:hover {
+  border-color: var(--obs-gold) !important;
+  box-shadow: 0 0 25px var(--obs-glow) !important;
+  transform: translateY(-3px) !important;
+}
+.stat-val {
+  font-family: 'Orbitron', monospace !important;
+  font-size: 28px !important;
+}
+.stat-val.lp { color: #38bdf8 !important; text-shadow: 0 0 16px rgba(56, 189, 248, 0.6) !important; }
+.stat-val.done { color: #34d399 !important; text-shadow: 0 0 16px rgba(52, 211, 153, 0.6) !important; }
+.stat-val.score { color: #fbbf24 !important; text-shadow: 0 0 16px rgba(251, 191, 36, 0.6) !important; }
+.stat-lbl { color: #94a3b8 !important; font-weight: 600 !important; }
+
+/* Tabs bar */
+.tabs-bar {
+  background: rgba(14, 10, 30, 0.6) !important;
+  border: 1px solid var(--obs-border) !important;
+  backdrop-filter: blur(16px) !important;
+  border-radius: 16px !important;
+  padding: 6px !important;
+}
+.tab-btn {
+  color: #94a3b8 !important;
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  transition: all 0.2s ease !important;
+}
+.tab-btn:hover {
+  color: #ffffff !important;
+  background: rgba(124, 58, 237, 0.2) !important;
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.7), rgba(245, 158, 11, 0.7)) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.4) !important;
+}
+
+/* Section cards */
+.section-card {
+  background: var(--obs-card) !important;
+  border: 1px solid var(--obs-border) !important;
+  backdrop-filter: blur(16px) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4) !important;
+  color: #f1f5f9 !important;
+}
+.section-head {
+  border-bottom: 1px solid rgba(192, 132, 252, 0.15) !important;
+  color: #ffffff !important;
+  font-family: 'Orbitron', 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 16px !important;
+  letter-spacing: 0.5px !important;
+}
+
+</style>
+  <script src="cache.js?v=1"></script>
+</head>
+<body>
+<div id="canvas-observatory-container"></div>
+
+
+<!-- NAV -->
+
+<!-- HUD HEADER CHO ĐÀI QUAN SÁT TINH TÚ (CELESTIAL OBSERVATORY) -->
+<header class="hud-header">
+  <div class="hud-header-left">
+    <a href="galaxy-multiverse.html" class="hud-back-btn">
+      <i class="fa-solid fa-arrow-left"></i> Về Phòng Không Gian
+    </a>
+    <div class="hud-world-badge">
+      <span class="world-dot"></span>
+      <span class="world-name">SKAT</span>
+      <span class="world-sep">·</span>
+      <span class="world-sub">ĐÀI QUAN SÁT TINH TÚ (HỒ SƠ HỌC SINH)</span>
+    </div>
+  </div>
+  <div class="hud-header-right">
+    <a href="dua-top.html" class="hud-mode-btn">🏆 Bảng Đấu Hạng</a>
+    <div id="vlxt-nav-user-area"></div>
+  </div>
+</header>
+
+
+<!-- ─── MOBILE NAV DRAWER (giống YouTube) ─── -->
+<div class="nav-drawer-overlay" id="navDrawerOverlay" onclick="toggleNavDrawer(false)"></div>
+<aside class="nav-drawer" id="navDrawer" aria-hidden="true">
+  <div class="nav-drawer-head">
+    <span class="ndh-brand">
+      <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="16" r="4" fill="#0b84f3"/>
+        <ellipse cx="16" cy="16" rx="14" ry="6" stroke="#0b84f3" stroke-width="1.5" fill="none" transform="rotate(-30 16 16)"/>
+        <ellipse cx="16" cy="16" rx="14" ry="6" stroke="#0b84f3" stroke-width="1.5" fill="none" transform="rotate(30 16 16)"/>
+      </svg>
+      Vật Lý Xuân Trường
+    </span>
+    <button class="nav-drawer-close" onclick="toggleNavDrawer(false)" aria-label="Đóng menu"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="nav-drawer-links" id="navDrawerLinks">
+    <a href="index.html"><i class="fa-solid fa-house"></i> Trang Chủ</a>
+    <a href="baihoc.html"><i class="fa-solid fa-graduation-cap"></i> Khóa Học</a>
+    <a href="live-record.html" style="color:#dc2626"><i class="fa-solid fa-satellite-dish"></i> Live & Xem Lại</a>
+    <a href="phong-thi-thu.html"><i class="fa-solid fa-clipboard-check"></i> Phòng Thi Thử</a>
+    <a href="danhsach-ly12.html"><i class="fa-solid fa-file-pen"></i> Phòng Kiểm Tra</a>
+    <a href="dau-thuong.html" style="color:#00f0ff;margin-right:15px"><i class="fa-solid fa-khanda"></i> Đấu Thường</a>
+        <a href="dua-top.html" style="color:#fbbf24"><i class="fa-solid fa-crown"></i> Đấu Hạng</a>
+    <a href="solo.html" style="color:#f472b6"><i class="fa-solid fa-khanda"></i> Solo</a>
+    <a href="huongdan.html"><i class="fa-solid fa-compass"></i> Hướng Dẫn</a>
+  </div>
+</aside>
+<script>
+(function () {
+    function toggleNavDrawer(show) {
+        var d = document.getElementById('navDrawer'), o = document.getElementById('navDrawerOverlay');
+        if (!d || !o) return;
+        d.classList.toggle('open', show);
+        o.classList.toggle('open', show);
+        d.setAttribute('aria-hidden', show ? 'false' : 'true');
+        document.body.classList.toggle('nav-drawer-locked', show);
+    }
+    window.toggleNavDrawer = toggleNavDrawer;
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') toggleNavDrawer(false); });
+    var links = document.getElementById('navDrawerLinks');
+    if (links) links.addEventListener('click', function (e) {
+        var a = e.target.closest('a');
+        if (a && a.getAttribute('href') && a.getAttribute('href').indexOf('#') === 0) toggleNavDrawer(false);
+    });
+})();
+</script>
+
+<div class="page" id="page">
+  <!-- Loading state -->
+  <div id="loading" style="text-align:center;padding:80px 0;color:#888;">Đang tải hồ sơ...</div>
+  <div id="content" style="display:none"></div>
+</div>
+
+<script>
+const GAS = 'https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec';
+
+// Rank tiers theo LP — nguồn DUY NHẤT giờ nằm ở xephang-fx.js (window.VLXT_RANKS),
+// dùng chung với baihoc.html/dua-top.html/nhiem-vu.js để tránh lệch mốc giữa các trang.
+const RANKS = VLXT_RANKS;
+function getRank(lp) { return vlxtGetRank(lp); }
+function nextRank(lp) { return vlxtNextRank(lp); }
+
+function formatDate(d) {
+  if (!d) return '';
+  const dt = new Date(d);
+  if (isNaN(dt)) return d;
+  const time = dt.toLocaleTimeString('vi-VN', { hour:'2-digit', minute:'2-digit' });
+  const date = dt.toLocaleDateString('vi-VN', { day:'2-digit', month:'2-digit', year:'numeric' });
+  return `${date} (${time})`;
+}
+
+// FIX 15/8: _lbLastUser phải khai báo TRƯỚC lệnh gọi renderPage() đầu tiên bên dưới
+// (chạy ngay từ localStorage khi load trang) — nếu không sẽ rơi vào temporal dead zone
+// và ném lỗi "Cannot access '_lbLastUser' before initialization", làm hỏng toàn bộ script
+// phía sau khiến trang hồ sơ hiện đen thui không có gì (bug từ lần fix 14/8).
+let _lbLastUser = null;
+
+// Require auth
+const user = (function() {
+  try { return JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null'); } catch { return null; }
+})();
+
+if (!user) {
+  window.location.href = 'login.html?from=hoso.html';
+}
+
+// Render ngay từ localStorage, không chờ GAS
+document.getElementById('loading').style.display = 'none';
+document.getElementById('content').style.display = 'block';
+renderPage({ ok: true, user: user, scores: [], tiendo: [] }, { ok: false, data: [] }, { ok: false, data: null }, []);
+
+// Sau đó fetch GAS để cập nhật dữ liệu thực (async, không chặn render)
+const profilePromise = (user && user.sdt && user.token)
+  ? fetch(GAS, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'getprofile', sdt: user.sdt, token: user.token })
+    }).then(r => r.json()).catch(() => ({ ok: true, user: user, scores: [], tiendo: [] }))
+  : Promise.resolve({ ok: true, user: user, scores: [], tiendo: [] });
+
+Promise.all([
+  profilePromise,
+  cachedFetch(GAS + '?type=leaderboard').then(r => r.json()),
+  cachedFetch(GAS + '?type=nhiemvu&hs=' + encodeURIComponent(user.sdt)).then(r => r.json()).catch(() => ({ ok: false, data: null })),
+  cachedFetch(GAS + '?type=baihoc').then(r => r.json()).catch(() => [])
+]).then(([profile, lb, nvRes, baihocRows]) => {
+  renderPage(profile, lb, nvRes, baihocRows);
+}).catch(function() {});
+
+function vipInfo(u) {
+  // Ưu tiên GAS, fallback localStorage
+  const storedUser = (() => { try { return JSON.parse(localStorage.getItem('vlxt_user_v2')||'null'); } catch { return null; } })();
+  const loaiTK      = u.loaiTK      || storedUser?.loaiTK      || 'vip';
+  const trialExpiry = u.trialExpiry  || storedUser?.trialExpiry || 0;
+  const now = Date.now();
+  const msLeft = trialExpiry ? (trialExpiry - now) : 0;
+  const daysLeft = Math.max(0, Math.floor(msLeft / 86400000));
+
+  if (loaiTK === 'premium') return { label:'💎 Premium', color:'#7c3aed', bg:'rgba(124,58,237,.1)', border:'rgba(124,58,237,.3)', note: 'Truy cập toàn bộ nội dung', countdown: '' };
+  if (loaiTK === 'vip' && msLeft > 0) {
+    const h = Math.floor((msLeft % 86400000) / 3600000);
+    const note = daysLeft > 0 ? `Còn ${daysLeft} ngày ${h} giờ dùng thử` : `Còn ${h} giờ dùng thử`;
+    return { label:'⭐ VIP (Dùng thử)', color:'#d97706', bg:'rgba(217,119,6,.1)', border:'rgba(217,119,6,.3)', note, countdown: note };
+  }
+  return { label:'🆓 Miễn phí', color:'#6b7280', bg:'rgba(107,114,128,.08)', border:'rgba(107,114,128,.25)', note:'Nâng lên VIP để truy cập toàn bộ', countdown: '' };
+}
+
+function normalizeLbData(lb) {
+  return ((lb && lb.ok && lb.data) ? lb.data : []).filter(r => !/^test\b/i.test((r.hoten || '').trim()));
+}
+function lbSectionHTML(lbData, u) {
+  window._vlxtCurrentLbRows = lbData;
+  return `
+        <div class="rank-info-row">
+          ${RANKS.map(r => `<span class="rank-chip ${r.cls}">${r.name} ≥${r.min} LP</span>`).join('')}
+        </div>
+        <div class="section-head">🏆 Top ${lbData.length} học sinh (LP cao nhất)</div>
+        <div>
+          ${lbData.length === 0
+            ? '<div class="empty-msg">Chưa có dữ liệu xếp hạng.</div>'
+            : lbData.map((row, i) => {
+                const rankCls = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
+                const medal   = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1;
+                const isMe    = (row.hoten === u.hoten && row.lop === u.lop);
+                return `
+                <div class="lb-row profile-link ${isMe ? 'me' : ''}" data-lb-index="${i}">
+                  <div class="lb-rank ${rankCls}">${medal}</div>
+                  <div style="flex:1">
+                    <div class="lb-name">${row.hoten} ${isMe ? '<span style="color:var(--blue);font-size:12px">(bạn)</span>' : ''}</div>
+                    <div class="lb-class">${row.lop}</div>
+                  </div>
+                  <div style="text-align:right">
+                    <div class="lb-lp">${row.lpTotal}</div>
+                    <div class="lb-lp-lbl">LP</div>
+                  </div>
+                </div>`;
+              }).join('')
+          }
+        </div>`;
+}
+document.addEventListener('click', function(e) {
+  const rowEl = e.target.closest('.lb-row[data-lb-index]');
+  if (!rowEl || typeof window.vlxtOpenPublicProfile !== 'function') return;
+  const rows = window._vlxtCurrentLbRows || [];
+  const i = Number(rowEl.dataset.lbIndex);
+  const row = rows[i];
+  if (!row) return;
+  window.vlxtOpenPublicProfile({
+    key: row.sdt || row.key || '', hoten: row.hoten || '', lop: row.lop || '',
+    lpTotal: Number(row.lpTotal) || 0, rank: i + 1
+  });
+});
+function refreshLeaderboardOnly(lbData) {
+  const el = document.getElementById('lb-section');
+  if (el && _lbLastUser) el.innerHTML = lbSectionHTML(lbData, _lbLastUser);
+}
+window.addEventListener('vlxt:data-updated', function(e){
+  if (e.detail && e.detail.type === 'leaderboard') refreshLeaderboardOnly(normalizeLbData(e.detail.data));
+});
+// FIX 19/8: truoc day poll 5s/lan (qua day, vuot yeu cau toi da 1 request/phut/tab).
+// Doi sang 90s + chi poll khi tab dang hien; dong bo giua cac tab van qua event
+// 'vlxt:data-updated' o tren (khong can cho het chu ky 90s).
+function pollLbOnce(){
+  cachedFetch(GAS + '?type=leaderboard').then(r => r.json()).then(function(lb){
+    refreshLeaderboardOnly(normalizeLbData(lb));
+  }).catch(function(){});
+}
+if (typeof vlxtVisiblePoll === 'function') vlxtVisiblePoll(pollLbOnce, 90000);
+else setInterval(pollLbOnce, 90000);
+
+function renderPage(profile, lb, nvRes, baihocRows) {
+  const nv = (nvRes && nvRes.ok && nvRes.data) ? nvRes.data : null;
+  const u = (profile.ok && profile.user) ? profile.user : user;
+  const scores  = profile.scores  || [];
+  const tiendo  = profile.tiendo  || [];
+  // Đọc số bài từ localStorage để hiện ngay khi GAS chưa đồng bộ
+  const _localWatched = (() => { try { return JSON.parse(localStorage.getItem('vlxt_watched_' + user.sdt) || '[]'); } catch { return []; } })();
+  const _localCount = Array.isArray(_localWatched) ? _localWatched.length : 0;
+  // Nếu server (GAS) chưa kịp đồng bộ tiến độ (tiendo rỗng) nhưng máy đã có lưu local,
+  // dùng tạm danh sách local để card số liệu và danh sách "Bài học đã hoàn thành" luôn khớp nhau
+  // (trước đây 2 nơi lấy nguồn khác nhau → hiện số mâu thuẫn, vd "9" nhưng list lại rỗng).
+  let displayTiendo = tiendo;
+  let tiendoSyncNote = '';
+  if (tiendo.length === 0 && _localCount > 0) {
+    displayTiendo = _localWatched.map(k => {
+      const parts = String(k).split('|||');
+      return { lesson: parts[2] || parts[parts.length - 1] || k, khoa: parts[0] || '' };
+    });
+    tiendoSyncNote = '<div class="empty-msg" style="padding:6px 0 12px;font-size:12px;color:var(--sub,#8b949e)">💡 Đang đồng bộ với máy chủ: số liệu có thể cập nhật lại trong giây lát.</div>';
+  }
+
+  // Tra ten bai hoc that su tu gia tri TienDo.lesson da luu — co the la MaBai on dinh
+  // (dang "B..." tu 6/8/2026) hoac key ghep cu "Khoa|||Chuong|||TenBai". CHI DOC du lieu
+  // BaiHoc da tai (baihocRows), KHONG ghi/sua bat ky du lieu nao — an toan, khong anh
+  // huong tien do/diem cua hoc sinh, chi sua CACH HIEN THI cho de doc hon.
+  const _lessonNameMap = new Map();
+  (Array.isArray(baihocRows) ? baihocRows : []).forEach(row => {
+    const mb = String(row.MaBai || row.mabai || '').trim();
+    const ten = String(row.TenBai || row.tenbai || row.title || row.ten || '').trim();
+    if (mb && ten) _lessonNameMap.set(mb, ten);
+  });
+  const _TKD_OLDKEYS = {
+    'B1036d251af19':'B1. Khai giảng GĐ1 + Cấu trúc của chất & Mô hình động học phân tử',
+    'B04e20f0ec67d':'B2. Lực liên kết và Sự chuyển thể của chất',
+    'Bfb85fde44802':'B3. Nhiệt độ – Thang nhiệt độ – Nhiệt kế',
+    'Bfc4552a2a3b2':'B4. Nhiệt dung riêng - Nóng chảy riêng - Hoá Hơi riêng',
+    'Be5b72ccf1261':'B5. Nội Năng – Định Luật I Nhiệt Động Lực Học',
+    'B04ff6fe289da':'Ngày 1: Ý NGHĨA CỦA ĐƠN VỊ TRONG VẬT LÝ'
+  };
+  function resolveLessonName(raw) {
+    const s = String(raw || '').trim();
+    if (!s) return '---';
+    if (_lessonNameMap.has(s)) return _lessonNameMap.get(s);
+    if (_TKD_OLDKEYS[s]) return _TKD_OLDKEYS[s];
+    if (s.includes('|||')) { const parts = s.split('|||'); return parts[parts.length - 1] || s; }
+    return s;
+  }
+  displayTiendo = displayTiendo.map(t => ({ ...t, lesson: resolveLessonName(t.lesson) }));
+  // Lọc bớt các tài khoản test rõ ràng (vd "Test User", "Test Google") khỏi bảng xếp hạng
+  // công khai — dữ liệu rác còn lại (tên vô nghĩa khác) cần thầy xoá thủ công trong Google Sheets
+  // vì không có cách nhận diện an toàn 100% bằng code mà không lỡ ẩn học sinh thật.
+  const lbData  = normalizeLbData(lb);
+  _lbLastUser = u;
+
+  function parseScoreNum(val) {
+    if (val === null || val === undefined) return 0;
+    const str = String(val).trim().split('/')[0].replace(',', '.');
+    const num = parseFloat(str);
+    return isNaN(num) ? 0 : Math.round(num * 100) / 100;
+  }
+
+  // Scan local exam attempts from localStorage for instant sync
+  const localCbtScores = [];
+  try {
+    const sdtKey = u.sdt || user.sdt || '';
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('vlxt_cbt_result_') && (!sdtKey || key.includes(sdtKey))) {
+        const raw = localStorage.getItem(key);
+        if (raw) {
+          const item = JSON.parse(raw);
+          if (item && item.score !== undefined) {
+            localCbtScores.push({
+              ten: item.examId || 'Bài thi THPT QG',
+              examId: item.examId || '',
+              diem: item.score,
+              maxScore: item.maxScore || 10,
+              ngay: item.submittedAt || new Date().toISOString(),
+              timeUsed: item.timeUsed || '',
+              correctCount: item.correctCount,
+              totalQ: item.totalQ
+            });
+          }
+        }
+      }
+    }
+  } catch(e){}
+
+  // Merge server scores and local CBT scores
+  const allScores = [...scores];
+  localCbtScores.forEach(loc => {
+    const exists = allScores.some(s => 
+      (s.examId && loc.examId && s.examId === loc.examId) ||
+      (s.ngay && loc.ngay && Math.abs(new Date(s.ngay).getTime() - new Date(loc.ngay).getTime()) < 30000)
+    );
+    if (!exists) {
+      allScores.push(loc);
+    }
+  });
+
+  function resolveExamName(s) {
+    const raw = s.examName || s.tenDe || s.made || s.examId || s.de || s.ten || '';
+    if (!raw || raw === '10 đ Lý' || raw === u.hoten) return 'Khảo sát năng lực — Kỳ thi THPT QG 2027';
+    if (raw.includes('vedich2k9_de02')) return 'Đề 02 — Về Đích 2K9 (Kỳ thi THPT QG 2027)';
+    if (raw.includes('vedich2k9_de05')) return 'Đề 05 — Về Đích 2K9 (Kỳ thi THPT QG 2027)';
+    if (raw.startsWith('vedich2k9_de')) {
+      const num = raw.replace('vedich2k9_de', '');
+      return `Đề ${num} — Về Đích 2K9 (Kỳ thi THPT QG 2027)`;
+    }
+    return raw;
+  }
+
+  const lp     = Number(u.lpTotal) || 0;
+  const rank   = getRank(lp);
+  const next   = nextRank(lp);
+  const subLabel = vlxtSubRank(lp);
+  const initials = (u.hoten || 'HS').split(' ').map(w=>w[0]).slice(-2).join('').toUpperCase();
+  const bestScore = allScores.length ? Math.max(...allScores.map(s => parseScoreNum(s.diem))) : 0;
+  const vip = vipInfo(u);
+
+  const myRankPos = lbData.findIndex(r =>
+    r.hoten === u.hoten && r.lop === u.lop
+  ) + 1;
+
+  document.getElementById('content').innerHTML = `
+    <!-- VIP Status Banner -->
+    <div style="background:${vip.bg};border:1.5px solid ${vip.border};border-radius:12px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:15px;font-weight:800;color:${vip.color}">${vip.label}</span>
+        <span style="font-size:13px;color:#666">${vip.note}</span>
+      </div>
+      ${vip.label.includes('Miễn phí') ? `<a href="hoso.html#upgrade" style="font-size:13px;font-weight:700;color:${vip.color};text-decoration:none;padding:6px 14px;border:1.5px solid ${vip.border};border-radius:7px">Liên hệ thầy để nâng cấp →</a>` : ''}
+    </div>
+
+    <!-- Profile card -->
+    <div class="profile-card">
+      <div class="avatar-big" id="vlxt-avatar-slot">${initials}</div>
+      <div class="profile-info">
+        <h2>${u.hoten}</h2>
+        <p>Lớp ${u.lop}${u.sdt && !String(u.sdt).includes('@') ? ' · ' + u.sdt : ''}</p>
+        <div id="vlxt-bio-slot"></div>
+        ${myRankPos > 0 ? `<p style="margin-top:4px;font-size:13px;color:var(--blue);font-weight:600;">🏆 Xếp hạng #${myRankPos} toàn khoá</p>` : ''}
+        ${nv && nv.chuoiDung > 0 ? `<p style="margin-top:4px;font-size:13px;">${vlxtStreakFireHTML(nv.chuoiDung)} chuỗi học liên tục</p>` : ''}
+      </div>
+      <div class="rank-badge">
+        <div class="rank-name">${rank.name}${subLabel ? ` <span class="rank-sub">${subLabel}</span>` : ''}</div>
+        <div class="rank-lp">${lp} LP${next ? ' / ' + next.min + ' lên ' + next.name : ' · Đỉnh!'}</div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-val lp">${lp}</div>
+        <div class="stat-lbl">⚡ Tổng LP</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val done">${displayTiendo.length}</div>
+        <div class="stat-lbl">📚 Bài đã học</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val score">${allScores.length > 0 ? (bestScore % 1 === 0 ? bestScore : bestScore.toFixed(2)) : '—'}</div>
+        <div class="stat-lbl">🏅 Điểm cao nhất</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="switchTab('tiendo')">📚 Tiến Độ</button>
+      <button class="tab-btn" onclick="switchTab('diem')">📝 Điểm Thi</button>
+      <button class="tab-btn" onclick="switchTab('lb')">🏆 Xếp Hạng</button>
+      <button class="tab-btn" onclick="switchTab('banbe')">🤝 Bạn Bè</button>
+    </div>
+
+    <!-- Tab: Tiến độ -->
+    <div class="tab-panel active" id="tab-tiendo">
+      <div class="section-card">
+        <div class="section-head">📚 Bài học đã hoàn thành (${displayTiendo.length})</div>
+        <div class="progress-list">
+          ${tiendoSyncNote}
+          ${displayTiendo.length === 0
+            ? '<div class="empty-msg">Chưa hoàn thành bài học nào.<br><a href="baihoc.html" style="color:var(--blue);font-weight:600;">Bắt đầu học ngay →</a></div>'
+            : displayTiendo.map(t => `
+              <div class="progress-item">
+                <div class="progress-dot"></div>
+                <div class="progress-name">${t.lesson || '---'}</div>
+                <div class="progress-khoa">${t.khoa || ''}</div>
+              </div>`).join('')
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Điểm thi -->
+    <div class="tab-panel" id="tab-diem">
+      <div class="section-card">
+        <div class="section-head">📝 Lịch sử điểm thi (${allScores.length} lần)</div>
+        <div>
+          ${allScores.length === 0
+            ? '<div class="empty-msg">Chưa có lịch sử thi.<br><a href="phong-thi-thu.html" style="color:var(--blue);font-weight:600;">Vào phòng thi thử ngay →</a></div>'
+            : [...allScores].sort((a,b) => new Date(b.ngay || 0) - new Date(a.ngay || 0)).map(s => {
+                const num = parseScoreNum(s.diem);
+                const cls = num >= 8 ? 'high' : num >= 5 ? 'mid' : 'low';
+                const name = resolveExamName(s);
+                const timeInfo = s.timeUsed ? ` · ⏱ ${s.timeUsed}` : '';
+                const correctInfo = (s.correctCount !== undefined && s.totalQ) ? ` · ✔ Đúng ${s.correctCount}/${s.totalQ} câu` : '';
+                const scoreDisplay = (num % 1 === 0) ? num : num.toFixed(2);
+                return `
+                <div class="score-item">
+                  <div class="score-circle ${cls}">${scoreDisplay}</div>
+                  <div class="score-info">
+                    <div class="score-name">${name}</div>
+                    <div class="score-date">📅 ${formatDate(s.ngay)}${timeInfo}${correctInfo}</div>
+                  </div>
+                </div>`;
+              }).join('')
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Bảng xếp hạng -->
+    <div class="tab-panel" id="tab-lb">
+      <div class="section-card" id="lb-section">
+        ${lbSectionHTML(lbData, u)}
+      </div>
+    </div>
+
+    <!-- Tab: Bạn bè -->
+    <div class="tab-panel" id="tab-banbe"></div>
+  `;
+
+  // Render auth widget
+  if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(u);
+  // Cập nhật lại ảnh đại diện/bio/tab Bạn bè (ban-be.js) sau khi DOM vừa được dựng lại
+  if (typeof vlxtBanBeRefreshProfileUI === 'function') vlxtBanBeRefreshProfileUI();
+  if (typeof vlxtRenderBanBeTab === 'function') vlxtRenderBanBeTab(); // an toàn gọi nhiều lần — tự bỏ qua nếu chưa init xong hoặc đã mount rồi
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    const names = ['tiendo', 'diem', 'lb', 'banbe'];
+    b.classList.toggle('active', names[i] === name);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => {
+    p.classList.toggle('active', p.id === 'tab-' + name);
+  });
+}
+</script>
+<script>
+function toggleTheme(){document.body.classList.toggle('dark');localStorage.setItem('vlxt_theme',document.body.classList.contains('dark')?'dark':'light');}
+if(localStorage.getItem('vlxt_theme')==='dark')document.body.classList.add('dark');
+</script>
+<script src="hoat-dong.js?v=1"></script>
+<script src="huongdan-popup.js?v=1"></script>
+<script>if(typeof vlxtAutoShowGuide==='function') vlxtAutoShowGuide('hoso');</script>
+
+<!-- ══════════════════════════════════════════════════════════════
+     THREE.JS CELESTIAL OBSERVATORY 3D ENGINE & GSAP (SKAT)
+     ══════════════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  const container = document.getElementById('canvas-observatory-container');
+  if (!container) return;
+
+  // 1. SCENE SETUP
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x030208, 0.0012);
+
+  const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 3000);
+  camera.position.set(0, 15, 160);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x030208, 1);
+  container.appendChild(renderer.domElement);
+
+  // 2. MÁY ĐO VŨ TRỤ ARMILLARY SPHERE / GYROSCOPE VÀNG KIM 3D
+  const sphereGroup = new THREE.Group();
+  sphereGroup.position.set(0, 20, -220);
+  scene.add(sphereGroup);
+
+  // Lõi pha lê tri thức (Crystal Core)
+  const coreGeo = new THREE.DodecahedronGeometry(18, 0);
+  const coreMat = new THREE.MeshBasicMaterial({
+    color: 0xfbbf24,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.65
+  });
+  const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+  sphereGroup.add(coreMesh);
+
+  // Vòng quỹ đạo Torus 1 (Trục nghiêng X)
+  const ringGeo1 = new THREE.TorusGeometry(38, 0.8, 16, 100);
+  const ringMat1 = new THREE.MeshBasicMaterial({
+    color: 0xc084fc,
+    transparent: true,
+    opacity: 0.45,
+    blending: THREE.AdditiveBlending
+  });
+  const ringMesh1 = new THREE.Mesh(ringGeo1, ringMat1);
+  ringMesh1.rotation.x = Math.PI * 0.3;
+  sphereGroup.add(ringMesh1);
+
+  // Vòng quỹ đạo Torus 2 (Trục nghiêng Y)
+  const ringGeo2 = new THREE.TorusGeometry(52, 0.8, 16, 100);
+  const ringMat2 = new THREE.MeshBasicMaterial({
+    color: 0xf59e0b,
+    transparent: true,
+    opacity: 0.45,
+    blending: THREE.AdditiveBlending
+  });
+  const ringMesh2 = new THREE.Mesh(ringGeo2, ringMat2);
+  ringMesh2.rotation.y = Math.PI * 0.4;
+  sphereGroup.add(ringMesh2);
+
+  // Vòng quỹ đạo Torus 3 (Trục nghiêng Z)
+  const ringGeo3 = new THREE.TorusGeometry(68, 0.8, 16, 100);
+  const ringMat3 = new THREE.MeshBasicMaterial({
+    color: 0x38bdf8,
+    transparent: true,
+    opacity: 0.35,
+    blending: THREE.AdditiveBlending
+  });
+  const ringMesh3 = new THREE.Mesh(ringGeo3, ringMat3);
+  ringMesh3.rotation.z = Math.PI * 0.25;
+  sphereGroup.add(ringMesh3);
+
+  // 3. BẦU TRỜI CHÒM SAO VÀNG HOÀNG GIA (GOLDEN CONSTELLATIONS)
+  const starCount = 1400;
+  const starGeo = new THREE.BufferGeometry();
+  const starPos = new Float32Array(starCount * 3);
+  const starCols = new Float32Array(starCount * 3);
+
+  const colGold = new THREE.Color(0xfbbf24);
+  const colPurp = new THREE.Color(0xc084fc);
+  const colCyan = new THREE.Color(0x38bdf8);
+
+  for (let i = 0; i < starCount; i++) {
+    starPos[i * 3]     = (Math.random() - 0.5) * 1600;
+    starPos[i * 3 + 1] = (Math.random() - 0.5) * 1000;
+    starPos[i * 3 + 2] = (Math.random() - 0.5) * 1200 - 100;
+
+    const r = Math.random();
+    const c = r < 0.45 ? colGold : (r < 0.75 ? colPurp : colCyan);
+    starCols[i * 3]     = c.r;
+    starCols[i * 3 + 1] = c.g;
+    starCols[i * 3 + 2] = c.b;
+  }
+
+  starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+  starGeo.setAttribute('color', new THREE.BufferAttribute(starCols, 3));
+
+  const starMat = new THREE.PointsMaterial({
+    size: 3.2,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.75,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+  });
+  const stars = new THREE.Points(starGeo, starMat);
+  scene.add(stars);
+
+  // 4. MOUSE PARALLAX
+  let mouseX = 0, mouseY = 0;
+  let targetX = 0, targetY = 15;
+
+  document.addEventListener('mousemove', function(e) {
+    mouseX = (e.clientX - window.innerWidth / 2) * 0.02;
+    mouseY = (e.clientY - window.innerHeight / 2) * 0.02;
+  });
+
+  // 5. ANIMATION LOOP
+  const clock = new THREE.Clock();
+
+  function animate() {
+    requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+
+    // Parallax
+    targetX += (mouseX - targetX) * 0.05;
+    targetY += (-mouseY + 15 - targetY) * 0.05;
+    camera.position.x = targetX;
+    camera.position.y = targetY;
+    camera.lookAt(0, 10, -220);
+
+    // Xoay Armillary Sphere đa trục
+    coreMesh.rotation.x = t * 0.4;
+    coreMesh.rotation.y = t * 0.5;
+
+    ringMesh1.rotation.x += 0.008;
+    ringMesh1.rotation.y += 0.005;
+
+    ringMesh2.rotation.y += 0.006;
+    ringMesh2.rotation.z += 0.009;
+
+    ringMesh3.rotation.z += 0.005;
+    ringMesh3.rotation.x += 0.007;
+
+    sphereGroup.rotation.y = t * 0.05;
+
+    // Nhấp nháy nhẹ sao
+    starMat.opacity = 0.65 + 0.15 * Math.sin(t * 1.5);
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', function() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  // 6. GSAP INTRO ANIMATION CHO PROFILE
+  document.addEventListener('DOMContentLoaded', function() {
+    if (typeof gsap !== 'undefined') {
+      gsap.from('.profile-card', {
+        y: 40,
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power3.out'
+      });
+      gsap.from('.stat-card', {
+        y: 30,
+        opacity: 0,
+        stagger: 0.1,
+        duration: 0.7,
+        delay: 0.25,
+        ease: 'power2.out'
+      });
+      gsap.from('.tabs-bar, .section-card', {
+        y: 20,
+        opacity: 0,
+        duration: 0.7,
+        delay: 0.45,
+        ease: 'power2.out'
+      });
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
