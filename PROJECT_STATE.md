@@ -2181,9 +2181,8 @@ gba(255, 255, 255, 0.05), tạo không gian liền mạch vô tận như chuẩn
   1. **Khôi phục nguyên bản giao diện chuẩn Bộ GD&ĐT của `phong-thi-thu.html` & Bổ sung quy tắc bắt buộc trong `AGENTS.md`**:
      - Đưa `phong-thi-thu.html` về đúng giao diện sáng mô phỏng kỳ thi trên máy tính (CBT chuẩn Bộ GD&ĐT) từ commit `cc93106`.
      - Thêm quy tắc cứng vào `AGENTS.md` và `PROJECT_STATE.md`: **Tuyệt đối giữ nguyên giao diện chuẩn Bộ GD&ĐT của `phong-thi-thu.html`; không áp theme tối hoặc thay đổi bố cục của trang này trong các đợt đồng bộ giao diện sau.**
-  2. **Loại bỏ hoàn toàn sự trùng lặp, ẩn các sao phụ & Tinh chỉnh hiệu ứng trôi sao nền trên Vũ Trụ 3D (`index.html`)**:
-     - **Bỏ các đường nối chòm sao (`constellationLines`), hạt chạy dọc đường nối (`photonPulses`), 2 ngôi sao tab cũ (`Albali`, `Sadalsuud`) và 8 ngôi sao phụ (`secondaryMeshes`)**, chỉ để 4 ngôi sao tab chính (`SADALMELIK`, `SADACHBIA`, `SHATABHISHA`, `SKAT`) cùng Hố Đen và Sao Neutron tỏa sáng nổi bật trên nền ngân hà.
-     - **Giới hạn quỹ đạo sao nền bé (`starPoints`, `dustPoints`)**: Thu nhỏ kích thước (`size: 4.2`), giữ khoảng cách tối thiểu `dForward >= 420` và bán kính ngoài vùng nhìn trung tâm `radialDist >= 220` khi ở sảnh chờ (`IDLE`), giúp các ngôi sao bé vẫn trôi nhẹ nhàng ở không gian phía ngoài mà không bao giờ phóng to hay băng ngang qua tầm nhìn trung tâm.
+  2. **Loại bỏ hoàn toàn sự trùng lặp, ẩn 2 sao to của tab cũ & Giữ các hạt sao bé trôi lung linh trên Vũ Trụ 3D (`index.html`)**:
+     - **Bỏ các đường nối chòm sao (`constellationLines`) và chỉ ẩn 2 ngôi sao to của tab cũ (`Albali`, `Sadalsuud`)**, giữ nguyên toàn bộ các hạt sao bé (`secondaryMeshes`, `starPoints`, `dustPoints`) trôi lung linh trên bầu trời ngân hà; đồng thời đặt ngưỡng khoảng cách an toàn (`dForward >= 220` ở `IDLE`) để các hạt sao bé không bị phóng to đùng ngay sát trước mặt camera.
      - **Gộp `Đánh Giá Năng Lực` và `Test Điểm Thi THPT (Hố Đen)` làm 1**: Thống nhất tại **Hố Đen Gargantua (`SINGULARITY · TEST ĐIỂM THI THPT` → `danh-gia-nang-luc.html`)** bên trái.
      - **Gộp `Khóa Học` và `Học Thử Miễn Phí (Sao Neutron)` làm 1**: Thống nhất tại **Sao Neutron (`PULSAR · HỌC THỬ MIỄN PHÍ` → `baihoc.html`)** bên phải.
      - Toàn cảnh Vũ Trụ 3D hiện có **đúng 6 điểm đến độc nhất (0 trùng lặp)**:
