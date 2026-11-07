@@ -2205,6 +2205,213 @@
             text-align: center !important;
             letter-spacing: 0.02em !important;
         }
+
+        /* ═══ GALAXY MULTIVERSE HOME & COURSE CARDS (ĐỒNG BỘ VŨ TRỤ 3D INDEX) ═══ */
+        body.dark {
+            --bg:#060b19; --card:#0d162c; --card2:#13203d; --line:rgba(56,189,248,0.18);
+            --text:#f1f5f9; --sub:#94a3b8; --blue:#38bdf8; --blue2:#0284c7;
+        }
+        body.dark:not(.vstep-page-mode) {
+            background:
+                radial-gradient(circle at 18% 12%, rgba(0, 240, 255, 0.10) 0%, transparent 42%),
+                radial-gradient(circle at 84% 22%, rgba(124, 58, 237, 0.12) 0%, transparent 46%),
+                radial-gradient(circle at 50% 88%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+                #050a18 !important;
+            background-attachment: fixed !important;
+        }
+        .galaxy-sector-banner {
+            position: relative;
+            margin: 22px 0 20px;
+            padding: 22px 26px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(12, 24, 52, 0.88) 0%, rgba(8, 15, 34, 0.94) 60%, rgba(22, 16, 50, 0.88) 100%);
+            border: 1px solid rgba(0, 240, 255, 0.28);
+            box-shadow: 0 16px 44px rgba(0, 0, 0, 0.48), inset 0 0 32px rgba(0, 240, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            flex-wrap: wrap;
+            overflow: hidden;
+        }
+        .galaxy-sector-banner::before {
+            content: '';
+            position: absolute;
+            right: -60px;
+            top: -60px;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,240,255,0.22) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .gsb-left { position: relative; z-index: 1; }
+        .gsb-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #00f0ff;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            padding: 4px 11px;
+            border-radius: 100px;
+            margin-bottom: 8px;
+        }
+        .gsb-eyebrow .dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: #00f0ff; box-shadow: 0 0 8px #00f0ff;
+        }
+        .gsb-title {
+            font-size: clamp(20px, 2.4vw, 27px);
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+            text-shadow: 0 0 24px rgba(0, 240, 255, 0.25);
+        }
+        .gsb-sub {
+            font-size: 13.5px;
+            color: #94a3b8;
+            max-width: 640px;
+            line-height: 1.5;
+        }
+        .gsb-back-galaxy {
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 100px;
+            background: rgba(0, 240, 255, 0.12);
+            border: 1px solid rgba(0, 240, 255, 0.42);
+            color: #e0f2fe !important;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+            text-decoration: none !important;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+            white-space: nowrap;
+        }
+        .gsb-back-galaxy:hover {
+            background: #00f0ff;
+            color: #030712 !important;
+            box-shadow: 0 0 28px rgba(0, 240, 255, 0.55);
+            transform: translateY(-2px);
+        }
+        body.dark .course-card {
+            background: linear-gradient(180deg, rgba(15, 26, 52, 0.88) 0%, rgba(10, 18, 38, 0.94) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.22);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.42);
+            backdrop-filter: blur(12px);
+        }
+        body.dark .course-card:hover {
+            transform: translateY(-6px);
+            border-color: #00f0ff;
+            box-shadow: 0 18px 42px rgba(0, 240, 255, 0.18), 0 0 0 1px rgba(0, 240, 255, 0.35);
+        }
+        body.dark .course-card.locked {
+            opacity: 0.84;
+            border-color: rgba(148, 163, 184, 0.18);
+        }
+        body.dark .course-card.locked:hover {
+            transform: translateY(-3px);
+            border-color: rgba(245, 158, 11, 0.45);
+            box-shadow: 0 12px 30px rgba(245, 158, 11, 0.12);
+            cursor: pointer;
+        }
+        .cc-thumb {
+            height: 156px;
+            padding: 0;
+            overflow: hidden;
+            background: #070d1e;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.18);
+        }
+        .galaxy-thumb-art {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 45%, #112244 0%, #060c1d 100%);
+        }
+        .galaxy-thumb-art.gt-cyan { background: radial-gradient(circle at 50% 45%, rgba(6, 78, 115, 0.65) 0%, #060c1d 100%); }
+        .galaxy-thumb-art.gt-purple { background: radial-gradient(circle at 50% 45%, rgba(76, 29, 149, 0.6) 0%, #070b19 100%); }
+        .galaxy-thumb-art.gt-gold { background: radial-gradient(circle at 50% 45%, rgba(120, 53, 15, 0.6) 0%, #080c18 100%); }
+        .galaxy-thumb-art.gt-emerald { background: radial-gradient(circle at 50% 45%, rgba(6, 78, 59, 0.65) 0%, #060d1a 100%); }
+        .galaxy-thumb-art.gt-crimson { background: radial-gradient(circle at 50% 45%, rgba(136, 19, 55, 0.6) 0%, #080b16 100%); }
+        .gt-svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .course-card:hover .gt-svg {
+            transform: scale(1.08);
+        }
+        .gt-tag {
+            position: absolute;
+            bottom: 10px;
+            left: 12px;
+            font-size: 9.5px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            color: rgba(226, 232, 240, 0.85);
+            background: rgba(6, 11, 25, 0.72);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 3px 8px;
+            border-radius: 6px;
+            backdrop-filter: blur(4px);
+        }
+        .gt-code {
+            position: absolute;
+            bottom: 10px;
+            right: 12px;
+            font-size: 9px;
+            font-family: 'DM Mono', monospace;
+            color: #38bdf8;
+            opacity: 0.8;
+            letter-spacing: 0.08em;
+        }
+        .cc-thumb .cc-status-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            margin: 0;
+            backdrop-filter: blur(8px);
+            background: rgba(8, 14, 28, 0.82) !important;
+        }
+        body.dark .cc-btn {
+            background: linear-gradient(90deg, #0284c7, #00c8ff);
+            color: #031126;
+            font-weight: 800;
+            box-shadow: 0 4px 16px rgba(0, 200, 255, 0.25);
+        }
+        body.dark .course-card:hover .cc-btn {
+            background: linear-gradient(90deg, #00f0ff, #38bdf8);
+            color: #020817;
+        }
+        body.dark .tab-btn.active {
+            background: linear-gradient(90deg, #0284c7, #00e1ff);
+            color: #020817;
+            border-color: #00f0ff;
+            box-shadow: 0 0 18px rgba(0, 240, 255, 0.28);
+        }
+        @media (max-width: 768px) {
+            .galaxy-sector-banner { padding: 16px 18px; margin: 14px 0 16px; }
+            .gsb-back-galaxy { width: 100%; justify-content: center; }
+            .toolbar { gap: 8px; }
+            .search-box { width: 100%; order: 3; }
+            .container { padding: 0 12px; }
+        }
+
 </style>
   <script src="auth.js?v=7"></script>
   <script src="trial-manager.js?v=1"></script>
@@ -2935,9 +3142,132 @@ function renderHome(){
         return a.order - b.order;
     });
 
+
+function getGalaxyCourseBanner(c, idx){
+    if(c && c.img && /^https?:|^data:/.test(c.img)){
+        return `<img src="${esc(c.img)}" alt="">`;
+    }
+    const nm = String((c && (c.dname || c.name)) || '').toLowerCase();
+    // 1. Chuyên đề Lý thuyết GĐ1 (Sadalsuud Cyan / Quantum Atom)
+    if(nm.includes('gđ1') || nm.includes('lý thuyết') || nm.includes('li thuyet') || idx === 0){
+        return `<div class="galaxy-thumb-art gt-cyan">
+            <div class="gt-glow"></div>
+            <svg viewBox="0 0 320 156" class="gt-svg" fill="none">
+                <defs>
+                    <radialGradient id="gCyan" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.55"/>
+                        <stop offset="100%" stop-color="#0284c7" stop-opacity="0"/>
+                    </radialGradient>
+                </defs>
+                <circle cx="160" cy="78" r="64" fill="url(#gCyan)"/>
+                <ellipse cx="160" cy="78" rx="76" ry="26" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.65" transform="rotate(-18 160 78)"/>
+                <ellipse cx="160" cy="78" rx="76" ry="26" stroke="#00f0ff" stroke-width="1.5" opacity="0.85" transform="rotate(32 160 78)"/>
+                <ellipse cx="160" cy="78" rx="52" ry="18" stroke="#a5f3fc" stroke-width="1.2" opacity="0.55" transform="rotate(85 160 78)"/>
+                <circle cx="160" cy="78" r="14" fill="#00f0ff" opacity="0.25"/>
+                <circle cx="160" cy="78" r="7" fill="#ffffff"/>
+                <circle cx="218" cy="54" r="4" fill="#38bdf8"/>
+                <circle cx="104" cy="96" r="3.5" fill="#00f0ff"/>
+            </svg>
+            <div class="gt-tag">STAGE 01 · CORE THEORY</div>
+            <div class="gt-code">SADALSUUD SECTOR</div>
+        </div>`;
+    }
+    // 2. Chuyên đề Mô hình - Bài tập - Nâng cao GĐ2 (Amethyst / Magnetic & Force Fields)
+    if(nm.includes('gđ2') || nm.includes('mô hình') || nm.includes('nâng cao') || idx === 1){
+        return `<div class="galaxy-thumb-art gt-purple">
+            <div class="gt-glow"></div>
+            <svg viewBox="0 0 320 156" class="gt-svg" fill="none">
+                <defs>
+                    <radialGradient id="gPurp" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#c084fc" stop-opacity="0.55"/>
+                        <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+                    </radialGradient>
+                </defs>
+                <circle cx="160" cy="78" r="64" fill="url(#gPurp)"/>
+                <polygon points="160,26 206,52 206,104 160,130 114,104 114,52" stroke="#c084fc" stroke-width="1.6" fill="rgba(124,58,237,0.12)"/>
+                <polygon points="160,42 192,60 192,96 160,114 128,96 128,60" stroke="#38bdf8" stroke-width="1.2" stroke-dasharray="3 3" fill="none"/>
+                <line x1="160" y1="26" x2="160" y2="130" stroke="#e9d5ff" stroke-width="1" opacity="0.4"/>
+                <line x1="114" y1="52" x2="206" y2="104" stroke="#e9d5ff" stroke-width="1" opacity="0.4"/>
+                <line x1="206" y1="52" x2="114" y2="104" stroke="#e9d5ff" stroke-width="1" opacity="0.4"/>
+                <circle cx="160" cy="78" r="6" fill="#f3e8ff"/>
+            </svg>
+            <div class="gt-tag">STAGE 02 · ADVANCED MODEL</div>
+            <div class="gt-code">QUANTUM MATRIX</div>
+        </div>`;
+    }
+    // 3. 5 Ngày Lấy Gốc Vật Lí (Solar Gold / Supernova Ignition)
+    if(nm.includes('lấy gốc') || nm.includes('5 ngày') || nm.includes('nền tảng') || idx === 2){
+        return `<div class="galaxy-thumb-art gt-gold">
+            <div class="gt-glow"></div>
+            <svg viewBox="0 0 320 156" class="gt-svg" fill="none">
+                <defs>
+                    <radialGradient id="gGold" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.6"/>
+                        <stop offset="100%" stop-color="#d97706" stop-opacity="0"/>
+                    </radialGradient>
+                </defs>
+                <circle cx="160" cy="78" r="66" fill="url(#gGold)"/>
+                <circle cx="160" cy="78" r="36" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.75"/>
+                <circle cx="160" cy="78" r="52" stroke="#f59e0b" stroke-width="1.1" opacity="0.45"/>
+                <path d="M165 38 L143 80 L161 80 L153 118 L181 72 L162 72 Z" fill="#fef3c7" stroke="#fbbf24" stroke-width="1.5"/>
+            </svg>
+            <div class="gt-tag">FOUNDATION · 5-DAY BOOST</div>
+            <div class="gt-code">IGNITION CORE</div>
+        </div>`;
+    }
+    // 4. Chuyên đề Tổng Ôn GĐ3 (Emerald Nebula / Wave-Particle Synthesis)
+    if(nm.includes('gđ3') || nm.includes('tổng ôn') || idx === 3){
+        return `<div class="galaxy-thumb-art gt-emerald">
+            <div class="gt-glow"></div>
+            <svg viewBox="0 0 320 156" class="gt-svg" fill="none">
+                <defs>
+                    <radialGradient id="gEm" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#10b981" stop-opacity="0.55"/>
+                        <stop offset="100%" stop-color="#059669" stop-opacity="0"/>
+                    </radialGradient>
+                </defs>
+                <circle cx="160" cy="78" r="64" fill="url(#gEm)"/>
+                <circle cx="160" cy="78" r="44" stroke="#34d399" stroke-width="1.5" opacity="0.7"/>
+                <circle cx="160" cy="78" r="28" stroke="#6ee7b7" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.7"/>
+                <path d="M90 78 Q125 38 160 78 T230 78" stroke="#a7f3d0" stroke-width="2" fill="none"/>
+                <path d="M90 78 Q125 118 160 78 T230 78" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
+                <circle cx="160" cy="78" r="6" fill="#ecfdf5"/>
+            </svg>
+            <div class="gt-tag">STAGE 03 · FULL SYNTHESIS</div>
+            <div class="gt-code">SHATABHISHA RING</div>
+        </div>`;
+    }
+    // 5. Chuyên đề Luyện Đề GĐ4 / Live / Default (Crimson / Singularity Horizon)
+    return `<div class="galaxy-thumb-art gt-crimson">
+        <div class="gt-glow"></div>
+        <svg viewBox="0 0 320 156" class="gt-svg" fill="none">
+            <defs>
+                <radialGradient id="gCrim" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#f43f5e" stop-opacity="0.55"/>
+                    <stop offset="100%" stop-color="#e11d48" stop-opacity="0"/>
+                </radialGradient>
+            </defs>
+            <circle cx="160" cy="78" r="64" fill="url(#gCrim)"/>
+            <ellipse cx="160" cy="78" rx="74" ry="20" stroke="#fb7185" stroke-width="2" opacity="0.85" transform="rotate(-12 160 78)"/>
+            <ellipse cx="160" cy="78" rx="56" ry="14" stroke="#fda4af" stroke-width="1.2" stroke-dasharray="5 3" opacity="0.65" transform="rotate(-12 160 78)"/>
+            <circle cx="160" cy="78" r="18" fill="#090d16" stroke="#f43f5e" stroke-width="2"/>
+            <circle cx="160" cy="78" r="24" stroke="#fecdd3" stroke-width="1" opacity="0.5"/>
+        </svg>
+        <div class="gt-tag">STAGE 04 · EXAM MASTERY</div>
+        <div class="gt-code">EVENT HORIZON</div>
+    </div>`;
+}
+
     let h='';
     if(USING_DEMO) h+=`<div class="notice"><i class="fa-solid fa-circle-info"></i> Đang hiển thị <b>dữ liệu mẫu</b>. Tạo tab <b>BaiHoc</b> trong Google Sheets và điền dữ liệu để hiện bài giảng thật.</div>`;
-    h+=`<div class="page-head"><h1>Chọn khóa học của thầy Trường</h1></div>
+    h+=`<div class="galaxy-sector-banner">
+            <div class="gsb-left">
+                <div class="gsb-eyebrow"><span class="dot"></span> HÀNH TINH SADALSUUD · HỆ VŨ TRỤ VẬT LÝ 12</div>
+                <div class="gsb-title">Chọn khóa học của thầy Trường</div>
+                <div class="gsb-sub">Lộ trình toàn diện từ nền tảng, chuyên đề lý thuyết 3D, mô hình nâng cao đến tổng ôn & luyện đề chuẩn cấu trúc mới.</div>
+            </div>
+            <a href="index.html" class="gsb-back-galaxy"><i class="fa-solid fa-shuttle-space"></i> Quay về Vũ Trụ 3D</a>
+        </div>
         <div class="toolbar">
             <div class="tabs">
                 <button class="tab-btn ${homeState.tab==='all'?'active':''}" onclick="setTab('all')"><i class="fa-solid fa-layer-group"></i> Tất cả <span class="pill">${visibleCourses.length}</span></button>
@@ -2953,9 +3283,9 @@ function renderHome(){
         </div>`;
     if(!list.length){ h+=`<div class="empty"><i class="fa-solid fa-box-open"></i><p>${homeState.tab==='mine'?'Em chưa bắt đầu khóa nào. Hãy chọn một khóa để học!':'Chưa có khóa học nào.'}</p></div>`; }
     else{
-        const ccHTML=c=>{
+        const ccHTML=(c,cIdx)=>{
             const pct=coursePct(c),w=courseWatched(c),nw=courseNew(c);
-            const thumb=c.img&&/^https?:|^data:/.test(c.img)?`<img src="${esc(c.img)}" alt="">`:`<span>${c.img||'📘'}</span>`;
+            const thumb=getGalaxyCourseBanner(c, cIdx||0);
             const _started = isStarted(c.name);
             const _access = canAccess(c.name);
             const _lockMsg = _access ? '' : tierLabel(c.name);
@@ -2982,10 +3312,10 @@ function renderHome(){
         list.filter(c=>isVisible(c.name)).forEach(c=>{ if(c.group){if(!grpMap.has(c.group))grpMap.set(c.group,[]);grpMap.get(c.group).push(c);}else solo.push(c); });
         grpMap.forEach((cs,gn)=>{
             h+='<div class="subject-section"><div class="subject-label"><h2>📚 '+esc(gn)+'</h2><span class="subj-pill">'+cs.length+' khóa học</span></div><div class="grid">';
-            cs.forEach(c=>{ h+=ccHTML(c); });
+            cs.forEach((c,ci)=>{ h+=ccHTML(c,ci); });
             h+='</div></div>';
         });
-        if(solo.length){ h+='<div class="grid">'; solo.forEach(c=>{ h+=ccHTML(c); }); h+='</div>'; }
+        if(solo.length){ h+='<div class="grid">'; solo.forEach((c,ci)=>{ h+=ccHTML(c,ci); }); h+='</div>'; }
     }
     // Virtual diffing: Nếu nội dung HTML sinh ra giống hệt giao diện đang hiển thị -> Bỏ qua, không chạm DOM
     if(app().__lastRenderedHomeHtml === h && app().firstElementChild){
@@ -3284,7 +3614,7 @@ function renderCourse(name){
     if(!isVisible(c.name)){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-eye-slash"></i><p>Khóa học hiện đang tạm ẩn.</p><p><a onclick="go('#home')">← Về danh sách khóa học</a></p></div>`; return; }
     if(!canAccess(c.name)){ showUpgrade(c.name); return; }
     const pct=coursePct(c),w=courseWatched(c);
-    const thumb=c.img&&/^https?:|^data:/.test(c.img)?`<img src="${esc(c.img)}" alt="">`:(c.img||'📘');
+    const thumb=c.img&&/^https?:|^data:/.test(c.img)?`<img src="${esc(c.img)}" alt="">`:'<i class="fa-solid fa-atom" style="color:#00f0ff;filter:drop-shadow(0 0 10px rgba(0,240,255,0.6))"></i>';
     const grpCrumb=c.group?'<span class="sep">›</span><a onclick="go(\'#home\')">'+esc(c.group)+'</a>':'';
     let h=`<div class="crumb"><a onclick="go('#home')">Khóa học</a>${grpCrumb}<span class="sep">›</span><span class="cur">${esc(c.dname||c.name)}</span></div>
         <div class="course-hero">
@@ -3946,8 +4276,9 @@ function renderLesson(key){
         lesson.baitap = mapQuizRows(window._QUIZZES_BUNDLE[key]);
         lesson._quizLoaded = true;
     }
-    const _quizMeta=(window._QUIZZES_BUNDLE && window._QUIZZES_BUNDLE[key]) || (QUIZ_INDEX&&QUIZ_INDEX.lessons&&QUIZ_INDEX.lessons[key]);
-    const _needsQuizLoad = !lesson._quizLoaded && !lesson._quizLoading && (_quizMeta || !(lesson.baitap && lesson.baitap.length));
+    const _quizMeta=QUIZ_INDEX&&QUIZ_INDEX.lessons&&QUIZ_INDEX.lessons[key];
+    if(!_quizMeta) lesson._quizLoaded = true;
+    const _needsQuizLoad = !lesson._quizLoaded && !lesson._quizLoading && !!_quizMeta;
     if(_needsQuizLoad){
         lesson._quizLoading=true;
         app().innerHTML=`<div class="loading"><i class="fa-solid fa-spinner fa-spin"></i><p style="margin-top:12px">Đang mở bài học...</p></div>`;
@@ -6215,7 +6546,7 @@ function startQuizTimer(key, minutes){
    THEME
 ═══════════════════════════════════════════ */
 function toggleTheme(){ document.body.classList.toggle('dark'); localStorage.setItem('vlxt_theme',document.body.classList.contains('dark')?'dark':'light'); }
-if(localStorage.getItem('vlxt_theme')==='dark') document.body.classList.add('dark');
+if(localStorage.getItem('vlxt_theme')!=='light') document.body.classList.add('dark');
 
 let KHOACONFIG = {}; // { courseName: { trangThai, loaiTK, hienThi, thuTu, daKhaiGiang } }
 
@@ -6409,6 +6740,22 @@ async function boot(){
     if(HS && HS.sdt){
         try{ (JSON.parse(localStorage.getItem('vlxt_watched_'+HS.sdt)||'[]')).forEach(k=>WATCHED.add(k)); }catch(e){}
     }
+    // 0ms Optimistic Render từ cache localStorage + bundle tĩnh
+    try{
+        const localCfg = JSON.parse(localStorage.getItem('vlxt_khoaconfig_v2') || 'null');
+        if(Array.isArray(localCfg) && localCfg.length) applyKhoaConfig(localCfg);
+        if(window._QUIZ_INDEX_BUNDLE && window._QUIZ_INDEX_BUNDLE.lessons) QUIZ_INDEX = window._QUIZ_INDEX_BUNDLE;
+        const fastRows = _lcLoad();
+        if(Array.isArray(fastRows) && fastRows.length){
+            COURSES = buildCourses(fastRows.filter(isPublicLesson));
+            COURSES.forEach(c=>c.chapters.forEach(ch=>ch.lessons.forEach(l=>{
+                const meta=QUIZ_INDEX&&QUIZ_INDEX.lessons&&QUIZ_INDEX.lessons[l.key];
+                l._quizCount=meta?Number(meta.count)||0:0;
+            })));
+            _coursesReady = true;
+            route({ silent: true });
+        }
+    }catch(e){}
     const [rows] = await Promise.all([fetchLessons(), fetchKhoaConfig(), fetchQuizIndex()]);
     COURSES=buildCourses(rows);
     COURSES.forEach(c=>c.chapters.forEach(ch=>ch.lessons.forEach(l=>{

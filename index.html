@@ -691,6 +691,127 @@
       color: #ffffff;
     }
 
+    /* NÚT BỎ QUA BAY / VÀO THẲNG TRONG LÚC WARP */
+    #warp-skip-btn {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(12px);
+      z-index: 10005;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      background: rgba(6, 15, 34, 0.78);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #bae6fd;
+      font-family: 'Space Mono', 'Plus Jakarta Sans', monospace;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    body.is-warping #warp-skip-btn {
+      opacity: 0.92;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+    #warp-skip-btn:hover {
+      opacity: 1;
+      background: rgba(14, 116, 144, 0.72);
+      border-color: #00f0ff;
+      color: #ffffff;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.45);
+    }
+
+    /* ─── TỐI ƯU ĐA MÀN HÌNH: LAPTOP, MÁY TÍNH BẢNG & ĐIỆN THOẠI ─── */
+    @media (max-width: 1366px) {
+      .star-code { font-size: 14.5px; letter-spacing: 0.18em; }
+      .star-vn { font-size: 12.5px; }
+      .nav-menu-links a, .nav-dropdown-btn { font-size: 12.8px !important; padding: 6px 9px !important; }
+    }
+    @media (max-width: 1024px) {
+      .star-code { font-size: 13px; letter-spacing: 0.15em; }
+      .star-vn { font-size: 11.5px; }
+      .star-label { padding: 4px 10px 6px; }
+      .star-hitbox { width: 62px; height: 62px; }
+      .enter-btn, .enter-btn.primary-warp-btn {
+        font-size: clamp(16px, 3vw, 24px);
+        letter-spacing: 0.14em;
+        padding: 16px 28px;
+      }
+      .galaxy-stats-section { padding: 70px 20px 80px; }
+      .features-wrap { padding: 0 20px; }
+    }
+    @media (max-width: 640px) {
+      .top-bar { padding: 0 12px !important; height: 54px !important; }
+      .brand-glow-text { font-size: 13.5px !important; letter-spacing: 0.3px !important; }
+      .logo-atom-icon { width: 24px; height: 24px; }
+      #btn-audio-toggle { padding: 6px 10px; font-size: 10px; }
+      #audio-text { display: none; }
+      .star-label {
+        padding: 2px 6px 4px;
+        gap: 1px;
+      }
+      .star-label::after {
+        height: 7px;
+        margin-top: 2px;
+      }
+      .star-code {
+        font-size: 10.5px !important;
+        letter-spacing: 0.11em !important;
+        margin-right: -0.11em !important;
+      }
+      .star-vn {
+        font-size: 10px !important;
+        letter-spacing: 0.03em !important;
+      }
+      .star-hitbox {
+        width: 50px;
+        height: 50px;
+      }
+      #arrived-layer {
+        top: 54px;
+        height: calc(100% - 54px);
+        padding: 16px;
+      }
+      .enter-btn, .enter-btn.primary-warp-btn {
+        font-size: clamp(14px, 4.3vw, 19px) !important;
+        letter-spacing: 0.1em !important;
+        padding: 14px 18px !important;
+        white-space: normal !important;
+        text-align: center !important;
+        line-height: 1.35 !important;
+        max-width: 92vw;
+      }
+      .galaxy-scroll-indicator {
+        bottom: 12px;
+        padding: 4px 12px;
+      }
+      .scroll-text {
+        font-size: 9px;
+        letter-spacing: 1.4px;
+      }
+      .features-wrap { padding: 0 16px; }
+      .galaxy-feature-row { padding: 44px 0; gap: 28px; }
+      .feat-visual, .score-demo { min-height: auto; padding: 20px; }
+      .feat-visual-body { padding: 16px; }
+      .feat-line { padding: 10px 12px; font-size: 13px; }
+      .score-number { font-size: 44px; }
+      .galaxy-stats-section { padding: 54px 16px 64px; }
+      .num-item { padding: 26px 12px; }
+      .num-big { font-size: 30px; }
+      .num-label { font-size: 12.5px; }
+      .dgnl-bootup-card { padding: 24px 18px; }
+    }
+
     /* ══════════════════════════════════════════════════════════════
        GALAXY SCROLLABLE CONTENT SECTIONS (DEEP SPACE OBSIDIAN GLASS)
        ══════════════════════════════════════════════════════════════ */
@@ -1550,6 +1671,9 @@
       </button>
     </div>
   </div>
+  <button type="button" id="warp-skip-btn" title="Bỏ qua hiệu ứng bay, vào thẳng trang đích">
+    <span>Vào ngay</span> <i class="fa-solid fa-forward-fast"></i>
+  </button>
 </div><!-- /hero-galaxy-section -->
 
 <!-- NỘI DUNG CUỘN CHI TIẾT (OBSIDIAN GLASS) -->
@@ -3956,16 +4080,20 @@ function updateLabels() {
 
     var sx = (v.x * 0.5 + 0.5) * window.innerWidth;
     var sy = (v.y * -0.5 + 0.5) * window.innerHeight;
+    var starPadX = (window.innerWidth < 680) ? 54 : 72;
+    var lblSx = Math.max(starPadX, Math.min(window.innerWidth - starPadX, sx));
 
     if(lbl) {
-      lbl.style.transform = 'translate3d(' + sx + 'px, ' + (sy - 18) + 'px, 0) translate(-50%, -100%)';
+      lbl.style.transform = 'translate3d(' + lblSx + 'px, ' + (sy - 16) + 'px, 0) translate(-50%, -100%)';
     }
     if(hit) {
       hit.style.transform = 'translate3d(' + sx + 'px, ' + sy + 'px, 0) translate(-50%, -50%)';
     }
   }
 
-    // Cập nhật vị trí nhãn và hitbox của Hố Đen & Sao Neutron
+    // Cập nhật vị trí nhãn và hitbox của Hố Đen & Sao Neutron (tự động giữ nhãn trong khung hình an toàn)
+    var isNarrowViewport = (window.innerWidth < 680);
+    var celOffsetY = isNarrowViewport ? 30 : 46;
     function updateCelestialLabel(objGroup, lblId, hitId) {
       var v = objGroup.position.clone().project(camera);
       var lbl = document.getElementById(lblId);
@@ -3979,8 +4107,11 @@ function updateLabels() {
       if(hit) { hit.style.display = 'flex'; hit.style.pointerEvents = 'auto'; }
       var sx = (v.x * 0.5 + 0.5) * window.innerWidth;
       var sy = (v.y * -0.5 + 0.5) * window.innerHeight;
+      var padX = isNarrowViewport ? 56 : 78;
+      var clampedSx = Math.max(padX, Math.min(window.innerWidth - padX, sx));
+      var clampedSy = Math.max(78, Math.min(window.innerHeight - 36, sy));
       if(lbl) {
-        lbl.style.transform = 'translate3d(' + sx + 'px, ' + (sy - 46) + 'px, 0) translate(-50%, -100%)';
+        lbl.style.transform = 'translate3d(' + clampedSx + 'px, ' + (clampedSy - celOffsetY) + 'px, 0) translate(-50%, -100%)';
       }
       if(hit) {
         hit.style.transform = 'translate3d(' + sx + 'px, ' + sy + 'px, 0) translate(-50%, -50%)';
@@ -3991,15 +4122,198 @@ function updateLabels() {
 
 }
 
+/* ─────────────────────────────────────────────────────────────────────────
+   HỆ THỐNG ĐÁP ỨNG ĐA MÀN HÌNH 3D (MOBILE PORTRAIT, TABLET, LAPTOP, DESKTOP)
+   Đảm bảo toàn bộ 6 ngôi sao Bảo Bình + Hố Đen Gargantua + Sao Neutron Pulsar
+   + dòng chữ VATLYXUANTRUONG.IO.VN luôn nằm gọn 100% trong khung nhìn, không cắt mép!
+   ───────────────────────────────────────────────────────────────────────── */
+aquariusTabStars.forEach(function(ts) {
+  ts.baseX = ts.x;
+  ts.baseY = ts.y;
+  ts.baseZ = ts.z;
+  ts.desktopScale = ts.baseScale;
+});
+aquariusSecondaryStars.forEach(function(ss) {
+  ss.baseX = ss.x;
+  ss.baseY = ss.y;
+  ss.baseZ = ss.z;
+  ss.desktopScale = ss.baseScale;
+});
+
+var currentIdleFov = 50;
+var responsiveCelestialLayout = {
+  bhX: -470, bhY: -10, bhZ: -570, bhScale: 1.0,
+  nsX:  470, nsY: -10, nsZ: -570, nsScale: 1.0
+};
+
+function applyResponsiveGalaxyLayout() {
+  var w = window.innerWidth || 1366;
+  var h = window.innerHeight || 768;
+  var aspect = w / Math.max(1, h);
+
+  if (aspect < 0.72) {
+    // 1. ĐIỆN THOẠI DỌC (Mobile Portrait, ví dụ 390x844, aspect ~ 0.46)
+    currentIdleFov = 58;
+    var mobileTabCoords = [
+      { x:  88, y:  36, z: -600, scale: 26.0 }, // 0: SADALSUUD (Khóa Học)
+      { x: -88, y:  36, z: -580, scale: 26.0 }, // 1: SADALMELIK (Live & Xem Lại)
+      { x:  58, y: -44, z: -590, scale: 26.0 }, // 2: SADACHBIA (Phòng Thi Thử)
+      { x:   0, y: 112, z: -590, scale: 27.5 }, // 3: ALBALI (Đánh Giá Năng Lực)
+      { x: -84, y:-122, z: -580, scale: 26.0 }, // 4: SHATABHISHA (Đấu Thường)
+      { x:  84, y:-130, z: -600, scale: 26.0 }  // 5: SKAT (Đấu Hạng)
+    ];
+    aquariusTabStars.forEach(function(ts, idx) {
+      var mc = mobileTabCoords[idx];
+      ts.x = mc.x; ts.y = mc.y; ts.z = mc.z; ts.baseScale = mc.scale;
+    });
+    var mobileSecCoords = [
+      { x: -24, y: -26, z: -585, scale: 9.5 },  // zeta
+      { x:  14, y: -72, z: -585, scale: 9.0 },  // ancha
+      { x: -96, y: -18, z: -580, scale: 8.5 },  // stream_1
+      { x:-104, y: -62, z: -580, scale: 9.0 },  // stream_2
+      { x: -92, y: -96, z: -580, scale: 8.5 },  // stream_3
+      { x: -34, y:-132, z: -585, scale: 9.0 },  // stream_4
+      { x:  16, y:-126, z: -590, scale: 9.5 },  // stream_5
+      { x:  52, y:-140, z: -595, scale: 9.5 }   // stream_6
+    ];
+    aquariusSecondaryStars.forEach(function(ss, sIdx) {
+      var sc = mobileSecCoords[sIdx];
+      ss.x = sc.x; ss.y = sc.y; ss.z = sc.z; ss.baseScale = sc.scale;
+    });
+    responsiveCelestialLayout.bhX = -82; responsiveCelestialLayout.bhY = 206; responsiveCelestialLayout.bhZ = -570; responsiveCelestialLayout.bhScale = 0.54;
+    responsiveCelestialLayout.nsX =  82; responsiveCelestialLayout.nsY = 206; responsiveCelestialLayout.nsZ = -570; responsiveCelestialLayout.nsScale = 0.54;
+    if (typeof deepGalaxyTitleMesh !== 'undefined' && deepGalaxyTitleMesh) {
+      var mScale = Math.max(0.38, Math.min(0.54, aspect * 1.02));
+      deepGalaxyTitleMesh.position.set(0, -305, -1050);
+      deepGalaxyTitleMesh.scale.set(mScale, mScale, 1);
+    }
+  } else if (aspect < 1.08) {
+    // 2. MÁY TÍNH BẢNG DỌC / MÀN HÌNH VUÔNG (Tablet Portrait, ví dụ 768x1024, aspect ~ 0.75)
+    currentIdleFov = 54;
+    var tabPortraitCoords = [
+      { x:  148, y:  60, z: -600, scale: 30.0 },
+      { x: -156, y:  50, z: -580, scale: 30.0 },
+      { x:   92, y: -14, z: -590, scale: 30.0 },
+      { x:  -12, y: 105, z: -590, scale: 31.0 },
+      { x: -120, y:-118, z: -580, scale: 30.0 },
+      { x:  142, y:-118, z: -600, scale: 30.0 }
+    ];
+    aquariusTabStars.forEach(function(ts, idx) {
+      var tc = tabPortraitCoords[idx];
+      ts.x = tc.x; ts.y = tc.y; ts.z = tc.z; ts.baseScale = tc.scale;
+    });
+    aquariusSecondaryStars.forEach(function(ss) {
+      ss.x = ss.baseX * 0.62;
+      ss.y = ss.baseY;
+      ss.z = ss.baseZ;
+      ss.baseScale = ss.desktopScale * 0.88;
+    });
+    responsiveCelestialLayout.bhX = -165; responsiveCelestialLayout.bhY = 192; responsiveCelestialLayout.bhZ = -570; responsiveCelestialLayout.bhScale = 0.74;
+    responsiveCelestialLayout.nsX =  165; responsiveCelestialLayout.nsY = 192; responsiveCelestialLayout.nsZ = -570; responsiveCelestialLayout.nsScale = 0.74;
+    if (typeof deepGalaxyTitleMesh !== 'undefined' && deepGalaxyTitleMesh) {
+      var tScale = Math.max(0.62, Math.min(0.84, aspect * 0.94));
+      deepGalaxyTitleMesh.position.set(0, -235, -1050);
+      deepGalaxyTitleMesh.scale.set(tScale, tScale, 1);
+    }
+  } else {
+    // 3. LAPTOP, MÁY TÍNH BẢNG NGANG & DESKTOP (aspect >= 1.08, ví dụ 1024x768, 1366x768, 1920x1080)
+    currentIdleFov = 50;
+    var hFit = Math.min(1.0, Math.max(0.72, (aspect - 0.08) / 1.56));
+    aquariusTabStars.forEach(function(ts) {
+      ts.x = ts.baseX * hFit;
+      ts.y = ts.baseY;
+      ts.z = ts.baseZ;
+      ts.baseScale = ts.desktopScale;
+    });
+    aquariusSecondaryStars.forEach(function(ss) {
+      ss.x = ss.baseX * hFit;
+      ss.y = ss.baseY;
+      ss.z = ss.baseZ;
+      ss.baseScale = ss.desktopScale;
+    });
+    var celScale = Math.min(1.0, 0.76 + 0.24 * hFit);
+    responsiveCelestialLayout.bhX = -470 * hFit; responsiveCelestialLayout.bhY = -10; responsiveCelestialLayout.bhZ = -570; responsiveCelestialLayout.bhScale = celScale;
+    responsiveCelestialLayout.nsX =  470 * hFit; responsiveCelestialLayout.nsY = -10; responsiveCelestialLayout.nsZ = -570; responsiveCelestialLayout.nsScale = celScale;
+    if (typeof deepGalaxyTitleMesh !== 'undefined' && deepGalaxyTitleMesh) {
+      deepGalaxyTitleMesh.position.set(0, -150, -1050);
+      deepGalaxyTitleMesh.scale.set(hFit, hFit, 1);
+    }
+  }
+
+  // Cập nhật vị trí 3D của các sao và đường nối chòm sao
+  for (var i = 0; i < tabMeshes.length; i++) {
+    var tm = tabMeshes[i];
+    tm.sprite.position.set(tm.data.x, tm.data.y, tm.data.z);
+    tm.halo.position.copy(tm.sprite.position);
+    tm.reticle.position.copy(tm.sprite.position);
+    tm.reticle.scale.set(tm.data.baseScale * 1.65, tm.data.baseScale * 1.65, 1);
+  }
+  for (var j = 0; j < secondaryMeshes.length; j++) {
+    var sm = secondaryMeshes[j];
+    sm.sprite.position.set(sm.data.x, sm.data.y, sm.data.z);
+    sm.halo.position.copy(sm.sprite.position);
+  }
+  if (typeof constellationGeo !== 'undefined' && constellationGeo.attributes.position) {
+    var cArr = constellationGeo.attributes.position.array;
+    for (var lp = 0; lp < linePairs.length; lp++) {
+      var pA = linePairs[lp][0];
+      var pB = linePairs[lp][1];
+      cArr[lp * 6 + 0] = pA.x; cArr[lp * 6 + 1] = pA.y; cArr[lp * 6 + 2] = pA.z;
+      cArr[lp * 6 + 3] = pB.x; cArr[lp * 6 + 4] = pB.y; cArr[lp * 6 + 5] = pB.z;
+    }
+    constellationGeo.attributes.position.needsUpdate = true;
+  }
+
+  if (currentState === 'IDLE') {
+    camera.fov = currentIdleFov;
+    camera.updateProjectionMatrix();
+    if (typeof blackHoleGroup !== 'undefined' && blackHoleGroup) {
+      blackHoleGroup.position.set(responsiveCelestialLayout.bhX, responsiveCelestialLayout.bhY, responsiveCelestialLayout.bhZ);
+      blackHoleGroup.scale.set(responsiveCelestialLayout.bhScale, responsiveCelestialLayout.bhScale, responsiveCelestialLayout.bhScale);
+    }
+    if (typeof neutronGroup !== 'undefined' && neutronGroup) {
+      neutronGroup.position.set(responsiveCelestialLayout.nsX, responsiveCelestialLayout.nsY, responsiveCelestialLayout.nsZ);
+      neutronGroup.scale.set(responsiveCelestialLayout.nsScale, responsiveCelestialLayout.nsScale, responsiveCelestialLayout.nsScale);
+    }
+    updateLabels();
+  }
+}
+
+/* NẠP TRƯỚC (PREFETCH) TRANG ĐÍCH & DỮ LIỆU ĐỂ MỞ TRANG TỨC THÌ (0ms) */
+var _prefetchedUrls = {};
+function prefetchDestination(url) {
+  if (!url || _prefetchedUrls[url]) return;
+  _prefetchedUrls[url] = true;
+  try {
+    var linkEl = document.createElement('link');
+    linkEl.rel = 'prefetch';
+    linkEl.href = url;
+    document.head.appendChild(linkEl);
+    if (url.indexOf('baihoc') !== -1 || url.indexOf('live-record') !== -1) {
+      ['data/baihoc.json', 'data/khoaconfig.json'].forEach(function(dUrl) {
+        if (!_prefetchedUrls[dUrl]) {
+          _prefetchedUrls[dUrl] = true;
+          var dl = document.createElement('link');
+          dl.rel = 'prefetch';
+          dl.href = dUrl;
+          document.head.appendChild(dl);
+        }
+      });
+    }
+  } catch (e) {}
+}
+
 function scrollToGalaxyContent() {
   var target = document.getElementById('galaxy-scroll-content');
   if(target) target.scrollIntoView({ behavior: 'smooth' });
 }
 
+applyResponsiveGalaxyLayout();
 animate();
 
 window.addEventListener('resize', function() {
   camera.aspect = window.innerWidth / window.innerHeight;
+  applyResponsiveGalaxyLayout();
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
@@ -4350,9 +4664,25 @@ function triggerWarp(tm) {
   tl.to(lineMat, { opacity: 0, duration: 1.15, ease: 'power2.out' }, 2.65);
   tl.to(glowTrailMat, { opacity: 0, duration: 1.15, ease: 'power2.out' }, 2.65);
 
-  // 6. Quỹ đạo bay dài 3.95s và dừng ở khoảng cách gần hùng vĩ z + 96 (với R = 35.0) giúp hành tinh to lớn choáng ngợp (~80% khung hình) kèm 2 vệ tinh quay quanh bên trái chuẩn Hình 5!
+  // Prefetch ngay khi bắt đầu bay để khi học sinh bấm "Tiến Vào..." là mở tức thì 0ms
+  prefetchDestination(selectedUrl);
+
+  // 6. Quỹ đạo bay thích ứng thông minh theo tỉ lệ màn hình (Điện thoại dọc, Tablet, Laptop) để hành tinh + mặt trăng + sao đôi luôn cân đối hùng vĩ và không bị cắt mép!
+  var curAspect = (window.innerWidth || 1366) / Math.max(1, (window.innerHeight || 768));
+  if (!isSpecialCelestial && typeof moonMesh !== 'undefined') {
+    moonMesh.position.set(curAspect < 0.75 ? -30.5 : -36.0, 0.0, 0.0);
+  }
+  if (!isSpecialCelestial && typeof binaryStarGroup !== 'undefined') {
+    binaryStarGroup.position.set(curAspect < 0.75 ? -27.5 : -44.0, curAspect < 0.75 ? 24.5 : 19.0, -38.0);
+  }
+  var camDistOffset;
+  if (isSpecialCelestial) {
+    camDistOffset = (curAspect < 0.72) ? 185 : ((curAspect < 1.08) ? 152 : 128);
+  } else {
+    camDistOffset = (curAspect < 0.72) ? 168 : ((curAspect < 1.08) ? 138 : 114);
+  }
   var targetCamY = isSpecialCelestial ? (tm.data.y - 4) : (tm.data.y + 2.0);
-  var targetCamZ = isSpecialCelestial ? (tm.data.z + 128) : (tm.data.z + 114);
+  var targetCamZ = tm.data.z + camDistOffset;
   tl.to(camera.position, {
     x: tm.data.x,
     y: targetCamY,
@@ -4387,6 +4717,7 @@ tabMeshes.forEach(function(tm) {
     if (lbl) lbl.classList.add('reticle-active');
     if (cursorRing) cursorRing.classList.add('cursor-hover');
     AudioEngine.hover(tm.data.idx);
+    prefetchDestination(tm.data.link);
   }
   function onLeaveStar() {
     if (hoveredStarIdx === tm.data.idx) hoveredStarIdx = -1;
@@ -4445,7 +4776,7 @@ function resetToGalaxyHub() {
 
   gsap.to('#flash', { opacity: 0, duration: 0.6, ease: 'power2.out' });
   gsap.to(camera, {
-    fov: 50,
+    fov: currentIdleFov || 50,
     duration: 1.2,
     ease: 'power3.out',
     onUpdate: function() { camera.updateProjectionMatrix(); }
@@ -4485,8 +4816,8 @@ function resetToGalaxyHub() {
   });
   if (typeof blackHoleGroup !== 'undefined' && blackHoleGroup) {
     blackHoleGroup.visible = true;
-    gsap.to(blackHoleGroup.position, { x: -470, y: -10, z: -570, duration: 0.8, ease: 'power2.out' });
-    gsap.to(blackHoleGroup.scale, { x: 1, y: 1, z: 1, duration: 0.8, ease: 'power2.out' });
+    gsap.to(blackHoleGroup.position, { x: responsiveCelestialLayout.bhX, y: responsiveCelestialLayout.bhY, z: responsiveCelestialLayout.bhZ, duration: 0.8, ease: 'power2.out' });
+    gsap.to(blackHoleGroup.scale, { x: responsiveCelestialLayout.bhScale, y: responsiveCelestialLayout.bhScale, z: responsiveCelestialLayout.bhScale, duration: 0.8, ease: 'power2.out' });
     if (typeof bhLensingPlane !== 'undefined') {
       gsap.to(bhLensingPlane.rotation, { y: 0.48, duration: 0.8, ease: 'power2.out' });
     }
@@ -4496,8 +4827,8 @@ function resetToGalaxyHub() {
   }
   if (typeof neutronGroup !== 'undefined' && neutronGroup) {
     neutronGroup.visible = true;
-    gsap.to(neutronGroup.position, { x: 470, y: -10, z: -570, duration: 0.8, ease: 'power2.out' });
-    gsap.to(neutronGroup.scale, { x: 1, y: 1, z: 1, duration: 0.8, ease: 'power2.out' });
+    gsap.to(neutronGroup.position, { x: responsiveCelestialLayout.nsX, y: responsiveCelestialLayout.nsY, z: responsiveCelestialLayout.nsZ, duration: 0.8, ease: 'power2.out' });
+    gsap.to(neutronGroup.scale, { x: responsiveCelestialLayout.nsScale, y: responsiveCelestialLayout.nsScale, z: responsiveCelestialLayout.nsScale, duration: 0.8, ease: 'power2.out' });
   }
   var lblBH = document.getElementById('lbl-blackhole'); if (lblBH) lblBH.style.display = 'flex';
   var hitBH = document.getElementById('hit-blackhole'); if (hitBH) hitBH.style.display = 'flex';
@@ -4588,14 +4919,18 @@ if (btnEnterEl) {
     e.preventDefault();
     e.stopPropagation();
     AudioEngine.enter();
-
-    // Mờ nhẹ màn hình và chuyển trang ngay lập tức
     var al = document.getElementById('arrived-layer');
     if (al) al.style.opacity = '0.5';
-
-    setTimeout(function() {
-      safeNavigate(selectedUrl);
-    }, 120);
+    safeNavigate(selectedUrl);
+  });
+}
+var warpSkipBtn = document.getElementById('warp-skip-btn');
+if (warpSkipBtn) {
+  warpSkipBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    AudioEngine.enter();
+    safeNavigate(selectedUrl);
   });
 }
 
@@ -4955,7 +5290,8 @@ function initCelestialInteractions() {
     var bhTarget = {
       data: {
         idx: 3, starCode: 'SINGULARITY', tabName: 'Test Điểm Thi THPT',
-        link: 'danh-gia-nang-luc.html', x: -470, y: -10, z: -570,
+        link: 'danh-gia-nang-luc.html',
+        x: responsiveCelestialLayout.bhX, y: responsiveCelestialLayout.bhY, z: responsiveCelestialLayout.bhZ,
         planetColor: 0xea580c, atmoColor: 0xfb923c, baseScale: 25.0,
         celestialType: 'blackhole'
       }
@@ -4981,6 +5317,7 @@ function initCelestialInteractions() {
     if(lblNS) lblNS.classList.add('reticle-active');
     if(cursorRing) cursorRing.classList.add('cursor-hover');
     AudioEngine.hover();
+    prefetchDestination('baihoc.html');
   }
   function onLeaveNS() {
     if(lblNS) lblNS.classList.remove('reticle-active');
@@ -4991,7 +5328,8 @@ function initCelestialInteractions() {
     var nsTarget = {
       data: {
         idx: 0, starCode: 'PULSAR', tabName: 'Khóa Học Thử Miễn Phí',
-        link: 'baihoc.html', x: 470, y: -10, z: -570,
+        link: 'baihoc.html',
+        x: responsiveCelestialLayout.nsX, y: responsiveCelestialLayout.nsY, z: responsiveCelestialLayout.nsZ,
         planetColor: 0x38bdf8, atmoColor: 0x00f0ff, baseScale: 25.0,
         celestialType: 'neutron'
       }

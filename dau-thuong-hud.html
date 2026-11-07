@@ -2,8 +2,8 @@
 <html lang="vi">
 <head>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="vendor/three.min.js"></script>
+  <script src="vendor/gsap.min.js"></script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -987,6 +987,39 @@ body {
   filter: brightness(1.15) !important;
 }
 
+
+@media (max-width: 768px) {
+  .hud-header {
+    padding: 10px 14px !important;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .hud-header-left {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .hud-back-btn {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+  }
+  .hud-world-badge {
+    padding: 4px 10px !important;
+  }
+  .world-sub {
+    display: none;
+  }
+  .world-sep {
+    display: none;
+  }
+  .hud-header-right {
+    gap: 6px;
+  }
+  .hud-mode-btn {
+    padding: 5px 10px !important;
+    font-size: 11.5px !important;
+  }
+}
+
 </style>
 </head>
 <body class="dark">
@@ -998,8 +1031,8 @@ body {
 <!-- HUD HEADER CHO LÕI SIÊU TÂN TINH (SUPERNOVA ARENA) -->
 <header class="hud-header">
   <div class="hud-header-left">
-    <a href="galaxy-multiverse.html" class="hud-back-btn">
-      <i class="fa-solid fa-arrow-left"></i> Về Phòng Không Gian
+    <a href="index.html" class="hud-back-btn">
+      <i class="fa-solid fa-earth-asia"></i> Về Vũ Trụ 3D
     </a>
     <div class="hud-world-badge">
       <span class="world-dot"></span>
@@ -1050,6 +1083,7 @@ body {
   </div>
 </div>
 
+<script src="data/bundle_quizzes.js"></script>
 <script src="auth.js?v=7"></script>
 <script src="cache.js?v=1"></script>
 <script src="teaching-scope.js?v=3"></script>
@@ -1803,18 +1837,45 @@ body {
   function loadQuestions() {
     arena.innerHTML = '<div class="loading-box"><div class="spinner"></div><div style="color:var(--sub);font-size:14px">Đang chuẩn bị dữ liệu Đấu Thường…</div></div>';
 
-    var loadNganHang = fetcher(GAS + '?type=nganhang')
-      .then(function(r){ return r.json(); })
-      .catch(function(){
-        return fetcher('temp_nganhang.json').then(function(r){ return r.json(); });
-      })
-      .catch(function(){ return []; });
+    function buildFallbackQuestionsFromBundle(lessons) {
+      if (!window._QUIZZES_BUNDLE) return [];
+      var lessonMap = {};
+      (lessons || []).forEach(function(l) {
+        var k = l.MaBai || l.mabai || '';
+        if (k) lessonMap[k] = l;
+      });
+      var out = [];
+      Object.keys(window._QUIZZES_BUNDLE).forEach(function(baiKey) {
+        var arr = window._QUIZZES_BUNDLE[baiKey];
+        var lInfo = lessonMap[baiKey] || {};
+        if (Array.isArray(arr)) {
+          arr.forEach(function(q, idx) {
+            if (q && q.optA && q.optB && q.correct) {
+              out.push({
+                id: baiKey + '_' + (q.thuTu || idx),
+                question: q.question || '',
+                optA: q.optA,
+                optB: q.optB,
+                optC: q.optC,
+                optD: q.optD,
+                correct: q.correct,
+                giaiThich: q.explanation || q.giaiThich || '',
+                mucDo: q.mucDo || 'TH',
+                loai: 'TN',
+                chatLuong: 'tinh',
+                chuong: lInfo.Chuong || lInfo.chuong || 'Chương 1. Vật lí nhiệt',
+                baiHoc: lInfo.TenBai || lInfo.tenbai || ''
+              });
+            }
+          });
+        }
+      });
+      return out;
+    }
 
     var loadScope = fetcher('data/teachingscope.json')
       .then(function(r){ return r.json(); })
-      .catch(function(){
-        return fetcher(GAS + '?type=teachingscope').then(function(r){ return r.json(); }).catch(function(){ return []; });
-      });
+      .catch(function(){ return []; });
 
     var loadBaiHoc = fetcher('data/baihoc.json')
       .then(function(r){ return r.json(); })
@@ -1822,42 +1883,49 @@ body {
         return fetcher(GAS + '?type=baihoc').then(function(r){ return r.json(); }).catch(function(){ return []; });
       });
 
-    Promise.all([loadNganHang, loadScope, loadBaiHoc]).then(function (results) {
-      var data = results[0];
-      var scopeData = results[1];
-      g_lessonsList = Array.isArray(results[2]) ? results[2] : (results[2].data || results[2].baihoc || []);
-      
-      var raw = Array.isArray(data) ? data : (data.data || data.rows || []);
-      questions = raw;
-      teachingScopes = scopeData;
-      
+    // Hiển thị ngay Bộ chọn Chương/Bài từ JSON tĩnh (0ms) mà không chờ GAS nganhang
+    Promise.all([loadScope, loadBaiHoc]).then(function(resFast) {
+      teachingScopes = resFast[0];
+      g_lessonsList = Array.isArray(resFast[1]) ? resFast[1] : (resFast[1].data || resFast[1].baihoc || []);
+      if (!questions.length) {
+        questions = buildFallbackQuestionsFromBundle(g_lessonsList);
+      }
       renderScopeSelector();
-    }).catch(function () {
-      arena.innerHTML = '<div class="empty-box"><h3>Không thể tải dữ liệu</h3><p>Kiểm tra kết nối mạng rồi thử lại.</p></div>';
     });
+
+    // Đồng thời tải ngân hàng đầy đủ từ cache/GAS ở hậu trường
+    fetcher(GAS + '?type=nganhang')
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        var raw = Array.isArray(data) ? data : (data.data || data.rows || []);
+        if (raw && raw.length) {
+          questions = raw;
+        }
+      })
+      .catch(function(){});
   }
 
   // ─── Boot ─────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', function () {
     // Kiểm tra auth
     user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
-    if (!user) { window.location.href = 'login.html?from=dua-top.html'; return; }
+    if (!user) { window.location.href = 'login.html?from=dau-thuong-hud.html'; return; }
 
     // Render widget
     if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(user);
 
-    var profilePromise = (user && user.sdt && user.token)
-      ? fetch(GAS, {
-          method: 'POST',
-          mode: 'cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'getprofile', sdt: user.sdt, token: user.token })
-        }).then(function (r) { return r.json(); }).catch(function () { return { ok: true, user: user }; })
-      : Promise.resolve({ ok: true, user: user });
+    // Khởi chạy nạp giao diện chọn chương ngay lập tức (0ms)
+    loadQuestions();
 
-    profilePromise
-      .then(function () { loadQuestions(); })
-      .catch(function () { loadQuestions(); });
+    // Làm mới hồ sơ ngầm ở hậu trường
+    if (user && user.sdt && user.token) {
+      fetch(GAS, {
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'getprofile', sdt: user.sdt, token: user.token })
+      }).catch(function () {});
+    }
   });
 })();
 </script>

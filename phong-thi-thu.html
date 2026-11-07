@@ -302,17 +302,145 @@
             .exam-row-card { grid-template-columns: 1fr; }
             .exam-row-actions { width: 100%; }
         }
+
+        /* ═══ GALAXY SECTOR SADACHBIA THEME & MULTI-DEVICE RESPONSIVE ═══ */
+        body.dark {
+            --primary: #00f0ff;
+            --primary-light: #38bdf8;
+            --primary-dark: #0284c7;
+            --primary-bg: rgba(0, 240, 255, 0.12);
+            --black: #f0f6fc;
+            --gray: #94a3b8;
+            --gray2: #64748b;
+            --border: rgba(0, 240, 255, 0.22);
+            --border-light: rgba(255, 255, 255, 0.08);
+            --bg: #081022;
+            --bg2: #050a18;
+            --card-bg: rgba(13, 22, 44, 0.88);
+            --green: #34d399;
+            --green-bg: rgba(16, 185, 129, 0.15);
+            --red: #f87171;
+            --red-bg: rgba(239, 68, 68, 0.15);
+            --amber: #fbbf24;
+            --amber-bg: rgba(245, 158, 11, 0.15);
+            background:
+                radial-gradient(ellipse at 18% 12%, rgba(168, 85, 247, 0.15) 0%, transparent 48%),
+                radial-gradient(ellipse at 82% 24%, rgba(0, 240, 255, 0.12) 0%, transparent 50%),
+                linear-gradient(180deg, #040814 0%, #070e20 55%, #050a18 100%) !important;
+            color: #f0f6fc !important;
+        }
+        body.dark .navbar {
+            background: rgba(5, 10, 24, 0.88) !important;
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.22) !important;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5) !important;
+        }
+        body.dark .nav-brand-badge {
+            background: rgba(168, 85, 247, 0.18);
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            color: #e9d5ff;
+        }
+        body.dark .sim-login-card,
+        body.dark .sidebar-card,
+        body.dark .info-box-card,
+        body.dark .main-controls-card,
+        body.dark .exam-row-card,
+        body.dark .empty-box {
+            background: rgba(13, 22, 44, 0.86) !important;
+            border-color: rgba(0, 240, 255, 0.2) !important;
+            backdrop-filter: blur(14px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45) !important;
+            color: #f0f6fc !important;
+        }
+        body.dark .exam-row-card:hover {
+            border-color: rgba(0, 240, 255, 0.55) !important;
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.6), 0 0 22px rgba(0, 240, 255, 0.14) !important;
+        }
+        body.dark .sim-input,
+        body.dark .search-box input {
+            background: rgba(6, 12, 26, 0.9) !important;
+            border-color: rgba(0, 240, 255, 0.25) !important;
+            color: #f0f6fc !important;
+        }
+        body.dark .filter-btn {
+            background: rgba(15, 23, 42, 0.8) !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
+            color: #cbd5e1 !important;
+        }
+        body.dark .filter-btn.active {
+            background: linear-gradient(135deg, #0b84f3, #00c6ff) !important;
+            border-color: #00f0ff !important;
+            color: #04101e !important;
+            font-weight: 800;
+        }
+        body.dark .btn-exam-entry,
+        body.dark .btn-sim-login {
+            background: linear-gradient(135deg, #0b84f3 0%, #00d2ff 100%) !important;
+            color: #04101e !important;
+            box-shadow: 0 4px 18px rgba(0, 210, 255, 0.3) !important;
+        }
+        body.dark .btn-exam-locked,
+        body.dark .status-pill.locked {
+            background: rgba(30, 41, 59, 0.8) !important;
+            color: #94a3b8 !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        body.dark .status-pill.done {
+            background: rgba(56, 189, 248, 0.16) !important;
+            color: #38bdf8 !important;
+        }
+        body.dark .btn-exam-video {
+            background: rgba(245, 158, 11, 0.12) !important;
+            border-color: rgba(245, 158, 11, 0.4) !important;
+            color: #fbbf24 !important;
+        }
+        body.dark .exam-structure-table th {
+            background: rgba(0, 240, 255, 0.08) !important;
+            color: #00f0ff !important;
+        }
+        body.dark .exam-structure-table tr:nth-child(even) td {
+            background: rgba(255, 255, 255, 0.02) !important;
+        }
+        body.dark .cbt-header-banner {
+            background:
+                radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.25) 0%, transparent 55%),
+                linear-gradient(135deg, rgba(10, 22, 48, 0.95) 0%, rgba(18, 32, 68, 0.92) 100%) !important;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.25) !important;
+        }
+        .nav-hamburger {
+            display: none; background: none; border: 1px solid rgba(255,255,255,0.2); cursor: pointer;
+            width: 36px; height: 36px; align-items: center; justify-content: center;
+            border-radius: 8px; color: #fff; font-size: 17px;
+        }
+        .nav-return-galaxy {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 6px 12px; border-radius: 999px;
+            background: rgba(0, 240, 255, 0.12); border: 1px solid rgba(0, 240, 255, 0.35);
+            color: #00f0ff !important; font-size: 12px; font-weight: 800; text-decoration: none;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .nav-return-galaxy:hover {
+            background: rgba(0, 240, 255, 0.22); transform: translateY(-1px);
+        }
+        @media (max-width: 900px) {
+            .nav-links, .nav-brand-badge { display: none !important; }
+            .nav-hamburger { display: inline-flex !important; }
+            .navbar { padding: 0 14px !important; }
+        }
+
     </style>
     <script src="auth.js?v=7"></script>
     <script src="thongbao.js?v=2"></script>
     <script src="device-id.js?v=1"></script>
     <script src="cache.js?v=1"></script>
 </head>
-<body>
+<body class="dark">
+<script>if(localStorage.getItem('vlxt_theme')==='light')document.body.classList.remove('dark');</script>
 
 <!-- ─── NAVBAR ─── -->
 <nav class="navbar">
     <div class="nav-left">
+        <button class="nav-hamburger" onclick="document.querySelector('.nav-links').style.display=document.querySelector('.nav-links').style.display==='flex'?'none':'flex'" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
         <a href="index.html" class="nav-logo">
             <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
                 <circle cx="14" cy="14" r="2.8" fill="#fff"/>
@@ -333,6 +461,7 @@
         </div>
     </div>
     <div class="nav-right">
+        <a href="index.html" class="nav-return-galaxy"><i class="fa-solid fa-earth-asia"></i> Vũ Trụ 3D</a>
         <div id="vlxt-nav-user-area"></div>
     </div>
 </nav>
@@ -377,7 +506,7 @@
     <!-- Header banner -->
     <div class="cbt-header-banner">
         <div class="cbt-banner-badge">
-            <i class="fa-solid fa-desktop"></i> PHÒNG THI THỬ TRÊN MÁY TÍNH - VẬT LÝ XUÂN TRƯỜNG
+            <i class="fa-solid fa-planet-ringed"></i> HÀNH TINH SADACHBIA · PHÒNG THI THỬ TRÊN MÁY TÍNH CBT
         </div>
         <h1 class="cbt-banner-title">KỲ THI THỬ TỐT NGHIỆP THPT</h1>
         <p class="cbt-banner-sub">Đợt thi: <b>Kỳ thi THPT QG 2027</b> · Mô phỏng trải nghiệm thi trên máy tính với đồng hồ đếm ngược, tự động lưu bài làm và chấm điểm tức thì.</p>
@@ -781,6 +910,10 @@ document.addEventListener('keydown', function(e) {
 });
 
 initCandidateInfo();
+// Hiển thị thẳng Sảnh Phòng Thi Thử (0ms) để học sinh thấy danh sách đề ngay lập tức, không phải chờ qua bước form trung gian
+document.getElementById('simLoginScreen').style.display = 'none';
+document.getElementById('lobbyScreen').classList.add('active');
+loadExams();
 </script>
 </body>
 </html>

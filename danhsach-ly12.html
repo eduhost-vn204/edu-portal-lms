@@ -184,6 +184,45 @@
         body.dark .nav-drawer-links a:hover, body.dark .nav-drawer-links a.active { background: rgba(0,240,255,0.08); }
         body.nav-drawer-locked { overflow: hidden; }
         @media (max-width: 640px) { .nav-hamburger { display: inline-flex; } }
+
+        /* ═══ GALAXY DEEP SPACE ENHANCEMENT ═══ */
+        body.dark {
+            background:
+                radial-gradient(ellipse at 20% 10%, rgba(11, 132, 243, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 25%, rgba(0, 240, 255, 0.1) 0%, transparent 50%),
+                linear-gradient(180deg, #040814 0%, #070e20 55%, #050a18 100%) !important;
+            color: #f0f6fc;
+            min-height: 100vh;
+        }
+        body.dark .navbar {
+            background: rgba(5, 10, 24, 0.88) !important;
+            border-color: rgba(0, 240, 255, 0.2) !important;
+        }
+        body.dark .exam-list {
+            background: transparent !important;
+            border: none !important;
+            gap: 14px !important;
+        }
+        body.dark .exam-card {
+            background: rgba(13, 22, 44, 0.86) !important;
+            border: 1px solid rgba(0, 240, 255, 0.2) !important;
+            border-radius: 16px !important;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+        }
+        body.dark .exam-card:hover {
+            border-color: rgba(0, 240, 255, 0.55) !important;
+            transform: translateY(-2px);
+        }
+        body.dark .btn-start {
+            background: linear-gradient(135deg, #0b84f3 0%, #00d2ff 100%) !important;
+            color: #04101e !important;
+        }
+        body.dark .btn-locked {
+            background: rgba(30, 41, 59, 0.75) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+            color: #94a3b8 !important;
+        }
+
     </style>
   <script src="auth.js?v=7"></script>
   <script src="thongbao.js?v=2"></script>
@@ -203,7 +242,7 @@
   </script>
   <script src="cache.js?v=1"></script>
 </head>
-<body>
+<body class="dark">
 
 <!-- ─── NAV ─── -->
 <nav class="navbar">
@@ -283,7 +322,7 @@
 
 <!-- ─── CONTENT ─── -->
 <div class="container">
-    <span class="page-eyebrow">// vật lý 12 · phòng kiểm tra</span>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px"><span class="page-eyebrow" style="margin-bottom:0;color:#00f0ff">// HỆ VŨ TRỤ VẬT LÝ 12 · PHÒNG KIỂM TRA ĐỊNH KỲ</span><a href="index.html" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:rgba(0,240,255,0.12);border:1px solid rgba(0,240,255,0.32);color:#00f0ff;font-size:12px;font-weight:800;text-decoration:none"><i class="fa-solid fa-earth-asia"></i> Quay về Vũ Trụ 3D</a></div>
     <h1 class="page-title">Phòng Kiểm Tra.</h1>
     <p class="page-sub">Hệ thống khảo sát năng lực trực tuyến: làm bài ngay, chấm điểm tức thì, lưu kết quả tự động.</p>
 
@@ -374,7 +413,7 @@ loadExams();
 </script>
 <script>
 function toggleTheme(){document.body.classList.toggle('dark');localStorage.setItem('vlxt_theme',document.body.classList.contains('dark')?'dark':'light');}
-if(localStorage.getItem('vlxt_theme')==='dark')document.body.classList.add('dark');
+if(localStorage.getItem('vlxt_theme')!=='light')document.body.classList.add('dark');
 </script>
 <script src="hoat-dong.js?v=1"></script>
 <script src="huongdan-popup.js?v=1"></script>

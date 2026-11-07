@@ -159,6 +159,30 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 07/11/2026 (19:50) — Tối Ưu Toàn Diện Đa Thiết Bị (Mobile / Tablet / Laptop), Đồng Bộ Đa Vũ Trụ Galaxy Giữa `index.html` & Toàn Bộ Các Sao Đích, Và Tăng Tốc Độ Click / Phản Hồi 0ms
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_MULTIDEVICE_GALAXY_AND_ZERO_LATENCY_PASS` (Đã kiểm thử Playwright trên `390x844` Mobile, `768x1024` Tablet, `1366x768` Laptop và toàn bộ các trang đích `index.html`, `baihoc.html`, `live-record.html`, `phong-thi-thu.html`, `danhsach-ly12.html`, `dau-thuong-hud.html`, `dua-top.html`, `danh-gia-nang-luc.html`, `0` lỗi JS).
+- **Chi tiết nguyên nhân & giải pháp**:
+  1. **Tối ưu 3D Camera & Bố cục chòm sao đa thiết bị trên `index.html` (Điện thoại, Máy tính bảng, Laptop)**:
+     - Bổ sung hàm `applyResponsiveGalaxyLayout()` tự động điều chỉnh FOV và tọa độ 3D theo 3 phân tầng màn hình:
+       - **Điện thoại dọc (`aspect < 0.72`, vd `390x844`)**: `camera.fov = 58`; gom tọa độ 6 ngôi sao chính của chòm Bảo Bình vào khoảng `x ∈ [-88, +88], y ∈ [-130, +112]`, đưa Hố Đen `SINGULARITY` (`x = -82, y = 206, scale = 0.54`) và Sao Neutron `PULSAR` (`x = +82, y = 206, scale = 0.54`) lên tầng trên cân đối, đồng thời thu gọn dòng chữ 3D `VATLYXUANTRUONG.IO.VN` (`y = -305`) để **100% các ngôi sao, thiên thể và tiêu đề đều nằm gọn trong màn hình điện thoại** (không còn bị cắt mất 3 ngôi sao và 2 thiên thể ở rìa ngang như trước).
+       - **Máy tính bảng dọc (`0.72 <= aspect < 1.08`, vd `768x1024`)**: `camera.fov = 54`; bố cục cân đối toàn bộ 8 điểm đến trong khung hình dọc.
+       - **Laptop & PC (`aspect >= 1.08`, vd `1366x768`, `1920x1080`)**: giữ nguyên bố cục Panorama điện ảnh rộng rãi với hệ số co giãn ngang mượt `hFit`.
+     - Thêm cơ chế kẹp biên an toàn (Screen-Space Clamping) trong `updateLabels()` và điều chỉnh khoảng cách dừng máy quay khi bay tới hành tinh (`camDistOffset = 168` trên điện thoại dọc, `138` trên tablet, `114` trên laptop) để quả cầu hành tinh vừa vặn tuyệt đẹp trên mọi màn hình.
+  2. **Đồng bộ nhận diện Vũ Trụ Galaxy (Multiverse UI/UX) giữa `index.html` và tất cả các trang đích**:
+     - **`baihoc.html` (Hành tinh Sadalsuud — Khóa Học)** & **`live-record.html` (Hành tinh Sadalmelik — Live & Xem Lại)**: Mặc định chế độ nền vũ trụ sâu (`body.dark` `#050a18`), thêm Banner Khu Vực Hành Tinh (`.galaxy-sector-banner`) kèm nút `"Quay về Vũ Trụ 3D"`, và thay thế 5 biểu tượng quyển sách `📘` đơn điệu bằng 5 thiết kế Đồ Họa Vector Vũ Trụ Vật Lý (`getGalaxyCourseBanner`: *Stage 01 Core Theory Quantum Atom*, *Stage 02 Advanced Model Matrix*, *Foundation 5-Day Boost Ignition*, *Stage 03 Full Synthesis*, *Stage 04 Exam Mastery*). Đồng bộ thanh điều hướng `.top-bar` và menu ngăn kéo di động trên `live-record.html`.
+     - **`phong-thi-thu.html` (Hành tinh Sadachbia — Phòng Thi Thử CBT)** & **`danhsach-ly12.html` (Phòng Kiểm Tra)**: Nâng cấp lên giao diện Galaxy Dark Mode kính mờ (`rgba(13, 22, 44, 0.86)`), viền phát sáng Cyan/Amethyst và nút `"Vũ Trụ 3D"`, giữ nguyên `.nav-hamburger` chuyên biệt.
+     - **`dua-top.html` (Hành tinh Skat — Đấu Hạng)**, **`dau-thuong-hud.html` (Hành tinh Shatabhisha — Đấu Thường)** & **`danh-gia-nang-luc.html` (Hành tinh Albali & Singularity)**: Đồng bộ nhãn khu vực hành tinh, nút quay về Vũ Trụ 3D và bố cục responsive cho màn hình nhỏ.
+  3. **Xử lý triệt để các điểm nghẽn gây load chậm khi click (Phản hồi tức thì `0ms`) & Bảo toàn logic/backend**:
+     - Trên `index.html`: Tự động `<link rel="prefetch">` trang đích ngay khi học sinh chạm/di chuột vào sao hoặc bắt đầu bay, bỏ độ trễ `120ms` khi bấm nút vào trang, và thêm nút `"Vào ngay ⏭"` (`#warp-skip-btn`) góc dưới bên phải để học sinh có thể bỏ qua hoạt cảnh bay bất cứ lúc nào.
+     - Trên `baihoc.html` và `live-record.html`: Bổ sung bước **Optimistic Render `0ms`** ngay đầu hàm `boot()` từ `localStorage` (`_lcLoad()`, `vlxt_khoaconfig_v2`, `window._QUIZ_INDEX_BUNDLE`) trước khi chờ mạng; đồng thời sửa điều kiện nạp quiz trong `renderLesson()` (`const _needsQuizLoad = !lesson._quizLoaded && !lesson._quizLoading && !!_quizMeta;`) để các bài học không có file quiz riêng không bị gọi ngược lên Google Apps Script (loại bỏ hoàn toàn độ trễ 2–4 giây khi mở bài học).
+     - Trên `phong-thi-thu.html`: Mở thẳng Sảnh Phòng Thi Thử (`#lobbyScreen`) và nạp danh sách đề ngay khi mở trang từ `data/danhsachde.json` thay vì bắt học sinh điền lại form mô phỏng trung gian.
+     - Trên `dau-thuong-hud.html` và `dua-top.html`: Chuyển `three.min.js` và `gsap.min.js` sang bản nội bộ `vendor/`, tách `profilePromise` (`POST getprofile`) chạy ngầm không chặn luồng khởi tạo câu hỏi, và bổ sung cơ chế nạp tức thì từ gói câu hỏi tĩnh `data/bundle_quizzes.js` (`window._QUIZZES_BUNDLE`) kết hợp `data/baihoc.json` & `data/teachingscope.json` nếu mạng GAS phản hồi chậm.
+     - Bảo toàn nguyên vẹn 100% logic phân quyền khóa học (`applyKhoaConfig`, `canAccess`, `isVisible`, `TrialManager`), hàng đợi tiến độ ngoại tuyến (`vlxt_progress_queue_v1`) và cơ chế cộng điểm LP.
+- **Tệp đã sửa đổi**:
+  - `index.html`, `baihoc.html`, `live-record.html`, `phong-thi-thu.html`, `danhsach-ly12.html`, `dua-top.html`, `dau-thuong-hud.html`, `danh-gia-nang-luc.html`, `PROJECT_STATE.md`.
+
 ### 07/11/2026 (17:03) — Khôi Phục Tinh Vân Tím-Xanh *Endgame* Đồng Bộ 3D & Thiết Kế 6 Hệ Hành Tinh Độc Bản (Hệ Sao Đôi, Đám Mây Tinh Vân & Vệ Tinh Quay 360°)
 - **Người thực hiện**: Antigravity AI Coordinator
 - **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex

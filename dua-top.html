@@ -374,6 +374,30 @@
       body.in-game .q-feedback { font-size: 13.5px; padding: 10px 12px; }
       .q-explain { font-size: 13.5px; padding: 10px 12px; }
     }
+
+    /* ═══ PLANET SKAT (ĐẤU HẠNG) GALAXY DEEP SPACE THEME ═══ */
+    body.dark {
+      --bg: #050a18;
+      --bg2: #0d162c;
+      background:
+        radial-gradient(ellipse at 20% 10%, rgba(245, 158, 11, 0.14) 0%, transparent 48%),
+        radial-gradient(ellipse at 80% 20%, rgba(0, 240, 255, 0.12) 0%, transparent 50%),
+        linear-gradient(180deg, #040814 0%, #070e20 55%, #050a18 100%) !important;
+    }
+    .nav {
+      flex-wrap: wrap; gap: 8px;
+    }
+    .nav-actions {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    @media (max-width: 600px) {
+      .nav { padding: 8px 12px; height: auto; min-height: 50px; }
+      .nav-logo { font-size: 13.5px; }
+      .nav-back { padding: 5px 9px; font-size: 11.5px; }
+      .score-bar { padding: 10px 10px; gap: 8px; }
+      .score-chip { padding: 6px 12px; min-width: 70px; }
+    }
+
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -386,17 +410,22 @@
     body.dark .katex svg { filter: invert(1); }
   </style>
 </head>
-<body>
+<body class="dark">
+<script>if(localStorage.getItem('vlxt_theme')==='light')document.body.classList.remove('dark');</script>
 
 <!-- NAV -->
 <nav class="nav">
-  <a href="index.html" class="nav-logo">⚡ Vật Lý Xuân Trường</a>
-  <a href="index.html#leaderboard" class="nav-back">← Bảng Vàng</a>
-  <a href="solo.html" class="nav-back">⚔️ Solo</a>
+  <a href="index.html" class="nav-logo">🌌 Vật Lý Xuân Trường · Sao Skat</a>
+  <div class="nav-actions">
+    <a href="index.html" class="nav-back" style="border-color:rgba(0,240,255,0.35);color:#00f0ff">🪐 Vũ Trụ 3D</a>
+    <a href="dau-thuong-hud.html" class="nav-back">🔥 Đấu Thường</a>
+    <a href="solo.html" class="nav-back">⚔️ Solo</a>
+  </div>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
+  <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.35);color:#fbbf24;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">HÀNH TINH SKAT · ĐẤU TRƯỜNG XẾP HẠNG</div>
   <div class="hero-icon">🏆</div>
   <h1 class="hero-title">Chế độ Đấu Hạng</h1>
   <p class="hero-sub">Trả lời câu hỏi, ghi điểm theo độ khó, leo thẳng lên Bảng Vàng.<br>Mỗi câu chỉ tính điểm một lần — câu khó cho điểm cao hơn.</p>
@@ -430,6 +459,7 @@
   </div>
 </div>
 
+<script src="data/bundle_quizzes.js"></script>
 <script src="auth.js?v=7"></script>
 <script src="cache.js?v=1"></script>
 <script src="teaching-scope.js?v=3"></script>
@@ -1002,11 +1032,58 @@
       .catch(function () {});
   }
 
+  function buildFallbackTinhFromBundle(lessons) {
+    if (!window._QUIZZES_BUNDLE) return [];
+    var lessonMap = {};
+    (lessons || []).forEach(function(l) {
+      var k = l.MaBai || l.mabai || '';
+      if (k) lessonMap[k] = l;
+    });
+    var out = [];
+    Object.keys(window._QUIZZES_BUNDLE).forEach(function(baiKey) {
+      var arr = window._QUIZZES_BUNDLE[baiKey];
+      var lInfo = lessonMap[baiKey] || {};
+      if (Array.isArray(arr)) {
+        arr.forEach(function(q, idx) {
+          if (q && q.optA && q.optB && q.correct) {
+            out.push({
+              id: baiKey + '_' + (q.thuTu || idx),
+              baiKey: baiKey,
+              maBai: baiKey,
+              question: q.question || '',
+              optA: q.optA,
+              optB: q.optB,
+              optC: q.optC,
+              optD: q.optD,
+              correct: q.correct,
+              giaiThich: q.explanation || q.giaiThich || '',
+              mucDo: q.mucDo || 'TH',
+              loai: 'TN',
+              chatLuong: 'tinh',
+              rawTier: 'tinh',
+              kyThuat: 'dat',
+              status: 'TEACHER_APPROVED',
+              usageScopes: ['DUA_TOP', 'SOLO'],
+              chuong: lInfo.Chuong || lInfo.chuong || 'CHƯƠNG 1 – VẬT LÝ NHIỆT',
+              baiHoc: lInfo.TenBai || lInfo.tenbai || ''
+            });
+          }
+        });
+      }
+    });
+    return out;
+  }
+
   function loadQuestions() {
     arena.innerHTML = '<div class="loading-box"><div class="spinner"></div><div style="color:var(--sub);font-size:14px">Đang chuẩn bị câu hỏi theo phạm vi bài học…</div></div>';
 
+    var nganHangRace = Promise.race([
+      fetcher(GAS + '?type=nganhang').then(function(r){ return r.json(); }).catch(function(){ return null; }),
+      new Promise(function(resolve){ setTimeout(function(){ resolve(null); }, 900); })
+    ]);
+
     Promise.all([
-      fetcher(GAS + '?type=nganhang').then(function(r){ return r.json(); }).catch(function(){ return []; }),
+      nganHangRace,
       fetcher('data/teachingscope.json').then(function(r){ return r.json(); }).catch(function(){
         return fetcher(GAS + '?type=teachingscope').then(function(r){ return r.json(); }).catch(function(){ return []; });
       }),
@@ -1017,7 +1094,10 @@
       var data = results[0];
       var scopeData = results[1];
       var lessons = Array.isArray(results[2]) ? results[2] : (results[2].data || results[2].baihoc || []);
-      var raw = Array.isArray(data) ? data : (data.data || data.rows || []);
+      var raw = data ? (Array.isArray(data) ? data : (data.data || data.rows || [])) : [];
+      if (!raw || !raw.length) {
+        raw = buildFallbackTinhFromBundle(lessons);
+      }
       
       questions = raw;
       teachingScopes = scopeData;
@@ -1056,6 +1136,14 @@
     // Render widget
     if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(user);
 
+    // Tối ưu 0ms: Kiểm tra LP từ phiên local trước để tải câu hỏi ngay lập tức, không chặn chờ mạng GAS
+    var cachedLp = Number(user.lpTotal) || 0;
+    var startedLoad = false;
+    if (cachedLp >= MIN_LP_DUATOP) {
+      startedLoad = true;
+      loadQuestions();
+    }
+
     var profilePromise = (user && user.sdt && user.token)
       ? fetch(GAS, {
           method: 'POST',
@@ -1067,11 +1155,11 @@
 
     profilePromise
       .then(function (profile) {
-        var lp = (profile && profile.ok && profile.user) ? (Number(profile.user.lpTotal) || 0) : (Number(user.lpTotal) || 0);
+        var lp = (profile && profile.ok && profile.user) ? (Number(profile.user.lpTotal) || 0) : cachedLp;
         if (lp < MIN_LP_DUATOP) { showLockedScreen(lp); return; }
-        loadQuestions();
+        if (!startedLoad) loadQuestions();
       })
-      .catch(function () { loadQuestions(); });
+      .catch(function () { if (!startedLoad) loadQuestions(); });
   });
 })();
 </script>
