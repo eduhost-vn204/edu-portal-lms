@@ -1637,19 +1637,19 @@
     <div class="star-hitbox" id="hit-4" data-idx="4" title="Đấu Thường (Shatabhisha)"></div>
     <div class="star-hitbox" id="hit-5" data-idx="5" title="Đấu Hạng (Skat)"></div>
 
-    <!-- HỐ ĐEN GARGANTUA (BÊN TRÁI): ĐÁNH GIÁ NĂNG LỰC · TEST ĐIỂM THI THPT -->
+    <!-- HỐ ĐEN GARGANTUA (BÊN TRÁI): TEST ĐIỂM THI THPT -->
     <div class="star-label celestial-label" id="lbl-blackhole">
       <span class="star-code" style="color:#fed7aa; text-shadow: 0 0 16px rgba(251, 146, 60, 0.95), 0 2px 10px rgba(0,0,0,1);">SINGULARITY</span>
-      <span class="star-vn" style="color:#fb923c; text-shadow: 0 0 16px rgba(234, 88, 12, 0.85), 0 2px 8px rgba(0,0,0,1);">Đánh Giá Năng Lực</span>
+      <span class="star-vn" style="color:#fb923c; text-shadow: 0 0 16px rgba(234, 88, 12, 0.85), 0 2px 8px rgba(0,0,0,1);">Test Điểm Thi THPT</span>
     </div>
-    <div class="star-hitbox" id="hit-blackhole" title="Đánh Giá Năng Lực · Test Điểm Thi THPT (Singularity)"></div>
+    <div class="star-hitbox" id="hit-blackhole" title="Test Điểm Thi THPT (Singularity)"></div>
 
-    <!-- SAO NEUTRON PULSAR (BÊN PHẢI): KHÓA HỌC & HỌC THỬ -->
+    <!-- SAO NEUTRON PULSAR (BÊN PHẢI): HỌC THỬ MIỄN PHÍ -->
     <div class="star-label celestial-label" id="lbl-neutron">
       <span class="star-code" style="color:#e0f2fe; text-shadow: 0 0 16px rgba(56, 189, 248, 1), 0 2px 10px rgba(0,0,0,1);">PULSAR</span>
-      <span class="star-vn" style="color:#38bdf8; text-shadow: 0 0 16px rgba(0, 240, 255, 0.9), 0 2px 8px rgba(0,0,0,1);">Khóa Học</span>
+      <span class="star-vn" style="color:#38bdf8; text-shadow: 0 0 16px rgba(0, 240, 255, 0.9), 0 2px 8px rgba(0,0,0,1);">Học Thử Miễn Phí</span>
     </div>
-    <div class="star-hitbox" id="hit-neutron" title="Khóa Học &amp; Học Thử (Pulsar)"></div>
+    <div class="star-hitbox" id="hit-neutron" title="Học Thử Miễn Phí (Pulsar)"></div>
 
     <div class="galaxy-scroll-indicator" id="galaxy-scroll-indicator" onclick="scrollToGalaxyContent()">
       <span class="scroll-text">Cuộn xuống khám phá hệ thống</span>
@@ -3150,11 +3150,12 @@ constellationGeo.setAttribute('position', new THREE.BufferAttribute(constelPosAr
 var constellationMat = new THREE.LineBasicMaterial({
   color: 0x67e8f9,
   transparent: true,
-  opacity: 0.42,
+  opacity: 0.0,
   blending: THREE.AdditiveBlending,
   depthWrite: false
 });
 var constellationLines = new THREE.LineSegments(constellationGeo, constellationMat);
+constellationLines.visible = false;
 scene.add(constellationLines);
 
 var photonPulses = [];
@@ -3164,10 +3165,11 @@ for (var pIdx = 0; pIdx < linePairs.length; pIdx++) {
     color: 0x00f0ff,
     blending: THREE.AdditiveBlending,
     transparent: true,
-    opacity: 0.85
+    opacity: 0.0
   });
   var pSprite = new THREE.Sprite(pMat);
   pSprite.scale.set(5.5, 5.5, 1);
+  pSprite.visible = false;
   scene.add(pSprite);
   photonPulses.push({
     sprite: pSprite,
@@ -3855,20 +3857,7 @@ function animate() {
     }
 
     if(constellationMat) {
-      constellationMat.opacity = 0.34 + Math.sin(t * 1.6) * 0.09;
-    }
-
-    for (var pIdx = 0; pIdx < photonPulses.length; pIdx++) {
-      var pp = photonPulses[pIdx];
-      var prog = (t * pp.speed + pp.offset) % 1.0;
-      var pA = pp.pair[0];
-      var pB = pp.pair[1];
-      pp.sprite.position.set(
-        pA.x + (pB.x - pA.x) * prog,
-        pA.y + (pB.y - pA.y) * prog,
-        pA.z + (pB.z - pA.z) * prog
-      );
-      pp.mat.opacity = Math.sin(prog * Math.PI) * 0.85;
+      constellationMat.opacity = 0.0;
     }
 
     for(var i=0; i<tabMeshes.length; i++) {
@@ -4796,7 +4785,7 @@ function resetToGalaxyHub() {
   pointMat.opacity = 0.9;
   lineMat.opacity = 0;
   glowTrailMat.opacity = 0;
-  gsap.to(constellationMat, { opacity: 0.42, duration: 0.8 });
+  if (constellationMat) constellationMat.opacity = 0.0;
 
   tabMeshes.forEach(function(t) {
     t.sprite.visible = true;
@@ -4816,7 +4805,7 @@ function resetToGalaxyHub() {
     gsap.to(s.mat, { opacity: 0.85, duration: 0.8 });
   });
   photonPulses.forEach(function(pp) {
-    pp.sprite.visible = true;
+    pp.sprite.visible = false;
   });
   if (typeof blackHoleGroup !== 'undefined' && blackHoleGroup) {
     blackHoleGroup.visible = true;
@@ -5304,7 +5293,7 @@ function initCelestialInteractions() {
     AudioEngine.click();
     var bhTarget = {
       data: {
-        idx: 3, starCode: 'SINGULARITY', tabName: 'Đánh Giá Năng Lực',
+        idx: 3, starCode: 'SINGULARITY', tabName: 'Test Điểm Thi THPT',
         link: 'danh-gia-nang-luc.html',
         x: responsiveCelestialLayout.bhX, y: responsiveCelestialLayout.bhY, z: responsiveCelestialLayout.bhZ,
         planetColor: 0xea580c, atmoColor: 0xfb923c, baseScale: 25.0,
@@ -5324,7 +5313,7 @@ function initCelestialInteractions() {
     hitBH.addEventListener('click', onClickBH);
   }
 
-  // Sao Neutron (Khóa Học & Học Thử)
+  // Sao Neutron (Học Thử Miễn Phí)
   var lblNS = document.getElementById('lbl-neutron');
   var hitNS = document.getElementById('hit-neutron');
 
@@ -5342,7 +5331,7 @@ function initCelestialInteractions() {
     AudioEngine.click();
     var nsTarget = {
       data: {
-        idx: 0, starCode: 'PULSAR', tabName: 'Khóa Học',
+        idx: 0, starCode: 'PULSAR', tabName: 'Học Thử Miễn Phí',
         link: 'baihoc.html',
         x: responsiveCelestialLayout.nsX, y: responsiveCelestialLayout.nsY, z: responsiveCelestialLayout.nsZ,
         planetColor: 0x38bdf8, atmoColor: 0x00f0ff, baseScale: 25.0,

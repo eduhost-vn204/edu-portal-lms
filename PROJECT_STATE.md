@@ -2181,13 +2181,14 @@ gba(255, 255, 255, 0.05), tạo không gian liền mạch vô tận như chuẩn
   1. **Khôi phục nguyên bản giao diện chuẩn Bộ GD&ĐT của `phong-thi-thu.html` & Bổ sung quy tắc bắt buộc trong `AGENTS.md`**:
      - Đưa `phong-thi-thu.html` về đúng giao diện sáng mô phỏng kỳ thi trên máy tính (CBT chuẩn Bộ GD&ĐT) từ commit `cc93106`.
      - Thêm quy tắc cứng vào `AGENTS.md` và `PROJECT_STATE.md`: **Tuyệt đối giữ nguyên giao diện chuẩn Bộ GD&ĐT của `phong-thi-thu.html`; không áp theme tối hoặc thay đổi bố cục của trang này trong các đợt đồng bộ giao diện sau.**
-  2. **Loại bỏ hoàn toàn sự trùng lặp trên Vũ Trụ 3D (`index.html`)**:
-     - **Gộp `Đánh Giá Năng Lực` và `Test Điểm Thi THPT (Hố Đen)` làm 1**: Thống nhất tại **Hố Đen Gargantua (`SINGULARITY · ĐÁNH GIÁ NĂNG LỰC` → `danh-gia-nang-luc.html`)** bên trái; chuyển ngôi sao `Albali` thành nút hình học thuần túy của chòm Bảo Bình (ẩn nhãn chữ & hitbox trùng lặp).
-     - **Gộp `Khóa Học` và `Học Thử Miễn Phí (Sao Neutron)` làm 1**: Thống nhất tại **Sao Neutron (`PULSAR · KHÓA HỌC` → `baihoc.html`)** bên phải; chuyển ngôi sao `Sadalsuud` thành nút hình học thuần túy của chòm Bảo Bình (ẩn nhãn chữ & hitbox trùng lặp).
+  2. **Loại bỏ hoàn toàn sự trùng lặp & Bỏ các đường nối giữa các ngôi sao trên Vũ Trụ 3D (`index.html`)**:
+     - **Bỏ các đường nối chòm sao (`constellationLines`) và hạt chạy dọc đường nối (`photonPulses`)**, giúp không gian vũ trụ sâu thẳm, thoáng đãng và điện ảnh hơn.
+     - **Gộp `Đánh Giá Năng Lực` và `Test Điểm Thi THPT (Hố Đen)` làm 1**: Thống nhất tại **Hố Đen Gargantua (`SINGULARITY · TEST ĐIỂM THI THPT` → `danh-gia-nang-luc.html`)** bên trái; ẩn nhãn chữ trùng lặp của `Albali`.
+     - **Gộp `Khóa Học` và `Học Thử Miễn Phí (Sao Neutron)` làm 1**: Thống nhất tại **Sao Neutron (`PULSAR · HỌC THỬ MIỄN PHÍ` → `baihoc.html`)** bên phải; ẩn nhãn chữ trùng lặp của `Sadalsuud`.
      - Toàn cảnh Vũ Trụ 3D hiện có **đúng 6 điểm đến độc nhất (0 trùng lặp)**:
-       * Trái: `SINGULARITY · ĐÁNH GIÁ NĂNG LỰC` (`danh-gia-nang-luc.html`)
-       * Phải: `PULSAR · KHÓA HỌC` (`baihoc.html`)
-       * 4 Sao trung tâm chòm Bảo Bình: `SADALMELIK · LIVE & XEM LẠI` (`live-record.html`), `SADACHBIA · PHÒNG THI THỬ` (`phong-thi-thu.html`), `SHATABHISHA · ĐẤU THƯỜNG` (`dau-thuong-hud.html`), `SKAT · ĐẤU HẠNG` (`dua-top.html`).
+       * Trái: `SINGULARITY · TEST ĐIỂM THI THPT` (`danh-gia-nang-luc.html`)
+       * Phải: `PULSAR · HỌC THỬ MIỄN PHÍ` (`baihoc.html`)
+       * 4 Sao trung tâm: `SADALMELIK · LIVE & XEM LẠI` (`live-record.html`), `SADACHBIA · PHÒNG THI THỬ` (`phong-thi-thu.html`), `SHATABHISHA · ĐẤU THƯỜNG` (`dau-thuong-hud.html`), `SKAT · ĐẤU HẠNG` (`dua-top.html`).
   3. **Tinh chỉnh bố cục hệ sao điện ảnh & Tách bạch dòng chữ `VATLYXUANTRUONG.IO.VN`**:
      - Nâng cung chòm sao Bảo Bình lên vùng trung tâm cân đối và hạ dòng chữ 3D `VATLYXUANTRUONG.IO.VN` xuống sâu phía dưới (`y = -255` trên Desktop/Laptop, `y = -265` trên Tablet, `y = -315` trên Mobile), chấm dứt hoàn toàn hiện tượng chữ `VATLYXUANTRUONG.IO.VN` đè lên ngôi sao `SHATABHISHA`.
 - **Kiểm thử Playwright**:
