@@ -2417,11 +2417,13 @@ var starPalette = [
   [0.18, 0.50, 0.98]  // Neon Sapphire Blue
 ];
 for(var i=0; i<starCount; i++) {
-  var x = (Math.random() - 0.5) * 1450;
-  var y = (Math.random() - 0.5) * 1450;
-  var z = (Math.random() - 0.5) * 2000 - 1000;
+  var initAngle = Math.random() * Math.PI * 2;
+  var initRad = 185 + Math.random() * 680;
+  var x = Math.cos(initAngle) * initRad;
+  var y = Math.sin(initAngle) * initRad;
+  var z = -650 - Math.random() * 1400;
   posArray[i*3] = x; posArray[i*3+1] = y; posArray[i*3+2] = z;
-  var spd = Math.random() * 1.8 + 0.4;
+  var spd = Math.random() * 1.6 + 0.35;
   // ~70% ngôi sao kéo thành tia sáng xanh-tím tốc độ cao khi nhảy không gian
   var streakWeight = (i % 10 < 7) ? (0.58 + Math.random() * 0.42) : 0.0;
   starVels.push({ x: x, y: y, z: z, speed: spd, streakWeight: streakWeight });
@@ -2439,8 +2441,8 @@ for(var i=0; i<starCount; i++) {
 pointGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
 var pointMat = new THREE.PointsMaterial({
-  color: 0xffffff, size: 7.5, map: glowTex,
-  transparent: true, opacity: 0.9,
+  color: 0xffffff, size: 4.2, map: glowTex,
+  transparent: true, opacity: 0.72,
   blending: THREE.AdditiveBlending, depthWrite: false
 });
 var starPoints = new THREE.Points(pointGeo, pointMat);
@@ -2470,22 +2472,22 @@ var glowTrailMat = new THREE.PointsMaterial({
 var glowTrailPoints = new THREE.Points(glowTrailGeo, glowTrailMat);
 scene.add(glowTrailPoints);
 
-// BỤI SAO NỀN (DUST PARTICLES)
+// BỤI SAO NỀN Ở XA (DISTANT DEEP-SPACE DUST — KHÔNG BĂNG QUA GẦN CAMERA)
 var dustCount = 450;
 var dustGeo = new THREE.BufferGeometry();
 var dustPosArray = new Float32Array(dustCount * 3);
 for(var d=0; d<dustCount; d++) {
-  dustPosArray[d*3]     = (Math.random() - 0.5) * 1600;
+  dustPosArray[d*3]     = (Math.random() - 0.5) * 2000;
   dustPosArray[d*3 + 1] = (Math.random() - 0.5) * 1600;
-  dustPosArray[d*3 + 2] = (Math.random() - 0.5) * 1800 - 500;
+  dustPosArray[d*3 + 2] = -700 - Math.random() * 1100;
 }
 dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPosArray, 3));
 var dustMat = new THREE.PointsMaterial({
   color: 0x7dd3fc,
-  size: 3.2,
+  size: 2.2,
   map: glowTex,
   transparent: true,
-  opacity: 0.45,
+  opacity: 0.35,
   blending: THREE.AdditiveBlending,
   depthWrite: false
 });
@@ -3045,22 +3047,25 @@ scene.add(neutronGroup);
 
 var tabMeshes = [];
 aquariusTabStars.forEach(function(ts, idx) {
+  var isHiddenNode = !!ts.isConstellationNodeOnly;
   var spikeMat = new THREE.SpriteMaterial({
     map: spikeTex, color: ts.color,
-    blending: THREE.AdditiveBlending, transparent: true, opacity: 0.95, depthWrite: false
+    blending: THREE.AdditiveBlending, transparent: true, opacity: isHiddenNode ? 0.0 : 0.95, depthWrite: false
   });
   var sp = new THREE.Sprite(spikeMat);
   sp.position.set(ts.x, ts.y, ts.z);
   sp.scale.set(ts.baseScale, ts.baseScale, 1);
+  sp.visible = !isHiddenNode;
   scene.add(sp);
 
   var haloMat = new THREE.SpriteMaterial({
     map: glowTex, color: 0xffffff,
-    blending: THREE.AdditiveBlending, transparent: true, opacity: 0.55, depthWrite: false
+    blending: THREE.AdditiveBlending, transparent: true, opacity: isHiddenNode ? 0.0 : 0.55, depthWrite: false
   });
   var spHalo = new THREE.Sprite(haloMat);
   spHalo.position.copy(sp.position);
   spHalo.scale.set(ts.baseScale * 1.5, ts.baseScale * 1.5, 1);
+  spHalo.visible = !isHiddenNode;
   scene.add(spHalo);
 
   var retMat = new THREE.SpriteMaterial({
@@ -3070,6 +3075,7 @@ aquariusTabStars.forEach(function(ts, idx) {
   var spReticle = new THREE.Sprite(retMat);
   spReticle.position.copy(sp.position);
   spReticle.scale.set(ts.baseScale * 1.65, ts.baseScale * 1.65, 1);
+  spReticle.visible = !isHiddenNode;
   scene.add(spReticle);
 
   tabMeshes.push({
@@ -3089,20 +3095,22 @@ var secondaryMeshes = [];
 aquariusSecondaryStars.forEach(function(ss, sIdx) {
   var sMat = new THREE.SpriteMaterial({
     map: spikeTex, color: ss.color,
-    blending: THREE.AdditiveBlending, transparent: true, opacity: 0.85, depthWrite: false
+    blending: THREE.AdditiveBlending, transparent: true, opacity: 0.0, depthWrite: false
   });
   var sp = new THREE.Sprite(sMat);
   sp.position.set(ss.x, ss.y, ss.z);
   sp.scale.set(ss.baseScale, ss.baseScale, 1);
+  sp.visible = false;
   scene.add(sp);
 
   var hMat = new THREE.SpriteMaterial({
     map: glowTex, color: 0xffffff,
-    blending: THREE.AdditiveBlending, transparent: true, opacity: 0.4, depthWrite: false
+    blending: THREE.AdditiveBlending, transparent: true, opacity: 0.0, depthWrite: false
   });
   var spH = new THREE.Sprite(hMat);
   spH.position.copy(sp.position);
   spH.scale.set(ss.baseScale * 1.3, ss.baseScale * 1.3, 1);
+  spH.visible = false;
   scene.add(spH);
 
   secondaryMeshes.push({
@@ -3853,7 +3861,7 @@ function animate() {
     camera.lookAt(lookTarget);
 
     if(dustPoints) {
-      dustPoints.rotation.y = t * 0.025;
+      dustPoints.rotation.z = t * 0.012;
     }
 
     if(constellationMat) {
@@ -3862,6 +3870,12 @@ function animate() {
 
     for(var i=0; i<tabMeshes.length; i++) {
       var tm = tabMeshes[i];
+      if (tm.data.isConstellationNodeOnly) {
+        tm.sprite.visible = false;
+        tm.halo.visible = false;
+        tm.reticle.visible = false;
+        continue;
+      }
       var base = tm.data.baseScale;
       var isHovered = (hoveredStarIdx === i);
       var hoverMult = isHovered ? 1.35 : 1.0;
@@ -3874,15 +3888,6 @@ function animate() {
       tm.retMat.rotation = t * 1.2;
       var targetRetOpacity = isHovered ? 0.95 : 0.0;
       tm.retMat.opacity += (targetRetOpacity - tm.retMat.opacity) * 0.15;
-    }
-
-    for(var j=0; j<secondaryMeshes.length; j++) {
-      var sm = secondaryMeshes[j];
-      var sBase = sm.data.baseScale;
-      var sScale = sBase * (1.0 + 0.25 * Math.sin(t * sm.freq + sm.phase));
-      sm.sprite.scale.set(sScale, sScale, 1);
-      sm.halo.scale.set(sScale * 1.3, sScale * 1.3, 1);
-      sm.mat.opacity = 0.75 + 0.25 * Math.sin(t * sm.freq + sm.phase);
     }
   } else if(currentState === 'WARPING' || currentState === 'ARRIVED') {
     if (currentState === 'ARRIVED' && activeTarget) {
@@ -3979,11 +3984,20 @@ function animate() {
     var relZ = v.z - cPos.z;
 
     var dForward = relX * Fx + relY * Fy + relZ * Fz;
+    var projX = relX - Fx * dForward;
+    var projY = relY - Fy * dForward;
+    var projZ = relZ - Fz * dForward;
+    var radialDist = Math.sqrt(projX*projX + projY*projY + projZ*projZ);
 
-    if (dForward < 35) {
-      var spawnDist = 1100 + Math.random() * 900;
-      // Sinh sao theo đường hầm hình trụ quanh trục nhìn camera (bán kính >= 145) để không bao giờ đâm xuyên tâm hành tinh/Hố Đen
-      var cylRadius = 145 + Math.random() * 720;
+    // Khi ở trạng thái sảnh chờ (IDLE), không cho các ngôi sao bé tiến lại quá gần ống kính (dForward < 420)
+    // hoặc băng ngang qua vùng trung tâm tầm nhìn (radialDist < 220 khi dForward < 820) để các sao luôn nhỏ nhắn, trôi êm ở ngoài rìa!
+    var minSafeDist = (currentState === 'IDLE') ? 420 : 45;
+    var crossesCenterView = (currentState === 'IDLE' && dForward < 820 && radialDist < 220);
+
+    if (dForward < minSafeDist || crossesCenterView) {
+      var spawnDist = (currentState === 'IDLE') ? (780 + Math.random() * 1100) : (1100 + Math.random() * 900);
+      var minRad = (currentState === 'IDLE') ? 235 : 155;
+      var cylRadius = minRad + Math.random() * 680;
       var cylAngle = Math.random() * Math.PI * 2;
       var rx = Math.cos(cylAngle) * cylRadius;
       var ry = Math.sin(cylAngle) * cylRadius;
@@ -3994,13 +4008,9 @@ function animate() {
       relY = v.y - cPos.y;
       relZ = v.z - cPos.z;
       dForward = spawnDist;
+      radialDist = cylRadius;
     }
 
-    // Tính khoảng cách vuông góc từ ngôi sao tới tâm trục nhìn camera để làm mềm vùng trung tâm (Sightline Tunnel)
-    var projX = relX - Fx * dForward;
-    var projY = relY - Fy * dForward;
-    var projZ = relZ - Fz * dForward;
-    var radialDist = Math.sqrt(projX*projX + projY*projY + projZ*projZ);
     var tunnelMask = radialDist < 95 ? 0.0 : Math.min(1.0, (radialDist - 95) / 90.0);
 
     var sTail = warpFactor * (48.0 + v.speed * 58.0) * tunnelMask * (v.streakWeight > 0 ? 1.0 : 0.0);
@@ -4653,7 +4663,7 @@ function triggerWarp(tm) {
   tl.call(function() { AudioEngine.stopWarp(); }, [], 3.05);
   tl.call(function() { AudioEngine.arrival(); }, [], 3.45);
 
-  tl.to(pointMat, { opacity: 0.85, duration: 1.15, ease: 'power2.out' }, 2.65);
+  tl.to(pointMat, { opacity: 0.72, duration: 1.15, ease: 'power2.out' }, 2.65);
   tl.to(lineMat, { opacity: 0, duration: 1.15, ease: 'power2.out' }, 2.65);
   tl.to(glowTrailMat, { opacity: 0, duration: 1.15, ease: 'power2.out' }, 2.65);
 
@@ -4782,12 +4792,18 @@ function resetToGalaxyHub() {
     onComplete: function() { destGroup.visible = false; }
   });
 
-  pointMat.opacity = 0.9;
+  pointMat.opacity = 0.72;
   lineMat.opacity = 0;
   glowTrailMat.opacity = 0;
   if (constellationMat) constellationMat.opacity = 0.0;
 
   tabMeshes.forEach(function(t) {
+    if (t.data.isConstellationNodeOnly) {
+      t.sprite.visible = false;
+      t.halo.visible = false;
+      t.reticle.visible = false;
+      return;
+    }
     t.sprite.visible = true;
     t.halo.visible = true;
     t.reticle.visible = true;
@@ -4798,11 +4814,8 @@ function resetToGalaxyHub() {
   });
 
   secondaryMeshes.forEach(function(s) {
-    s.sprite.visible = true;
-    s.halo.visible = true;
-    gsap.to(s.sprite.scale, { x: s.data.baseScale, y: s.data.baseScale, duration: 0.8 });
-    gsap.to(s.halo.scale, { x: s.data.baseScale * 1.3, y: s.data.baseScale * 1.3, duration: 0.8 });
-    gsap.to(s.mat, { opacity: 0.85, duration: 0.8 });
+    s.sprite.visible = false;
+    s.halo.visible = false;
   });
   photonPulses.forEach(function(pp) {
     pp.sprite.visible = false;
