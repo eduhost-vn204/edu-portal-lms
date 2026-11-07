@@ -1603,20 +1603,20 @@
   </div>
 
   <div id="ui-layer">
-    <!-- 6 NGÔI SAO TAB CHÒM BẢO BÌNH (AQUARIUS) -->
-    <div class="star-label" id="lbl-0">
+    <!-- 4 NGÔI SAO TRUNG TÂM CHÒM BẢO BÌNH (KHÔNG TRÙNG LẶP VỚI HỐ ĐEN & PULSAR) -->
+    <div class="star-label" id="lbl-0" style="display:none !important">
       <span class="star-code">Sadalsuud</span>
       <span class="star-vn">Khóa Học</span>
     </div>
     <div class="star-label" id="lbl-1">
       <span class="star-code">Sadalmelik</span>
-      <span class="star-vn">Live & Xem Lại</span>
+      <span class="star-vn">Live &amp; Xem Lại</span>
     </div>
     <div class="star-label" id="lbl-2">
       <span class="star-code">Sadachbia</span>
       <span class="star-vn">Phòng Thi Thử</span>
     </div>
-    <div class="star-label" id="lbl-3">
+    <div class="star-label" id="lbl-3" style="display:none !important">
       <span class="star-code">Albali</span>
       <span class="star-vn">Đánh Giá Năng Lực</span>
     </div>
@@ -1629,28 +1629,27 @@
       <span class="star-vn">Đấu Hạng</span>
     </div>
 
-    <!-- 6 HITBOX TƯƠNG TÁC -->
-    <div class="star-hitbox" id="hit-0" data-idx="0" title="Khóa Học (Sadalsuud)"></div>
-    <div class="star-hitbox" id="hit-1" data-idx="1" title="Live & Xem Lại (Sadalmelik)"></div>
+    <!-- HITBOX TƯƠNG TÁC -->
+    <div class="star-hitbox" id="hit-0" data-idx="0" style="display:none !important; pointer-events:none !important"></div>
+    <div class="star-hitbox" id="hit-1" data-idx="1" title="Live &amp; Xem Lại (Sadalmelik)"></div>
     <div class="star-hitbox" id="hit-2" data-idx="2" title="Phòng Thi Thử (Sadachbia)"></div>
-    <div class="star-hitbox" id="hit-3" data-idx="3" title="Đánh Giá Năng Lực (Albali)"></div>
+    <div class="star-hitbox" id="hit-3" data-idx="3" style="display:none !important; pointer-events:none !important"></div>
     <div class="star-hitbox" id="hit-4" data-idx="4" title="Đấu Thường (Shatabhisha)"></div>
     <div class="star-hitbox" id="hit-5" data-idx="5" title="Đấu Hạng (Skat)"></div>
 
-    <!-- TIÊU ĐỀ TRUNG TÂM & 3 NÚT CTA HERO -->
-  <!-- HỐ ĐEN (BÊN TRÁI): TEST ĐIỂM THI THPT -->
+    <!-- HỐ ĐEN GARGANTUA (BÊN TRÁI): ĐÁNH GIÁ NĂNG LỰC · TEST ĐIỂM THI THPT -->
     <div class="star-label celestial-label" id="lbl-blackhole">
       <span class="star-code" style="color:#fed7aa; text-shadow: 0 0 16px rgba(251, 146, 60, 0.95), 0 2px 10px rgba(0,0,0,1);">SINGULARITY</span>
-      <span class="star-vn" style="color:#fb923c; text-shadow: 0 0 16px rgba(234, 88, 12, 0.85), 0 2px 8px rgba(0,0,0,1);">Test Điểm Thi THPT</span>
+      <span class="star-vn" style="color:#fb923c; text-shadow: 0 0 16px rgba(234, 88, 12, 0.85), 0 2px 8px rgba(0,0,0,1);">Đánh Giá Năng Lực</span>
     </div>
-    <div class="star-hitbox" id="hit-blackhole"></div>
+    <div class="star-hitbox" id="hit-blackhole" title="Đánh Giá Năng Lực · Test Điểm Thi THPT (Singularity)"></div>
 
-    <!-- SAO NEUTRON (BÊN PHẢI): HỌC THỬ MIỄN PHÍ -->
+    <!-- SAO NEUTRON PULSAR (BÊN PHẢI): KHÓA HỌC & HỌC THỬ -->
     <div class="star-label celestial-label" id="lbl-neutron">
       <span class="star-code" style="color:#e0f2fe; text-shadow: 0 0 16px rgba(56, 189, 248, 1), 0 2px 10px rgba(0,0,0,1);">PULSAR</span>
-      <span class="star-vn" style="color:#38bdf8; text-shadow: 0 0 16px rgba(0, 240, 255, 0.9), 0 2px 8px rgba(0,0,0,1);">Học Thử Miễn Phí</span>
+      <span class="star-vn" style="color:#38bdf8; text-shadow: 0 0 16px rgba(0, 240, 255, 0.9), 0 2px 8px rgba(0,0,0,1);">Khóa Học</span>
     </div>
-    <div class="star-hitbox" id="hit-neutron"></div>
+    <div class="star-hitbox" id="hit-neutron" title="Khóa Học &amp; Học Thử (Pulsar)"></div>
 
     <div class="galaxy-scroll-indicator" id="galaxy-scroll-indicator" onclick="scrollToGalaxyContent()">
       <span class="scroll-text">Cuộn xuống khám phá hệ thống</span>
@@ -2493,26 +2492,26 @@ var dustMat = new THREE.PointsMaterial({
 var dustPoints = new THREE.Points(dustGeo, dustMat);
 scene.add(dustPoints);
 
-/* 6 NGÔI SAO CHÍNH CỦA CHÒM BẢO BÌNH (TƯƠNG ỨNG 6 PHÂN HỆ CỐT LÕI) */
+/* NGÔI SAO CHÍNH CỦA CHÒM BẢO BÌNH (4 SAO TƯƠNG TÁC TRUNG TÂM + 2 SAO ĐỊNH HÌNH CHÒM SAO) */
 var UNIFIED_STAR_COLOR = 0xa5f3fc;
 var aquariusTabStars = [
-  { idx:0, starCode:'SADALSUUD',   tabName:'Khóa Học',          link:'baihoc.html',            x: 230, y:  75, z:-600, color:UNIFIED_STAR_COLOR, planetColor:0x0284c7, atmoColor:0x38bdf8, baseScale:34.0 },
-  { idx:1, starCode:'SADALMELIK',  tabName:'Live & Xem Lại',    link:'live-record.html',       x:-245, y:  60, z:-580, color:UNIFIED_STAR_COLOR, planetColor:0xd97706, atmoColor:0xfbbf24, baseScale:34.0 },
-  { idx:2, starCode:'SADACHBIA',   tabName:'Phòng Thi Thử',     link:'phong-thi-thu.html',     x: 135, y:  13, z:-590, color:UNIFIED_STAR_COLOR, planetColor:0x9333ea, atmoColor:0xe879f9, baseScale:34.0 },
-  { idx:3, starCode:'ALBALI',      tabName:'Đánh Giá Năng Lực', link:'danh-gia-nang-luc.html', x: -25, y:  95, z:-590, color:UNIFIED_STAR_COLOR, planetColor:0x0ea5e9, atmoColor:0x7dd3fc, baseScale:34.0 },
-  { idx:4, starCode:'SHATABHISHA', tabName:'Đấu Thường',        link:'dau-thuong-hud.html',    x:-155, y:-120, z:-580, color:UNIFIED_STAR_COLOR, planetColor:0x059669, atmoColor:0x34d399, baseScale:34.0 },
-  { idx:5, starCode:'SKAT',        tabName:'Đấu Hạng',          link:'dua-top.html',           x: 215, y:-114, z:-600, color:UNIFIED_STAR_COLOR, planetColor:0xea580c, atmoColor:0xf97316, baseScale:34.0 }
+  { idx:0, starCode:'SADALSUUD',   tabName:'Khóa Học',          link:'baihoc.html',            x: 245, y:  96, z:-595, color:UNIFIED_STAR_COLOR, planetColor:0x0284c7, atmoColor:0x38bdf8, baseScale:15.5, isConstellationNodeOnly:true },
+  { idx:1, starCode:'SADALMELIK',  tabName:'Live & Xem Lại',    link:'live-record.html',       x:-215, y:  74, z:-580, color:UNIFIED_STAR_COLOR, planetColor:0xd97706, atmoColor:0xfbbf24, baseScale:35.0 },
+  { idx:2, starCode:'SADACHBIA',   tabName:'Phòng Thi Thử',     link:'phong-thi-thu.html',     x: 138, y:  34, z:-590, color:UNIFIED_STAR_COLOR, planetColor:0x9333ea, atmoColor:0xe879f9, baseScale:35.0 },
+  { idx:3, starCode:'ALBALI',      tabName:'Đánh Giá Năng Lực', link:'danh-gia-nang-luc.html', x: -32, y: 112, z:-590, color:UNIFIED_STAR_COLOR, planetColor:0x0ea5e9, atmoColor:0x7dd3fc, baseScale:16.0, isConstellationNodeOnly:true },
+  { idx:4, starCode:'SHATABHISHA', tabName:'Đấu Thường',        link:'dau-thuong-hud.html',    x:-135, y: -72, z:-580, color:UNIFIED_STAR_COLOR, planetColor:0x059669, atmoColor:0x34d399, baseScale:35.0 },
+  { idx:5, starCode:'SKAT',        tabName:'Đấu Hạng',          link:'dua-top.html',           x: 205, y: -68, z:-600, color:UNIFIED_STAR_COLOR, planetColor:0xea580c, atmoColor:0xf97316, baseScale:35.0 }
 ];
 
 var aquariusSecondaryStars = [
-  { id:'zeta',     name:'Zeta Aquarii', x: -55, y: -24, z:-585, baseScale: 12.0, color:0xa5f3fc },
-  { id:'ancha',    name:'Ancha',        x:  35, y: -74, z:-585, baseScale: 11.0, color:0xbae6fd },
-  { id:'stream_1', name:'Dòng nước 1',  x:-265, y: -47, z:-580, baseScale: 10.5, color:0x7dd3fc },
-  { id:'stream_2', name:'Dòng nước 2',  x:-290, y: -94, z:-580, baseScale: 11.0, color:0x38bdf8 },
-  { id:'stream_3', name:'Dòng nước 3',  x:-240, y:-137, z:-580, baseScale: 10.5, color:0x67e8f9 },
-  { id:'stream_4', name:'Dòng nước 4',  x: -75, y:-132, z:-585, baseScale: 11.0, color:0x7dd3fc },
-  { id:'stream_5', name:'Dòng nước 5',  x:  35, y:-124, z:-590, baseScale: 11.5, color:0x38bdf8 },
-  { id:'stream_6', name:'Dòng nước 6',  x: 115, y:-144, z:-595, baseScale: 11.5, color:0x67e8f9 }
+  { id:'zeta',     name:'Zeta Aquarii', x: -42, y:   4, z:-585, baseScale: 12.5, color:0xa5f3fc },
+  { id:'ancha',    name:'Ancha',        x:  44, y: -38, z:-585, baseScale: 11.5, color:0xbae6fd },
+  { id:'stream_1', name:'Dòng nước 1',  x:-252, y: -12, z:-580, baseScale: 10.5, color:0x7dd3fc },
+  { id:'stream_2', name:'Dòng nước 2',  x:-272, y: -56, z:-580, baseScale: 11.0, color:0x38bdf8 },
+  { id:'stream_3', name:'Dòng nước 3',  x:-218, y: -92, z:-580, baseScale: 10.5, color:0x67e8f9 },
+  { id:'stream_4', name:'Dòng nước 4',  x: -58, y: -88, z:-585, baseScale: 11.0, color:0x7dd3fc },
+  { id:'stream_5', name:'Dòng nước 5',  x:  38, y: -82, z:-590, baseScale: 11.5, color:0x38bdf8 },
+  { id:'stream_6', name:'Dòng nước 6',  x: 118, y: -96, z:-595, baseScale: 11.5, color:0x67e8f9 }
 ];
 
 
@@ -2524,27 +2523,27 @@ function createDeepGalaxyTitle() {
   cv.width = 2560; cv.height = 320;
   var c = cv.getContext('2d');
   c.clearRect(0, 0, 2560, 320);
-  c.font = '900 86px "Space Mono", "Orbitron", sans-serif';
+  c.font = '900 84px "Space Mono", "Orbitron", sans-serif';
   c.textAlign = 'center';
   c.textBaseline = 'middle';
   c.letterSpacing = '16px';
 
   // Glow mờ ảo hòa quyện vào dải ngân hà nhưng rõ nét, dễ đọc
-  c.shadowColor = 'rgba(56, 189, 248, 0.7)';
-  c.shadowBlur = 32;
-  c.fillStyle = 'rgba(224, 242, 254, 0.52)';
+  c.shadowColor = 'rgba(56, 189, 248, 0.65)';
+  c.shadowBlur = 30;
+  c.fillStyle = 'rgba(224, 242, 254, 0.46)';
   c.fillText('VATLYXUANTRUONG.IO.VN', 1280, 160);
 
   var tex = new THREE.CanvasTexture(cv);
   var mat = new THREE.MeshBasicMaterial({
     map: tex,
     transparent: true,
-    opacity: 0.45,
+    opacity: 0.38,
     blending: THREE.AdditiveBlending,
     depthWrite: false
   });
   var plane = new THREE.Mesh(new THREE.PlaneGeometry(1080, 135), mat);
-  plane.position.set(0, -150, -1050);
+  plane.position.set(0, -255, -1050);
   return plane;
 }
 var deepGalaxyTitleMesh = createDeepGalaxyTitle();
@@ -4060,9 +4059,14 @@ function updateLabels() {
 
   for(var i=0; i<tabMeshes.length; i++) {
     var tm = tabMeshes[i];
-    var v = tm.sprite.position.clone().project(camera);
     var lbl = document.getElementById('lbl-' + tm.data.idx);
     var hit = document.getElementById('hit-' + tm.data.idx);
+    if (tm.data.isConstellationNodeOnly) {
+      if(lbl) lbl.style.display = 'none';
+      if(hit) { hit.style.display = 'none'; hit.style.pointerEvents = 'none'; }
+      continue;
+    }
+    var v = tm.sprite.position.clone().project(camera);
 
     if(starOpacity <= 0.05 || v.z > 1 || Math.abs(v.x) > 1.2 || Math.abs(v.y) > 1.2) {
       if(lbl) lbl.style.display = 'none';
@@ -4155,64 +4159,64 @@ function applyResponsiveGalaxyLayout() {
     // 1. ĐIỆN THOẠI DỌC (Mobile Portrait, ví dụ 390x844, aspect ~ 0.46)
     currentIdleFov = 58;
     var mobileTabCoords = [
-      { x:  88, y:  36, z: -600, scale: 26.0 }, // 0: SADALSUUD (Khóa Học)
-      { x: -88, y:  36, z: -580, scale: 26.0 }, // 1: SADALMELIK (Live & Xem Lại)
-      { x:  58, y: -44, z: -590, scale: 26.0 }, // 2: SADACHBIA (Phòng Thi Thử)
-      { x:   0, y: 112, z: -590, scale: 27.5 }, // 3: ALBALI (Đánh Giá Năng Lực)
-      { x: -84, y:-122, z: -580, scale: 26.0 }, // 4: SHATABHISHA (Đấu Thường)
-      { x:  84, y:-130, z: -600, scale: 26.0 }  // 5: SKAT (Đấu Hạng)
+      { x:  86, y:  96, z: -600, scale: 12.5 }, // 0: SADALSUUD (Node phụ chòm sao)
+      { x: -78, y:  52, z: -580, scale: 27.0 }, // 1: SADALMELIK (Live & Xem Lại)
+      { x:  68, y:   4, z: -590, scale: 27.0 }, // 2: SADACHBIA (Phòng Thi Thử)
+      { x: -12, y: 108, z: -590, scale: 13.0 }, // 3: ALBALI (Node phụ chòm sao)
+      { x: -74, y: -96, z: -580, scale: 27.0 }, // 4: SHATABHISHA (Đấu Thường)
+      { x:  78, y:-106, z: -600, scale: 27.0 }  // 5: SKAT (Đấu Hạng)
     ];
     aquariusTabStars.forEach(function(ts, idx) {
       var mc = mobileTabCoords[idx];
       ts.x = mc.x; ts.y = mc.y; ts.z = mc.z; ts.baseScale = mc.scale;
     });
     var mobileSecCoords = [
-      { x: -24, y: -26, z: -585, scale: 9.5 },  // zeta
-      { x:  14, y: -72, z: -585, scale: 9.0 },  // ancha
-      { x: -96, y: -18, z: -580, scale: 8.5 },  // stream_1
-      { x:-104, y: -62, z: -580, scale: 9.0 },  // stream_2
-      { x: -92, y: -96, z: -580, scale: 8.5 },  // stream_3
-      { x: -34, y:-132, z: -585, scale: 9.0 },  // stream_4
-      { x:  16, y:-126, z: -590, scale: 9.5 },  // stream_5
-      { x:  52, y:-140, z: -595, scale: 9.5 }   // stream_6
+      { x: -18, y:  -2, z: -585, scale: 9.5 },  // zeta
+      { x:  18, y: -44, z: -585, scale: 9.0 },  // ancha
+      { x: -94, y:   8, z: -580, scale: 8.5 },  // stream_1
+      { x:-102, y: -38, z: -580, scale: 9.0 },  // stream_2
+      { x: -88, y: -74, z: -580, scale: 8.5 },  // stream_3
+      { x: -28, y:-108, z: -585, scale: 9.0 },  // stream_4
+      { x:  16, y:-102, z: -590, scale: 9.5 },  // stream_5
+      { x:  48, y:-114, z: -595, scale: 9.5 }   // stream_6
     ];
     aquariusSecondaryStars.forEach(function(ss, sIdx) {
       var sc = mobileSecCoords[sIdx];
       ss.x = sc.x; ss.y = sc.y; ss.z = sc.z; ss.baseScale = sc.scale;
     });
-    responsiveCelestialLayout.bhX = -82; responsiveCelestialLayout.bhY = 206; responsiveCelestialLayout.bhZ = -570; responsiveCelestialLayout.bhScale = 0.54;
-    responsiveCelestialLayout.nsX =  82; responsiveCelestialLayout.nsY = 206; responsiveCelestialLayout.nsZ = -570; responsiveCelestialLayout.nsScale = 0.54;
+    responsiveCelestialLayout.bhX = -82; responsiveCelestialLayout.bhY = 196; responsiveCelestialLayout.bhZ = -570; responsiveCelestialLayout.bhScale = 0.56;
+    responsiveCelestialLayout.nsX =  82; responsiveCelestialLayout.nsY = 196; responsiveCelestialLayout.nsZ = -570; responsiveCelestialLayout.nsScale = 0.56;
     if (typeof deepGalaxyTitleMesh !== 'undefined' && deepGalaxyTitleMesh) {
       var mScale = Math.max(0.38, Math.min(0.54, aspect * 1.02));
-      deepGalaxyTitleMesh.position.set(0, -305, -1050);
+      deepGalaxyTitleMesh.position.set(0, -315, -1050);
       deepGalaxyTitleMesh.scale.set(mScale, mScale, 1);
     }
   } else if (aspect < 1.08) {
     // 2. MÁY TÍNH BẢNG DỌC / MÀN HÌNH VUÔNG (Tablet Portrait, ví dụ 768x1024, aspect ~ 0.75)
     currentIdleFov = 54;
     var tabPortraitCoords = [
-      { x:  148, y:  60, z: -600, scale: 30.0 },
-      { x: -156, y:  50, z: -580, scale: 30.0 },
-      { x:   92, y: -14, z: -590, scale: 30.0 },
-      { x:  -12, y: 105, z: -590, scale: 31.0 },
-      { x: -120, y:-118, z: -580, scale: 30.0 },
-      { x:  142, y:-118, z: -600, scale: 30.0 }
+      { x:  152, y:  88, z: -600, scale: 14.0 }, // 0: SADALSUUD (Node phụ)
+      { x: -142, y:  62, z: -580, scale: 31.0 }, // 1: SADALMELIK (Live & Xem Lại)
+      { x:  102, y:  18, z: -590, scale: 31.0 }, // 2: SADACHBIA (Phòng Thi Thử)
+      { x:  -18, y: 104, z: -590, scale: 14.5 }, // 3: ALBALI (Node phụ)
+      { x: -108, y: -82, z: -580, scale: 31.0 }, // 4: SHATABHISHA (Đấu Thường)
+      { x:  136, y: -78, z: -600, scale: 31.0 }  // 5: SKAT (Đấu Hạng)
     ];
     aquariusTabStars.forEach(function(ts, idx) {
       var tc = tabPortraitCoords[idx];
       ts.x = tc.x; ts.y = tc.y; ts.z = tc.z; ts.baseScale = tc.scale;
     });
     aquariusSecondaryStars.forEach(function(ss) {
-      ss.x = ss.baseX * 0.62;
+      ss.x = ss.baseX * 0.64;
       ss.y = ss.baseY;
       ss.z = ss.baseZ;
       ss.baseScale = ss.desktopScale * 0.88;
     });
-    responsiveCelestialLayout.bhX = -165; responsiveCelestialLayout.bhY = 192; responsiveCelestialLayout.bhZ = -570; responsiveCelestialLayout.bhScale = 0.74;
-    responsiveCelestialLayout.nsX =  165; responsiveCelestialLayout.nsY = 192; responsiveCelestialLayout.nsZ = -570; responsiveCelestialLayout.nsScale = 0.74;
+    responsiveCelestialLayout.bhX = -165; responsiveCelestialLayout.bhY = 188; responsiveCelestialLayout.bhZ = -570; responsiveCelestialLayout.bhScale = 0.76;
+    responsiveCelestialLayout.nsX =  165; responsiveCelestialLayout.nsY = 188; responsiveCelestialLayout.nsZ = -570; responsiveCelestialLayout.nsScale = 0.76;
     if (typeof deepGalaxyTitleMesh !== 'undefined' && deepGalaxyTitleMesh) {
       var tScale = Math.max(0.62, Math.min(0.84, aspect * 0.94));
-      deepGalaxyTitleMesh.position.set(0, -235, -1050);
+      deepGalaxyTitleMesh.position.set(0, -265, -1050);
       deepGalaxyTitleMesh.scale.set(tScale, tScale, 1);
     }
   } else {
@@ -4231,12 +4235,12 @@ function applyResponsiveGalaxyLayout() {
       ss.z = ss.baseZ;
       ss.baseScale = ss.desktopScale;
     });
-    var celScale = Math.min(1.0, 0.76 + 0.24 * hFit);
-    responsiveCelestialLayout.bhX = -470 * hFit; responsiveCelestialLayout.bhY = -10; responsiveCelestialLayout.bhZ = -570; responsiveCelestialLayout.bhScale = celScale;
-    responsiveCelestialLayout.nsX =  470 * hFit; responsiveCelestialLayout.nsY = -10; responsiveCelestialLayout.nsZ = -570; responsiveCelestialLayout.nsScale = celScale;
+    var celScale = Math.min(1.0, 0.80 + 0.20 * hFit);
+    responsiveCelestialLayout.bhX = -455 * hFit; responsiveCelestialLayout.bhY = -6; responsiveCelestialLayout.bhZ = -570; responsiveCelestialLayout.bhScale = celScale;
+    responsiveCelestialLayout.nsX =  455 * hFit; responsiveCelestialLayout.nsY = -6; responsiveCelestialLayout.nsZ = -570; responsiveCelestialLayout.nsScale = celScale;
     if (typeof deepGalaxyTitleMesh !== 'undefined' && deepGalaxyTitleMesh) {
-      deepGalaxyTitleMesh.position.set(0, -150, -1050);
-      deepGalaxyTitleMesh.scale.set(hFit, hFit, 1);
+      deepGalaxyTitleMesh.position.set(0, -255, -1050);
+      deepGalaxyTitleMesh.scale.set(hFit * 0.92, hFit * 0.92, 1);
     }
   }
 
@@ -4978,17 +4982,27 @@ window.addEventListener('keydown', unlockAudioOnFirstGesture);
 /* HỖ TRỢ DEEP LINK QUA HASH */
 if(location.hash) {
   var rawHash = location.hash.replace('#', '').toLowerCase();
-  var aliasMap = {
-    'khoahoc': 0, 'khoa-hoc': 0, 'baihoc': 0, 'sadalsuud': 0,
-    'live': 1, 'xemlai': 1, 'liverecord': 1, 'sadalmelik': 1,
-    'thithu': 2, 'thi-thu': 2, 'phongthithu': 2, 'sadachbia': 2,
-    'danhgianangluc': 3, 'danh-gia-nang-luc': 3, 'albali': 3,
-    'dauthuong': 4, 'dau-thuong': 4, 'shatabhisha': 4,
-    'duatop': 5, 'dua-top': 5, 'dauthang': 5, 'skat': 5
-  };
-  var targetIdx = aliasMap[rawHash];
-  if(targetIdx !== undefined && tabMeshes[targetIdx]) {
-    setTimeout(function() { triggerWarp(tabMeshes[targetIdx]); }, 350);
+  if (rawHash === 'khoahoc' || rawHash === 'khoa-hoc' || rawHash === 'baihoc' || rawHash === 'sadalsuud' || rawHash === 'pulsar') {
+    setTimeout(function() {
+      var hitNS = document.getElementById('hit-neutron');
+      if (hitNS) hitNS.click();
+    }, 350);
+  } else if (rawHash === 'danhgianangluc' || rawHash === 'danh-gia-nang-luc' || rawHash === 'albali' || rawHash === 'singularity') {
+    setTimeout(function() {
+      var hitBH = document.getElementById('hit-blackhole');
+      if (hitBH) hitBH.click();
+    }, 350);
+  } else {
+    var aliasMap = {
+      'live': 1, 'xemlai': 1, 'liverecord': 1, 'sadalmelik': 1,
+      'thithu': 2, 'thi-thu': 2, 'phongthithu': 2, 'sadachbia': 2,
+      'dauthuong': 4, 'dau-thuong': 4, 'shatabhisha': 4,
+      'duatop': 5, 'dua-top': 5, 'dauthang': 5, 'skat': 5
+    };
+    var targetIdx = aliasMap[rawHash];
+    if(targetIdx !== undefined && tabMeshes[targetIdx]) {
+      setTimeout(function() { triggerWarp(tabMeshes[targetIdx]); }, 350);
+    }
   }
 }
 
@@ -5269,10 +5283,10 @@ function initScrollAnimations() {
 })();
 
 /* ─────────────────────────────────────────────────────────────
-   TƯƠNG TÁC HỐ ĐEN (SINGULARITY) & SAO NEUTRON (PULSAR)
+   TƯƠNG TÁC HỐ ĐEN (SINGULARITY · ĐÁNH GIÁ NĂNG LỰC) & SAO NEUTRON (PULSAR · KHÓA HỌC)
    ───────────────────────────────────────────────────────────── */
 function initCelestialInteractions() {
-  // Hố Đen (Test điểm thi THPT)
+  // Hố Đen (Đánh Giá Năng Lực · Test Điểm Thi THPT)
   var lblBH = document.getElementById('lbl-blackhole');
   var hitBH = document.getElementById('hit-blackhole');
 
@@ -5280,6 +5294,7 @@ function initCelestialInteractions() {
     if(lblBH) lblBH.classList.add('reticle-active');
     if(cursorRing) cursorRing.classList.add('cursor-hover');
     AudioEngine.hover();
+    prefetchDestination('danh-gia-nang-luc.html');
   }
   function onLeaveBH() {
     if(lblBH) lblBH.classList.remove('reticle-active');
@@ -5289,7 +5304,7 @@ function initCelestialInteractions() {
     AudioEngine.click();
     var bhTarget = {
       data: {
-        idx: 3, starCode: 'SINGULARITY', tabName: 'Test Điểm Thi THPT',
+        idx: 3, starCode: 'SINGULARITY', tabName: 'Đánh Giá Năng Lực',
         link: 'danh-gia-nang-luc.html',
         x: responsiveCelestialLayout.bhX, y: responsiveCelestialLayout.bhY, z: responsiveCelestialLayout.bhZ,
         planetColor: 0xea580c, atmoColor: 0xfb923c, baseScale: 25.0,
@@ -5309,7 +5324,7 @@ function initCelestialInteractions() {
     hitBH.addEventListener('click', onClickBH);
   }
 
-  // Sao Neutron (Học thử miễn phí)
+  // Sao Neutron (Khóa Học & Học Thử)
   var lblNS = document.getElementById('lbl-neutron');
   var hitNS = document.getElementById('hit-neutron');
 
@@ -5327,7 +5342,7 @@ function initCelestialInteractions() {
     AudioEngine.click();
     var nsTarget = {
       data: {
-        idx: 0, starCode: 'PULSAR', tabName: 'Khóa Học Thử Miễn Phí',
+        idx: 0, starCode: 'PULSAR', tabName: 'Khóa Học',
         link: 'baihoc.html',
         x: responsiveCelestialLayout.nsX, y: responsiveCelestialLayout.nsY, z: responsiveCelestialLayout.nsZ,
         planetColor: 0x38bdf8, atmoColor: 0x00f0ff, baseScale: 25.0,

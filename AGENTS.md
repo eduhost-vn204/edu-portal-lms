@@ -21,6 +21,7 @@
 - Không tải toàn bộ kho câu hỏi khi mở danh sách khóa học.
 - Không làm mất hàng đợi đồng bộ tiến độ ngoại tuyến.
 - Giữ menu điện thoại chuyên biệt của `index.html`, `hoso.html`, `danhsach-ly12.html`.
+- Giữ nguyên giao diện chuẩn Bộ GD&ĐT của `phong-thi-thu.html` (giao diện sáng CBT mô phỏng kỳ thi trên máy tính chuẩn Bộ); không áp theme tối hoặc thay đổi bố cục của trang này.
 - Không đưa bí mật vào kho mã.
 - Kiểm tra cú pháp JavaScript và thẻ `</html>` theo phạm vi thay đổi.
 

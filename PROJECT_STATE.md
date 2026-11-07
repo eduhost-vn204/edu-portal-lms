@@ -2172,3 +2172,24 @@ gba(255, 255, 255, 0.05), tạo không gian liền mạch vô tận như chuẩn
      - Đồng bộ điều hướng giữa Vũ Trụ 3D và toàn bộ các phân hệ Đấu Thường HUD, Đấu Hạng, Phòng Thi Thử, Phòng Kiểm Tra, Live & Xem Lại (giữ nguyên các bản vá `7047147` và `c660ac3` trên `live-record.html`).
   5. **Bảo Toàn Dữ Liệu Tự Động Đồng Bộ**:
      - Giữ nguyên 100% các file dữ liệu đồng bộ tự động từ Google Sheets trên `main` (`data/baihoc.json`, `data/khoaconfig.json`, `data/lichlive.json`, `data/live-record.json`, `data/quiz-index.json`, `data/quizzes/quiz-*.json`).
+
+#### 07/11/2026 (Cập nhật 20:10) — Khôi Phục Chuẩn Bộ GD&ĐT Cho `phong-thi-thu.html`, Gộp Nhãn Trùng Lặp & Tinh Chỉnh Bố Cục Hệ Sao Điện Ảnh Trên `index.html`
+
+- **Người thực hiện**: Antigravity
+- **Người duyệt & Chỉ đạo**: Thầy Nguyễn Xuân Trường (*"à cái kỳ thi thử này cho nó về giao diện cũ vì nó được thiết kế theo chuẩn bộ, em thêm nó vào quy tắc sau có j né nó ra, còn cái đánh giá năng lực với test thi thpt lỗ đen nó là 1 mà em, cách bố trí hệ sao cũng chưa đẹp lắm có thể em tinh chỉnh cho nó điện ảnh cũng được, khoá học với học thử nó là 1 nên có thu gọn bớt cái khoá học"*)
+- **Các thay đổi & Ràng buộc mới**:
+  1. **Khôi phục nguyên bản giao diện chuẩn Bộ GD&ĐT của `phong-thi-thu.html` & Bổ sung quy tắc bắt buộc trong `AGENTS.md`**:
+     - Đưa `phong-thi-thu.html` về đúng giao diện sáng mô phỏng kỳ thi trên máy tính (CBT chuẩn Bộ GD&ĐT) từ commit `cc93106`.
+     - Thêm quy tắc cứng vào `AGENTS.md` và `PROJECT_STATE.md`: **Tuyệt đối giữ nguyên giao diện chuẩn Bộ GD&ĐT của `phong-thi-thu.html`; không áp theme tối hoặc thay đổi bố cục của trang này trong các đợt đồng bộ giao diện sau.**
+  2. **Loại bỏ hoàn toàn sự trùng lặp trên Vũ Trụ 3D (`index.html`)**:
+     - **Gộp `Đánh Giá Năng Lực` và `Test Điểm Thi THPT (Hố Đen)` làm 1**: Thống nhất tại **Hố Đen Gargantua (`SINGULARITY · ĐÁNH GIÁ NĂNG LỰC` → `danh-gia-nang-luc.html`)** bên trái; chuyển ngôi sao `Albali` thành nút hình học thuần túy của chòm Bảo Bình (ẩn nhãn chữ & hitbox trùng lặp).
+     - **Gộp `Khóa Học` và `Học Thử Miễn Phí (Sao Neutron)` làm 1**: Thống nhất tại **Sao Neutron (`PULSAR · KHÓA HỌC` → `baihoc.html`)** bên phải; chuyển ngôi sao `Sadalsuud` thành nút hình học thuần túy của chòm Bảo Bình (ẩn nhãn chữ & hitbox trùng lặp).
+     - Toàn cảnh Vũ Trụ 3D hiện có **đúng 6 điểm đến độc nhất (0 trùng lặp)**:
+       * Trái: `SINGULARITY · ĐÁNH GIÁ NĂNG LỰC` (`danh-gia-nang-luc.html`)
+       * Phải: `PULSAR · KHÓA HỌC` (`baihoc.html`)
+       * 4 Sao trung tâm chòm Bảo Bình: `SADALMELIK · LIVE & XEM LẠI` (`live-record.html`), `SADACHBIA · PHÒNG THI THỬ` (`phong-thi-thu.html`), `SHATABHISHA · ĐẤU THƯỜNG` (`dau-thuong-hud.html`), `SKAT · ĐẤU HẠNG` (`dua-top.html`).
+  3. **Tinh chỉnh bố cục hệ sao điện ảnh & Tách bạch dòng chữ `VATLYXUANTRUONG.IO.VN`**:
+     - Nâng cung chòm sao Bảo Bình lên vùng trung tâm cân đối và hạ dòng chữ 3D `VATLYXUANTRUONG.IO.VN` xuống sâu phía dưới (`y = -255` trên Desktop/Laptop, `y = -265` trên Tablet, `y = -315` trên Mobile), chấm dứt hoàn toàn hiện tượng chữ `VATLYXUANTRUONG.IO.VN` đè lên ngôi sao `SHATABHISHA`.
+- **Kiểm thử Playwright**:
+  - `index.html` đạt `0` lỗi console/pageerror, cả 6 nhãn hiển thị rõ nét (`inBounds = True`) trên Laptop (`1366x768`), Tablet (`768x1024`) và Mobile (`390x844`).
+  - `phong-thi-thu.html` đạt `0` lỗi, hiển thị đúng 100% giao diện CBT sáng chuẩn Bộ GD&ĐT.
