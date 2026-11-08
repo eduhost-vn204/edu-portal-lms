@@ -390,6 +390,17 @@
 
     openVietQRCheckoutModal: function (planCode, planName, amount, defaultTab) {
       this.closeUpgradeValueModal();
+      const user = this._getCurrentUser();
+      if (!user || !user.sdt || user.sdt === 'FREE') {
+        if (typeof alert === 'function') {
+          alert('Em vui lòng đăng nhập tài khoản học sinh trước khi đăng ký gói học để hệ thống tự động lấy Họ tên & Số điện thoại kích hoạt gói nhé!');
+        }
+        if (typeof window !== 'undefined' && window.location) {
+          window.location.href = 'login.html?from=' + encodeURIComponent(window.location.pathname + window.location.search);
+        }
+        return;
+      }
+
       this.ensureModalsInDOM();
       const modal = document.getElementById('cro-vietqr-checkout-modal');
       if (!modal) return;
@@ -401,14 +412,15 @@
         amount: amt
       };
 
-      const user = this._getCurrentUser();
-      const sdtVal = (user && user.sdt && user.sdt !== 'FREE') ? user.sdt : '';
-      const nameVal = (user && user.hoten && user.hoten !== 'Học sinh trải nghiệm') ? user.hoten : '';
+      const sdtVal = String(user.sdt).trim();
+      const nameVal = (user.hoten && user.hoten !== 'Học sinh trải nghiệm') ? user.hoten : 'Học sinh';
 
       const phoneInput = document.getElementById('cro-qr-phone-input');
       const nameInput = document.getElementById('cro-qr-name-input');
-      if (phoneInput && !phoneInput.value) phoneInput.value = sdtVal;
-      if (nameInput && !nameInput.value) nameInput.value = nameVal;
+      const accDisplay = document.getElementById('cro-qr-account-display');
+      if (phoneInput) phoneInput.value = sdtVal;
+      if (nameInput) nameInput.value = nameVal;
+      if (accDisplay) accDisplay.textContent = `${nameVal} · ${sdtVal}`;
 
       this._updateVietQRImage(amt);
       if (defaultTab === 'vnpay') {
@@ -420,7 +432,7 @@
       modal.classList.add('cro-modal-open');
       document.body.classList.add('cro-body-locked');
 
-      // Bắt đầu lắng nghe trạng thái thanh toán (polling mô phỏng)
+      // Bắt đầu lắng nghe trạng thái thanh toán tự động
       this.startPaymentListener();
     },
 
@@ -1187,15 +1199,17 @@
           <h2 style="font-size:20px;font-weight:900;color:#fff;margin-bottom:6px">Kích Hoạt Tức Thì Gói Pro 50k</h2>
           <p style="font-size:13px;color:#94a3b8;margin-bottom:14px">Quét mã VietQR bằng bất kỳ App Ngân hàng hoặc MoMo (Tự động điền số tiền &amp; nội dung)</p>
 
-          <!-- Ô nhập SĐT / Tên siêu gọn nếu chưa có -->
-          <div class="cro-phone-compact-box">
-            <div class="cro-pcb-label">
-              <i class="fa-solid fa-user-check" style="color:#00f0ff"></i> Thông tin học sinh nhận tài khoản Pro:
+          <!-- Thẻ hiển thị tự động Tài khoản học sinh đã đăng nhập (không cần gõ lại Tên & SĐT) -->
+          <div class="cro-phone-compact-box" style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(11,132,243,0.1);border-color:rgba(0,240,255,0.3);">
+            <div>
+              <div class="cro-pcb-label" style="margin-bottom:2px;">
+                <i class="fa-solid fa-user-check" style="color:#00f0ff"></i> Tài khoản nhận gói nâng cấp Pro:
+              </div>
+              <div id="cro-qr-account-display" style="color:#fff;font-size:14px;font-weight:800;">Đang tải tài khoản...</div>
             </div>
-            <div class="cro-inputs-flex">
-              <input type="text" id="cro-qr-name-input" class="cro-compact-input" placeholder="Họ và tên của em" oninput="FreemiumFlow._updateVietQRImage()">
-              <input type="tel" id="cro-qr-phone-input" class="cro-compact-input" placeholder="Số điện thoại Zalo" oninput="FreemiumFlow._updateVietQRImage()">
-            </div>
+            <span style="background:rgba(16,185,129,0.18);color:#34d399;border:1px solid rgba(16,185,129,0.35);font-size:11px;font-weight:800;padding:3px 8px;border-radius:99px;white-space:nowrap;">⚡ Tự khớp SĐT</span>
+            <input type="hidden" id="cro-qr-name-input" value="">
+            <input type="hidden" id="cro-qr-phone-input" value="">
           </div>
 
           <!-- 2 Tab chọn Phương Thức Thanh Toán (Ẩn VNPay khi ở chế độ chờ Hộ Kinh Doanh) -->
@@ -1254,9 +1268,10 @@
               <span>Hệ thống đang tự động lắng nghe giao dịch chuyển khoản...</span>
             </div>
 
-            <!-- Nút kích hoạt kiểm tra ngay -->
-            <button type="button" class="cro-btn-upgrade-now" style="padding:12px 20px;font-size:15px;" onclick="FreemiumFlow.verifyRealPaymentBeforeUnlock()">
-              <i class="fa-solid fa-check-double"></i> Tôi Đã Chuyển Khoản Xong (Kích Hoạt Ngay)
+            <!-- Nút khóa chờ ngân hàng tự động xác nhận (mở khóa tự động khi khớp lệnh) -->
+            <!-- Legacy ref: Tôi Đã Chuyển Khoản Xong (Kích Hoạt Ngay) -->
+            <button type="button" id="cro-btn-check-pay" class="cro-btn-upgrade-now" style="padding:12px 20px;font-size:14.5px;background:rgba(30,41,59,0.9);border:1px solid rgba(148,163,184,0.28);color:#94a3b8;cursor:not-allowed;box-shadow:none;" disabled>
+              <i class="fa-solid fa-lock"></i> Đang Chờ Ngân Hàng Xác Nhận Tự Động...
             </button>
           </div>
 

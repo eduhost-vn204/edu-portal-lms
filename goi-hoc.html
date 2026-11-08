@@ -212,6 +212,30 @@
             color: #fff; font-size: 15px; font-weight: 800; cursor: pointer;
             display: inline-flex; align-items: center; justify-content: center; gap: 8px;
             box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+            transition: all 0.25s; font-family: inherit;
+        }
+        .btn-confirm-pay:disabled, .btn-confirm-pay.is-locked {
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.28);
+            color: #94a3b8;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        .account-locked-card {
+            background: rgba(11, 132, 243, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 12px; padding: 11px 14px; margin-bottom: 14px;
+            display: flex; align-items: center; justify-content: space-between; gap: 10px;
+            font-size: 13px; color: #e2e8f0;
+        }
+        .account-locked-info {
+            display: flex; align-items: center; gap: 8px; font-weight: 700;
+        }
+        .account-locked-badge {
+            background: rgba(16, 185, 129, 0.18); color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 99px;
+            white-space: nowrap;
         }
 
         /* ─── VNPAY INTEGRATION STYLES (STANDBY BY DEFAULT) ─── */
@@ -448,11 +472,19 @@
             </button>
         </div>
 
-        <!-- Ô nhập tên và SĐT học sinh -->
-        <div class="user-input-grid">
-            <input type="text" id="pay-student-name" class="user-input-field" placeholder="Họ và tên học sinh">
-            <input type="tel" id="pay-student-phone" class="user-input-field" placeholder="Số điện thoại / Zalo" oninput="refreshVietQrMemo()">
+        <!-- Thẻ hiển thị tự động Tài khoản học sinh đã đăng nhập (không cần gõ lại Tên & SĐT) -->
+        <div class="account-locked-card" id="pay-account-locked-card">
+            <div class="account-locked-info">
+                <i class="fa-solid fa-user-shield" style="color:var(--cyan);font-size:16px;"></i>
+                <div>
+                    <div style="font-size:11px;color:#94a3b8;font-weight:600;">Tài khoản nhận gói nâng cấp:</div>
+                    <div id="pay-account-display" style="color:#fff;font-size:13.5px;font-weight:800;">Đang tải tài khoản...</div>
+                </div>
+            </div>
+            <span class="account-locked-badge"><i class="fa-solid fa-bolt"></i> Tự khớp SĐT</span>
         </div>
+        <input type="hidden" id="pay-student-name" value="">
+        <input type="hidden" id="pay-student-phone" value="">
 
         <!-- PANEL 1: CỔNG THANH TOÁN VNPAY (Chế độ chờ Hộ Kinh Doanh) -->
         <div id="panel-vnpay" style="display:none;">
@@ -565,11 +597,11 @@
             <!-- Trạng thái tự động lắng nghe biến động số dư -->
             <div id="vietqr-listen-status" style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.28);border-radius:10px;padding:10px 12px;margin-bottom:14px;font-size:12.5px;color:#a7f3d0;display:flex;align-items:center;gap:8px;line-height:1.45;">
                 <i class="fa-solid fa-satellite-dish fa-beat-fade" style="color:#10b981;"></i>
-                <span>Hệ thống đang tự động lắng nghe biến động số dư VietinBank (tự mở khóa trong 3–10 giây sau khi chuyển khoản)...</span>
+                <span>Hệ thống đang tự động lắng nghe biến động số dư VietinBank (tự mở khóa ngay khi nhận chuyển khoản)...</span>
             </div>
 
-            <button class="btn-confirm-pay" id="btn-confirm-vietqr" onclick="handlePayDone()">
-                <i class="fa-solid fa-circle-check"></i> Tôi Đã Chuyển Khoản — Kiểm Tra Ngay
+            <button class="btn-confirm-pay is-locked" id="btn-confirm-vietqr" disabled>
+                <i class="fa-solid fa-lock"></i> Đang Chờ Ngân Hàng Xác Nhận Tự Động...
             </button>
         </div>
 
@@ -623,16 +655,30 @@ function switchPayTab(mode) {
 
 function openPayment(code, planName, amount, defaultTab) {
     const user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
+    if (!user || !user.sdt || user.sdt === 'FREE') {
+        alert('Em vui lòng đăng nhập tài khoản học sinh trước khi đăng ký gói học để hệ thống tự động lấy Họ tên & Số điện thoại kích hoạt gói nhé!');
+        window.location.href = 'login.html?from=' + encodeURIComponent(window.location.pathname + window.location.search);
+        return;
+    }
+
     const nameInput = document.getElementById('pay-student-name');
     const phoneInput = document.getElementById('pay-student-phone');
+    const accDisplay = document.getElementById('pay-account-display');
 
-    if (user) {
-        if (nameInput && !nameInput.value && user.hoten && user.hoten !== 'Học sinh trải nghiệm') {
-            nameInput.value = user.hoten;
-        }
-        if (phoneInput && !phoneInput.value && user.sdt && user.sdt !== 'FREE') {
-            phoneInput.value = user.sdt;
-        }
+    const hoten = (user.hoten && user.hoten !== 'Học sinh trải nghiệm') ? user.hoten : 'Học sinh';
+    const sdt = String(user.sdt).trim();
+
+    if (nameInput) nameInput.value = hoten;
+    if (phoneInput) phoneInput.value = sdt;
+    if (accDisplay) accDisplay.textContent = `${hoten} · ${sdt}`;
+
+    // Đặt lại nút ở trạng thái khóa tự động chờ ngân hàng
+    const btn = document.getElementById('btn-confirm-vietqr');
+    if (btn) {
+        btn.disabled = true;
+        btn.classList.add('is-locked');
+        btn.innerHTML = `<i class="fa-solid fa-lock"></i> Đang Chờ Ngân Hàng Xác Nhận Tự Động...`;
+        btn.onclick = null;
     }
 
     currentAmount = amount;
@@ -658,11 +704,14 @@ function startVietQrPolling() {
     stopVietQrPolling();
     const statusBox = document.getElementById('vietqr-listen-status');
     if (statusBox) {
-        statusBox.innerHTML = `<i class="fa-solid fa-satellite-dish fa-beat-fade" style="color:#10b981;"></i><span>Hệ thống đang tự động lắng nghe biến động số dư VietinBank (tự mở khóa trong 3–10 giây sau khi chuyển khoản)...</span>`;
+        statusBox.style.background = 'rgba(16,185,129,0.08)';
+        statusBox.style.borderColor = 'rgba(16,185,129,0.28)';
+        statusBox.innerHTML = `<i class="fa-solid fa-satellite-dish fa-beat-fade" style="color:#10b981;"></i><span>Hệ thống đang tự động lắng nghe biến động số dư VietinBank (tự mở khóa ngay khi nhận chuyển khoản)...</span>`;
     }
+    checkVietQrPaymentStatus(false);
     vietQrPollTimer = setInterval(() => {
         checkVietQrPaymentStatus(false);
-    }, 4000);
+    }, 3500);
 }
 
 function stopVietQrPolling() {
@@ -676,30 +725,17 @@ function checkVietQrPaymentStatus(isManualClick) {
     const nameInput = document.getElementById('pay-student-name');
     const phoneInput = document.getElementById('pay-student-phone');
     const memoEl = document.getElementById('bank-memo-val');
-    const statusBox = document.getElementById('vietqr-listen-status');
     const user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : {};
 
     const hoten = (nameInput && nameInput.value.trim()) || (user && user.hoten) || 'Học sinh';
-    const sdt = (phoneInput && phoneInput.value.replace(/\D/g, '')) || (user && user.sdt !== 'FREE' ? user.sdt : '');
+    const sdt = (phoneInput && phoneInput.value.replace(/\D/g, '')) || (user && user.sdt !== 'FREE' ? String(user.sdt).replace(/\D/g, '') : '');
     const memo = memoEl ? memoEl.textContent.trim() : '';
-
-    if (isManualClick && (!sdt || sdt.length < 9)) {
-        if (statusBox) {
-            statusBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color:#fbbf24;"></i><span style="color:#fde68a;">Vui lòng nhập <strong>Số điện thoại / Zalo</strong> của em ở ô phía trên để hệ thống đối soát giao dịch tự động!</span>`;
-        }
-        if (phoneInput) phoneInput.focus();
-        return;
-    }
 
     if (!sdt || typeof fetch !== 'function') return;
 
     const gasUrl = (typeof window.VLXT_GAS !== 'undefined')
         ? window.VLXT_GAS
         : 'https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec';
-
-    if (isManualClick && statusBox) {
-        statusBox.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#38bdf8;"></i><span style="color:#bae6fd;">Đang kiểm tra biến động số dư VietinBank cho SĐT <strong>${sdt}</strong>...</span>`;
-    }
 
     fetch(gasUrl, {
         method: 'POST',
@@ -720,15 +756,9 @@ function checkVietQrPaymentStatus(isManualClick) {
         if (res && res.ok && res.paid) {
             stopVietQrPolling();
             unlockPaidAccountOnPage(sdt, hoten, res);
-        } else if (isManualClick && statusBox) {
-            statusBox.innerHTML = `<i class="fa-solid fa-clock" style="color:#fbbf24;"></i><span style="color:#fde68a;">Đã ghi nhận yêu cầu đối soát (<strong>${memo}</strong>). Hệ thống đang chờ VietinBank báo tiền về (thường mất 5–15 giây sau khi chuyển khoản). Giữ màn hình này để tự động mở khóa ngay khi khớp lệnh!</span>`;
         }
     })
-    .catch(() => {
-        if (isManualClick && statusBox) {
-            statusBox.innerHTML = `<i class="fa-solid fa-clock" style="color:#fbbf24;"></i><span style="color:#fde68a;">Đã gửi yêu cầu kiểm tra (<strong>${memo}</strong>). Hệ thống sẽ tự động kích hoạt ngay khi giao dịch hoàn tất!</span>`;
-        }
-    });
+    .catch(() => {});
 }
 
 function unlockPaidAccountOnPage(sdt, hoten, res) {
@@ -765,7 +795,9 @@ function unlockPaidAccountOnPage(sdt, hoten, res) {
 
     const btn = document.getElementById('btn-confirm-vietqr');
     if (btn) {
-        btn.innerHTML = `<i class="fa-solid fa-rocket"></i> VÀO HỌC NGAY (ĐÃ MỞ KHÓA 100%)`;
+        btn.disabled = false;
+        btn.classList.remove('is-locked');
+        btn.innerHTML = `<i class="fa-solid fa-rocket"></i> ĐÃ KHỚP LỆNH — VÀO HỌC NGAY!`;
         btn.onclick = () => { window.location.href = 'baihoc.html'; };
     }
 }
@@ -774,7 +806,7 @@ function refreshVietQrMemo() {
     const user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
     const phoneInput = document.getElementById('pay-student-phone');
     const typedPhone = phoneInput ? phoneInput.value.replace(/\D/g, '') : '';
-    const sdt = typedPhone || (user ? (user.sdt || (user.email ? user.email.split('@')[0] : '')) : '') || 'HOCSINH';
+    const sdt = typedPhone || (user && user.sdt && user.sdt !== 'FREE' ? String(user.sdt).replace(/\D/g, '') : '') || 'HOCSINH';
     const memo = `VLXT ${sdt} ${currentPlanCode}`.replace(/[^a-zA-Z0-9 ]/g, '').toUpperCase();
 
     const memoEl = document.getElementById('bank-memo-val');
