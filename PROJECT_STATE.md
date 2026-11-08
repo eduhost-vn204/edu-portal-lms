@@ -2205,3 +2205,24 @@ gba(255, 255, 255, 0.05), tạo không gian liền mạch vô tận như chuẩn
 - **Kiểm thử Playwright**:
   - `index.html` đạt `0` lỗi console/pageerror, cả 6 nhãn hiển thị rõ nét (`inBounds = True`) trên Laptop (`1366x768`), Tablet (`768x1024`) và Mobile (`390x844`).
   - `phong-thi-thu.html` đạt `0` lỗi, hiển thị đúng 100% giao diện CBT sáng chuẩn Bộ GD&ĐT.
+
+
+#### 08/11/2026 — Triển Khai Hệ Thống Thanh Toán Tự Động VietQR VietinBank (SePay Webhook 24/7) & Cổng VNPay v2.1.0 (Chế Độ Chờ Hộ Kinh Doanh)
+
+- **Người thực hiện**: Antigravity
+- **Người duyệt & Chỉ đạo**: Thầy Nguyễn Xuân Trường
+- **Commits & Deployments**:
+  - **Student Repo (`eduhost-vn204/edu-portal-lms` — `main`)**: Commits `d675ba8` và `7e30ff8` (Tag rollback an toàn: `rollback-before-vietqr-vnpay-deploy`).
+  - **Admin / GAS Repo (`eduhost-vn204/edu-portal-console` — `main`)**: Commit `c30f2ce`, đã deploy lên Google Apps Script `AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW @160`.
+- **Chi tiết thay đổi**:
+  1. **VietQR Tự Động Khớp Lệnh 24/7 (`goi-hoc.html`, `freemium-flow.js`, `apps-script-CAPNHAT.txt`)**:
+     - Cấu hình tài khoản thật của Thầy: **VietinBank (`ICB` / `970415`) — Số TK: `198490756789` — Chủ TK: `NGUYEN XUAN TRUONG`**.
+     - Kết nối SePay Webhook (`Vat Ly Xuan Truong`) bắn tín hiệu biến động số dư về `handleBankWebhookGAS` trên Google Apps Script (`@160`), tự động lưu biên lai vào Sheet `GiaoDichVietQR` và nâng cấp tài khoản học sinh trong Sheet `TaiKhoan`.
+     - **Tự động lấy Họ tên & SĐT từ tài khoản đã đăng nhập (`vlxtGetUser()`)**: Loại bỏ hoàn toàn 2 ô nhập tay Tên/SĐT trong Modal thanh toán để học sinh không quên hoặc gõ nhầm; nếu chưa đăng nhập sẽ tự động nhắc và chuyển sang `login.html`.
+     - **Khóa nút xác nhận thủ công**: Nút ở trạng thái khóa (`disabled` — `🔒 Đang Chờ Ngân Hàng Xác Nhận Tự Động...`), hệ thống tự động polling mỗi 3.5 giây (`action: 'checkpaymentstatus'`) và chỉ tự động mở khóa + nổ pháo hoa Confetti khi tiền thật đã vào tài khoản VietinBank của Thầy.
+  2. **Cổng VNPay v2.1.0 (`vnpay-service.js`, `vnpay-return.html`)**:
+     - Hoàn thiện chữ ký số `HMAC-SHA512` chuẩn VNPay v2.1.0 và cất gọn ở chế độ chờ (`enabled: false`) để bật ngay khi Thầy đăng ký Hộ kinh doanh.
+- **Kiểm thử**:
+  - `node test_vnpay_integration.mjs`: Pass 7/7 tests (100%).
+  - `node test_cro_funnel.mjs`: Pass 8/8 suites (100%).
+  - Endpoint GAS `@160` và `https://vatlyxuantruong.io.vn/goi-hoc.html` hoạt động ổn định (HTTP 200).
