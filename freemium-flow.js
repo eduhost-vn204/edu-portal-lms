@@ -511,13 +511,15 @@
     },
 
     // Cập nhật mã VietQR động dựa trên SĐT / User ID
+    // Legacy ref: https://img.vietqr.io/image/ | VL12_
     _updateVietQRImage: function (amount) {
       const amt = amount || PAYMENT_CONFIG.defaultAmount;
       const phoneInput = document.getElementById('cro-qr-phone-input');
       const rawPhone = phoneInput ? phoneInput.value.trim() : '';
       const normPhone = rawPhone.replace(/\D/g, '');
       const userId = normPhone || (this._getCurrentUser()?.sdt !== 'FREE' ? this._getCurrentUser()?.sdt : '') || ('HS' + Math.floor(1000 + Math.random() * 9000));
-      const memo = `${PAYMENT_CONFIG.prefix}${userId}`.toUpperCase();
+      const planCode = (this._currentPlan && this._currentPlan.code) || 'THANG50K';
+      const memo = `SEVQR VLXT ${userId} ${planCode}`.toUpperCase();
 
       const qrImg = document.getElementById('cro-qr-dynamic-img');
       const qrMemoEl = document.getElementById('cro-qr-memo-val');
@@ -526,7 +528,7 @@
       if (qrMemoEl) qrMemoEl.textContent = memo;
       if (qrAmtEl) qrAmtEl.textContent = amt.toLocaleString('vi-VN') + 'đ';
 
-      const qrUrl = `https://img.vietqr.io/image/${PAYMENT_CONFIG.bankId}-${PAYMENT_CONFIG.accountNo}-${PAYMENT_CONFIG.template}.png?amount=${amt}&addInfo=${encodeURIComponent(memo)}&accountName=${encodeURIComponent(PAYMENT_CONFIG.accountName)}`;
+      const qrUrl = `https://qr.sepay.vn/img?acc=${PAYMENT_CONFIG.accountNo}&bank=VietinBank&amount=${amt}&des=${encodeURIComponent(memo)}`;
       if (qrImg) qrImg.src = qrUrl;
 
       // Lưu lại thông tin nếu học sinh vừa nhập

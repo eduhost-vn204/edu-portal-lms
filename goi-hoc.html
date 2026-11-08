@@ -807,12 +807,13 @@ function refreshVietQrMemo() {
     const phoneInput = document.getElementById('pay-student-phone');
     const typedPhone = phoneInput ? phoneInput.value.replace(/\D/g, '') : '';
     const sdt = typedPhone || (user && user.sdt && user.sdt !== 'FREE' ? String(user.sdt).replace(/\D/g, '') : '') || 'HOCSINH';
-    const memo = `VLXT ${sdt} ${currentPlanCode}`.replace(/[^a-zA-Z0-9 ]/g, '').toUpperCase();
+    // Bắt buộc có tiền tố SEVQR ở đầu để Open API VietinBank đồng bộ biến động số dư sang SePay
+    const memo = `SEVQR VLXT ${sdt} ${currentPlanCode}`.replace(/[^a-zA-Z0-9 ]/g, '').toUpperCase();
 
     const memoEl = document.getElementById('bank-memo-val');
     if (memoEl) memoEl.textContent = memo;
 
-    const qrUrl = `https://img.vietqr.io/image/${PAYMENT_CONFIG.bankId}-${PAYMENT_CONFIG.accountNo}-${PAYMENT_CONFIG.template}.png?amount=${currentAmount}&addInfo=${encodeURIComponent(memo)}&accountName=${encodeURIComponent(PAYMENT_CONFIG.accountName)}`;
+    const qrUrl = `https://qr.sepay.vn/img?acc=${PAYMENT_CONFIG.accountNo}&bank=VietinBank&amount=${currentAmount}&des=${encodeURIComponent(memo)}`;
     const qrImg = document.getElementById('vietqr-image');
     if (qrImg) qrImg.src = qrUrl;
 }
