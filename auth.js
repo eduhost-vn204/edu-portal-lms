@@ -98,7 +98,9 @@ function vlxtRenderWidget(user){
   const trialExpiry = user.trialExpiry || 0;
   const msLeft = trialExpiry ? (trialExpiry - Date.now()) : 0;
   const daysLeft = Math.max(0, Math.ceil(msLeft / 86400000));
-  const vipBadge = loaiTK === 'premium' ? '<span style="font-size:10px;font-weight:800;background:rgba(124,58,237,.2);color:#7c3aed;padding:1px 6px;border-radius:4px;margin-left:4px">💎</span>'
+  const isPaidLocal = Boolean(user.isPaid || loaiTK === 'pro' || (typeof localStorage !== 'undefined' && localStorage.getItem('vlxt_is_paid') === 'true'));
+  const vipBadge = loaiTK === 'premium' ? '<span style="font-size:10px;font-weight:800;background:rgba(124,58,237,.25);color:#c4b5fd;padding:1px 6px;border-radius:4px;margin-left:4px">💎 VIP</span>'
+    : isPaidLocal ? '<span style="font-size:10px;font-weight:800;background:rgba(16,185,129,.22);color:#34d399;padding:1px 6px;border-radius:4px;margin-left:4px">👑 PRO</span>'
     : (loaiTK === 'vip' && msLeft > 0) ? `<span style="font-size:10px;font-weight:800;background:rgba(217,119,6,.2);color:#d97706;padding:1px 6px;border-radius:4px;margin-left:4px">⭐ ${daysLeft}d</span>`
     : '<span style="font-size:10px;font-weight:700;background:rgba(107,114,128,.15);color:#888;padding:1px 6px;border-radius:4px;margin-left:4px">Free</span>';
 
@@ -222,6 +224,7 @@ function vlxtRenderWidget(user){
           }
           // Đồng bộ toàn bộ hồ sơ, đặc biệt loaiTK/trialExpiry sau khi admin nâng cấp.
           var fresh=Object.assign({},user,d.user);
+          if(user.isPaid && (!user.proExpiry || user.proExpiry > Date.now())) { fresh.isPaid = true; fresh.proExpiry = user.proExpiry; if(fresh.loaiTK !== 'premium') fresh.loaiTK = user.loaiTK || 'pro'; }
           if(user.token && !fresh.token) fresh.token = user.token;
           vlxtSaveUser(fresh);
           if(fresh.loaiTK!==user.loaiTK || Number(fresh.trialExpiry||0)!==Number(user.trialExpiry||0)){

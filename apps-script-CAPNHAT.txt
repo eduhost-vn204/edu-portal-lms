@@ -98,6 +98,10 @@ function doPost(e) {
     if (action === 'resetdevice')        return resetDevice(data);
     if (action === 'savelivesession')    return saveLiveSession(data);
     if (action === 'deletelivesession')  return deleteLiveSession(data.id);
+    if (action === 'createvnpayurl' || action === 'create_vnpay_url') return createVnPayUrlGAS(data);
+    if (action === 'verifyvnpayreturn' || action === 'verify_vnpay_return') return verifyVnPayReturnGAS(data);
+    if (action === 'checkpaymentstatus' || action === 'check_payment_status') return checkPaymentStatusGAS(data);
+    if (action === 'webhookbank' || action === 'sepaywebhook' || action === 'cassowebhook' || data.transferAmount !== undefined || (data.error === 0 && Array.isArray(data.data))) return handleBankWebhookGAS(data);
     return jsonOut({ ok: false, msg: 'Unknown action' });
   } catch(err) {
     return jsonOut({ error: err.message });
@@ -5336,4 +5340,362 @@ function clearTrialActivity(data) {
   } finally {
     lock.releaseLock();
   }
+}
+
+
+// ══════════════════════════════════════════════════════════════════════
+// CỔNG THANH TOÁN VNPAY (v2.1.0) — HỖ TRỢ SERVER-SIDE SIGNING & VERIFY
+// Cấu hình ScriptProperties tùy chọn: VNPAY_TMN_CODE, VNPAY_HASH_SECRET, VNPAY_BASE_URL, VNPAY_RETURN_URL
+// ══════════════════════════════════════════════════════════════════════
+function getVnPayConfigGAS_() {
+  const props = PropertiesService.getScriptProperties();
+  return {
+    tmnCode:    props.getProperty('VNPAY_TMN_CODE')    || 'NJJ0R8FS',
+    hashSecret: props.getProperty('VNPAY_HASH_SECRET') || 'BYKJBHPPZKQMKBIBGGXIYKWYFAYSJXCW',
+    baseUrl:    props.getProperty('VNPAY_BASE_URL')    || 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html',
+    returnUrl:  props.getProperty('VNPAY_RETURN_URL')  || 'https://vatlyxuantruong.io.vn/vnpay-return.html',
+    version:    '2.1.0',
+    command:    'pay',
+    currCode:   'VND',
+    locale:     'vn'
+  };
+}
+
+function vnpUrlEncodeGAS_(str) {
+  return encodeURIComponent(String(str == null ? '' : str))
+    .replace(/%20/g, '+')
+    .replace(/!/g, '%21')
+    .replace(/'/g, '%27')
+    .replace(/\(/g, '%28')
+    .replace(/\)/g, '%29')
+    .replace(/\*/g, '%2A');
+}
+
+function hmacSha512HexGAS_(key, inputData) {
+  const rawSig = Utilities.computeHmacSignature(
+    Utilities.MacAlgorithm.HMAC_SHA_512,
+    Utilities.newBlob(String(inputData), 'UTF-8').getBytes(),
+    Utilities.newBlob(String(key), 'UTF-8').getBytes()
+  );
+  return rawSig.map(function(b) {
+    const v = (b < 0) ? b + 256 : b;
+    return ('0' + v.toString(16)).slice(-2);
+  }).join('');
+}
+
+function createVnPayUrlGAS(data) {
+  const cfg = getVnPayConfigGAS_();
+  const amount = Math.round(Number(data && (data.Amount || data.amount) || 50000));
+  const rawOrderType = String((data && (data.OrderType || data.orderType)) || 'other').trim().toLowerCase();
+  const orderType = (!rawOrderType || rawOrderType === 'order') ? 'other' : rawOrderType;
+  const name = String((data && (data.Name || data.name || data.hoten)) || 'Hoc sinh').trim();
+  const desc = String((data && (data.OrderDescription || data.orderDescription)) || 'Goi hoc Vat Ly Xuan Truong').trim();
+  const cleanInfo = (name + ' ' + desc + ' ' + amount)
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D')
+    .replace(/[^a-zA-Z0-9 ._-]/g, ' ').replace(/\s+/g, ' ').trim();
+
+  const createDate = Utilities.formatDate(new Date(), 'GMT+7', 'yyyyMMddHHmmss');
+  const tick = String(Date.now()) + String(Math.floor(Math.random() * 900 + 100));
+
+  const params = {
+    vnp_Version:    cfg.version,
+    vnp_Command:    cfg.command,
+    vnp_TmnCode:    cfg.tmnCode,
+    vnp_Amount:     String(amount * 100),
+    vnp_CreateDate: createDate,
+    vnp_CurrCode:   cfg.currCode,
+    vnp_IpAddr:     String((data && data.ipAddr) || '127.0.0.1'),
+    vnp_Locale:     cfg.locale,
+    vnp_OrderInfo:  cleanInfo,
+    vnp_OrderType:  orderType,
+    vnp_ReturnUrl:  String((data && data.returnUrl) || cfg.returnUrl),
+    vnp_TxnRef:     tick
+  };
+
+  const sortedKeys = Object.keys(params).sort();
+  const pairs = sortedKeys.map(function(k) {
+    return vnpUrlEncodeGAS_(k) + '=' + vnpUrlEncodeGAS_(params[k]);
+  });
+  const signData = pairs.join('&');
+  const secureHash = hmacSha512HexGAS_(cfg.hashSecret, signData);
+  const paymentUrl = cfg.baseUrl + '?' + signData + '&vnp_SecureHash=' + secureHash;
+
+  return jsonOut({
+    ok: true,
+    paymentUrl: paymentUrl,
+    vnp_TxnRef: tick,
+    vnp_CreateDate: createDate,
+    vnp_SecureHash: secureHash
+  });
+}
+
+function verifyVnPayReturnGAS(data) {
+  const cfg = getVnPayConfigGAS_();
+  const queryObj = (data && data.query) ? data.query : (data || {});
+  const receivedHash = String(queryObj.vnp_SecureHash || '').trim();
+  const vnpKeys = Object.keys(queryObj).filter(function(k) {
+    return k.indexOf('vnp_') === 0 && k !== 'vnp_SecureHash' && k !== 'vnp_SecureHashType' && queryObj[k] !== '' && queryObj[k] != null;
+  }).sort();
+
+  const signData = vnpKeys.map(function(k) {
+    return vnpUrlEncodeGAS_(k) + '=' + vnpUrlEncodeGAS_(queryObj[k]);
+  }).join('&');
+  const expectedHash = hmacSha512HexGAS_(cfg.hashSecret, signData);
+  const validSignature = Boolean(receivedHash) && expectedHash.toLowerCase() === receivedHash.toLowerCase();
+  const responseCode = String(queryObj.vnp_ResponseCode || '');
+  const isPaid = validSignature && responseCode === '00';
+
+  if (isPaid) {
+    try {
+      const txSheet = getOrCreate('GiaoDichVNPay', ['txnRef','transactionId','sdt','hoten','planCode','amount','orderInfo','responseCode','payDate','ngayGhi']);
+      appendRowNamed(txSheet, {
+        txnRef:        String(queryObj.vnp_TxnRef || ''),
+        transactionId: String(queryObj.vnp_TransactionNo || ''),
+        sdt:           String(data.sdt || ''),
+        hoten:         String(data.hoten || ''),
+        planCode:      String(data.planCode || ''),
+        amount:        Number(queryObj.vnp_Amount || 0) / 100,
+        orderInfo:     String(queryObj.vnp_OrderInfo || ''),
+        responseCode:  responseCode,
+        payDate:       String(queryObj.vnp_PayDate || ''),
+        ngayGhi:       new Date().toISOString()
+      });
+
+      if (data && data.sdt) {
+        setVipStatus({ sdt: data.sdt, vip: true, adminKey: getAdminKey() });
+      }
+    } catch (e) {}
+  }
+
+  return jsonOut({
+    ok: true,
+    Success: validSignature,
+    IsPaid: isPaid,
+    PaymentMethod: 'VnPay',
+    OrderDescription: String(queryObj.vnp_OrderInfo || ''),
+    OrderId: String(queryObj.vnp_TxnRef || ''),
+    TransactionId: String(queryObj.vnp_TransactionNo || ''),
+    Token: receivedHash,
+    VnPayResponseCode: responseCode
+  });
+}
+
+
+// ══════════════════════════════════════════════════════════════════════
+// TỰ ĐỘNG KHỚP LỆNH CHUYỂN KHOẢN VIETQR (VIETINBANK 198490756789 — NGUYEN XUAN TRUONG)
+// Tương thích 100% với SePay.vn Webhook, Casso.vn Webhook & Kiểm tra trạng thái Realtime
+// ══════════════════════════════════════════════════════════════════════
+const VIETQR_TEACHER_BANK = {
+  bankName: 'VietinBank',
+  accountNo: '198490756789',
+  accountName: 'NGUYEN XUAN TRUONG'
+};
+
+function extractStudentPhoneFromMemo_(content) {
+  const raw = String(content || '').toUpperCase();
+  // Ưu tiên tìm SĐT đi ngay sau từ khóa VLXT hoặc VL12
+  const m1 = raw.match(/(?:VLXT|VL12)[_\s-]*([0-9]{9,11})/);
+  if (m1 && m1[1]) return normSdt(m1[1]);
+  // Fallback: tìm số điện thoại di động Việt Nam 10 số (03, 05, 07, 08, 09) hoặc 9 số (bỏ số 0 đầu)
+  const m2 = raw.match(/\b(0[35789][0-9]{8}|[35789][0-9]{8})\b/);
+  if (m2 && m2[1]) return normSdt(m2[1]);
+  return '';
+}
+
+function resolvePlanFromAmountAndMemo_(amount, content) {
+  const amt = Number(amount || 0);
+  const raw = String(content || '').toUpperCase();
+  if (amt >= 800000 || raw.indexOf('VIP850K') >= 0) {
+    return { planCode: 'VIP850K', loaiTK: 'premium', days: 365 };
+  }
+  if (amt >= 350000 || raw.indexOf('NAM399K') >= 0) {
+    return { planCode: 'NAM399K', loaiTK: 'premium', days: 365 };
+  }
+  if (amt >= 45000) {
+    return { planCode: 'THANG50K', loaiTK: 'vip', days: 30 };
+  }
+  return null;
+}
+
+function handleBankWebhookGAS(payload) {
+  const lock = LockService.getScriptLock();
+  try { lock.waitLock(10000); } catch (e) {}
+
+  try {
+    // Chuẩn hóa danh sách giao dịch từ SePay (1 object) hoặc Casso (mảng data)
+    const txList = [];
+    if (payload && Array.isArray(payload.data)) {
+      payload.data.forEach(function(item) {
+        txList.push({
+          txId: String(item.tid || item.id || Date.now()),
+          amount: Number(item.amount || 0),
+          content: String(item.description || ''),
+          bank: 'VietinBank',
+          accountNo: String(item.bank_sub_acc_id || VIETQR_TEACHER_BANK.accountNo),
+          txDate: String(item.when || new Date().toISOString()),
+          transferType: Number(item.amount || 0) > 0 ? 'in' : 'out'
+        });
+      });
+    } else if (payload) {
+      txList.push({
+        txId: String(payload.referenceCode || payload.id || Date.now()),
+        amount: Number(payload.transferAmount || payload.amount || 0),
+        content: String(payload.content || payload.description || ''),
+        bank: String(payload.gateway || VIETQR_TEACHER_BANK.bankName),
+        accountNo: String(payload.accountNumber || VIETQR_TEACHER_BANK.accountNo),
+        txDate: String(payload.transactionDate || new Date().toISOString()),
+        transferType: String(payload.transferType || 'in').toLowerCase()
+      });
+    }
+
+    const txSheet = getOrCreate('GiaoDichVietQR', [
+      'maGD','sdt','hoten','goiHoc','loaiTK','soTien','noiDung','nganHang','stkNhan','thoiGianGD','ngayKichHoat','trangThai'
+    ]);
+    const existingRows = sheetToJson(txSheet);
+    let processedCount = 0;
+
+    txList.forEach(function(tx) {
+      if (tx.transferType !== 'in' || tx.amount < 45000) return;
+
+      // Chống xử lý trùng mã giao dịch ngân hàng
+      const isDup = existingRows.some(function(r) {
+        return String(r.maGD || '') === tx.txId;
+      });
+      if (isDup) return;
+
+      const sdt = extractStudentPhoneFromMemo_(tx.content);
+      const plan = resolvePlanFromAmountAndMemo_(tx.amount, tx.content);
+      if (!plan) return;
+
+      let studentName = '';
+      const expiryMs = Date.now() + plan.days * 86400000;
+
+      if (sdt) {
+        const accSheet = getOrCreate('TaiKhoan', [
+          'sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry','mienVideo','tracNghiemVideo','mienLuyenTap'
+        ]);
+        const accRows = sheetToJson(accSheet);
+        let foundAcc = false;
+
+        for (let i = 0; i < accRows.length; i++) {
+          if (normSdt(accRows[i].sdt) === sdt) {
+            foundAcc = true;
+            studentName = accRows[i].hoten || '';
+            const curExpiry = Number(accRows[i].trialExpiry) || 0;
+            const baseTime = curExpiry > Date.now() ? curExpiry : Date.now();
+            const newExpiry = baseTime + plan.days * 86400000;
+            writeRowNamed(accSheet, accRows[i]._rowIndex, Object.assign({}, accRows[i], {
+              loaiTK: plan.loaiTK,
+              trialExpiry: newExpiry
+            }));
+            break;
+          }
+        }
+
+        if (!foundAcc) {
+          appendRowNamed(accSheet, {
+            sdt: "'" + sdt,
+            hoten: 'Học sinh Pro (' + sdt + ')',
+            lop: '12',
+            matkhau: '',
+            ngayDK: new Date().toISOString(),
+            lpTotal: 0,
+            diemGame: 0,
+            loaiTK: plan.loaiTK,
+            trialExpiry: expiryMs
+          });
+        }
+      }
+
+      appendRowNamed(txSheet, {
+        maGD: tx.txId,
+        sdt: sdt ? ("'" + sdt) : 'CHUA_RO_SDT',
+        hoten: studentName,
+        goiHoc: plan.planCode,
+        loaiTK: plan.loaiTK,
+        soTien: tx.amount,
+        noiDung: tx.content,
+        nganHang: tx.bank,
+        stkNhan: tx.accountNo,
+        thoiGianGD: tx.txDate,
+        ngayKichHoat: new Date().toISOString(),
+        trangThai: sdt ? 'DA_KICH_HOAT_TU_DONG' : 'CAN_KIEM_TRA_SDT'
+      });
+
+      processedCount++;
+    });
+
+    return jsonOut({ success: true, ok: true, processed: processedCount });
+  } finally {
+    try { lock.releaseLock(); } catch (e) {}
+  }
+}
+
+function checkPaymentStatusGAS(data) {
+  const rawSdt = String((data && data.sdt) || '').trim();
+  const sdt = normSdt(rawSdt);
+  if (!sdt) {
+    return jsonOut({ ok: false, paid: false, msg: 'Thiếu số điện thoại học sinh' });
+  }
+
+  // Ghi nhận vào sheet YeuCauKichHoat nếu học sinh bấm nút kiểm tra thủ công
+  if (data && data.manualCheck) {
+    try {
+      const reqSheet = getOrCreate('YeuCauKichHoat', ['sdt','hoten','goiHoc','soTien','noiDungCK','thoiGianBam','trangThai']);
+      appendRowNamed(reqSheet, {
+        sdt: "'" + sdt,
+        hoten: String(data.hoten || ''),
+        goiHoc: String(data.planCode || 'THANG50K'),
+        soTien: Number(data.amount || 50000),
+        noiDungCK: String(data.memo || ''),
+        thoiGianBam: new Date().toISOString(),
+        trangThai: 'DANG_CHO_DOI_SOAT'
+      });
+    } catch (e) {}
+  }
+
+  // 1. Kiểm tra trong bảng GiaoDichVietQR xem có giao dịch thành công của SĐT này chưa
+  try {
+    const txSheet = getOrCreate('GiaoDichVietQR', [
+      'maGD','sdt','hoten','goiHoc','loaiTK','soTien','noiDung','nganHang','stkNhan','thoiGianGD','ngayKichHoat','trangThai'
+    ]);
+    const txRows = sheetToJson(txSheet);
+    for (let i = txRows.length - 1; i >= 0; i--) {
+      if (normSdt(txRows[i].sdt) === sdt && String(txRows[i].trangThai) === 'DA_KICH_HOAT_TU_DONG') {
+        const isYear = String(txRows[i].loaiTK) === 'premium';
+        return jsonOut({
+          ok: true,
+          paid: true,
+          planCode: txRows[i].goiHoc || 'THANG50K',
+          loaiTK: isYear ? 'premium' : 'pro',
+          proExpiry: Date.now() + (isYear ? 365 : 30) * 86400000,
+          transactionId: txRows[i].maGD
+        });
+      }
+    }
+  } catch (e) {}
+
+  // 2. Kiểm tra trong bảng TaiKhoan nếu Thầy vừa bật VIP/Premium cho SĐT này
+  try {
+    const accSheet = getOrCreate('TaiKhoan', ['sdt','hoten','lop','matkhau','ngayDK','lpTotal','diemGame','loaiTK','trialExpiry']);
+    const accRows = sheetToJson(accSheet);
+    for (let i = 0; i < accRows.length; i++) {
+      if (normSdt(accRows[i].sdt) === sdt) {
+        const loai = String(accRows[i].loaiTK || '').toLowerCase();
+        const exp = Number(accRows[i].trialExpiry) || 0;
+        // Tài khoản được coi là vừa mua gói nếu là premium hoặc có hạn > 8 ngày (vượt quá 7 ngày dùng thử mặc định)
+        if (loai === 'premium' || (loai === 'vip' && exp > Date.now() + 8 * 86400000)) {
+          return jsonOut({
+            ok: true,
+            paid: true,
+            loaiTK: loai === 'premium' ? 'premium' : 'pro',
+            proExpiry: exp || (Date.now() + 30 * 86400000)
+          });
+        }
+        break;
+      }
+    }
+  } catch (e) {}
+
+  return jsonOut({ ok: true, paid: false });
 }

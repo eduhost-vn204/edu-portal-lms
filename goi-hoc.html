@@ -214,6 +214,64 @@
             box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
         }
 
+        /* ─── VNPAY INTEGRATION STYLES (STANDBY BY DEFAULT) ─── */
+        .btn-vnpay-direct {
+            width: 100%; margin-top: 10px; padding: 12px 14px; border-radius: 12px;
+            border: 1px solid rgba(56, 189, 248, 0.45);
+            background: linear-gradient(135deg, rgba(0, 91, 170, 0.35) 0%, rgba(11, 132, 243, 0.2) 100%);
+            color: #e0f2fe; font-size: 14px; font-weight: 800; cursor: pointer;
+            transition: all 0.2s; font-family: inherit;
+            display: none; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-vnpay-direct:hover {
+            background: linear-gradient(135deg, #005baa 0%, #0b84f3 100%);
+            color: #fff; border-color: var(--cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(11, 132, 243, 0.35);
+        }
+        .vnpay-badge-tag {
+            background: #ed1c24; color: #fff; font-size: 10px; font-weight: 900;
+            padding: 2px 6px; border-radius: 4px; letter-spacing: 0.4px;
+        }
+        .pay-tabs {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+            background: rgba(255, 255, 255, 0.04); padding: 5px; border-radius: 12px;
+            border: 1px solid var(--border); margin-bottom: 18px;
+        }
+        .pay-tab-btn {
+            padding: 10px 12px; border-radius: 9px; border: none;
+            background: transparent; color: var(--text-muted);
+            font-size: 13px; font-weight: 800; cursor: pointer; font-family: inherit;
+            display: flex; align-items: center; justify-content: center; gap: 7px;
+            transition: all 0.2s;
+        }
+        .pay-tab-btn.active {
+            background: linear-gradient(135deg, #0b84f3 0%, #0284c7 100%);
+            color: #fff; box-shadow: 0 4px 14px rgba(11, 132, 243, 0.35);
+        }
+        .btn-vnpay-gateway {
+            width: 100%; padding: 15px; border-radius: 12px;
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            background: linear-gradient(135deg, #005baa 0%, #0284c7 50%, #ed1c24 140%);
+            color: #fff; font-size: 15.5px; font-weight: 900; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            box-shadow: 0 10px 26px rgba(2, 132, 199, 0.4);
+            transition: all 0.2s; font-family: inherit;
+        }
+        .btn-vnpay-gateway:hover {
+            filter: brightness(1.12); transform: translateY(-2px);
+        }
+        .user-input-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;
+        }
+        @media(max-width: 500px) { .user-input-grid { grid-template-columns: 1fr; } }
+        .user-input-field {
+            width: 100%; padding: 10px 12px; border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+            color: #fff; font-size: 13.5px; font-weight: 600; font-family: inherit; outline: none;
+        }
+        .user-input-field:focus { border-color: var(--cyan); }
+
         /* ─── FAQ SECTION ─── */
         .faq-section { margin-top: 60px; }
         .faq-title { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 20px; text-align: center; }
@@ -226,6 +284,9 @@
         .faq-a { font-size: 13.5px; color: var(--text-muted); line-height: 1.5; }
     </style>
     <script src="auth.js?v=7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <script src="vnpay-service.js?v=1"></script>
+    <script src="freemium-flow.js?v=2"></script>
 </head>
 <body>
 
@@ -280,9 +341,14 @@
                 <li><i class="fa-solid fa-circle-check"></i> <span>Tải toàn bộ <strong>PDF lý thuyết & bài tập</strong></span></li>
                 <li><i class="fa-solid fa-circle-check"></i> <span>Ôn tập không giới hạn trên cả Web và Điện thoại</span></li>
             </ul>
-            <button class="btn-select-plan secondary" onclick="openPayment('THANG50K', 'Gói Tháng Linh Hoạt', 50000)">
-                <i class="fa-solid fa-qrcode"></i> Đăng Ký Gói 50k / Tháng
-            </button>
+            <div>
+                <button class="btn-select-plan secondary" onclick="openPayment('THANG50K', 'Gói Tháng Linh Hoạt', 50000, 'vietqr')">
+                    <i class="fa-solid fa-qrcode"></i> Đăng Ký Gói 50k / Tháng
+                </button>
+                <button class="btn-vnpay-direct" onclick="openPayment('THANG50K', 'Gói Tháng Linh Hoạt', 50000, 'vnpay')">
+                    <span class="vnpay-badge-tag">VNPAY</span> Thanh Toán Qua Cổng VNPay
+                </button>
+            </div>
         </div>
 
         <!-- GÓI 2: THEO NĂM (TIẾT KIỆM) -->
@@ -303,9 +369,14 @@
                 <li><i class="fa-solid fa-circle-check"></i> <span>Huy hiệu <strong>VIP Member</strong> trên bảng xếp hạng Đấu Hạng</span></li>
                 <li><i class="fa-solid fa-circle-check"></i> <span>Tiết kiệm <strong>35% học phí</strong> so với đăng ký từng tháng</span></li>
             </ul>
-            <button class="btn-select-plan primary" onclick="openPayment('NAM399K', 'Gói Trọn Năm XPS 2k9', 399000)">
-                <i class="fa-solid fa-bolt"></i> Nhận Ưu Đãi Trọn Khóa (399k)
-            </button>
+            <div>
+                <button class="btn-select-plan primary" onclick="openPayment('NAM399K', 'Gói Trọn Năm XPS 2k9', 399000, 'vietqr')">
+                    <i class="fa-solid fa-bolt"></i> Nhận Ưu Đãi Trọn Khóa (399k)
+                </button>
+                <button class="btn-vnpay-direct" onclick="openPayment('NAM399K', 'Gói Trọn Năm XPS 2k9', 399000, 'vnpay')">
+                    <span class="vnpay-badge-tag">VNPAY</span> Thanh Toán Qua Cổng VNPay (399k)
+                </button>
+            </div>
         </div>
 
         <!-- GÓI 3: LỚP ONLINE CÙNG THẦY -->
@@ -324,9 +395,14 @@
                 <li><i class="fa-solid fa-circle-check"></i> <span>Hỏi đáp bài tập <strong>1-1 với Thầy & Trợ giảng</strong></span></li>
                 <li><i class="fa-solid fa-circle-check"></i> <span>Kiểm tra định kỳ và sửa bài cá nhân hóa chi tiết</span></li>
             </ul>
-            <button class="btn-select-plan secondary" onclick="openPayment('VIP850K', 'Lớp Online Cùng Thầy (VIP)', 850000)">
-                <i class="fa-solid fa-user-tie"></i> Đăng Ký Lớp Cùng Thầy
-            </button>
+            <div>
+                <button class="btn-select-plan secondary" onclick="openPayment('VIP850K', 'Lớp Online Cùng Thầy (VIP)', 850000, 'vietqr')">
+                    <i class="fa-solid fa-user-tie"></i> Đăng Ký Lớp Cùng Thầy
+                </button>
+                <button class="btn-vnpay-direct" onclick="openPayment('VIP850K', 'Lớp Online Cùng Thầy (VIP)', 850000, 'vnpay')">
+                    <span class="vnpay-badge-tag">VNPAY</span> Thanh Toán Qua Cổng VNPay (850k)
+                </button>
+            </div>
         </div>
 
     </div>
@@ -352,102 +428,390 @@
 
 </div>
 
-<!-- ─── VIETQR PAYMENT MODAL ─── -->
+<!-- ─── VIETQR & VNPAY PAYMENT MODAL ─── -->
 <div id="payment-modal" class="payment-modal">
     <div class="payment-box">
         <button class="modal-close-btn" onclick="closePayment()"><i class="fa-solid fa-xmark"></i></button>
 
         <div class="payment-head">
             <h3 class="payment-title" id="modal-plan-name">Thanh Toán Gói Học</h3>
-            <p class="payment-sub">Quét mã VietQR bằng bất kỳ App Ngân hàng hoặc MoMo</p>
+            <p class="payment-sub">Chọn phương thức thanh toán tự động 24/7</p>
         </div>
 
-        <div class="qr-frame">
-            <img id="vietqr-image" class="qr-image" src="" alt="Mã VietQR Chuyển Khoản">
-            <div style="font-size:12px;font-weight:700;color:#0b84f3;margin-top:8px;">NAPAS 247 · TỰ ĐỘNG ĐIỀN THÔNG TIN</div>
+        <!-- 2 TAB CHUYỂN ĐỔI PHƯƠNG THỨC (Ẩn mặc định khi VNPay ở chế độ chờ Hộ Kinh Doanh) -->
+        <div class="pay-tabs" id="modal-pay-tabs" style="display:none;">
+            <button type="button" id="tab-btn-vnpay" class="pay-tab-btn" onclick="switchPayTab('vnpay')">
+                <span class="vnpay-badge-tag">VNPAY</span> Cổng VNPay
+            </button>
+            <button type="button" id="tab-btn-vietqr" class="pay-tab-btn active" onclick="switchPayTab('vietqr')">
+                <i class="fa-solid fa-qrcode"></i> Quét Mã VietQR
+            </button>
         </div>
 
-        <div class="bank-details-card">
-            <div class="detail-row">
-                <span class="detail-label">Ngân hàng</span>
-                <span class="detail-val" id="bank-name-val">MB BANK (Quân Đội)</span>
-            </div>
-            <div class="detail-row">
-                <span class="detail-label">Chủ tài khoản</span>
-                <span class="detail-val" id="bank-owner-val">DƯƠNG XUÂN TRƯỜNG</span>
-            </div>
-            <div class="detail-row">
-                <span class="detail-label">Số tài khoản</span>
-                <span class="detail-val">
-                    <span id="bank-acc-val">0987654321</span>
-                    <button class="btn-copy" onclick="copyText('bank-acc-val')">Copy</button>
-                </span>
-            </div>
-            <div class="detail-row">
-                <span class="detail-label">Số tiền</span>
-                <span class="detail-val" style="color:#10b981">
-                    <span id="bank-amount-val">50.000đ</span>
-                    <button class="btn-copy" onclick="copyAmount()">Copy</button>
-                </span>
-            </div>
-            <div class="detail-row">
-                <span class="detail-label">Nội dung CK</span>
-                <span class="detail-val" style="color:var(--cyan)">
-                    <span id="bank-memo-val">VLXT HS01 THANG50K</span>
-                    <button class="btn-copy" onclick="copyText('bank-memo-val')">Copy</button>
-                </span>
-            </div>
+        <!-- Ô nhập tên và SĐT học sinh -->
+        <div class="user-input-grid">
+            <input type="text" id="pay-student-name" class="user-input-field" placeholder="Họ và tên học sinh">
+            <input type="tel" id="pay-student-phone" class="user-input-field" placeholder="Số điện thoại / Zalo" oninput="refreshVietQrMemo()">
         </div>
 
-        <button class="btn-confirm-pay" onclick="handlePayDone()">
-            <i class="fa-solid fa-circle-check"></i> Tôi Đã Chuyển Khoản Thành Công
-        </button>
-        <p style="font-size:12px;color:#94a3b8;text-align:center;margin-top:10px;">
-            Hỗ trợ nhanh qua Zalo Thầy: <strong>0987.654.321</strong> (24/7)
+        <!-- PANEL 1: CỔNG THANH TOÁN VNPAY (Chế độ chờ Hộ Kinh Doanh) -->
+        <div id="panel-vnpay" style="display:none;">
+            <div class="bank-details-card" style="border-color:rgba(56,189,248,0.35);background:rgba(11,132,243,0.06);">
+                <div class="detail-row">
+                    <span class="detail-label">Cổng thanh toán</span>
+                    <span class="detail-val"><span class="vnpay-badge-tag">VNPAY</span> Sandbox / Gateway v2.1.0</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Gói đăng ký</span>
+                    <span class="detail-val" id="vnpay-plan-val" style="color:var(--cyan)">Gói Tháng Linh Hoạt</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Tổng thanh toán</span>
+                    <span class="detail-val" id="vnpay-amount-val" style="color:#10b981;font-size:16px">50.000đ</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Chế độ cổng VNPay</span>
+                    <span class="detail-val">
+                        <select id="vnpay-bank-code" style="background:#0f172a;color:#38bdf8;border:1px solid rgba(56,189,248,0.4);border-radius:6px;padding:4px 8px;font-size:12px;font-weight:700;outline:none;cursor:pointer;">
+                            <option value="NCB" selected>⚡ Vào thẳng trang nhập thẻ NCB Demo</option>
+                            <option value="VNBANK">🏦 Chọn danh sách Ngân hàng nội địa</option>
+                            <option value="ALL">📱 Hiện tất cả phương thức (QR / Thẻ)</option>
+                        </select>
+                    </span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Chuẩn bảo mật</span>
+                    <span class="detail-val" style="font-size:12px;color:#93c5fd"><i class="fa-solid fa-shield-halved"></i> Chữ ký số HMAC-SHA512</span>
+                </div>
+            </div>
+
+            <!-- Khung thông tin Thẻ Ngân Hàng NCB Demo để Thầy & Học sinh test -->
+            <div class="bank-details-card" style="background:rgba(15,23,42,0.85);border-color:rgba(245,158,11,0.3);">
+                <div style="font-size:11.5px;font-weight:800;color:#fbbf24;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+                    <span><i class="fa-solid fa-flask"></i> Thẻ Ngân Hàng Demo Test (VNPAY Sandbox)</span>
+                    <span style="color:#34d399;font-size:10.5px;">● Sẵn sàng</span>
+                </div>
+                <div class="detail-row" style="padding:5px 0;font-size:12.5px;">
+                    <span class="detail-label">Ngân hàng</span>
+                    <span class="detail-val">NCB (Ngân hàng Quốc Dân)</span>
+                </div>
+                <div class="detail-row" style="padding:5px 0;font-size:12.5px;">
+                    <span class="detail-label">Số thẻ</span>
+                    <span class="detail-val">
+                        <code id="ncb-card-no" style="color:#38bdf8;font-family:'DM Mono',monospace;">9704198526191432198</code>
+                        <button class="btn-copy" onclick="copyText('ncb-card-no')">Copy</button>
+                    </span>
+                </div>
+                <div class="detail-row" style="padding:5px 0;font-size:12.5px;">
+                    <span class="detail-label">Chủ thẻ & Ngày PH</span>
+                    <span class="detail-val">
+                        <code id="ncb-card-holder" style="color:#e2e8f0">NGUYEN VAN A</code> · <code style="color:#fbbf24">07/15</code>
+                        <button class="btn-copy" onclick="copyText('ncb-card-holder')">Copy</button>
+                    </span>
+                </div>
+                <div class="detail-row" style="padding:5px 0;font-size:12.5px;">
+                    <span class="detail-label">Mật khẩu OTP</span>
+                    <span class="detail-val">
+                        <code id="ncb-card-otp" style="color:#34d399;font-weight:900">123456</code>
+                        <button class="btn-copy" onclick="copyText('ncb-card-otp')">Copy</button>
+                    </span>
+                </div>
+            </div>
+
+            <button class="btn-vnpay-gateway" onclick="handleVnPayCheckout()">
+                <i class="fa-solid fa-credit-card"></i> THANH TOÁN NGAY VỚI VNPAY <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:13px"></i>
+            </button>
+        </div>
+
+        <!-- PANEL 2: QUÉT MÃ VIETQR (MẶC ĐỊNH TỰ ĐỘNG KHỚP LỆNH) -->
+        <div id="panel-vietqr">
+            <div class="qr-frame">
+                <img id="vietqr-image" class="qr-image" src="" alt="Mã VietQR Chuyển Khoản">
+                <div style="font-size:12px;font-weight:700;color:#0b84f3;margin-top:8px;">NAPAS 247 · TỰ ĐỘNG ĐIỀN SỐ TIỀN &amp; NỘI DUNG</div>
+            </div>
+
+            <div class="bank-details-card">
+                <div class="detail-row">
+                    <span class="detail-label">Ngân hàng</span>
+                    <span class="detail-val" id="bank-name-val">VietinBank (Công Thương)</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Chủ tài khoản</span>
+                    <span class="detail-val" id="bank-owner-val">NGUYEN XUAN TRUONG</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Số tài khoản</span>
+                    <span class="detail-val">
+                        <span id="bank-acc-val">198490756789</span>
+                        <button class="btn-copy" onclick="copyText('bank-acc-val')">Copy</button>
+                    </span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Số tiền</span>
+                    <span class="detail-val" style="color:#10b981">
+                        <span id="bank-amount-val">50.000đ</span>
+                        <button class="btn-copy" onclick="copyAmount()">Copy</button>
+                    </span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Nội dung CK</span>
+                    <span class="detail-val" style="color:var(--cyan)">
+                        <span id="bank-memo-val">VLXT HS01 THANG50K</span>
+                        <button class="btn-copy" onclick="copyText('bank-memo-val')">Copy</button>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Trạng thái tự động lắng nghe biến động số dư -->
+            <div id="vietqr-listen-status" style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.28);border-radius:10px;padding:10px 12px;margin-bottom:14px;font-size:12.5px;color:#a7f3d0;display:flex;align-items:center;gap:8px;line-height:1.45;">
+                <i class="fa-solid fa-satellite-dish fa-beat-fade" style="color:#10b981;"></i>
+                <span>Hệ thống đang tự động lắng nghe biến động số dư VietinBank (tự mở khóa trong 3–10 giây sau khi chuyển khoản)...</span>
+            </div>
+
+            <button class="btn-confirm-pay" id="btn-confirm-vietqr" onclick="handlePayDone()">
+                <i class="fa-solid fa-circle-check"></i> Tôi Đã Chuyển Khoản — Kiểm Tra Ngay
+            </button>
+        </div>
+
+        <p style="font-size:12px;color:#94a3b8;text-align:center;margin-top:12px;">
+            Hỗ trợ nhanh qua Zalo Thầy: <strong>0964.885.924</strong> (24/7)
         </p>
     </div>
 </div>
 
 <script>
-// Cấu hình thông tin tài khoản ngân hàng của Thầy
-// (Thầy có thể cập nhật STK và Tên Ngân Hàng thật bất kỳ lúc nào)
+// Cấu hình thông tin tài khoản ngân hàng thật của Thầy Xuân Trường (VietinBank - BIN 970415 / ICB)
 const PAYMENT_CONFIG = {
-    bankId: 'MB', // MB, VCB, TCB, VPB, TPB, BIDV, etc.
-    accountNo: '0987654321', // STK Thầy
-    accountName: 'DUONG XUAN TRUONG',
+    bankId: 'ICB', // VietinBank (Ngân hàng TMCP Công Thương Việt Nam)
+    bankName: 'VietinBank (Công Thương)',
+    accountNo: '198490756789',
+    accountName: 'NGUYEN XUAN TRUONG',
     template: 'compact2'
 };
 
 let currentAmount = 50000;
+let currentPlanCode = 'THANG50K';
+let currentPlanName = 'Gói Tháng Linh Hoạt';
+let vietQrPollTimer = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof vlxtGetUser === 'function') {
         const u = vlxtGetUser();
         if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(u);
     }
+    // Chỉ hiển thị nút/tab VNPay nếu VNPay được bật trong cấu hình (hoặc ?vnpay=1)
+    if (typeof window.VnPayService !== 'undefined' && typeof window.VnPayService.isEnabled === 'function' && window.VnPayService.isEnabled()) {
+        document.querySelectorAll('.btn-vnpay-direct').forEach(btn => { btn.style.display = 'inline-flex'; });
+        const tabs = document.getElementById('modal-pay-tabs');
+        if (tabs) tabs.style.display = 'grid';
+    }
 });
 
-function openPayment(code, planName, amount) {
+function switchPayTab(mode) {
+    const vnpEnabled = (typeof window.VnPayService !== 'undefined' && typeof window.VnPayService.isEnabled === 'function' && window.VnPayService.isEnabled());
+    const isVnPay = vnpEnabled && mode === 'vnpay';
+    const tabVnPay = document.getElementById('tab-btn-vnpay');
+    const tabVietQr = document.getElementById('tab-btn-vietqr');
+    const panelVnPay = document.getElementById('panel-vnpay');
+    const panelVietQr = document.getElementById('panel-vietqr');
+
+    if (tabVnPay) tabVnPay.classList.toggle('active', isVnPay);
+    if (tabVietQr) tabVietQr.classList.toggle('active', !isVnPay);
+    if (panelVnPay) panelVnPay.style.display = isVnPay ? 'block' : 'none';
+    if (panelVietQr) panelVietQr.style.display = isVnPay ? 'none' : 'block';
+}
+
+function openPayment(code, planName, amount, defaultTab) {
     const user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
-    const sdt = user ? (user.sdt || user.email.split('@')[0]) : 'HOCSINH';
-    
+    const nameInput = document.getElementById('pay-student-name');
+    const phoneInput = document.getElementById('pay-student-phone');
+
+    if (user) {
+        if (nameInput && !nameInput.value && user.hoten && user.hoten !== 'Học sinh trải nghiệm') {
+            nameInput.value = user.hoten;
+        }
+        if (phoneInput && !phoneInput.value && user.sdt && user.sdt !== 'FREE') {
+            phoneInput.value = user.sdt;
+        }
+    }
+
     currentAmount = amount;
-    const memo = `VLXT ${sdt} ${code}`.replace(/[^a-zA-Z0-9 ]/g, '').toUpperCase();
+    currentPlanCode = code;
+    currentPlanName = planName;
 
     document.getElementById('modal-plan-name').textContent = `Thanh Toán: ${planName}`;
+    document.getElementById('bank-name-val').textContent = PAYMENT_CONFIG.bankName;
     document.getElementById('bank-acc-val').textContent = PAYMENT_CONFIG.accountNo;
     document.getElementById('bank-owner-val').textContent = PAYMENT_CONFIG.accountName;
     document.getElementById('bank-amount-val').textContent = amount.toLocaleString('vi-VN') + 'đ';
-    document.getElementById('bank-memo-val').textContent = memo;
+    document.getElementById('vnpay-plan-val').textContent = `${planName} (${code})`;
+    document.getElementById('vnpay-amount-val').textContent = amount.toLocaleString('vi-VN') + 'đ';
 
-    // Sinh link VietQR chuẩn
-    const qrUrl = `https://img.vietqr.io/image/${PAYMENT_CONFIG.bankId}-${PAYMENT_CONFIG.accountNo}-${PAYMENT_CONFIG.template}.png?amount=${amount}&addInfo=${encodeURIComponent(memo)}&accountName=${encodeURIComponent(PAYMENT_CONFIG.accountName)}`;
-    document.getElementById('vietqr-image').src = qrUrl;
+    refreshVietQrMemo();
+    switchPayTab(defaultTab || 'vietqr');
 
     document.getElementById('payment-modal').style.display = 'flex';
+    startVietQrPolling();
+}
+
+function startVietQrPolling() {
+    stopVietQrPolling();
+    const statusBox = document.getElementById('vietqr-listen-status');
+    if (statusBox) {
+        statusBox.innerHTML = `<i class="fa-solid fa-satellite-dish fa-beat-fade" style="color:#10b981;"></i><span>Hệ thống đang tự động lắng nghe biến động số dư VietinBank (tự mở khóa trong 3–10 giây sau khi chuyển khoản)...</span>`;
+    }
+    vietQrPollTimer = setInterval(() => {
+        checkVietQrPaymentStatus(false);
+    }, 4000);
+}
+
+function stopVietQrPolling() {
+    if (vietQrPollTimer) {
+        clearInterval(vietQrPollTimer);
+        vietQrPollTimer = null;
+    }
+}
+
+function checkVietQrPaymentStatus(isManualClick) {
+    const nameInput = document.getElementById('pay-student-name');
+    const phoneInput = document.getElementById('pay-student-phone');
+    const memoEl = document.getElementById('bank-memo-val');
+    const statusBox = document.getElementById('vietqr-listen-status');
+    const user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : {};
+
+    const hoten = (nameInput && nameInput.value.trim()) || (user && user.hoten) || 'Học sinh';
+    const sdt = (phoneInput && phoneInput.value.replace(/\D/g, '')) || (user && user.sdt !== 'FREE' ? user.sdt : '');
+    const memo = memoEl ? memoEl.textContent.trim() : '';
+
+    if (isManualClick && (!sdt || sdt.length < 9)) {
+        if (statusBox) {
+            statusBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color:#fbbf24;"></i><span style="color:#fde68a;">Vui lòng nhập <strong>Số điện thoại / Zalo</strong> của em ở ô phía trên để hệ thống đối soát giao dịch tự động!</span>`;
+        }
+        if (phoneInput) phoneInput.focus();
+        return;
+    }
+
+    if (!sdt || typeof fetch !== 'function') return;
+
+    const gasUrl = (typeof window.VLXT_GAS !== 'undefined')
+        ? window.VLXT_GAS
+        : 'https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec';
+
+    if (isManualClick && statusBox) {
+        statusBox.innerHTML = `<i class="fa-solid fa-spinner fa-spin" style="color:#38bdf8;"></i><span style="color:#bae6fd;">Đang kiểm tra biến động số dư VietinBank cho SĐT <strong>${sdt}</strong>...</span>`;
+    }
+
+    fetch(gasUrl, {
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+            action: 'checkpaymentstatus',
+            sdt: sdt,
+            hoten: hoten,
+            planCode: currentPlanCode,
+            amount: currentAmount,
+            memo: memo,
+            manualCheck: Boolean(isManualClick)
+        })
+    })
+    .then(r => r.json())
+    .then(res => {
+        if (res && res.ok && res.paid) {
+            stopVietQrPolling();
+            unlockPaidAccountOnPage(sdt, hoten, res);
+        } else if (isManualClick && statusBox) {
+            statusBox.innerHTML = `<i class="fa-solid fa-clock" style="color:#fbbf24;"></i><span style="color:#fde68a;">Đã ghi nhận yêu cầu đối soát (<strong>${memo}</strong>). Hệ thống đang chờ VietinBank báo tiền về (thường mất 5–15 giây sau khi chuyển khoản). Giữ màn hình này để tự động mở khóa ngay khi khớp lệnh!</span>`;
+        }
+    })
+    .catch(() => {
+        if (isManualClick && statusBox) {
+            statusBox.innerHTML = `<i class="fa-solid fa-clock" style="color:#fbbf24;"></i><span style="color:#fde68a;">Đã gửi yêu cầu kiểm tra (<strong>${memo}</strong>). Hệ thống sẽ tự động kích hoạt ngay khi giao dịch hoàn tất!</span>`;
+        }
+    });
+}
+
+function unlockPaidAccountOnPage(sdt, hoten, res) {
+    const curUser = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : null) || {};
+    const isYearPlan = (currentPlanCode === 'NAM399K' || currentPlanCode === 'VIP850K' || currentAmount >= 300000);
+    const tier = (res && res.loaiTK) || (isYearPlan ? 'premium' : 'pro');
+    const expiry = (res && res.proExpiry) || (Date.now() + (isYearPlan ? 365 : 30) * 86400000);
+
+    const updatedUser = Object.assign({}, curUser, {
+        sdt: sdt,
+        hoten: hoten,
+        loaiTK: tier,
+        isPaid: true,
+        proExpiry: expiry,
+        trialExpiry: expiry
+    });
+
+    try {
+        localStorage.setItem('vlxt_user_v2', JSON.stringify(updatedUser));
+        localStorage.setItem('vlxt_is_paid', 'true');
+        if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(updatedUser);
+    } catch (e) {}
+
+    if (typeof window.confetti === 'function') {
+        window.confetti({ particleCount: 130, spread: 80, origin: { y: 0.6 } });
+    }
+
+    const statusBox = document.getElementById('vietqr-listen-status');
+    if (statusBox) {
+        statusBox.style.background = 'rgba(16,185,129,0.22)';
+        statusBox.style.borderColor = '#10b981';
+        statusBox.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#34d399;font-size:18px;"></i><span style="color:#ecfdf5;font-weight:800;">🎉 ĐÃ NHẬN ĐƯỢC CHUYỂN KHOẢN! Tài khoản của em đã nâng cấp thành công lên gói ${currentPlanName}!</span>`;
+    }
+
+    const btn = document.getElementById('btn-confirm-vietqr');
+    if (btn) {
+        btn.innerHTML = `<i class="fa-solid fa-rocket"></i> VÀO HỌC NGAY (ĐÃ MỞ KHÓA 100%)`;
+        btn.onclick = () => { window.location.href = 'baihoc.html'; };
+    }
+}
+
+function refreshVietQrMemo() {
+    const user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
+    const phoneInput = document.getElementById('pay-student-phone');
+    const typedPhone = phoneInput ? phoneInput.value.replace(/\D/g, '') : '';
+    const sdt = typedPhone || (user ? (user.sdt || (user.email ? user.email.split('@')[0] : '')) : '') || 'HOCSINH';
+    const memo = `VLXT ${sdt} ${currentPlanCode}`.replace(/[^a-zA-Z0-9 ]/g, '').toUpperCase();
+
+    const memoEl = document.getElementById('bank-memo-val');
+    if (memoEl) memoEl.textContent = memo;
+
+    const qrUrl = `https://img.vietqr.io/image/${PAYMENT_CONFIG.bankId}-${PAYMENT_CONFIG.accountNo}-${PAYMENT_CONFIG.template}.png?amount=${currentAmount}&addInfo=${encodeURIComponent(memo)}&accountName=${encodeURIComponent(PAYMENT_CONFIG.accountName)}`;
+    const qrImg = document.getElementById('vietqr-image');
+    if (qrImg) qrImg.src = qrUrl;
+}
+
+function handleVnPayCheckout() {
+    const nameInput = document.getElementById('pay-student-name');
+    const phoneInput = document.getElementById('pay-student-phone');
+    const user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : {};
+
+    const hoten = (nameInput && nameInput.value.trim()) || (user && user.hoten) || 'Hoc sinh VLXT';
+    const sdt = (phoneInput && phoneInput.value.replace(/\D/g, '')) || (user && user.sdt) || '0987654321';
+    const bankSelect = document.getElementById('vnpay-bank-code');
+    const bankCode = bankSelect ? bankSelect.value : 'NCB';
+
+    if (typeof window.VnPayService !== 'undefined') {
+        window.VnPayService.redirectToVnPay({
+            OrderType: 'other',
+            Amount: currentAmount,
+            OrderDescription: `Thanh toan ${currentPlanCode} tai Vat Ly Xuan Truong`,
+            Name: hoten,
+            planCode: currentPlanCode,
+            sdt: sdt,
+            bankCode: bankCode
+        });
+    } else {
+        alert('Không tìm thấy dịch vụ VNPay. Vui lòng tải lại trang!');
+    }
 }
 
 function closePayment() {
+    stopVietQrPolling();
     document.getElementById('payment-modal').style.display = 'none';
 }
 
@@ -467,8 +831,7 @@ function copyAmount() {
 }
 
 function handlePayDone() {
-    alert('Cảm ơn bạn! Hệ thống đã ghi nhận yêu cầu. Tài khoản của bạn sẽ được kích hoạt ngay sau khi tiền về (thường 5 - 15 phút). Nếu cần gấp, bạn có thể gửi ảnh bill qua Zalo cho Thầy nhé!');
-    closePayment();
+    checkVietQrPaymentStatus(true);
 }
 </script>
 

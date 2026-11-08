@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kết Quả Thanh Toán VNPay · Vật Lý Xuân Trường</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=DM+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js" defer></script>
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --blue: #0b84f3;
+            --cyan: #00f0ff;
+            --green: #10b981;
+            --yellow: #f59e0b;
+            --red: #ef4444;
+            --bg: #070b14;
+            --bg-card: rgba(16, 24, 42, 0.94);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed; inset: 0; z-index: 0;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(11, 132, 243, 0.14) 0%, transparent 45%),
+                radial-gradient(circle at 80% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 45%),
+                #070b14;
+            pointer-events: none;
+        }
+
+        .navbar {
+            position: sticky; top: 0; z-index: 100;
+            height: 60px; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px; background: rgba(7, 11, 20, 0.9);
+            backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+        }
+        .nav-logo {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 15px; font-weight: 800; color: #fff; text-decoration: none;
+        }
+        .nav-links { display: flex; gap: 16px; align-items: center; }
+        .nav-links a {
+            color: var(--text-muted); text-decoration: none; font-size: 13.5px; font-weight: 600;
+            transition: color 0.15s;
+        }
+        .nav-links a:hover { color: #fff; }
+
+        .main-wrap {
+            position: relative; z-index: 1;
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            padding: 36px 16px 64px;
+        }
+
+        .result-card {
+            background: var(--bg-card);
+            border: 1.5px solid rgba(0, 240, 255, 0.3);
+            border-radius: 24px;
+            max-width: 580px; width: 100%;
+            padding: 36px 30px;
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.75), 0 0 40px rgba(0, 240, 255, 0.1);
+            text-align: center;
+            animation: cardAppear 0.35s ease-out;
+        }
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(14px) scale(0.98); }
+            to { opacity: 1; transform: none; }
+        }
+
+        .status-icon {
+            width: 76px; height: 76px; border-radius: 50%;
+            margin: 0 auto 18px; display: flex; align-items: center; justify-content: center;
+            font-size: 34px;
+        }
+        .status-icon.ok {
+            background: rgba(16, 185, 129, 0.15);
+            border: 2px solid rgba(16, 185, 129, 0.5);
+            color: var(--green);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
+        }
+        .status-icon.err {
+            background: rgba(239, 68, 68, 0.15);
+            border: 2px solid rgba(239, 68, 68, 0.5);
+            color: var(--red);
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.25);
+        }
+        .status-icon.warn {
+            background: rgba(245, 158, 11, 0.15);
+            border: 2px solid rgba(245, 158, 11, 0.5);
+            color: var(--yellow);
+        }
+
+        .vnpay-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 5px 14px; border-radius: 999px;
+            background: rgba(0, 91, 170, 0.25); border: 1px solid rgba(56, 189, 248, 0.4);
+            color: #38bdf8; font-size: 12px; font-weight: 800; letter-spacing: 0.06em;
+            text-transform: uppercase; margin-bottom: 12px;
+        }
+
+        .result-title {
+            font-size: clamp(22px, 4vw, 28px); font-weight: 900; color: #fff;
+            line-height: 1.25; margin-bottom: 8px;
+        }
+        .result-desc {
+            font-size: 14.5px; color: var(--text-muted); line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .receipt-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px 20px;
+            text-align: left;
+            margin-bottom: 24px;
+        }
+        .receipt-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 9px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 13.5px; gap: 12px;
+        }
+        .receipt-row:last-child { border-bottom: none; }
+        .receipt-label { color: var(--text-muted); flex-shrink: 0; }
+        .receipt-val {
+            font-weight: 700; color: #fff; text-align: right;
+            word-break: break-all; font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .receipt-val.mono { font-family: 'DM Mono', monospace; color: var(--cyan); }
+        .receipt-val.price { font-family: 'DM Mono', monospace; font-size: 16px; color: var(--green); }
+
+        .actions-row {
+            display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+        }
+        .btn-action {
+            flex: 1; min-width: 200px;
+            padding: 14px 24px; border-radius: 12px; border: none;
+            font-size: 15px; font-weight: 800; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            text-decoration: none; transition: all 0.2s; font-family: inherit;
+        }
+        .btn-action.primary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #fff; box-shadow: 0 8px 25px rgba(16, 185, 129, 0.35);
+        }
+        .btn-action.primary:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn-action.secondary {
+            background: rgba(255, 255, 255, 0.07); color: #fff;
+            border: 1px solid var(--border);
+        }
+        .btn-action.secondary:hover { background: rgba(255, 255, 255, 0.14); }
+
+        /* Khung JSON Model đối chiếu theo chuẩn video hướng dẫn */
+        .json-inspector-toggle {
+            margin-top: 22px; font-size: 12px; color: #64748b;
+            background: none; border: none; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 6px; font-family: inherit;
+        }
+        .json-inspector-toggle:hover { color: var(--cyan); }
+        .json-inspector-box {
+            display: none; margin-top: 12px; text-align: left;
+            background: #030712; border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 12px; padding: 14px; font-family: 'DM Mono', monospace;
+            font-size: 12px; color: #38bdf8; overflow-x: auto; line-height: 1.5;
+        }
+        .json-inspector-box.open { display: block; }
+
+        /* Khung giả lập callback nhanh khi mở trực tiếp chưa có query vnp_ */
+        .sim-banner {
+            margin-top: 18px; padding: 14px 16px; border-radius: 14px;
+            background: rgba(245, 158, 11, 0.08); border: 1px dashed rgba(245, 158, 11, 0.35);
+            font-size: 13px; color: #fde68a; text-align: left; line-height: 1.5;
+        }
+        .btn-sim-callback {
+            margin-top: 10px; padding: 8px 14px; border-radius: 8px;
+            background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.5);
+            color: #fbbf24; font-size: 12.5px; font-weight: 700; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 6px;
+        }
+        .btn-sim-callback:hover { background: rgba(245, 158, 11, 0.35); color: #fff; }
+    </style>
+
+    <script src="auth.js?v=7"></script>
+    <script src="vnpay-service.js?v=1"></script>
+    <script src="freemium-flow.js?v=2"></script>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="index.html" class="nav-logo">
+        <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+            <circle cx="14" cy="14" r="2.8" fill="#0b84f3"/>
+            <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.3" fill="none" opacity="0.7"/>
+            <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.3" fill="none" opacity="0.5" transform="rotate(60 14 14)"/>
+            <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#0b84f3" stroke-width="1.3" fill="none" opacity="0.5" transform="rotate(-60 14 14)"/>
+        </svg>
+        Vật Lý Xuân Trường
+    </a>
+    <div class="nav-links">
+        <a href="baihoc.html">Khóa Học</a>
+        <a href="goi-hoc.html">Bảng Giá &amp; Gói Học</a>
+        <div id="vlxt-nav-user-area"></div>
+    </div>
+</nav>
+
+<main class="main-wrap">
+    <div class="result-card" id="result-card-container">
+        <!-- Nội dung được render tự động từ VnPayService.paymentExecute(window.location.search) -->
+    </div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    if (typeof vlxtGetUser === 'function') {
+        const u = vlxtGetUser();
+        if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(u);
+    }
+
+    processVnPayCallback();
+});
+
+function formatPayDateDisplay(raw) {
+    if (!raw || String(raw).length !== 14) return raw || new Date().toLocaleString('vi-VN');
+    const s = String(raw);
+    return `${s.slice(6,8)}/${s.slice(4,6)}/${s.slice(0,4)} ${s.slice(8,10)}:${s.slice(10,12)}:${s.slice(12,14)}`;
+}
+
+function processVnPayCallback() {
+    const container = document.getElementById('result-card-container');
+    const search = window.location.search;
+    const hasVnpParams = search && search.includes('vnp_');
+
+    if (!hasVnpParams) {
+        renderNoQueryState(container);
+        return;
+    }
+
+    const response = VnPayService.paymentExecute(search);
+
+    if (response.success && response.signatureValid) {
+        // Bắn pháo hoa chúc mừng
+        setTimeout(() => {
+            if (typeof FreemiumFlow !== 'undefined' && typeof FreemiumFlow.triggerConfetti === 'function') {
+                FreemiumFlow.triggerConfetti();
+            } else if (typeof window.confetti === 'function') {
+                window.confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+            }
+        }, 250);
+
+        container.innerHTML = `
+            <div class="status-icon ok"><i class="fa-solid fa-check"></i></div>
+            <div class="vnpay-badge"><i class="fa-solid fa-shield-check"></i> VNPAY PAYMENT VERIFIED (HMAC-SHA512)</div>
+            <h1 class="result-title">THANH TOÁN VNPAY THÀNH CÔNG!</h1>
+            <p class="result-desc">
+                Chúc mừng em! Giao dịch qua cổng <strong>VNPay</strong> đã được xác thực chữ ký số hợp lệ.
+                Toàn bộ <strong>Chương 3, Chương 4</strong>, kho bài tập và phòng thí nghiệm 3D đã được mở khóa 100%!
+            </p>
+
+            <div class="receipt-box">
+                <div class="receipt-row">
+                    <span class="receipt-label">Phương thức thanh toán</span>
+                    <span class="receipt-val" style="color:#38bdf8"><i class="fa-solid fa-credit-card"></i> ${escapeHtml(response.paymentMethod)} (${escapeHtml(response.bankCode || 'NCB')})</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">Số tiền thanh toán</span>
+                    <span class="receipt-val price">${Number(response.amount || 50000).toLocaleString('vi-VN')}đ</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">Mã đơn hàng (OrderId)</span>
+                    <span class="receipt-val mono">${escapeHtml(response.orderId)}</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">Mã giao dịch VNPay (TransactionId)</span>
+                    <span class="receipt-val mono">${escapeHtml(response.transactionId)}</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">Nội dung đơn hàng</span>
+                    <span class="receipt-val">${escapeHtml(response.orderDescription)}</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">Thời gian thanh toán</span>
+                    <span class="receipt-val">${escapeHtml(formatPayDateDisplay(response.payDate))}</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">Mã phản hồi (VnPayResponseCode)</span>
+                    <span class="receipt-val" style="color:#10b981">00 (Thành công)</span>
+                </div>
+            </div>
+
+            <div class="actions-row">
+                <a href="baihoc.html" class="btn-action primary">
+                    <i class="fa-solid fa-rocket"></i> Vào Học Ngay (Đã Mở Khóa 100%)
+                </a>
+                <a href="goi-hoc.html" class="btn-action secondary">
+                    <i class="fa-solid fa-arrow-left"></i> Quay Lại Bảng Giá
+                </a>
+            </div>
+
+            <button type="button" class="json-inspector-toggle" onclick="toggleJsonBox()">
+                <i class="fa-solid fa-code"></i> Xem dữ liệu JSON PaymentResponseModel trả về
+            </button>
+            <pre class="json-inspector-box" id="json-response-box">${escapeHtml(JSON.stringify(response, null, 2))}</pre>
+        `;
+    } else {
+        container.innerHTML = `
+            <div class="status-icon err"><i class="fa-solid fa-xmark"></i></div>
+            <div class="vnpay-badge" style="color:#f87171;border-color:rgba(239,68,68,0.4);background:rgba(239,68,68,0.12)">
+                <i class="fa-solid fa-circle-exclamation"></i> GIAO DỊCH CHƯA HOÀN TẤT
+            </div>
+            <h1 class="result-title">THANH TOÁN KHÔNG THÀNH CÔNG</h1>
+            <p class="result-desc">${escapeHtml(response.message || 'Giao dịch đã bị hủy hoặc xảy ra lỗi trong quá trình thanh toán.')}</p>
+
+            <div class="receipt-box">
+                <div class="receipt-row">
+                    <span class="receipt-label">Mã đơn hàng (OrderId)</span>
+                    <span class="receipt-val mono">${escapeHtml(response.orderId || 'N/A')}</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">Mã phản hồi (VnPayResponseCode)</span>
+                    <span class="receipt-val" style="color:#f87171">${escapeHtml(response.vnPayResponseCode || 'N/A')}</span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">Kiểm tra chữ ký HMAC-SHA512</span>
+                    <span class="receipt-val" style="color:${response.signatureValid ? '#10b981' : '#f87171'}">
+                        ${response.signatureValid ? 'Hợp lệ (Valid Signature)' : 'Không hợp lệ (Invalid Signature)'}
+                    </span>
+                </div>
+                <div class="receipt-row">
+                    <span class="receipt-label">Nội dung đơn hàng</span>
+                    <span class="receipt-val">${escapeHtml(response.orderDescription || 'N/A')}</span>
+                </div>
+            </div>
+
+            <div class="actions-row">
+                <a href="goi-hoc.html" class="btn-action primary" style="background:linear-gradient(135deg,#0b84f3,#0284c7)">
+                    <i class="fa-solid fa-rotate-right"></i> Thử Thanh Toán Lại
+                </a>
+                <a href="index.html" class="btn-action secondary">
+                    <i class="fa-solid fa-house"></i> Về Trang Chủ
+                </a>
+            </div>
+
+            <button type="button" class="json-inspector-toggle" onclick="toggleJsonBox()">
+                <i class="fa-solid fa-code"></i> Xem dữ liệu JSON PaymentResponseModel trả về
+            </button>
+            <pre class="json-inspector-box" id="json-response-box">${escapeHtml(JSON.stringify(response, null, 2))}</pre>
+        `;
+    }
+}
+
+function renderNoQueryState(container) {
+    const lastOrder = VnPayService.getLastOrder();
+    container.innerHTML = `
+        <div class="status-icon warn"><i class="fa-solid fa-receipt"></i></div>
+        <div class="vnpay-badge"><i class="fa-solid fa-credit-card"></i> CỔNG CALLBACK VNPAY (PaymentCallbackVnpay)</div>
+        <h1 class="result-title">TRANG NHẬN KẾT QUẢ VNPAY</h1>
+        <p class="result-desc">
+            Đây là trang <code>PaymentBackReturnUrl</code> nhận dữ liệu trả về từ cổng thanh toán VNPay sau khi học sinh hoàn tất giao dịch.
+        </p>
+
+        <div class="sim-banner">
+            <div><strong>💡 Chế độ kiểm thử nhanh dành cho Thầy:</strong></div>
+            <div style="margin-top:4px;">
+                Thầy có thể khởi tạo giao dịch từ trang <strong>Bảng Giá (goi-hoc.html)</strong> hoặc bấm nút dưới đây để mô phỏng một phản hồi <code>PaymentCallbackVnpay</code> thành công chuẩn chữ ký <code>HMAC-SHA512</code> từ ngân hàng NCB:
+            </div>
+            <button type="button" class="btn-sim-callback" onclick="simulateSignedVnPayCallback()">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Giả lập Callback VNPay Thành Công (NCB - 50.000đ)
+            </button>
+        </div>
+
+        <div class="actions-row" style="margin-top:22px;">
+            <a href="goi-hoc.html" class="btn-action primary" style="background:linear-gradient(135deg,#0b84f3,#0284c7)">
+                <i class="fa-solid fa-credit-card"></i> Mở Trang Thanh Toán Gói Học
+            </a>
+            <a href="baihoc.html" class="btn-action secondary">
+                <i class="fa-solid fa-book-open"></i> Vào Khóa Học
+            </a>
+        </div>
+    `;
+}
+
+// Tạo URL callback mẫu có chữ ký HMAC-SHA512 thật 100% để test ngay tại chỗ
+function simulateSignedVnPayCallback() {
+    const lastOrder = VnPayService.getLastOrder() || {};
+    const pay = new VnPayLibrary();
+    const amount = lastOrder.amount || 50000;
+    const txnRef = lastOrder.orderId || String(Date.now());
+    const nowStr = VnPayService.formatVnPayDate(new Date());
+
+    pay.addRequestData('vnp_Amount', String(amount * 100));
+    pay.addRequestData('vnp_BankCode', 'NCB');
+    pay.addRequestData('vnp_BankTranNo', 'VNP14589201');
+    pay.addRequestData('vnp_CardType', 'ATM');
+    pay.addRequestData('vnp_OrderInfo', lastOrder.orderInfo || 'Hoc sinh Thanh toan goi hoc VLXT 50000');
+    pay.addRequestData('vnp_PayDate', nowStr);
+    pay.addRequestData('vnp_ResponseCode', '00');
+    pay.addRequestData('vnp_TmnCode', VnPayService.CONFIG.tmnCode);
+    pay.addRequestData('vnp_TransactionNo', '14589201');
+    pay.addRequestData('vnp_TransactionStatus', '00');
+    pay.addRequestData('vnp_TxnRef', txnRef);
+
+    const signedCallbackUrl = pay.createRequestUrl(window.location.pathname, VnPayService.CONFIG.hashSecret);
+    window.location.href = signedCallbackUrl;
+}
+
+function toggleJsonBox() {
+    const el = document.getElementById('json-response-box');
+    if (el) el.classList.toggle('open');
+}
+
+function escapeHtml(str) {
+    return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+</script>
+
+</body>
+</html>

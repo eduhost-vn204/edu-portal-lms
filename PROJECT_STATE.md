@@ -159,6 +159,17 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 08/11/2026 (16:38) — Tích Hợp Cổng Thanh Toán VNPay (v2.1.0) Song Hành Cùng VietQR Trên Toàn Hệ Thống
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_VNPAY_GATEWAY_INTEGRATION_PASS` (Đã qua 6/6 bài test tự động `test_vnpay_integration.mjs` và 8/8 bài test hồi quy `test_cro_funnel.mjs`, kiểm tra cú pháp JS và thẻ `</html>` đạt 100%).
+- **Chi tiết triển khai**:
+  1. **Thư viện lõi `vnpay-service.js` (`VnPayLibrary`, `VnPayService`, `PaymentInformationModel`, `PaymentResponseModel`)**: Chuyển thể chuẩn xác 1:1 từ đặc tả `VnPayLibrary.cs` / `VnPayService.cs` (ASP.NET) sang JavaScript thuần. Thuật toán ký số `HMAC-SHA512` 64-bit (`BigInt`) khớp 100% với `crypto.createHmac('sha512')` của Node.js và `HMACSHA512` của .NET; sắp xếp tham số theo `Ordinal`, mã hóa URL chuẩn `WebUtility.UrlEncode`, múi giờ `UTC+7` (`yyyyMMddHHmmss`), tự động chuẩn hóa `vnp_OrderType = 'other'` và `vnp_Amount = amount * 100`; cấu hình sẵn Sandbox `TmnCode: "NJJ0R8FS"`, `HashSecret: "BYKJBHPPZKQMKBIBGGXIYKWYFAYSJXCW"`.
+  2. **Trang nhận kết quả trả về `vnpay-return.html` (`PaymentCallbackVnpay`)**: Xác thực chữ ký `vnp_SecureHash`, kiểm tra `vnp_ResponseCode === "00"`, tự động nâng cấp tài khoản học sinh lên gói `pro`/`premium` (`isPaid = true`), mở khóa toàn bộ Chương 3 & Chương 4, bắn pháo hoa chúc mừng, hiển thị biên lai chi tiết + JSON `PaymentResponseModel`.
+  3. **Tích hợp giao diện thanh toán trên `goi-hoc.html` và Modal Bước 6 (`freemium-flow.js`)**: Hỗ trợ song song 2 tab (**Cổng VNPay** & **Quét Mã VietQR**) kèm khung copy nhanh thông tin thẻ NCB Demo Test (`9704198526191432198`, `NGUYEN VAN A`, `07/15`, OTP `123456`). Nhúng `vnpay-service.js` vào `goi-hoc.html`, `danh-gia-nang-luc.html`, `baihoc.html`.
+  4. **Hỗ trợ Backend tham chiếu trong `apps-script-CAPNHAT.txt`**: Bổ sung `createVnPayUrlGAS` và `verifyVnPayReturnGAS`.
+- **Tệp đã tạo/sửa**: `vnpay-service.js`, `vnpay-return.html`, `test_vnpay_integration.mjs`, `freemium-flow.js`, `goi-hoc.html`, `danh-gia-nang-luc.html`, `baihoc.html`, `apps-script-CAPNHAT.txt`, `PROJECT_STATE.md`.
+
 ### 07/11/2026 (19:50) — Tối Ưu Toàn Diện Đa Thiết Bị (Mobile / Tablet / Laptop), Đồng Bộ Đa Vũ Trụ Galaxy Giữa `index.html` & Toàn Bộ Các Sao Đích, Và Tăng Tốc Độ Click / Phản Hồi 0ms
 - **Người thực hiện**: Antigravity AI Coordinator
 - **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
