@@ -39,12 +39,10 @@
       if (this.isPaidUser(user)) return true;
       if (!chapterName) return true;
       const lower = chapterName.toLowerCase();
-      // Chương 1 và Chương 2 được mở MIỄN PHÍ hoàn toàn
       if (lower.includes('chương 1') || lower.includes('nhiệt') || 
           lower.includes('chương 2') || lower.includes('khí')) {
         return true;
       }
-      // Chương 3 và Chương 4 dành riêng cho tài khoản Pro / VIP
       if (lower.includes('chương 3') || lower.includes('từ trường') || 
           lower.includes('chương 4') || lower.includes('hạt nhân')) {
         return false;

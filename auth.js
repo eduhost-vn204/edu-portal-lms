@@ -183,7 +183,7 @@ function vlxtRenderWidget(user){
       +'</div>'+ddHTML;
     navArea.appendChild(widget);
     if(isPaidLocal){
-      document.querySelectorAll('a.nav-item-pro').forEach(function(el){
+      document.querySelectorAll('a.nav-item-pro, .nav-item-pro').forEach(function(el){
         el.innerHTML = '👑 Gói Pro <span class="nav-pro-badge" style="background:rgba(16,185,129,0.22);color:#34d399;border:1px solid rgba(16,185,129,0.45)">ĐANG BẬT</span>';
       });
     }
@@ -335,7 +335,7 @@ function vlxtEnsureGlobalDrawer() {
       '<aside class="nav-drawer" id="vlxt-global-drawer" aria-hidden="true">',
       '  <div class="nav-drawer-head">',
       '    <a href="index.html" class="ndh-brand">',
-      '      <span style="font-size:18px">⚛️</span>',
+      '    <svg class="logo-atom-icon" viewBox="0 0 105 52" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:26px;width:auto;vertical-align:middle;flex-shrink:0;"><path d="M6 10 H16 L25.5 24 L35 10 H45 L31.5 28.5 L46 48 H36 L25.5 33 L15 48 H5 L20 28.5 Z" fill="#00f0ff" /><path d="M48 10 H84 V17 H69.5 V48 H60 V17 H48 Z" fill="#00f0ff" /><g transform="translate(48, 28)"><circle cx="0" cy="0" r="3.2" fill="#00f0ff" /><ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#00f0ff" stroke-width="1.4" fill="none"/><ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#38bdf8" stroke-width="1.4" fill="none" transform="rotate(60)"/><ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#38bdf8" stroke-width="1.4" fill="none" transform="rotate(-60)"/></g></svg>',
       '      <span>Vật Lý Xuân Trường</span>',
       '    </a>',
       '    <button class="nav-drawer-close" onclick="toggleNavDrawer(false)" aria-label="Đóng menu">✕</button>',

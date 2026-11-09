@@ -307,35 +307,208 @@
     <script src="thongbao.js?v=2"></script>
     <script src="device-id.js?v=1"></script>
     <script src="cache.js?v=1"></script>
+<style>
+/* ─── NAVBAR ĐỒNG NHẤT TOÀN HỆ THỐNG ─── */
+.top-bar, nav.navbar, header.hud-header, .top-bar-phongthi {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 60px !important;
+  background: rgba(13, 17, 23, 0.92) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.18) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0 20px !important;
+  z-index: 10000 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+}
+.nav-left-wrap, .nav-left, .hud-header-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+}
+.nav-brand-logo, .nav-logo {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  text-decoration: none !important;
+  color: #fff !important;
+  font-weight: 800 !important;
+  font-size: 15px !important;
+  letter-spacing: -0.2px !important;
+}
+.brand-glow-text {
+  color: #fff !important;
+  font-weight: 800 !important;
+  font-size: 15px !important;
+  background: linear-gradient(135deg, #ffffff 40%, #00f0ff 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+.nav-hamburger {
+  display: none;
+  background: transparent !important;
+  border: none !important;
+  color: #00f0ff !important;
+  font-size: 18px !important;
+  padding: 6px !important;
+  cursor: pointer !important;
+  border-radius: 8px !important;
+  line-height: 1 !important;
+}
+.nav-menu-links {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+.nav-menu-links a, .nav-dropdown-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 6px 12px !important;
+  border-radius: 8px !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  color: #94a3b8 !important;
+  text-decoration: none !important;
+  transition: all 0.15s !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  font-family: inherit !important;
+}
+.nav-menu-links a:hover, .nav-dropdown-btn:hover, .nav-menu-links a.active, .nav-dropdown-btn.active {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+.nav-item-pro {
+  color: #fbbf24 !important;
+  font-weight: 700 !important;
+}
+.nav-pro-badge {
+  font-size: 10.5px !important;
+  font-weight: 800 !important;
+  padding: 1px 6px !important;
+  border-radius: 4px !important;
+  background: rgba(245, 158, 11, 0.2) !important;
+  border: 1px solid rgba(245, 158, 11, 0.4) !important;
+  color: #fbbf24 !important;
+}
+.nav-live-dot {
+  width: 7px !important;
+  height: 7px !important;
+  border-radius: 50% !important;
+  background: #ef4444 !important;
+  box-shadow: 0 0 8px #ef4444 !important;
+  display: inline-block !important;
+}
+.nav-dropdown {
+  position: relative !important;
+  display: inline-block !important;
+}
+.nav-dropdown-content {
+  display: none !important;
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  min-width: 230px !important;
+  background: #0d1527 !important;
+  border: 1px solid rgba(0, 240, 255, 0.22) !important;
+  border-radius: 12px !important;
+  padding: 8px !important;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.7) !important;
+  z-index: 99999 !important;
+}
+.nav-dropdown:hover .nav-dropdown-content {
+  display: block !important;
+}
+.nav-dropdown-content a {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+  color: #cbd5e1 !important;
+  text-decoration: none !important;
+  transition: all 0.15s !important;
+}
+.nav-dropdown-content a:hover {
+  background: rgba(0, 240, 255, 0.1) !important;
+  color: #00f0ff !important;
+}
+@media (max-width: 992px) {
+  .nav-menu-links { display: none !important; }
+  .nav-hamburger { display: inline-flex !important; }
+}
+</style>
 </head>
 <body>
 
 <!-- ─── NAVBAR ─── -->
-<nav class="navbar">
-    <div class="nav-left">
-        <a href="index.html" class="nav-logo">
-            <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
-                <circle cx="14" cy="14" r="2.8" fill="#fff"/>
-                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#fff" stroke-width="1.3" fill="none" opacity="0.9"/>
-                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#fff" stroke-width="1.3" fill="none" opacity="0.6" transform="rotate(60 14 14)"/>
-                <ellipse cx="14" cy="14" rx="12" ry="5" stroke="#fff" stroke-width="1.3" fill="none" opacity="0.6" transform="rotate(-60 14 14)"/>
-            </svg>
-            Vật Lý Xuân Trường
-        </a>
-        <span class="nav-brand-badge">PHÒNG THI THỬ TRÊN MÁY TÍNH</span>
-        <div class="nav-links">
-            <a href="baihoc.html">Khóa Học</a>
-            <a href="phong-thi-thu.html" class="active">Phòng Thi Thử</a>
-            <a href="danhsach-ly12.html">Phòng Kiểm Tra</a>
-            <a href="dua-top.html">Đấu Hạng</a>
-            <a href="solo.html">Solo</a>
-            <a href="huongdan.html">Hướng Dẫn</a>
+
+  <!-- ─── THANH ĐIỀU HƯỚNG CHUẨN ĐỒNG NHẤT TOÀN HỆ THỐNG (VẬT LÝ XUÂN TRƯỜNG) ─── -->
+  <header class="top-bar" id="main-top-bar">
+    <div class="nav-left-wrap">
+      <button class="nav-hamburger" id="navHamburgerBtn" aria-label="Mở menu" onclick="toggleNavDrawer(true)">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <a href="index.html" class="nav-brand-logo" title="Trang chủ Vật Lý Xuân Trường">
+        <svg class="logo-atom-icon" viewBox="0 0 105 52" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:28px;width:auto;vertical-align:middle;flex-shrink:0;">
+  <defs>
+    <linearGradient id="xtGlowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <filter id="xtGlowFilter" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="1.5" flood-color="#00f0ff" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+  <path d="M6 10 H16 L25.5 24 L35 10 H45 L31.5 28.5 L46 48 H36 L25.5 33 L15 48 H5 L20 28.5 Z" fill="url(#xtGlowGrad)" filter="url(#xtGlowFilter)" />
+  <path d="M48 10 H84 V17 H69.5 V48 H60 V17 H48 Z" fill="url(#xtGlowGrad)" filter="url(#xtGlowFilter)" />
+  <g transform="translate(48, 28)">
+    <circle cx="0" cy="0" r="3.2" fill="#00f0ff" />
+    <circle cx="0" cy="0" r="4.2" stroke="#0d1117" stroke-width="1.2" fill="none"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#0d1117" stroke-width="2.6" fill="none"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#00f0ff" stroke-width="1.4" fill="none"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#0d1117" stroke-width="2.6" fill="none" transform="rotate(60)"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#38bdf8" stroke-width="1.4" fill="none" transform="rotate(60)"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#0d1117" stroke-width="2.6" fill="none" transform="rotate(-60)"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#38bdf8" stroke-width="1.4" fill="none" transform="rotate(-60)"/>
+  </g>
+</svg>
+        <span class="brand-glow-text">Vật Lý Xuân Trường</span>
+      </a>
+
+      <!-- MENU DESKTOP ĐỒNG NHẤT KHÔNG RỚT DÒNG -->
+      <nav class="nav-menu-links">
+        <a href="danh-gia-nang-luc.html">🎯 Đánh Giá Năng Lực</a>
+        <a href="baihoc.html">Khóa Học</a>
+        <a href="goi-hoc.html" class="nav-item-pro">Gói Pro <span class="nav-pro-badge">50k</span></a>
+        <a href="live-record.html"><span class="nav-live-dot"></span> Live Class</a>
+        <div class="nav-dropdown">
+          <button type="button" class="nav-dropdown-btn active">Đấu Trường <i class="fa-solid fa-chevron-down" style="font-size:9px;opacity:0.6"></i></button>
+          <div class="nav-dropdown-content">
+            <a href="phong-thi-thu.html"><i class="fa-solid fa-clipboard-check" style="color:#00f0ff;width:18px"></i> Phòng Thi Thử (Chuẩn Bộ)</a>
+            <a href="danhsach-ly12.html"><i class="fa-solid fa-file-pen" style="color:#34d399;width:18px"></i> Phòng Kiểm Tra (Theo bài)</a>
+            <a href="dau-thuong-hud.html"><i class="fa-solid fa-khanda" style="color:#38bdf8;width:18px"></i> Đấu Thường (PvP)</a>
+            <a href="dua-top.html"><i class="fa-solid fa-crown" style="color:#fbbf24;width:18px"></i> Đấu Hạng (Đua Top)</a>
+            <a href="solo.html"><i class="fa-solid fa-crosshairs" style="color:#f472b6;width:18px"></i> Solo (1vs1)</a>
+          </div>
         </div>
+        <a href="huongdan.html">Hướng Dẫn</a>
+      </nav>
     </div>
-    <div class="nav-right">
-        <div id="vlxt-nav-user-area"></div>
+
+    <div class="nav-right-wrap" style="display:flex;align-items:center;gap:12px">
+      <div id="vlxt-nav-user-area"></div>
     </div>
-</nav>
+  </header>
 
 <!-- ─── STEP 1: SIMULATED LOGIN CARD (MÔ PHỎNG ĐĂNG NHẬP PHÒNG THI) ─── -->
 <div class="sim-login-wrap" id="simLoginScreen">

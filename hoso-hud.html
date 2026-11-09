@@ -756,6 +756,7 @@ body {
 
 </style>
   <script src="cache.js?v=1"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 <div id="canvas-observatory-container"></div>
@@ -764,23 +765,64 @@ body {
 <!-- NAV -->
 
 <!-- HUD HEADER CHO ĐÀI QUAN SÁT TINH TÚ (CELESTIAL OBSERVATORY) -->
-<header class="hud-header">
-  <div class="hud-header-left">
-    <a href="galaxy-multiverse.html" class="hud-back-btn">
-      <i class="fa-solid fa-arrow-left"></i> Về Phòng Không Gian
-    </a>
-    <div class="hud-world-badge">
-      <span class="world-dot"></span>
-      <span class="world-name">SKAT</span>
-      <span class="world-sep">·</span>
-      <span class="world-sub">ĐÀI QUAN SÁT TINH TÚ (HỒ SƠ HỌC SINH)</span>
+
+  <!-- ─── THANH ĐIỀU HƯỚNG CHUẨN ĐỒNG NHẤT TOÀN HỆ THỐNG (VẬT LÝ XUÂN TRƯỜNG) ─── -->
+  <header class="top-bar" id="main-top-bar">
+    <div class="nav-left-wrap">
+      <button class="nav-hamburger" id="navHamburgerBtn" aria-label="Mở menu" onclick="toggleNavDrawer(true)">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <a href="index.html" class="nav-brand-logo" title="Trang chủ Vật Lý Xuân Trường">
+        <svg class="logo-atom-icon" viewBox="0 0 105 52" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:28px;width:auto;vertical-align:middle;flex-shrink:0;">
+  <defs>
+    <linearGradient id="xtGlowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <filter id="xtGlowFilter" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="1.5" flood-color="#00f0ff" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+  <path d="M6 10 H16 L25.5 24 L35 10 H45 L31.5 28.5 L46 48 H36 L25.5 33 L15 48 H5 L20 28.5 Z" fill="url(#xtGlowGrad)" filter="url(#xtGlowFilter)" />
+  <path d="M48 10 H84 V17 H69.5 V48 H60 V17 H48 Z" fill="url(#xtGlowGrad)" filter="url(#xtGlowFilter)" />
+  <g transform="translate(48, 28)">
+    <circle cx="0" cy="0" r="3.2" fill="#00f0ff" />
+    <circle cx="0" cy="0" r="4.2" stroke="#0d1117" stroke-width="1.2" fill="none"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#0d1117" stroke-width="2.6" fill="none"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#00f0ff" stroke-width="1.4" fill="none"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#0d1117" stroke-width="2.6" fill="none" transform="rotate(60)"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#38bdf8" stroke-width="1.4" fill="none" transform="rotate(60)"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#0d1117" stroke-width="2.6" fill="none" transform="rotate(-60)"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#38bdf8" stroke-width="1.4" fill="none" transform="rotate(-60)"/>
+  </g>
+</svg>
+        <span class="brand-glow-text">Vật Lý Xuân Trường</span>
+      </a>
+
+      <!-- MENU DESKTOP ĐỒNG NHẤT KHÔNG RỚT DÒNG -->
+      <nav class="nav-menu-links">
+        <a href="danh-gia-nang-luc.html">🎯 Đánh Giá Năng Lực</a>
+        <a href="baihoc.html">Khóa Học</a>
+        <a href="goi-hoc.html" class="nav-item-pro">Gói Pro <span class="nav-pro-badge">50k</span></a>
+        <a href="live-record.html"><span class="nav-live-dot"></span> Live Class</a>
+        <div class="nav-dropdown">
+          <button type="button" class="nav-dropdown-btn">Đấu Trường <i class="fa-solid fa-chevron-down" style="font-size:9px;opacity:0.6"></i></button>
+          <div class="nav-dropdown-content">
+            <a href="phong-thi-thu.html"><i class="fa-solid fa-clipboard-check" style="color:#00f0ff;width:18px"></i> Phòng Thi Thử (Chuẩn Bộ)</a>
+            <a href="danhsach-ly12.html"><i class="fa-solid fa-file-pen" style="color:#34d399;width:18px"></i> Phòng Kiểm Tra (Theo bài)</a>
+            <a href="dau-thuong-hud.html"><i class="fa-solid fa-khanda" style="color:#38bdf8;width:18px"></i> Đấu Thường (PvP)</a>
+            <a href="dua-top.html"><i class="fa-solid fa-crown" style="color:#fbbf24;width:18px"></i> Đấu Hạng (Đua Top)</a>
+            <a href="solo.html"><i class="fa-solid fa-crosshairs" style="color:#f472b6;width:18px"></i> Solo (1vs1)</a>
+          </div>
+        </div>
+        <a href="huongdan.html">Hướng Dẫn</a>
+      </nav>
     </div>
-  </div>
-  <div class="hud-header-right">
-    <a href="dua-top.html" class="hud-mode-btn">🏆 Bảng Đấu Hạng</a>
-    <div id="vlxt-nav-user-area"></div>
-  </div>
-</header>
+
+    <div class="nav-right-wrap" style="display:flex;align-items:center;gap:12px">
+      <div id="vlxt-nav-user-area"></div>
+    </div>
+  </header>
 
 
 <!-- ─── MOBILE NAV DRAWER (giống YouTube) ─── -->
