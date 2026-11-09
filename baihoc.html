@@ -1235,10 +1235,17 @@
       filter: drop-shadow(0 0 6px #00f0ff);
     }
     .brand-glow-text {
-      background: linear-gradient(180deg, #ffffff 0%, #e0f2fe 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 15px !important;
+  letter-spacing: 0.2px !important;
+  white-space: nowrap !important;
+  display: inline-block !important;
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-background-clip: border-box !important;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.45) !important;
+}
     .nav-menu-links {
       display: flex; align-items: center; gap: clamp(4px, 0.6vw, 12px);
       flex-shrink: 0;
@@ -2563,12 +2570,16 @@
   letter-spacing: -0.2px !important;
 }
 .brand-glow-text {
-  color: #fff !important;
+  color: #ffffff !important;
   font-weight: 800 !important;
   font-size: 15px !important;
-  background: linear-gradient(135deg, #ffffff 40%, #00f0ff 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
+  letter-spacing: 0.2px !important;
+  white-space: nowrap !important;
+  display: inline-block !important;
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-background-clip: border-box !important;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.45) !important;
 }
 .nav-hamburger {
   display: none;
@@ -2667,6 +2678,37 @@
   .nav-hamburger { display: inline-flex !important; }
 }
 </style>
+<style>/* ROBUST_BRAND_CSS */
+
+.brand-glow-text {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 15px !important;
+  letter-spacing: 0.2px !important;
+  white-space: nowrap !important;
+  display: inline-block !important;
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-background-clip: border-box !important;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.45) !important;
+}
+.nav-brand-logo, .nav-logo {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+.logo-atom-icon {
+  width: 46px !important;
+  height: 24px !important;
+  max-width: 46px !important;
+  max-height: 24px !important;
+  flex-shrink: 0 !important;
+  display: inline-block !important;
+}
+</style>
 </head>
 <body>
 
@@ -2692,27 +2734,14 @@
         <i class="fa-solid fa-bars"></i>
       </button>
       <a href="index.html" class="nav-brand-logo" title="Trang chủ Vật Lý Xuân Trường">
-        <svg class="logo-atom-icon" viewBox="0 0 105 52" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:28px;width:auto;vertical-align:middle;flex-shrink:0;">
-  <defs>
-    <linearGradient id="xtGlowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#00f0ff"/>
-      <stop offset="100%" stop-color="#38bdf8"/>
-    </linearGradient>
-    <filter id="xtGlowFilter" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="0" stdDeviation="1.5" flood-color="#00f0ff" flood-opacity="0.45"/>
-    </filter>
-  </defs>
-  <path d="M6 10 H16 L25.5 24 L35 10 H45 L31.5 28.5 L46 48 H36 L25.5 33 L15 48 H5 L20 28.5 Z" fill="url(#xtGlowGrad)" filter="url(#xtGlowFilter)" />
-  <path d="M48 10 H84 V17 H69.5 V48 H60 V17 H48 Z" fill="url(#xtGlowGrad)" filter="url(#xtGlowFilter)" />
-  <g transform="translate(48, 28)">
-    <circle cx="0" cy="0" r="3.2" fill="#00f0ff" />
-    <circle cx="0" cy="0" r="4.2" stroke="#0d1117" stroke-width="1.2" fill="none"/>
-    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#0d1117" stroke-width="2.6" fill="none"/>
-    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#00f0ff" stroke-width="1.4" fill="none"/>
-    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#0d1117" stroke-width="2.6" fill="none" transform="rotate(60)"/>
-    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#38bdf8" stroke-width="1.4" fill="none" transform="rotate(60)"/>
-    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#0d1117" stroke-width="2.6" fill="none" transform="rotate(-60)"/>
-    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#38bdf8" stroke-width="1.4" fill="none" transform="rotate(-60)"/>
+        <svg class="logo-atom-icon" width="46" height="24" viewBox="0 0 88 50" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;flex-shrink:0;">
+  <path d="M4 8 H14 L24 23 L34 8 H44 L30 28 L45 48 H35 L24 33 L13 48 H3 L18 28 Z" fill="#00f0ff"/>
+  <path d="M46 8 H82 V15 H68 V48 H58 V15 H46 Z" fill="#00f0ff"/>
+  <g transform="translate(46, 28)">
+    <circle cx="0" cy="0" r="3.2" fill="#00f0ff"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#00f0ff" stroke-width="1.6" fill="none"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#38bdf8" stroke-width="1.6" fill="none" transform="rotate(60)"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#38bdf8" stroke-width="1.6" fill="none" transform="rotate(-60)"/>
   </g>
 </svg>
         <span class="brand-glow-text">Vật Lý Xuân Trường</span>
@@ -2748,27 +2777,14 @@
     <aside class="nav-drawer" id="navDrawer">
       <div class="nav-drawer-head">
         <div class="nav-brand-logo">
-          <svg class="logo-atom-icon" viewBox="0 0 105 52" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:28px;width:auto;vertical-align:middle;flex-shrink:0;">
-  <defs>
-    <linearGradient id="xtGlowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#00f0ff"/>
-      <stop offset="100%" stop-color="#38bdf8"/>
-    </linearGradient>
-    <filter id="xtGlowFilter" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="0" stdDeviation="1.5" flood-color="#00f0ff" flood-opacity="0.45"/>
-    </filter>
-  </defs>
-  <path d="M6 10 H16 L25.5 24 L35 10 H45 L31.5 28.5 L46 48 H36 L25.5 33 L15 48 H5 L20 28.5 Z" fill="url(#xtGlowGrad)" filter="url(#xtGlowFilter)" />
-  <path d="M48 10 H84 V17 H69.5 V48 H60 V17 H48 Z" fill="url(#xtGlowGrad)" filter="url(#xtGlowFilter)" />
-  <g transform="translate(48, 28)">
-    <circle cx="0" cy="0" r="3.2" fill="#00f0ff" />
-    <circle cx="0" cy="0" r="4.2" stroke="#0d1117" stroke-width="1.2" fill="none"/>
-    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#0d1117" stroke-width="2.6" fill="none"/>
-    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#00f0ff" stroke-width="1.4" fill="none"/>
-    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#0d1117" stroke-width="2.6" fill="none" transform="rotate(60)"/>
-    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#38bdf8" stroke-width="1.4" fill="none" transform="rotate(60)"/>
-    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#0d1117" stroke-width="2.6" fill="none" transform="rotate(-60)"/>
-    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#38bdf8" stroke-width="1.4" fill="none" transform="rotate(-60)"/>
+          <svg class="logo-atom-icon" width="46" height="24" viewBox="0 0 88 50" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;flex-shrink:0;">
+  <path d="M4 8 H14 L24 23 L34 8 H44 L30 28 L45 48 H35 L24 33 L13 48 H3 L18 28 Z" fill="#00f0ff"/>
+  <path d="M46 8 H82 V15 H68 V48 H58 V15 H46 Z" fill="#00f0ff"/>
+  <g transform="translate(46, 28)">
+    <circle cx="0" cy="0" r="3.2" fill="#00f0ff"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#00f0ff" stroke-width="1.6" fill="none"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#38bdf8" stroke-width="1.6" fill="none" transform="rotate(60)"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#38bdf8" stroke-width="1.6" fill="none" transform="rotate(-60)"/>
   </g>
 </svg>
           <span class="brand-glow-text">Vật Lý Xuân Trường</span>
