@@ -972,16 +972,51 @@
     .feat-line-label { flex: 1; }
     .feat-line-val { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: rgba(2, 6, 18, 0.45); }
 
-    .score-demo { padding: 32px; min-height: 300px; }
-    .score-header { font-family: 'Space Mono', monospace; font-size: 11.5px; color: #38bdf8; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
-    .score-number { font-family: 'Orbitron', sans-serif; font-size: 62px; font-weight: 900; letter-spacing: -0.04em; color: #ffffff; margin-bottom: 4px; text-shadow: 0 0 24px rgba(0, 240, 255, 0.65); line-height: 1; }
-    .score-label { font-size: 14px; color: #94a3b8; margin-bottom: 22px; font-weight: 500; }
-    .progress-bar-wrap { height: 8px; background: rgba(12, 28, 58, 0.85); border-radius: 100px; margin-bottom: 24px; overflow: hidden; border: 1px solid rgba(56, 189, 248, 0.22); }
+    .score-demo {
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+    }
+    .score-demo-body {
+      flex: 1;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      transform-style: preserve-3d;
+    }
+    .score-header { font-family: 'Space Mono', monospace; font-size: 11px; color: #38bdf8; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .score-number { font-family: 'Orbitron', sans-serif; font-size: 56px; font-weight: 900; letter-spacing: -0.04em; color: #ffffff; margin-bottom: 4px; text-shadow: 0 0 24px rgba(0, 240, 255, 0.65); line-height: 1; }
+    .score-label { font-size: 13.5px; color: #94a3b8; margin-bottom: 18px; font-weight: 500; }
+    .progress-bar-wrap { height: 8px; background: rgba(12, 28, 58, 0.85); border-radius: 100px; margin-bottom: 20px; overflow: hidden; border: 1px solid rgba(56, 189, 248, 0.22); width: 100%; box-sizing: border-box; }
     .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #00f0ff 0%, #38bdf8 50%, #818cf8 100%); border-radius: 100px; box-shadow: 0 0 16px rgba(0, 240, 255, 0.8); position: relative; }
-    .score-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; background: rgba(13, 30, 62, 0.6); border: 1px solid rgba(56, 189, 248, 0.16); font-size: 13.5px; color: #e2e8f0; margin-bottom: 10px; transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s ease; }
+    .score-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 13px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      background: rgba(13, 30, 62, 0.6);
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      font-size: 14px;
+      color: #e2e8f0;
+      font-weight: 500;
+      margin-bottom: 11px;
+      position: relative;
+      width: 100%;
+      box-sizing: border-box;
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
     .score-item:last-child { margin-bottom: 0; }
-    .score-item:hover { transform: translateX(6px) translateZ(10px) !important; background: rgba(20, 48, 96, 0.85) !important; border-color: rgba(0, 240, 255, 0.55) !important; }
-    .score-status { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 100px; background: rgba(0, 240, 255, 0.12); color: #00f0ff; border: 1px solid rgba(0, 240, 255, 0.32); }
+    .score-item:hover {
+      transform: scale(1.015) !important;
+      background: rgba(20, 48, 96, 0.85) !important;
+      border-color: rgba(0, 240, 255, 0.75) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 16px rgba(0, 240, 255, 0.25) !important;
+    }
+    .score-item i { width: 16px; text-align: center; flex-shrink: 0; }
+    .score-item span:first-of-type { flex: 1; }
+    .score-status { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 12.5px; font-weight: 700; padding: 2px 10px; border-radius: 100px; background: rgba(0, 240, 255, 0.12); color: #00f0ff; border: 1px solid rgba(0, 240, 255, 0.32); }
 
     .feat-text { display: flex; flex-direction: column; gap: 18px; }
     .feat-kicker { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; color: #38bdf8; text-transform: uppercase; display: inline-flex; align-items: center; gap: 8px; }
@@ -1943,37 +1978,46 @@
       </div>
     </div>
 
-    <div class="galaxy-feature-row flip" id="section-thi-thu">
+    <div class="galaxy-feature-row" id="section-thi-thu">
+      <div class="feat-visual score-demo">
+        <div class="feat-window-bar">
+          <div class="feat-dot" style="background:#ff5f57"></div>
+          <div class="feat-dot" style="background:#febc2e"></div>
+          <div class="feat-dot" style="background:#28c840"></div>
+          <span class="feat-window-title">thi-thu-chuan-bo.cbt</span>
+          <span class="feat-window-status" style="color:#38bdf8; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.3);">● TOP 5%</span>
+        </div>
+        <div class="score-demo-body">
+          <div class="score-header">
+            <span>// PHÂN TÍCH KẾT QUẢ THI THỬ</span>
+            <span style="color:#34d399;font-weight:700;">ĐÃ XÁC THỰC</span>
+          </div>
+          <div class="score-number" data-target="9.25">0.0</div>
+          <div class="score-label">Điểm quy đổi chuẩn: 9.25 / 10 đ</div>
+          <div class="progress-bar-wrap"><div class="progress-bar-fill"></div></div>
+          <div class="score-item">
+            <i class="fa-solid fa-list-ol" style="color:#60a5fa;font-size:13px"></i>
+            <span>Phần I: Trắc nghiệm nhiều lựa chọn</span>
+            <span class="score-status ok">18 câu</span>
+          </div>
+          <div class="score-item">
+            <i class="fa-solid fa-toggle-on" style="color:#6ee7b7;font-size:13px"></i>
+            <span>Phần II: Trắc nghiệm Đúng / Sai (4 ý)</span>
+            <span class="score-status ok">4 câu</span>
+          </div>
+          <div class="score-item">
+            <i class="fa-solid fa-pen-to-square" style="color:#fbbf24;font-size:13px"></i>
+            <span>Phần III: Trắc nghiệm trả lời ngắn</span>
+            <span class="score-status ok">6 câu</span>
+          </div>
+        </div>
+      </div>
       <div class="feat-text">
         <div class="feat-kicker">PHÒNG KHẢO THÍ CHUẨN BỘ GD&ĐT</div>
         <h2 class="feat-heading">Thi thử <span class="blue">thực chiến.</span></h2>
         <p class="feat-sub">Hệ thống thi trực tuyến chuẩn cấu trúc đề minh họa mới nhất của Bộ Giáo Dục, chấm điểm tức thì, phân tích lỗ hổng kiến thức và lưu lịch sử tiến bộ từng tuần.</p>
         <div class="feat-links">
           <a href="phong-thi-thu.html" class="feat-link">Vào phòng thi thử miễn phí <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
-      </div>
-      <div class="score-demo">
-        <div class="score-header">
-          <span>// PHÂN TỮ KẾT QUẢ THI THỬ</span>
-          <span style="color:#34d399;">TOP 5%</span>
-        </div>
-        <div class="score-number" data-target="9.25">0.0</div>
-        <div class="score-label">Điểm quy đổi chuẩn: 9.25 / 10 đ</div>
-        <div class="progress-bar-wrap"><div class="progress-bar-fill"></div></div>
-        <div class="score-item">
-          <i class="fa-solid fa-list-ol" style="color:#60a5fa;font-size:13px"></i>
-          <span>Phần I: Trắc nghiệm nhiều lựa chọn</span>
-          <span class="score-status ok">18 câu</span>
-        </div>
-        <div class="score-item">
-          <i class="fa-solid fa-toggle-on" style="color:#6ee7b7;font-size:13px"></i>
-          <span>Phần II: Trắc nghiệm Đúng / Sai (4 ý)</span>
-          <span class="score-status ok">4 câu</span>
-        </div>
-        <div class="score-item">
-          <i class="fa-solid fa-pen-to-square" style="color:#fbbf24;font-size:13px"></i>
-          <span>Phần III: Trắc nghiệm trả lời ngắn</span>
-          <span class="score-status ok">6 câu</span>
         </div>
       </div>
     </div>
@@ -5334,8 +5378,8 @@ function initScrollAnimations() {
         var barFill = el.querySelector('.progress-bar-fill');
         var items = el.querySelectorAll('.score-item');
 
-        gsap.from(card, { opacity: 0, y: 50, rotateX: -12, transformPerspective: 950, duration: 0.85, ease: 'power3.out' });
-        if(text) gsap.from(text.children, { opacity: 0, y: 30, stagger: 0.12, duration: 0.7, delay: 0.15, ease: 'power2.out' });
+        gsap.from(card, { opacity: 0, y: 50, rotateX: 12, transformPerspective: 950, duration: 0.85, ease: 'power3.out', clearProps: 'all' });
+        if(text) gsap.from(text.children, { opacity: 0, y: 30, stagger: 0.12, duration: 0.7, delay: 0.15, ease: 'power2.out', clearProps: 'all' });
 
         var counter = { val: 0 };
         gsap.to(counter, {
@@ -5352,7 +5396,7 @@ function initScrollAnimations() {
           gsap.fromTo(barFill, { width: '0%' }, { width: '92.5%', duration: 1.5, delay: 0.35, ease: 'power3.out' });
         }
 
-        gsap.from(items, { opacity: 0, x: 30, scale: 0.9, stagger: 0.1, duration: 0.6, delay: 0.45, ease: 'back.out(1.5)' });
+        gsap.from(items, { opacity: 0, y: 16, stagger: 0.07, duration: 0.55, delay: 0.2, ease: 'power2.out', clearProps: 'all' });
       }
       else if(el.id === 'section-lo-trinh') {
         var card = el.querySelector('.feat-visual');
