@@ -2243,3 +2243,19 @@ gba(255, 255, 255, 0.05), tạo không gian liền mạch vô tận như chuẩn
   - `node test_vnpay_integration.mjs`: Pass 7/7 tests (100%).
   - `node test_cro_funnel.mjs`: Pass 8/8 suites (100%).
   - Endpoint GAS `@160` và `https://vatlyxuantruong.io.vn/goi-hoc.html` hoạt động ổn định (HTTP 200).
+
+#### 09/11/2026 — Đồng Bộ Header Navbar Toàn Hệ Thống, Thống Nhất Logo Nguyên Tử XT, Khóa Khóa Học Tài Khoản Miễn Phí, Thu Gọn Menu Avatar Hồ Sơ & Cân Đối Bố Cục Thẻ Tính Năng Trên `index.html`
+
+- **Người thực hiện**: Antigravity
+- **Người duyệt & Chỉ đạo**: Thầy Nguyễn Xuân Trường
+- **Commits**:
+  - `0f8b9fd`: Đồng bộ menu header trên các trang, thu gọn dropdown avatar cá nhân, biến danh sách bài học trên mobile của `baihoc.html` thành off-canvas drawer.
+  - `d43189c`: Thống nhất header navbar trên tất cả 14 trang (bao gồm các trang Đấu trường và Hướng dẫn), đồng bộ logo nhận diện nguyên tử XT chuẩn thương hiệu, khóa quyền truy cập khóa học của tài khoản free trong `data/khoaconfig.json` và `freemium-flow.js`.
+  - `c9a16b0`: Xóa bỏ thẻ `<header>` lặp thừa trong `huongdan.html`, sửa lỗi viewBox SVG logo và loại bỏ `-webkit-background-clip: text` gây mảng đen che chữ trên một số trình duyệt.
+  - `1daf582`: Thay đổi `background: transparent` của `.top-bar` trên `index.html` thành nền kính mờ `rgba(13, 17, 23, 0.94)` và text-shadow nổi bật giúp chữ "Vật Lý Xuân Trường" hiển thị sáng rõ, sắc nét.
+  - `ac09f5c`: Cân đối tỷ lệ vàng khối tính năng vũ trụ trên `index.html` (`.features-wrap`, `.galaxy-feature-row`, `.feat-visual`, `.score-demo`, `.feat-text`), căn giữa đối xứng 2 cột (`justify-content: center`, max-width 1040px, khoảng cách 36-60px), loại bỏ lỗi thẻ code tab dính sát mép trái và khối chữ dạt sang mép phải; chỉnh `.flip` thành lưới đảo cột tự nhiên.
+- **Kiểm thử**:
+  - `node test_vnpay_integration.mjs`: 7/7 test đạt (100%).
+  - `node test_cro_funnel.mjs`: 8/8 test suites đạt (100%).
+  - `node scripts/test-trial-soft-unlock.mjs`: 22/22 test cases đạt (100%).
+  - Kiểm tra toàn bộ 14 trang HTML đóng đúng thẻ `</html>`.
