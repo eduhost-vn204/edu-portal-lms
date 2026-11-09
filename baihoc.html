@@ -1587,24 +1587,7 @@
             box-shadow: none !important;
         }
 
-        @media (max-width: 1200px) {
-            .vstep-course-layout {
-                grid-template-columns: 260px minmax(0, 1fr) !important;
-            }
-            .vstep-sidebar-right {
-                display: none !important;
-            }
-        }
-        @media (max-width: 860px) {
-            .vstep-course-layout {
-                grid-template-columns: 1fr !important;
-            }
-            .vstep-sidebar-left {
-                display: none !important;
-            }
-        }
-
-        /* ── CỘT TRÁI: LỘ TRÌNH BÀI HỌC (STICKY CỐ ĐỊNH, ĐỒNG NHẤT NỀN #0c1222) ── */
+        /* ── CỘT TRÁI: LỘ TRÌNH BÀI HỌC (STICKY TRÊN DESKTOP, OFF-CANVAS TRÊN MOBILE) ── */
         .vstep-sidebar-left {
             display: block !important;
             background: #0c1222 !important;
@@ -1622,6 +1605,108 @@
         }
         .vstep-sidebar-left::-webkit-scrollbar { display: none !important; }
 
+        .vstep-sidebar-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.72);
+            backdrop-filter: blur(4px);
+            z-index: 99998;
+        }
+
+        .vstep-sidebar-mobile-head {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 14px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .vstep-sidebar-close {
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: #94a3b8;
+            font-size: 16px;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s;
+        }
+        .vstep-sidebar-close:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        .vstep-drawer-btn {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 240, 255, 0.12);
+            border: 1px solid rgba(0, 240, 255, 0.35);
+            color: #00f0ff;
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .vstep-drawer-btn:hover {
+            background: rgba(0, 240, 255, 0.22);
+            border-color: #00f0ff;
+        }
+
+        @media (max-width: 1200px) {
+            .vstep-course-layout {
+                grid-template-columns: 260px minmax(0, 1fr) !important;
+            }
+            .vstep-sidebar-right {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 860px) {
+            .vstep-course-layout {
+                display: block !important;
+                width: 100% !important;
+            }
+            .vstep-drawer-btn {
+                display: inline-flex !important;
+            }
+            .vstep-sidebar-right {
+                display: none !important;
+            }
+            .vstep-sidebar-left {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                bottom: 0 !important;
+                width: 84vw !important;
+                max-width: 310px !important;
+                height: 100vh !important;
+                background: #0d1527 !important;
+                border-right: 1px solid rgba(0, 240, 255, 0.25) !important;
+                box-shadow: 8px 0 32px rgba(0, 0, 0, 0.85) !important;
+                z-index: 99999 !important;
+                transform: translateX(-105%) !important;
+                transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+                padding: 16px 14px 80px !important;
+            }
+            .vstep-sidebar-left.open {
+                transform: translateX(0) !important;
+            }
+            .vstep-sidebar-backdrop.open {
+                display: block !important;
+            }
+            .vstep-sidebar-mobile-head {
+                display: flex !important;
+            }
+        }
+
         .vstep-side-head {
             font-size: 12px !important;
             font-weight: 800 !important;
@@ -1634,94 +1719,99 @@
             gap: 6px !important;
             padding: 0 4px !important;
         }
+
         .vstep-chap-group { margin-bottom: 20px !important; }
         .vstep-chap-title {
             font-size: 13.5px !important;
-            font-weight: 700 !important;
-            color: #cbd5e1 !important;
+            font-weight: 800 !important;
+            color: #94a3b8 !important;
             padding: 8px 10px !important;
-            border-radius: 8px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: space-between !important;
-            letter-spacing: -0.01em !important;
             cursor: pointer !important;
-            transition: background 0.15s !important;
+            border-radius: 8px !important;
+            margin-bottom: 4px !important;
+            transition: all 0.15s !important;
+            user-select: none !important;
         }
         .vstep-chap-title:hover {
-            background: rgba(255, 255, 255, 0.04) !important;
             color: #fff !important;
+            background: rgba(255, 255, 255, 0.04) !important;
         }
+
         .vstep-lesson-list {
             list-style: none !important;
-            padding-left: 6px !important;
-            margin-top: 4px !important;
+            padding: 0 !important;
+            margin: 0 !important;
             display: flex !important;
             flex-direction: column !important;
-            gap: 2px !important;
+            gap: 3px !important;
         }
+
         .vstep-lesson-item {
             display: flex !important;
             align-items: center !important;
-            gap: 8px !important;
+            gap: 10px !important;
+            padding: 10px 12px !important;
+            border-radius: 10px !important;
+            font-size: 13.5px !important;
+            font-weight: 600 !important;
             color: #94a3b8 !important;
-            text-decoration: none !important;
-            font-size: 13px !important;
-            padding: 7px 10px !important;
-            border-radius: 6px !important;
             cursor: pointer !important;
+            text-decoration: none !important;
             transition: all 0.15s ease !important;
-            line-height: 1.4 !important;
-            border-left: 3px solid transparent !important;
+            border: 1px solid transparent !important;
+            user-select: none !important;
         }
-        .vstep-lesson-item:hover { 
-            color: #fff !important; 
-            background: rgba(255, 255, 255, 0.04) !important; 
+        .vstep-lesson-item:hover {
+            color: #f8fafc !important;
+            background: rgba(255, 255, 255, 0.04) !important;
         }
         .vstep-lesson-item.active {
             color: #10b981 !important;
+            background: rgba(16, 185, 129, 0.12) !important;
+            border-color: rgba(16, 185, 129, 0.28) !important;
             font-weight: 700 !important;
-            background: rgba(16, 185, 129, 0.08) !important;
-            border-left: 3px solid #10b981 !important;
-            border-top-left-radius: 0 !important;
-            border-bottom-left-radius: 0 !important;
         }
         .vstep-lesson-item.done { color: #cbd5e1 !important; }
         .vstep-lesson-item.is-locked { opacity: 0.62 !important; }
         .vstep-lesson-item.is-locked:hover {
-            opacity: 0.95 !important;
-            background: rgba(245, 158, 11, 0.08) !important;
-            color: #fbbf24 !important;
+            background: rgba(239, 68, 68, 0.08) !important;
+            color: #f87171 !important;
         }
+
         .vstep-num-pill {
-            font-size: 11px !important;
-            font-weight: 700 !important;
-            color: inherit !important;
-            background: transparent !important;
-            padding: 0 !important;
-            min-width: 18px !important;
-            opacity: 0.8 !important;
-            border: none !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-width: 28px !important;
+            height: 22px !important;
+            padding: 0 6px !important;
+            border-radius: 6px !important;
+            background: rgba(255, 255, 255, 0.06) !important;
+            font-size: 11.5px !important;
+            font-weight: 800 !important;
             flex-shrink: 0 !important;
         }
+
         .vstep-item-title {
             flex: 1 !important;
-            white-space: nowrap !important;
-            overflow: hidden !important;
-            text-overflow: ellipsis !important;
+            line-height: 1.35 !important;
+            word-break: break-word !important;
         }
+
         .vstep-status-tag {
-            margin-left: auto !important;
-            font-size: 11px !important;
+            font-size: 12px !important;
             flex-shrink: 0 !important;
+            margin-left: auto !important;
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
         }
-        .vstep-status-tag.done { color: #10b981 !important; font-weight: 800 !important; font-size: 12px !important; }
+        .vstep-status-tag.done { color: #10b981 !important; font-weight: 800 !important; }
         .vstep-status-tag.lock { font-size: 11px !important; opacity: 0.85 !important; }
 
-        /* ── CỘT GIỮA: DÒNG CHẢY BÀI HỌC RỘNG RÃI, LIỀN MẠCH #0c1222 ── */
         .vstep-main-stream {
             padding: 24px 36px 80px !important;
             max-width: 1060px !important;
@@ -3547,6 +3637,7 @@ if (typeof window !== 'undefined') window.triggerTrial = triggerTrial;
 if (typeof global !== 'undefined') global.triggerTrial = triggerTrial;
 
 function handleOpenLesson(courseName, lessonKey){
+    try { toggleCourseOutline(false); } catch(e){}
     const course = findCourse(courseName);
     const info = findLesson(lessonKey);
     if(course && !canAccess(course.name)){
@@ -3978,7 +4069,12 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
     document.body.classList.add('vstep-page-mode');
 
     // CỘT 1: LỘ TRÌNH KHÓA HỌC (SIDEBAR TRÁI - CHUẨN DEMO VSTEP OWL)
-    let leftNav = `<div class="vstep-side-head">📚 LỘ TRÌNH VẬT LÝ 12 — GĐ1</div>`;
+    let leftNav = `
+        <div class="vstep-sidebar-mobile-head">
+            <span style="font-size:13px;font-weight:800;color:#00f0ff">📚 LỘ TRÌNH BÀI HỌC</span>
+            <button class="vstep-sidebar-close" onclick="toggleCourseOutline(false)" aria-label="Đóng lộ trình">✕</button>
+        </div>
+        <div class="vstep-side-head">📚 LỘ TRÌNH VẬT LÝ 12 — GĐ1</div>`;
     course.chapters.forEach((ch, ci) => {
         const chapTitle = formatChapterTitle(ch.name);
         leftNav += `<div class="vstep-chap-group">
@@ -4180,7 +4276,8 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
 
     return `
     <div class="vstep-course-layout">
-        <aside class="vstep-sidebar-left">${leftNav}</aside>
+        <aside class="vstep-sidebar-left" id="vstepSidebarLeft">${leftNav}</aside>
+        <div class="vstep-sidebar-backdrop" id="vstepSidebarBackdrop" onclick="toggleCourseOutline(false)"></div>
         <main class="vstep-main-stream">${stream}</main>
         <aside class="vstep-sidebar-right">${rightToc}</aside>
     </div>`;
@@ -6921,11 +7018,14 @@ function scrollToQuiz(){
 
 
 window.toggleCourseOutline = function(open){
-    const d = document.getElementById('courseOutlineDrawer');
-    const b = document.getElementById('courseOutlineBackdrop');
-    if(d) d.classList.toggle('open', open);
-    if(b) b.style.display = open ? 'block' : 'none';
-}
+    const d = document.getElementById('vstepSidebarLeft') || document.querySelector('.vstep-sidebar-left');
+    const b = document.getElementById('vstepSidebarBackdrop');
+    if(!d) return;
+    const willOpen = (typeof open === 'boolean') ? open : !d.classList.contains('open');
+    d.classList.toggle('open', willOpen);
+    if(b) b.classList.toggle('open', willOpen);
+    document.body.classList.toggle('nav-drawer-locked', willOpen);
+};
 
   // Lắng nghe sự kiện kích hoạt Pro thành công từ CRO Checkout
   window.addEventListener('vlxt:pro_unlocked', function(e) {

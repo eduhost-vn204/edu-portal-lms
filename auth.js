@@ -114,27 +114,27 @@ function vlxtRenderWidget(user){
   const localDone = vlxtLocalDoneCount(user.sdt);
 
   const ddCSS=[
-    '#vlxt-dropdown{display:none;position:absolute;top:calc(100% + 10px);right:0;',
-    'background:#0d1117;border:1px solid rgba(0,240,255,0.2);border-radius:14px;',
-    'padding:12px;min-width:220px;box-shadow:0 8px 32px rgba(0,0,0,0.7);',
+    '#vlxt-dropdown{display:none;position:absolute;top:calc(100% + 8px);right:0;',
+    'background:#0f172a;border:1px solid rgba(0,240,255,0.25);border-radius:14px;',
+    'padding:14px;min-width:230px;max-width:280px;box-shadow:0 12px 36px rgba(0,0,0,0.75);',
     'animation:vlxtDropIn 0.15s ease-out;z-index:99999;}',
-    '@keyframes vlxtDropIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}',
+    '@keyframes vlxtDropIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}',
     '#vlxt-dropdown.open{display:block;}',
-    '.vlxt-user-name{font-size:14px;font-weight:700;color:#e6edf3;margin-bottom:2px;}',
-    '.vlxt-user-meta{font-size:12px;color:#8b949e;margin-bottom:10px;}',
-    '.vlxt-stats{display:flex;gap:8px;margin-bottom:10px;}',
-    '.vlxt-stat{flex:1;background:rgba(0,240,255,0.07);border:1px solid rgba(0,240,255,0.15);border-radius:8px;padding:6px 8px;text-align:center;}',
+    '.vlxt-user-name{font-size:14.5px;font-weight:700;color:#f8fafc;margin-bottom:2px;display:flex;align-items:center;justify-content:space-between;}',
+    '.vlxt-user-meta{font-size:11.5px;color:#94a3b8;margin-bottom:12px;}',
+    '.vlxt-stats{display:flex;gap:8px;margin-bottom:12px;}',
+    '.vlxt-stat{flex:1;background:rgba(15,23,42,0.8);border:1px solid rgba(0,240,255,0.2);border-radius:8px;padding:6px 8px;text-align:center;}',
     '.vlxt-stat-val{font-size:15px;font-weight:800;color:#00f0ff;}',
-    '.vlxt-stat-label{font-size:10px;color:#8b949e;margin-top:1px;}',
-    '.vlxt-nav-links{display:flex;flex-direction:column;gap:4px;margin-bottom:8px;}',
-    '.vlxt-nav-link{display:block;padding:7px 10px;border-radius:8px;font-size:13px;color:#c9d1d9;text-decoration:none;transition:background 0.1s;}',
-    '.vlxt-nav-link:hover{background:rgba(255,255,255,0.07);color:#fff;}',
-    '.vlxt-divider{border:none;border-top:1px solid rgba(255,255,255,0.08);margin:8px 0;}',
-    '.vlxt-theme-btn{width:100%;padding:7px 10px;border-radius:8px;border:none;background:rgba(255,255,255,0.05);color:#c9d1d9;font-size:13px;font-weight:600;cursor:pointer;text-align:left;transition:background 0.1s;font-family:inherit;margin-bottom:8px;}',
-    '.vlxt-theme-btn:hover{background:rgba(255,255,255,0.1);}',
-    '.vlxt-logout-btn{width:100%;padding:7px 10px;border-radius:8px;border:none;background:rgba(239,68,68,0.12);color:#f87171;font-size:13px;font-weight:600;cursor:pointer;text-align:left;transition:background 0.1s;font-family:inherit;}',
-    '.vlxt-logout-btn:hover{background:rgba(239,68,68,0.22);}',
-    '@media(max-width:600px){#vlxt-dropdown{right:auto;left:50%;transform:translateX(-50%);min-width:200px;max-width:90vw;}}'
+    '.vlxt-stat-label{font-size:10.5px;color:#94a3b8;margin-top:2px;}',
+    '.vlxt-nav-links{display:flex;flex-direction:column;gap:5px;margin-bottom:10px;}',
+    '.vlxt-nav-link{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:600;color:#e2e8f0;text-decoration:none;transition:background 0.15s;}',
+    '.vlxt-nav-link:hover{background:rgba(255,255,255,0.08);color:#fff;}',
+    '.vlxt-divider{border:none;border-top:1px solid rgba(255,255,255,0.1);margin:10px 0;}',
+    '.vlxt-theme-btn{width:100%;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.05);color:#cbd5e1;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;transition:background 0.15s;font-family:inherit;margin-bottom:8px;}',
+    '.vlxt-theme-btn:hover{background:rgba(255,255,255,0.1);color:#fff;}',
+    '.vlxt-logout-btn{width:100%;padding:8px 10px;border-radius:8px;border:none;background:rgba(239,68,68,0.12);color:#f87171;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;transition:background 0.15s;font-family:inherit;}',
+    '.vlxt-logout-btn:hover{background:rgba(239,68,68,0.25);color:#fca5a5;}',
+    '@media(max-width:600px){#vlxt-dropdown{right:0;left:auto;min-width:220px;max-width:92vw;}}'
   ].join('');
 
   // Nhãn nút đổi giao diện, đọc trạng thái dark hiện tại của trang (đã được set từ
@@ -143,28 +143,17 @@ function vlxtRenderWidget(user){
   var _themeLabel = _isDarkNow ? '☀️ Chuyển sang giao diện sáng' : '🌙 Chuyển sang giao diện tối';
 
   const ddHTML='<div id="vlxt-dropdown">'
-    +'<div class="vlxt-user-name">'+user.hoten+'</div>'
-    +'<div class="vlxt-user-meta">Lớp '+user.lop+' \xb7 '+user.sdt+'</div>'
+    +'<div class="vlxt-user-name"><span>'+user.hoten+'</span>'+vipBadge+'</div>'
+    +'<div class="vlxt-user-meta">Lớp '+(user.lop || '12')+' · '+(user.sdt || '')+'</div>'
     +'<div class="vlxt-stats">'
     +'<div class="vlxt-stat"><div class="vlxt-stat-val" id="vlxt-lp">'+(isNaN(Number(user.lpTotal))?0:(Number(user.lpTotal)||0))+'</div><div class="vlxt-stat-label">⚡ LP</div></div>'
-    +'<div class="vlxt-stat"><div class="vlxt-stat-val" id="vlxt-done">'+localDone+'</div><div class="vlxt-stat-label">📚 B\xe0i học</div></div>'
+    +'<div class="vlxt-stat"><div class="vlxt-stat-val" id="vlxt-done">'+localDone+'</div><div class="vlxt-stat-label">📚 Bài học</div></div>'
     +'</div>'
     +'<button type="button" class="vlxt-theme-btn" id="vlxt-theme-btn" onclick="vlxtToggleTheme(event)">'+_themeLabel+'</button>'
     +'<div class="vlxt-nav-links">'
-    +'<a href="index.html" class="vlxt-nav-link">🏠 Trang chủ</a>'
-    +'<a href="danh-gia-nang-luc.html" class="vlxt-nav-link" style="color:#00f0ff;font-weight:700">🎯 Đánh Giá Năng Lực (Free)</a>'
-
-    +(isPaidLocal ? '<a href="goi-hoc.html" class="vlxt-nav-link" style="color:#34d399;font-weight:700">👑 Gói Học Hiện Tại & Nâng Cấp</a>' : '<a href="goi-hoc.html" class="vlxt-nav-link" style="color:#fbbf24;font-weight:700">⭐ Gói Học & Bảng Giá (50k)</a>')
-
-    +'<a href="baihoc.html" class="vlxt-nav-link">📚 Kh\xf3a học</a>'
-    +'<a href="phong-thi-thu.html" class="vlxt-nav-link">📋 Ph\xf2ng thi thử</a>'
-    +'<a href="danhsach-ly12.html" class="vlxt-nav-link">📝 Ph\xf2ng kiểm tra</a>'
-    +'<a href="dau-thuong.html" class="vlxt-nav-link" style="color:#00f0ff;font-weight:700">⚔️ Đấu Thường</a>'
-    +'<a href="dua-top.html" class="vlxt-nav-link" style="color:#fbbf24;font-weight:700">🏆 Đấu Hạng</a>'
-    +'<a href="solo.html" class="vlxt-nav-link" style="color:#f472b6;font-weight:700">⚔️ Solo</a>'
-    +'<a href="live.html" class="vlxt-nav-link" style="color:#dc2626;font-weight:700">📡 Live</a>'
-    +'<a href="huongdan.html" class="vlxt-nav-link">🧭 Hướng dẫn</a>'
-    +'<a href="hoso.html" class="vlxt-nav-link">👤 Hồ sơ cá nhân</a>'
+    +'<a href="hoso.html" class="vlxt-nav-link" style="color:#38bdf8;font-weight:700">👤 Hồ sơ cá nhân</a>'
+    +(isPaidLocal ? '<a href="goi-hoc.html" class="vlxt-nav-link" style="color:#34d399;font-weight:700">👑 Gói Pro đang dùng</a>' : '<a href="goi-hoc.html" class="vlxt-nav-link" style="color:#fbbf24;font-weight:700">⭐ Nâng cấp Gói Pro (50k)</a>')
+    +'<a href="huongdan.html" class="vlxt-nav-link">🧭 Hướng dẫn học tập</a>'
     +'</div><hr class="vlxt-divider">'
     +'<button class="vlxt-logout-btn" onclick="vlxtLogout()">↩ Đăng xuất</button>'
     +'</div>';
@@ -215,13 +204,22 @@ function vlxtRenderWidget(user){
   }
 
   // Cập nhật LP từ GAS qua POST body (async, không chặn render, không lộ token trên URL)
-  if(user && user.sdt && user.token) {
-    fetch(VLXT_GAS, {
-      method: 'POST',
-      mode: 'cors',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'getprofile', sdt: user.sdt, token: user.token })
-    })
+  if(user && user.sdt) {
+    var pFetch = (user.token)
+      ? fetch(VLXT_GAS, {
+          method: 'POST',
+          mode: 'cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'getprofile', sdt: user.sdt, token: user.token })
+        }).then(function(r){ return r.json(); }).then(function(d){
+          if(d && d.ok && d.user) return d;
+          return fetch(VLXT_GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt)).then(function(r){ return r.json(); });
+        }).catch(function(){
+          return fetch(VLXT_GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt)).then(function(r){ return r.json(); });
+        })
+      : fetch(VLXT_GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt)).then(function(r){ return r.json(); });
+
+    pFetch
       .then(function(r){return r.json();}).then(function(d){
         if(d.ok){
           var lpEl=document.getElementById('vlxt-lp');
@@ -287,4 +285,103 @@ function vlxtRenderWidget(user){
 document.addEventListener('DOMContentLoaded',function(){
   var user=vlxtGetUser();
   if(user&&!document.getElementById('vlxt-user-widget')) vlxtRenderWidget(user);
+});
+
+
+// ── BỘ ĐIỀU HƯỚNG DRAWER DI ĐỘNG ĐỒNG NHẤT TOÀN HỆ THỐNG ──
+function vlxtEnsureGlobalDrawer() {
+  if (typeof document === 'undefined') return;
+
+  // Cung cấp toggleNavDrawer toàn cục để các trang luôn hoạt động đồng nhất
+  window.toggleNavDrawer = function(show) {
+    var drawer = document.getElementById('navDrawer') || document.getElementById('vlxt-global-drawer');
+    var overlay = document.getElementById('navDrawerOverlay') || document.getElementById('vlxt-global-drawer-overlay');
+    if (!drawer) return;
+    var willOpen = (typeof show === 'boolean') ? show : !drawer.classList.contains('open');
+    if (willOpen) {
+      drawer.classList.add('open');
+      drawer.setAttribute('aria-hidden', 'false');
+      if (overlay) overlay.classList.add('open');
+      document.body.classList.add('nav-drawer-locked');
+    } else {
+      drawer.classList.remove('open');
+      drawer.setAttribute('aria-hidden', 'true');
+      if (overlay) overlay.classList.remove('open');
+      document.body.classList.remove('nav-drawer-locked');
+    }
+  };
+
+  // Đảm bảo các nút .nav-hamburger hoặc #navHamburgerBtn luôn kích hoạt toggleNavDrawer
+  document.querySelectorAll('.nav-hamburger, #navHamburgerBtn').forEach(function(btn) {
+    if (!btn.__vlxtBound) {
+      btn.__vlxtBound = true;
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        window.toggleNavDrawer(true);
+      });
+    }
+  });
+
+  // Nếu trang chưa có navDrawer, tự động tạo Drawer đồng bộ chuẩn VLXT
+  if (!document.getElementById('navDrawer') && !document.getElementById('vlxt-global-drawer')) {
+    var u = null;
+    try { u = vlxtGetUser(); } catch(e){}
+    var isPaid = Boolean(u && (u.isPaid || u.loaiTK === 'pro' || u.loaiTK === 'premium' || (typeof localStorage !== 'undefined' && localStorage.getItem('vlxt_is_paid') === 'true')));
+    var curPath = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+
+    var drawerHTML = [
+      '<div class="nav-drawer-overlay" id="vlxt-global-drawer-overlay" onclick="toggleNavDrawer(false)"></div>',
+      '<aside class="nav-drawer" id="vlxt-global-drawer" aria-hidden="true">',
+      '  <div class="nav-drawer-head">',
+      '    <a href="index.html" class="ndh-brand">',
+      '      <span style="font-size:18px">⚛️</span>',
+      '      <span>Vật Lý Xuân Trường</span>',
+      '    </a>',
+      '    <button class="nav-drawer-close" onclick="toggleNavDrawer(false)" aria-label="Đóng menu">✕</button>',
+      '  </div>',
+      '  <div class="nav-drawer-links" id="vlxt-drawer-links">',
+      '    <a href="index.html"' + (curPath === 'index.html' ? ' class="active"' : '') + '>🏠 Trang Chủ</a>',
+      '    <a href="danh-gia-nang-luc.html"' + (curPath === 'danh-gia-nang-luc.html' ? ' class="active"' : '') + ' style="color:#00f0ff;font-weight:700">🎯 Đánh Giá Năng Lực (Free)</a>',
+      '    <a href="baihoc.html"' + (curPath === 'baihoc.html' ? ' class="active"' : '') + '>📚 Khóa Học Vật Lý 12</a>',
+      '    <a href="goi-hoc.html"' + (curPath === 'goi-hoc.html' ? ' class="active"' : '') + ' style="color:#fbbf24;font-weight:700">' + (isPaid ? '👑 Gói Học Đang Bật' : '⭐ Gói Học (50k/Tháng)') + '</a>',
+      '    <a href="live-record.html"' + (curPath === 'live-record.html' ? ' class="active"' : '') + ' style="color:#f87171">📡 Live Class & Xem Lại</a>',
+      '    <a href="phong-thi-thu.html"' + (curPath === 'phong-thi-thu.html' ? ' class="active"' : '') + '>📋 Phòng Thi Thử (Chuẩn Bộ)</a>',
+      '    <a href="danhsach-ly12.html"' + (curPath === 'danhsach-ly12.html' ? ' class="active"' : '') + '>📝 Phòng Kiểm Tra (Theo bài)</a>',
+      '    <a href="dau-thuong-hud.html"' + (curPath === 'dau-thuong-hud.html' || curPath === 'dau-thuong.html' ? ' class="active"' : '') + ' style="color:#00f0ff">⚔️ Đấu Thường (PvP)</a>',
+      '    <a href="dua-top.html"' + (curPath === 'dua-top.html' ? ' class="active"' : '') + ' style="color:#fbbf24">🏆 Đấu Hạng (Đua Top)</a>',
+      '    <a href="solo.html"' + (curPath === 'solo.html' ? ' class="active"' : '') + ' style="color:#f472b6">🎯 Solo (1vs1)</a>',
+      '    <a href="huongdan.html"' + (curPath === 'huongdan.html' ? ' class="active"' : '') + '>🧭 Hướng Dẫn</a>',
+      '    <a href="hoso.html"' + (curPath === 'hoso.html' ? ' class="active"' : '') + ' style="font-weight:700;color:#38bdf8">👤 Hồ Sơ Cá Nhân</a>',
+      '  </div>',
+      '</aside>'
+    ].join('\n');
+
+    var drawerWrap = document.createElement('div');
+    drawerWrap.id = 'vlxt-global-drawer-wrap';
+    drawerWrap.innerHTML = drawerHTML;
+    document.body.appendChild(drawerWrap);
+
+    // CSS chuẩn cho Global Drawer
+    var dStyle = document.createElement('style');
+    dStyle.id = 'vlxt-global-drawer-css';
+    dStyle.textContent = [
+      '.nav-drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);z-index:99990;opacity:0;visibility:hidden;transition:all 0.25s;}',
+      '.nav-drawer-overlay.open{opacity:1;visibility:visible;}',
+      '.nav-drawer{position:fixed;top:0;left:0;bottom:0;width:82vw;max-width:300px;background:#0d1117;border-right:1px solid rgba(0,240,255,0.2);box-shadow:8px 0 32px rgba(0,0,0,0.8);z-index:99991;transform:translateX(-105%);transition:transform 0.28s cubic-bezier(0.16,1,0.3,1);display:flex;flex-direction:column;font-family:\'Plus Jakarta Sans\',system-ui,sans-serif;}',
+      '.nav-drawer.open{transform:translateX(0);}',
+      '.nav-drawer-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,0.08);}',
+      '.ndh-brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;color:#f8fafc;text-decoration:none;}',
+      '.nav-drawer-close{background:rgba(255,255,255,0.06);border:none;color:#94a3b8;font-size:16px;width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;}',
+      '.nav-drawer-links{display:flex;flex-direction:column;gap:4px;padding:12px;overflow-y:auto;}',
+      '.nav-drawer-links a{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;color:#cbd5e1;text-decoration:none;font-size:13.5px;font-weight:600;transition:background 0.15s;}',
+      '.nav-drawer-links a:hover,.nav-drawer-links a.active{background:rgba(0,240,255,0.12);color:#00f0ff;}',
+      'body.nav-drawer-locked{overflow:hidden;}'
+    ].join('');
+    document.head.appendChild(dStyle);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(vlxtEnsureGlobalDrawer, 50);
 });
