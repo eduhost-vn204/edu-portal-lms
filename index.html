@@ -846,37 +846,27 @@
       padding-top: 40px;
     }
 
-    /* ─── CÂN ĐỐI TỶ LỆ VÀNG KHỐI TÍNH NĂNG VŨ TRỤ (CHỐNG LỆCH TRÁI/PHẢI) ─── */
     .features-wrap {
-      max-width: 1040px;
+      max-width: 1180px;
       margin: 0 auto;
-      padding: 0 clamp(16px, 3vw, 32px);
-      box-sizing: border-box;
+      padding: 0 28px;
     }
 
     .galaxy-feature-row {
       display: grid;
-      grid-template-columns: minmax(320px, 480px) minmax(320px, 460px);
-      justify-content: center;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
       align-items: center;
-      gap: clamp(36px, 4.5vw, 60px);
-      padding: 85px 0;
+      padding: 95px 0;
       border-bottom: 1px solid rgba(56, 189, 248, 0.14);
       perspective: 1200px;
-      margin: 0 auto;
     }
-    .galaxy-feature-row.flip {
-      grid-template-columns: minmax(320px, 460px) minmax(320px, 480px);
-    }
+    .galaxy-feature-row.flip { direction: rtl; }
+    .galaxy-feature-row.flip > * { direction: ltr; }
 
     @media (max-width: 900px) {
-      .galaxy-feature-row,
-      .galaxy-feature-row.flip {
-        grid-template-columns: 1fr;
-        justify-content: center;
-        gap: 36px;
-        padding: 55px 0;
-      }
+      .galaxy-feature-row { grid-template-columns: 1fr; gap: 42px; padding: 60px 0; }
+      .galaxy-feature-row.flip { direction: ltr; }
     }
 
     .feat-visual, .score-demo, .panel-card, .num-row {
@@ -931,7 +921,7 @@
       opacity: 0;
     }
 
-    .feat-visual { width: 100%; max-width: 480px; min-height: 290px; display: flex; flex-direction: column; margin: 0 auto; }
+    .feat-visual { min-height: 300px; display: flex; flex-direction: column; }
     .feat-window-bar {
       background: rgba(12, 26, 54, 0.85);
       padding: 13px 20px;
@@ -957,29 +947,32 @@
     .feat-line {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 13px;
-      padding: 13px 16px;
+      padding: 12px 18px;
       border-radius: 12px;
       background: rgba(13, 30, 62, 0.6);
-      border: 1px solid rgba(56, 189, 248, 0.16);
+      border: 1px solid rgba(56, 189, 248, 0.22);
       font-size: 14px;
       color: #e2e8f0;
       font-weight: 500;
       position: relative;
-      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), background 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+      width: 100%;
+      box-sizing: border-box;
+      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     }
     .feat-line:hover {
-      transform: translateX(8px) translateZ(12px) !important;
+      transform: scale(1.015) !important;
       background: rgba(20, 48, 96, 0.85) !important;
-      border-color: rgba(0, 240, 255, 0.65) !important;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 20px rgba(0, 240, 255, 0.22) !important;
+      border-color: rgba(0, 240, 255, 0.75) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 16px rgba(0, 240, 255, 0.25) !important;
     }
     .feat-line-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 8px currentColor; transition: transform 0.25s ease; }
     .feat-line:hover .feat-line-dot { transform: scale(1.45); }
     .feat-line-label { flex: 1; }
     .feat-line-val { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: rgba(2, 6, 18, 0.45); }
 
-    .score-demo { width: 100%; max-width: 480px; min-height: 290px; padding: 28px 24px; margin: 0 auto; }
+    .score-demo { padding: 32px; min-height: 300px; }
     .score-header { font-family: 'Space Mono', monospace; font-size: 11.5px; color: #38bdf8; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
     .score-number { font-family: 'Orbitron', sans-serif; font-size: 62px; font-weight: 900; letter-spacing: -0.04em; color: #ffffff; margin-bottom: 4px; text-shadow: 0 0 24px rgba(0, 240, 255, 0.65); line-height: 1; }
     .score-label { font-size: 14px; color: #94a3b8; margin-bottom: 22px; font-weight: 500; }
@@ -990,7 +983,7 @@
     .score-item:hover { transform: translateX(6px) translateZ(10px) !important; background: rgba(20, 48, 96, 0.85) !important; border-color: rgba(0, 240, 255, 0.55) !important; }
     .score-status { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 100px; background: rgba(0, 240, 255, 0.12); color: #00f0ff; border: 1px solid rgba(0, 240, 255, 0.32); }
 
-    .feat-text { width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; margin: 0 auto; }
+    .feat-text { display: flex; flex-direction: column; gap: 18px; }
     .feat-kicker { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; color: #38bdf8; text-transform: uppercase; display: inline-flex; align-items: center; gap: 8px; }
     .feat-kicker::before { content: ''; width: 20px; height: 1.5px; background: #00f0ff; box-shadow: 0 0 8px #00f0ff; }
     .feat-heading { font-family: 'Orbitron', 'Plus Jakarta Sans', sans-serif; font-size: clamp(30px, 3.6vw, 44px); font-weight: 900; letter-spacing: -0.02em; line-height: 1.18; color: #ffffff; }
@@ -5331,7 +5324,7 @@ function initScrollAnimations() {
         var text = el.querySelector('.feat-text');
 
         gsap.from(card, { opacity: 0, y: 50, rotateX: 12, transformPerspective: 950, duration: 0.85, ease: 'power3.out' });
-        gsap.from(lines, { opacity: 0, x: -35, stagger: 0.08, duration: 0.6, delay: 0.25, ease: 'back.out(1.4)' });
+        gsap.from(lines, { opacity: 0, y: 16, stagger: 0.07, duration: 0.55, delay: 0.2, ease: 'power2.out', clearProps: 'all' });
         if(text) gsap.from(text.children, { opacity: 0, y: 30, stagger: 0.12, duration: 0.7, delay: 0.15, ease: 'power2.out' });
       }
       else if(el.id === 'section-thi-thu') {
@@ -5367,7 +5360,7 @@ function initScrollAnimations() {
         var text = el.querySelector('.feat-text');
 
         gsap.from(card, { opacity: 0, y: 50, rotateX: 12, transformPerspective: 950, duration: 0.85, ease: 'power3.out' });
-        gsap.from(lines, { opacity: 0, x: 35, stagger: 0.08, duration: 0.6, delay: 0.25, ease: 'back.out(1.4)' });
+        gsap.from(lines, { opacity: 0, y: 16, stagger: 0.07, duration: 0.55, delay: 0.2, ease: 'power2.out', clearProps: 'all' });
         if(text) gsap.from(text.children, { opacity: 0, y: 30, stagger: 0.12, duration: 0.7, delay: 0.15, ease: 'power2.out' });
       }
       else if(el.id === 'section-cong-dong') {

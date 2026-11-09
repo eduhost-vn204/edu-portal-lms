@@ -1588,10 +1588,93 @@
             grid-template-columns: 280px minmax(0, 1fr) 250px !important;
             min-height: calc(100vh - 60px) !important;
             width: 100% !important;
+            margin-top: 60px !important;
             background: #0c1222 !important;
             position: relative !important;
             font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
             box-shadow: none !important;
+        }
+
+        .vstep-meta-pdf-pill {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            background: rgba(16, 185, 129, 0.15) !important;
+            color: #10b981 !important;
+            border: 1px solid #10b981 !important;
+            padding: 3px 12px !important;
+            border-radius: 100px !important;
+            font-size: 12px !important;
+            font-weight: 700 !important;
+            text-decoration: none !important;
+            margin-left: 8px !important;
+            transition: all 0.2s ease !important;
+        }
+        .vstep-meta-pdf-pill:hover {
+            background: #10b981 !important;
+            color: #042f2e !important;
+            box-shadow: 0 0 14px rgba(16, 185, 129, 0.45) !important;
+        }
+        .vstep-pdf-card {
+            margin: 20px 0 26px !important;
+            padding: 16px 20px !important;
+            background: linear-gradient(145deg, rgba(16, 32, 64, 0.6) 0%, rgba(8, 18, 38, 0.85) 100%) !important;
+            border: 1px solid rgba(56, 189, 248, 0.25) !important;
+            border-radius: 14px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 12px !important;
+        }
+        .vstep-pdf-card-title {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            font-size: 13.5px !important;
+            font-weight: 700 !important;
+            color: #e2e8f0 !important;
+        }
+        .vstep-pdf-card-links {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 10px !important;
+        }
+        .vstep-pdf-link {
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+            padding: 8px 16px !important;
+            border-radius: 10px !important;
+            font-size: 12.5px !important;
+            font-weight: 700 !important;
+            text-decoration: none !important;
+            transition: all 0.2s ease !important;
+        }
+        .vstep-pdf-link.lt {
+            background: rgba(14, 165, 233, 0.12) !important;
+            color: #38bdf8 !important;
+            border: 1px solid rgba(56, 189, 248, 0.35) !important;
+        }
+        .vstep-pdf-link.lt:hover {
+            background: #0284c7 !important;
+            color: #ffffff !important;
+        }
+        .vstep-pdf-link.bt {
+            background: rgba(244, 63, 94, 0.12) !important;
+            color: #fb7185 !important;
+            border: 1px solid rgba(244, 63, 94, 0.35) !important;
+        }
+        .vstep-pdf-link.bt:hover {
+            background: #e11d48 !important;
+            color: #ffffff !important;
+        }
+        .vstep-pdf-link.ltt {
+            background: rgba(168, 85, 247, 0.12) !important;
+            color: #c084fc !important;
+            border: 1px solid rgba(168, 85, 247, 0.35) !important;
+        }
+        .vstep-pdf-link.ltt:hover {
+            background: #9333ea !important;
+            color: #ffffff !important;
         }
 
         /* ── CỘT TRÁI: LỘ TRÌNH BÀI HỌC (STICKY TRÊN DESKTOP, OFF-CANVAS TRÊN MOBILE) ── */
@@ -4344,6 +4427,11 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
             <span class="vstep-meta-badge">Buổi ${_lessonSessionNum || 1} / ${course.total}</span>
             <span>⏱ Thời lượng: ~25 phút học</span>
             <span style="color:#38bdf8;font-weight:700">👨‍🏫 Biên soạn: Thầy Nguyễn Xuân Trường</span>
+            ${(lesson.pdflt || lesson.pdf) ? `
+                <a class="vstep-meta-pdf-pill" href="${lesson.pdflt || lesson.pdf}" target="_blank" rel="noopener" title="Tải file PDF tài liệu học tập về máy">
+                    <i class="fa-solid fa-file-arrow-down"></i> Tải PDF Tài Liệu
+                </a>
+            ` : ''}
         </div>
     `;
 
@@ -4383,6 +4471,22 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
         <div class="vstep-video-wrap">
             ${videoTabsHtml || `<div class="video-box">${videoHtml}</div>`}
         </div>`;
+
+        // Khối tải nhanh PDF tài liệu bài học (Lý thuyết / Bài tập / Luyện tập thêm)
+        if(lesson.pdflt || lesson.pdf || lesson.pdfluyentap){
+            stream += `
+            <div class="vstep-pdf-card">
+                <div class="vstep-pdf-card-title">
+                    <i class="fa-solid fa-folder-arrow-down" style="color:#10b981;font-size:16px"></i>
+                    <span>Tài liệu PDF bài học (In ấn & Ôn tập):</span>
+                </div>
+                <div class="vstep-pdf-card-links">
+                    ${lesson.pdflt ? `<a class="vstep-pdf-link lt" href="${lesson.pdflt}" target="_blank" rel="noopener"><i class="fa-solid fa-file-lines"></i> <span>Tải PDF Lý Thuyết</span> <i class="fa-solid fa-arrow-down" style="font-size:11px"></i></a>` : ''}
+                    ${lesson.pdf ? `<a class="vstep-pdf-link bt" href="${lesson.pdf}" target="_blank" rel="noopener"><i class="fa-solid fa-pen-ruler"></i> <span>Tải PDF Bài Tập Áp Dụng</span> <i class="fa-solid fa-arrow-down" style="font-size:11px"></i></a>` : ''}
+                    ${lesson.pdfluyentap ? `<a class="vstep-pdf-link ltt" href="${lesson.pdfluyentap}" target="_blank" rel="noopener"><i class="fa-solid fa-graduation-cap"></i> <span>Tải PDF Luyện Tập Thêm</span> <i class="fa-solid fa-arrow-down" style="font-size:11px"></i></a>` : ''}
+                </div>
+            </div>`;
+        }
     }
 
     // Mục II: Lý thuyết trọng tâm
