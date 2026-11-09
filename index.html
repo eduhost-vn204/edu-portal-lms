@@ -142,19 +142,19 @@
 
     /* ─── NAVBAR ĐỒNG BỘ CHUẨN CẢI TIẾN (CHỐNG RỚT DÒNG 1366x768) ─── */
     .top-bar {
-      position: fixed; top: 0; left: 0; right: 0;
-      height: 60px;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 0 clamp(16px, 3.2vw, 42px);
-      background: transparent !important;
+      position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important;
+      height: 60px !important;
+      display: flex !important; justify-content: space-between !important; align-items: center !important;
+      padding: 0 clamp(16px, 3.2vw, 42px) !important;
+      background: rgba(13, 17, 23, 0.94) !important;
+      backdrop-filter: blur(14px) !important;
+      -webkit-backdrop-filter: blur(14px) !important;
       border: none !important;
-      border-radius: 0 !important;
-      box-shadow: none !important;
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.22) !important;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6) !important;
       pointer-events: auto !important;
-      z-index: 200000 !important; /* ĐẢM BẢO LUÔN NẰM TRÊN CÙNG ĐỂ CLICK ĐƯỢC MỌI TAB */
-      transition: background 0.35s ease, border-bottom 0.35s ease, box-shadow 0.35s ease;
+      z-index: 200000 !important;
+      transition: background 0.25s ease, border-bottom 0.25s ease, box-shadow 0.25s ease;
     }
     .nav-left-wrap, .nav-menu-links, .nav-right-wrap {
       pointer-events: auto !important;
@@ -1647,6 +1647,27 @@
   max-height: 24px !important;
   flex-shrink: 0 !important;
   display: inline-block !important;
+}
+</style>
+<style>
+/* ── CƯỜNG ĐỘ SÁNG TỐI ĐA CHO CHỮ VẬT LÝ XUÂN TRƯỜNG TRÊN INDEX ── */
+.brand-glow-text {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 15.5px !important;
+  letter-spacing: 0.3px !important;
+  white-space: nowrap !important;
+  display: inline-block !important;
+  opacity: 1 !important;
+  filter: none !important;
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-background-clip: border-box !important;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.7), 0 0 22px rgba(0, 240, 255, 0.35) !important;
+}
+.nav-brand-logo {
+  opacity: 1 !important;
+  filter: none !important;
 }
 </style>
 </head>
