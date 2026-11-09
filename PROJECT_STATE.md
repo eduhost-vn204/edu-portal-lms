@@ -159,6 +159,23 @@ Các bước thầy tự làm (trợ lý AI không tự deploy Apps Script):
 
 ## Bàn giao gần nhất
 
+### 09/11/2026 (09:20) — Mở Khóa Toàn Bộ Khóa Học Cho Tài Khoản PRO, Hiển Thị Gói Hiện Tại & Lịch Sử Giao Dịch Trên Hồ Sơ (`hoso.html`) Và Đồng Bộ Trạng Thái Gói Trên `goi-hoc.html`
+- **Người thực hiện**: Antigravity AI Coordinator
+- **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex
+- **Trạng thái**: `VERIFIED_PRO_ACCESS_PROFILE_AND_PRICING_SYNC_PASS` (Đã qua toàn bộ kiểm thử tự động `verify_all_pro_fixes.mjs`, `test_cro_funnel.mjs` 8/8, `test_vnpay_integration.mjs` 7/7, `scripts/test-trial-soft-unlock.mjs` 22/22).
+- **Nguyên nhân gốc rễ & Giải pháp đã xử lý**:
+  1. **Tại sao tài khoản đã lên `👑 PRO` vẫn bị khóa các khóa học trên `baihoc.html`**:
+     - Trước đây, khi nâng cấp Gói Pro 50k (qua VietQR SePay hoặc VNPay), `user.loaiTK` được gán thành `'pro'` và `user.isPaid = true`, nhưng cấu hình `loaiTK` của các khóa học trong `data/khoaconfig.json` chỉ liệt kê `'free,vip,premium'` hoặc `'premium'`. Các hàm `canAccess()`, `tierLabel()`, `showUpgrade()` trên `baihoc.html` kiểm tra `allowed.includes(tier)` nên trả về `false` với mọi khóa học đối với `loaiTK === 'pro'` (thậm chí báo `"🔒 Không có quyền truy cập"` ở khóa `free,vip,premium` và `"💎 Cần tài khoản Premium"` ở khóa `premium`).
+     - **Giải pháp**: Bổ sung `isUserPaidProOrPremium(u)` và `hasCourseTierAccess(cfg, u)` trong `baihoc.html`, đồng bộ sang `trial-manager.js` và `nhiem-vu.js`. Tài khoản `pro` / `premium` / `isPaid === true` được mở khóa 100% các khóa học và bài giảng; đồng thời tách riêng thông báo khóa tuần tự (`blk.reason === 'sequence'`) để không bật nhầm popup mua gói Pro khi bài học chỉ đang khóa theo thứ tự bài trước.
+  2. **Tại sao trang Hồ sơ cá nhân (`hoso.html`, `hoso-hud.html`) vẫn hiện `🆓 Miễn phí` và thiếu Gói hiện tại & Lịch sử giao dịch**:
+     - Trước đây, hàm `vipInfo(u)` trong `hoso.html` và `hoso-hud.html` chỉ kiểm tra `loaiTK === 'premium'` và `loaiTK === 'vip'`, nên khi `loaiTK === 'pro'` đã rơi thẳng xuống nhánh mặc định `🆓 Miễn phí`. Ngoài ra khi `getprofile` từ GAS trả về `loaiTK: 'free'` đã ghi đè trạng thái `pro` ở `localStorage`, và trang hồ sơ chưa có khu vực hiển thị gói học hiện tại hay lịch sử thanh toán.
+     - **Giải pháp**:
+       - Cập nhật `auth.js`, `hoso.html` và `hoso-hud.html` (`resolveSubscriptionAndHistory`, `vipInfo`, `buildSubscriptionAndHistoryHTML`), tự động đối soát thêm `checkpaymentstatus` từ GAS và hợp nhất lịch sử từ `vlxt_payment_history`, `vlxt_vnpay_orders_v1` và `GiaoDichVietQR`.
+       - Hiển thị rõ Banner **`👑 Gói Tháng PRO (Đang kích hoạt)`** (hoặc Gói Năm/VIP) kèm số ngày hiệu lực còn lại, thẻ **`📦 Gói Học Hiện Tại & Lịch Sử Giao Dịch`** ngay trên trang Hồ sơ cá nhân và tab riêng **`💳 Gói Học & GD`**.
+  3. **Tại sao trang `goi-hoc.html` và nút nâng cấp vẫn hiện "Đăng Ký Gói 50k / Tháng" khi đang dùng Gói Tháng**:
+     - **Giải pháp**: Trên `goi-hoc.html`, bổ sung Banner Gói Hiện Tại (`#active-plan-banner`), hàm `renderCurrentPlanStateOnPricingCards()` và bảng Lịch sử giao dịch (`#goihoc-payment-history`). Khi học sinh đang sử dụng `THANG50K`, thẻ Gói Tháng gắn nhãn **`👑 GÓI HIỆN TẠI CỦA BẠN`**, nút chính chuyển thành **`✅ Đang Sử Dụng Gói Này — Vào Học Ngay`** (kèm nút phụ gia hạn cộng dồn +30 ngày), còn các gói cao hơn đổi thành **`⬆️ Nâng Cấp Lên Gói Cả Năm (399k)`** / **`⬆️ Nâng Cấp Lên Lớp VIP Cùng Thầy (850k)`**. Đồng thời cập nhật `openUpgradeValueModal` trong `freemium-flow.js` và nút `.nav-item-pro` trên thanh điều hướng.
+- **Tệp đã sửa đổi**: `baihoc.html`, `goi-hoc.html`, `hoso.html`, `hoso-hud.html`, `auth.js`, `freemium-flow.js`, `vnpay-service.js`, `trial-manager.js`, `nhiem-vu.js`, `apps-script-CAPNHAT.txt`, `PROJECT_STATE.md`.
+
 ### 08/11/2026 (16:38) — Tích Hợp Cổng Thanh Toán VNPay (v2.1.0) Song Hành Cùng VietQR Trên Toàn Hệ Thống
 - **Người thực hiện**: Antigravity AI Coordinator
 - **Người nhận bàn giao**: Thầy Nguyễn Xuân Trường & Codex

@@ -30,6 +30,15 @@
       return false; // Tài khoản test của Thầy: mở tự do
     }
     var loai = String(user.loaiTK || '').trim().toLowerCase();
+    var isPaidPro = Boolean(
+      user.isPaid ||
+      loai === 'pro' ||
+      loai === 'premium' ||
+      (typeof localStorage !== 'undefined' && localStorage.getItem('vlxt_is_paid') === 'true')
+    );
+    if (isPaidPro) {
+      return false; // Tài khoản Pro / Premium trả phí được mở toàn bộ, không bị giới hạn học thử 2 bài/ngày
+    }
     if (loai !== 'vip' && loai !== 'trial') {
       return false; // Free hoặc loại khác không được hưởng trial soft unlock
     }

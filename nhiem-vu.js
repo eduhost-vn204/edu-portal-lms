@@ -549,10 +549,17 @@
     // (loaiTK) y hệt cách baihoc.html quyết định canAccess(), để 1 khoá chỉ
     // dành cho Premium thì cũng chỉ được thêm vào lộ trình Nhiệm vụ của các
     // tài khoản Premium, KHÔNG tính vào nhiệm vụ của tài khoản free/vip.
-    var myTier = (user && user.loaiTK) || 'free';
+    var myTier = String((user && user.loaiTK) || 'free').trim().toLowerCase();
+    var isPaidPro = Boolean(
+      (user && user.isPaid) ||
+      myTier === 'pro' ||
+      myTier === 'premium' ||
+      (typeof localStorage !== 'undefined' && localStorage.getItem('vlxt_is_paid') === 'true')
+    );
     function courseAllowsTier(khoaHoc) {
+      if (isPaidPro) return true;
       var cfg = khoaMap[khoaHoc || ''];
-      var allowed = ((cfg && cfg.loaiTK) || 'free,vip,premium').split(',').map(function (s) { return s.trim(); });
+      var allowed = ((cfg && cfg.loaiTK) || 'free,vip,premium').split(',').map(function (s) { return s.trim().toLowerCase(); });
       return allowed.indexOf(myTier) !== -1;
     }
 

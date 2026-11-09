@@ -375,6 +375,19 @@
         const titleEl = document.getElementById('cro-uvm-context-title');
         if (titleEl) titleEl.textContent = contextTitle;
       }
+      // Nếu học sinh đã đăng ký Gói Tháng Pro, đổi nút trong modal thành Nâng cấp Gói Năm (399k) thay vì hiện lại Đăng ký Gói Tháng 50k
+      const curUser = this._getCurrentUser();
+      if (this.isPaidUser(curUser)) {
+        const priceNum = modal.querySelector('.cro-price-number');
+        const priceUnit = modal.querySelector('.cro-price-unit');
+        const upgradeBtn = modal.querySelector('.cro-btn-upgrade-now');
+        if (priceNum) priceNum.textContent = '399.000đ';
+        if (priceUnit) priceUnit.textContent = '/ Trọn khóa cả năm XPS 2k9 (Đang dùng Gói Tháng Pro)';
+        if (upgradeBtn) {
+          upgradeBtn.innerHTML = '<i class="fa-solid fa-arrow-up-right-dots"></i> Nâng cấp lên Gói Trọn Năm XPS 2k9 (399.000đ)';
+          upgradeBtn.setAttribute('onclick', "FreemiumFlow.openVietQRCheckoutModal('NAM399K', 'Trọn Khóa Cả Năm (XPS 2k9)', 399000)");
+        }
+      }
       modal.classList.add('cro-modal-open');
       document.body.classList.add('cro-body-locked');
     },
@@ -640,20 +653,56 @@
     },
 
     // Kích hoạt xác nhận thanh toán thành công
-    confirmPaymentSuccess: function () {
+    confirmPaymentSuccess: function (res) {
       this.stopPaymentListener();
 
-      // Cập nhật trạng thái người dùng thành PRO / PAID trong localStorage
       const currentUser = this._getCurrentUser() || { hoten: 'Học sinh Pro', sdt: '0987654321' };
+      const plan = this._currentPlan || { code: 'THANG50K', name: 'Gói Tháng Linh Hoạt', amount: 50000 };
+      const planCode = (res && res.planCode) || plan.code || 'THANG50K';
+      const isYear = planCode === 'NAM399K' || planCode === 'VIP850K' || Number(plan.amount) >= 300000;
+      const tier = (res && res.loaiTK) || (isYear ? 'premium' : 'pro');
+      const nowMs = Date.now();
+      const expiryMs = (res && Number(res.proExpiry)) || (nowMs + (isYear ? 365 : 30) * 24 * 3600 * 1000);
+      const txId = (res && (res.transactionId || res.maGD)) || ('VQR-' + nowMs);
+      const planName = plan.name || (planCode === 'VIP850K' ? 'Lớp Online Cùng Thầy (VIP)' : planCode === 'NAM399K' ? 'Trọn Khóa Cả Năm (XPS 2k9)' : 'Gói Tháng Linh Hoạt');
+
+      const paymentRecord = {
+        id: String(txId),
+        transactionId: String(txId),
+        gateway: 'VietQR',
+        method: 'VietQR VietinBank',
+        sdt: currentUser.sdt || '',
+        hoten: currentUser.hoten || 'Học sinh Pro',
+        planCode: planCode,
+        planName: planName,
+        loaiTK: tier,
+        amount: Number((res && res.amount) || plan.amount || 50000),
+        activatedAt: nowMs,
+        paidAt: (res && res.paidAt) || new Date(nowMs).toISOString(),
+        expiryAt: expiryMs,
+        status: 'paid'
+      };
+
+      // Cập nhật trạng thái người dùng thành PRO / PAID trong localStorage
       const proUser = Object.assign({}, currentUser, {
-        loaiTK: 'pro',
+        loaiTK: tier,
         isPaid: true,
-        proExpiry: Date.now() + 30 * 24 * 3600 * 1000 // 30 ngày
+        planCode: planCode,
+        planName: planName,
+        activatedAt: nowMs,
+        proExpiry: expiryMs,
+        trialExpiry: expiryMs,
+        lastPayment: paymentRecord
       });
 
       try {
         localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(proUser));
         localStorage.setItem('vlxt_is_paid', 'true');
+        const hist = JSON.parse(localStorage.getItem('vlxt_payment_history') || '[]');
+        const arr = Array.isArray(hist) ? hist : [];
+        const exists = arr.some(x => String(x.transactionId || x.id) === String(paymentRecord.id));
+        if (!exists) arr.unshift(paymentRecord);
+        localStorage.setItem('vlxt_payment_history', JSON.stringify(arr.slice(0, 50)));
       } catch (e) {}
 
       // Kích hoạt hiệu ứng Confetti ăn mừng

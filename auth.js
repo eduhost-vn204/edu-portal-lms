@@ -98,7 +98,13 @@ function vlxtRenderWidget(user){
   const trialExpiry = user.trialExpiry || 0;
   const msLeft = trialExpiry ? (trialExpiry - Date.now()) : 0;
   const daysLeft = Math.max(0, Math.ceil(msLeft / 86400000));
-  const isPaidLocal = Boolean(user.isPaid || loaiTK === 'pro' || (typeof localStorage !== 'undefined' && localStorage.getItem('vlxt_is_paid') === 'true'));
+  const isPaidLocal = Boolean(
+    user.isPaid ||
+    loaiTK === 'pro' ||
+    loaiTK === 'premium' ||
+    (loaiTK === 'vip' && daysLeft > 8) ||
+    (typeof localStorage !== 'undefined' && localStorage.getItem('vlxt_is_paid') === 'true')
+  );
   const vipBadge = loaiTK === 'premium' ? '<span style="font-size:10px;font-weight:800;background:rgba(124,58,237,.25);color:#c4b5fd;padding:1px 6px;border-radius:4px;margin-left:4px">💎 VIP</span>'
     : isPaidLocal ? '<span style="font-size:10px;font-weight:800;background:rgba(16,185,129,.22);color:#34d399;padding:1px 6px;border-radius:4px;margin-left:4px">👑 PRO</span>'
     : (loaiTK === 'vip' && msLeft > 0) ? `<span style="font-size:10px;font-weight:800;background:rgba(217,119,6,.2);color:#d97706;padding:1px 6px;border-radius:4px;margin-left:4px">⭐ ${daysLeft}d</span>`
@@ -148,7 +154,7 @@ function vlxtRenderWidget(user){
     +'<a href="index.html" class="vlxt-nav-link">🏠 Trang chủ</a>'
     +'<a href="danh-gia-nang-luc.html" class="vlxt-nav-link" style="color:#00f0ff;font-weight:700">🎯 Đánh Giá Năng Lực (Free)</a>'
 
-    +'<a href="goi-hoc.html" class="vlxt-nav-link" style="color:#fbbf24;font-weight:700">⭐ Gói Học & Bảng Giá (50k)</a>'
+    +(isPaidLocal ? '<a href="goi-hoc.html" class="vlxt-nav-link" style="color:#34d399;font-weight:700">👑 Gói Học Hiện Tại & Nâng Cấp</a>' : '<a href="goi-hoc.html" class="vlxt-nav-link" style="color:#fbbf24;font-weight:700">⭐ Gói Học & Bảng Giá (50k)</a>')
 
     +'<a href="baihoc.html" class="vlxt-nav-link">📚 Kh\xf3a học</a>'
     +'<a href="phong-thi-thu.html" class="vlxt-nav-link">📋 Ph\xf2ng thi thử</a>'
@@ -187,6 +193,11 @@ function vlxtRenderWidget(user){
       +'<span id="vlxt-avatar-name">'+shortName+vipBadge+'</span>'
       +'</div>'+ddHTML;
     navArea.appendChild(widget);
+    if(isPaidLocal){
+      document.querySelectorAll('a.nav-item-pro').forEach(function(el){
+        el.innerHTML = '👑 Gói Pro <span class="nav-pro-badge" style="background:rgba(16,185,129,0.22);color:#34d399;border:1px solid rgba(16,185,129,0.45)">ĐANG BẬT</span>';
+      });
+    }
   } else {
     var fixedCSS=[
       '#vlxt-user-widget{position:fixed;top:72px;right:16px;z-index:99999;font-family:\'Inter\',system-ui,sans-serif;}',
@@ -224,10 +235,47 @@ function vlxtRenderWidget(user){
           }
           // Đồng bộ toàn bộ hồ sơ, đặc biệt loaiTK/trialExpiry sau khi admin nâng cấp.
           var fresh=Object.assign({},user,d.user);
-          if(user.isPaid && (!user.proExpiry || user.proExpiry > Date.now())) { fresh.isPaid = true; fresh.proExpiry = user.proExpiry; if(fresh.loaiTK !== 'premium') fresh.loaiTK = user.loaiTK || 'pro'; }
+          var wasPaidLocal = Boolean(
+            user.isPaid ||
+            user.loaiTK === 'pro' ||
+            user.loaiTK === 'premium' ||
+            (typeof localStorage !== 'undefined' && localStorage.getItem('vlxt_is_paid') === 'true')
+          );
+          var serverPaid = Boolean(
+            d.user && (
+              d.user.isPaid ||
+              d.user.loaiTK === 'pro' ||
+              d.user.loaiTK === 'premium' ||
+              (d.user.loaiTK === 'vip' && Number(d.user.trialExpiry || 0) > Date.now() + 8 * 86400000)
+            )
+          );
+          if((wasPaidLocal && (!user.proExpiry || user.proExpiry > Date.now())) || serverPaid) {
+            fresh.isPaid = true;
+            fresh.proExpiry = Number(d.user && d.user.proExpiry) || Number(user.proExpiry) || Number(d.user && d.user.trialExpiry) || (Date.now() + 30 * 86400000);
+            if(fresh.loaiTK !== 'premium') {
+              fresh.loaiTK = (user.loaiTK === 'premium' || (d.user && d.user.loaiTK === 'premium')) ? 'premium' : 'pro';
+            }
+            if(user.planCode && !fresh.planCode) fresh.planCode = user.planCode;
+            if(user.planName && !fresh.planName) fresh.planName = user.planName;
+            if(user.activatedAt && !fresh.activatedAt) fresh.activatedAt = user.activatedAt;
+            if(user.lastPayment && !fresh.lastPayment) fresh.lastPayment = user.lastPayment;
+            try { localStorage.setItem('vlxt_is_paid', 'true'); } catch(e){}
+          }
+          if(Array.isArray(d.payments) && d.payments.length > 0) {
+            try {
+              var existingHist = JSON.parse(localStorage.getItem('vlxt_payment_history') || '[]');
+              if(!Array.isArray(existingHist)) existingHist = [];
+              d.payments.forEach(function(p) {
+                var pId = String(p.transactionId || p.maGD || p.orderId || '');
+                var exists = pId && existingHist.some(function(x) { return String(x.transactionId || x.maGD || x.orderId || x.id || '') === pId; });
+                if(!exists) existingHist.unshift(p);
+              });
+              localStorage.setItem('vlxt_payment_history', JSON.stringify(existingHist.slice(0, 50)));
+            } catch(e){}
+          }
           if(user.token && !fresh.token) fresh.token = user.token;
           vlxtSaveUser(fresh);
-          if(fresh.loaiTK!==user.loaiTK || Number(fresh.trialExpiry||0)!==Number(user.trialExpiry||0)){
+          if(fresh.loaiTK!==user.loaiTK || Number(fresh.trialExpiry||0)!==Number(user.trialExpiry||0) || Boolean(fresh.isPaid)!==Boolean(user.isPaid)){
             vlxtRenderWidget(fresh);
             window.dispatchEvent(new CustomEvent('vlxt:user-refreshed',{detail:fresh}));
           }

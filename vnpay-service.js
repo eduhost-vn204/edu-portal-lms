@@ -598,26 +598,55 @@
         const durationDays = (planCode === 'NAM399K' || planCode === 'VIP850K' || vnpResponse.amount >= 300000) ? 365 : 30;
         const tier = (planCode === 'NAM399K' || planCode === 'VIP850K' || vnpResponse.amount >= 300000) ? 'premium' : 'pro';
 
+        const planNamesMap = {
+          THANG50K: 'Gói Tháng Linh Hoạt (50.000đ/tháng)',
+          NAM399K: 'Trọn Khóa Cả Năm XPS 2k9 (399.000đ)',
+          VIP850K: 'Lớp Online Cùng Thầy VIP (850.000đ)'
+        };
+        const nowMs = Date.now();
+        const expiryMs = nowMs + durationDays * 24 * 3600 * 1000;
+        const paymentRecord = {
+          id: String(vnpResponse.transactionId || vnpResponse.orderId || ('VNP-' + nowMs)),
+          gateway: 'VNPay',
+          method: 'VNPay (' + (vnpResponse.bankCode || 'NCB') + ')',
+          orderId: vnpResponse.orderId,
+          transactionId: vnpResponse.transactionId,
+          sdt: sdt,
+          hoten: hoten,
+          amount: vnpResponse.amount,
+          bankCode: vnpResponse.bankCode,
+          payDate: vnpResponse.payDate,
+          planCode: planCode,
+          planName: planNamesMap[planCode] || lastOrder.planName || ('Gói ' + planCode),
+          loaiTK: tier,
+          activatedAt: nowMs,
+          paidAt: new Date(nowMs).toISOString(),
+          expiryAt: expiryMs,
+          status: 'paid'
+        };
+
         const updatedUser = Object.assign({}, curUser, {
           sdt: sdt,
           hoten: hoten,
           loaiTK: tier,
           isPaid: true,
-          proExpiry: Date.now() + durationDays * 24 * 3600 * 1000,
-          lastPayment: {
-            gateway: 'VNPay',
-            orderId: vnpResponse.orderId,
-            transactionId: vnpResponse.transactionId,
-            amount: vnpResponse.amount,
-            bankCode: vnpResponse.bankCode,
-            payDate: vnpResponse.payDate,
-            planCode: planCode,
-            activatedAt: Date.now()
-          }
+          planCode: planCode,
+          planName: paymentRecord.planName,
+          activatedAt: nowMs,
+          proExpiry: expiryMs,
+          trialExpiry: expiryMs,
+          lastPayment: paymentRecord
         });
 
         localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(updatedUser));
         localStorage.setItem('vlxt_is_paid', 'true');
+        try {
+          const hist = JSON.parse(localStorage.getItem('vlxt_payment_history') || '[]');
+          const arr = Array.isArray(hist) ? hist : [];
+          const exists = arr.some(x => String(x.transactionId || x.orderId || x.id) === String(paymentRecord.id));
+          if (!exists) arr.unshift(paymentRecord);
+          localStorage.setItem('vlxt_payment_history', JSON.stringify(arr.slice(0, 50)));
+        } catch (e) {}
 
         // Cập nhật trạng thái đơn hàng trong lịch sử
         if (lastOrder && lastOrder.orderId === vnpResponse.orderId) {

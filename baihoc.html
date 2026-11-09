@@ -2981,9 +2981,7 @@ function isLessonBlocked(course, key){
     if(!lessonHasContent(flat[idx])) return {blocked:true, reason:'empty'};
 
     const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
-    const isPaid = (typeof FreemiumFlow !== 'undefined')
-        ? FreemiumFlow.isPaidUser(user)
-        : (user && (user.loaiTK === 'premium' || user.loaiTK === 'pro' || (user.loaiTK === 'vip' && Number(user.trialExpiry||0) > Date.now())));
+    const isPaid = isUserPaidProOrPremium(user);
 
     const targetLesson = flat[idx];
     const chapterName = targetLesson.chapter || targetLesson.Chuong || '';
@@ -3583,7 +3581,12 @@ function handleOpenLesson(courseName, lessonKey){
             showTrialLimitModal(course, lesson, blk.trialInfo);
             return;
         }
-        if(typeof FreemiumFlow !== 'undefined') {
+        if(blk.reason === 'sequence'){
+            const prevName = blk.prevLesson && blk.prevLesson.name ? blk.prevLesson.name : 'bài trước';
+            toast('🔒 Em cần hoàn thành "' + esc(prevName) + '" trước để mở khoá bài tiếp theo nhé!', 'err');
+            return;
+        }
+        if(!isUserPaidProOrPremium() && typeof FreemiumFlow !== 'undefined') {
             FreemiumFlow.openBenefitsModal('Nâng Cấp Gói Pro (50k) Để Mở Khóa Trọn Vẹn'); } else { toast('🔒 Nâng cấp Gói Pro (50k) để mở khoá nội dung này!', 'err'); } return; }
 
     const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
@@ -6638,28 +6641,45 @@ function isStarted(courseName){
     return cfg.daKhaiGiang === true;
 }
 
+function isUserPaidProOrPremium(u){
+    const user = u || (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
+    const rawTier = String((user && user.loaiTK) || '').trim().toLowerCase();
+    if(rawTier === 'pro' || rawTier === 'premium') return true;
+    if(user && user.isPaid === true && (!user.proExpiry || Number(user.proExpiry) > Date.now())) return true;
+    if(typeof FreemiumFlow !== 'undefined' && typeof FreemiumFlow.isPaidUser === 'function' && FreemiumFlow.isPaidUser(user)) return true;
+    try{ if(typeof localStorage !== 'undefined' && localStorage.getItem('vlxt_is_paid') === 'true') return true; }catch(e){}
+    return false;
+}
+
+function hasCourseTierAccess(cfg, u){
+    if(!cfg) return true;
+    const allowed = (cfg.loaiTK||'free,vip,premium').split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
+    if(!allowed.length || allowed.includes('free')) return true;
+    if(isUserPaidProOrPremium(u)) return true;
+    const user = u || (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
+    const tier = String((user && user.loaiTK) || 'free').trim().toLowerCase();
+    if(allowed.includes(tier)) return true;
+    if((tier === 'trial' || tier === 'vip') && allowed.includes('vip')) return true;
+    return false;
+}
+
 function canAccess(courseName){
     const cfg = getCourseConfig(courseName);
     if(!cfg) return true;
     if(cfg.trangThai === 'closed') return false;
     if(cfg.daKhaiGiang === false) return false; // chưa khai giảng → khoá
-    const allowed = (cfg.loaiTK||'free,vip,premium').split(',').map(s=>s.trim().toLowerCase());
-    const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
-    const tier = String((user && user.loaiTK) || 'free').trim().toLowerCase();
-    return allowed.includes(tier);
+    return hasCourseTierAccess(cfg);
 }
 
 function tierLabel(courseName){
     const cfg = getCourseConfig(courseName);
     if(!cfg || cfg.trangThai === 'closed') return '🔒 Khoá học chưa mở';
     const allowed = (cfg.loaiTK||'free,vip,premium').split(',').map(s=>s.trim().toLowerCase());
-    const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
-    const tier = String((user && user.loaiTK) || 'free').trim().toLowerCase();
 
     // 1) Ưu tiên kiểm tra điều kiện phân hạng tài khoản trước
-    if(!allowed.includes(tier)){
-        if(allowed.every(t=>t==='premium')) return '💎 Cần tài khoản Premium';
-        if(allowed.some(t=>t==='vip'||t==='premium') && !allowed.includes('free')) return '⭐ Cần tài khoản VIP trở lên';
+    if(!hasCourseTierAccess(cfg)){
+        if(allowed.every(t=>t==='premium'||t==='pro')) return '💎 Cần tài khoản Premium';
+        if(allowed.some(t=>t==='vip'||t==='premium'||t==='pro') && !allowed.includes('free')) return '⭐ Cần tài khoản VIP trở lên';
         return '🔒 Không có quyền truy cập';
     }
     // 2) Đã đạt điều kiện phân hạng nhưng khoá chưa khai giảng
@@ -6673,16 +6693,13 @@ function tierLabel(courseName){
 function showUpgrade(courseName){
     const msg = tierLabel(courseName);
     const cfg = getCourseConfig(courseName);
-    const allowed = ((cfg && cfg.loaiTK) || 'free,vip,premium').split(',').map(s=>s.trim().toLowerCase());
-    const user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
-    const tier = String((user && user.loaiTK) || 'free').trim().toLowerCase();
 
     // Nếu chưa đủ phân hạng tài khoản -> luôn hiện thông báo nâng hạng
-    if(!allowed.includes(tier)){
+    if(!hasCourseTierAccess(cfg)){
         app().innerHTML=`<div class="empty">
             <i class="fa-solid fa-crown" style="font-size:40px;color:#d97706;margin-bottom:16px"></i>
             <p style="font-size:18px;font-weight:700">${msg || '💎 Cần tài khoản Premium'}</p>
-            <p style="color:var(--muted)">Liên hệ thầy Trường qua Zalo để nâng cấp tài khoản và truy cập khoá học này.</p>
+            <p style="color:var(--muted)">Liên hệ thầy Trường qua Zalo hoặc nâng cấp Gói Pro để truy cập khoá học này.</p>
             <p><a onclick="go('#home')" style="cursor:pointer;color:var(--blue)">← Về danh sách khoá học</a></p>
         </div>`;
         return;

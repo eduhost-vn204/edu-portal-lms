@@ -346,11 +346,15 @@
         <p class="header-desc">Học bài giảng video độc quyền, giải bộ 20 câu trắc nghiệm dừng video theo từng bài và rèn luyện kỹ năng thực chiến cùng Thầy Xuân Trường.</p>
     </div>
 
+    <!-- ─── BANNER GÓI HIỆN TẠI CỦA HỌC SINH (Tự động hiển thị nếu đã kích hoạt Pro/VIP) ─── -->
+    <div id="active-plan-banner" style="display:none;max-width:1100px;margin:0 auto 28px;background:linear-gradient(135deg,rgba(16,185,129,0.14),rgba(6,78,59,0.28));border:1.5px solid rgba(16,185,129,0.45);border-radius:18px;padding:18px 22px;box-shadow:0 12px 32px rgba(0,0,0,0.35);"></div>
+
     <!-- ─── PRICING TIERS ─── -->
     <div class="pricing-grid">
 
         <!-- GÓI 1: THEO THÁNG (50K) -->
-        <div class="pricing-card">
+        <div class="pricing-card" id="plan-card-THANG50K">
+            <div id="current-tag-THANG50K" style="display:none;position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#10b981,#34d399);color:#022c22;font-size:11px;font-weight:900;padding:4px 14px;border-radius:100px;letter-spacing:0.04em;white-space:nowrap;box-shadow:0 4px 14px rgba(16,185,129,0.4);">👑 GÓI HIỆN TẠI CỦA BẠN</div>
             <div class="plan-header">
                 <div class="plan-name">Gói Tháng Linh Hoạt</div>
                 <div class="plan-sub">Trải nghiệm toàn bộ bài giảng video và trắc nghiệm tương tác từng tháng một.</div>
@@ -360,13 +364,13 @@
                 <div class="plan-cycle">/ tháng</div>
             </div>
             <ul class="features-list">
-                <li><i class="fa-solid fa-circle-check"></i> <span>Mở khóa 100% <strong>41 bài giảng video chuyên sâu</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Mở khóa 100% <strong>toàn bộ các khóa học & bài giảng video</strong></span></li>
                 <li><i class="fa-solid fa-circle-check"></i> <span>Tương tác hệ thống <strong>20 câu dừng video</strong> mỗi bài</span></li>
                 <li><i class="fa-solid fa-circle-check"></i> <span>Tải toàn bộ <strong>PDF lý thuyết & bài tập</strong></span></li>
                 <li><i class="fa-solid fa-circle-check"></i> <span>Ôn tập không giới hạn trên cả Web và Điện thoại</span></li>
             </ul>
-            <div>
-                <button class="btn-select-plan secondary" onclick="openPayment('THANG50K', 'Gói Tháng Linh Hoạt', 50000, 'vietqr')">
+            <div id="action-wrap-THANG50K">
+                <button id="btn-plan-THANG50K" class="btn-select-plan secondary" onclick="openPayment('THANG50K', 'Gói Tháng Linh Hoạt', 50000, 'vietqr')">
                     <i class="fa-solid fa-qrcode"></i> Đăng Ký Gói 50k / Tháng
                 </button>
                 <button class="btn-vnpay-direct" onclick="openPayment('THANG50K', 'Gói Tháng Linh Hoạt', 50000, 'vnpay')">
@@ -376,8 +380,8 @@
         </div>
 
         <!-- GÓI 2: THEO NĂM (TIẾT KIỆM) -->
-        <div class="pricing-card featured">
-            <div class="featured-tag">ĐƯỢC CHỌN NHIỀU NHẤT ⭐</div>
+        <div class="pricing-card featured" id="plan-card-NAM399K">
+            <div class="featured-tag" id="current-tag-NAM399K">ĐƯỢC CHỌN NHIỀU NHẤT ⭐</div>
             <div class="plan-header">
                 <div class="plan-name">Trọn Khóa Cả Năm (XPS 2k9)</div>
                 <div class="plan-sub">Đồng hành trọn vẹn cả năm học cho đến ngày bước vào phòng thi tốt nghiệp.</div>
@@ -393,8 +397,8 @@
                 <li><i class="fa-solid fa-circle-check"></i> <span>Huy hiệu <strong>VIP Member</strong> trên bảng xếp hạng Đấu Hạng</span></li>
                 <li><i class="fa-solid fa-circle-check"></i> <span>Tiết kiệm <strong>35% học phí</strong> so với đăng ký từng tháng</span></li>
             </ul>
-            <div>
-                <button class="btn-select-plan primary" onclick="openPayment('NAM399K', 'Gói Trọn Năm XPS 2k9', 399000, 'vietqr')">
+            <div id="action-wrap-NAM399K">
+                <button id="btn-plan-NAM399K" class="btn-select-plan primary" onclick="openPayment('NAM399K', 'Gói Trọn Năm XPS 2k9', 399000, 'vietqr')">
                     <i class="fa-solid fa-bolt"></i> Nhận Ưu Đãi Trọn Khóa (399k)
                 </button>
                 <button class="btn-vnpay-direct" onclick="openPayment('NAM399K', 'Gói Trọn Năm XPS 2k9', 399000, 'vnpay')">
@@ -404,7 +408,8 @@
         </div>
 
         <!-- GÓI 3: LỚP ONLINE CÙNG THẦY -->
-        <div class="pricing-card">
+        <div class="pricing-card" id="plan-card-VIP850K">
+            <div id="current-tag-VIP850K" style="display:none;position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#a855f7,#ec4899);color:#fff;font-size:11px;font-weight:900;padding:4px 14px;border-radius:100px;letter-spacing:0.04em;white-space:nowrap;box-shadow:0 4px 14px rgba(168,85,247,0.45);">💎 GÓI HIỆN TẠI CỦA BẠN</div>
             <div class="plan-header">
                 <div class="plan-name">Lớp Online Cùng Thầy (VIP)</div>
                 <div class="plan-sub">Học tương tác trực tiếp hàng tuần cùng Thầy Xuân Trường và đội ngũ trợ giảng.</div>
@@ -419,8 +424,8 @@
                 <li><i class="fa-solid fa-circle-check"></i> <span>Hỏi đáp bài tập <strong>1-1 với Thầy & Trợ giảng</strong></span></li>
                 <li><i class="fa-solid fa-circle-check"></i> <span>Kiểm tra định kỳ và sửa bài cá nhân hóa chi tiết</span></li>
             </ul>
-            <div>
-                <button class="btn-select-plan secondary" onclick="openPayment('VIP850K', 'Lớp Online Cùng Thầy (VIP)', 850000, 'vietqr')">
+            <div id="action-wrap-VIP850K">
+                <button id="btn-plan-VIP850K" class="btn-select-plan secondary" onclick="openPayment('VIP850K', 'Lớp Online Cùng Thầy (VIP)', 850000, 'vietqr')">
                     <i class="fa-solid fa-user-tie"></i> Đăng Ký Lớp Cùng Thầy
                 </button>
                 <button class="btn-vnpay-direct" onclick="openPayment('VIP850K', 'Lớp Online Cùng Thầy (VIP)', 850000, 'vnpay')">
@@ -430,6 +435,9 @@
         </div>
 
     </div>
+
+    <!-- ─── LỊCH SỬ GIAO DỊCH & THANH TOÁN CỦA HỌC SINH ─── -->
+    <div id="goihoc-payment-history" style="display:none;max-width:1100px;margin:28px auto 0;background:rgba(15,23,42,0.85);border:1px solid rgba(56,189,248,0.22);border-radius:18px;padding:22px 24px;"></div>
 
     <!-- ─── FAQ ─── -->
     <div class="faq-section">
@@ -626,11 +634,268 @@ let currentPlanCode = 'THANG50K';
 let currentPlanName = 'Gói Tháng Linh Hoạt';
 let vietQrPollTimer = null;
 
-document.addEventListener('DOMContentLoaded', () => {
-    if (typeof vlxtGetUser === 'function') {
-        const u = vlxtGetUser();
-        if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(u);
+function getPlanMetaByCode(code) {
+    if (code === 'VIP850K') return { code: 'VIP850K', name: 'Lớp Online Cùng Thầy (VIP)', priceText: '850.000đ / khóa học', amount: 850000, rank: 3 };
+    if (code === 'NAM399K') return { code: 'NAM399K', name: 'Trọn Khóa Cả Năm (XPS 2k9)', priceText: '399.000đ / cả năm', amount: 399000, rank: 2 };
+    return { code: 'THANG50K', name: 'Gói Tháng Linh Hoạt', priceText: '50.000đ / tháng', amount: 50000, rank: 1 };
+}
+
+function getEffectiveSubscriptionOnPricingPage() {
+    const u = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : null) || {};
+    let hist = [];
+    try { hist = JSON.parse(localStorage.getItem('vlxt_payment_history') || '[]'); } catch (e) {}
+    if (!Array.isArray(hist)) hist = [];
+
+    const loai = String(u.loaiTK || '').toLowerCase();
+    const expiry = Number(u.proExpiry || u.trialExpiry || 0);
+    const daysLeft = expiry > Date.now() ? Math.ceil((expiry - Date.now()) / 86400000) : 0;
+    const isPaid = Boolean(
+        u.isPaid ||
+        loai === 'pro' ||
+        loai === 'premium' ||
+        (loai === 'vip' && daysLeft > 8) ||
+        localStorage.getItem('vlxt_is_paid') === 'true' ||
+        hist.length > 0
+    );
+
+    if (!isPaid) return { isPaid: false, user: u, history: hist };
+
+    let planCode = u.planCode || (u.lastPayment && u.lastPayment.planCode) || (hist[0] && hist[0].planCode) || '';
+    if (!planCode) {
+        planCode = (loai === 'premium' || daysLeft > 60) ? 'NAM399K' : 'THANG50K';
     }
+    const meta = getPlanMetaByCode(planCode);
+    const effectiveExpiry = expiry > Date.now() ? expiry : (Date.now() + (meta.rank >= 2 ? 365 : 30) * 86400000);
+    const effDaysLeft = Math.max(1, Math.ceil((effectiveExpiry - Date.now()) / 86400000));
+
+    return {
+        isPaid: true,
+        user: u,
+        planCode: meta.code,
+        planName: u.planName || meta.name,
+        priceText: meta.priceText,
+        rank: meta.rank,
+        expiryAt: effectiveExpiry,
+        daysLeft: effDaysLeft,
+        history: hist
+    };
+}
+
+function renderCurrentPlanStateOnPricingCards() {
+    const state = getEffectiveSubscriptionOnPricingPage();
+    const banner = document.getElementById('active-plan-banner');
+    const histBox = document.getElementById('goihoc-payment-history');
+    if (!state.isPaid) {
+        if (banner) banner.style.display = 'none';
+        if (histBox) histBox.style.display = 'none';
+        return;
+    }
+
+    const expDateStr = new Date(state.expiryAt).toLocaleDateString('vi-VN');
+    if (banner) {
+        banner.style.display = 'block';
+        banner.innerHTML = `
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+                <div style="display:flex;align-items:center;gap:14px;">
+                    <div style="width:46px;height:46px;border-radius:12px;background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.45);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👑</div>
+                    <div>
+                        <div style="font-size:12px;font-weight:800;color:#34d399;text-transform:uppercase;letter-spacing:0.06em;">● GÓI HỌC HIỆN TẠI CỦA BẠN ĐANG KÍCH HOẠT</div>
+                        <div style="font-size:17px;font-weight:900;color:#fff;margin-top:2px;">${state.planName} <span style="font-size:13px;font-weight:700;color:#a7f3d0;">(${state.priceText})</span></div>
+                        <div style="font-size:13px;color:#cbd5e1;margin-top:3px;">⏳ Còn <strong>${state.daysLeft} ngày</strong> hiệu lực (Hết hạn: <strong>${expDateStr}</strong>) · Đã mở khóa 100% các khóa học</div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <a href="baihoc.html" style="padding:10px 18px;border-radius:10px;background:linear-gradient(90deg,#10b981,#059669);color:#022c22;font-weight:800;font-size:13.5px;text-decoration:none;display:inline-flex;align-items:center;gap:7px;box-shadow:0 4px 14px rgba(16,185,129,0.35);">
+                        <i class="fa-solid fa-rocket"></i> Vào Học Ngay
+                    </a>
+                    <a href="hoso.html" style="padding:10px 16px;border-radius:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);color:#e2e8f0;font-weight:700;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:7px;">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Hồ Sơ & Lịch Sử Giao Dịch
+                    </a>
+                </div>
+            </div>
+        `;
+    }
+
+    // Cập nhật trạng thái nút trên 3 thẻ gói học để không hiện "Đăng ký gói tháng" khi đang ở Gói Tháng
+    const cardMonth = document.getElementById('plan-card-THANG50K');
+    const cardYear = document.getElementById('plan-card-NAM399K');
+    const cardVip = document.getElementById('plan-card-VIP850K');
+    const tagMonth = document.getElementById('current-tag-THANG50K');
+    const tagYear = document.getElementById('current-tag-NAM399K');
+    const tagVip = document.getElementById('current-tag-VIP850K');
+    const wrapMonth = document.getElementById('action-wrap-THANG50K');
+    const wrapYear = document.getElementById('action-wrap-NAM399K');
+    const wrapVip = document.getElementById('action-wrap-VIP850K');
+
+    if (state.planCode === 'THANG50K') {
+        if (cardMonth) {
+            cardMonth.style.borderColor = '#10b981';
+            cardMonth.style.boxShadow = '0 0 28px rgba(16,185,129,0.22)';
+        }
+        if (tagMonth) tagMonth.style.display = 'block';
+        if (wrapMonth) {
+            wrapMonth.innerHTML = `
+                <button class="btn-select-plan primary" style="background:linear-gradient(90deg,#10b981,#059669);color:#022c22;box-shadow:0 4px 16px rgba(16,185,129,0.35);" onclick="window.location.href='baihoc.html'">
+                    <i class="fa-solid fa-circle-check"></i> Đang Sử Dụng Gói Này — Vào Học Ngay
+                </button>
+                <button class="btn-select-plan secondary" style="margin-top:8px;padding:9px 12px;font-size:12.5px;opacity:0.88;" onclick="openPayment('THANG50K', 'Gia Hạn Gói Tháng Linh Hoạt (+30 ngày)', 50000, 'vietqr')">
+                    <i class="fa-solid fa-rotate"></i> Gia hạn cộng dồn thêm 1 tháng (+30 ngày)
+                </button>
+            `;
+        }
+        const btnYear = document.getElementById('btn-plan-NAM399K');
+        if (btnYear) btnYear.innerHTML = '<i class="fa-solid fa-arrow-up-right-dots"></i> Nâng Cấp Lên Gói Cả Năm (399k)';
+        const btnVip = document.getElementById('btn-plan-VIP850K');
+        if (btnVip) btnVip.innerHTML = '<i class="fa-solid fa-arrow-up-right-dots"></i> Nâng Cấp Lên Lớp VIP Cùng Thầy (850k)';
+    } else if (state.planCode === 'NAM399K') {
+        if (cardYear) {
+            cardYear.style.borderColor = '#10b981';
+            cardYear.style.boxShadow = '0 0 28px rgba(16,185,129,0.25)';
+        }
+        if (tagYear) {
+            tagYear.textContent = '👑 GÓI HIỆN TẠI CỦA BẠN';
+            tagYear.style.background = 'linear-gradient(90deg,#10b981,#34d399)';
+            tagYear.style.color = '#022c22';
+        }
+        if (wrapMonth) {
+            wrapMonth.innerHTML = `
+                <button class="btn-select-plan secondary" disabled style="opacity:0.55;cursor:default;">
+                    <i class="fa-solid fa-check"></i> Đã bao gồm trong Gói Cả Năm của bạn
+                </button>
+            `;
+        }
+        if (wrapYear) {
+            wrapYear.innerHTML = `
+                <button class="btn-select-plan primary" style="background:linear-gradient(90deg,#10b981,#059669);color:#022c22;" onclick="window.location.href='baihoc.html'">
+                    <i class="fa-solid fa-circle-check"></i> Đang Sử Dụng Gói Cả Năm — Vào Học Ngay
+                </button>
+            `;
+        }
+        const btnVip = document.getElementById('btn-plan-VIP850K');
+        if (btnVip) btnVip.innerHTML = '<i class="fa-solid fa-arrow-up-right-dots"></i> Nâng Cấp Lên Lớp VIP Cùng Thầy (850k)';
+    } else if (state.planCode === 'VIP850K') {
+        if (cardVip) {
+            cardVip.style.borderColor = '#a855f7';
+            cardVip.style.boxShadow = '0 0 28px rgba(168,85,247,0.28)';
+        }
+        if (tagVip) tagVip.style.display = 'block';
+        if (wrapMonth) {
+            wrapMonth.innerHTML = `<button class="btn-select-plan secondary" disabled style="opacity:0.55;cursor:default;"><i class="fa-solid fa-check"></i> Đã bao gồm trong Gói VIP của bạn</button>`;
+        }
+        if (wrapYear) {
+            wrapYear.innerHTML = `<button class="btn-select-plan secondary" disabled style="opacity:0.55;cursor:default;"><i class="fa-solid fa-check"></i> Đã bao gồm trong Gói VIP của bạn</button>`;
+        }
+        if (wrapVip) {
+            wrapVip.innerHTML = `
+                <button class="btn-select-plan primary" style="background:linear-gradient(90deg,#a855f7,#ec4899);color:#fff;" onclick="window.location.href='baihoc.html'">
+                    <i class="fa-solid fa-circle-check"></i> Đang Sử Dụng Gói VIP — Vào Học Ngay
+                </button>
+            `;
+        }
+    }
+
+    // Hiển thị bảng lịch sử giao dịch ngay dưới bảng giá
+    if (histBox) {
+        const rows = state.history.length > 0 ? state.history : [{
+            id: (state.user.lastPayment && state.user.lastPayment.transactionId) || ('PRO-' + (state.user.sdt || 'ACTIVE')),
+            transactionId: (state.user.lastPayment && state.user.lastPayment.transactionId) || 'Đang đồng bộ mã GD',
+            planName: state.planName,
+            amount: state.planCode === 'VIP850K' ? 850000 : state.planCode === 'NAM399K' ? 399000 : 50000,
+            method: (state.user.lastPayment && state.user.lastPayment.method) || 'VietQR VietinBank',
+            paidAt: (state.user.lastPayment && state.user.lastPayment.paidAt) || state.user.activatedAt || new Date().toISOString(),
+            expiryAt: state.expiryAt,
+            status: 'paid'
+        }];
+        histBox.style.display = 'block';
+        histBox.innerHTML = `
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+                <div style="font-size:16px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px;">
+                    <i class="fa-solid fa-receipt" style="color:#38bdf8;"></i> Lịch Sử Giao Dịch & Thanh Toán (${rows.length})
+                </div>
+                <a href="hoso.html" style="font-size:12.5px;color:#38bdf8;text-decoration:none;font-weight:700;">Xem trong Hồ sơ cá nhân →</a>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+                ${rows.map(item => {
+                    const amtStr = Number(item.amount || 50000).toLocaleString('vi-VN') + 'đ';
+                    const timeStr = item.paidAt ? new Date(item.paidAt).toLocaleString('vi-VN') : 'Đã kích hoạt';
+                    const codeStr = item.transactionId || item.maGD || item.orderId || item.id || '---';
+                    return `
+                        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:12px 16px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
+                            <div>
+                                <div style="font-size:14px;font-weight:800;color:#f8fafc;">${item.planName || 'Gói Tự Học Pro'} <span style="font-size:11.5px;font-weight:800;color:#34d399;background:rgba(16,185,129,0.16);padding:2px 8px;border-radius:6px;margin-left:6px;">✓ Thành công</span></div>
+                                <div style="font-size:12px;color:#94a3b8;margin-top:3px;">Mã GD: <code style="color:#38bdf8;">${codeStr}</code> · Phương thức: <strong>${item.method || item.gateway || 'VietQR VietinBank'}</strong> · Thời gian: ${timeStr}</div>
+                            </div>
+                            <div style="font-size:16px;font-weight:900;color:#34d399;">${amtStr}</div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const u = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
+    if (u && typeof vlxtRenderWidget === 'function') {
+        vlxtRenderWidget(u);
+    }
+    renderCurrentPlanStateOnPricingCards();
+
+    // Tự động đồng bộ trạng thái gói & mã giao dịch thật từ GAS cho tài khoản đang đăng nhập
+    if (u && u.sdt && u.sdt !== 'FREE' && typeof fetch === 'function') {
+        const gasUrl = (typeof window.VLXT_GAS !== 'undefined')
+            ? window.VLXT_GAS
+            : 'https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec';
+        fetch(gasUrl, {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: 'checkpaymentstatus', sdt: String(u.sdt).replace(/\D/g, ''), hoten: u.hoten || '' })
+        }).then(r => r.json()).then(res => {
+            if (res && res.ok && res.paid) {
+                const planCode = res.planCode || u.planCode || 'THANG50K';
+                const meta = getPlanMetaByCode(planCode);
+                const expiry = Number(res.proExpiry) || Number(u.proExpiry) || (Date.now() + (meta.rank >= 2 ? 365 : 30) * 86400000);
+                const txId = res.transactionId || (u.lastPayment && u.lastPayment.transactionId) || ('VQR-' + u.sdt);
+                const txRecord = {
+                    id: String(txId),
+                    transactionId: String(txId),
+                    gateway: 'VietQR',
+                    method: 'VietQR VietinBank',
+                    sdt: u.sdt,
+                    hoten: u.hoten || 'Học sinh Pro',
+                    planCode: meta.code,
+                    planName: meta.name,
+                    loaiTK: res.loaiTK || (meta.rank >= 2 ? 'premium' : 'pro'),
+                    amount: Number(res.amount || meta.amount),
+                    paidAt: res.paidAt || (u.lastPayment && u.lastPayment.paidAt) || new Date().toISOString(),
+                    expiryAt: expiry,
+                    status: 'paid'
+                };
+                const updated = Object.assign({}, u, {
+                    isPaid: true,
+                    loaiTK: txRecord.loaiTK,
+                    planCode: meta.code,
+                    planName: meta.name,
+                    proExpiry: expiry,
+                    trialExpiry: expiry,
+                    lastPayment: txRecord
+                });
+                try {
+                    localStorage.setItem('vlxt_user_v2', JSON.stringify(updated));
+                    localStorage.setItem('vlxt_is_paid', 'true');
+                    const hist = JSON.parse(localStorage.getItem('vlxt_payment_history') || '[]');
+                    const arr = Array.isArray(hist) ? hist : [];
+                    const exists = arr.some(x => String(x.transactionId || x.id) === String(txRecord.id));
+                    if (!exists) arr.unshift(txRecord);
+                    localStorage.setItem('vlxt_payment_history', JSON.stringify(arr.slice(0, 50)));
+                } catch (e) {}
+                if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(updated);
+                renderCurrentPlanStateOnPricingCards();
+            }
+        }).catch(() => {});
+    }
+
     // Chỉ hiển thị nút/tab VNPay nếu VNPay được bật trong cấu hình (hoặc ?vnpay=1)
     if (typeof window.VnPayService !== 'undefined' && typeof window.VnPayService.isEnabled === 'function' && window.VnPayService.isEnabled()) {
         document.querySelectorAll('.btn-vnpay-direct').forEach(btn => { btn.style.display = 'inline-flex'; });
@@ -763,23 +1028,54 @@ function checkVietQrPaymentStatus(isManualClick) {
 
 function unlockPaidAccountOnPage(sdt, hoten, res) {
     const curUser = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : null) || {};
-    const isYearPlan = (currentPlanCode === 'NAM399K' || currentPlanCode === 'VIP850K' || currentAmount >= 300000);
+    const planCode = (res && res.planCode) || currentPlanCode || 'THANG50K';
+    const meta = getPlanMetaByCode(planCode);
+    const isYearPlan = (planCode === 'NAM399K' || planCode === 'VIP850K' || currentAmount >= 300000);
     const tier = (res && res.loaiTK) || (isYearPlan ? 'premium' : 'pro');
-    const expiry = (res && res.proExpiry) || (Date.now() + (isYearPlan ? 365 : 30) * 86400000);
+    const nowMs = Date.now();
+    const expiry = (res && res.proExpiry) || (nowMs + (isYearPlan ? 365 : 30) * 86400000);
+    const txId = (res && (res.transactionId || res.maGD)) || ('VQR-' + nowMs);
+
+    const paymentRecord = {
+        id: String(txId),
+        transactionId: String(txId),
+        gateway: 'VietQR',
+        method: 'VietQR VietinBank',
+        sdt: sdt,
+        hoten: hoten,
+        planCode: planCode,
+        planName: currentPlanName || meta.name,
+        loaiTK: tier,
+        amount: Number((res && res.amount) || currentAmount || meta.amount),
+        activatedAt: nowMs,
+        paidAt: (res && res.paidAt) || new Date(nowMs).toISOString(),
+        expiryAt: expiry,
+        status: 'paid'
+    };
 
     const updatedUser = Object.assign({}, curUser, {
         sdt: sdt,
         hoten: hoten,
         loaiTK: tier,
         isPaid: true,
+        planCode: planCode,
+        planName: paymentRecord.planName,
+        activatedAt: nowMs,
         proExpiry: expiry,
-        trialExpiry: expiry
+        trialExpiry: expiry,
+        lastPayment: paymentRecord
     });
 
     try {
         localStorage.setItem('vlxt_user_v2', JSON.stringify(updatedUser));
         localStorage.setItem('vlxt_is_paid', 'true');
+        const hist = JSON.parse(localStorage.getItem('vlxt_payment_history') || '[]');
+        const arr = Array.isArray(hist) ? hist : [];
+        const exists = arr.some(x => String(x.transactionId || x.id) === String(paymentRecord.id));
+        if (!exists) arr.unshift(paymentRecord);
+        localStorage.setItem('vlxt_payment_history', JSON.stringify(arr.slice(0, 50)));
         if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(updatedUser);
+        renderCurrentPlanStateOnPricingCards();
     } catch (e) {}
 
     if (typeof window.confetti === 'function') {

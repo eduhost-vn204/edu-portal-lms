@@ -699,7 +699,41 @@ function getProfile(dataOrEvent) {
     }
   }
 
-  return jsonOut({ ok: true, user, scores, tiendo });
+  const payments = [];
+  try {
+    const vqrSheet = getOrCreate('GiaoDichVietQR', [
+      'maGD','sdt','hoten','goiHoc','loaiTK','soTien','noiDung','nganHang','stkNhan','thoiGianGD','ngayKichHoat','trangThai'
+    ]);
+    const vqrRows = sheetToJson(vqrSheet);
+    for (let i = vqrRows.length - 1; i >= 0; i--) {
+      if (normSdt(vqrRows[i].sdt) === normSdt(sdt) && String(vqrRows[i].trangThai) === 'DA_KICH_HOAT_TU_DONG') {
+        const isYear = String(vqrRows[i].loaiTK) === 'premium' || String(vqrRows[i].goiHoc) === 'NAM399K' || String(vqrRows[i].goiHoc) === 'VIP850K';
+        payments.push({
+          maGD: vqrRows[i].maGD,
+          transactionId: vqrRows[i].maGD,
+          planCode: vqrRows[i].goiHoc || 'THANG50K',
+          loaiTK: isYear ? 'premium' : 'pro',
+          amount: Number(vqrRows[i].soTien || 50000),
+          nganHang: vqrRows[i].nganHang || 'VietinBank',
+          paidAt: vqrRows[i].ngayKichHoat || vqrRows[i].thoiGianGD || '',
+          trangThai: vqrRows[i].trangThai
+        });
+      }
+    }
+  } catch (e) {}
+
+  if (payments.length > 0 && user) {
+    user.isPaid = true;
+    user.planCode = payments[0].planCode;
+    if (user.loaiTK !== 'premium') {
+      user.loaiTK = payments[0].loaiTK === 'premium' ? 'premium' : 'pro';
+    }
+    if (!user.proExpiry || user.proExpiry < user.trialExpiry) {
+      user.proExpiry = user.trialExpiry || (Date.now() + (user.loaiTK === 'premium' ? 365 : 30) * 86400000);
+    }
+  }
+
+  return jsonOut({ ok: true, user, scores, tiendo, payments });
 }
 
 // ── GET: Bảng xếp hạng ───────────────────────────────────────
@@ -5662,13 +5696,17 @@ function checkPaymentStatusGAS(data) {
     const txRows = sheetToJson(txSheet);
     for (let i = txRows.length - 1; i >= 0; i--) {
       if (normSdt(txRows[i].sdt) === sdt && String(txRows[i].trangThai) === 'DA_KICH_HOAT_TU_DONG') {
-        const isYear = String(txRows[i].loaiTK) === 'premium';
+        const isYear = String(txRows[i].loaiTK) === 'premium' || String(txRows[i].goiHoc) === 'NAM399K' || String(txRows[i].goiHoc) === 'VIP850K';
+        const activatedMs = txRows[i].ngayKichHoat ? new Date(txRows[i].ngayKichHoat).getTime() : Date.now();
+        const baseMs = (!isNaN(activatedMs) && activatedMs > 0) ? activatedMs : Date.now();
         return jsonOut({
           ok: true,
           paid: true,
           planCode: txRows[i].goiHoc || 'THANG50K',
           loaiTK: isYear ? 'premium' : 'pro',
-          proExpiry: Date.now() + (isYear ? 365 : 30) * 86400000,
+          amount: Number(txRows[i].soTien || (isYear ? 399000 : 50000)),
+          paidAt: txRows[i].ngayKichHoat || txRows[i].thoiGianGD || new Date().toISOString(),
+          proExpiry: baseMs + (isYear ? 365 : 30) * 86400000,
           transactionId: txRows[i].maGD
         });
       }

@@ -745,31 +745,337 @@ const profilePromise = (user && user.sdt && user.token)
     }).then(r => r.json()).catch(() => ({ ok: true, user: user, scores: [], tiendo: [] }))
   : Promise.resolve({ ok: true, user: user, scores: [], tiendo: [] });
 
+const paymentStatusPromise = (user && user.sdt && user.sdt !== 'FREE')
+  ? fetch(GAS, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'checkpaymentstatus', sdt: String(user.sdt).replace(/\D/g, ''), hoten: user.hoten || '' })
+    }).then(r => r.json()).catch(() => ({ ok: false, paid: false }))
+  : Promise.resolve({ ok: false, paid: false });
+
+let _latestPaymentCheck = { ok: false, paid: false };
+
 Promise.all([
   profilePromise,
   cachedFetch(GAS + '?type=leaderboard').then(r => r.json()),
   cachedFetch(GAS + '?type=nhiemvu&hs=' + encodeURIComponent(user.sdt)).then(r => r.json()).catch(() => ({ ok: false, data: null })),
-  cachedFetch(GAS + '?type=baihoc').then(r => r.json()).catch(() => [])
-]).then(([profile, lb, nvRes, baihocRows]) => {
+  cachedFetch(GAS + '?type=baihoc').then(r => r.json()).catch(() => []),
+  paymentStatusPromise
+]).then(([profile, lb, nvRes, baihocRows, payStatus]) => {
+  _latestPaymentCheck = payStatus || { ok: false, paid: false };
   renderPage(profile, lb, nvRes, baihocRows);
 }).catch(function() {});
 
-function vipInfo(u) {
-  // Ưu tiên GAS, fallback localStorage
-  const storedUser = (() => { try { return JSON.parse(localStorage.getItem('vlxt_user_v2')||'null'); } catch { return null; } })();
-  const loaiTK      = u.loaiTK      || storedUser?.loaiTK      || 'vip';
-  const trialExpiry = u.trialExpiry  || storedUser?.trialExpiry || 0;
-  const now = Date.now();
-  const msLeft = trialExpiry ? (trialExpiry - now) : 0;
-  const daysLeft = Math.max(0, Math.floor(msLeft / 86400000));
-
-  if (loaiTK === 'premium') return { label:'💎 Premium', color:'#7c3aed', bg:'rgba(124,58,237,.1)', border:'rgba(124,58,237,.3)', note: 'Truy cập toàn bộ nội dung', countdown: '' };
-  if (loaiTK === 'vip' && msLeft > 0) {
-    const h = Math.floor((msLeft % 86400000) / 3600000);
-    const note = daysLeft > 0 ? `Còn ${daysLeft} ngày ${h} giờ dùng thử` : `Còn ${h} giờ dùng thử`;
-    return { label:'⭐ VIP (Dùng thử)', color:'#d97706', bg:'rgba(217,119,6,.1)', border:'rgba(217,119,6,.3)', note, countdown: note };
+function getPlanLabelMeta(planCode, loaiTK) {
+  const code = String(planCode || '').toUpperCase();
+  if (code === 'VIP850K') {
+    return { code: 'VIP850K', name: 'Lớp Online Cùng Thầy (VIP)', price: 850000, cycle: 'khóa học', badge: '💎 Gói VIP Live + Tự Học' };
   }
-  return { label:'🆓 Miễn phí', color:'#6b7280', bg:'rgba(107,114,128,.08)', border:'rgba(107,114,128,.25)', note:'Nâng lên VIP để truy cập toàn bộ', countdown: '' };
+  if (code === 'NAM399K' || String(loaiTK || '').toLowerCase() === 'premium') {
+    return { code: 'NAM399K', name: 'Trọn Khóa Cả Năm (XPS 2k9)', price: 399000, cycle: 'cả năm', badge: '💎 Gói Trọn Năm XPS 2k9' };
+  }
+  return { code: 'THANG50K', name: 'Gói Tháng Linh Hoạt', price: 50000, cycle: 'tháng', badge: '👑 Gói Tự Học PRO (50k/tháng)' };
+}
+
+function resolveSubscriptionAndHistory(u, profile) {
+  const storedUser = (() => { try { return JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null'); } catch { return null; } })() || {};
+  const payCheck = _latestPaymentCheck || {};
+
+  // Gom lịch sử giao dịch từ localStorage + VNPay orders + server profile/payCheck
+  let hist = [];
+  try {
+    const raw = JSON.parse(localStorage.getItem('vlxt_payment_history') || '[]');
+    if (Array.isArray(raw)) hist = [...raw];
+  } catch (e) {}
+
+  try {
+    const vnpOrders = JSON.parse(localStorage.getItem('vlxt_vnpay_orders_v1') || '[]');
+    if (Array.isArray(vnpOrders)) {
+      vnpOrders.filter(o => o && o.status === 'paid').forEach(o => {
+        const id = String(o.transactionId || o.orderId || '');
+        if (id && !hist.some(x => String(x.transactionId || x.orderId || x.id) === id)) {
+          const meta = getPlanLabelMeta(o.planCode, '');
+          hist.push({
+            id: id,
+            transactionId: o.transactionId || o.orderId,
+            orderId: o.orderId,
+            planCode: meta.code,
+            planName: meta.name,
+            amount: Number(o.amount || meta.price),
+            method: 'VNPay',
+            paidAt: o.paidAt ? new Date(o.paidAt).toISOString() : new Date(o.createdAt || Date.now()).toISOString(),
+            status: 'paid'
+          });
+        }
+      });
+    }
+  } catch (e) {}
+
+  if (profile && Array.isArray(profile.payments)) {
+    profile.payments.forEach(p => {
+      const id = String(p.transactionId || p.maGD || p.orderId || '');
+      if (id && !hist.some(x => String(x.transactionId || x.maGD || x.orderId || x.id) === id)) {
+        const meta = getPlanLabelMeta(p.planCode || p.goiHoc, p.loaiTK);
+        hist.unshift({
+          id: id,
+          transactionId: id,
+          planCode: meta.code,
+          planName: p.planName || meta.name,
+          amount: Number(p.amount || p.soTien || meta.price),
+          method: p.method || (p.nganHang ? ('VietQR ' + p.nganHang) : 'VietQR VietinBank'),
+          paidAt: p.paidAt || p.ngayKichHoat || p.thoiGianGD || new Date().toISOString(),
+          status: 'paid'
+        });
+      }
+    });
+  }
+
+  if (payCheck && payCheck.ok && payCheck.paid) {
+    const meta = getPlanLabelMeta(payCheck.planCode, payCheck.loaiTK);
+    const txId = String(payCheck.transactionId || ('VQR-' + (u?.sdt || storedUser?.sdt || 'PRO')));
+    if (!hist.some(x => String(x.transactionId || x.maGD || x.id) === txId)) {
+      hist.unshift({
+        id: txId,
+        transactionId: txId,
+        planCode: meta.code,
+        planName: meta.name,
+        amount: Number(payCheck.amount || meta.price),
+        method: 'VietQR VietinBank',
+        paidAt: payCheck.paidAt || storedUser.activatedAt || new Date().toISOString(),
+        expiryAt: Number(payCheck.proExpiry) || 0,
+        status: 'paid'
+      });
+    }
+    try {
+      localStorage.setItem('vlxt_payment_history', JSON.stringify(hist.slice(0, 50)));
+    } catch (e) {}
+  }
+
+  const uLoai = String(u?.loaiTK || '').toLowerCase();
+  const sLoai = String(storedUser?.loaiTK || '').toLowerCase();
+  const rawExpiry = Math.max(
+    Number(u?.proExpiry || 0),
+    Number(storedUser?.proExpiry || 0),
+    Number(payCheck?.proExpiry || 0),
+    Number(u?.trialExpiry || 0),
+    Number(storedUser?.trialExpiry || 0)
+  );
+  const now = Date.now();
+  const msLeft = rawExpiry > now ? (rawExpiry - now) : 0;
+  const daysLeft = Math.max(0, Math.ceil(msLeft / 86400000));
+
+  const isPaid = Boolean(
+    u?.isPaid ||
+    storedUser?.isPaid ||
+    (payCheck && payCheck.ok && payCheck.paid) ||
+    uLoai === 'pro' ||
+    sLoai === 'pro' ||
+    uLoai === 'premium' ||
+    sLoai === 'premium' ||
+    (uLoai === 'vip' && daysLeft > 8) ||
+    localStorage.getItem('vlxt_is_paid') === 'true' ||
+    hist.length > 0
+  );
+
+  let effectiveTier = 'free';
+  if (uLoai === 'premium' || sLoai === 'premium' || payCheck?.loaiTK === 'premium') {
+    effectiveTier = 'premium';
+  } else if (isPaid) {
+    effectiveTier = 'pro';
+  } else if ((uLoai === 'vip' || sLoai === 'vip') && msLeft > 0) {
+    effectiveTier = 'vip';
+  }
+
+  const planCode = payCheck?.planCode || u?.planCode || storedUser?.planCode || storedUser?.lastPayment?.planCode || (hist[0] && hist[0].planCode) || (effectiveTier === 'premium' ? 'NAM399K' : 'THANG50K');
+  const planMeta = getPlanLabelMeta(planCode, effectiveTier);
+  const effectiveExpiry = isPaid
+    ? (rawExpiry > now ? rawExpiry : (now + (effectiveTier === 'premium' ? 365 : 30) * 86400000))
+    : rawExpiry;
+  const effDaysLeft = effectiveExpiry > now ? Math.max(1, Math.ceil((effectiveExpiry - now) / 86400000)) : 0;
+
+  // Nếu tài khoản đang là PRO/Premium nhưng lịch sử chưa có bản ghi nào (kích hoạt trước bản cập nhật), tạo bản ghi hiển thị từ gói hiện tại
+  if (isPaid && hist.length === 0) {
+    const fallbackTx = storedUser.lastPayment || u?.lastPayment || {
+      id: 'PRO-' + (u?.sdt || storedUser?.sdt || 'ACTIVE'),
+      transactionId: payCheck?.transactionId || 'Đã kích hoạt trên hệ thống',
+      planCode: planMeta.code,
+      planName: planMeta.name,
+      amount: planMeta.price,
+      method: 'VietQR VietinBank',
+      paidAt: storedUser.activatedAt || new Date(effectiveExpiry - (effectiveTier === 'premium' ? 365 : 30) * 86400000).toISOString(),
+      expiryAt: effectiveExpiry,
+      status: 'paid'
+    };
+    hist = [fallbackTx];
+  }
+
+  // Đồng bộ ngược lại vào vlxt_user_v2 để auth widget và các trang khác luôn nhất quán
+  if (isPaid) {
+    try {
+      const mergedUser = Object.assign({}, storedUser, u || {}, {
+        loaiTK: effectiveTier,
+        isPaid: true,
+        planCode: planMeta.code,
+        planName: planMeta.name,
+        proExpiry: effectiveExpiry,
+        trialExpiry: effectiveExpiry
+      });
+      if (storedUser.token && !mergedUser.token) mergedUser.token = storedUser.token;
+      localStorage.setItem('vlxt_user_v2', JSON.stringify(mergedUser));
+      localStorage.setItem('vlxt_is_paid', 'true');
+    } catch (e) {}
+  }
+
+  return {
+    isPaid,
+    loaiTK: effectiveTier,
+    planCode: planMeta.code,
+    planName: planMeta.name,
+    planBadge: planMeta.badge,
+    price: planMeta.price,
+    cycle: planMeta.cycle,
+    expiryAt: effectiveExpiry,
+    daysLeft: effDaysLeft,
+    msLeft: effectiveExpiry > now ? (effectiveExpiry - now) : 0,
+    history: hist
+  };
+}
+
+function vipInfo(u, profile) {
+  const sub = resolveSubscriptionAndHistory(u, profile);
+  const expDateStr = sub.expiryAt > 0 ? new Date(sub.expiryAt).toLocaleDateString('vi-VN') : '';
+
+  if (sub.loaiTK === 'premium') {
+    return {
+      label: sub.planBadge,
+      color: '#a855f7',
+      bg: 'rgba(168,85,247,.12)',
+      border: 'rgba(168,85,247,.38)',
+      note: `Đang kích hoạt · Còn ${sub.daysLeft} ngày hiệu lực${expDateStr ? ' (Hết hạn: ' + expDateStr + ')' : ''}`,
+      ctaText: '📦 Chi tiết gói & Lịch sử GD →',
+      ctaHref: 'goi-hoc.html',
+      sub
+    };
+  }
+  if (sub.isPaid || sub.loaiTK === 'pro') {
+    return {
+      label: '👑 Gói Tháng PRO (Đang kích hoạt)',
+      color: '#10b981',
+      bg: 'rgba(16,185,129,.12)',
+      border: 'rgba(16,185,129,.38)',
+      note: `Mở khóa 100% khóa học & Phòng thi · Còn ${sub.daysLeft} ngày hiệu lực${expDateStr ? ' (Hết hạn: ' + expDateStr + ')' : ''}`,
+      ctaText: '⬆️ Nâng cấp Gói Năm (399k) →',
+      ctaHref: 'goi-hoc.html',
+      sub
+    };
+  }
+  if (sub.loaiTK === 'vip' && sub.msLeft > 0) {
+    const h = Math.floor((sub.msLeft % 86400000) / 3600000);
+    const note = sub.daysLeft > 0 ? `Còn ${sub.daysLeft} ngày ${h} giờ dùng thử` : `Còn ${h} giờ dùng thử`;
+    return {
+      label: '⭐ VIP (Dùng thử)',
+      color: '#d97706',
+      bg: 'rgba(217,119,6,.1)',
+      border: 'rgba(217,119,6,.3)',
+      note,
+      ctaText: '👑 Nâng cấp Gói Pro 50k →',
+      ctaHref: 'goi-hoc.html',
+      sub
+    };
+  }
+  return {
+    label: '🆓 Miễn phí',
+    color: '#6b7280',
+    bg: 'rgba(107,114,128,.08)',
+    border: 'rgba(107,114,128,.25)',
+    note: 'Nâng lên Gói Pro để mở khóa toàn bộ bài giảng & phòng thi',
+    ctaText: '👑 Đăng ký Gói Pro 50k →',
+    ctaHref: 'goi-hoc.html',
+    sub
+  };
+}
+
+function buildSubscriptionAndHistoryHTML(vip) {
+  const sub = vip.sub;
+  const expStr = sub.expiryAt > 0 ? new Date(sub.expiryAt).toLocaleDateString('vi-VN') : '---';
+  const startMs = sub.history[0]?.paidAt ? new Date(sub.history[0].paidAt).getTime() : (sub.expiryAt > 0 ? sub.expiryAt - (sub.loaiTK === 'premium' ? 365 : 30) * 86400000 : 0);
+  const startStr = startMs > 0 && !isNaN(startMs) ? new Date(startMs).toLocaleDateString('vi-VN') : 'Đã kích hoạt';
+
+  const statusBadge = sub.isPaid
+    ? '<span style="background:rgba(16,185,129,0.16);color:#10b981;border:1px solid rgba(16,185,129,0.35);padding:3px 10px;border-radius:100px;font-size:12px;font-weight:800;">● Đang kích hoạt</span>'
+    : (sub.loaiTK === 'vip' && sub.msLeft > 0)
+      ? '<span style="background:rgba(217,119,6,0.15);color:#d97706;border:1px solid rgba(217,119,6,0.35);padding:3px 10px;border-radius:100px;font-size:12px;font-weight:800;">⏳ Đang dùng thử</span>'
+      : '<span style="background:rgba(107,114,128,0.15);color:var(--gray2);padding:3px 10px;border-radius:100px;font-size:12px;font-weight:700;">Chưa kích hoạt gói Pro</span>';
+
+  const currentPlanTitle = sub.isPaid
+    ? `${sub.planName} (${sub.price.toLocaleString('vi-VN')}đ / ${sub.cycle})`
+    : (sub.loaiTK === 'vip' && sub.msLeft > 0 ? 'Gói VIP Học Thử 7 Ngày (Miễn phí)' : 'Tài Khoản Miễn Phí (Giới hạn học phần)');
+
+  const actionBtns = sub.isPaid
+    ? `
+        <a href="baihoc.html" style="padding:8px 15px;border-radius:9px;background:#10b981;color:#022c22;font-weight:800;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">🚀 Vào học ngay</a>
+        ${sub.planCode === 'THANG50K'
+          ? '<a href="goi-hoc.html" style="padding:8px 14px;border-radius:9px;background:rgba(11,132,243,0.12);border:1px solid rgba(11,132,243,0.35);color:var(--blue);font-weight:700;font-size:13px;text-decoration:none;">⬆️ Nâng cấp Gói Năm (399k)</a>'
+          : '<a href="goi-hoc.html" style="padding:8px 14px;border-radius:9px;background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.35);color:#c084fc;font-weight:700;font-size:13px;text-decoration:none;">📦 Xem bảng gói học</a>'}
+      `
+    : `<a href="goi-hoc.html" style="padding:9px 16px;border-radius:9px;background:var(--blue);color:#fff;font-weight:800;font-size:13px;text-decoration:none;">👑 Đăng ký Gói Pro 50k/tháng →</a>`;
+
+  const historyListHTML = sub.history.length === 0
+    ? '<div class="empty-msg" style="padding:22px 16px;">Chưa phát sinh giao dịch thanh toán nào.<br><a href="goi-hoc.html" style="color:var(--blue);font-weight:700;">Xem các gói học Vật Lý 12 →</a></div>'
+    : sub.history.map(item => {
+        const amt = Number(item.amount || sub.price || 50000).toLocaleString('vi-VN') + 'đ';
+        const txCode = item.transactionId || item.maGD || item.orderId || item.id || '---';
+        const method = item.method || item.gateway || 'VietQR VietinBank';
+        const paidTime = item.paidAt ? formatDate(item.paidAt) : startStr;
+        return `
+          <div class="progress-item" style="justify-content:space-between;flex-wrap:wrap;gap:10px;padding:14px 20px;">
+            <div style="display:flex;align-items:flex-start;gap:12px;flex:1;min-width:220px;">
+              <div style="width:36px;height:36px;border-radius:10px;background:rgba(16,185,129,0.14);color:#10b981;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;flex-shrink:0;">✓</div>
+              <div>
+                <div style="font-weight:700;color:var(--black);font-size:14px;">${item.planName || sub.planName} <span style="font-size:11px;font-weight:800;color:#10b981;background:rgba(16,185,129,0.14);padding:2px 7px;border-radius:6px;margin-left:4px;">Thành công</span></div>
+                <div style="font-size:12px;color:var(--gray2);margin-top:3px;">Mã GD: <strong>${txCode}</strong> · Cổng: <strong>${method}</strong> · Ngày: ${paidTime}</div>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:15px;font-weight:800;color:#10b981;">${amt}</div>
+              <div style="font-size:11px;color:var(--gray2);">Đã kích hoạt</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+  return `
+    <div class="section-card" id="goi-hoc-card" style="margin-bottom:20px;">
+      <div class="section-head" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <span>📦 Gói Học Hiện Tại & Lịch Sử Giao Dịch</span>
+        ${statusBadge}
+      </div>
+      <div style="padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+        <div>
+          <div style="font-size:16px;font-weight:800;color:var(--black);">${currentPlanTitle}</div>
+          <div style="font-size:13px;color:var(--gray2);margin-top:4px;">
+            ${sub.isPaid
+              ? `📅 Kích hoạt: <strong>${startStr}</strong> · Hết hạn: <strong>${expStr}</strong> (Còn <strong>${sub.daysLeft} ngày</strong>)`
+              : vip.note}
+          </div>
+          <div style="font-size:12.5px;color:var(--gray);margin-top:6px;">
+            ${sub.isPaid
+              ? '🔓 Quyền lợi: Mở khóa 100% các khóa học (GĐ1–GĐ4, 5 Ngày Lấy Gốc), Chương 3–4, Phòng thi thử CBT & Mô phỏng 3D'
+              : '🔒 Quyền lợi hiện tại: Học trải nghiệm các bài mở đầu (Nâng cấp Pro 50k để mở khóa toàn bộ)'}
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          ${actionBtns}
+        </div>
+      </div>
+      <div>
+        <div style="padding:11px 20px;font-size:12.5px;font-weight:700;color:var(--gray2);background:rgba(128,128,128,0.04);border-bottom:1px solid var(--border);">
+          💳 LỊCH SỬ GIAO DỊCH & THANH TOÁN (${sub.history.length})
+        </div>
+        ${historyListHTML}
+      </div>
+    </div>
+  `;
 }
 
 function normalizeLbData(lb) {
@@ -953,7 +1259,8 @@ function renderPage(profile, lb, nvRes, baihocRows) {
   const subLabel = vlxtSubRank(lp);
   const initials = (u.hoten || 'HS').split(' ').map(w=>w[0]).slice(-2).join('').toUpperCase();
   const bestScore = allScores.length ? Math.max(...allScores.map(s => parseScoreNum(s.diem))) : 0;
-  const vip = vipInfo(u);
+  const vip = vipInfo(u, profile);
+  const subCardHTML = buildSubscriptionAndHistoryHTML(vip);
 
   const myRankPos = lbData.findIndex(r =>
     r.hoten === u.hoten && r.lop === u.lop
@@ -962,11 +1269,11 @@ function renderPage(profile, lb, nvRes, baihocRows) {
   document.getElementById('content').innerHTML = `
     <!-- VIP Status Banner -->
     <div style="background:${vip.bg};border:1.5px solid ${vip.border};border-radius:12px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
-      <div style="display:flex;align-items:center;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
         <span style="font-size:15px;font-weight:800;color:${vip.color}">${vip.label}</span>
-        <span style="font-size:13px;color:#666">${vip.note}</span>
+        <span style="font-size:13px;color:var(--gray)">${vip.note}</span>
       </div>
-      ${vip.label.includes('Miễn phí') ? `<a href="hoso.html#upgrade" style="font-size:13px;font-weight:700;color:${vip.color};text-decoration:none;padding:6px 14px;border:1.5px solid ${vip.border};border-radius:7px">Liên hệ thầy để nâng cấp →</a>` : ''}
+      <a href="${vip.ctaHref || 'goi-hoc.html'}" style="font-size:13px;font-weight:700;color:${vip.color};text-decoration:none;padding:6px 14px;border:1.5px solid ${vip.border};border-radius:7px">${vip.ctaText || 'Xem gói học →'}</a>
     </div>
 
     <!-- Profile card -->
@@ -1001,10 +1308,14 @@ function renderPage(profile, lb, nvRes, baihocRows) {
       </div>
     </div>
 
+    <!-- Gói học hiện tại & Lịch sử giao dịch -->
+    ${subCardHTML}
+
     <!-- Tabs -->
     <div class="tabs-bar">
       <button class="tab-btn active" onclick="switchTab('tiendo')">📚 Tiến Độ</button>
       <button class="tab-btn" onclick="switchTab('diem')">📝 Điểm Thi</button>
+      <button class="tab-btn" onclick="switchTab('goihoc')">💳 Gói Học & GD</button>
       <button class="tab-btn" onclick="switchTab('lb')">🏆 Xếp Hạng</button>
       <button class="tab-btn" onclick="switchTab('banbe')">🤝 Bạn Bè</button>
     </div>
@@ -1056,6 +1367,11 @@ function renderPage(profile, lb, nvRes, baihocRows) {
       </div>
     </div>
 
+    <!-- Tab: Gói học & Giao dịch -->
+    <div class="tab-panel" id="tab-goihoc">
+      ${subCardHTML}
+    </div>
+
     <!-- Tab: Bảng xếp hạng -->
     <div class="tab-panel" id="tab-lb">
       <div class="section-card" id="lb-section">
@@ -1076,7 +1392,7 @@ function renderPage(profile, lb, nvRes, baihocRows) {
 
 function switchTab(name) {
   document.querySelectorAll('.tab-btn').forEach((b, i) => {
-    const names = ['tiendo', 'diem', 'lb', 'banbe'];
+    const names = ['tiendo', 'diem', 'goihoc', 'lb', 'banbe'];
     b.classList.toggle('active', names[i] === name);
   });
   document.querySelectorAll('.tab-panel').forEach(p => {
