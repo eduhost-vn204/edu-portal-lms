@@ -647,8 +647,25 @@ function getEffectiveSubscriptionOnPricingPage() {
     if (!Array.isArray(hist)) hist = [];
 
     const loai = String(u.loaiTK || '').toLowerCase();
-    const expiry = Number(u.proExpiry || u.trialExpiry || 0);
+    const serverTrialExpiry = Number(u.trialExpiry || u.proExpiry || 0);
+    const isYear = (u.planCode === 'NAM399K' || u.planCode === 'VIP850K' || loai === 'premium');
+    const planDurationMs = (isYear ? 365 : 30) * 86400000;
+    const trueActivatedMs = (serverTrialExpiry > Date.now() + 8 * 86400000) ? (serverTrialExpiry - planDurationMs) : 0;
+    const expiry = (serverTrialExpiry > Date.now() + 8 * 86400000) ? serverTrialExpiry : Number(u.proExpiry || u.trialExpiry || 0);
     const daysLeft = expiry > Date.now() ? Math.ceil((expiry - Date.now()) / 86400000) : 0;
+
+    // Chuẩn hóa lại các bản ghi trong lịch sử nếu bị lưu nhầm thời gian tải web sáng nay
+    if (trueActivatedMs > 0 && Array.isArray(hist)) {
+        hist.forEach(item => {
+            if (item && item.paidAt) {
+                const itemMs = new Date(item.paidAt).getTime();
+                if (itemMs > trueActivatedMs + 3 * 3600000) {
+                    item.paidAt = new Date(trueActivatedMs).toISOString();
+                }
+            }
+        });
+        try { localStorage.setItem('vlxt_payment_history', JSON.stringify(hist.slice(0, 50))); } catch (e) {}
+    }
     const isPaid = Boolean(
         u.isPaid ||
         loai === 'pro' ||
@@ -855,8 +872,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (res && res.ok && res.paid) {
                 const planCode = res.planCode || u.planCode || 'THANG50K';
                 const meta = getPlanMetaByCode(planCode);
-                const expiry = Number(res.proExpiry) || Number(u.proExpiry) || (Date.now() + (meta.rank >= 2 ? 365 : 30) * 86400000);
                 const txId = res.transactionId || (u.lastPayment && u.lastPayment.transactionId) || ('VQR-' + u.sdt);
+                const isYearTx = (meta.rank >= 2 || (res && res.loaiTK === 'premium'));
+                const planMs = (isYearTx ? 365 : 30) * 86400000;
+                const txServerExp = (Number(u.trialExpiry) > Date.now() + 8 * 86400000) ? Number(u.trialExpiry) : Number(res.proExpiry || u.proExpiry || 0);
+                const expiry = txServerExp > Date.now() ? txServerExp : (Date.now() + planMs);
+                const trueActMs = (txServerExp > Date.now() + 8 * 86400000) ? (txServerExp - planMs) : Date.now();
                 const txRecord = {
                     id: String(txId),
                     transactionId: String(txId),
@@ -868,7 +889,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     planName: meta.name,
                     loaiTK: res.loaiTK || (meta.rank >= 2 ? 'premium' : 'pro'),
                     amount: Number(res.amount || meta.amount),
-                    paidAt: res.paidAt || (u.lastPayment && u.lastPayment.paidAt) || new Date().toISOString(),
+                    paidAt: res.paidAt || (u.lastPayment && u.lastPayment.paidAt) || (trueActMs > 0 ? new Date(trueActMs).toISOString() : new Date().toISOString()),
                     expiryAt: expiry,
                     status: 'paid'
                 };

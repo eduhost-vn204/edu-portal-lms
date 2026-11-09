@@ -835,6 +835,9 @@ function resolveSubscriptionAndHistory(u, profile) {
     const meta = getPlanLabelMeta(payCheck.planCode, payCheck.loaiTK);
     const txId = String(payCheck.transactionId || ('VQR-' + (u?.sdt || storedUser?.sdt || 'PRO')));
     if (!hist.some(x => String(x.transactionId || x.maGD || x.id) === txId)) {
+      const calcPaidAt = (trueActivatedMs > 0)
+        ? new Date(trueActivatedMs).toISOString()
+        : (payCheck.paidAt || storedUser.activatedAt || (payCheck.proExpiry ? new Date(payCheck.proExpiry - planDurationMs).toISOString() : new Date().toISOString()));
       hist.unshift({
         id: txId,
         transactionId: txId,
@@ -842,8 +845,8 @@ function resolveSubscriptionAndHistory(u, profile) {
         planName: meta.name,
         amount: Number(payCheck.amount || meta.price),
         method: 'VietQR VietinBank',
-        paidAt: payCheck.paidAt || storedUser.activatedAt || new Date().toISOString(),
-        expiryAt: Number(payCheck.proExpiry) || 0,
+        paidAt: calcPaidAt,
+        expiryAt: (serverTrialExpiry > Date.now() + 8 * 86400000) ? serverTrialExpiry : (Number(payCheck.proExpiry) || 0),
         status: 'paid'
       });
     }
@@ -854,13 +857,24 @@ function resolveSubscriptionAndHistory(u, profile) {
 
   const uLoai = String(u?.loaiTK || '').toLowerCase();
   const sLoai = String(storedUser?.loaiTK || '').toLowerCase();
-  const rawExpiry = Math.max(
-    Number(u?.proExpiry || 0),
-    Number(storedUser?.proExpiry || 0),
-    Number(payCheck?.proExpiry || 0),
-    Number(u?.trialExpiry || 0),
-    Number(storedUser?.trialExpiry || 0)
-  );
+
+  // Nguồn sự thật chuẩn xác nhất từ máy chủ (cột trialExpiry trong sheet TaiKhoan được webhook ngân hàng ghi khi nhận tiền)
+  const serverTrialExpiry = Number(profile?.user?.trialExpiry || u?.trialExpiry || storedUser?.trialExpiry || 0);
+  const isYearPlan = (payCheck?.planCode === 'NAM399K' || payCheck?.planCode === 'VIP850K' || u?.planCode === 'NAM399K' || u?.planCode === 'VIP850K' || uLoai === 'premium');
+  const planDurationMs = (isYearPlan ? 365 : 30) * 86400000;
+
+  // Nếu máy chủ có hạn > 8 ngày (đã kích hoạt gói), thời điểm kích hoạt thật sự là: serverTrialExpiry - planDurationMs
+  const trueActivatedMs = (serverTrialExpiry > Date.now() + 8 * 86400000) ? (serverTrialExpiry - planDurationMs) : 0;
+
+  const rawExpiry = (serverTrialExpiry > Date.now() + 8 * 86400000)
+    ? serverTrialExpiry
+    : Math.max(
+        Number(u?.proExpiry || 0),
+        Number(storedUser?.proExpiry || 0),
+        Number(payCheck?.proExpiry || 0),
+        Number(u?.trialExpiry || 0),
+        Number(storedUser?.trialExpiry || 0)
+      );
   const now = Date.now();
   const msLeft = rawExpiry > now ? (rawExpiry - now) : 0;
   const daysLeft = Math.max(0, Math.ceil(msLeft / 86400000));
@@ -893,6 +907,20 @@ function resolveSubscriptionAndHistory(u, profile) {
     ? (rawExpiry > now ? rawExpiry : (now + (effectiveTier === 'premium' ? 365 : 30) * 86400000))
     : rawExpiry;
   const effDaysLeft = effectiveExpiry > now ? Math.max(1, Math.ceil((effectiveExpiry - now) / 86400000)) : 0;
+
+  // Tự động chuẩn hóa lại thời điểm kích hoạt thật cho các bản ghi bị lưu nhầm thời gian mở web sáng nay
+  if (trueActivatedMs > 0 && Array.isArray(hist)) {
+    hist.forEach(item => {
+      if (item && item.paidAt) {
+        const itemMs = new Date(item.paidAt).getTime();
+        // Nếu item.paidAt bị ghi sau thời điểm mở web sáng nay (lệch quá 3 tiếng so với lúc kích hoạt thật), sửa lại đúng thời điểm thật
+        if (itemMs > trueActivatedMs + 3 * 3600000) {
+          item.paidAt = new Date(trueActivatedMs).toISOString();
+        }
+      }
+    });
+    try { localStorage.setItem('vlxt_payment_history', JSON.stringify(hist.slice(0, 50))); } catch (e) {}
+  }
 
   // Nếu tài khoản đang là PRO/Premium nhưng lịch sử chưa có bản ghi nào (kích hoạt trước bản cập nhật), tạo bản ghi hiển thị từ gói hiện tại
   if (isPaid && hist.length === 0) {
