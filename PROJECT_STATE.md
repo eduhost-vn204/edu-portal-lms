@@ -2259,3 +2259,5 @@ gba(255, 255, 255, 0.05), tạo không gian liền mạch vô tận như chuẩn
   - `node test_cro_funnel.mjs`: 8/8 test suites đạt (100%).
   - `node scripts/test-trial-soft-unlock.mjs`: 22/22 test cases đạt (100%).
   - Kiểm tra toàn bộ 14 trang HTML đóng đúng thẻ `</html>`.
+
+  - `15421c6`: Khôi phục lại kích thước lưới tự nhiên của khối tính năng trên `index.html`, sửa triệt để lỗi lệch dòng trong 2 thẻ tab code (bỏ `x: -35` và `x: 35` trong GSAP, đổi sang hiệu ứng trượt `y: 16` và `clearProps: 'all'`, đổi hover từ `translateX(8px)` sang `scale(1.015)` giúp giữ 100% khung bo viền trọn vẹn, không bị cụt hay khuất mép); đồng thời sửa lỗi ghim thanh điều hướng trên `baihoc.html` (thêm `margin-top: 60px` cho `.vstep-course-layout` chống bị thanh navbar che mất nút Tải PDF) và bổ sung các nút tải PDF nổi bật ngay dưới tiêu đề bài học và dưới video bài giảng.
