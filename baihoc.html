@@ -2413,11 +2413,11 @@
         }
 
 </style>
-  <script src="auth.js?v=7"></script>
-  <script src="trial-manager.js?v=1"></script>
+  <script src="auth.js?v=20261109p"></script>
+  <script src="trial-manager.js?v=20261109p"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-  <script src="vnpay-service.js?v=1"></script>
-  <script src="freemium-flow.js?v=2"></script>
+  <script src="vnpay-service.js?v=20261109p"></script>
+  <script src="freemium-flow.js?v=20261109p"></script>
   <script src="xephang-fx.js?v=1"></script>
   <script src="thongbao.js?v=2"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -2435,7 +2435,7 @@
     })();
   </script>
   <script src="cache.js?v=5"></script>
-  <!-- <script src="nhiem-vu.js?v=6"></script> -->
+  <!-- <script src="nhiem-vu.js?v=20261109p"></script> -->
   <script src="simulations/sim-registry.js?v=1"></script>
 </head>
 <body>
@@ -3614,13 +3614,13 @@ function handleOpenLesson(courseName, lessonKey){
 ═══════════════════════════════════════════ */
 function renderCourse(name){
     const c=findCourse(name);
-    if(!c){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-circle-question"></i><p>Không tìm thấy khóa học.</p><p><a onclick="go('#home')">← Về trang chủ</a></p></div>`; return; }
-    if(!isVisible(c.name)){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-eye-slash"></i><p>Khóa học hiện đang tạm ẩn.</p><p><a onclick="go('#home')">← Về danh sách khóa học</a></p></div>`; return; }
+    if(!c){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-circle-question"></i><p>Không tìm thấy khóa học.</p><p><a href="baihoc.html#home" onclick="go('#home');return false;">← Về trang chủ</a></p></div>`; return; }
+    if(!isVisible(c.name)){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-eye-slash"></i><p>Khóa học hiện đang tạm ẩn.</p><p><a href="baihoc.html#home" onclick="go('#home');return false;">← Về danh sách khóa học</a></p></div>`; return; }
     if(!canAccess(c.name)){ showUpgrade(c.name); return; }
     const pct=coursePct(c),w=courseWatched(c);
     const thumb=c.img&&/^https?:|^data:/.test(c.img)?`<img src="${esc(c.img)}" alt="">`:'<i class="fa-solid fa-atom" style="color:#00f0ff;filter:drop-shadow(0 0 10px rgba(0,240,255,0.6))"></i>';
     const grpCrumb=c.group?'<span class="sep">›</span><a onclick="go(\'#home\')">'+esc(c.group)+'</a>':'';
-    let h=`<div class="crumb"><a onclick="go('#home')">Khóa học</a>${grpCrumb}<span class="sep">›</span><span class="cur">${esc(c.dname||c.name)}</span></div>
+    let h=`<div class="crumb"><a href="baihoc.html#home" onclick="go('#home');return false;">Khóa học</a>${grpCrumb}<span class="sep">›</span><span class="cur">${esc(c.dname||c.name)}</span></div>
         <div class="course-hero">
             <div class="ch-icon">${thumb}</div>
             <div style="flex:1;min-width:200px">
@@ -4030,7 +4030,7 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
     let stream = `
         <div class="vstep-top-bar">
             <div class="vstep-crumb">
-                <a onclick="go('#home')">Khóa học</a> <span>›</span>
+                <a href="baihoc.html#home" onclick="go('#home');return false;">Khóa học</a> <span>›</span>
                 <a onclick="go('#course/${encodeURIComponent(course.name)}')">${esc(course.name)}</a> <span>›</span>
                 <span style="color:#fff">${esc(chapBread)}</span>
             </div>
@@ -4232,7 +4232,7 @@ window.scrollToSection = function(id){
 ═══════════════════════════════════════════ */
 function renderLesson(key){
     const info=findLesson(key);
-    if(!info){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-circle-question"></i><p>Không tìm thấy bài học.</p><p><a onclick="go('#home')">← Về trang chủ</a></p></div>`; return; }
+    if(!info){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-circle-question"></i><p>Không tìm thấy bài học.</p><p><a href="baihoc.html#home" onclick="go('#home');return false;">← Về trang chủ</a></p></div>`; return; }
     const {course,chapter,lesson}=info;
     if(course && !canAccess(course.name)){ showUpgrade(course.name); return; }
     // Chặn "học vượt" kể cả khi vào thẳng bằng link/hash — không chỉ chặn ở danh sách bài
@@ -4800,12 +4800,12 @@ async function renderLiveLesson(){
     if(decodeURIComponent(location.hash||'') !== '#live') return;
 
     if(!teachingKey){
-        app().innerHTML = `<div class="empty"><i class="fa-solid fa-tower-broadcast"></i><p>Thầy chưa chọn bài để live.</p><p style="color:var(--sub);margin-top:6px">Quay lại sau hoặc xem <a onclick="go('#home')">danh sách khóa học</a> nhé!</p></div>`;
+        app().innerHTML = `<div class="empty"><i class="fa-solid fa-tower-broadcast"></i><p>Thầy chưa chọn bài để live.</p><p style="color:var(--sub);margin-top:6px">Quay lại sau hoặc xem <a href="baihoc.html#home" onclick="go('#home');return false;">danh sách khóa học</a> nhé!</p></div>`;
         return;
     }
     const info = findLesson(teachingKey);
     if(!info){
-        app().innerHTML = `<div class="empty"><i class="fa-solid fa-tower-broadcast" style="font-size:40px;color:var(--sub);margin-bottom:12px"></i><p style="font-size:17px;font-weight:700;margin-bottom:6px">Chưa có bài giảng live tương ứng</p><p style="color:var(--sub);margin-bottom:14px">Bài học thầy đang dạy tạm thời chưa sẵn sàng hoặc đã được cập nhật. Bạn quay lại sau nhé!</p><p><a onclick="go('#home')" style="cursor:pointer;color:var(--blue);font-weight:600">← Về danh sách khóa học</a></p></div>`;
+        app().innerHTML = `<div class="empty"><i class="fa-solid fa-tower-broadcast" style="font-size:40px;color:var(--sub);margin-bottom:12px"></i><p style="font-size:17px;font-weight:700;margin-bottom:6px">Chưa có bài giảng live tương ứng</p><p style="color:var(--sub);margin-bottom:14px">Bài học thầy đang dạy tạm thời chưa sẵn sàng hoặc đã được cập nhật. Bạn quay lại sau nhé!</p><p><a href="baihoc.html#home" onclick="go('#home');return false;" style="cursor:pointer;color:var(--blue);font-weight:600">← Về danh sách khóa học</a></p></div>`;
         return;
     }
     const {course,chapter,lesson} = info;
@@ -6700,7 +6700,7 @@ function showUpgrade(courseName){
             <i class="fa-solid fa-crown" style="font-size:40px;color:#d97706;margin-bottom:16px"></i>
             <p style="font-size:18px;font-weight:700">${msg || '💎 Cần tài khoản Premium'}</p>
             <p style="color:var(--muted)">Liên hệ thầy Trường qua Zalo hoặc nâng cấp Gói Pro để truy cập khoá học này.</p>
-            <p><a onclick="go('#home')" style="cursor:pointer;color:var(--blue)">← Về danh sách khoá học</a></p>
+            <p><a href="baihoc.html#home" onclick="go('#home');return false;" style="cursor:pointer;color:var(--blue)">← Về danh sách khoá học</a></p>
         </div>`;
         return;
     }
@@ -6710,7 +6710,7 @@ function showUpgrade(courseName){
             <i class="fa-solid fa-clock" style="font-size:40px;color:#f59e0b;margin-bottom:16px"></i>
             <p style="font-size:18px;font-weight:700">Khoá học sắp khai giảng</p>
             <p style="color:var(--sub)">Thầy Trường sẽ thông báo khi khoá học bắt đầu. Theo dõi nhóm Zalo để cập nhật!</p>
-            <p><a onclick="go('#home')" style="cursor:pointer;color:var(--blue)">← Về danh sách khoá học</a></p>
+            <p><a href="baihoc.html#home" onclick="go('#home');return false;" style="cursor:pointer;color:var(--blue)">← Về danh sách khoá học</a></p>
         </div>`;
         return;
     }
@@ -6719,14 +6719,14 @@ function showUpgrade(courseName){
             <i class="fa-solid fa-lock" style="font-size:40px;color:#ef4444;margin-bottom:16px"></i>
             <p style="font-size:18px;font-weight:700">Khoá học chưa mở</p>
             <p style="color:var(--muted)">Thầy Trường sẽ thông báo khi khoá học bắt đầu. Theo dõi nhóm Zalo để cập nhật!</p>
-            <p><a onclick="go('#home')" style="cursor:pointer;color:var(--blue)">← Về danh sách khoá học</a></p>
+            <p><a href="baihoc.html#home" onclick="go('#home');return false;" style="cursor:pointer;color:var(--blue)">← Về danh sách khoá học</a></p>
         </div>`;
     } else {
         app().innerHTML=`<div class="empty">
             <i class="fa-solid fa-crown" style="font-size:40px;color:#d97706;margin-bottom:16px"></i>
             <p style="font-size:18px;font-weight:700">${msg}</p>
             <p style="color:var(--muted)">Liên hệ thầy Trường qua Zalo để nâng cấp tài khoản và truy cập khoá học này.</p>
-            <p><a onclick="go('#home')" style="cursor:pointer;color:var(--blue)">← Về danh sách khoá học</a></p>
+            <p><a href="baihoc.html#home" onclick="go('#home');return false;" style="cursor:pointer;color:var(--blue)">← Về danh sách khoá học</a></p>
         </div>`;
     }
 }
