@@ -1232,7 +1232,7 @@
     }
     .logo-atom-icon {
       width: 26px; height: 26px; flex-shrink: 0;
-      filter: drop-shadow(0 0 6px #00f0ff);
+      filter: none !important;
     }
     .brand-glow-text {
   color: #ffffff !important;
@@ -1245,7 +1245,7 @@
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
   text-shadow: none !important;
-}
+ filter: none !important;}
     .nav-menu-links {
       display: flex; align-items: center; gap: clamp(4px, 0.6vw, 12px);
       flex-shrink: 0;
@@ -2663,7 +2663,7 @@
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
   text-shadow: none !important;
-}
+ filter: none !important;}
 .nav-hamburger {
   display: none;
   background: transparent !important;
@@ -2774,7 +2774,7 @@
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
   text-shadow: none !important;
-}
+ filter: none !important;}
 .nav-brand-logo, .nav-logo {
   display: inline-flex !important;
   align-items: center !important;
@@ -3147,6 +3147,43 @@
     }
 
 
+</style>
+
+<style id="vlxt-anti-ai-glow-logo">
+/* ─── TRIỆT TIÊU HOÀN TOÀN AI GLOW TRÊN LOGO & BRAND (PHẲNG, SẮC NÉT EDTECH) ─── */
+.nav-brand-logo,
+.nav-logo,
+.logo-atom-icon,
+svg.logo-atom-icon,
+.brand-glow-text {
+  filter: none !important;
+  -webkit-filter: none !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+.logo-atom-icon {
+  width: 46px !important;
+  height: 24px !important;
+  max-width: 46px !important;
+  max-height: 24px !important;
+  flex-shrink: 0 !important;
+  display: inline-block !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+}
+.brand-glow-text {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 15.5px !important;
+  letter-spacing: 0.2px !important;
+  white-space: nowrap !important;
+  display: inline-block !important;
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-background-clip: border-box !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
 </style>
 </head>
 <body>
@@ -4437,7 +4474,7 @@ function renderCourse(name){
     if(!isVisible(c.name)){ app().innerHTML=`<div class="empty"><i class="fa-solid fa-eye-slash"></i><p>Khóa học hiện đang tạm ẩn.</p><p><a href="baihoc.html#home" onclick="go('#home');return false;">← Về danh sách khóa học</a></p></div>`; return; }
     if(!canAccess(c.name)){ showUpgrade(c.name); return; }
     const pct=coursePct(c),w=courseWatched(c);
-    const thumb=c.img&&/^https?:|^data:/.test(c.img)?`<img src="${esc(c.img)}" alt="">`:'<i class="fa-solid fa-atom" style="color:#00f0ff;filter:drop-shadow(0 0 10px rgba(0,240,255,0.6))"></i>';
+    const thumb=c.img&&/^https?:|^data:/.test(c.img)?`<img src="${esc(c.img)}" alt="">`:'<i class="fa-solid fa-atom" style="color:#00f0ff;)"></i>';
     const grpCrumb=c.group?'<span class="sep">›</span><a onclick="go(\'#home\')">'+esc(c.group)+'</a>':'';
     let h=`<div class="crumb"><a href="baihoc.html#home" onclick="go('#home');return false;">Khóa học</a>${grpCrumb}<span class="sep">›</span><span class="cur">${esc(c.dname||c.name)}</span></div>
         <div class="course-hero">

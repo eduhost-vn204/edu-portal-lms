@@ -186,7 +186,7 @@
     }
     .logo-atom-icon {
       width: 28px; height: 28px; flex-shrink: 0;
-      filter: drop-shadow(0 0 8px #00f0ff);
+      filter: none !important;
     }
     .brand-glow-text {
   color: #ffffff !important;
@@ -199,7 +199,7 @@
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
   text-shadow: none !important;
-}
+ filter: none !important;}
 
     .nav-menu-links {
       display: flex; align-items: center; gap: clamp(4px, 0.6vw, 12px);
@@ -766,7 +766,7 @@
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
   text-shadow: none !important;
-}
+ filter: none !important;}
       .logo-atom-icon { width: 24px; height: 24px; }
       #btn-audio-toggle { padding: 6px 10px; font-size: 10px; }
       #audio-text { display: none; }
@@ -1559,7 +1559,7 @@
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
   text-shadow: none !important;
-}
+ filter: none !important;}
 .nav-hamburger {
   display: none;
   background: transparent !important;
@@ -1671,7 +1671,7 @@
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
   text-shadow: none !important;
-}
+ filter: none !important;}
 .nav-brand-logo, .nav-logo {
   display: inline-flex !important;
   align-items: center !important;
@@ -1707,6 +1707,43 @@
 }
 .nav-brand-logo {
   opacity: 1 !important;
+  filter: none !important;
+}
+</style>
+
+<style id="vlxt-anti-ai-glow-logo">
+/* ─── TRIỆT TIÊU HOÀN TOÀN AI GLOW TRÊN LOGO & BRAND (PHẲNG, SẮC NÉT EDTECH) ─── */
+.nav-brand-logo,
+.nav-logo,
+.logo-atom-icon,
+svg.logo-atom-icon,
+.brand-glow-text {
+  filter: none !important;
+  -webkit-filter: none !important;
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+.logo-atom-icon {
+  width: 46px !important;
+  height: 24px !important;
+  max-width: 46px !important;
+  max-height: 24px !important;
+  flex-shrink: 0 !important;
+  display: inline-block !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+}
+.brand-glow-text {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 15.5px !important;
+  letter-spacing: 0.2px !important;
+  white-space: nowrap !important;
+  display: inline-block !important;
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-background-clip: border-box !important;
+  text-shadow: none !important;
   filter: none !important;
 }
 </style>
