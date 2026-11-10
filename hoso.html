@@ -138,57 +138,68 @@
       .stat-card:last-child { grid-column: span 2; }
     }
 
-    /* ── THẺ TIẾN ĐỘ 4 CHƯƠNG VSTEP-O (GRID 2x2 SANG TRỌNG) ── */
-    .vstep-chap-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+    /* ── THẺ TIẾN ĐỘ 4 CHƯƠNG VSTEP-O (DANH SÁCH 4 HÀNG RỘNG RÃI, KHÔNG BAO GIỜ BỊ KHUẤT) ── */
+    .vstep-chap-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
       margin-top: 14px;
-    }
-    @media (max-width: 480px) {
-      .vstep-chap-grid { grid-template-columns: 1fr; }
     }
     .vstep-chap-card {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(0, 240, 255, 0.18);
-      border-radius: 14px;
-      padding: 12px 14px;
+      border-radius: 16px;
+      padding: 13px 16px;
       transition: all 0.2s ease;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
     }
     .vstep-chap-card:hover {
       background: rgba(0, 240, 255, 0.06);
-      border-color: rgba(0, 240, 255, 0.4);
+      border-color: rgba(0, 240, 255, 0.45);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
     }
     .vstep-chap-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      gap: 10px;
+    }
+    .vstep-chap-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
     }
     .vstep-chap-icon {
       font-size: 14px;
-      width: 26px; height: 26px;
-      border-radius: 8px;
+      width: 32px; height: 32px;
+      border-radius: 9px;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
     .vstep-chap-title {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 800;
       color: #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      letter-spacing: -0.01em;
     }
     .vstep-chap-badge {
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 800;
-      padding: 2px 7px;
+      padding: 3px 10px;
       border-radius: 100px;
       white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .vstep-chap-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12.5px;
+      color: var(--text-sub);
     }
 
     /* ── TABS BAR VSTEP-O (PILL 100px NEON CYAN) ── */
@@ -710,10 +721,162 @@ if (!user) {
 }
 
 var _latestPaymentCheck = { ok: false, paid: false };
+// ── BẢN ĐỒ ĐO LƯỜNG NĂNG LỰC (RADAR CHART MẠNG NHỆN) ──
+function renderRadarChart() {
+  const container = document.getElementById('radar-section-container');
+  if (!container) return;
+
+  let attempt = null;
+  try {
+    const raw = localStorage.getItem('vlxt_zero_friction_state');
+    if (raw) {
+      const state = JSON.parse(raw);
+      attempt = state.lastAttempt || (state.attempts && state.attempts.length > 0 ? state.attempts[state.attempts.length - 1] : null);
+    }
+  } catch(e) {}
+
+  if (!attempt) {
+    try {
+      const rawLatest = localStorage.getItem('vlxt_dgnl_latest_result');
+      if (rawLatest) {
+        attempt = JSON.parse(rawLatest);
+      }
+    } catch(e) {}
+  }
+
+  const isDemo = !attempt;
+
+  const tags = (attempt && attempt.tagStats) ? attempt.tagStats : {};
+  const lt = tags.ly_thuyet || { total: 8, correct: 0, pct: isDemo ? 85 : 0 };
+  const bv = tags.bay_don_vi || { total: 9, correct: 0, pct: isDemo ? 75 : 0 };
+  const dt = tags.do_thi_vdc || { total: 3, correct: 0, pct: isDemo ? 70 : 0 };
+
+  // 6 Trục năng lực (thang 100%)
+  const axes = [
+    { label: 'Lý Thuyết Cốt Lõi', val: isDemo ? 85 : (lt.pct || 0), color: '#10b981' },
+    { label: 'Phản Xạ Bẫy Đơn Vị', val: isDemo ? 75 : (bv.pct || 0), color: '#f59e0b' },
+    { label: 'Đồ Thị & Chu Trình', val: isDemo ? 70 : (dt.pct || 0), color: '#a855f7' },
+    { label: 'Toán & Biến Đổi', val: isDemo ? 80 : (Math.round(((lt.pct + bv.pct) / 2)) || 0), color: '#38bdf8' },
+    { label: 'Vận Dụng Cao (VDC)', val: isDemo ? 65 : (Math.round((dt.pct * 0.9)) || 0), color: '#ec4899' },
+    { label: 'Tốc Độ Phản Xạ', val: isDemo ? 80 : (attempt.score10 >= 5 ? 75 : 45), color: '#00f0ff' }
+  ];
+
+  // Tính tọa độ SVG mạng nhện 6 đỉnh (bán kính R = 100, tâm 160, 160)
+  const cx = 160, cy = 160, r = 100;
+  const numAxes = axes.length;
+
+  function getPoint(index, ratio) {
+    const angle = (Math.PI * 2 / numAxes) * index - Math.PI / 2;
+    const x = cx + r * ratio * Math.cos(angle);
+    const y = cy + r * ratio * Math.sin(angle);
+    return { x: x.toFixed(1), y: y.toFixed(1) };
+  }
+
+  // Tọa độ mạng lưới các vòng (20%, 40%, 60%, 80%, 100%)
+  const gridLevels = [0.2, 0.4, 0.6, 0.8, 1.0];
+  let gridPolys = '';
+  gridLevels.forEach(lvl => {
+    const pts = axes.map((_, i) => {
+      const p = getPoint(i, lvl);
+      return `${p.x},${p.y}`;
+    }).join(' ');
+    gridPolys += `<polygon points="${pts}" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1" />`;
+  });
+
+  // Tọa độ các nan hoa trục
+  let axisLines = '';
+  let labelsSvg = '';
+  axes.forEach((ax, i) => {
+    const endP = getPoint(i, 1.0);
+    axisLines += `<line x1="${cx}" y1="${cy}" x2="${endP.x}" y2="${endP.y}" stroke="rgba(255,255,255,0.12)" stroke-width="1" />`;
+    const labelP = getPoint(i, 1.25);
+    labelsSvg += `<text x="${labelP.x}" y="${labelP.y}" fill="#94a3b8" font-size="10.5" font-weight="700" text-anchor="middle" dominant-baseline="middle">${ax.label}</text>`;
+  });
+
+  // Tọa độ đa giác dữ liệu
+  const dataPts = axes.map((ax, i) => {
+    const ratio = Math.max(0.08, ax.val / 100);
+    const p = getPoint(i, ratio);
+    return `${p.x},${p.y}`;
+  }).join(' ');
+
+  let dotsSvg = '';
+  axes.forEach((ax, i) => {
+    const ratio = Math.max(0.08, ax.val / 100);
+    const p = getPoint(i, ratio);
+    dotsSvg += `<circle cx="${p.x}" cy="${p.y}" r="4.5" fill="${ax.color}" stroke="#0b1329" stroke-width="2" />`;
+  });
+
+  const polyFill = isDemo ? 'rgba(251, 191, 36, 0.14)' : 'rgba(0, 240, 255, 0.22)';
+  const polyStroke = isDemo ? '#fbbf24' : '#00f0ff';
+  const polyDash = isDemo ? 'stroke-dasharray="5,4"' : '';
+
+  container.innerHTML = `
+    <div class="section-head" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+      <span style="display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:900;color:#fff;">
+        <i class="fa-solid fa-chart-pie" style="color:#00f0ff"></i> 🕸️ BẢN ĐỒ ĐO LƯỜNG NĂNG LỰC VẬT LÝ 12 (RADAR HUD)
+      </span>
+      <span style="font-size:12px;font-weight:800;padding:4px 12px;border-radius:100px;background:${isDemo ? 'rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.4)' : 'rgba(0,240,255,0.15);color:#00f0ff;border:1px solid rgba(0,240,255,0.4)'};box-shadow:0 0 12px ${isDemo ? 'rgba(251,191,36,0.25)' : 'rgba(0,240,255,0.25)'};">
+        ${isDemo ? '⚡ Bản đồ mẫu chuẩn đầu ra THPT 8.5+' : '✓ Cập nhật từ bài Test Chẩn Đoán'}
+      </span>
+    </div>
+
+    <div style="padding:22px;display:grid;grid-template-columns:1.05fr 1fr;gap:24px;align-items:center;">
+      <!-- Cột trái: Biểu đồ SVG Mạng Nhện To Rõ Nét Sắc Sảo -->
+      <div style="background:rgba(9,18,36,0.7);border:1.5px solid rgba(0,240,255,0.22);border-radius:20px;padding:18px 12px;text-align:center;box-shadow:inset 0 0 25px rgba(0,240,255,0.05);">
+        <svg viewBox="0 0 320 320" style="width:100%;max-width:340px;height:auto;display:inline-block;filter:drop-shadow(0 0 18px ${isDemo ? 'rgba(251,191,36,0.25)' : 'rgba(0,240,255,0.35)'});">
+          ${gridPolys}
+          ${axisLines}
+          <polygon points="${dataPts}" fill="${polyFill}" stroke="${polyStroke}" stroke-width="2.5" ${polyDash} />
+          ${dotsSvg}
+          ${labelsSvg}
+        </svg>
+      </div>
+
+      <!-- Cột phải: Bảng chỉ số chi tiết 6 khía cạnh -->
+      <div style="display:flex;flex-direction:column;gap:11px;">
+        <div style="font-size:14.5px;font-weight:800;color:#ffffff;margin-bottom:2px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">
+          <span>🎯 ${isDemo ? 'Chuẩn năng lực mục tiêu:' : 'Điểm THPT dự kiến:'}</span>
+          <span style="color:${isDemo ? '#fbbf24' : '#00f0ff'};font-size:18px;font-weight:900;text-shadow:0 0 16px ${isDemo ? 'rgba(251,191,36,0.6)' : 'rgba(0,240,255,0.6)'};">
+            ${isDemo ? '8.5+/10' : `${attempt.predictedScore || attempt.score10}/10`}
+          </span>
+        </div>
+        ${axes.map(ax => `
+          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:9px 14px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:5px;">
+              <span style="font-weight:700;color:#e2e8f0;">${ax.label}</span>
+              <strong style="color:${ax.color};font-weight:900;">${ax.val}%</strong>
+            </div>
+            <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:100px;overflow:hidden;">
+              <div style="width:${ax.val}%;height:100%;background:${ax.color};border-radius:100px;box-shadow:0 0 10px ${ax.color};"></div>
+            </div>
+          </div>
+        `).join('')}
+
+        <div style="margin-top:8px;">
+          ${isDemo ? `
+            <a href="danh-gia-nang-luc.html?autostart=1" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 20px;border-radius:100px;background:linear-gradient(135deg,#10b981,#059669);color:#ffffff;box-shadow:0 0 20px rgba(16,185,129,0.45);border:1px solid rgba(52,211,153,0.45);font-weight:900;text-decoration:none;box-shadow:0 0 24px rgba(0,240,255,0.4);font-size:14px;transition:all 0.2s;">
+              <i class="fa-solid fa-play"></i> Làm bài test 20 câu để đo bản đồ cá nhân →
+            </a>
+          ` : `
+            <div style="text-align:right;">
+              <a href="danh-gia-nang-luc.html?autostart=1" style="font-size:13px;color:#10b981;text-decoration:none;font-weight:800;display:inline-flex;align-items:center;gap:6px;">
+                <i class="fa-solid fa-arrows-rotate"></i> Làm lại bài test để cập nhật bản đồ →
+              </a>
+            </div>
+          `}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 // Render ngay từ localStorage, không chờ GAS
 document.getElementById('loading').style.display = 'none';
 document.getElementById('content').style.display = 'block';
 renderPage({ ok: true, user: user, scores: [], tiendo: [] }, { ok: false, data: [] }, { ok: false, data: null }, []);
+renderRadarChart();
+renderRadarChart();
 
 // Sau đó fetch GAS để cập nhật dữ liệu thực (async, không chặn render)
 // Tự động thử POST getprofile (có token), nếu không có token hoặc token lỗi sẽ fallback GET ?type=profile&hs= để lấy chính xác trialExpiry từ sheet TaiKhoan
@@ -1296,13 +1459,28 @@ function renderPage(profile, lb, nvRes, baihocRows) {
   const isPaidUser = (typeof isUserPaidProOrPremium === 'function') ? isUserPaidProOrPremium(u) : (vip.code === 'PRO' || vip.code === 'VIP');
 
   document.getElementById('content').innerHTML = `
-    <!-- VIP Status Banner (Obsidian Neon Glassmorphism) -->
-    <div style="background:rgba(8, 22, 50, 0.45);backdrop-filter:blur(16px);border:1.5px solid var(--border-neon);border-radius:18px;padding:16px 22px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:0 8px 30px rgba(0,0,0,0.5);">
+    <!-- VIP Status Banner (Obsidian Neon Glassmorphism Với Nút Xanh Lá Chuẩn VStep-O) -->
+    <div style="background:rgba(8, 22, 50, 0.55);backdrop-filter:blur(16px);border:1.5px solid var(--border-neon);border-radius:18px;padding:16px 22px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;box-shadow:0 8px 30px rgba(0,0,0,0.5);">
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
         <span style="font-size:15px;font-weight:900;color:${vip.color};text-shadow:0 0 16px ${vip.color};display:inline-flex;align-items:center;gap:6px;"><i class="fa-solid fa-crown"></i> ${vip.label}</span>
         <span style="font-size:13.5px;color:var(--text-sub)">${vip.note}</span>
       </div>
-      <a href="${vip.ctaHref || 'goi-hoc.html'}" style="font-size:13px;font-weight:800;color:#04101e;background:linear-gradient(135deg,#00f0ff,#0b84f3);text-decoration:none;padding:8px 18px;border-radius:100px;box-shadow:0 0 16px rgba(0,240,255,0.4);transition:all 0.2s">${vip.ctaText || 'Xem gói học →'}</a>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <!-- NÚT XANH LÁ LỤC BẢO NỔI BẬT: VÀO HỌC NGAY / VÀO HỌC THỬ -->
+        <a href="baihoc.html" style="font-size:13.5px;font-weight:800;color:#ffffff;background:linear-gradient(135deg,#10b981 0%,#059669 100%);text-decoration:none;padding:10px 22px;border-radius:100px;box-shadow:0 0 20px rgba(16,185,129,0.5);border:1px solid rgba(52,211,153,0.5);display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;">
+          <i class="fa-solid fa-circle-play"></i> ${isPaidUser ? 'Vào học ngay →' : 'Vào học thử miễn phí →'}
+        </a>
+        <!-- Nút phụ Nâng cấp gói năm nếu là gói Pro, hoặc đăng ký Pro nếu là Free -->
+        ${isPaidUser ? `
+          <a href="goi-hoc.html" style="font-size:12.5px;font-weight:700;color:#94a3b8;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);text-decoration:none;padding:9px 16px;border-radius:100px;transition:all 0.2s;">
+            Nâng cấp Gói Năm (399k)
+          </a>
+        ` : `
+          <a href="goi-hoc.html" style="font-size:12.5px;font-weight:800;color:#fbbf24;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.35);text-decoration:none;padding:9px 16px;border-radius:100px;transition:all 0.2s;">
+            👑 Đăng ký Gói Pro 50k
+          </a>
+        `}
+      </div>
     </div>
 
     <!-- KHUNG BỐ CỤC 2 CỘT VSTEP-O (CỘT TRÁI: HỒ SƠ & TIẾN ĐỘ | CỘT PHẢI: RADAR NĂNG LỰC TRỰC DIỆN) -->
@@ -1341,83 +1519,85 @@ function renderPage(profile, lb, nvRes, baihocRows) {
           </div>
         </div>
 
-        <!-- Tiến Độ 4 Chương Vật Lý 12 Của Học Sinh Dạng Thẻ VSTEP-O -->
+        <!-- Tiến Độ 4 Chương Vật Lý 12 Dạng Danh Sách Full-Width Không Bao Giờ Bị Khuất -->
         <div class="section-card" style="margin-bottom:18px;">
           <div class="section-head" style="display:flex;justify-content:space-between;align-items:center;">
             <span><i class="fa-solid fa-graduation-cap" style="color:#00f0ff"></i> TIẾN ĐỘ 4 CHƯƠNG VẬT LÝ 12</span>
-            <a href="baihoc.html" style="font-size:12.5px;color:#00f0ff;text-decoration:none;font-weight:800;">Vào học →</a>
+            <a href="baihoc.html" style="font-size:12px;font-weight:800;color:#10b981;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.35);padding:5px 14px;border-radius:100px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;box-shadow:0 0 12px rgba(16,185,129,0.25);">
+              <i class="fa-solid fa-circle-play" style="font-size:11px;"></i> Vào học ngay →
+            </a>
           </div>
           <div style="padding:16px 18px;">
-            <div class="vstep-chap-grid">
-              <!-- Ô 1: Chương 1 -->
+            <div class="vstep-chap-list">
+              <!-- Hàng 1: Chương 1 -->
               <div class="vstep-chap-card">
                 <div class="vstep-chap-head">
-                  <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="vstep-chap-left">
                     <span class="vstep-chap-icon" style="background:rgba(16,185,129,0.15);color:#10b981;"><i class="fa-solid fa-atom"></i></span>
-                    <span class="vstep-chap-title">C1: Vật Lí Nhiệt</span>
+                    <span class="vstep-chap-title">Chương 1: Vật Lí Nhiệt</span>
                   </div>
                   <span class="vstep-chap-badge" style="background:rgba(16,185,129,0.18);color:#10b981;border:1px solid rgba(16,185,129,0.35);">Miễn phí</span>
                 </div>
-                <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-sub);margin-top:2px;">
-                  <span>Tiến độ</span>
-                  <strong style="color:#10b981;">${c1Done}/6 bài (${c1Pct}%)</strong>
+                <div class="vstep-chap-meta">
+                  <span>Tiến độ bài học:</span>
+                  <strong style="color:#10b981;font-weight:800;">${c1Done} / 6 bài (${c1Pct}%)</strong>
                 </div>
-                <div style="height:5px;background:rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;">
-                  <div style="width:${c1Pct}%;height:100%;background:#10b981;border-radius:10px;box-shadow:0 0 8px #10b981;"></div>
+                <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;">
+                  <div style="width:${c1Pct}%;height:100%;background:#10b981;border-radius:10px;box-shadow:0 0 10px #10b981;"></div>
                 </div>
               </div>
 
-              <!-- Ô 2: Chương 2 -->
+              <!-- Hàng 2: Chương 2 -->
               <div class="vstep-chap-card">
                 <div class="vstep-chap-head">
-                  <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="vstep-chap-left">
                     <span class="vstep-chap-icon" style="background:rgba(0,240,255,0.15);color:#00f0ff;"><i class="fa-solid fa-cubes"></i></span>
-                    <span class="vstep-chap-title">C2: Khí Lí Tưởng</span>
+                    <span class="vstep-chap-title">Chương 2: Khí Lí Tưởng</span>
                   </div>
                   <span class="vstep-chap-badge" style="background:rgba(0,240,255,0.18);color:#00f0ff;border:1px solid rgba(0,240,255,0.35);">Miễn phí</span>
                 </div>
-                <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-sub);margin-top:2px;">
-                  <span>Tiến độ</span>
-                  <strong style="color:#00f0ff;">${c2Done}/7 bài (${c2Pct}%)</strong>
+                <div class="vstep-chap-meta">
+                  <span>Tiến độ bài học:</span>
+                  <strong style="color:#00f0ff;font-weight:800;">${c2Done} / 7 bài (${c2Pct}%)</strong>
                 </div>
-                <div style="height:5px;background:rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;">
-                  <div style="width:${c2Pct}%;height:100%;background:#00f0ff;border-radius:10px;box-shadow:0 0 8px #00f0ff;"></div>
+                <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;">
+                  <div style="width:${c2Pct}%;height:100%;background:#00f0ff;border-radius:10px;box-shadow:0 0 10px #00f0ff;"></div>
                 </div>
               </div>
 
-              <!-- Ô 3: Chương 3 -->
+              <!-- Hàng 3: Chương 3 -->
               <div class="vstep-chap-card">
                 <div class="vstep-chap-head">
-                  <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="vstep-chap-left">
                     <span class="vstep-chap-icon" style="background:rgba(168,85,247,0.15);color:#a855f7;"><i class="fa-solid fa-bolt"></i></span>
-                    <span class="vstep-chap-title">C3: Từ Trường</span>
+                    <span class="vstep-chap-title">Chương 3: Từ Trường</span>
                   </div>
-                  <span class="vstep-chap-badge" style="background:${isPaidUser ? 'rgba(168,85,247,0.18);color:#c084fc;border:1px solid rgba(168,85,247,0.35)' : 'rgba(148,163,184,0.15);color:#94a3b8;border:1px solid rgba(148,163,184,0.25)'};">${isPaidUser ? 'Đã mở' : 'Gói Pro 50k'}</span>
+                  <span class="vstep-chap-badge" style="background:${isPaidUser ? 'rgba(168,85,247,0.18);color:#c084fc;border:1px solid rgba(168,85,247,0.35)' : 'rgba(148,163,184,0.15);color:#94a3b8;border:1px solid rgba(148,163,184,0.25)'};">${isPaidUser ? 'Đã mở khóa' : 'Gói Pro 50k'}</span>
                 </div>
-                <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-sub);margin-top:2px;">
-                  <span>Tiến độ</span>
-                  <strong style="color:${isPaidUser ? '#a855f7' : '#94a3b8'};">${isPaidUser ? `${c3Done}/8 bài` : 'Khóa'}</strong>
+                <div class="vstep-chap-meta">
+                  <span>Tiến độ bài học:</span>
+                  <strong style="color:${isPaidUser ? '#a855f7' : '#94a3b8'};font-weight:800;">${isPaidUser ? `${c3Done} / 8 bài (${Math.round((c3Done/8)*100)}%)` : '<i class="fa-solid fa-lock" style="font-size:11px;"></i> Khóa · Cần Gói Pro'}</strong>
                 </div>
-                <div style="height:5px;background:rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;">
-                  <div style="width:${isPaidUser ? Math.round((c3Done/8)*100) : 0}%;height:100%;background:#a855f7;border-radius:10px;box-shadow:0 0 8px #a855f7;"></div>
+                <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;">
+                  <div style="width:${isPaidUser ? Math.round((c3Done/8)*100) : 0}%;height:100%;background:#a855f7;border-radius:10px;box-shadow:0 0 10px #a855f7;"></div>
                 </div>
               </div>
 
-              <!-- Ô 4: Chương 4 -->
+              <!-- Hàng 4: Chương 4 -->
               <div class="vstep-chap-card">
                 <div class="vstep-chap-head">
-                  <div style="display:flex;align-items:center;gap:8px;">
+                  <div class="vstep-chap-left">
                     <span class="vstep-chap-icon" style="background:rgba(251,191,36,0.15);color:#fbbf24;"><i class="fa-solid fa-radiation"></i></span>
-                    <span class="vstep-chap-title">C4: Hạt Nhân</span>
+                    <span class="vstep-chap-title">Chương 4: Vật Lí Hạt Nhân</span>
                   </div>
-                  <span class="vstep-chap-badge" style="background:${isPaidUser ? 'rgba(251,191,36,0.18);color:#fbbf24;border:1px solid rgba(251,191,36,0.35)' : 'rgba(148,163,184,0.15);color:#94a3b8;border:1px solid rgba(148,163,184,0.25)'};">${isPaidUser ? 'Đã mở' : 'Gói Pro 50k'}</span>
+                  <span class="vstep-chap-badge" style="background:${isPaidUser ? 'rgba(251,191,36,0.18);color:#fbbf24;border:1px solid rgba(251,191,36,0.35)' : 'rgba(148,163,184,0.15);color:#94a3b8;border:1px solid rgba(148,163,184,0.25)'};">${isPaidUser ? 'Đã mở khóa' : 'Gói Pro 50k'}</span>
                 </div>
-                <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--text-sub);margin-top:2px;">
-                  <span>Tiến độ</span>
-                  <strong style="color:${isPaidUser ? '#fbbf24' : '#94a3b8'};">${isPaidUser ? `${c4Done}/5 bài` : 'Khóa'}</strong>
+                <div class="vstep-chap-meta">
+                  <span>Tiến độ bài học:</span>
+                  <strong style="color:${isPaidUser ? '#fbbf24' : '#94a3b8'};font-weight:800;">${isPaidUser ? `${c4Done} / 5 bài (${Math.round((c4Done/5)*100)}%)` : '<i class="fa-solid fa-lock" style="font-size:11px;"></i> Khóa · Cần Gói Pro'}</strong>
                 </div>
-                <div style="height:5px;background:rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;">
-                  <div style="width:${isPaidUser ? Math.round((c4Done/5)*100) : 0}%;height:100%;background:#fbbf24;border-radius:10px;box-shadow:0 0 8px #fbbf24;"></div>
+                <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;">
+                  <div style="width:${isPaidUser ? Math.round((c4Done/5)*100) : 0}%;height:100%;background:#fbbf24;border-radius:10px;box-shadow:0 0 10px #fbbf24;"></div>
                 </div>
               </div>
             </div>
@@ -1510,6 +1690,7 @@ function renderPage(profile, lb, nvRes, baihocRows) {
   // Cập nhật lại ảnh đại diện/bio/tab Bạn bè (ban-be.js) sau khi DOM vừa được dựng lại
   if (typeof vlxtBanBeRefreshProfileUI === 'function') vlxtBanBeRefreshProfileUI();
   if (typeof vlxtRenderBanBeTab === 'function') vlxtRenderBanBeTab(); // an toàn gọi nhiều lần — tự bỏ qua nếu chưa init xong hoặc đã mount rồi
+  renderRadarChart();
 }
 
 function switchTab(name) {
@@ -1532,156 +1713,6 @@ if(localStorage.getItem('vlxt_theme')==='dark')document.body.classList.add('dark
 <script src="hoat-dong.js?v=1"></script>
 <script src="huongdan-popup.js?v=1"></script>
 <script>if(typeof vlxtAutoShowGuide==='function') vlxtAutoShowGuide('hoso');
-// ── BẢN ĐỒ ĐO LƯỜNG NĂNG LỰC (RADAR CHART MẠNG NHỆN) ──
-function renderRadarChart() {
-  const container = document.getElementById('radar-section-container');
-  if (!container) return;
-
-  let attempt = null;
-  try {
-    const raw = localStorage.getItem('vlxt_zero_friction_state');
-    if (raw) {
-      const state = JSON.parse(raw);
-      attempt = state.lastAttempt || (state.attempts && state.attempts.length > 0 ? state.attempts[state.attempts.length - 1] : null);
-    }
-  } catch(e) {}
-
-  if (!attempt) {
-    try {
-      const rawLatest = localStorage.getItem('vlxt_dgnl_latest_result');
-      if (rawLatest) {
-        attempt = JSON.parse(rawLatest);
-      }
-    } catch(e) {}
-  }
-
-  const isDemo = !attempt;
-
-  const tags = (attempt && attempt.tagStats) ? attempt.tagStats : {};
-  const lt = tags.ly_thuyet || { total: 8, correct: 0, pct: isDemo ? 85 : 0 };
-  const bv = tags.bay_don_vi || { total: 9, correct: 0, pct: isDemo ? 75 : 0 };
-  const dt = tags.do_thi_vdc || { total: 3, correct: 0, pct: isDemo ? 70 : 0 };
-
-  // 6 Trục năng lực (thang 100%)
-  const axes = [
-    { label: 'Lý Thuyết Cốt Lõi', val: isDemo ? 85 : (lt.pct || 0), color: '#10b981' },
-    { label: 'Phản Xạ Bẫy Đơn Vị', val: isDemo ? 75 : (bv.pct || 0), color: '#f59e0b' },
-    { label: 'Đồ Thị & Chu Trình', val: isDemo ? 70 : (dt.pct || 0), color: '#a855f7' },
-    { label: 'Toán & Biến Đổi', val: isDemo ? 80 : (Math.round(((lt.pct + bv.pct) / 2)) || 0), color: '#38bdf8' },
-    { label: 'Vận Dụng Cao (VDC)', val: isDemo ? 65 : (Math.round((dt.pct * 0.9)) || 0), color: '#ec4899' },
-    { label: 'Tốc Độ Phản Xạ', val: isDemo ? 80 : (attempt.score10 >= 5 ? 75 : 45), color: '#00f0ff' }
-  ];
-
-  // Tính tọa độ SVG mạng nhện 6 đỉnh (bán kính R = 100, tâm 160, 160)
-  const cx = 160, cy = 160, r = 100;
-  const numAxes = axes.length;
-
-  function getPoint(index, ratio) {
-    const angle = (Math.PI * 2 / numAxes) * index - Math.PI / 2;
-    const x = cx + r * ratio * Math.cos(angle);
-    const y = cy + r * ratio * Math.sin(angle);
-    return { x: x.toFixed(1), y: y.toFixed(1) };
-  }
-
-  // Tọa độ mạng lưới các vòng (20%, 40%, 60%, 80%, 100%)
-  const gridLevels = [0.2, 0.4, 0.6, 0.8, 1.0];
-  let gridPolys = '';
-  gridLevels.forEach(lvl => {
-    const pts = axes.map((_, i) => {
-      const p = getPoint(i, lvl);
-      return `${p.x},${p.y}`;
-    }).join(' ');
-    gridPolys += `<polygon points="${pts}" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1" />`;
-  });
-
-  // Tọa độ các nan hoa trục
-  let axisLines = '';
-  let labelsSvg = '';
-  axes.forEach((ax, i) => {
-    const endP = getPoint(i, 1.0);
-    axisLines += `<line x1="${cx}" y1="${cy}" x2="${endP.x}" y2="${endP.y}" stroke="rgba(255,255,255,0.12)" stroke-width="1" />`;
-    const labelP = getPoint(i, 1.25);
-    labelsSvg += `<text x="${labelP.x}" y="${labelP.y}" fill="#94a3b8" font-size="10.5" font-weight="700" text-anchor="middle" dominant-baseline="middle">${ax.label}</text>`;
-  });
-
-  // Tọa độ đa giác dữ liệu
-  const dataPts = axes.map((ax, i) => {
-    const ratio = Math.max(0.08, ax.val / 100);
-    const p = getPoint(i, ratio);
-    return `${p.x},${p.y}`;
-  }).join(' ');
-
-  let dotsSvg = '';
-  axes.forEach((ax, i) => {
-    const ratio = Math.max(0.08, ax.val / 100);
-    const p = getPoint(i, ratio);
-    dotsSvg += `<circle cx="${p.x}" cy="${p.y}" r="4.5" fill="${ax.color}" stroke="#0b1329" stroke-width="2" />`;
-  });
-
-  const polyFill = isDemo ? 'rgba(251, 191, 36, 0.14)' : 'rgba(0, 240, 255, 0.22)';
-  const polyStroke = isDemo ? '#fbbf24' : '#00f0ff';
-  const polyDash = isDemo ? 'stroke-dasharray="5,4"' : '';
-
-  container.innerHTML = `
-    <div class="section-head" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-      <span style="display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:900;color:#fff;">
-        <i class="fa-solid fa-chart-pie" style="color:#00f0ff"></i> 🕸️ BẢN ĐỒ ĐO LƯỜNG NĂNG LỰC VẬT LÝ 12 (RADAR HUD)
-      </span>
-      <span style="font-size:12px;font-weight:800;padding:4px 12px;border-radius:100px;background:${isDemo ? 'rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.4)' : 'rgba(0,240,255,0.15);color:#00f0ff;border:1px solid rgba(0,240,255,0.4)'};box-shadow:0 0 12px ${isDemo ? 'rgba(251,191,36,0.25)' : 'rgba(0,240,255,0.25)'};">
-        ${isDemo ? '⚡ Bản đồ mẫu chuẩn đầu ra THPT 8.5+' : '✓ Cập nhật từ bài Test Chẩn Đoán'}
-      </span>
-    </div>
-
-    <div style="padding:22px;display:grid;grid-template-columns:1.05fr 1fr;gap:24px;align-items:center;">
-      <!-- Cột trái: Biểu đồ SVG Mạng Nhện To Rõ Nét Sắc Sảo -->
-      <div style="background:rgba(9,18,36,0.7);border:1.5px solid rgba(0,240,255,0.22);border-radius:20px;padding:18px 12px;text-align:center;box-shadow:inset 0 0 25px rgba(0,240,255,0.05);">
-        <svg viewBox="0 0 320 320" style="width:100%;max-width:340px;height:auto;display:inline-block;filter:drop-shadow(0 0 18px ${isDemo ? 'rgba(251,191,36,0.25)' : 'rgba(0,240,255,0.35)'});">
-          ${gridPolys}
-          ${axisLines}
-          <polygon points="${dataPts}" fill="${polyFill}" stroke="${polyStroke}" stroke-width="2.5" ${polyDash} />
-          ${dotsSvg}
-          ${labelsSvg}
-        </svg>
-      </div>
-
-      <!-- Cột phải: Bảng chỉ số chi tiết 6 khía cạnh -->
-      <div style="display:flex;flex-direction:column;gap:11px;">
-        <div style="font-size:14.5px;font-weight:800;color:#ffffff;margin-bottom:2px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">
-          <span>🎯 ${isDemo ? 'Chuẩn năng lực mục tiêu:' : 'Điểm THPT dự kiến:'}</span>
-          <span style="color:${isDemo ? '#fbbf24' : '#00f0ff'};font-size:18px;font-weight:900;text-shadow:0 0 16px ${isDemo ? 'rgba(251,191,36,0.6)' : 'rgba(0,240,255,0.6)'};">
-            ${isDemo ? '8.5+/10' : `${attempt.predictedScore || attempt.score10}/10`}
-          </span>
-        </div>
-        ${axes.map(ax => `
-          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:9px 14px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:5px;">
-              <span style="font-weight:700;color:#e2e8f0;">${ax.label}</span>
-              <strong style="color:${ax.color};font-weight:900;">${ax.val}%</strong>
-            </div>
-            <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:100px;overflow:hidden;">
-              <div style="width:${ax.val}%;height:100%;background:${ax.color};border-radius:100px;box-shadow:0 0 10px ${ax.color};"></div>
-            </div>
-          </div>
-        `).join('')}
-
-        <div style="margin-top:8px;">
-          ${isDemo ? `
-            <a href="danh-gia-nang-luc.html?autostart=1" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 20px;border-radius:100px;background:linear-gradient(135deg,#00f0ff,#0b84f3);color:#04101e;font-weight:900;text-decoration:none;box-shadow:0 0 24px rgba(0,240,255,0.4);font-size:14px;transition:all 0.2s;">
-              <i class="fa-solid fa-play"></i> Làm bài test 20 câu để đo bản đồ cá nhân →
-            </a>
-          ` : `
-            <div style="text-align:right;">
-              <a href="danh-gia-nang-luc.html?autostart=1" style="font-size:13px;color:#00f0ff;text-decoration:none;font-weight:800;display:inline-flex;align-items:center;gap:6px;">
-                <i class="fa-solid fa-arrows-rotate"></i> Làm lại bài test để cập nhật bản đồ →
-              </a>
-            </div>
-          `}
-        </div>
-      </div>
-    </div>
-  `;
-}
-
 // Tự động kích hoạt tab nếu URL có hash #nangluc hoặc search ?tab=nangluc
 window.addEventListener('DOMContentLoaded', function() {
   try {
