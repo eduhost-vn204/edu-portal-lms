@@ -1,3 +1,33 @@
+## Bàn giao gần nhất (10/11/2026 17:58)
+- **Commit**: `d46a4a7` (trên `main` production) / `bc15887` (trên `feature/arena`) — *fix(hoso): render radar chart 0ms, nut xanh la luc bao tren banner va danh sach tien do 4 chuong full-width*
+- **Phạm vi hoàn tất (3 Hạng mục trọng tâm theo chỉ đạo sát sao của Thầy)**:
+  1. **Nút Xanh Lá Lục Bảo Chuẩn VStep-O Trên Banner Hồ Sơ (`hoso.html`)**:
+     - *Hiện tượng Thầy chỉ ra*: Khi tài khoản đã kích hoạt Gói Pro (`sub.isPaid || sub.loaiTK === 'pro'`), thanh Banner trên cùng ở `hoso.html` trước đây hiển thị nút màu xanh cyan `Nâng cấp Gói Năm (399k) ->` chưa chuẩn nhận diện VSTEP-O.
+     - *Khắc phục*:
+       + Bổ sung **NÚT XANH LÁ LỤC BẢO** rực rỡ (`linear-gradient(135deg, #10b981 0%, #059669 100%)`) nổi bật: `<i class="fa-solid fa-circle-play"></i> Vào học ngay →` (nếu tài khoản Pro) hoặc `Vào học thử miễn phí →` (nếu tài khoản Free) dẫn thẳng đến `baihoc.html`.
+       + Đi kèm nút phụ tinh tế bo tròn Pill: `Nâng cấp Gói Năm (399k)` (nếu là Pro) hoặc `👑 Đăng ký Gói Pro 50k` (nếu là Free).
+       + Thêm nút xanh lá nhỏ `<i class="fa-solid fa-circle-play"></i> Vào học ngay →` tại tiêu đề mục *TIẾN ĐỘ 4 CHƯƠNG VẬT LÝ 12*.
+  2. **Khắc phục triệt để độ trễ Radar Chart — Render tức thì 0ms từ localStorage (`hoso.html`)**:
+     - *Nguyên nhân Thầy phát hiện*: Vừa mở `hoso.html`, bên phải trống trơn một mảng đen khổng lồ, phải chờ 3–5 giây sau bản đồ mạng nhện mới hiện ra.
+     - *Phát hiện kỹ thuật cốt lõi*: Hàm `renderRadarChart()` trước đây được định nghĩa ở thẻ script thứ hai (dòng 1536) và chỉ được gọi trong `setTimeout(renderRadarChart, 50)` bên trong `Promise.all` chờ tới 5 request mạng GAS (`profile`, `leaderboard`, `nhiemvu`, `baihoc`, `paymentStatus`). Lần initial render ở dòng 716 hoàn toàn không có lệnh gọi vẽ biểu đồ!
+     - *Giải pháp*:
+       + Chuyển (hoist) toàn bộ hàm `renderRadarChart()` vào khối script chính, đặt ngay trước lời gọi `renderPage` ban đầu.
+       + Gọi `renderRadarChart()` NGAY LẬP TỨC ở initial render (0ms) và gọi tự động ở cuối hàm `renderPage()`. Dữ liệu được đọc tức thì từ `localStorage` (`vlxt_zero_friction_state` / `vlxt_dgnl_latest_result`).
+       + Chuẩn hóa nút trong Radar Chart nếu là Demo sang nút xanh lá lục bảo `#10b981 -> #059669`. Ngay khi trang mở, SVG mạng nhện 6 trục và các thanh chỉ số hiện ra sắc sảo trong 0.05 giây!
+  3. **Khắc phục lỗi che khuất tiến độ 4 chương — Chuyển từ Grid 2x2 sang Danh sách hàng dọc Full-Width (`hoso.html`)**:
+     - *Hiện tượng Thầy chỉ ra*: Cột trái chỉ rộng 460px nhưng lại chia `grid-template-columns: 1fr 1fr;` khiến mỗi ô chỉ còn ~200px. Dòng tiến độ bị cắt cụt thành `0/7 bài (`, tiêu đề `C4: Hạt Nhân` bị badge `Gói Pro 50k` đè lên chữ.
+     - *Giải pháp*:
+       + Chuyển đổi toàn diện sang `.vstep-chap-list` (1 cột full chiều ngang 420px): Mỗi chương là 1 Card hàng ngang độc lập, cao ráo, thoáng đãng.
+       + Hiển thị đầy đủ tên chương trang trọng: `Chương 1: Vật Lí Nhiệt`, `Chương 2: Khí Lí Tưởng`, `Chương 3: Từ Trường`, `Chương 4: Vật Lí Hạt Nhân`.
+       + Badge trạng thái (`Miễn phí` / `Đã mở khóa` / `Gói Pro 50k`) đặt gọn gàng ở góc phải, tuyệt đối không bị đè chữ.
+       + Dòng tiến độ hiển thị trọn vẹn: `Tiến độ bài học:` kèm `0 / 6 bài (0%)`, `0 / 7 bài (0%)`, `Khóa · Cần Gói Pro` to rõ nét.
+       + Thanh progress bar neon kéo dài rộng rãi 400px, trực quan 100%.
+- **Kiểm định chất lượng**:
+  - `node scratch/verify_hoso_syntax.js`: PASS 100% (Cú pháp JS 4 script blocks hợp lệ, thẻ `</html>` kết thúc chuẩn).
+  - `node test_cro_funnel.mjs`: PASS 100%.
+  - `node test_diagnostic_mastery_loop.mjs`: PASS 100%.
+- **Trạng thái triển khai**: Đã commit và push nhánh `main` lên GitHub repository chính thức, GitHub Actions deploy tự động ra production `https://vatlyxuantruong.io.vn`.
+
 ## Bàn giao gần nhất (10/11/2026 17:35)
 - **Commit**: Nâng Cấp Khoảng Đệm Cụm Đấu Trường Chống Khuất Fixed Navbar, Chuẩn Hóa Typography Nút CTA, Mở Bài Học Tức Thì 0.05s & Hoàn Thiện Quy Trình Nộp Đề B + Chuỗi Vá Lỗ Hổng Tuần Tự
 - **Phạm vi hoàn tất (5 Hạng mục trọng tâm theo chỉ đạo chi tiết của Thầy)**:
