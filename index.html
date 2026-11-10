@@ -198,7 +198,7 @@
   background: none !important;
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
-  text-shadow: 0 0 10px rgba(0, 240, 255, 0.45) !important;
+  text-shadow: none !important;
 }
 
     .nav-menu-links {
@@ -765,7 +765,7 @@
   background: none !important;
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
-  text-shadow: 0 0 10px rgba(0, 240, 255, 0.45) !important;
+  text-shadow: none !important;
 }
       .logo-atom-icon { width: 24px; height: 24px; }
       #btn-audio-toggle { padding: 6px 10px; font-size: 10px; }
@@ -1398,23 +1398,23 @@
     .atom-nucleus {
       position: absolute;
       top: 50%; left: 50%;
-      width: 13px; height: 13px;
-      margin-left: -6.5px; margin-top: -6.5px;
+      width: 14px; height: 14px;
+      margin-left: -7px; margin-top: -7px;
       border-radius: 50%;
-      background: #00f0ff;
-      box-shadow: 0 0 16px #00f0ff, 0 0 32px #0072ff;
+      background: #38bdf8;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
       animation: nucleusPulse 1.8s infinite ease-in-out;
     }
     @keyframes nucleusPulse {
-      0%, 100% { transform: scale(1); opacity: 0.9; }
-      50% { transform: scale(1.25); opacity: 1; filter: drop-shadow(0 0 10px #ffffff); }
+      0%, 100% { transform: scale(1); opacity: 0.95; }
+      50% { transform: scale(1.15); opacity: 1; }
     }
     .atom-orbit {
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
       border-radius: 50%;
-      border: 1.5px solid rgba(0, 240, 255, 0.45);
+      border: 1.5px solid rgba(56, 189, 248, 0.4);
     }
     .atom-orbit.orbit-1 {
       transform: rotate(0deg) rotateX(68deg);
@@ -1434,8 +1434,8 @@
       margin-left: -4px;
       width: 8px; height: 8px;
       border-radius: 50%;
-      background: #ffffff;
-      box-shadow: 0 0 10px #00f0ff, 0 0 18px #00f0ff;
+      background: #38bdf8;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
     }
     @keyframes orbitSpin1 {
       0% { transform: rotate(0deg) rotateX(68deg) rotateZ(0deg); }
@@ -1450,55 +1450,57 @@
       100% { transform: rotate(-60deg) rotateX(68deg) rotateZ(360deg); }
     }
     .preloader-brand {
-      font-family: 'Orbitron', 'Space Mono', sans-serif;
-      font-size: 15.5px;
-      font-weight: 800;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+      font-size: 18.5px !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.08em !important;
+      text-transform: uppercase !important;
+      margin-bottom: 8px !important;
     }
     .preloader-brand .brand-white {
-      color: #ffffff;
-      text-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+      color: #ffffff !important;
+      text-shadow: none !important;
     }
     .preloader-brand .brand-cyan {
-      color: #00f0ff;
-      text-shadow: 0 0 16px rgba(0, 240, 255, 0.9), 0 0 28px rgba(0, 114, 255, 0.5);
+      color: #38bdf8 !important;
+      text-shadow: none !important;
     }
     .preloader-formula {
-      font-family: 'Space Mono', monospace;
-      font-size: 13.5px;
-      font-weight: 500;
-      color: #38bdf8;
-      letter-spacing: 0.08em;
-      margin-bottom: 20px;
-      height: 20px;
-      text-shadow: 0 0 10px rgba(56, 189, 248, 0.7);
-      transition: opacity 0.3s ease;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+      font-size: 14px !important;
+      font-weight: 600 !important;
+      color: #94a3b8 !important;
+      letter-spacing: 0.02em !important;
+      margin-bottom: 20px !important;
+      height: 20px !important;
+      text-shadow: none !important;
+      transition: opacity 0.3s ease !important;
     }
     .preloader-progress-wrap {
-      width: 260px;
-      height: 5px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(0, 240, 255, 0.25);
-      border-radius: 9999px;
-      overflow: hidden;
-      margin-bottom: 12px;
-      box-shadow: inset 0 0 8px rgba(0,0,0,0.6);
+      width: 260px !important;
+      height: 6px !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      border-radius: 9999px !important;
+      overflow: hidden !important;
+      margin-bottom: 12px !important;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
     }
     .preloader-progress-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #0072ff 0%, #00f0ff 70%, #ffffff 100%);
-      border-radius: 9999px;
-      box-shadow: 0 0 12px #00f0ff;
-      transition: width 0.15s ease-out;
+      height: 100% !important;
+      width: 0% !important;
+      background: linear-gradient(90deg, #10b981, #06b6d4) !important;
+      border-radius: 9999px !important;
+      box-shadow: none !important;
+      transition: width 0.15s ease-out !important;
     }
     .preloader-percent {
-      font-family: 'Space Mono', monospace;
-      font-size: 12px;
-      color: #94a3b8;
-      letter-spacing: 0.05em;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+      font-size: 13px !important;
+      font-weight: 700 !important;
+      color: #38bdf8 !important;
+      letter-spacing: 0.02em !important;
+      text-shadow: none !important;
     }
 
     /* ─── KHẮC PHỤC TRIỆT ĐỂ: KHÔNG CHO NHÃN CHỮ HIỆN Ở GÓC TRÁI KHI VỪA VÀO TRANG ─── */
@@ -1556,7 +1558,7 @@
   background: none !important;
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
-  text-shadow: 0 0 10px rgba(0, 240, 255, 0.45) !important;
+  text-shadow: none !important;
 }
 .nav-hamburger {
   display: none;
@@ -1668,7 +1670,7 @@
   background: none !important;
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
-  text-shadow: 0 0 10px rgba(0, 240, 255, 0.45) !important;
+  text-shadow: none !important;
 }
 .nav-brand-logo, .nav-logo {
   display: inline-flex !important;
@@ -1701,7 +1703,7 @@
   background: none !important;
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
-  text-shadow: 0 0 10px rgba(0, 240, 255, 0.7), 0 0 22px rgba(0, 240, 255, 0.35) !important;
+  text-shadow: none !important;
 }
 .nav-brand-logo {
   opacity: 1 !important;
@@ -1850,7 +1852,7 @@
       <button id="btn-audio-toggle" class="btn-audio-pill" title="Bật / Tắt âm thanh vũ trụ">
         <i class="fa-solid fa-volume-high" id="audio-icon"></i> <span id="audio-text">Âm Thanh</span>
       </button>
-      <!-- Auth widget hiển thị thông tin học sinh do auth.js?v=20261110r tự render -->
+      <!-- Auth widget hiển thị thông tin học sinh do auth.js?v=20261110s tự render -->
       <div id="vlxt-nav-user-area" data-vlxt-nav="dark"><a href="login.html" class="nav-btn-login-fallback"><i class="fa-solid fa-arrow-right-to-bracket" style="font-size:11px;margin-right:2px"></i><span>Đăng nhập</span></a></div>
     </div>
   </div>
@@ -2160,7 +2162,7 @@
 </div>
 
 <!-- SCRIPTS HỆ THỐNG CỦA VLXT -->
-<script src="auth.js?v=20261110r"></script>
+<script src="auth.js?v=20261110s"></script>
 <script src="ho-tro-chat.js?v=1"></script>
 <script src="cache.js?v=1"></script>
 <!-- THƯ VIỆN ĐỒ HỌA THREE.JS VÀ HIỆU ỨNG GSAP (LOCAL VENDOR - KHÔNG BAO GIỜ LỖI CACHE/OFFLINE) -->

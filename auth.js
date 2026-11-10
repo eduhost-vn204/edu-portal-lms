@@ -116,7 +116,7 @@ function vlxtRenderWidget(user){
         background: rgba(16, 185, 129, 0.1) !important;
         border-color: rgba(16, 185, 129, 0.4) !important;
         color: #ffffff !important;
-        box-shadow: 0 0 14px rgba(16, 185, 129, 0.25) !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
       }
       .vlxt-dot-neon {
         width: 8px !important;
@@ -127,7 +127,7 @@ function vlxtRenderWidget(user){
       }
       .vlxt-dot-neon.green {
         background: #10b981 !important;
-        box-shadow: 0 0 8px #10b981, 0 0 12px rgba(16, 185, 129, 0.5) !important;
+        box-shadow: 0 0 4px #10b981 !important;
         animation: vlxtDotPulse 2s infinite !important;
       }
       @keyframes vlxtDotPulse {
@@ -232,9 +232,9 @@ function vlxtRenderWidget(user){
       'color:#f1f5f9!important;cursor:pointer!important;transition:all 0.2s cubic-bezier(0.4,0,0.2,1)!important;',
       'user-select:none!important;}',
       '.vlxt-pill-btn:hover{background:rgba(16,185,129,0.1)!important;border-color:rgba(16,185,129,0.4)!important;',
-      'color:#fff!important;box-shadow:0 0 14px rgba(16,185,129,0.25)!important;}',
+      'color:#fff!important;box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;}',
       '.vlxt-dot-neon{width:8px!important;height:8px!important;border-radius:50%!important;flex-shrink:0!important;display:inline-block!important;}',
-      '.vlxt-dot-neon.green{background:#10b981!important;box-shadow:0 0 8px #10b981,0 0 12px rgba(16,185,129,0.5)!important;animation:vlxtDotPulse 2s infinite!important;}',
+      '.vlxt-dot-neon.green{background:#10b981!important;box-shadow: 0 0 4px #10b981 !important;animation:vlxtDotPulse 2s infinite!important;}',
       '@keyframes vlxtDotPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.6;transform:scale(1.15);}}',
       '.vlxt-pill-name{font-size:13px!important;font-weight:600!important;color:#f1f5f9!important;white-space:nowrap!important;}',
       '.vlxt-pill-badge{font-size:10.5px!important;font-weight:800!important;padding:1px 6px!important;border-radius:4px!important;}',

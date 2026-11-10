@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hồ Sơ Học Sinh | Vật Lý Xuân Trường</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script defer src="auth.js?v=20261110r"></script>
+  <script defer src="auth.js?v=20261110s"></script>
   <script src="xephang-fx.js?v=1"></script>
   <script defer src="thongbao.js?v=2"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -14,6 +14,11 @@
   <script src="ho-tro-chat.js?v=1"></script>
   <script src="ban-be.js?v=4"></script>
   <style>
+    /* ─── TYPOGRAPHY TOÀN CỤC CHUẨN EDTECH ─── */
+    button, input, select, textarea {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg-base: #060a12;
@@ -78,7 +83,7 @@
       align-items: center;
       gap: 20px;
       margin-bottom: 18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(0, 240, 255, 0.03);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.45);
     }
     .avatar-big {
       width: 72px; height: 72px; border-radius: 50%;
@@ -88,7 +93,7 @@
       flex-shrink: 0;
       
     }
-    .profile-info h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; color: #fff; }
+    .profile-info h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; color: #fff; text-shadow: none !important; }
     .profile-info p { font-size: 13.5px; color: var(--text-sub); }
     .rank-badge {
       margin-left: auto;
