@@ -1,0 +1,302 @@
+[
+  {
+    "id": 1,
+    "topic": "Vật lí nhiệt",
+    "level": "NB",
+    "tag": "ly_thuyet",
+    "question": "Trong hệ đơn vị SI, đơn vị chuẩn của nhiệt độ là gì?",
+    "options": [
+      "A. Kelvin ($K$)",
+      "B. Độ Celsius ($^\\circ C$)",
+      "C. Độ Fahrenheit ($^\\circ F$)",
+      "D. Joule ($J$)"
+    ],
+    "answer": 0,
+    "explain": "Trong hệ SI, đơn vị đo nhiệt độ là Kelvin (kí hiệu là $K$). Độ Celsius ($^\\circ C$) là đơn vị thông dụng nhưng không phải đơn vị cơ bản của hệ SI."
+  },
+  {
+    "id": 2,
+    "topic": "Vật lí nhiệt",
+    "level": "NB",
+    "tag": "ly_thuyet",
+    "question": "Công thức tính nhiệt lượng cần cung cấp để làm nóng chảy hoàn toàn một khối chất rắn kết tinh ở nhiệt độ nóng chảy là:",
+    "options": [
+      "A. $Q = mc\\Delta t$",
+      "B. $Q = \\lambda m$",
+      "C. $Q = Lm$",
+      "D. $Q = \\dfrac{\\lambda}{m}$"
+    ],
+    "answer": 1,
+    "explain": "Nhiệt lượng nóng chảy được tính bằng tích của nhiệt nóng chảy riêng $\\lambda$ và khối lượng $m$: $Q = \\lambda m$."
+  },
+  {
+    "id": 3,
+    "topic": "Vật lí nhiệt",
+    "level": "TH",
+    "tag": "bay_don_vi",
+    "question": "Nhiệt độ của một vật giảm đi $15^\\circ C$. Trong thang nhiệt độ Kelvin, độ giảm nhiệt độ của vật đó là bao nhiêu?",
+    "options": [
+      "A. $288\\text{ K}$",
+      "B. $15\\text{ K}$",
+      "C. $258\\text{ K}$",
+      "D. $150\\text{ K}$"
+    ],
+    "answer": 1,
+    "explain": "Độ biến thiên nhiệt độ trong thang Celsius bằng độ biến thiên nhiệt độ trong thang Kelvin: $\\Delta T (\\text{K}) = \\Delta t (^\\circ C) = 15\\text{ K}$."
+  },
+  {
+    "id": 4,
+    "topic": "Vật lí nhiệt",
+    "level": "TH",
+    "tag": "bay_don_vi",
+    "question": "Cần cung cấp nhiệt lượng bao nhiêu để đun nóng $2\\text{ kg}$ nước từ $25^\\circ C$ lên $100^\\circ C$? Biết nhiệt dung riêng của nước là $4200\\text{ J/(kg.K)}$.",
+    "options": [
+      "A. $630\\text{ kJ}$",
+      "B. $840\\text{ kJ}$",
+      "C. $315\\text{ kJ}$",
+      "D. $210\\text{ kJ}$"
+    ],
+    "answer": 0,
+    "explain": "Áp dụng công thức $Q = mc\\Delta t = 2 \\times 4200 \\times (100 - 25) = 630000\\text{ J} = 630\\text{ kJ}$."
+  },
+  {
+    "id": 5,
+    "topic": "Vật lí nhiệt",
+    "level": "VD",
+    "tag": "bay_don_vi",
+    "question": "Thả một cục nước đá có khối lượng $0,2\\text{ kg}$ ở $0^\\circ C$ vào $0,5\\text{ kg}$ nước ở $40^\\circ C$. Biết nhiệt nóng chảy riêng của nước đá là $\\lambda = 3,34 \\times 10^5\\text{ J/kg}$ và nhiệt dung riêng của nước là $c = 4200\\text{ J/(kg.K)}$. Nhiệt độ của hệ khi cân bằng nhiệt gần nhất với giá trị nào?",
+    "options": [
+      "A. $5,7^\\circ C$",
+      "B. $12,4^\\circ C$",
+      "C. $0^\\circ C$",
+      "D. $8,2^\\circ C$"
+    ],
+    "answer": 0,
+    "explain": "Nhiệt lượng nước tỏa ra khi hạ về $0^\\circ C$: $Q_{tỏa\\max} = 0,5 \\times 4200 \\times 40 = 84000\\text{ J}$. Nhiệt lượng đá cần để tan hết: $Q_{tan} = 0,2 \\times 3,34 \\times 10^5 = 66800\\text{ J}$. Vì $Q_{tỏa\\max} > Q_{tan}$ nên đá tan hết. Phương trình cân bằng: $66800 + 0,2 \\times 4200 \\times t = 0,5 \\times 4200 \\times (40 - t) \\rightarrow t \\approx 5,85^\\circ C$ (gần $5,7^\\circ C$ nhất)."
+  },
+  {
+    "id": 6,
+    "topic": "Khí lí tưởng",
+    "level": "NB",
+    "tag": "ly_thuyet",
+    "question": "Quá trình biến đổi trạng thái trong đó nhiệt độ tuyệt đối của một lượng khí xác định được giữ không đổi gọi là quá trình gì?",
+    "options": [
+      "A. Đẳng áp",
+      "B. Đẳng tích",
+      "C. Đẳng nhiệt",
+      "D. Đoạn nhiệt"
+    ],
+    "answer": 2,
+    "explain": "Quá trình biến đổi trạng thái khi nhiệt độ không đổi ($T = \\text{const}$) được gọi là quá trình đẳng nhiệt."
+  },
+  {
+    "id": 7,
+    "topic": "Khí lí tưởng",
+    "level": "NB",
+    "tag": "ly_thuyet",
+    "question": "Phương trình trạng thái của khí lí tưởng (Clapeyron) đối với một lượng khí xác định có biểu thức nào sau đây?",
+    "options": [
+      "A. $\\dfrac{pV}{T} = \\text{hằng số}$",
+      "B. $\\dfrac{pT}{V} = \\text{hằng số}$",
+      "C. $pVT = \\text{hằng số}$",
+      "D. $\\dfrac{V}{pT} = \\text{hằng số}$"
+    ],
+    "answer": 0,
+    "explain": "Đối với một lượng khí lí tưởng xác định, tích của áp suất và thể tích chia cho nhiệt độ tuyệt đối là một hằng số: $\\dfrac{pV}{T} = \\text{const}$."
+  },
+  {
+    "id": 8,
+    "topic": "Khí lí tưởng",
+    "level": "TH",
+    "tag": "bay_don_vi",
+    "question": "Một khối khí lí tưởng thực hiện quá trình nén đẳng nhiệt từ thể tích $6\\text{ lít}$ xuống còn $2\\text{ lít}$. Nếu áp suất ban đầu là $1,5\\text{ atm}$ thì áp suất lúc sau là bao nhiêu?",
+    "options": [
+      "A. $0,5\\text{ atm}$",
+      "B. $3,0\\text{ atm}$",
+      "C. $4,5\\text{ atm}$",
+      "D. $6,0\\text{ atm}$"
+    ],
+    "answer": 2,
+    "explain": "Theo định luật Boyle: $p_1V_1 = p_2V_2 \\rightarrow p_2 = \\dfrac{1,5 \\times 6}{2} = 4,5\\text{ atm}$."
+  },
+  {
+    "id": 9,
+    "topic": "Khí lí tưởng",
+    "level": "TH",
+    "tag": "bay_don_vi",
+    "question": "Một bình kín có dung tích không đổi chứa khí lí tưởng ở nhiệt độ $27^\\circ C$ và áp suất $2\\text{ atm}$. Khi đun nóng khí lên tới $177^\\circ C$ thì áp suất khí trong bình là:",
+    "options": [
+      "A. $3\\text{ atm}$",
+      "B. $13,1\\text{ atm}$",
+      "C. $4\\text{ atm}$",
+      "D. $2,5\\text{ atm}$"
+    ],
+    "answer": 0,
+    "explain": "Đổi sang độ Kelvin: $T_1 = 27 + 273 = 300\\text{ K}$, $T_2 = 177 + 273 = 450\\text{ K}$. Quá trình đẳng tích: $\\dfrac{p_1}{T_1} = \\dfrac{p_2}{T_2} \\rightarrow p_2 = 2 \\times \\dfrac{450}{300} = 3\\text{ atm}$."
+  },
+  {
+    "id": 10,
+    "topic": "Khí lí tưởng",
+    "level": "VDC",
+    "tag": "do_thi_vdc",
+    "question": "Một mol khí lí tưởng thực hiện chu trình khép kín $1 \\rightarrow 2 \\rightarrow 3 \\rightarrow 1$ trên hệ tọa độ $(p, T)$: Quá trình $1 \\rightarrow 2$ là đẳng áp ($T_2 = 2T_1$); quá trình $2 \\rightarrow 3$ là đẳng tích ($p_3 = 0,5p_2$); quá trình $3 \\rightarrow 1$ là đẳng nhiệt. Tỉ số thể tích cực đại và thể tích cực tiểu của khối khí trong chu trình này bằng bao nhiêu?",
+    "options": [
+      "A. $2$",
+      "B. $4$",
+      "C. $1,5$",
+      "D. $3$"
+    ],
+    "answer": 0,
+    "explain": "Từ $1 \\rightarrow 2$ đẳng áp: $\\dfrac{V_2}{V_1} = \\dfrac{T_2}{T_1} = 2 \\rightarrow V_2 = 2V_1$. Quá trình $2 \\rightarrow 3$ đẳng tích nên $V_3 = V_2 = 2V_1$. Quá trình $3 \\rightarrow 1$ đẳng nhiệt nén từ $V_3 = 2V_1$ về $V_1$. Vậy $\\dfrac{V_{\\max}}{V_{\\min}} = \\dfrac{V_2}{V_1} = 2$."
+  },
+  {
+    "id": 11,
+    "topic": "Từ trường",
+    "level": "NB",
+    "tag": "ly_thuyet",
+    "question": "Đơn vị của cảm ứng từ $B$ trong hệ SI là gì?",
+    "options": [
+      "A. Weber ($\\text{Wb}$)",
+      "B. Tesla ($\\text{T}$)",
+      "C. Henry ($\\text{H}$)",
+      "D. Volt ($\\text{V}$)"
+    ],
+    "answer": 1,
+    "explain": "Trong hệ SI, đơn vị của cảm ứng từ là Tesla ($\\text{T}$), còn Weber ($\\text{Wb}$) là đơn vị của từ thông."
+  },
+  {
+    "id": 12,
+    "topic": "Từ trường",
+    "level": "TH",
+    "tag": "ly_thuyet",
+    "question": "Một đoạn dây dẫn thẳng dài $0,5\\text{ m}$ mang dòng điện $I = 4\\text{ A}$ đặt vuông góc với các đường sức từ của một từ trường đều có độ lớn cảm ứng từ $B = 0,2\\text{ T}$. Độ lớn lực từ tác dụng lên đoạn dây là:",
+    "options": [
+      "A. $0,4\\text{ N}$",
+      "B. $0,2\\text{ N}$",
+      "C. $4,0\\text{ N}$",
+      "D. $0\\text{ N}$"
+    ],
+    "answer": 0,
+    "explain": "Áp dụng công thức lực từ: $F = BIl\\sin 90^\\circ = 0,2 \\times 4 \\times 0,5 \\times 1 = 0,4\\text{ N}$."
+  },
+  {
+    "id": 13,
+    "topic": "Từ trường",
+    "level": "TH",
+    "tag": "bay_don_vi",
+    "question": "Một khung dây phẳng diện tích $20\\text{ cm}^2$ đặt trong từ trường đều $B = 0,1\\text{ T}$, mặt phẳng khung dây hợp với vectơ cảm ứng từ góc $30^\\circ$. Từ thông qua khung dây là:",
+    "options": [
+      "A. $10^{-4}\\text{ Wb}$",
+      "B. $1,73 \\times 10^{-4}\\text{ Wb}$",
+      "C. $2 \\times 10^{-4}\\text{ Wb}$",
+      "D. $10^{-2}\\text{ Wb}$"
+    ],
+    "answer": 0,
+    "explain": "Mặt phẳng khung hợp với $\\vec{B}$ góc $30^\\circ$ nên góc giữa pháp tuyến $\\vec{n}$ và $\\vec{B}$ là $\\alpha = 60^\\circ$. Từ thông $\\Phi = BS\\cos 60^\\circ = 0,1 \\times (20 \\times 10^{-4}) \\times 0,5 = 10^{-4}\\text{ Wb}$."
+  },
+  {
+    "id": 14,
+    "topic": "Từ trường",
+    "level": "VD",
+    "tag": "bay_don_vi",
+    "question": "Một khung dây dẫn gồm $100$ vòng, diện tích mỗi vòng là $50\\text{ cm}^2$, đặt vuông góc với đường sức của từ trường đều. Trong khoảng thời gian $\\Delta t = 0,05\\text{ s}$, cảm ứng từ giảm đều từ $0,4\\text{ T}$ về $0,1\\text{ T}$. Độ lớn suất điện động cảm ứng xuất hiện trong khung là:",
+    "options": [
+      "A. $3\\text{ V}$",
+      "B. $1,5\\text{ V}$",
+      "C. $30\\text{ V}$",
+      "D. $0,3\\text{ V}$"
+    ],
+    "answer": 0,
+    "explain": "Độ lớn suất điện động cảm ứng: $e_c = N \\dfrac{|\\Delta B| \\cdot S}{\\Delta t} = 100 \\times \\dfrac{(0,4 - 0,1) \\times 50 \\times 10^{-4}}{0,05} = 3\\text{ V}$."
+  },
+  {
+    "id": 15,
+    "topic": "Từ trường",
+    "level": "VD",
+    "tag": "do_thi_vdc",
+    "question": "Một thanh dẫn điện MN dài $l = 40\\text{ cm}$ chuyển động tịnh tiến với vận tốc $v = 5\\text{ m/s}$ trên hai thanh ray song song trong từ trường đều $B = 0,5\\text{ T}$ vuông góc với mặt phẳng hai ray. Hai đầu thanh ray nối với điện trở $R = 2\\text{ }\\Omega$, bỏ qua điện trở thanh và ray. Cường độ dòng điện cảm ứng chạy qua $R$ là:",
+    "options": [
+      "A. $0,5\\text{ A}$",
+      "B. $1,0\\text{ A}$",
+      "C. $2,0\\text{ A}$",
+      "D. $0,25\\text{ A}$"
+    ],
+    "answer": 0,
+    "explain": "Suất điện động cảm ứng trên thanh chuyển động: $e_c = Blv = 0,5 \\times 0,4 \\times 5 = 1\\text{ V}$. Cường độ dòng điện: $I = \\dfrac{e_c}{R} = \\dfrac{1}{2} = 0,5\\text{ A}$."
+  },
+  {
+    "id": 16,
+    "topic": "Vật lí hạt nhân",
+    "level": "NB",
+    "tag": "ly_thuyet",
+    "question": "Hạt nhân nguyên tử $_{Z}^{A}X$ được cấu tạo bởi:",
+    "options": [
+      "A. $Z$ proton và $A$ neutron",
+      "B. $Z$ proton và $(A - Z)$ neutron",
+      "C. $A$ proton và $Z$ electron",
+      "D. $(A - Z)$ proton và $Z$ neutron"
+    ],
+    "answer": 1,
+    "explain": "Hạt nhân $_{Z}^{A}X$ có tổng số nucleon là $A$, trong đó có $Z$ hạt proton và $N = A - Z$ hạt neutron."
+  },
+  {
+    "id": 17,
+    "topic": "Vật lí hạt nhân",
+    "level": "TH",
+    "tag": "bay_don_vi",
+    "question": "Hạt nhân Carbon $_{6}^{12}\\text{C}$ có độ hụt khối $\\Delta m = 0,099\\text{ amu}$. Biết $1\\text{ amu} \\cdot c^2 = 931,5\\text{ MeV}$. Năng lượng liên kết của hạt nhân $_{6}^{12}\\text{C}$ gần nhất với giá trị nào?",
+    "options": [
+      "A. $92,22\\text{ MeV}$",
+      "B. $7,68\\text{ MeV}$",
+      "C. $15,37\\text{ MeV}$",
+      "D. $111,78\\text{ MeV}$"
+    ],
+    "answer": 0,
+    "explain": "Năng lượng liên kết: $W_{lk} = \\Delta m \\cdot c^2 = 0,099 \\times 931,5 \\approx 92,22\\text{ MeV}$."
+  },
+  {
+    "id": 18,
+    "topic": "Vật lí hạt nhân",
+    "level": "TH",
+    "tag": "ly_thuyet",
+    "question": "Một chất phóng xạ có chu kì bán rã $T = 8\\text{ ngày}$. Ban đầu có $100\\text{ g}$ chất phóng xạ này, sau $24\\text{ ngày}$ khối lượng chất phóng xạ còn lại là:",
+    "options": [
+      "A. $33,3\\text{ g}$",
+      "B. $25,0\\text{ g}$",
+      "C. $12,5\\text{ g}$",
+      "D. $87,5\\text{ g}$"
+    ],
+    "answer": 2,
+    "explain": "Áp dụng định luật phóng xạ: $m = m_0 \\cdot 2^{-\\dfrac{t}{T}} = 100 \\times 2^{-\\dfrac{24}{8}} = 100 \\times 2^{-3} = 12,5\\text{ g}$."
+  },
+  {
+    "id": 19,
+    "topic": "Vật lí hạt nhân",
+    "level": "VD",
+    "tag": "bay_don_vi",
+    "question": "Cho phản ứng hạt nhân: $_{1}^{2}\\text{H} + _{1}^{3}\\text{H} \\rightarrow _{2}^{4}\\text{He} + _{0}^{1}\\text{n}$. Biết khối lượng các hạt nhân: $m_{\\text{D}} = 2,0135\\text{ amu}$, $m_{\\text{T}} = 3,0160\\text{ amu}$, $m_{\\text{He}} = 4,0015\\text{ amu}$, $m_{\\text{n}} = 1,0087\\text{ amu}$ và $1\\text{ amu} \\cdot c^2 = 931,5\\text{ MeV}$. Phản ứng này tỏa hay thu bao nhiêu năng lượng?",
+    "options": [
+      "A. Tỏa $17,98\\text{ MeV}$",
+      "B. Thu $17,98\\text{ MeV}$",
+      "C. Tỏa $15,24\\text{ MeV}$",
+      "D. Thu $15,24\\text{ MeV}$"
+    ],
+    "answer": 0,
+    "explain": "Tổng khối lượng trước phản ứng: $m_{tr} = 2,0135 + 3,0160 = 5,0295\\text{ amu}$. Tổng khối lượng sau: $m_{sau} = 4,0015 + 1,0087 = 5,0102\\text{ amu}$. Vì $m_{tr} > m_{sau}$ nên phản ứng tỏa năng lượng: $\\Delta E = (5,0295 - 5,0102) \\times 931,5 \\approx 17,98\\text{ MeV}$."
+  },
+  {
+    "id": 20,
+    "topic": "Vật lí hạt nhân",
+    "level": "VDC",
+    "tag": "do_thi_vdc",
+    "question": "Chất phóng xạ Poloni $_{84}^{210}\\text{Po}$ phát ra tia $\\alpha$ và biến đổi thành chì $_{82}^{206}\\text{Pb}$ với chu kì bán rã $138\\text{ ngày}$. Mẫu chất ban đầu chỉ chứa $_{84}^{210}\\text{Po}$ nguyên chất. Sau bao lâu thì tỉ số khối lượng giữa chì tạo thành và Poloni còn lại trong mẫu bằng $0,6865$?",
+    "options": [
+      "A. $105\\text{ ngày}$",
+      "B. $138\\text{ ngày}$",
+      "C. $276\\text{ ngày}$",
+      "D. $95\\text{ ngày}$"
+    ],
+    "answer": 0,
+    "explain": "Tỉ số khối lượng: $\\dfrac{m_{\\text{Pb}}}{m_{\\text{Po}}} = \\dfrac{A_{\\text{Pb}}}{A_{\\text{Po}}}(2^{\\dfrac{t}{T}} - 1) = \\dfrac{206}{210}(2^{\\dfrac{t}{138}} - 1) = 0,6865 \\rightarrow 2^{\\dfrac{t}{138}} - 1 \\approx 0,7 \\rightarrow 2^{\\dfrac{t}{138}} = 1,7 \\rightarrow t = 138 \\times \\log_2(1,7) \\approx 105,8\\text{ ngày}$."
+  }
+]

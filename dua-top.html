@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Đua Top — Vật Lý Xuân Trường</title>
+  <title>Đấu Hạng — Vật Lý Xuân Trường</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -66,8 +66,8 @@
     .nav-back:hover { color: var(--text); border-color: rgba(255,255,255,.3); }
 
     /* ─── HERO ─── */
-    .hero {
-      text-align: center; padding: 48px 24px 32px;
+    .hero { text-align: center; padding: 108px 24px 32px !important; }
+    @media (max-width: 600px) { .hero { padding: 96px 16px 28px !important; } }
       background: linear-gradient(180deg, rgba(0,114,255,.06) 0%, transparent 100%);
     }
     .hero-icon { font-size: 52px; margin-bottom: 12px; }
@@ -275,6 +275,7 @@
     }
     body.in-game .hero { display: none; }
     body.in-game .score-bar {
+      margin-top: 80px !important;
       padding: 5px 12px;
       gap: 6px;
       background: rgba(0,0,0,.2);
@@ -374,6 +375,30 @@
       body.in-game .q-feedback { font-size: 13.5px; padding: 10px 12px; }
       .q-explain { font-size: 13.5px; padding: 10px 12px; }
     }
+
+    /* ═══ PLANET SKAT (ĐẤU HẠNG) GALAXY DEEP SPACE THEME ═══ */
+    body.dark {
+      --bg: #050a18;
+      --bg2: #0d162c;
+      background:
+        radial-gradient(ellipse at 20% 10%, rgba(245, 158, 11, 0.14) 0%, transparent 48%),
+        radial-gradient(ellipse at 80% 20%, rgba(0, 240, 255, 0.12) 0%, transparent 50%),
+        linear-gradient(180deg, #040814 0%, #070e20 55%, #050a18 100%) !important;
+    }
+    .nav {
+      flex-wrap: wrap; gap: 8px;
+    }
+    .nav-actions {
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    @media (max-width: 600px) {
+      .nav { padding: 8px 12px; height: auto; min-height: 50px; }
+      .nav-logo { font-size: 13.5px; }
+      .nav-back { padding: 5px 9px; font-size: 11.5px; }
+      .score-bar { padding: 10px 10px; gap: 8px; }
+      .score-chip { padding: 6px 12px; min-width: 70px; }
+    }
+
   </style>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -385,20 +410,238 @@
     .katex { color: inherit; }
     body.dark .katex svg { filter: invert(1); }
   </style>
+<style>
+/* ─── NAVBAR ĐỒNG NHẤT TOÀN HỆ THỐNG ─── */
+.top-bar, nav.navbar, header.hud-header, .top-bar-phongthi {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 60px !important;
+  background: rgba(13, 17, 23, 0.92) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.18) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0 20px !important;
+  z-index: 10000 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+}
+.nav-left-wrap, .nav-left, .hud-header-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+}
+.nav-brand-logo, .nav-logo {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  text-decoration: none !important;
+  color: #fff !important;
+  font-weight: 800 !important;
+  font-size: 15px !important;
+  letter-spacing: -0.2px !important;
+}
+.brand-glow-text {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 15px !important;
+  letter-spacing: 0.2px !important;
+  white-space: nowrap !important;
+  display: inline-block !important;
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-background-clip: border-box !important;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.45) !important;
+}
+.nav-hamburger {
+  display: none;
+  background: transparent !important;
+  border: none !important;
+  color: #00f0ff !important;
+  font-size: 18px !important;
+  padding: 6px !important;
+  cursor: pointer !important;
+  border-radius: 8px !important;
+  line-height: 1 !important;
+}
+.nav-menu-links {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+.nav-menu-links a, .nav-dropdown-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 6px 12px !important;
+  border-radius: 8px !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  color: #94a3b8 !important;
+  text-decoration: none !important;
+  transition: all 0.15s !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  font-family: inherit !important;
+}
+.nav-menu-links a:hover, .nav-dropdown-btn:hover, .nav-menu-links a.active, .nav-dropdown-btn.active {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+.nav-item-pro {
+  color: #fbbf24 !important;
+  font-weight: 700 !important;
+}
+.nav-pro-badge {
+  font-size: 10.5px !important;
+  font-weight: 800 !important;
+  padding: 1px 6px !important;
+  border-radius: 4px !important;
+  background: rgba(245, 158, 11, 0.2) !important;
+  border: 1px solid rgba(245, 158, 11, 0.4) !important;
+  color: #fbbf24 !important;
+}
+.nav-live-dot {
+  width: 7px !important;
+  height: 7px !important;
+  border-radius: 50% !important;
+  background: #ef4444 !important;
+  box-shadow: 0 0 8px #ef4444 !important;
+  display: inline-block !important;
+}
+.nav-dropdown {
+  position: relative !important;
+  display: inline-block !important;
+}
+.nav-dropdown-content {
+  display: none !important;
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  min-width: 230px !important;
+  background: #0d1527 !important;
+  border: 1px solid rgba(0, 240, 255, 0.22) !important;
+  border-radius: 12px !important;
+  padding: 8px !important;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.7) !important;
+  z-index: 99999 !important;
+}
+.nav-dropdown:hover .nav-dropdown-content {
+  display: block !important;
+}
+.nav-dropdown-content a {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+  color: #cbd5e1 !important;
+  text-decoration: none !important;
+  transition: all 0.15s !important;
+}
+.nav-dropdown-content a:hover {
+  background: rgba(0, 240, 255, 0.1) !important;
+  color: #00f0ff !important;
+}
+@media (max-width: 992px) {
+  .nav-menu-links { display: none !important; }
+  .nav-hamburger { display: inline-flex !important; }
+}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>/* ROBUST_BRAND_CSS */
+
+.brand-glow-text {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 15px !important;
+  letter-spacing: 0.2px !important;
+  white-space: nowrap !important;
+  display: inline-block !important;
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-background-clip: border-box !important;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.45) !important;
+}
+.nav-brand-logo, .nav-logo {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+.logo-atom-icon {
+  width: 46px !important;
+  height: 24px !important;
+  max-width: 46px !important;
+  max-height: 24px !important;
+  flex-shrink: 0 !important;
+  display: inline-block !important;
+}
+</style>
 </head>
-<body>
+<body class="dark">
+<script>if(localStorage.getItem('vlxt_theme')==='light')document.body.classList.remove('dark');</script>
 
 <!-- NAV -->
-<nav class="nav">
-  <a href="index.html" class="nav-logo">⚡ Vật Lý Xuân Trường</a>
-  <a href="index.html#leaderboard" class="nav-back">← Bảng Vàng</a>
-  <a href="solo.html" class="nav-back">⚔️ Solo</a>
-</nav>
+
+  <!-- ─── THANH ĐIỀU HƯỚNG CHUẨN ĐỒNG NHẤT TOÀN HỆ THỐNG (VẬT LÝ XUÂN TRƯỜNG) ─── -->
+  <header class="top-bar" id="main-top-bar">
+    <div class="nav-left-wrap">
+      <button class="nav-hamburger" id="navHamburgerBtn" aria-label="Mở menu" onclick="toggleNavDrawer(true)">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <a href="index.html" class="nav-brand-logo" title="Trang chủ Vật Lý Xuân Trường">
+        <svg class="logo-atom-icon" width="46" height="24" viewBox="0 0 88 50" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;flex-shrink:0;">
+  <path d="M4 8 H14 L24 23 L34 8 H44 L30 28 L45 48 H35 L24 33 L13 48 H3 L18 28 Z" fill="#00f0ff"/>
+  <path d="M46 8 H82 V15 H68 V48 H58 V15 H46 Z" fill="#00f0ff"/>
+  <g transform="translate(46, 28)">
+    <circle cx="0" cy="0" r="3.2" fill="#00f0ff"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#00f0ff" stroke-width="1.6" fill="none"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#38bdf8" stroke-width="1.6" fill="none" transform="rotate(60)"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#38bdf8" stroke-width="1.6" fill="none" transform="rotate(-60)"/>
+  </g>
+</svg>
+        <span class="brand-glow-text">Vật Lý Xuân Trường</span>
+      </a>
+
+      <!-- MENU DESKTOP ĐỒNG NHẤT KHÔNG RỚT DÒNG -->
+      <nav class="nav-menu-links">
+        <a href="danh-gia-nang-luc.html">🎯 Đánh Giá Năng Lực</a>
+        <a href="baihoc.html">Khóa Học</a>
+        <a href="goi-hoc.html" class="nav-item-pro">Gói Pro <span class="nav-pro-badge">50k</span></a>
+        <a href="live-record.html"><span class="nav-live-dot"></span> Live Class</a>
+        <div class="nav-dropdown">
+          <button type="button" class="nav-dropdown-btn active">Đấu Trường <i class="fa-solid fa-chevron-down" style="font-size:9px;opacity:0.6"></i></button>
+          <div class="nav-dropdown-content">
+            <a href="phong-thi-thu.html"><i class="fa-solid fa-clipboard-check" style="color:#00f0ff;width:18px"></i> Phòng Thi Thử (Chuẩn Bộ)</a>
+            <a href="danhsach-ly12.html"><i class="fa-solid fa-file-pen" style="color:#34d399;width:18px"></i> Phòng Kiểm Tra (Theo bài)</a>
+            <a href="dau-thuong-hud.html"><i class="fa-solid fa-khanda" style="color:#38bdf8;width:18px"></i> Đấu Thường (PvP)</a>
+            <a href="dua-top.html"><i class="fa-solid fa-crown" style="color:#fbbf24;width:18px"></i> Đấu Hạng (Đua Top)</a>
+            <a href="solo.html"><i class="fa-solid fa-crosshairs" style="color:#f472b6;width:18px"></i> Solo (1vs1)</a>
+          </div>
+        </div>
+        <a href="huongdan.html">Hướng Dẫn</a>
+      </nav>
+    </div>
+
+    <div class="nav-right-wrap" style="display:flex;align-items:center;gap:12px">
+      <div id="vlxt-nav-user-area"></div>
+    </div>
+  </header>
 
 <!-- HERO -->
 <div class="hero">
+  <div style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.35);color:#fbbf24;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">HÀNH TINH SKAT · ĐẤU TRƯỜNG XẾP HẠNG</div>
   <div class="hero-icon">🏆</div>
-  <h1 class="hero-title">Chế độ Đua Top</h1>
+  <h1 class="hero-title">Chế độ Đấu Hạng</h1>
   <p class="hero-sub">Trả lời câu hỏi, ghi điểm theo độ khó, leo thẳng lên Bảng Vàng.<br>Mỗi câu chỉ tính điểm một lần — câu khó cho điểm cao hơn.</p>
 </div>
 
@@ -430,6 +673,7 @@
   </div>
 </div>
 
+<script src="data/bundle_quizzes.js"></script>
 <script src="auth.js?v=7"></script>
 <script src="cache.js?v=1"></script>
 <script src="teaching-scope.js?v=3"></script>
@@ -947,7 +1191,7 @@
     }
 
     var picked = theory.slice(0, numTheory).concat(calc.slice(0, numCalc));
-    console.log('Đua Top - Tổng câu Tinh hợp lệ:', filtered.length, '| Câu chưa làm:', newQuestions.length, '| Chọn Lý thuyết:', numTheory, '| Chọn Tính toán:', numCalc);
+    console.log('Đấu Hạng - Tổng câu Tinh hợp lệ:', filtered.length, '| Câu chưa làm:', newQuestions.length, '| Chọn Lý thuyết:', numTheory, '| Chọn Tính toán:', numCalc);
     console.log('👉 BẤM VÀO MŨI TÊN BÊN CẠNH ĐỂ XEM CHI TIẾT TOÀN BỘ ' + filtered.length + ' CÂU HỎI THẬT:', filtered);
     window.__DEBUG_POOL = filtered; // Expose for teacher to verify
     
@@ -967,22 +1211,24 @@
     renderQuestion();
   };
 
-  // Mốc LP tối thiểu để mở khoá Đua Top
-  var MIN_LP_DUATOP = 25;
+  // Mốc LP tối thiểu để mở khoá Đấu Hạng
+  var MIN_LP_DUATOP = 200;
 
   function showLockedScreen(lp) {
     var pct = Math.max(0, Math.min(100, Math.round(lp / MIN_LP_DUATOP * 100)));
     arena.innerHTML =
       '<div class="empty-box" style="text-align:center;padding:40px 20px">' +
         '<div style="font-size:44px;margin-bottom:10px">🔒</div>' +
-        '<h3>Chưa mở khoá Đua Top</h3>' +
+        '<h3>Chưa mở khoá Đấu Hạng</h3>' +
         '<p style="color:#8b949e;margin:10px 0 16px">Học thêm bài để đạt <strong>' + MIN_LP_DUATOP + ' LP</strong> ' +
-        '(hiện có ' + lp + ' LP) là mở khoá được chế độ Đua Top nhé!</p>' +
+        '(hiện có ' + lp + ' LP) là mở khoá được chế độ Đấu Hạng nhé!</p>' +
         '<div style="max-width:260px;margin:0 auto 18px;height:10px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden">' +
         '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,#0072ff,#00f0ff)"></div>' +
         '</div>' +
+        '<a href="dau-thuong.html" style="display:inline-block;padding:10px 22px;border-radius:10px;' +
+        'background:linear-gradient(135deg,#0072ff,#00f0ff);color:#fff;font-weight:700;text-decoration:none;margin-right:10px">Vào Đấu thường ⚔️</a>' +
         '<a href="baihoc.html" style="display:inline-block;padding:10px 22px;border-radius:10px;' +
-        'background:linear-gradient(135deg,#0072ff,#00f0ff);color:#fff;font-weight:700;text-decoration:none">Học ngay →</a>' +
+        'background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:var(--text);font-weight:700;text-decoration:none">Học ngay →</a>' +
       '</div>';
   }
 
@@ -1000,11 +1246,58 @@
       .catch(function () {});
   }
 
+  function buildFallbackTinhFromBundle(lessons) {
+    if (!window._QUIZZES_BUNDLE) return [];
+    var lessonMap = {};
+    (lessons || []).forEach(function(l) {
+      var k = l.MaBai || l.mabai || '';
+      if (k) lessonMap[k] = l;
+    });
+    var out = [];
+    Object.keys(window._QUIZZES_BUNDLE).forEach(function(baiKey) {
+      var arr = window._QUIZZES_BUNDLE[baiKey];
+      var lInfo = lessonMap[baiKey] || {};
+      if (Array.isArray(arr)) {
+        arr.forEach(function(q, idx) {
+          if (q && q.optA && q.optB && q.correct) {
+            out.push({
+              id: baiKey + '_' + (q.thuTu || idx),
+              baiKey: baiKey,
+              maBai: baiKey,
+              question: q.question || '',
+              optA: q.optA,
+              optB: q.optB,
+              optC: q.optC,
+              optD: q.optD,
+              correct: q.correct,
+              giaiThich: q.explanation || q.giaiThich || '',
+              mucDo: q.mucDo || 'TH',
+              loai: 'TN',
+              chatLuong: 'tinh',
+              rawTier: 'tinh',
+              kyThuat: 'dat',
+              status: 'TEACHER_APPROVED',
+              usageScopes: ['DUA_TOP', 'SOLO'],
+              chuong: lInfo.Chuong || lInfo.chuong || 'CHƯƠNG 1 – VẬT LÝ NHIỆT',
+              baiHoc: lInfo.TenBai || lInfo.tenbai || ''
+            });
+          }
+        });
+      }
+    });
+    return out;
+  }
+
   function loadQuestions() {
     arena.innerHTML = '<div class="loading-box"><div class="spinner"></div><div style="color:var(--sub);font-size:14px">Đang chuẩn bị câu hỏi theo phạm vi bài học…</div></div>';
 
+    var nganHangRace = Promise.race([
+      fetcher(GAS + '?type=nganhang').then(function(r){ return r.json(); }).catch(function(){ return null; }),
+      new Promise(function(resolve){ setTimeout(function(){ resolve(null); }, 900); })
+    ]);
+
     Promise.all([
-      fetcher(GAS + '?type=nganhang').then(function(r){ return r.json(); }).catch(function(){ return []; }),
+      nganHangRace,
       fetcher('data/teachingscope.json').then(function(r){ return r.json(); }).catch(function(){
         return fetcher(GAS + '?type=teachingscope').then(function(r){ return r.json(); }).catch(function(){ return []; });
       }),
@@ -1015,7 +1308,10 @@
       var data = results[0];
       var scopeData = results[1];
       var lessons = Array.isArray(results[2]) ? results[2] : (results[2].data || results[2].baihoc || []);
-      var raw = Array.isArray(data) ? data : (data.data || data.rows || []);
+      var raw = data ? (Array.isArray(data) ? data : (data.data || data.rows || [])) : [];
+      if (!raw || !raw.length) {
+        raw = buildFallbackTinhFromBundle(lessons);
+      }
       
       questions = raw;
       teachingScopes = scopeData;
@@ -1030,7 +1326,7 @@
               '<div style="font-size:44px;margin-bottom:12px">📚</div>' +
               '<h3>Chưa có câu hỏi trong phạm vi bài học đang mở</h3>' +
               '<p style="color:var(--sub);margin:8px auto 20px;max-width:440px;line-height:1.6">' +
-              'Đua Top chỉ phát các câu hỏi <strong>đã qua kiểm duyệt (Tinh)</strong> thuộc phạm vi bài học (<strong>' + scopeDesc + '</strong>). Thầy đang liên tục cập nhật ngân hàng câu hỏi nhé!' +
+              'Đấu Hạng chỉ phát các câu hỏi <strong>đã qua kiểm duyệt (Tinh)</strong> thuộc phạm vi bài học (<strong>' + scopeDesc + '</strong>). Thầy đang liên tục cập nhật ngân hàng câu hỏi nhé!' +
               '</p>' +
               '<a href="baihoc.html" class="btn-primary" style="display:inline-block;text-decoration:none;padding:12px 24px;border-radius:10px;background:linear-gradient(135deg,#0072ff,#00f0ff);color:#fff;font-weight:700">Vào học bài giảng →</a>' +
             '</div>';
@@ -1054,6 +1350,14 @@
     // Render widget
     if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(user);
 
+    // Tối ưu 0ms: Kiểm tra LP từ phiên local trước để tải câu hỏi ngay lập tức, không chặn chờ mạng GAS
+    var cachedLp = Number(user.lpTotal) || 0;
+    var startedLoad = false;
+    if (cachedLp >= MIN_LP_DUATOP) {
+      startedLoad = true;
+      loadQuestions();
+    }
+
     var profilePromise = (user && user.sdt && user.token)
       ? fetch(GAS, {
           method: 'POST',
@@ -1065,11 +1369,11 @@
 
     profilePromise
       .then(function (profile) {
-        var lp = (profile && profile.ok && profile.user) ? (Number(profile.user.lpTotal) || 0) : (Number(user.lpTotal) || 0);
+        var lp = (profile && profile.ok && profile.user) ? (Number(profile.user.lpTotal) || 0) : cachedLp;
         if (lp < MIN_LP_DUATOP) { showLockedScreen(lp); return; }
-        loadQuestions();
+        if (!startedLoad) loadQuestions();
       })
-      .catch(function () { loadQuestions(); });
+      .catch(function () { if (!startedLoad) loadQuestions(); });
   });
 })();
 </script>

@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bảng Giá & Gói Học · Vật Lý Xuân Trường</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=DM+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --blue: #0b84f3;
+            --cyan: #00f0ff;
+            --green: #10b981;
+            --yellow: #f59e0b;
+            --purple: #8b5cf6;
+            --bg: #0d1117;
+            --bg-card: rgba(22, 27, 34, 0.95);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed; inset: 0; z-index: 0;
+            background:
+                radial-gradient(circle at 20% 15%, rgba(11, 132, 243, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 80% 85%, rgba(0, 240, 255, 0.08) 0%, transparent 45%),
+                #0d1117;
+            pointer-events: none;
+        }
+
+        /* ─── NAVBAR ─── */
+        .navbar {
+            position: sticky; top: 0; left: 0; right: 0; z-index: 200;
+            height: 60px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px;
+            background: rgba(13, 17, 23, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-left { display: flex; align-items: center; gap: 20px; }
+        .nav-logo {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 15px; font-weight: 800; color: #fff; text-decoration: none;
+        }
+        .nav-links-sub { display: flex; gap: 16px; margin-left: 12px; }
+        .nav-links-sub a {
+            color: var(--text-muted); text-decoration: none; font-size: 13.5px; font-weight: 600;
+            transition: color 0.15s;
+        }
+        .nav-links-sub a:hover { color: #fff; }
+        @media(max-width: 768px){ .nav-links-sub { display: none; } }
+
+        /* ─── CONTAINER ─── */
+        .container {
+            position: relative; z-index: 1;
+            max-width: 1080px; width: 100%; margin: 0 auto;
+            padding: 92px 16px 80px; flex: 1;
+        }
+        @media (max-width: 768px) {
+            .container { padding: 82px 14px 60px; }
+        }
+
+        /* ─── HEADER ─── */
+        .header-section { text-align: center; margin-bottom: 44px; }
+        .badge-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 16px; border-radius: 30px;
+            background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #fbbf24; font-size: 13px; font-weight: 700; margin-bottom: 16px;
+        }
+        .header-title {
+            font-size: clamp(30px, 5vw, 44px); font-weight: 900; color: #fff; line-height: 1.2; margin-bottom: 12px;
+        }
+        .header-title span {
+            background: linear-gradient(135deg, #00f0ff 0%, #0b84f3 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .header-desc { font-size: 16px; color: var(--text-muted); max-width: 640px; margin: 0 auto; line-height: 1.6; }
+
+        /* ─── PRICING TIERS ─── */
+        .pricing-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 24px; align-items: stretch;
+        }
+
+        .pricing-card {
+            background: var(--bg-card); border: 1.5px solid var(--border);
+            border-radius: 22px; padding: 32px 26px; display: flex; flex-direction: column;
+            justify-content: space-between; position: relative;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+        }
+        .pricing-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 240, 255, 0.4);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Featured tier */
+        .pricing-card.featured {
+            border-color: var(--cyan);
+            background: linear-gradient(180deg, rgba(11, 132, 243, 0.08) 0%, rgba(22, 27, 34, 0.98) 100%);
+            box-shadow: 0 12px 36px rgba(0, 240, 255, 0.15);
+        }
+        .featured-tag {
+            position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(135deg, #0b84f3, #00f0ff); color: #04101e;
+            font-size: 11.5px; font-weight: 800; padding: 4px 14px; border-radius: 20px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        .plan-header { margin-bottom: 22px; }
+        .plan-name { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+        .plan-sub { font-size: 13.5px; color: var(--text-muted); line-height: 1.4; }
+
+        .plan-price-wrap {
+            display: flex; align-items: baseline; gap: 6px; margin: 20px 0 24px;
+        }
+        .plan-price { font-size: 40px; font-weight: 900; color: #fff; font-family: 'DM Mono', monospace; }
+        .plan-cycle { font-size: 14px; color: var(--text-muted); font-weight: 600; }
+
+        .features-list { list-style: none; display: flex; flex-direction: column; gap: 13px; margin-bottom: 30px; }
+        .features-list li {
+            display: flex; gap: 10px; font-size: 14.5px; color: #cbd5e1; line-height: 1.45;
+        }
+        .features-list li i {
+            color: var(--cyan); font-size: 14px; margin-top: 3px; flex-shrink: 0;
+        }
+
+        .btn-select-plan {
+            width: 100%; padding: 14px; border-radius: 12px; border: none;
+            font-size: 15px; font-weight: 800; cursor: pointer;
+            transition: all 0.2s; font-family: inherit; display: inline-flex;
+            align-items: center; justify-content: center; gap: 8px; text-decoration: none;
+        }
+        .btn-select-plan.primary {
+            background: linear-gradient(135deg, #0b84f3 0%, #00f0ff 100%);
+            color: #04101e; box-shadow: 0 8px 24px rgba(0, 240, 255, 0.25);
+        }
+        .btn-select-plan.primary:hover {
+            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.4); transform: translateY(-2px);
+        }
+        .btn-select-plan.secondary {
+            background: rgba(255, 255, 255, 0.08); color: #fff; border: 1px solid var(--border);
+        }
+        .btn-select-plan.secondary:hover { background: rgba(255, 255, 255, 0.15); }
+
+        /* ─── PAYMENT MODAL (VIETQR) ─── */
+        .payment-modal {
+            display: none; position: fixed; inset: 0; z-index: 9999;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+            align-items: center; justify-content: center; padding: 16px;
+        }
+        .payment-box {
+            background: #111827; border: 1.5px solid rgba(0, 240, 255, 0.3);
+            border-radius: 22px; max-width: 500px; width: 100%; padding: 28px 24px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7); position: relative;
+            max-height: 90vh; overflow-y: auto;
+        }
+        .modal-close-btn {
+            position: absolute; top: 16px; right: 16px; background: none; border: none;
+            color: var(--text-muted); font-size: 18px; cursor: pointer; width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center; border-radius: 8px;
+        }
+        .modal-close-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+        .payment-head { text-align: center; margin-bottom: 20px; }
+        .payment-title { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+        .payment-sub { font-size: 13.5px; color: var(--text-muted); }
+
+        .qr-frame {
+            background: #fff; border-radius: 14px; padding: 14px;
+            width: fit-content; margin: 0 auto 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+        .qr-image { width: 220px; height: 220px; display: block; object-fit: contain; }
+
+        .bank-details-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);
+            border-radius: 14px; padding: 16px; margin-bottom: 20px;
+        }
+        .detail-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 13.5px;
+        }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-label { color: var(--text-muted); }
+        .detail-val { font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
+        .btn-copy {
+            background: rgba(255, 255, 255, 0.1); border: none; color: var(--cyan);
+            padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer;
+        }
+        .btn-copy:hover { background: rgba(0, 240, 255, 0.2); }
+
+        .btn-confirm-pay {
+            width: 100%; padding: 14px; border-radius: 12px; border: none;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #fff; font-size: 15px; font-weight: 800; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+            transition: all 0.25s; font-family: inherit;
+        }
+        .btn-confirm-pay:disabled, .btn-confirm-pay.is-locked {
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.28);
+            color: #94a3b8;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        .account-locked-card {
+            background: rgba(11, 132, 243, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 12px; padding: 11px 14px; margin-bottom: 14px;
+            display: flex; align-items: center; justify-content: space-between; gap: 10px;
+            font-size: 13px; color: #e2e8f0;
+        }
+        .account-locked-info {
+            display: flex; align-items: center; gap: 8px; font-weight: 700;
+        }
+        .account-locked-badge {
+            background: rgba(16, 185, 129, 0.18); color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 99px;
+            white-space: nowrap;
+        }
+
+        /* ─── VNPAY INTEGRATION STYLES (STANDBY BY DEFAULT) ─── */
+        .btn-vnpay-direct {
+            width: 100%; margin-top: 10px; padding: 12px 14px; border-radius: 12px;
+            border: 1px solid rgba(56, 189, 248, 0.45);
+            background: linear-gradient(135deg, rgba(0, 91, 170, 0.35) 0%, rgba(11, 132, 243, 0.2) 100%);
+            color: #e0f2fe; font-size: 14px; font-weight: 800; cursor: pointer;
+            transition: all 0.2s; font-family: inherit;
+            display: none; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-vnpay-direct:hover {
+            background: linear-gradient(135deg, #005baa 0%, #0b84f3 100%);
+            color: #fff; border-color: var(--cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(11, 132, 243, 0.35);
+        }
+        .vnpay-badge-tag {
+            background: #ed1c24; color: #fff; font-size: 10px; font-weight: 900;
+            padding: 2px 6px; border-radius: 4px; letter-spacing: 0.4px;
+        }
+        .pay-tabs {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+            background: rgba(255, 255, 255, 0.04); padding: 5px; border-radius: 12px;
+            border: 1px solid var(--border); margin-bottom: 18px;
+        }
+        .pay-tab-btn {
+            padding: 10px 12px; border-radius: 9px; border: none;
+            background: transparent; color: var(--text-muted);
+            font-size: 13px; font-weight: 800; cursor: pointer; font-family: inherit;
+            display: flex; align-items: center; justify-content: center; gap: 7px;
+            transition: all 0.2s;
+        }
+        .pay-tab-btn.active {
+            background: linear-gradient(135deg, #0b84f3 0%, #0284c7 100%);
+            color: #fff; box-shadow: 0 4px 14px rgba(11, 132, 243, 0.35);
+        }
+        .btn-vnpay-gateway {
+            width: 100%; padding: 15px; border-radius: 12px;
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            background: linear-gradient(135deg, #005baa 0%, #0284c7 50%, #ed1c24 140%);
+            color: #fff; font-size: 15.5px; font-weight: 900; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            box-shadow: 0 10px 26px rgba(2, 132, 199, 0.4);
+            transition: all 0.2s; font-family: inherit;
+        }
+        .btn-vnpay-gateway:hover {
+            filter: brightness(1.12); transform: translateY(-2px);
+        }
+        .user-input-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;
+        }
+        @media(max-width: 500px) { .user-input-grid { grid-template-columns: 1fr; } }
+        .user-input-field {
+            width: 100%; padding: 10px 12px; border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+            color: #fff; font-size: 13.5px; font-weight: 600; font-family: inherit; outline: none;
+        }
+        .user-input-field:focus { border-color: var(--cyan); }
+
+        /* ─── FAQ SECTION ─── */
+        .faq-section { margin-top: 60px; }
+        .faq-title { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 20px; text-align: center; }
+        .faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .faq-item {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 14px; padding: 18px;
+        }
+        .faq-q { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+        .faq-a { font-size: 13.5px; color: var(--text-muted); line-height: 1.5; }
+    
+/* ─── NAVBAR ĐỒNG NHẤT TOÀN HỆ THỐNG ─── */
+.top-bar, nav.navbar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 60px !important;
+  background: rgba(13, 17, 23, 0.92) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.18) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0 20px !important;
+  z-index: 10000 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+}
+.nav-left-wrap, .nav-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+}
+.nav-brand-logo, .nav-logo {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  text-decoration: none !important;
+  color: #fff !important;
+  font-weight: 800 !important;
+  font-size: 15px !important;
+  letter-spacing: -0.2px !important;
+}
+.brand-glow-text {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 15px !important;
+  letter-spacing: 0.2px !important;
+  white-space: nowrap !important;
+  display: inline-block !important;
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-background-clip: border-box !important;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.45) !important;
+}
+.nav-hamburger {
+  display: none;
+  background: transparent !important;
+  border: none !important;
+  color: #00f0ff !important;
+  font-size: 18px !important;
+  padding: 6px !important;
+  cursor: pointer !important;
+  border-radius: 8px !important;
+  line-height: 1 !important;
+}
+.nav-menu-links {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+.nav-menu-links a, .nav-dropdown-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 6px 12px !important;
+  border-radius: 8px !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  color: #94a3b8 !important;
+  text-decoration: none !important;
+  transition: all 0.15s !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  font-family: inherit !important;
+}
+.nav-menu-links a:hover, .nav-dropdown-btn:hover, .nav-menu-links a.active {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+.nav-item-pro {
+  color: #fbbf24 !important;
+  font-weight: 700 !important;
+}
+.nav-pro-badge {
+  font-size: 10.5px !important;
+  font-weight: 800 !important;
+  padding: 1px 6px !important;
+  border-radius: 4px !important;
+  background: rgba(245, 158, 11, 0.2) !important;
+  border: 1px solid rgba(245, 158, 11, 0.4) !important;
+  color: #fbbf24 !important;
+}
+.nav-live-dot {
+  width: 7px !important;
+  height: 7px !important;
+  border-radius: 50% !important;
+  background: #ef4444 !important;
+  box-shadow: 0 0 8px #ef4444 !important;
+  display: inline-block !important;
+}
+.nav-dropdown {
+  position: relative !important;
+  display: inline-block !important;
+}
+.nav-dropdown-content {
+  display: none !important;
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  min-width: 230px !important;
+  background: #0d1527 !important;
+  border: 1px solid rgba(0, 240, 255, 0.22) !important;
+  border-radius: 12px !important;
+  padding: 8px !important;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.7) !important;
+  z-index: 99999 !important;
+}
+.nav-dropdown:hover .nav-dropdown-content {
+  display: block !important;
+}
+.nav-dropdown-content a {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+  color: #cbd5e1 !important;
+  text-decoration: none !important;
+  transition: all 0.15s !important;
+}
+.nav-dropdown-content a:hover {
+  background: rgba(0, 240, 255, 0.1) !important;
+  color: #00f0ff !important;
+}
+@media (max-width: 992px) {
+  .nav-menu-links { display: none !important; }
+  .nav-hamburger { display: inline-flex !important; }
+}
+
+</style>
+    <script src="auth.js?v=20261109p"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <script src="vnpay-service.js?v=20261109p"></script>
+    <script src="freemium-flow.js?v=20261109p"></script>
+<style>/* ROBUST_BRAND_CSS */
+
+.brand-glow-text {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 15px !important;
+  letter-spacing: 0.2px !important;
+  white-space: nowrap !important;
+  display: inline-block !important;
+  background: none !important;
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-background-clip: border-box !important;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.45) !important;
+}
+.nav-brand-logo, .nav-logo {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+.logo-atom-icon {
+  width: 46px !important;
+  height: 24px !important;
+  max-width: 46px !important;
+  max-height: 24px !important;
+  flex-shrink: 0 !important;
+  display: inline-block !important;
+}
+</style>
+</head>
+<body>
+
+<!-- ─── NAVBAR ─── -->
+
+  
+  <!-- ─── THANH ĐIỀU HƯỚNG CHUẨN ĐỒNG NHẤT TOÀN HỆ THỐNG (VẬT LÝ XUÂN TRƯỜNG) ─── -->
+  <header class="top-bar" id="main-top-bar">
+    <div class="nav-left-wrap">
+      <button class="nav-hamburger" id="navHamburgerBtn" aria-label="Mở menu" onclick="toggleNavDrawer(true)">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <a href="index.html" class="nav-brand-logo" title="Trang chủ Vật Lý Xuân Trường">
+        <svg class="logo-atom-icon" width="46" height="24" viewBox="0 0 88 50" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;flex-shrink:0;">
+  <path d="M4 8 H14 L24 23 L34 8 H44 L30 28 L45 48 H35 L24 33 L13 48 H3 L18 28 Z" fill="#00f0ff"/>
+  <path d="M46 8 H82 V15 H68 V48 H58 V15 H46 Z" fill="#00f0ff"/>
+  <g transform="translate(46, 28)">
+    <circle cx="0" cy="0" r="3.2" fill="#00f0ff"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#00f0ff" stroke-width="1.6" fill="none"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#38bdf8" stroke-width="1.6" fill="none" transform="rotate(60)"/>
+    <ellipse cx="0" cy="0" rx="6.5" ry="14" stroke="#38bdf8" stroke-width="1.6" fill="none" transform="rotate(-60)"/>
+  </g>
+</svg>
+        <span class="brand-glow-text">Vật Lý Xuân Trường</span>
+      </a>
+
+      <!-- MENU DESKTOP ĐỒNG NHẤT KHÔNG RỚT DÒNG -->
+      <nav class="nav-menu-links">
+        <a href="danh-gia-nang-luc.html">🎯 Đánh Giá Năng Lực</a>
+        <a href="baihoc.html">Khóa Học</a>
+        <a href="goi-hoc.html" class="nav-item-pro active">Gói Pro <span class="nav-pro-badge">50k</span></a>
+        <a href="live-record.html"><span class="nav-live-dot"></span> Live Class</a>
+        <div class="nav-dropdown">
+          <button type="button" class="nav-dropdown-btn">Đấu Trường <i class="fa-solid fa-chevron-down" style="font-size:9px;opacity:0.6"></i></button>
+          <div class="nav-dropdown-content">
+            <a href="phong-thi-thu.html"><i class="fa-solid fa-clipboard-check" style="color:#00f0ff;width:18px"></i> Phòng Thi Thử (Chuẩn Bộ)</a>
+            <a href="danhsach-ly12.html"><i class="fa-solid fa-file-pen" style="color:#34d399;width:18px"></i> Phòng Kiểm Tra (Theo bài)</a>
+            <a href="dau-thuong-hud.html"><i class="fa-solid fa-khanda" style="color:#38bdf8;width:18px"></i> Đấu Thường (PvP)</a>
+            <a href="dua-top.html"><i class="fa-solid fa-crown" style="color:#fbbf24;width:18px"></i> Đấu Hạng (Đua Top)</a>
+            <a href="solo.html"><i class="fa-solid fa-crosshairs" style="color:#f472b6;width:18px"></i> Solo (1vs1)</a>
+          </div>
+        </div>
+        <a href="huongdan.html">Hướng Dẫn</a>
+      </nav>
+    </div>
+
+    <div class="nav-right-wrap" style="display:flex;align-items:center;gap:12px">
+      <div id="vlxt-nav-user-area"></div>
+    </div>
+  </header>
+
+<div class="container">
+
+    <!-- ─── HEADER ─── -->
+    <div class="header-section">
+        <div class="badge-pill"><i class="fa-solid fa-gem"></i> Đầu Tư Cho Điểm 9+ Vật Lý 12</div>
+        <h1 class="header-title">CHỌN GÓI HỌC <span>PHÙ HỢP VỚI BẠN</span></h1>
+        <p class="header-desc">Học bài giảng video độc quyền, giải bộ 20 câu trắc nghiệm dừng video theo từng bài và rèn luyện kỹ năng thực chiến cùng Thầy Xuân Trường.</p>
+    </div>
+
+    <!-- ─── BANNER GÓI HIỆN TẠI CỦA HỌC SINH (Tự động hiển thị nếu đã kích hoạt Pro/VIP) ─── -->
+    <div id="active-plan-banner" style="display:none;max-width:1100px;margin:0 auto 28px;background:linear-gradient(135deg,rgba(16,185,129,0.14),rgba(6,78,59,0.28));border:1.5px solid rgba(16,185,129,0.45);border-radius:18px;padding:18px 22px;box-shadow:0 12px 32px rgba(0,0,0,0.35);"></div>
+
+    <!-- ─── PRICING TIERS ─── -->
+    <div class="pricing-grid">
+
+        <!-- GÓI 1: THEO THÁNG (50K) -->
+        <div class="pricing-card" id="plan-card-THANG50K">
+            <div id="current-tag-THANG50K" style="display:none;position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#10b981,#34d399);color:#022c22;font-size:11px;font-weight:900;padding:4px 14px;border-radius:100px;letter-spacing:0.04em;white-space:nowrap;box-shadow:0 4px 14px rgba(16,185,129,0.4);">👑 GÓI HIỆN TẠI CỦA BẠN</div>
+            <div class="plan-header">
+                <div class="plan-name">Gói Tháng Linh Hoạt</div>
+                <div class="plan-sub">Trải nghiệm toàn bộ bài giảng video và trắc nghiệm tương tác từng tháng một.</div>
+            </div>
+            <div class="plan-price-wrap">
+                <div class="plan-price">50.000đ</div>
+                <div class="plan-cycle">/ tháng</div>
+            </div>
+            <ul class="features-list">
+                <li><i class="fa-solid fa-circle-check"></i> <span>Mở khóa 100% <strong>toàn bộ các khóa học & bài giảng video</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Tương tác hệ thống <strong>20 câu dừng video</strong> mỗi bài</span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Tải toàn bộ <strong>PDF lý thuyết & bài tập</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Ôn tập không giới hạn trên cả Web và Điện thoại</span></li>
+            </ul>
+            <div id="action-wrap-THANG50K">
+                <button id="btn-plan-THANG50K" class="btn-select-plan secondary" onclick="openPayment('THANG50K', 'Gói Tháng Linh Hoạt', 50000, 'vietqr')">
+                    <i class="fa-solid fa-qrcode"></i> Đăng Ký Gói 50k / Tháng
+                </button>
+                <button class="btn-vnpay-direct" onclick="openPayment('THANG50K', 'Gói Tháng Linh Hoạt', 50000, 'vnpay')">
+                    <span class="vnpay-badge-tag">VNPAY</span> Thanh Toán Qua Cổng VNPay
+                </button>
+            </div>
+        </div>
+
+        <!-- GÓI 2: THEO NĂM (TIẾT KIỆM) -->
+        <div class="pricing-card featured" id="plan-card-NAM399K">
+            <div class="featured-tag" id="current-tag-NAM399K">ĐƯỢC CHỌN NHIỀU NHẤT ⭐</div>
+            <div class="plan-header">
+                <div class="plan-name">Trọn Khóa Cả Năm (XPS 2k9)</div>
+                <div class="plan-sub">Đồng hành trọn vẹn cả năm học cho đến ngày bước vào phòng thi tốt nghiệp.</div>
+            </div>
+            <div class="plan-price-wrap">
+                <div class="plan-price">399.000đ</div>
+                <div class="plan-cycle">/ cả năm (~33k/tháng)</div>
+            </div>
+            <ul class="features-list">
+                <li><i class="fa-solid fa-circle-check"></i> <span>Toàn bộ quyền lợi của <strong>Gói Tháng</strong> trọn năm học</span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Mở khóa toàn bộ <strong>Phòng Thi Thử CBT chuẩn cấu trúc Bộ</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Khóa học cấp tốc <strong>Tổng ôn & Luyện đề về đích</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Huy hiệu <strong>VIP Member</strong> trên bảng xếp hạng Đấu Hạng</span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Tiết kiệm <strong>35% học phí</strong> so với đăng ký từng tháng</span></li>
+            </ul>
+            <div id="action-wrap-NAM399K">
+                <button id="btn-plan-NAM399K" class="btn-select-plan primary" onclick="openPayment('NAM399K', 'Gói Trọn Năm XPS 2k9', 399000, 'vietqr')">
+                    <i class="fa-solid fa-bolt"></i> Nhận Ưu Đãi Trọn Khóa (399k)
+                </button>
+                <button class="btn-vnpay-direct" onclick="openPayment('NAM399K', 'Gói Trọn Năm XPS 2k9', 399000, 'vnpay')">
+                    <span class="vnpay-badge-tag">VNPAY</span> Thanh Toán Qua Cổng VNPay (399k)
+                </button>
+            </div>
+        </div>
+
+        <!-- GÓI 3: LỚP ONLINE CÙNG THẦY -->
+        <div class="pricing-card" id="plan-card-VIP850K">
+            <div id="current-tag-VIP850K" style="display:none;position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#a855f7,#ec4899);color:#fff;font-size:11px;font-weight:900;padding:4px 14px;border-radius:100px;letter-spacing:0.04em;white-space:nowrap;box-shadow:0 4px 14px rgba(168,85,247,0.45);">💎 GÓI HIỆN TẠI CỦA BẠN</div>
+            <div class="plan-header">
+                <div class="plan-name">Lớp Online Cùng Thầy (VIP)</div>
+                <div class="plan-sub">Học tương tác trực tiếp hàng tuần cùng Thầy Xuân Trường và đội ngũ trợ giảng.</div>
+            </div>
+            <div class="plan-price-wrap">
+                <div class="plan-price">850.000đ</div>
+                <div class="plan-cycle">/ khóa học</div>
+            </div>
+            <ul class="features-list">
+                <li><i class="fa-solid fa-circle-check"></i> <span>Bao gồm toàn bộ quyền lợi của <strong>Gói Trọn Năm</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Học trực tiếp qua <strong>Google Meet/Zoom 2-3 buổi/tuần</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Hỏi đáp bài tập <strong>1-1 với Thầy & Trợ giảng</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Kiểm tra định kỳ và sửa bài cá nhân hóa chi tiết</span></li>
+            </ul>
+            <div id="action-wrap-VIP850K">
+                <button id="btn-plan-VIP850K" class="btn-select-plan secondary" onclick="openPayment('VIP850K', 'Lớp Online Cùng Thầy (VIP)', 850000, 'vietqr')">
+                    <i class="fa-solid fa-user-tie"></i> Đăng Ký Lớp Cùng Thầy
+                </button>
+                <button class="btn-vnpay-direct" onclick="openPayment('VIP850K', 'Lớp Online Cùng Thầy (VIP)', 850000, 'vnpay')">
+                    <span class="vnpay-badge-tag">VNPAY</span> Thanh Toán Qua Cổng VNPay (850k)
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ─── LỊCH SỬ GIAO DỊCH & THANH TOÁN CỦA HỌC SINH ─── -->
+    <div id="goihoc-payment-history" style="display:none;max-width:1100px;margin:28px auto 0;background:rgba(15,23,42,0.85);border:1px solid rgba(56,189,248,0.22);border-radius:18px;padding:22px 24px;"></div>
+
+    <!-- ─── FAQ ─── -->
+    <div class="faq-section">
+        <h2 class="faq-title">CÂU HỎI THƯỜNG GẶP</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <div class="faq-q">Sau khi chuyển khoản bao lâu thì tài khoản được kích hoạt?</div>
+                <div class="faq-a">Sau khi bạn quét mã VietQR chuyển khoản với đúng nội dung, hệ thống sẽ kích hoạt tài khoản trong vòng 5 - 15 phút. Bạn chỉ cần tải lại trang là học được ngay.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Em có thể học trên điện thoại được không?</div>
+                <div class="faq-a">Hoàn toàn được! Website Vật Lý Xuân Trường được tối ưu mượt mà 100% cho cả iPhone, Android, iPad và Máy tính.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Gói 50k/tháng có bị tự động trừ tiền tháng sau không?</div>
+                <div class="faq-a">Không. Bạn chuyển khoản tháng nào sẽ được sử dụng tháng đó, hoàn toàn chủ động, không có cơ chế tự động trừ tiền trong thẻ hay tài khoản của bạn.</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ─── VIETQR & VNPAY PAYMENT MODAL ─── -->
+<div id="payment-modal" class="payment-modal">
+    <div class="payment-box">
+        <button class="modal-close-btn" onclick="closePayment()"><i class="fa-solid fa-xmark"></i></button>
+
+        <div class="payment-head">
+            <h3 class="payment-title" id="modal-plan-name">Thanh Toán Gói Học</h3>
+            <p class="payment-sub">Chọn phương thức thanh toán tự động 24/7</p>
+        </div>
+
+        <!-- 2 TAB CHUYỂN ĐỔI PHƯƠNG THỨC (Ẩn mặc định khi VNPay ở chế độ chờ Hộ Kinh Doanh) -->
+        <div class="pay-tabs" id="modal-pay-tabs" style="display:none;">
+            <button type="button" id="tab-btn-vnpay" class="pay-tab-btn" onclick="switchPayTab('vnpay')">
+                <span class="vnpay-badge-tag">VNPAY</span> Cổng VNPay
+            </button>
+            <button type="button" id="tab-btn-vietqr" class="pay-tab-btn active" onclick="switchPayTab('vietqr')">
+                <i class="fa-solid fa-qrcode"></i> Quét Mã VietQR
+            </button>
+        </div>
+
+        <!-- Thẻ hiển thị tự động Tài khoản học sinh đã đăng nhập (không cần gõ lại Tên & SĐT) -->
+        <div class="account-locked-card" id="pay-account-locked-card">
+            <div class="account-locked-info">
+                <i class="fa-solid fa-user-shield" style="color:var(--cyan);font-size:16px;"></i>
+                <div>
+                    <div style="font-size:11px;color:#94a3b8;font-weight:600;">Tài khoản nhận gói nâng cấp:</div>
+                    <div id="pay-account-display" style="color:#fff;font-size:13.5px;font-weight:800;">Đang tải tài khoản...</div>
+                </div>
+            </div>
+            <span class="account-locked-badge"><i class="fa-solid fa-bolt"></i> Tự khớp SĐT</span>
+        </div>
+        <input type="hidden" id="pay-student-name" value="">
+        <input type="hidden" id="pay-student-phone" value="">
+
+        <!-- PANEL 1: CỔNG THANH TOÁN VNPAY (Chế độ chờ Hộ Kinh Doanh) -->
+        <div id="panel-vnpay" style="display:none;">
+            <div class="bank-details-card" style="border-color:rgba(56,189,248,0.35);background:rgba(11,132,243,0.06);">
+                <div class="detail-row">
+                    <span class="detail-label">Cổng thanh toán</span>
+                    <span class="detail-val"><span class="vnpay-badge-tag">VNPAY</span> Sandbox / Gateway v2.1.0</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Gói đăng ký</span>
+                    <span class="detail-val" id="vnpay-plan-val" style="color:var(--cyan)">Gói Tháng Linh Hoạt</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Tổng thanh toán</span>
+                    <span class="detail-val" id="vnpay-amount-val" style="color:#10b981;font-size:16px">50.000đ</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Chế độ cổng VNPay</span>
+                    <span class="detail-val">
+                        <select id="vnpay-bank-code" style="background:#0f172a;color:#38bdf8;border:1px solid rgba(56,189,248,0.4);border-radius:6px;padding:4px 8px;font-size:12px;font-weight:700;outline:none;cursor:pointer;">
+                            <option value="NCB" selected>⚡ Vào thẳng trang nhập thẻ NCB Demo</option>
+                            <option value="VNBANK">🏦 Chọn danh sách Ngân hàng nội địa</option>
+                            <option value="ALL">📱 Hiện tất cả phương thức (QR / Thẻ)</option>
+                        </select>
+                    </span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Chuẩn bảo mật</span>
+                    <span class="detail-val" style="font-size:12px;color:#93c5fd"><i class="fa-solid fa-shield-halved"></i> Chữ ký số HMAC-SHA512</span>
+                </div>
+            </div>
+
+            <!-- Khung thông tin Thẻ Ngân Hàng NCB Demo để Thầy & Học sinh test -->
+            <div class="bank-details-card" style="background:rgba(15,23,42,0.85);border-color:rgba(245,158,11,0.3);">
+                <div style="font-size:11.5px;font-weight:800;color:#fbbf24;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+                    <span><i class="fa-solid fa-flask"></i> Thẻ Ngân Hàng Demo Test (VNPAY Sandbox)</span>
+                    <span style="color:#34d399;font-size:10.5px;">● Sẵn sàng</span>
+                </div>
+                <div class="detail-row" style="padding:5px 0;font-size:12.5px;">
+                    <span class="detail-label">Ngân hàng</span>
+                    <span class="detail-val">NCB (Ngân hàng Quốc Dân)</span>
+                </div>
+                <div class="detail-row" style="padding:5px 0;font-size:12.5px;">
+                    <span class="detail-label">Số thẻ</span>
+                    <span class="detail-val">
+                        <code id="ncb-card-no" style="color:#38bdf8;font-family:'DM Mono',monospace;">9704198526191432198</code>
+                        <button class="btn-copy" onclick="copyText('ncb-card-no')">Copy</button>
+                    </span>
+                </div>
+                <div class="detail-row" style="padding:5px 0;font-size:12.5px;">
+                    <span class="detail-label">Chủ thẻ & Ngày PH</span>
+                    <span class="detail-val">
+                        <code id="ncb-card-holder" style="color:#e2e8f0">NGUYEN VAN A</code> · <code style="color:#fbbf24">07/15</code>
+                        <button class="btn-copy" onclick="copyText('ncb-card-holder')">Copy</button>
+                    </span>
+                </div>
+                <div class="detail-row" style="padding:5px 0;font-size:12.5px;">
+                    <span class="detail-label">Mật khẩu OTP</span>
+                    <span class="detail-val">
+                        <code id="ncb-card-otp" style="color:#34d399;font-weight:900">123456</code>
+                        <button class="btn-copy" onclick="copyText('ncb-card-otp')">Copy</button>
+                    </span>
+                </div>
+            </div>
+
+            <button class="btn-vnpay-gateway" onclick="handleVnPayCheckout()">
+                <i class="fa-solid fa-credit-card"></i> THANH TOÁN NGAY VỚI VNPAY <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:13px"></i>
+            </button>
+        </div>
+
+        <!-- PANEL 2: QUÉT MÃ VIETQR (MẶC ĐỊNH TỰ ĐỘNG KHỚP LỆNH) -->
+        <div id="panel-vietqr">
+            <div class="qr-frame">
+                <img id="vietqr-image" class="qr-image" src="" alt="Mã VietQR Chuyển Khoản">
+                <div style="font-size:12px;font-weight:700;color:#0b84f3;margin-top:8px;">NAPAS 247 · TỰ ĐỘNG ĐIỀN SỐ TIỀN &amp; NỘI DUNG</div>
+            </div>
+
+            <div class="bank-details-card">
+                <div class="detail-row">
+                    <span class="detail-label">Ngân hàng</span>
+                    <span class="detail-val" id="bank-name-val">VietinBank (Công Thương)</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Chủ tài khoản</span>
+                    <span class="detail-val" id="bank-owner-val">NGUYEN XUAN TRUONG</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Số tài khoản</span>
+                    <span class="detail-val">
+                        <span id="bank-acc-val">198490756789</span>
+                        <button class="btn-copy" onclick="copyText('bank-acc-val')">Copy</button>
+                    </span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Số tiền</span>
+                    <span class="detail-val" style="color:#10b981">
+                        <span id="bank-amount-val">50.000đ</span>
+                        <button class="btn-copy" onclick="copyAmount()">Copy</button>
+                    </span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Nội dung CK</span>
+                    <span class="detail-val" style="color:var(--cyan)">
+                        <span id="bank-memo-val">VLXT HS01 THANG50K</span>
+                        <button class="btn-copy" onclick="copyText('bank-memo-val')">Copy</button>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Trạng thái tự động lắng nghe biến động số dư -->
+            <div id="vietqr-listen-status" style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.28);border-radius:10px;padding:10px 12px;margin-bottom:14px;font-size:12.5px;color:#a7f3d0;display:flex;align-items:center;gap:8px;line-height:1.45;">
+                <i class="fa-solid fa-satellite-dish fa-beat-fade" style="color:#10b981;"></i>
+                <span>Hệ thống đang tự động lắng nghe biến động số dư VietinBank (tự mở khóa ngay khi nhận chuyển khoản)...</span>
+            </div>
+
+            <button class="btn-confirm-pay is-locked" id="btn-confirm-vietqr" disabled>
+                <i class="fa-solid fa-lock"></i> Đang Chờ Ngân Hàng Xác Nhận Tự Động...
+            </button>
+        </div>
+
+        <p style="font-size:12px;color:#94a3b8;text-align:center;margin-top:12px;">
+            Hỗ trợ nhanh qua Zalo Thầy: <strong>0964.885.924</strong> (24/7)
+        </p>
+    </div>
+</div>
+
+<script>
+// Cấu hình thông tin tài khoản ngân hàng thật của Thầy Xuân Trường (VietinBank - BIN 970415 / ICB)
+const PAYMENT_CONFIG = {
+    bankId: 'ICB', // VietinBank (Ngân hàng TMCP Công Thương Việt Nam)
+    bankName: 'VietinBank (Công Thương)',
+    accountNo: '198490756789',
+    accountName: 'NGUYEN XUAN TRUONG',
+    template: 'compact2'
+};
+
+let currentAmount = 50000;
+let currentPlanCode = 'THANG50K';
+let currentPlanName = 'Gói Tháng Linh Hoạt';
+let vietQrPollTimer = null;
+
+function getPlanMetaByCode(code) {
+    if (code === 'VIP850K') return { code: 'VIP850K', name: 'Lớp Online Cùng Thầy (VIP)', priceText: '850.000đ / khóa học', amount: 850000, rank: 3 };
+    if (code === 'NAM399K') return { code: 'NAM399K', name: 'Trọn Khóa Cả Năm (XPS 2k9)', priceText: '399.000đ / cả năm', amount: 399000, rank: 2 };
+    return { code: 'THANG50K', name: 'Gói Tháng Linh Hoạt', priceText: '50.000đ / tháng', amount: 50000, rank: 1 };
+}
+
+function getEffectiveSubscriptionOnPricingPage() {
+    const u = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : null) || {};
+    let hist = [];
+    try { hist = JSON.parse(localStorage.getItem('vlxt_payment_history') || '[]'); } catch (e) {}
+    if (!Array.isArray(hist)) hist = [];
+
+    const loai = String(u.loaiTK || '').toLowerCase();
+    const serverTrialExpiry = Number(u.trialExpiry || u.proExpiry || 0);
+    const isYear = (u.planCode === 'NAM399K' || u.planCode === 'VIP850K' || loai === 'premium');
+    const planDurationMs = (isYear ? 365 : 30) * 86400000;
+    const trueActivatedMs = (serverTrialExpiry > Date.now() + 8 * 86400000) ? (serverTrialExpiry - planDurationMs) : 0;
+    const expiry = (serverTrialExpiry > Date.now() + 8 * 86400000) ? serverTrialExpiry : Number(u.proExpiry || u.trialExpiry || 0);
+    const daysLeft = expiry > Date.now() ? Math.ceil((expiry - Date.now()) / 86400000) : 0;
+
+    // Chuẩn hóa lại các bản ghi trong lịch sử nếu bị lưu nhầm thời gian tải web sáng nay
+    if (trueActivatedMs > 0 && Array.isArray(hist)) {
+        hist.forEach(item => {
+            if (item && item.paidAt) {
+                const itemMs = new Date(item.paidAt).getTime();
+                if (itemMs > trueActivatedMs + 3 * 3600000) {
+                    item.paidAt = new Date(trueActivatedMs).toISOString();
+                }
+            }
+        });
+        try { localStorage.setItem('vlxt_payment_history', JSON.stringify(hist.slice(0, 50))); } catch (e) {}
+    }
+    const isPaid = Boolean(
+        u.isPaid ||
+        loai === 'pro' ||
+        loai === 'premium' ||
+        (loai === 'vip' && daysLeft > 8) ||
+        localStorage.getItem('vlxt_is_paid') === 'true' ||
+        hist.length > 0
+    );
+
+    if (!isPaid) return { isPaid: false, user: u, history: hist };
+
+    let planCode = u.planCode || (u.lastPayment && u.lastPayment.planCode) || (hist[0] && hist[0].planCode) || '';
+    if (!planCode) {
+        planCode = (loai === 'premium' || daysLeft > 60) ? 'NAM399K' : 'THANG50K';
+    }
+    const meta = getPlanMetaByCode(planCode);
+    const effectiveExpiry = expiry > Date.now() ? expiry : (Date.now() + (meta.rank >= 2 ? 365 : 30) * 86400000);
+    const effDaysLeft = Math.max(1, Math.ceil((effectiveExpiry - Date.now()) / 86400000));
+
+    return {
+        isPaid: true,
+        user: u,
+        planCode: meta.code,
+        planName: u.planName || meta.name,
+        priceText: meta.priceText,
+        rank: meta.rank,
+        expiryAt: effectiveExpiry,
+        daysLeft: effDaysLeft,
+        history: hist
+    };
+}
+
+function renderCurrentPlanStateOnPricingCards() {
+    const state = getEffectiveSubscriptionOnPricingPage();
+    const banner = document.getElementById('active-plan-banner');
+    const histBox = document.getElementById('goihoc-payment-history');
+    if (!state.isPaid) {
+        if (banner) banner.style.display = 'none';
+        if (histBox) histBox.style.display = 'none';
+        return;
+    }
+
+    const expDateStr = new Date(state.expiryAt).toLocaleDateString('vi-VN');
+    if (banner) {
+        banner.style.display = 'block';
+        banner.innerHTML = `
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+                <div style="display:flex;align-items:center;gap:14px;">
+                    <div style="width:46px;height:46px;border-radius:12px;background:rgba(16,185,129,0.2);border:1px solid rgba(16,185,129,0.45);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👑</div>
+                    <div>
+                        <div style="font-size:12px;font-weight:800;color:#34d399;text-transform:uppercase;letter-spacing:0.06em;">● GÓI HỌC HIỆN TẠI CỦA BẠN ĐANG KÍCH HOẠT</div>
+                        <div style="font-size:17px;font-weight:900;color:#fff;margin-top:2px;">${state.planName} <span style="font-size:13px;font-weight:700;color:#a7f3d0;">(${state.priceText})</span></div>
+                        <div style="font-size:13px;color:#cbd5e1;margin-top:3px;">⏳ Còn <strong>${state.daysLeft} ngày</strong> hiệu lực (Hết hạn: <strong>${expDateStr}</strong>) · Đã mở khóa 100% các khóa học</div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <a href="baihoc.html" style="padding:10px 18px;border-radius:10px;background:linear-gradient(90deg,#10b981,#059669);color:#022c22;font-weight:800;font-size:13.5px;text-decoration:none;display:inline-flex;align-items:center;gap:7px;box-shadow:0 4px 14px rgba(16,185,129,0.35);">
+                        <i class="fa-solid fa-rocket"></i> Vào Học Ngay
+                    </a>
+                    <a href="hoso.html" style="padding:10px 16px;border-radius:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);color:#e2e8f0;font-weight:700;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:7px;">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Hồ Sơ & Lịch Sử Giao Dịch
+                    </a>
+                </div>
+            </div>
+        `;
+    }
+
+    // Cập nhật trạng thái nút trên 3 thẻ gói học để không hiện "Đăng ký gói tháng" khi đang ở Gói Tháng
+    const cardMonth = document.getElementById('plan-card-THANG50K');
+    const cardYear = document.getElementById('plan-card-NAM399K');
+    const cardVip = document.getElementById('plan-card-VIP850K');
+    const tagMonth = document.getElementById('current-tag-THANG50K');
+    const tagYear = document.getElementById('current-tag-NAM399K');
+    const tagVip = document.getElementById('current-tag-VIP850K');
+    const wrapMonth = document.getElementById('action-wrap-THANG50K');
+    const wrapYear = document.getElementById('action-wrap-NAM399K');
+    const wrapVip = document.getElementById('action-wrap-VIP850K');
+
+    if (state.planCode === 'THANG50K') {
+        if (cardMonth) {
+            cardMonth.style.borderColor = '#10b981';
+            cardMonth.style.boxShadow = '0 0 28px rgba(16,185,129,0.22)';
+        }
+        if (tagMonth) tagMonth.style.display = 'block';
+        if (wrapMonth) {
+            wrapMonth.innerHTML = `
+                <button class="btn-select-plan primary" style="background:linear-gradient(90deg,#10b981,#059669);color:#022c22;box-shadow:0 4px 16px rgba(16,185,129,0.35);" onclick="window.location.href='baihoc.html'">
+                    <i class="fa-solid fa-circle-check"></i> Đang Sử Dụng Gói Này — Vào Học Ngay
+                </button>
+                <button class="btn-select-plan secondary" style="margin-top:8px;padding:9px 12px;font-size:12.5px;opacity:0.88;" onclick="openPayment('THANG50K', 'Gia Hạn Gói Tháng Linh Hoạt (+30 ngày)', 50000, 'vietqr')">
+                    <i class="fa-solid fa-rotate"></i> Gia hạn cộng dồn thêm 1 tháng (+30 ngày)
+                </button>
+            `;
+        }
+        const btnYear = document.getElementById('btn-plan-NAM399K');
+        if (btnYear) btnYear.innerHTML = '<i class="fa-solid fa-arrow-up-right-dots"></i> Nâng Cấp Lên Gói Cả Năm (399k)';
+        const btnVip = document.getElementById('btn-plan-VIP850K');
+        if (btnVip) btnVip.innerHTML = '<i class="fa-solid fa-arrow-up-right-dots"></i> Nâng Cấp Lên Lớp VIP Cùng Thầy (850k)';
+    } else if (state.planCode === 'NAM399K') {
+        if (cardYear) {
+            cardYear.style.borderColor = '#10b981';
+            cardYear.style.boxShadow = '0 0 28px rgba(16,185,129,0.25)';
+        }
+        if (tagYear) {
+            tagYear.textContent = '👑 GÓI HIỆN TẠI CỦA BẠN';
+            tagYear.style.background = 'linear-gradient(90deg,#10b981,#34d399)';
+            tagYear.style.color = '#022c22';
+        }
+        if (wrapMonth) {
+            wrapMonth.innerHTML = `
+                <button class="btn-select-plan secondary" disabled style="opacity:0.55;cursor:default;">
+                    <i class="fa-solid fa-check"></i> Đã bao gồm trong Gói Cả Năm của bạn
+                </button>
+            `;
+        }
+        if (wrapYear) {
+            wrapYear.innerHTML = `
+                <button class="btn-select-plan primary" style="background:linear-gradient(90deg,#10b981,#059669);color:#022c22;" onclick="window.location.href='baihoc.html'">
+                    <i class="fa-solid fa-circle-check"></i> Đang Sử Dụng Gói Cả Năm — Vào Học Ngay
+                </button>
+            `;
+        }
+        const btnVip = document.getElementById('btn-plan-VIP850K');
+        if (btnVip) btnVip.innerHTML = '<i class="fa-solid fa-arrow-up-right-dots"></i> Nâng Cấp Lên Lớp VIP Cùng Thầy (850k)';
+    } else if (state.planCode === 'VIP850K') {
+        if (cardVip) {
+            cardVip.style.borderColor = '#a855f7';
+            cardVip.style.boxShadow = '0 0 28px rgba(168,85,247,0.28)';
+        }
+        if (tagVip) tagVip.style.display = 'block';
+        if (wrapMonth) {
+            wrapMonth.innerHTML = `<button class="btn-select-plan secondary" disabled style="opacity:0.55;cursor:default;"><i class="fa-solid fa-check"></i> Đã bao gồm trong Gói VIP của bạn</button>`;
+        }
+        if (wrapYear) {
+            wrapYear.innerHTML = `<button class="btn-select-plan secondary" disabled style="opacity:0.55;cursor:default;"><i class="fa-solid fa-check"></i> Đã bao gồm trong Gói VIP của bạn</button>`;
+        }
+        if (wrapVip) {
+            wrapVip.innerHTML = `
+                <button class="btn-select-plan primary" style="background:linear-gradient(90deg,#a855f7,#ec4899);color:#fff;" onclick="window.location.href='baihoc.html'">
+                    <i class="fa-solid fa-circle-check"></i> Đang Sử Dụng Gói VIP — Vào Học Ngay
+                </button>
+            `;
+        }
+    }
+
+    // Hiển thị bảng lịch sử giao dịch ngay dưới bảng giá
+    if (histBox) {
+        const rows = state.history.length > 0 ? state.history : [{
+            id: (state.user.lastPayment && state.user.lastPayment.transactionId) || ('PRO-' + (state.user.sdt || 'ACTIVE')),
+            transactionId: (state.user.lastPayment && state.user.lastPayment.transactionId) || 'Đang đồng bộ mã GD',
+            planName: state.planName,
+            amount: state.planCode === 'VIP850K' ? 850000 : state.planCode === 'NAM399K' ? 399000 : 50000,
+            method: (state.user.lastPayment && state.user.lastPayment.method) || 'VietQR VietinBank',
+            paidAt: (state.user.lastPayment && state.user.lastPayment.paidAt) || state.user.activatedAt || new Date().toISOString(),
+            expiryAt: state.expiryAt,
+            status: 'paid'
+        }];
+        histBox.style.display = 'block';
+        histBox.innerHTML = `
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+                <div style="font-size:16px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px;">
+                    <i class="fa-solid fa-receipt" style="color:#38bdf8;"></i> Lịch Sử Giao Dịch & Thanh Toán (${rows.length})
+                </div>
+                <a href="hoso.html" style="font-size:12.5px;color:#38bdf8;text-decoration:none;font-weight:700;">Xem trong Hồ sơ cá nhân →</a>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+                ${rows.map(item => {
+                    const amtStr = Number(item.amount || 50000).toLocaleString('vi-VN') + 'đ';
+                    const timeStr = item.paidAt ? new Date(item.paidAt).toLocaleString('vi-VN') : 'Đã kích hoạt';
+                    const codeStr = item.transactionId || item.maGD || item.orderId || item.id || '---';
+                    return `
+                        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:12px 16px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);">
+                            <div>
+                                <div style="font-size:14px;font-weight:800;color:#f8fafc;">${item.planName || 'Gói Tự Học Pro'} <span style="font-size:11.5px;font-weight:800;color:#34d399;background:rgba(16,185,129,0.16);padding:2px 8px;border-radius:6px;margin-left:6px;">✓ Thành công</span></div>
+                                <div style="font-size:12px;color:#94a3b8;margin-top:3px;">Mã GD: <code style="color:#38bdf8;">${codeStr}</code> · Phương thức: <strong>${item.method || item.gateway || 'VietQR VietinBank'}</strong> · Thời gian: ${timeStr}</div>
+                            </div>
+                            <div style="font-size:16px;font-weight:900;color:#34d399;">${amtStr}</div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const u = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
+    if (u && typeof vlxtRenderWidget === 'function') {
+        vlxtRenderWidget(u);
+    }
+    renderCurrentPlanStateOnPricingCards();
+
+    // Tự động đồng bộ trạng thái gói & mã giao dịch thật từ GAS cho tài khoản đang đăng nhập
+    if (u && u.sdt && u.sdt !== 'FREE' && typeof fetch === 'function') {
+        const gasUrl = (typeof window.VLXT_GAS !== 'undefined')
+            ? window.VLXT_GAS
+            : 'https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec';
+        fetch(gasUrl, {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ action: 'checkpaymentstatus', sdt: String(u.sdt).replace(/\D/g, ''), hoten: u.hoten || '' })
+        }).then(r => r.json()).then(res => {
+            if (res && res.ok && res.paid) {
+                const planCode = res.planCode || u.planCode || 'THANG50K';
+                const meta = getPlanMetaByCode(planCode);
+                const txId = res.transactionId || (u.lastPayment && u.lastPayment.transactionId) || ('VQR-' + u.sdt);
+                const isYearTx = (meta.rank >= 2 || (res && res.loaiTK === 'premium'));
+                const planMs = (isYearTx ? 365 : 30) * 86400000;
+                const txServerExp = (Number(u.trialExpiry) > Date.now() + 8 * 86400000) ? Number(u.trialExpiry) : Number(res.proExpiry || u.proExpiry || 0);
+                const expiry = txServerExp > Date.now() ? txServerExp : (Date.now() + planMs);
+                const trueActMs = (txServerExp > Date.now() + 8 * 86400000) ? (txServerExp - planMs) : Date.now();
+                const txRecord = {
+                    id: String(txId),
+                    transactionId: String(txId),
+                    gateway: 'VietQR',
+                    method: 'VietQR VietinBank',
+                    sdt: u.sdt,
+                    hoten: u.hoten || 'Học sinh Pro',
+                    planCode: meta.code,
+                    planName: meta.name,
+                    loaiTK: res.loaiTK || (meta.rank >= 2 ? 'premium' : 'pro'),
+                    amount: Number(res.amount || meta.amount),
+                    paidAt: res.paidAt || (u.lastPayment && u.lastPayment.paidAt) || (trueActMs > 0 ? new Date(trueActMs).toISOString() : new Date().toISOString()),
+                    expiryAt: expiry,
+                    status: 'paid'
+                };
+                const updated = Object.assign({}, u, {
+                    isPaid: true,
+                    loaiTK: txRecord.loaiTK,
+                    planCode: meta.code,
+                    planName: meta.name,
+                    proExpiry: expiry,
+                    trialExpiry: expiry,
+                    lastPayment: txRecord
+                });
+                try {
+                    localStorage.setItem('vlxt_user_v2', JSON.stringify(updated));
+                    localStorage.setItem('vlxt_is_paid', 'true');
+                    const hist = JSON.parse(localStorage.getItem('vlxt_payment_history') || '[]');
+                    const arr = Array.isArray(hist) ? hist : [];
+                    const exists = arr.some(x => String(x.transactionId || x.id) === String(txRecord.id));
+                    if (!exists) arr.unshift(txRecord);
+                    localStorage.setItem('vlxt_payment_history', JSON.stringify(arr.slice(0, 50)));
+                } catch (e) {}
+                if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(updated);
+                renderCurrentPlanStateOnPricingCards();
+            }
+        }).catch(() => {});
+    }
+
+    // Chỉ hiển thị nút/tab VNPay nếu VNPay được bật trong cấu hình (hoặc ?vnpay=1)
+    if (typeof window.VnPayService !== 'undefined' && typeof window.VnPayService.isEnabled === 'function' && window.VnPayService.isEnabled()) {
+        document.querySelectorAll('.btn-vnpay-direct').forEach(btn => { btn.style.display = 'inline-flex'; });
+        const tabs = document.getElementById('modal-pay-tabs');
+        if (tabs) tabs.style.display = 'grid';
+    }
+});
+
+function switchPayTab(mode) {
+    const vnpEnabled = (typeof window.VnPayService !== 'undefined' && typeof window.VnPayService.isEnabled === 'function' && window.VnPayService.isEnabled());
+    const isVnPay = vnpEnabled && mode === 'vnpay';
+    const tabVnPay = document.getElementById('tab-btn-vnpay');
+    const tabVietQr = document.getElementById('tab-btn-vietqr');
+    const panelVnPay = document.getElementById('panel-vnpay');
+    const panelVietQr = document.getElementById('panel-vietqr');
+
+    if (tabVnPay) tabVnPay.classList.toggle('active', isVnPay);
+    if (tabVietQr) tabVietQr.classList.toggle('active', !isVnPay);
+    if (panelVnPay) panelVnPay.style.display = isVnPay ? 'block' : 'none';
+    if (panelVietQr) panelVietQr.style.display = isVnPay ? 'none' : 'block';
+}
+
+function openPayment(code, planName, amount, defaultTab) {
+    const user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
+    if (!user || !user.sdt || user.sdt === 'FREE') {
+        alert('Em vui lòng đăng nhập tài khoản học sinh trước khi đăng ký gói học để hệ thống tự động lấy Họ tên & Số điện thoại kích hoạt gói nhé!');
+        window.location.href = 'login.html?from=' + encodeURIComponent(window.location.pathname + window.location.search);
+        return;
+    }
+
+    const nameInput = document.getElementById('pay-student-name');
+    const phoneInput = document.getElementById('pay-student-phone');
+    const accDisplay = document.getElementById('pay-account-display');
+
+    const hoten = (user.hoten && user.hoten !== 'Học sinh trải nghiệm') ? user.hoten : 'Học sinh';
+    const sdt = String(user.sdt).trim();
+
+    if (nameInput) nameInput.value = hoten;
+    if (phoneInput) phoneInput.value = sdt;
+    if (accDisplay) accDisplay.textContent = `${hoten} · ${sdt}`;
+
+    // Đặt lại nút ở trạng thái khóa tự động chờ ngân hàng
+    const btn = document.getElementById('btn-confirm-vietqr');
+    if (btn) {
+        btn.disabled = true;
+        btn.classList.add('is-locked');
+        btn.innerHTML = `<i class="fa-solid fa-lock"></i> Đang Chờ Ngân Hàng Xác Nhận Tự Động...`;
+        btn.onclick = null;
+    }
+
+    currentAmount = amount;
+    currentPlanCode = code;
+    currentPlanName = planName;
+
+    document.getElementById('modal-plan-name').textContent = `Thanh Toán: ${planName}`;
+    document.getElementById('bank-name-val').textContent = PAYMENT_CONFIG.bankName;
+    document.getElementById('bank-acc-val').textContent = PAYMENT_CONFIG.accountNo;
+    document.getElementById('bank-owner-val').textContent = PAYMENT_CONFIG.accountName;
+    document.getElementById('bank-amount-val').textContent = amount.toLocaleString('vi-VN') + 'đ';
+    document.getElementById('vnpay-plan-val').textContent = `${planName} (${code})`;
+    document.getElementById('vnpay-amount-val').textContent = amount.toLocaleString('vi-VN') + 'đ';
+
+    refreshVietQrMemo();
+    switchPayTab(defaultTab || 'vietqr');
+
+    document.getElementById('payment-modal').style.display = 'flex';
+    startVietQrPolling();
+}
+
+function startVietQrPolling() {
+    stopVietQrPolling();
+    const statusBox = document.getElementById('vietqr-listen-status');
+    if (statusBox) {
+        statusBox.style.background = 'rgba(16,185,129,0.08)';
+        statusBox.style.borderColor = 'rgba(16,185,129,0.28)';
+        statusBox.innerHTML = `<i class="fa-solid fa-satellite-dish fa-beat-fade" style="color:#10b981;"></i><span>Hệ thống đang tự động lắng nghe biến động số dư VietinBank (tự mở khóa ngay khi nhận chuyển khoản)...</span>`;
+    }
+    checkVietQrPaymentStatus(false);
+    vietQrPollTimer = setInterval(() => {
+        checkVietQrPaymentStatus(false);
+    }, 3500);
+}
+
+function stopVietQrPolling() {
+    if (vietQrPollTimer) {
+        clearInterval(vietQrPollTimer);
+        vietQrPollTimer = null;
+    }
+}
+
+function checkVietQrPaymentStatus(isManualClick) {
+    const nameInput = document.getElementById('pay-student-name');
+    const phoneInput = document.getElementById('pay-student-phone');
+    const memoEl = document.getElementById('bank-memo-val');
+    const user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : {};
+
+    const hoten = (nameInput && nameInput.value.trim()) || (user && user.hoten) || 'Học sinh';
+    const sdt = (phoneInput && phoneInput.value.replace(/\D/g, '')) || (user && user.sdt !== 'FREE' ? String(user.sdt).replace(/\D/g, '') : '');
+    const memo = memoEl ? memoEl.textContent.trim() : '';
+
+    if (!sdt || typeof fetch !== 'function') return;
+
+    const gasUrl = (typeof window.VLXT_GAS !== 'undefined')
+        ? window.VLXT_GAS
+        : 'https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec';
+
+    fetch(gasUrl, {
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+            action: 'checkpaymentstatus',
+            sdt: sdt,
+            hoten: hoten,
+            planCode: currentPlanCode,
+            amount: currentAmount,
+            memo: memo,
+            manualCheck: Boolean(isManualClick)
+        })
+    })
+    .then(r => r.json())
+    .then(res => {
+        if (res && res.ok && res.paid) {
+            stopVietQrPolling();
+            unlockPaidAccountOnPage(sdt, hoten, res);
+        }
+    })
+    .catch(() => {});
+}
+
+function unlockPaidAccountOnPage(sdt, hoten, res) {
+    const curUser = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : null) || {};
+    const planCode = (res && res.planCode) || currentPlanCode || 'THANG50K';
+    const meta = getPlanMetaByCode(planCode);
+    const isYearPlan = (planCode === 'NAM399K' || planCode === 'VIP850K' || currentAmount >= 300000);
+    const tier = (res && res.loaiTK) || (isYearPlan ? 'premium' : 'pro');
+    const nowMs = Date.now();
+    const expiry = (res && res.proExpiry) || (nowMs + (isYearPlan ? 365 : 30) * 86400000);
+    const txId = (res && (res.transactionId || res.maGD)) || ('VQR-' + nowMs);
+
+    const paymentRecord = {
+        id: String(txId),
+        transactionId: String(txId),
+        gateway: 'VietQR',
+        method: 'VietQR VietinBank',
+        sdt: sdt,
+        hoten: hoten,
+        planCode: planCode,
+        planName: currentPlanName || meta.name,
+        loaiTK: tier,
+        amount: Number((res && res.amount) || currentAmount || meta.amount),
+        activatedAt: nowMs,
+        paidAt: (res && res.paidAt) || new Date(nowMs).toISOString(),
+        expiryAt: expiry,
+        status: 'paid'
+    };
+
+    const updatedUser = Object.assign({}, curUser, {
+        sdt: sdt,
+        hoten: hoten,
+        loaiTK: tier,
+        isPaid: true,
+        planCode: planCode,
+        planName: paymentRecord.planName,
+        activatedAt: nowMs,
+        proExpiry: expiry,
+        trialExpiry: expiry,
+        lastPayment: paymentRecord
+    });
+
+    try {
+        localStorage.setItem('vlxt_user_v2', JSON.stringify(updatedUser));
+        localStorage.setItem('vlxt_is_paid', 'true');
+        const hist = JSON.parse(localStorage.getItem('vlxt_payment_history') || '[]');
+        const arr = Array.isArray(hist) ? hist : [];
+        const exists = arr.some(x => String(x.transactionId || x.id) === String(paymentRecord.id));
+        if (!exists) arr.unshift(paymentRecord);
+        localStorage.setItem('vlxt_payment_history', JSON.stringify(arr.slice(0, 50)));
+        if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(updatedUser);
+        renderCurrentPlanStateOnPricingCards();
+    } catch (e) {}
+
+    if (typeof window.confetti === 'function') {
+        window.confetti({ particleCount: 130, spread: 80, origin: { y: 0.6 } });
+    }
+
+    const statusBox = document.getElementById('vietqr-listen-status');
+    if (statusBox) {
+        statusBox.style.background = 'rgba(16,185,129,0.22)';
+        statusBox.style.borderColor = '#10b981';
+        statusBox.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#34d399;font-size:18px;"></i><span style="color:#ecfdf5;font-weight:800;">🎉 ĐÃ NHẬN ĐƯỢC CHUYỂN KHOẢN! Tài khoản của em đã nâng cấp thành công lên gói ${currentPlanName}!</span>`;
+    }
+
+    const btn = document.getElementById('btn-confirm-vietqr');
+    if (btn) {
+        btn.disabled = false;
+        btn.classList.remove('is-locked');
+        btn.innerHTML = `<i class="fa-solid fa-rocket"></i> ĐÃ KHỚP LỆNH — VÀO HỌC NGAY!`;
+        btn.onclick = () => { window.location.href = 'baihoc.html'; };
+    }
+}
+
+function refreshVietQrMemo() {
+    const user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
+    const phoneInput = document.getElementById('pay-student-phone');
+    const typedPhone = phoneInput ? phoneInput.value.replace(/\D/g, '') : '';
+    const sdt = typedPhone || (user && user.sdt && user.sdt !== 'FREE' ? String(user.sdt).replace(/\D/g, '') : '') || 'HOCSINH';
+    // Bắt buộc có tiền tố SEVQR ở đầu để Open API VietinBank đồng bộ biến động số dư sang SePay
+    const memo = `SEVQR VLXT ${sdt} ${currentPlanCode}`.replace(/[^a-zA-Z0-9 ]/g, '').toUpperCase();
+
+    const memoEl = document.getElementById('bank-memo-val');
+    if (memoEl) memoEl.textContent = memo;
+
+    const qrUrl = `https://qr.sepay.vn/img?acc=${PAYMENT_CONFIG.accountNo}&bank=VietinBank&amount=${currentAmount}&des=${encodeURIComponent(memo)}`;
+    const qrImg = document.getElementById('vietqr-image');
+    if (qrImg) qrImg.src = qrUrl;
+}
+
+function handleVnPayCheckout() {
+    const nameInput = document.getElementById('pay-student-name');
+    const phoneInput = document.getElementById('pay-student-phone');
+    const user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : {};
+
+    const hoten = (nameInput && nameInput.value.trim()) || (user && user.hoten) || 'Hoc sinh VLXT';
+    const sdt = (phoneInput && phoneInput.value.replace(/\D/g, '')) || (user && user.sdt) || '0987654321';
+    const bankSelect = document.getElementById('vnpay-bank-code');
+    const bankCode = bankSelect ? bankSelect.value : 'NCB';
+
+    if (typeof window.VnPayService !== 'undefined') {
+        window.VnPayService.redirectToVnPay({
+            OrderType: 'other',
+            Amount: currentAmount,
+            OrderDescription: `Thanh toan ${currentPlanCode} tai Vat Ly Xuan Truong`,
+            Name: hoten,
+            planCode: currentPlanCode,
+            sdt: sdt,
+            bankCode: bankCode
+        });
+    } else {
+        alert('Không tìm thấy dịch vụ VNPay. Vui lòng tải lại trang!');
+    }
+}
+
+function closePayment() {
+    stopVietQrPolling();
+    document.getElementById('payment-modal').style.display = 'none';
+}
+
+function copyText(elemId) {
+    const txt = document.getElementById(elemId).textContent;
+    navigator.clipboard.writeText(txt).then(() => {
+        alert('Đã sao chép: ' + txt);
+    }).catch(() => {
+        alert('Nội dung: ' + txt);
+    });
+}
+
+function copyAmount() {
+    navigator.clipboard.writeText(String(currentAmount)).then(() => {
+        alert('Đã sao chép số tiền: ' + currentAmount.toLocaleString('vi-VN') + 'đ');
+    });
+}
+
+function handlePayDone() {
+    checkVietQrPaymentStatus(true);
+}
+</script>
+
+</body>
+</html>
