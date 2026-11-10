@@ -321,8 +321,8 @@
         .toast.show { transform:translateX(-50%) translateY(0); }
         .toast.ok { border-color:var(--green); } .toast.err { border-color:var(--red); }
 
-        /* ═══ IDENTITY GATE ═══ */
-        .gate { position:fixed; inset:0; background:rgba(255,255,255,0.97); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; z-index:9999; padding:18px; }
+        /* ═══ IDENTITY GATE ═══ (Ẩn mặc định để không gây flash FOUC khi tải trang) */
+        .gate { position:fixed; inset:0; background:rgba(255,255,255,0.97); backdrop-filter:blur(8px); display:none; align-items:center; justify-content:center; z-index:9999; padding:18px; }
         body.dark .gate { background:rgba(13,17,23,0.97); }
         .gate-box { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:40px; width:100%; max-width:420px; box-shadow:0 8px 40px rgba(0,0,0,.07); }
         .gate-box .gi { font-size:40px; color:var(--blue); text-align:center; margin-bottom:14px; }
@@ -720,7 +720,7 @@
         }
         .galaxy-sector-banner {
             position: relative;
-            margin: 22px 0 20px;
+            margin: 80px 0 20px;
             padding: 22px 26px;
             border-radius: 20px;
             background: linear-gradient(135deg, rgba(12, 24, 52, 0.88) 0%, rgba(8, 15, 34, 0.94) 60%, rgba(22, 16, 50, 0.88) 100%);
@@ -904,7 +904,7 @@
             box-shadow: 0 0 18px rgba(0, 240, 255, 0.28);
         }
         @media (max-width: 768px) {
-            .galaxy-sector-banner { padding: 16px 18px; margin: 14px 0 16px; }
+            .galaxy-sector-banner { padding: 16px 18px; margin: 72px 0 16px; }
             .gsb-back-galaxy { width: 100%; justify-content: center; }
             .toolbar { gap: 8px; }
             .search-box { width: 100%; order: 3; }
@@ -912,8 +912,8 @@
         }
 
 </style>
-  <script src="auth.js?v=20261109p"></script>
-  <script src="trial-manager.js?v=20261109p"></script>
+  <script src="auth.js?v=7"></script>
+  <script src="trial-manager.js?v=1"></script>
   <script src="xephang-fx.js?v=1"></script>
   <script src="thongbao.js?v=2"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -925,7 +925,7 @@
     // Không yêu cầu đăng nhập, không redirect khách sang login.html
   </script>
   <script src="cache.js?v=5"></script>
-  <script src="nhiem-vu.js?v=20261109p"></script>
+  <script src="nhiem-vu.js?v=6"></script>
 <style>
 /* ─── NAVBAR ĐỒNG NHẤT TOÀN HỆ THỐNG ─── */
 .top-bar, nav.navbar, header.hud-header, .top-bar-phongthi {
@@ -1104,8 +1104,8 @@
 </head>
 <body>
 
-    <!-- GATE -->
-    <div class="gate" id="gate">
+    <!-- GATE (Ẩn tuyệt đối mặc định, tránh flash FOUC) -->
+    <div class="gate" id="gate" style="display:none !important">
         <div class="gate-box">
             <div class="gi"><i class="fa-solid fa-graduation-cap"></i></div>
             <h3>Chào mừng đến lớp học!</h3>

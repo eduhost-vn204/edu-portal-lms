@@ -24,7 +24,7 @@
       "A. $Q = mc\\Delta t$",
       "B. $Q = \\lambda m$",
       "C. $Q = Lm$",
-      "D. $Q = \\frac{\\lambda}{m}$"
+      "D. $Q = \\dfrac{\\lambda}{m}$"
     ],
     "answer": 1,
     "explain": "Nhiệt lượng nóng chảy được tính bằng tích của nhiệt nóng chảy riêng $\\lambda$ và khối lượng $m$: $Q = \\lambda m$."
@@ -72,7 +72,7 @@
       "D. $8,2^\\circ C$"
     ],
     "answer": 0,
-    "explain": "Nhiệt lượng nước tỏa ra khi hạ về $0^\\circ C$: $Q_{tỏa\\max} = 0,5 \\times 4200 \\times 40 = 84000\\text{ J}$. Nhiệt lượng đá cần để tan hết: $Q_{tan} = 0,2 \\times 3,34 \\times 10^5 = 66800\\text{ J}$. Vì $Q_{tỏa\\max} > Q_{tan}$ nên đá tan hết. Phương trình cân bằng: $66800 + 0,2 \\times 4200 \\times t = 0,5 \\times 4200 \\times (40 - t) \\Rightarrow t \\approx 5,85^\\circ C$ (gần $5,7^\\circ C$ nhất)."
+    "explain": "Nhiệt lượng nước tỏa ra khi hạ về $0^\\circ C$: $Q_{tỏa\\max} = 0,5 \\times 4200 \\times 40 = 84000\\text{ J}$. Nhiệt lượng đá cần để tan hết: $Q_{tan} = 0,2 \\times 3,34 \\times 10^5 = 66800\\text{ J}$. Vì $Q_{tỏa\\max} > Q_{tan}$ nên đá tan hết. Phương trình cân bằng: $66800 + 0,2 \\times 4200 \\times t = 0,5 \\times 4200 \\times (40 - t) \\rightarrow t \\approx 5,85^\\circ C$ (gần $5,7^\\circ C$ nhất)."
   },
   {
     "id": 6,
@@ -96,13 +96,13 @@
     "tag": "ly_thuyet",
     "question": "Phương trình trạng thái của khí lí tưởng (Clapeyron) đối với một lượng khí xác định có biểu thức nào sau đây?",
     "options": [
-      "A. $\\frac{pV}{T} = \\text{hằng số}$",
-      "B. $\\frac{pT}{V} = \\text{hằng số}$",
+      "A. $\\dfrac{pV}{T} = \\text{hằng số}$",
+      "B. $\\dfrac{pT}{V} = \\text{hằng số}$",
       "C. $pVT = \\text{hằng số}$",
-      "D. $\\frac{V}{pT} = \\text{hằng số}$"
+      "D. $\\dfrac{V}{pT} = \\text{hằng số}$"
     ],
     "answer": 0,
-    "explain": "Đối với một lượng khí lí tưởng xác định, tích của áp suất và thể tích chia cho nhiệt độ tuyệt đối là một hằng số: $\\frac{pV}{T} = \\text{const}$."
+    "explain": "Đối với một lượng khí lí tưởng xác định, tích của áp suất và thể tích chia cho nhiệt độ tuyệt đối là một hằng số: $\\dfrac{pV}{T} = \\text{const}$."
   },
   {
     "id": 8,
@@ -117,7 +117,7 @@
       "D. $6,0\\text{ atm}$"
     ],
     "answer": 2,
-    "explain": "Theo định luật Boyle: $p_1V_1 = p_2V_2 \\Rightarrow p_2 = \\frac{1,5 \\times 6}{2} = 4,5\\text{ atm}$."
+    "explain": "Theo định luật Boyle: $p_1V_1 = p_2V_2 \\rightarrow p_2 = \\dfrac{1,5 \\times 6}{2} = 4,5\\text{ atm}$."
   },
   {
     "id": 9,
@@ -132,7 +132,7 @@
       "D. $2,5\\text{ atm}$"
     ],
     "answer": 0,
-    "explain": "Đổi sang độ Kelvin: $T_1 = 27 + 273 = 300\\text{ K}$, $T_2 = 177 + 273 = 450\\text{ K}$. Quá trình đẳng tích: $\\frac{p_1}{T_1} = \\frac{p_2}{T_2} \\Rightarrow p_2 = 2 \\times \\frac{450}{300} = 3\\text{ atm}$."
+    "explain": "Đổi sang độ Kelvin: $T_1 = 27 + 273 = 300\\text{ K}$, $T_2 = 177 + 273 = 450\\text{ K}$. Quá trình đẳng tích: $\\dfrac{p_1}{T_1} = \\dfrac{p_2}{T_2} \\rightarrow p_2 = 2 \\times \\dfrac{450}{300} = 3\\text{ atm}$."
   },
   {
     "id": 10,
@@ -147,7 +147,7 @@
       "D. $3$"
     ],
     "answer": 0,
-    "explain": "Từ $1 \\rightarrow 2$ đẳng áp: $\\frac{V_2}{V_1} = \\frac{T_2}{T_1} = 2 \\Rightarrow V_2 = 2V_1$. Quá trình $2 \\rightarrow 3$ đẳng tích nên $V_3 = V_2 = 2V_1$. Quá trình $3 \\rightarrow 1$ đẳng nhiệt nén từ $V_3 = 2V_1$ về $V_1$. Vậy $\\frac{V_{\\max}}{V_{\\min}} = \\frac{V_2}{V_1} = 2$."
+    "explain": "Từ $1 \\rightarrow 2$ đẳng áp: $\\dfrac{V_2}{V_1} = \\dfrac{T_2}{T_1} = 2 \\rightarrow V_2 = 2V_1$. Quá trình $2 \\rightarrow 3$ đẳng tích nên $V_3 = V_2 = 2V_1$. Quá trình $3 \\rightarrow 1$ đẳng nhiệt nén từ $V_3 = 2V_1$ về $V_1$. Vậy $\\dfrac{V_{\\max}}{V_{\\min}} = \\dfrac{V_2}{V_1} = 2$."
   },
   {
     "id": 11,
@@ -207,7 +207,7 @@
       "D. $0,3\\text{ V}$"
     ],
     "answer": 0,
-    "explain": "Độ lớn suất điện động cảm ứng: $e_c = N \\frac{|\\Delta B| \\cdot S}{\\Delta t} = 100 \\times \\frac{(0,4 - 0,1) \\times 50 \\times 10^{-4}}{0,05} = 3\\text{ V}$."
+    "explain": "Độ lớn suất điện động cảm ứng: $e_c = N \\dfrac{|\\Delta B| \\cdot S}{\\Delta t} = 100 \\times \\dfrac{(0,4 - 0,1) \\times 50 \\times 10^{-4}}{0,05} = 3\\text{ V}$."
   },
   {
     "id": 15,
@@ -222,7 +222,7 @@
       "D. $0,25\\text{ A}$"
     ],
     "answer": 0,
-    "explain": "Suất điện động cảm ứng trên thanh chuyển động: $e_c = Blv = 0,5 \\times 0,4 \\times 5 = 1\\text{ V}$. Cường độ dòng điện: $I = \\frac{e_c}{R} = \\frac{1}{2} = 0,5\\text{ A}$."
+    "explain": "Suất điện động cảm ứng trên thanh chuyển động: $e_c = Blv = 0,5 \\times 0,4 \\times 5 = 1\\text{ V}$. Cường độ dòng điện: $I = \\dfrac{e_c}{R} = \\dfrac{1}{2} = 0,5\\text{ A}$."
   },
   {
     "id": 16,
@@ -267,7 +267,7 @@
       "D. $87,5\\text{ g}$"
     ],
     "answer": 2,
-    "explain": "Áp dụng định luật phóng xạ: $m = m_0 \\cdot 2^{-\\frac{t}{T}} = 100 \\times 2^{-\\frac{24}{8}} = 100 \\times 2^{-3} = 12,5\\text{ g}$."
+    "explain": "Áp dụng định luật phóng xạ: $m = m_0 \\cdot 2^{-\\dfrac{t}{T}} = 100 \\times 2^{-\\dfrac{24}{8}} = 100 \\times 2^{-3} = 12,5\\text{ g}$."
   },
   {
     "id": 19,
@@ -297,6 +297,6 @@
       "D. $95\\text{ ngày}$"
     ],
     "answer": 0,
-    "explain": "Tỉ số khối lượng: $\\frac{m_{\\text{Pb}}}{m_{\\text{Po}}} = \\frac{A_{\\text{Pb}}}{A_{\\text{Po}}}(2^{\\frac{t}{T}} - 1) = \\frac{206}{210}(2^{\\frac{t}{138}} - 1) = 0,6865 \\Rightarrow 2^{\\frac{t}{138}} - 1 \\approx 0,7 \\Rightarrow 2^{\\frac{t}{138}} = 1,7 \\Rightarrow t = 138 \\times \\log_2(1,7) \\approx 105,8\\text{ ngày}$."
+    "explain": "Tỉ số khối lượng: $\\dfrac{m_{\\text{Pb}}}{m_{\\text{Po}}} = \\dfrac{A_{\\text{Pb}}}{A_{\\text{Po}}}(2^{\\dfrac{t}{T}} - 1) = \\dfrac{206}{210}(2^{\\dfrac{t}{138}} - 1) = 0,6865 \\rightarrow 2^{\\dfrac{t}{138}} - 1 \\approx 0,7 \\rightarrow 2^{\\dfrac{t}{138}} = 1,7 \\rightarrow t = 138 \\times \\log_2(1,7) \\approx 105,8\\text{ ngày}$."
   }
 ]

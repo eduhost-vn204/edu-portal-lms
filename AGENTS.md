@@ -22,6 +22,7 @@
 - Không làm mất hàng đợi đồng bộ tiến độ ngoại tuyến.
 - Giữ menu điện thoại chuyên biệt của `index.html`, `hoso.html`, `danhsach-ly12.html`.
 - Giữ nguyên giao diện chuẩn Bộ GD&ĐT của `phong-thi-thu.html` (giao diện sáng CBT mô phỏng kỳ thi trên máy tính chuẩn Bộ); không áp theme tối hoặc thay đổi bố cục của trang này.
+- **Quy tắc an toàn chống khuất Fixed Navbar**: Thanh điều hướng toàn hệ thống cố định `position: fixed` cao 60px. Mọi trang web (`.container`, `.page`, `.galaxy-sector-banner`, `.page-hero`, v.v.) BẮT BUỘC phải có khoảng đệm phía trên (padding-top hoặc margin-top) tối thiểu 78px - 92px trên Desktop và 70px - 82px trên Mobile để triệt tiêu hoàn toàn lỗi che khuất tiêu đề, banner hoặc badge.
 - Không đưa bí mật vào kho mã.
 - Kiểm tra cú pháp JavaScript và thẻ `</html>` theo phạm vi thay đổi.
 

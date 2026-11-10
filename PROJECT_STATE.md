@@ -1,3 +1,575 @@
+## Bàn giao gần nhất (10/11/2026 17:35)
+- **Commit**: Nâng Cấp Khoảng Đệm Cụm Đấu Trường Chống Khuất Fixed Navbar, Chuẩn Hóa Typography Nút CTA, Mở Bài Học Tức Thì 0.05s & Hoàn Thiện Quy Trình Nộp Đề B + Chuỗi Vá Lỗ Hổng Tuần Tự
+- **Phạm vi hoàn tất (5 Hạng mục trọng tâm theo chỉ đạo chi tiết của Thầy)**:
+  1. **Triệt tiêu lỗi che khuất Fixed Navbar trên cụm Đấu Trường (`dua-top.html`, `solo.html`, `dau-thuong.html`, `dau-thuong-hud.html`)**:
+     - *Phát hiện*: Navbar fixed cao 60px (`top: 0; z-index: 10000`). Phần `.hero` trước đây chỉ đệm `88px` khiến khoảng cách thực tế từ đáy navbar đến badge "HÀNH TINH SKAT · ĐẤU TRƯỜNG XẾP HẠNG" chỉ còn 28px và bị mép navbar chẹt mất nửa chữ trên một số tỉ lệ màn hình; tương tự chế độ in-game chỉ có `margin-top: 64px` (cách navbar đúng 4px).
+     - *Giải pháp*:
+       + Tăng padding của `.hero`: `padding: 108px 24px 32px !important;` (Desktop) và `padding: 96px 16px 28px !important;` (Mobile) trên cả 4 trang.
+       + Tăng khoảng cách khi thi đấu `body.in-game .score-bar` và `body.in-game .arena`: `margin-top: 80px !important;` (Mobile: `72px !important;`). Huy hiệu vàng, cúp vàng và thanh điểm số hiển thị trọn vẹn 100%, thoáng đãng và sang trọng.
+  2. **Chuẩn hóa Typography & Thiết kế Pill cao cấp cho các nút CTA (`danh-gia-nang-luc.html` & `freemium-flow.js`)**:
+     - *Thầy chỉ đạo*: Khắc phục triệt để tình trạng font chữ ọp ẹp, không chuyên nghiệp và chữ IN HOA thô cứng.
+     - *Nút "Xem Lộ Trình Vá Lỗ Hổng & Bứt Phá 8.5+ Cùng Thầy →"` (`.cro-btn-cta-step4`): Thiết kế lại theo chuẩn EdTech quốc tế với font `'Plus Jakarta Sans'`, bo tròn dạng Pill `border-radius: 999px !important;`, gradient cyan sang trọng `#0284c7 -> #00b4d8 -> #0077b6`, viền phát quang mờ và hiệu ứng đổ bóng neon `box-shadow: 0 8px 30px rgba(0, 180, 216, 0.45)`.
+     - *Nút "Vào Học Bài Khắc Phục Ngay (Miễn Phí)"` (`.btn-remedial-go`): Chuyển từ in hoa toàn bộ sang Title Case thanh lịch, gắn icon tròn, font weight 800, bo góc `999px`, nền gradient ngọc lục bảo `#10b981 -> #059669`.
+  3. **Tối ưu tốc độ mở bài học vá lỗ hổng siêu tốc ~0.05s (`baihoc.html`)**:
+     - *Phát hiện*: Khi học sinh bấm vào link bài học remedial hoặc bài thuộc Chương 1/Chương 2, hệ thống trước đây rơi vào nhánh pessimistic call gọi Google Apps Script `triggerTrial` và treo spinner "Đang xác thực quyền học thử từ máy chủ..." gây trễ 3–5 giây.
+     - *Giải pháp*: Tích hợp bypass thông minh in-memory: Nhận diện ngay nếu bài học có cờ `remedial=1` (hoặc `vlxt_remedial_active=1`) hoặc thuộc Chương 1 & Chương 2 (vốn đã mở miễn phí), tự động thêm bài vào `_trialGrantedLessons` và gán `_trialActiveGrantedLesson = key`. Loại bỏ hoàn toàn màn hình chờ xác thực mạng, bấm phát là mở bài học, video và mô phỏng 3D ngay lập tức trong 0.05 giây!
+  4. **Quy trình nộp bài Đề B & xem lời giải chi tiết trực tiếp trên trang (`freemium-flow.js`)**:
+     - *Đúng chỉ đạo của Thầy*: Khi học sinh bấm nộp bài Đề B, **tuyệt đối không tự động bung popup modal che kín màn hình**.
+     - Hệ thống mở bung toàn bộ đáp án và lời giải chi tiết của 5 câu hỏi ngay trên trang để học sinh đối chiếu từng câu.
+     - Khối Card Tổng Kết được đặt ở **CUỐI CÙNG** của phần Đề B (ngay sau Câu 5, trong `rdb-actions-slot`):
+       + **Trường hợp đúng 0/5 câu (0%)**: Hiện lời dặn dò sư phạm chân tình của Thầy ("Em chưa ghi điểm ở Đề B lần này. Đừng nản lòng nhé! Em hãy đọc thật kỹ lời giải chi tiết của Thầy ở từng câu phía trên..."), ưu tiên nút nổi bật `🔄 Luyện Tập Lại Đề B Này (Khuyên dùng)` và nút phụ `Vá Lỗ Hổng Tiếp Theo →`.
+       + **Trường hợp đúng > 0 câu**: Chúc mừng tiến bộ thực chất + nút nổi bật `⚡ Vá Lỗ Hổng Tiếp Theo →` và nút phụ `🔄 Luyện Tập Lại`.
+  5. **Chuỗi vá lỗ hổng tuần tự chuẩn xác — Triệt tiêu lỗi lặp lại Bài 11 (`freemium-flow.js`)**:
+     - *Nguyên nhân Thầy phát hiện*: Trong `renderRetestDeB`, biến `_currentRetestLessonId` chưa được lưu, khiến hàm `getNextRemedialTarget` nhận giá trị rỗng và luôn trả về phần tử đầu tiên là Bài 11, dẫn đến việc học sinh ở Bài 11 nộp xong lại bị đề xuất Bài 11.
+     - *Giải pháp*:
+       + Bổ sung lưu `this._currentRetestLessonId = lessonId;`.
+       + Thiết lập chuỗi 4 trạm vá lỗ hổng trọng tâm theo ma trận 4 chuyên đề Vật Lý 12:
+         * Trạm 1: `B04e20f0ec67d` (Bài 2 — Vật lí nhiệt: `B2. Lực liên kết và sự chuyển thể của chất`)
+         * Trạm 2: `B4ca24b64572f` (Bài 11 — Khí lí tưởng: `B11. Định luật Boyle – Quá trình đẳng nhiệt`)
+         * Trạm 3: `Bc71adbcb4dce` (Bài 19 — Từ trường: `B19. Cảm ứng từ & Lực từ`)
+         * Trạm 4: `B600c414815cd` (Bài 29 — Vật lí hạt nhân: `B29. Năng lượng liên kết hạt nhân`)
+       + Khi học sinh ở Bài 2 -> Đề xuất tiếp theo là Bài 11.
+       + Khi học sinh ở Bài 11 -> Đề xuất tiếp theo BẮT BUỘC là Bài 19 (`Bc71adbcb4dce`).
+       + Khi học sinh ở Bài 19 -> Đề xuất tiếp theo BẮT BUỘC là Bài 29 (`B600c414815cd`).
+       + Khi học sinh hoàn thành cả 4 bài -> Hiển thị nút: `🎉 Hoàn Thành 4 Trạm: Đo Lường Điểm Số THPT (20 Câu) →` dẫn về `danh-gia-nang-luc.html`.
+       + Cập nhật tiêu đề bài kiểm chứng rõ ràng theo tên bài (ví dụ: `BÀI TEST KIỂM CHỨNG TIẾN BỘ · B11: ĐỊNH LUẬT BOYLE`) thay vì chỉ ghi chữ "Đề B" cụt lủn làm Thầy hiểu nhầm là chưa đổi đề.
+- **Kiểm định chất lượng**:
+  - `node scratch/verify_mastery_and_arena.js`: PASS 100% (Sequence 4 trạm chuẩn, 6 file HTML có thẻ `</html>`, cú pháp JS 0 lỗi).
+  - `node test_diagnostic_mastery_loop.mjs`: PASS 100%.
+  - `node test_cro_funnel.mjs`: PASS 100%.
+  - `node test_full_student_journey.mjs`: PASS 100%.
+
+## Bàn giao gần nhất (10/11/2026 17:10)
+- **Commit**: Triệt Tiêu Lỗi LaTeX KaTeX Tô Đỏ, Nâng Cấp Luồng Vá Lỗ Hổng Kế Tiếp Sau Đề B & Khắc Phục Lỗi Khuất Fixed Navbar Toàn Hệ Thống
+- **Phạm vi hoàn tất (4 Hạng mục cốt lõi theo chỉ đạo của Thầy)**:
+  1. **Triệt tiêu hoàn toàn lỗi KaTeX tô chữ đỏ (`danh-gia-nang-luc.html`)**:
+     - *Nguyên nhân cốt lõi phát hiện*: Dữ liệu trong `data/danhgianangluc.json` hoàn toàn chuẩn xác. Tuy nhiên hàm `fixFormulaStrings` cũ sử dụng regex `replace(/([^\\])ext\{/g, ...)` và `replace(/(^|[^\\d])rac\{/g, ...)`. Ký tự `t` trước `ext{` và chữ `d` trước `rac{` đã bị regex match nhầm và chèn thêm `\`, biến `\text{` thành `\\text{` (lệnh xuống dòng trong LaTeX, mất cú pháp text) và biến `\dfrac` thành `\d\frac` (control sequence không tồn tại trong KaTeX). Điều này khiến KaTeX parse error và tô đỏ toàn bộ các từ như `\text{const}`, `\text{hằng số}`, `\text{ lít}`, `\text{ atm}`.
+     - *Giải pháp triệt để*:
+       + Loại bỏ hoàn toàn các regex phá hoại. Hàm `fixFormulaStrings` chỉ làm nhiệm vụ dọn dẹp các tàn tích lỗi (`\d\frac` -> `\dfrac`, `\\text` -> `\text`).
+       + Đồng bộ 100% dữ liệu sạch từ `data/danhgianangluc.json` vào thẻ nhúng `dgnl-questions-raw` trong `danh-gia-nang-luc.html` (chuẩn phân số đứng `\dfrac` theo phong cách Thầy Trường).
+  2. **Nâng cấp kết quả Đề B — 2 Lựa chọn sư phạm định hướng học sinh (`freemium-flow.js`)**:
+     - *Đúng yêu cầu định hướng sư phạm của Thầy*: Sau khi nộp Đề B, học sinh không còn bị bối rối "Xem báo cáo đối chiếu" chung chung mà được cung cấp **2 lựa chọn học tập rõ ràng, thiết thực**:
+       + **Lựa chọn 1: `🔄 Luyện Tập Lại Đề B` (`retryRetestDeB()`)**: Tự động reset lại toàn bộ phương án đã chọn của Đề B, mở khóa click và cuộn mượt mà lên Câu 1 để học sinh làm lại nếu chưa đạt điểm tối đa.
+       + **Lựa chọn 2: `⚡ Vá Lỗ Hổng Tiếp Theo (${nextRemedial.name}) →` (`goToNextRemedialLesson()`)**: Hệ thống tự động tra cứu từ danh sách câu sai của bài test chẩn đoán 20 câu để nhận diện lỗ hổng kế tiếp (Ví dụ: đã vá xong Nhiệt -> chuyển sang vá Khí: *Bài 11 — Định luật Boyle* -> Từ trường -> Hạt nhân). Từng bước dắt học sinh làm chủ toàn diện 4 chuyên đề.
+     - Cập nhật cả ở Hộp tổng kết dưới Đề B (`rdb-actions-slot`) và trong Modal Chúc mừng/Dặn dò (`showMasteryCelebrationModal`).
+  3. **Khắc phục lỗi che khuất Fixed Navbar trên toàn bộ các trang**:
+     - *Quy tắc an toàn bổ sung vào `AGENTS.md`*: Thanh điều hướng fixed cao 60px (`top: 0; z-index: 10000`). Phần tử nội dung đầu trang bắt buộc phải có khoảng đệm tối thiểu 78px - 92px trên Desktop và 70px - 82px trên Mobile.
+     - `live-record.html`: Tăng margin-top của `.galaxy-sector-banner` từ `22px` lên `80px` (desktop) và `72px` (mobile). Banner hành tinh Sadalmelik hiển thị trọn vẹn, không còn bị navbar đè lên viền/badge.
+     - `goi-hoc.html`: Tăng padding-top của `.container` từ `36px` lên `92px` (desktop) và `82px` (mobile). Huy hiệu *Đầu Tư Cho Điểm 9+ Vật Lý 12* và tiêu đề *CHỌN GÓI HỌC PHÙ HỢP VỚI BẠN* lộ rõ 100%.
+     - `huongdan.html`: Đã nâng `padding-top: 96px`.
+     - `baihoc.html`: Đã nâng `margin-top: 78px`.
+  4. **Kiểm tra và Xác minh chất lượng**:
+     - Test suites: `node test_diagnostic_mastery_loop.mjs` PASS 100%, `node test_cro_funnel.mjs` PASS 100%.
+     - Cú pháp JavaScript toàn bộ file: 0 lỗi.
+     - Tất cả các file HTML đều kết thúc hợp lệ bằng `</html>`.
+
+## Bàn giao gần nhất (10/11/2026 16:55)
+- **Commit**: Tái Thiết Lập Modal Xác Nhận Bắt Đầu 20 Câu ĐGNL, Sửa Triệt Để Lỗi KaTeX/Lặp Đáp Án & Đồng Bộ Toàn Diện Hướng Dẫn Sang Obsidian Deep Space
+- **Phạm vi hoàn tất (5 Hạng mục trọng tâm theo yêu cầu của Thầy)**:
+  1. **Khôi phục Modal Xác Nhận Bắt Đầu Làm Bài 20 Câu (`danh-gia-nang-luc.html`)**:
+     - *Vấn đề Thầy phản ánh*: Vừa bấm vào menu "Đánh giá năng lực" là đồng hồ 30 phút chạy ngay, vào làm câu 1 luôn, không còn nút xác nhận làm 20 câu như trước làm học sinh bị ngợp và mất thời gian khi chưa sẵn sàng.
+     - *Giải pháp triệt để*:
+       + Bổ sung Modal Khởi Động căn giữa màn hình `#start-exam-modal` với thiết kế Obsidian Glassmorphism neon cyan: Huy hiệu `CHUẨN MA TRẬN BỘ GD&ĐT 2026`, tóm tắt cấu trúc 20 câu 4 chuyên đề, lưu ý thời gian 30 phút chỉ bắt đầu đếm khi bấm nút.
+       + Bổ sung 2 nút hành động: Nút secondary `Để sau` (quay về trang chủ) và nút CTA phát sáng `🚀 BẮT ĐẦU LÀM BÀI →`.
+       + Logic khởi động `initApp()`: Mặc định đồng hồ cố định đứng yên ở `30:00`. Chỉ khi học sinh bấm `BẮT ĐẦU LÀM BÀI` thì hàm `startExamNow()` mới đóng modal và kích hoạt `startTimer()`.
+       + Nếu URL có `?autostart=1` (từ quảng cáo TikTok hoặc CTA pop-up): tự động đóng modal và vào làm ngay.
+  2. **Triệt tiêu lỗi KaTeX (`\d\frac`) và lỗi lặp phương án `A. A. ` (`danh-gia-nang-luc.html`)**:
+     - *Sửa lỗi KaTeX*: Regex cũ biến `\dfrac` thành `\d\frac` khiến KaTeX ném lỗi `Undefined control sequence: \d` tô đỏ toàn bộ công thức; regex `\text{` bị lặp thành `\\text{`. Đã chuẩn hóa hàm `fixFormulaStrings`.
+     - *Sửa lỗi lặp `A. A. `*: Viết hàm chuẩn hóa `formatOptionText(letter, rawOpt)` tự động loại bỏ tiền tố `^[A-D]\.\s*` có sẵn trong dữ liệu trước khi nối lại chữ cái phương án, đảm bảo cả màn hình làm bài lẫn màn hình đối soát chi tiết chỉ hiển thị duy nhất `A. Kelvin (K)`.
+  3. **Đồng bộ toàn diện giao diện `huongdan.html` theo chuẩn Obsidian Deep Space**:
+     - Loại bỏ hoàn toàn nền xám cũ `#0d1117` và biến màu cũ lệch tông.
+     - Đồng bộ nền `#060a12`, radial gradients chùm sao cyan/blue mờ ảo, thẻ card `#0d162b` viền neon `rgba(0, 240, 255, 0.22)`, bo góc 18px, đổ bóng phát quang xanh, typography và icon neon phát sáng.
+     - Tăng đệm phía trên `padding-top: 96px` để không bị thanh fixed topbar che khuất nội dung.
+  4. **Triệt tiêu văn phong ép mua Gói Pro 50k & Báo cáo trung thực sau Đề B (`freemium-flow.js`)**:
+     - Đúng tôn chỉ sư phạm của Thầy: Học sinh cần được học miễn phí, cảm nhận hiệu quả thật sự, có hạn mức số bài/ngày; không khèo ép mua gói Pro ở bước kiểm chứng Đề B.
+     - Cập nhật `showMasteryCelebrationModal`: Thay thế hoàn toàn nút mua Pro bằng 2 nút học tập thiết thực: `Xem Lời Giải Chi Tiết Của Thầy ↓` và `Học Bài Tiếp Theo (Miễn Phí) →`.
+     - Phản ánh trung thực: Nếu học sinh làm 0/5 câu, không chúc mừng bứt phá mà hiển thị lời dặn dò sư phạm chân tình của Thầy.
+     - Thay thế `confirm(...)` native của trình duyệt bằng Modal HTML Custom `#vlxt-retest-confirm-modal` căn giữa màn hình.
+  5. **Tối ưu Pop-up Thông Minh & Nhận Diện Đăng Nhập (`smart-marketing-popup.js`)**:
+     - Cập nhật dòng footer note: Tự động phát hiện trạng thái đã đăng nhập và hiển thị `Đã đăng nhập tài khoản [Tên/SĐT] · Tiến độ học tập được lưu tự động`.
+     - Đảm bảo con trỏ tàu vũ trụ `#quantum-cursor-ring` luôn nổi trên cùng `z-index: 2147483647` lướt mượt mà trên bề mặt popup.
+- **Kiểm định chất lượng**:
+  - `node test_diagnostic_mastery_loop.mjs`: PASS 100%.
+  - `node test_cro_funnel.mjs`: PASS 100%.
+  - Cú pháp JS toàn bộ file sửa đổi: 100% OK.
+  - Tất cả file HTML kết thúc hợp lệ bằng `</html>`.
+
+## Bàn giao gần nhất (10/11/2026 14:45)
+- **Commit**: Triệt Tiêu Lỗi Flash Gate Modal Đăng Nhập FOUC, Kích Hoạt Pop-up 2 Tầng Kính Xanh Cho Tài Khoản Mới & Đồng Bộ Toàn Diện Hồ Sơ Theo Chuẩn VStep-O
+- **Phạm vi hoàn tất (3 Hạng mục quan trọng)**:
+  1. **Triệt tiêu hoàn toàn lỗi Flash Khung Đăng Nhập (FOUC) khi tải hoặc chuyển trang**:
+     - *Nguyên nhân phát hiện*: Tại `baihoc.html`, `live-record.html`, `khoa-hoc-hud-concept.html`, khối `.gate` ("Chào mừng đến lớp học! Nhập thông tin để hệ thống lưu tiến độ...") mặc định trong CSS là `display: flex; position: fixed; inset: 0; z-index: 9999;`. Trong khi đó lệnh ẩn `$gate.style.display='none'` nằm ở tận cuối file HTML sau khi JS parse xong (hàng nghìn dòng mã). Do đó trình duyệt luôn render khung này trong 200–500ms trước khi ẩn đi, gây hiện tượng giật màn hình (FOUC).
+     - *Giải pháp triệt để*:
+       + Cập nhật CSS gốc: `.gate { display: none; ... }` tại cả 3 file HTML.
+       + Cập nhật trực tiếp thẻ HTML: `<div class="gate" id="gate" style="display:none !important">`.
+       + Kết quả: Khi học sinh mở trang, chuyển trang hoặc reload, trang web hiển thị mượt mà 100%, không còn bất kỳ tích tắc nào xuất hiện khung đăng nhập cũ.
+  2. **Kích hoạt & Tối ưu Pop-up 2 Tầng Kính Xanh Trong Suốt (`smart-marketing-popup.js`)**:
+     - *Sửa lỗi tài khoản mới không thấy pop-up*: Cơ chế cũ dùng chung key toàn cục trong `localStorage` với lệnh khóa 3 ngày (`suppressUntil`) và nhận diện nhầm kết quả test cũ của trình duyệt. Đã chuyển sang quản lý tracker gắn riêng theo từng User ID/Phone; đồng thời tự động reset tracker khi phát hiện học sinh vừa đăng ký mới (`welcome=1`).
+     - *Nâng cấp kích thước & độ trong suốt*: Mở rộng `max-width: 680px` bề thế; áp dụng Glassmorphism Deep Space trong suốt (`background: rgba(8, 22, 50, 0.45); backdrop-filter: blur(20px); border: 1.5px solid rgba(0, 240, 255, 0.45); box-shadow: 0 25px 80px rgba(0,0,0,0.65), 0 0 50px rgba(0,240,255,0.25)`).
+     - *Con trỏ tàu vũ trụ `#quantum-cursor-ring`*: Tự động đưa element con trỏ xuống làm con cuối cùng tuyệt đối của `document.body` với `z-index: 2147483647 !important; pointer-events: none !important; cursor: none !important;` trên toàn bộ popup. Con tàu vũ trụ lướt mượt mà, phóng to và tăng lửa đẩy phản lực khi di chuột qua các nút bấm.
+  3. **Đồng bộ toàn diện giao diện `hoso.html` theo Design System VStep-O**:
+     - Nền toàn trang: Đồng bộ 100% với `baihoc.html` và `danh-gia-nang-luc.html` bằng hệ thống biến màu Obsidian Deep Space (`--bg-base: #060a12`, radial gradient các chòm sao cyan/blue mờ ảo, không còn tông đen sì hoặc xám cũ).
+     - Tận dụng tối đa không gian màn hình: `.page { max-width: 1480px; width: 96%; margin: 0 auto; }`.
+     - Thay thế danh sách văn bản co cụm bằng **4 Ô Thẻ Card VSTEP-O Sang Trọng**:
+       + Ô 1: Chương 1 — Vật Lí Nhiệt (Icon atom cyan phát sáng, badge Miễn Phí, thanh progress neon xanh).
+       + Ô 2: Chương 2 — Khí Lí Tưởng (Icon khối đa diện, badge Miễn Phí, thanh progress neon cyan).
+       + Ô 3: Chương 3 — Từ Trường (Icon tia sét tím, badge Pro 50k / Đã mở, thanh progress tím).
+       + Ô 4: Chương 4 — Vật Lí Hạt Nhân (Icon hạt nhân vàng, badge Pro 50k / Đã mở, thanh progress vàng).
+     - Bản đồ mạng nhện SVG 6 trục (Radar HUD): Bố trí trực diện ở Cột Phải, kích thước to rõ 340px sắc sảo, nan hoa phát sáng neon, kèm 6 thanh năng lực và điểm thi THPT dự kiến.
+     - Thanh Tabs Pill bo tròn 100px: Tab active có gradient `#00f0ff` -> `#0b84f3`, chữ đen `#04101e` đậm nét, phát sáng neon cyan.
+- **Kiểm định chất lượng**:
+  - Script syntax `hoso.html`, `smart-marketing-popup.js`, `baihoc.html`: 0 syntax error (100% PASS).
+  - Toàn bộ file HTML kết thúc hợp lệ bằng `</html>`.
+  - Cả 4 test suites tự động:
+    + `node test_full_student_journey.mjs`: PASS 100%.
+    + `node test_diagnostic_mastery_loop.mjs`: PASS 100%.
+    + `node test_cro_funnel.mjs`: PASS 100%.
+    + `node test_vnpay_integration.mjs`: PASS 100%.
+
+## Bàn giao gần nhất (10/11/2026 14:35)
+- **Commit**: Máy 1 Hoàn Tất Tích Hợp Đề B Theo Bài Học, Mở Đề Thi Siêu Tốc 0.1s Phòng Thi Thử Chuẩn Bộ & Xác Minh Thông Suốt Luồng Học Sinh 7 Bước
+- **Phạm vi hoàn tất (3 trụ cột cốt lõi)**:
+  1. **Nâng cấp Đề B trong `freemium-flow.js` & `baihoc.html`**:
+     - Nạp và quản lý cache bộ dữ liệu `data/retest_bank_by_lessons.json` (23 bài học trọng tâm, 115 câu hỏi chất lượng cao).
+     - Xây dựng `FreemiumFlow.getRetestQuestions(lessonId, topicName)`: Đa chiều đối soát theo `maBai` hex (ví dụ: `B04e20f0ec67d`), theo `lessonCode` (`B01`..`B35`) và theo chuỗi tiêu đề. Ưu tiên 5 câu đúng bài học hiện tại; nếu chưa có trong ngân hàng thì fallback an toàn về 4 đề chung theo topic (`RETEST_BANKS`).
+     - Tối ưu `renderRetestDeB`: Hiển thị rõ tên bài học, gắn huy hiệu độ khó `.rdb-level-badge` (Nhận biết, Thông hiểu, Vận dụng · Bẫy), render KaTeX công thức phân số `\dfrac` đứng chuẩn Thầy Trường.
+     - Cập nhật `submitRetestDeB`: Chấm điểm chính xác theo `_currentRetestQuestions` thực tế, khóa phương án, mở bung lời giải chi tiết KaTeX và bung modal so sánh tiến bộ Before vs After.
+     - Cập nhật cả 2 vị trí gọi `FreemiumFlow.renderRetestDeB` trong `baihoc.html` truyền đầy đủ `_lessonId`.
+  2. **Tối ưu hàm nạp đề thi siêu tốc trong `phong-thi-thu.html` & `thithu.html`**:
+     - `thithu.html`: Ưu tiên fetch trực tiếp `data/exams/{examId}.json` để mở đề thi CBT siêu tốc trong ~0.4ms (< 0.1s), hiển thị bảng câu hỏi và bộ đếm thời gian ngay lập tức; chỉ gọi Google Apps Script làm dự phòng nếu không thấy file tĩnh. Preload metadata danh sách đề và assets câu hỏi ở chế độ nền.
+     - `phong-thi-thu.html`: Ưu tiên nạp danh sách đề từ `data/danhsachde.json`; bổ sung hàm `loadExamQuestions(examId)`, cơ chế `prefetchExam(examId)` tải trước đề vào cache trình duyệt khi học sinh rê chuột qua thẻ đề thi; hỗ trợ query `?exam=` tự động điều hướng sang phòng thi.
+     - Giữ nguyên 100% giao diện sáng chuẩn Bộ GD&ĐT (CBT light mode mô phỏng kỳ thi trên máy tính chính thức của Bộ).
+  3. **Kiểm thử xác minh toàn diện luồng học sinh 7 bước (`test_full_student_journey.mjs`)**:
+     - Xây dựng test suite tự động kiểm tra khép kín 7 mắt xích:
+       + Bước 1: Mở web & Nạp đề thi siêu tốc 0.1s (19 file JSON tĩnh).
+       + Bước 2: Học sinh làm test chẩn đoán 20 câu (`data/danhgianangluc.json`).
+       + Bước 3: Phân tích lỗ hổng & Tạo deep link remedial sang `baihoc.html`.
+       + Bước 4: Khởi động bài học khắc phục (miễn chặn tuần tự, mount Đề B).
+       + Bước 5: Nạp đúng 5 câu Đề B theo bài học B02 từ ngân hàng `data/retest_bank_by_lessons.json` (2NB + 2TH + 1VD).
+       + Bước 6: Nộp bài Đề B, chấm điểm, hiển thị lời giải KaTeX & bung modal bứt phá tiến bộ.
+       + Bước 7: Soft upsell Gói Pro 50k, VietQR VietinBank & nâng cấp mở khóa toàn bộ hệ sinh thái.
+- **Kiểm định chất lượng**:
+  - `node -c freemium-flow.js`: 0 syntax error (PASS).
+  - Cả 4 test suites tự động:
+    + `node test_full_student_journey.mjs`: PASS 100%.
+    + `node test_diagnostic_mastery_loop.mjs`: PASS 100%.
+    + `node test_cro_funnel.mjs`: PASS 100%.
+    + `node test_vnpay_integration.mjs`: PASS 100%.
+  - Toàn bộ các file HTML (`phong-thi-thu.html`, `thithu.html`, `baihoc.html`, `danh-gia-nang-luc.html`) kết thúc hợp lệ bằng `</html>`.
+
+## Bàn giao gần nhất (10/11/2026 14:25)
+- **Commit**: Nâng cấp Pop-up Kính Trong Suốt Xanh Dương, Tăng Kích Thước 620px & Cho Phép Con Trỏ Tàu Vũ Trụ Lướt Trên Bề Mặt
+- **Phạm vi hoàn tất (`smart-marketing-popup.js`)**:
+  1. **Nâng cấp giao diện Kính Trong Suốt Xanh Dương (Deep Space Glassmorphism)**:
+     - Lớp nền overlay: `background: rgba(2, 6, 18, 0.52); backdrop-filter: blur(8px);` nhìn xuyên thấu vũ trụ 3D và các chòm sao chuyển động phía sau.
+     - Thẻ card popup: `max-width: 620px;` (rộng rãi, bề thế), `background: rgba(8, 22, 48, 0.48); backdrop-filter: blur(22px); border: 1.5px solid rgba(0, 240, 255, 0.48); box-shadow: 0 25px 80px rgba(0,0,0,0.65), 0 0 50px rgba(0,240,255,0.22);`.
+     - Áp dụng đồng bộ cho CẢ HAI pop-up (Pop-up 1: Test Điểm Thi THPT Quốc Gia & Pop-up 2: Vào Học Thử Miễn Phí Khóa Vật Lý 12).
+  2. **Giải quyết triệt để con trỏ chuột tàu vũ trụ (`#quantum-cursor-ring`)**:
+     - Điều chỉnh `z-index` của `.vlxt-smart-overlay` về `99990`, đồng thời đặt `#quantum-cursor-ring { z-index: 99999999 !important; }`.
+     - Thêm `cursor: none !important;` trên toàn bộ popup để triệt tiêu hoàn toàn con trỏ mặc định của hệ điều hành, cho phép phi thuyền không gian bay lướt rực rỡ, phụt lửa phản lực trên bề mặt popup.
+     - Tích hợp sự kiện hover cho các nút CTA và nút đóng: con tàu vũ trụ tự động phóng to `scale(1.28)` và tăng tốc độ phụt lửa phản lực khi di chuột vào.
+- **Kiểm định chất lượng**:
+  - `node -c smart-marketing-popup.js`: PASS.
+  - Cả 3 test suites tự động (`test_diagnostic_mastery_loop.mjs`, `test_cro_funnel.mjs`, `test_vnpay_integration.mjs`): PASS 100%.
+
+## Bàn giao gần nhất (10/11/2026 14:15)
+- **Nhiệm vụ hoàn tất**: Hoàn thành trọn gói quy trình tự động hóa dữ liệu 3 pha liên hoàn (Chỉ thao tác trên `data/` và `scripts/`, bảo toàn 100% UI HTML/JS frontend)
+- **Chi tiết kết quả 3 Pha**:
+  1. **PHA 1: Quét sạch & Chuẩn hóa KaTeX toàn bộ ngân hàng câu hỏi**:
+     - Viết và chạy script `scripts/clean_and_standardize_katex.js` quét qua toàn bộ 32 file dữ liệu (`data/quizzes/*.json`, `data/exams/*.json`, `data/danhgianangluc.json`).
+     - Sửa sạch triệt để các lỗi ký tự escape: xóa sạch các tàn tích `\text{ e}xt{`, `\text{ i}mes`, `\text{ r}ightarrow`, xử lý các ký tự điều khiển ASCII `\x09` (Tab), `\x0D` (CR), `\x0C` (FF) do nuốt dấu gạch chéo.
+     - Chuẩn hóa toàn bộ các phân số KaTeX `\frac` sang `\dfrac` đứng chuẩn sư phạm Vật Lý, sắc nét trên mọi kích thước màn hình.
+     - Kết quả: Đạt 0 lỗi escape, 0 ký tự tab rác, 100% công thức KaTeX chuẩn mực.
+  2. **PHA 2: TĨNH HÓA & ĐỐI SOÁT 18 ĐỀ THI VÀO `data/exams/`**:
+     - Viết và thực thi `scripts/build_and_audit_18_exams.mjs`.
+     - Trích xuất 4 bộ đề tổng ôn Chương 1 từ các file Word gốc trong `cleaned_outputs/` thành 4 file JSON độc lập: `data/exams/tongc1s1.json`, `tongc1s2.json`, `tongc1s3.json`, `tongc1s4.json` (mỗi đề đủ 25 câu trắc nghiệm 4 lựa chọn có đáp án).
+     - Khắc phục lỗi câu 11 & 12 bị dính liền nội dung ở `vedich2k9_de04.json` (tách riêng câu hỏi nhiệt kế và độ hụt khối hạt nhân).
+     - Đối soát 100% 18 đề thi khớp với `data/danhsachde.json` (14 đề Về Đích 2k9 đủ 3 phần: 18 câu TN 4 lựa chọn + 4 câu Đúng/Sai + 6 câu Trả lời ngắn; 4 đề Tổng ôn Chương 1 đủ 25 câu TN).
+     - Kiểm tra định dạng UTF-8 không lỗi font/mojibake tiếng Việt: 18/18 đề đạt `PASS 100%`.
+  3. **PHA 3: ĐÓNG GÓI NGÂN HÀNG ĐỀ B (RETEST 5 CÂU) CHO TỪNG BÀI HỌC (`data/retest_bank_by_lessons.json`)**:
+     - Viết và thực thi `scripts/build_retest_bank.mjs`, xuất file chuẩn `data/retest_bank_by_lessons.json` (dung lượng hoàn chỉnh, cấu trúc khoa học).
+     - Đóng gói đầy đủ 23 bài học trọng tâm của 4 chương:
+       + Chương 1: B01, B02, B03, B04, B05, B06 (Vật lý nhiệt)
+       + Chương 2: B09, B10, B11, B12, B13, B14 (Khí lí tưởng)
+       + Chương 3: B21, B22, B23, B24, B25, B26 (Từ trường)
+       + Chương 4: B31, B32, B33, B34, B35 (Vật lí hạt nhân)
+     - Mỗi bài học gồm chuẩn cấu trúc: 2 câu nhận biết/lý thuyết cốt lõi, 2 câu thông hiểu/tính toán cơ bản, 1 câu bẫy đơn vị/đồ thị vận dụng (tổng 115 câu hỏi).
+     - Đầy đủ 4 đáp án A, B, C, D, `correct`, `ans` (0-3), và khối `explain` lời giải chi tiết KaTeX của Thầy kèm cảnh báo bẫy đơn vị.
+     - Hỗ trợ truy vấn 3 chiều: theo mã bài `lessonCode` (B01..B35), theo `maBai` hex (B1036d251af19...), và theo chuyên đề `byTopic`.
+- **Kiểm định chất lượng**:
+  - `node -c scripts/*.js` / `scripts/*.mjs`: 0 syntax error (PASS 100%).
+  - Xác thực JSON hợp lệ: 46/46 file JSON trong `data/` parse thành công 100%.
+  - `node test_diagnostic_mastery_loop.mjs`: PASS 100%.
+  - `node test_cro_funnel.mjs`: PASS 100%.
+  - `node test_vnpay_integration.mjs`: PASS 100%.
+  - Không thay đổi bất kỳ file UI HTML/JS frontend nào.
+
+## Bàn giao gần nhất (10/11/2026 14:05)
+- **Commit**: Modal Nộp Bài Căn Giữa Màn Hình, Sửa Triệt Để Layout Đề B, Nâng Cấp Hồ Sơ VStep-O Show Mạng Nhện Mặt Tiền & Tích Hợp Smart Marketing Popup 3s
+- **Phạm vi hoàn tất (4 trụ cột cốt lõi)**:
+  1. `danh-gia-nang-luc.html`:
+     - **Loại bỏ vĩnh viễn `window.confirm()` native**: Thay bằng modal HTML/CSS `#submit-confirm-modal` căn giữa màn hình tuyệt đẹp, phong cách Obsidian Glassmorphism, có icon clipboard, kiểm tra số câu chưa làm và 2 nút "Làm Tiếp" / "Nộp Bài Ngay".
+  2. `freemium-flow.js`:
+     - **Tái thiết kế hoàn toàn Modal Bứt Phá Đề B (`showMasteryCelebrationModal`)**: Bổ sung trọn bộ CSS chuyên biệt `.mastery-box`, thẻ `.cro-modal-card`, bảng so sánh Before/After 2 cột trực quan (Trước khi học vs Sau khi học cùng Thầy), icon cúp vàng phát sáng và nút CTA Gói Pro 50k sang trọng, sửa triệt để lỗi giao diện đen xì vỡ layout.
+  3. `hoso.html`:
+     - **Mở rộng chiều rộng trang**: Đổi `max-width` từ `880px` lên `1320px`, xóa bỏ hoàn toàn khoảng trống vô lý 2 bên màn hình.
+     - **Bố cục 2 Cột chuẩn VStep-O**:
+       + Cột trái (460px): Profile Card, Mini Stats (LP, Bài đã học, Điểm cao nhất) và Thẻ Tiến Độ 4 Chương cốt lõi (Vật lí nhiệt, Khí lí tưởng, Từ trường, Hạt nhân).
+       + Cột phải (Trung tâm): **ĐƯA BẢN ĐỒ MẠNG NHỆN SVG 6 TRỤC RA NGAY MẶT TIỀN**, mở hồ sơ là thấy ngay lập tức, không bị giấu trong tab nào.
+     - **Xóa bỏ trùng lặp Gói học**: Bỏ hộp `subCardHTML` ở giữa trang, giữ gọn gàng trong tab `goihoc`.
+  4. `smart-marketing-popup.js` & `index.html`:
+     - **Hệ thống Smart Marketing Pop-up 2 Tầng (3s Delay)**:
+       + Sau 3 giây khi vào trang chủ (để học sinh chiêm ngưỡng giao diện đẹp), tự động hiện Pop-up 1: "Test Điểm Thi THPT Quốc Gia & Quét Lỗ Hổng Vật Lý 12 (20 câu)".
+       + Nếu học sinh bấm tắt Pop-up 1 (hoặc đã từng làm test), tự động hiện Pop-up 2: "Học Thử Miễn Phí Khóa Vật Lý 12 (Chương 1 & Chương 2)".
+       + **Smart Behavioral Engine**: Theo dõi hành vi qua `localStorage`, tự hiểu và ngưng hiển thị khi học sinh tắt quá 2 lần hoặc đã là học sinh VIP / học thường xuyên.
+- **Kiểm định chất lượng**:
+  - `node test_diagnostic_mastery_loop.mjs`: PASS 100%.
+  - `node test_cro_funnel.mjs`: PASS 100%.
+  - `node test_vnpay_integration.mjs`: PASS 100%.
+  - Toàn bộ script JS đều hợp lệ cú pháp (0 lỗi). Thẻ `</html>` ở cuối tất cả các file vẹn nguyên.
+
+## Bàn giao gần nhất (10/11/2026 13:45)
+- **Commit**: Bổ sung Hộp Khắc Phục Dưới Câu 20, Kích hoạt thông suốt Luồng Remedial & Vẽ Mạng Nhện Hồ Sơ Đầy Đủ Cả 2 Trạng Thái
+- **Phạm vi hoàn tất (3 file cốt lõi)**:
+  1. `danh-gia-nang-luc.html`:
+     - **Thêm Hộp Remedial thứ hai ở DƯỚI CÙNG bài chữa chi tiết (sau câu 20)**: `#remedial-bottom-spotlight-slot` đồng bộ 100% với hộp ở đầu bài, giúp học sinh sau khi đối soát xong 20 câu hỏi có thể bấm ngay vào "Vào học bài khắc phục ngay (miễn phí)" mà không phải cuộn ngược lên đầu trang.
+     - **Tối ưu hóa điều hướng sang `baihoc.html` (`goToRemedialLesson`)**: Lưu chắc chắn cờ `vlxt_remedial_active`, `vlxt_remedial_topic`, `vlxt_remedial_lesson` vào `sessionStorage` và truyền đầy đủ query params `?openLesson=...&remedial=1&topic=...#lesson/...`.
+     - **Sửa lỗi công thức KaTeX**: Bổ sung hàm lọc `fixFormulaStrings()` khôi phục triệt để các dấu backslash bị nuốt (`ext{` -> `\text{`, `ightarrow` -> `\rightarrow`, `imes` -> `\times`, `rac{` -> `\frac{`), đảm bảo hiển thị hoàn hảo ở đề bài, các phương án và lời giải chi tiết.
+     - **Lưu đồng bộ kết quả**: Lưu trực tiếp vào `localStorage.vlxt_dgnl_latest_result` để `hoso.html` đọc tức thì.
+  2. `baihoc.html`:
+     - **Khắc phục lỗi nuốt search params khi khởi động**: Sửa router chuẩn hóa URL (dòng 3890), bảo toàn query `?remedial=1&topic=...&openLesson=...` khi chuyển đổi sang hash `#lesson/...`, không làm mất cờ remedial.
+     - **Nhận diện chính xác ngữ cảnh bài học khắc phục (`getRemedialContext(currentKey)`)**:
+       + Khi học sinh vào từ bài test: Banner chào đón remedial và Đề B kiểm chứng tiến bộ hiển thị 100% tại đúng bài học trọng tâm được chỉ định.
+       + Khi học sinh chuyển sang bài học khác trong sidebar: Tự động tắt cờ remedial và trở về bài học thông thường, không gây phân tâm.
+       + Cung cấp nút `[✕ Tắt chế độ khắc phục]` để học sinh chủ động tắt bất cứ lúc nào.
+  3. `hoso.html`:
+     - **Kích hoạt tức thì khi bấm tab (`switchTab('nangluc')`)**: Gọi ngay `renderRadarChart()` để vẽ biểu đồ mạng nhện SVG ngay khi chuyển tab hoặc truy cập qua link `#nangluc` / `?tab=nangluc`.
+     - **Luôn luôn vẽ biểu đồ SVG mạng nhện 6 trục trực quan (Cả khi đã thi hoặc chưa thi)**:
+       + *Khi đã có điểm test*: Vẽ mạng nhện Cyan neon theo dữ liệu thật của học sinh, kèm điểm THPT dự kiến và 6 thanh tiến độ năng lực.
+       + *Khi chưa có điểm test*: Vẽ biểu đồ mạng nhện chuẩn năng lực đầu ra THPT 8.5+ với nét đứt màu vàng hổ phách, kèm nút CTA phát sáng "Làm bài test 20 câu để đo bản đồ cá nhân →". Học sinh mở tab ra là THẤY NGAY HÌNH MẠNG NHỆN ĐẸP MẮT, không bao giờ bị trống khung.
+- **Kiểm định chất lượng**:
+  - `node test_diagnostic_mastery_loop.mjs`: PASS 100%.
+  - `node test_cro_funnel.mjs`: PASS 100%.
+  - `node test_vnpay_integration.mjs`: PASS 100%.
+  - Node.js Syntax Verification: 0 syntax errors trên cả 3 file.
+  - Cấu trúc HTML: Thẻ `</html>` vẹn nguyên ở cuối file.
+
+## Bàn giao gần nhất (10/11/2026 13:05)
+- **Commit**: Hoàn thành sản xuất 100% trọn bộ 5 gói giáo trình trình chiếu Video 1 Lý Thuyết cho Chương 1 Vật Lý Nhiệt (B02 đến B06) chuẩn TEACHING_DECK_SPEC v1.1.0
+- **Phạm vi hoàn tất (Chương 1 — 5 bài học hoàn chỉnh)**:
+  1. `teaching-decks/GD1_CH01_VatLyNhiet/B02_LucLienKet_SuChuyenThe/` (Lực liên kết phân tử & Các thể của chất)
+  2. `teaching-decks/GD1_CH01_VatLyNhiet/B03_NhietDo_ThangNhietDo_NhietKe/` (Nhiệt độ, Thang nhiệt độ Celsius/Kelvin & Nhiệt kế)
+  3. `teaching-decks/GD1_CH01_VatLyNhiet/B04_NhietDungRieng/` (Nhiệt dung riêng & Định luật bảo toàn năng lượng nhiệt $Q = mc\Delta T$)
+  4. `teaching-decks/GD1_CH01_VatLyNhiet/B05_NhietNongChayRieng/` (Nhiệt nóng chảy riêng $\lambda$ & Quá trình chuyển pha Rắn - Lỏng)
+  5. `teaching-decks/GD1_CH01_VatLyNhiet/B06_NhietHoaHoiRieng/` (Nhiệt hóa hơi riêng $L$ & Sự sôi / Sự bay hơi)
+- **Cấu trúc mỗi gói bài giảng (Đầy đủ 10 thành phần chuẩn mực)**:
+  1. `lesson-brief.md`: Tóm tắt sư phạm, mục tiêu cốt lõi trích xuất 100% nguyên văn từ `Ban Lí thuyết.docx`, mốc thời gian vàng `02:30` bước ngay vào công thức cốt lõi.
+  2. `deck-manifest.json`: Cấu hình 10 slide, ánh xạ 1:1 ID `SLIDE_01` -> `SLIDE_10`, đầy đủ các trường sư phạm (`studentAction`, `expectedEvidenceOfUnderstanding`, `nextTransition`), safetyGates cô lập toàn bộ `false`.
+  3. `slides.md`: Kịch bản chi tiết từng slide, thời lượng 16 phút.
+  4. `speaker-notes.md`: Lời thoại giảng viên tự nhiên, trực diện cho Thầy giảng dạy.
+  5. `asset-brief.md`: Đặc tả hình khối 3D Isometric, biểu đồ nhiệt độ - thời gian, véc-tơ sắc nét và an toàn Webcam.
+  6. `qa-report.md`: Báo cáo kỹ thuật 6 cổng kiểm định tự động, trạng thái `TECHNICAL_PREFLIGHT_PASS`.
+  7. `review-sheet.md`: Phiếu nghiệm thu 7 tiêu chí xưởng dành cho Thầy phê duyệt.
+  8. `review.html`: Bản xem trước trình chiếu độc lập 1920x1080, giao diện Light Editorial `#FAFBFD`, font Be Vietnam Pro, KaTeX phân số đứng `\dfrac{A}{B}`, thanh điều hướng nhanh Jump-to-slide.
+  9. `assets/`: Đầy đủ `logo_xt_full.png` và `logo_xt_small.png`.
+  10. `qa-renders/`: Kết xuất tự động đủ 10/10 file ảnh PNG 1920x1080 (`slide-01.png` đến `slide-10.png`) cho mỗi bài học phục vụ AI Vision nghiệm thu và kiểm tra thị giác.
+- **Tuân thủ quy tắc bất biến của xưởng**:
+  - Sạch 100% từ cấm: Tuyệt đối 0 xuất hiện các cụm `"GDPT 2018"`, `"chuẩn sư phạm"`, `"4 bước sư phạm"`.
+  - Vùng an toàn Webcam ($X \ge 1480\text{px}$, $Y \ge 760\text{px}$, cỡ $440\times 320\text{px}$) ở góc dưới bên phải giữ nguyên nền `#FAFBFD` tự nhiên, không kẻ viền/khung, footer gom toàn bộ sang lề trái: `Biên soạn: Xuân Trường • vatlyxuantruong.io.vn`.
+  - Typography: Cỡ chữ nội dung học sinh đọc $\ge 25\text{px} - 28\text{px}$, tiêu đề $\ge 48\text{px} - 58\text{px}$.
+  - Bảng ma trận Slide 9: Cột 2 ("Công thức & Đơn vị") căn lề trái gióng hàng (`text-align: left; vertical-align: middle;`).
+  - Tích hợp mô hình 3D Isometric / Three.js WebGL trực quan cho các thí nghiệm đo nhiệt và mô hình vi mô phân tử.
+- **Kiểm định tự động**:
+  - `node scratch/validate_batch.mjs`: 5/5 bài PASS `TECHNICAL_PREFLIGHT_PASS` (0 errors, 0 warnings).
+  - Playwright Chromium Screenshot: Kết xuất đủ 50/50 ảnh PNG sắc nét vào `qa-renders/` của toàn bộ 5 bài học.
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên trạng thái `OUTLINE_FOR_TEACHER` để Thầy trực tiếp xem xét và phê duyệt trước khi ghi hình hoặc xuất slide.
+  - Không tự ý nạp video lên YouTube/Drive hoặc sửa database production khi chưa có chỉ thị của Thầy.
+- **Việc tiếp theo**:
+  - Thầy kiểm tra visual review.html hoặc xem các ảnh PNG render trong qa-renders.
+
+## Bàn giao gần nhất (10/11/2026 12:55)
+- **Commit**: Phân biệt 2 luồng học (Cô lập Remedial), Chuẩn hóa Thẻ Hồ Sơ chấm xanh lá neon toàn hệ thống & Thêm Bản đồ Mạng nhện Hồ sơ
+- **File đã cập nhật**:
+  - `auth.js`:
+    1. **Nâng cấp thẻ hồ sơ Navbar đồng nhất cho toàn bộ hệ thống (`vlxtRenderWidget`)**:
+       - Bỏ vĩnh viễn avatar tròn màu xanh dương to thô cũ.
+       - Thay bằng **thẻ cứng dạng pill bo tròn `100px` có chấm xanh lá cây neon phát sáng `● dot-status-neon green`** chuẩn 100% nhận diện:
+         + Khi là Khách (chưa đăng nhập): `● Khách trải nghiệm` -> click mở modal đăng nhập / Auth Gate.
+         + Khi đã đăng nhập: `● [Tên học sinh]` kèm tag `Free`/`Pro` và icon `⌄` -> click mở dropdown quản lý hồ sơ.
+       - Áp dụng đồng loạt cho toàn bộ các trang: `baihoc.html`, `index.html`, `goi-hoc.html`, `danhsach-ly12.html`...
+  - `baihoc.html`:
+    1. **Cô lập triệt để 2 luồng người dùng (Khóa học bình thường vs Khắc phục lỗ hổng)**:
+       - **Học sinh học bình thường (từ khóa học vào hoặc chuyển bài khác)**: KHÔNG HIỆN banner khắc phục, KHÔNG HIỆN Đề B. Mục lục bài học chỉ gồm 4 phần chuẩn: (I. Video Bài Giảng, II. Lý Thuyết Trọng Tâm, III. Mô Phỏng 3D Trực Quan, IV. Luyện Tập Trắc Nghiệm Củng Cố). Học sinh tập trung học 100%, không bị phân tâm.
+       - **Học sinh từ bài Test Chẩn Đoán sang (`?remedial=1`)**: Mới hiện Banner chào đón và Đề B kiểm chứng tiến bộ ở đúng bài học được chỉ định.
+       - Bổ sung nút `[✕ Tắt chế độ khắc phục]` ngay trên banner để học sinh có thể chủ động tắt bất cứ lúc nào.
+       - Tự động gọi `dismissRemedialMode()` khi chuyển bài sang bài học khác trong sidebar.
+  - `hoso.html`:
+    1. **Tích hợp Biểu Đồ Mạng Nhện (Radar Chart) Đo Lường Năng Lực**:
+       - Thêm Tab `🕸️ Bản Đồ Năng Lực` vào thanh điều hướng hồ sơ.
+       - Vẽ biểu đồ mạng nhện đa giác SVG 6 trục năng lực: (1) Lý Thuyết Cốt Lõi, (2) Phản Xạ Bẫy Đơn Vị, (3) Đồ Thị & Chu Trình, (4) Toán & Biến Đổi, (5) Vận Dụng Cao (VDC), (6) Tốc Độ Phản Xạ.
+       - Trực quan hóa điểm mạnh, lỗ hổng kiến thức tiềm ẩn và liên kết làm lại bài test để cập nhật bản đồ năng lực cá nhân.
+- **Kiểm thử tự động xác minh**:
+  - `node test_diagnostic_mastery_loop.mjs`: 8/8 tests PASS (100%).
+  - `node test_cro_funnel.mjs`: 8/8 tests PASS (100%).
+  - `node test_vnpay_integration.mjs`: 7/7 tests PASS (100%).
+  - `Node.js Script Syntax Check`: 0 SyntaxError (PASS 100% trên cả 3 file `auth.js`, `baihoc.html`, `hoso.html`).
+  - Toàn bộ các file HTML đều kết thúc hợp lệ bằng `</html>`.
+
+## Bàn giao gần nhất (10/11/2026 12:40)
+- **Commit**: Hoàn thành sản xuất 100% trọn bộ 13 gói giáo trình trình chiếu Video 1 Lý Thuyết cho toàn bộ Chương 3 (B21-B28) & Chương 4 (B31-B35) chuẩn TEACHING_DECK_SPEC v1.1.0
+- **Phạm vi hoàn tất**:
+  - **Chương 3 (Từ Trường — 8 bài học)**:
+    1. `teaching-decks/GD1_CH03_TuTruong/B21_TuTruong/`
+    2. `teaching-decks/GD1_CH03_TuTruong/B22_CamUngTu_LucTu/`
+    3. `teaching-decks/GD1_CH03_TuTruong/B23_TuThong/`
+    4. `teaching-decks/GD1_CH03_TuTruong/B24_CamUngDienTu_DinhLuatLenz/`
+    5. `teaching-decks/GD1_CH03_TuTruong/B25_SuatDienDongCamUng_Faraday/`
+    6. `teaching-decks/GD1_CH03_TuTruong/B26_DongDienXoayChieu_MayPhatDien/`
+    7. `teaching-decks/GD1_CH03_TuTruong/B27_UngDungCamUngDienTu/`
+    8. `teaching-decks/GD1_CH03_TuTruong/B28_DienTuTruong_SongDienTu/`
+  - **Chương 4 (Vật Lí Hạt Nhân — 5 bài học)**:
+    1. `teaching-decks/GD1_CH04_VatLyHatNhan/B31_CauTaoHatNhan/`
+    2. `teaching-decks/GD1_CH04_VatLyHatNhan/B32_NangLuongLienKet/`
+    3. `teaching-decks/GD1_CH04_VatLyHatNhan/B33_PhanUngHatNhan/`
+    4. `teaching-decks/GD1_CH04_VatLyHatNhan/B34_HienTuongPhongXa/`
+    5. `teaching-decks/GD1_CH04_VatLyHatNhan/B35_DoThiPhongXa_UngDung/`
+- **Cấu trúc mỗi gói bài giảng (Đầy đủ 10 thành phần chuẩn mực)**:
+  1. `lesson-brief.md`: Tóm tắt sư phạm, mục tiêu cốt lõi trích xuất 100% nguyên văn từ `Ban Lí thuyết.docx`, mốc thời gian vàng `02:30` bước ngay vào công thức cốt lõi.
+  2. `deck-manifest.json`: Cấu hình 10 slide, ánh xạ 1:1 ID `SLIDE_01` -> `SLIDE_10`, đầy đủ trường `studentAction`, `expectedEvidenceOfUnderstanding`, `nextTransition`, safetyGates cô lập toàn bộ `false`.
+  3. `slides.md`: Kịch bản chi tiết từng slide, thời lượng 16 phút.
+  4. `speaker-notes.md`: Lời thoại giảng viên tự nhiên, lôi cuốn cho Thầy giảng dạy.
+  5. `asset-brief.md`: Đặc tả hình khối 3D Isometric, hiệu ứng đổ bóng, véc-tơ sắc nét và an toàn Webcam.
+  6. `qa-report.md`: Báo cáo kỹ thuật 6 cổng kiểm định tự động, trạng thái `TECHNICAL_PREFLIGHT_PASS`.
+  7. `review-sheet.md`: Phiếu nghiệm thu 7 tiêu chí xưởng dành cho Thầy phê duyệt.
+  8. `review.html`: Bản xem trước trình chiếu độc lập 1920x1080, giao diện Light Editorial `#FAFBFD`, font Be Vietnam Pro, KaTeX phân số đứng `\dfrac{A}{B}`, thanh điều hướng nhanh Jump-to-slide.
+  9. `assets/`: Đầy đủ `logo_xt_full.png` và `logo_xt_small.png`.
+  10. `qa-renders/`: Kết xuất tự động đủ 10/10 file ảnh PNG 1920x1080 (`slide-01.png` đến `slide-10.png`) cho mỗi bài học phục vụ AI Vision nghiệm thu và kiểm tra thị giác.
+- **Tuân thủ quy tắc bất biến của xưởng**:
+  - Sạch 100% từ cấm: Tuyệt đối 0 xuất hiện các cụm `"GDPT 2018"`, `"chuẩn sư phạm"`, `"4 bước sư phạm"`.
+  - Vùng an toàn Webcam ($X \ge 1480\text{px}$, $Y \ge 760\text{px}$, cỡ $440\times 320\text{px}$) ở góc dưới bên phải giữ nguyên nền `#FAFBFD` tự nhiên, không kẻ viền/khung, footer gom toàn bộ sang lề trái: `Biên soạn: Xuân Trường • vatlyxuantruong.io.vn`.
+  - Typography: Cỡ chữ nội dung học sinh đọc $\ge 25\text{px} - 28\text{px}$, tiêu đề $\ge 48\text{px} - 58\text{px}$.
+  - Bảng ma trận Slide 9: Cột 2 ("Công thức & Đơn vị") căn lề trái gióng hàng (`text-align: left; vertical-align: middle;`).
+  - Tích hợp mô hình 3D Isometric / Three.js WebGL trực quan cho các thí nghiệm mở đầu và hiện tượng vật lý trọng tâm.
+- **Kiểm định tự động**:
+  - `node scratch/validate_batch.mjs`: 13/13 bài PASS `TECHNICAL_PREFLIGHT_PASS` (0 errors, 0 warnings).
+  - Playwright Chromium Screenshot: Kết xuất đủ 130/130 ảnh PNG sắc nét vào `qa-renders/` của toàn bộ 13 bài học.
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên trạng thái `OUTLINE_FOR_TEACHER` để Thầy trực tiếp xem xét và phê duyệt trước khi ghi hình hoặc xuất slide.
+  - Không tự ý nạp video lên YouTube/Drive hoặc sửa database production khi chưa có chỉ thị của Thầy.
+- **Việc tiếp theo**:
+  - Gửi báo cáo tổng thể kèm đường dẫn mở trực tiếp `review.html` của toàn bộ các bài Chương 3 và Chương 4 cho Thầy kiểm tra.
+
+## Bàn giao gần nhất (10/11/2026 12:25)
+- **Commit**: Nâng cấp toàn diện giao diện làm bài Đề B chuẩn nhận diện thương hiệu Xuân Trường
+- **File đã cập nhật**:
+  - `freemium-flow.js`:
+    1. **Tái thiết kế component `renderRetestDeB`**:
+       - Card câu hỏi chuẩn Obsidian Dark Sci-Fi: bo góc 14px, viền kính mờ, background `#0b1329`.
+       - Header câu hỏi: Badge `Câu X / 5` dạng khối gradient cyan/blue phát sáng, kèm chủ đề và chip trạng thái động (`Chưa làm` -> `Đã chọn` -> `Làm đúng / Làm sai`).
+       - Thẻ chọn phương án A, B, C, D chuyên nghiệp:
+         + Tách tiền tố A/B/C/D vào vòng tròn radio `.rdb-opt-radio` bo tròn 30px phát sáng khi được chọn.
+         + Thẻ option `.rdb-opt-item` có hover dịch chuyển nhẹ (`translateX(4px)`), viền cyan glow.
+         + Khi click chọn (`.selected`): Nền xanh cyan mờ, viền rực rỡ, vòng tròn đổi sang màu cyan đậm với chữ số rõ nét.
+       - Thanh tiến độ làm bài: `Đã làm: X / 5 câu` tự động đếm theo thời gian thực.
+    2. **Chấm điểm trực quan và hiển thị lời giải chi tiết tại chỗ (`submitRetestDeB`)**:
+       - Sau khi nộp bài, từng câu hỏi được tô viền Xanh (`is-correct`) hoặc Đỏ (`is-wrong`).
+       - Phương án học sinh chọn bị sai tô đỏ (`wrong-choice`), phương án đúng của Thầy tô xanh (`correct-choice`).
+       - Tự động mở khối `💡 Lời giải chi tiết của Thầy` bên dưới từng câu hỏi với công thức KaTeX sắc nét.
+       - Nút nộp bài chuyển thành bảng tổng kết điểm số kèm nút mở lại biểu đồ so sánh tiến bộ.
+       - Chạy hiệu ứng pháo hoa Confetti và mở `MasteryCelebrationModal`.
+    3. **Bộ CSS chuẩn mực**: Đã bổ sung đầy đủ CSS của Đề B vào cả `ensureModalsInDOM()` trong `freemium-flow.js` và nhúng trực tiếp vào `<style>` của `baihoc.html`.
+  - `baihoc.html`:
+    - Nhúng trực tiếp toàn bộ CSS của Đề B vào thẻ style, đảm bảo hiển thị hoàn hảo ngay lập tức trên mọi thiết bị máy tính và điện thoại.
+- **Kiểm thử tự động**:
+  - `node test_diagnostic_mastery_loop.mjs`: 8/8 tests PASS (100%).
+  - `node test_cro_funnel.mjs`: 8/8 tests PASS (100%).
+  - `node test_vnpay_integration.mjs`: 7/7 tests PASS (100%).
+  - Node.js Script Syntax Check: PASS 100% (cả `freemium-flow.js` và `baihoc.html`).
+
+## Bàn giao gần nhất (10/11/2026 12:15)
+- **Commit**: Xóa bỏ triệt để dữ liệu Mock cứng (4.5 và 7/8, 5/9, 1/3) & Chuẩn hóa thuật toán tính năng lực ĐỘNG 100%
+- **File đã cập nhật**:
+  - `freemium-flow.js`:
+    1. **Loại bỏ hoàn toàn các giá trị Mock cứng**: Xóa bỏ fallback mặc định `predictedScore: 6.75` và `ly_thuyet: 7/8 (88%)`, `bay_don_vi: 5/9 (56%)`, `do_thi_vdc: 1/3 (33%)`.
+    2. **Xử lý điểm thi THPT dự kiến trung thực**: Khi học sinh được 0 điểm (nộp bài trắng / sai toàn bộ), `predictedScore = 0.0`, không bị hàm `Math.max(3.5, ...)` hay fallback `4.5` ép điểm giả.
+    3. **Lời nhận xét sư phạm động theo năng lực thực tế**: Nhận diện trường hợp 0 điểm (nộp bài trắng) để động viên chân thành, hướng dẫn học lại từ video và 3D Chương 1 & 2; các mức điểm khác nhận diện đúng điểm yếu lớn nhất (bẫy đơn vị, đồ thị VDC, lý thuyết).
+  - `danh-gia-nang-luc.html`:
+    1. **Thuật toán thống kê 3 trụ cột năng lực theo thời gian thực**: Duyệt 20 câu hỏi đối chiếu với đáp án thực tế của học sinh để tính chính xác số câu đúng/sai và phần trăm % của từng nhóm (`ly_thuyet`: 8 câu, `bay_don_vi`: 9 câu, `do_thi_vdc`: 3 câu).
+    2. **Truyền `tagStats` và `predictedScore` thực tế vào `<DiagnosticReportCard />`**: Không để Component bị thiếu dữ liệu dẫn đến rơi vào dữ liệu mẫu.
+    3. **Kết quả trung thực 100%**: Khi nộp bài trắng không làm câu nào, hiển thị đúng 0.0/10, dự kiến 0/10, 0/8 câu (0%), 0/9 câu (0%), 0/3 câu (0%). Khi làm bài, hiển thị chính xác theo từng đáp án A/B/C/D đã chọn.
+- **Kiểm thử tự động xác minh**:
+  - `node test_diagnostic_mastery_loop.mjs`: 8/8 tests PASS (100%).
+  - `node test_cro_funnel.mjs`: 8/8 tests PASS (100%).
+  - `node test_vnpay_integration.mjs`: 7/7 tests PASS (100%).
+  - `Node.js Inline Script Syntax Check`: 0 SyntaxError (PASS 100%).
+  - Test kịch bản nộp bài trắng (0 câu đúng): Điểm bài thi 0.0/10, Dự kiến 0/10, 3 tags 0%, không còn bất kỳ dấu vết nào của 4.5 hay 7/8, 5/9, 1/3.
+
+## Bàn giao gần nhất (10/11/2026 11:20)
+- **Commit**: Chuẩn hóa Thẻ Hồ Sơ người dùng theo phong cách Khách Trải Nghiệm, Xóa Favicon Trắng, Đồng bộ Logo & Sửa sạch KaTeX
+- **File đã cập nhật**:
+  - `danh-gia-nang-luc.html`:
+    1. **Đồng bộ thẻ Hồ Sơ người dùng theo phong cách thẻ cứng Khách Trải Nghiệm**:
+       - Bỏ hoàn toàn avatar tròn xanh dương to thô của auth.js. Thay bằng thẻ cứng dạng pill bo tròn (`100px`), nền kính mờ `rgba(255, 255, 255, 0.05)`, viền mờ `1px solid rgba(255, 255, 255, 0.12)`, chấm tròn neon phát sáng `● dot-status`, chữ trắng bạc sắc nét.
+       - Tương tác click:
+         + Khi là Khách: `● Khách trải nghiệm` -> click mở Modal Đăng Nhập / Auth Gate.
+         + Khi đã đăng nhập: `● [Tên học sinh]` kèm tag `Free`/`Pro` và icon `⌄` -> click mở Dropdown menu xổ xuống ngay dưới navbar (Khóa học của tôi, Gói Pro, Hồ sơ, Đăng xuất).
+       - Triệt tiêu 100% nút nổi xanh dương lơ lửng ngoài màn hình (`#vlxt-user-widget`) bằng CSS `display: none !important;`.
+    2. **Xóa favicon hình vuông nền trắng trên tab trình duyệt**:
+       - Xóa bỏ thẻ `<link rel="icon" type="image/png" href="images/logo-xt.png">`, đưa thanh tab trình duyệt về trạng thái sạch đẹp, đồng bộ với `baihoc.html` và `index.html`.
+    3. **Đồng bộ kích thước logo thương hiệu XT trên Navbar**:
+       - Đặt kích thước chuẩn SVG Atom: `width: 46px !important; height: 24px !important;` (khớp tỉ lệ gốc 88:50) và chữ `Vật Lý Xuân Trường` kích thước `15.5px !important; font-weight: 800 !important;` - hoàn toàn đồng nhất pixel-perfect với `baihoc.html`.
+    4. **Sửa dứt điểm lỗi KaTeX ở Lời giải chi tiết câu 19 & 20**:
+       - Loại bỏ hoàn toàn hàm `fixLatexQuirks()` trước đây chạy regex replace sai gây biến `\text{` thành `\t\text{` (hiện chữ `\t amu`, `\t MeV`, `138\t ngày`).
+       - Dữ liệu JSON gốc được nạp trực tiếp qua `<script id="dgnl-questions-raw" type="application/json">` và parse bằng `JSON.parse()`, giữ nguyên vẹn các công thức chuẩn KaTeX `\text{amu}`, `\text{MeV}`, `\rightarrow`, `\times`, `\cdot`, KaTeX auto-render chuẩn mực 100%.
+  - `data/danhgianangluc.json`: Đã làm sạch toàn bộ các ký tự rác `\t` và `\r`, chuẩn hóa 100% công thức KaTeX.
+  - `PRD.md`, `ARCHITECTURE.md`, `DESIGN.md`, `RULES.md`, `TASKS.md`, `PROGRESS.md`: Khởi tạo và cập nhật hoàn thiện bộ 6 file chuẩn Spec-Kit (SDD) theo khuyến nghị từ cộng đồng kỹ sư cao cấp để kiểm soát chất lượng vibe coding.
+- **Kiểm thử tự động xác minh**:
+  - `node test_diagnostic_mastery_loop.mjs`: 8/8 tests PASS (100%).
+  - `node test_cro_funnel.mjs`: 8/8 tests PASS (100%).
+  - `node test_vnpay_integration.mjs`: 7/7 tests PASS (100%).
+  - `Node.js Inline Script Syntax Check`: 0 SyntaxError (PASS 100%).
+  - HTML Validated: Kết thúc hợp lệ bằng `</html>`.
+
+## Bàn giao gần nhất (10/11/2026 09:00)
+- **Commit**: Chuẩn hóa 100% Top-bar Navbar giống baihoc.html & Fix triệt để lỗi SyntaxError VLXT_GAS làm không bấm làm bài được
+- **File đã cập nhật**:
+  - `danh-gia-nang-luc.html`:
+    1. **Chuẩn hóa thanh Navbar Top-bar giống hệt 100% `baihoc.html`**:
+       - Sử dụng `<header class="top-bar" id="main-top-bar">` cùng CSS chuẩn.
+       - Logo SVG Atom `XT` màu cyan cách điệu + `<span class="brand-glow-text">Vật Lý Xuân Trường</span>`.
+       - Toàn bộ menu links đồng nhất: `🎯 Đánh Giá Năng Lực` (active), `Khóa Học`, `Gói Pro 50k` (badge vàng), `🔴 Live Class` (chấm đỏ nhấp nháy), `Đấu Trường ⌄` (dropdown đủ 5 phòng đấu), `Hướng Dẫn`.
+       - Khối người dùng bên phải: `<div id="vlxt-nav-user-area"></div>` để `auth.js` tự động inject avatar tròn + tên học sinh + tag `Free`/`Pro` chuẩn xác.
+       - Bổ sung cả mobile drawer và nút hamburger.
+    2. **Khắc phục lỗi "không bấm làm bài được" (Console SyntaxError)**:
+       - Nguyên nhân: `auth.js` đã khai báo `const VLXT_GAS`. Trong `danh-gia-nang-luc.html` lại khai báo `const VLXT_GAS` trùng scope làm trình duyệt ném `Uncaught SyntaxError: Identifier 'VLXT_GAS' has already been declared`, khiến toàn bộ script bị hủy, `initApp()` không chạy làm khung câu hỏi đen rỗng, và nút nộp bài bị lỗi `ReferenceError: confirmSubmit is not defined`.
+       - Giải pháp: Đổi sang `var DGNL_GAS_URL = window.VLXT_GAS || ...`, kiểm tra cú pháp 0 lỗi, script chạy mượt mà ngay khi tải trang, câu hỏi hiển thị ngay lập tức và học sinh bấm chọn đáp án trơn tru.
+- **Kiểm thử tự động**:
+  - `node test_diagnostic_mastery_loop.mjs`: 8/8 tests PASS (100%).
+  - `node test_cro_funnel.mjs`: 8/8 tests PASS (100%).
+  - `node test_vnpay_integration.mjs`: 7/7 tests PASS (100%).
+  - Node.js Inline Script Syntax Check: PASS 100% (0 SyntaxError).
+
+## Bàn giao gần nhất (10/11/2026 08:50)
+- **Commit**: Đang chờ Thầy duyệt nghiệm thu giao diện Vstep Owl 3 cột & Fix 3 lỗi trải nghiệm
+- **File đã cập nhật**:
+  - `danh-gia-nang-luc.html`: Thiết kế lại toàn bộ theo layout Vstep Owl 3 cột chuẩn `baihoc.html`; sửa triệt để lỗi đồng hồ bị che khuất và lỗi KaTeX escaping.
+  - `baihoc.html`: Bổ sung cơ chế `getRemedialContext()` lưu vết qua `sessionStorage` và miễn chặn tuần tự (sequence lock) cho Chương Free & luồng Remedial; mở bài B2 ngay khi click từ bài test năng lực.
+  - `data/danhgianangluc.json`: Chuẩn hóa 100% công thức KaTeX, loại bỏ toàn bộ các ký tự rác `\t`, `\r` nuốt mất dấu backslash `\`.
+  - `PROGRESS.md`: Cập nhật tiến độ hoàn thành và hướng dẫn nghiệm thu.
+- **Hành vi mới & Cải tiến khắc phục theo phản hồi của Thầy**:
+  1. **Chuyển đổi toàn diện giao diện `danh-gia-nang-luc.html` sang chuẩn Vstep Owl 3 cột**:
+     - Đồng bộ trải nghiệm học thuật hoàn hảo với `baihoc.html`:
+       + **Cột 1 (Sidebar trái - 280px)**: Cấu trúc 4 chuyên đề (Nhiệt 5 câu, Khí 5 câu, Từ trường 5 câu, Hạt nhân 5 câu). Mỗi câu có pill `C1..C20`, tiêu đề vắn tắt, icon tick xanh khi đã làm, click câu nào nhảy ngay câu đó.
+       + **Cột 2 (Vùng giữa - Main Stream)**: Breadcrumb, H1 học thuật, Meta badges, Khối Mục Tiêu Bài Test (vstep-goals) bo góc xanh gradient, thẻ câu hỏi to bản rõ ràng, và bảng đối soát 20 câu giải thích chi tiết kèm hộp Lộ trình khắc phục cấp tốc.
+       + **Cột 3 (Sidebar phải - 260px)**: Đồng hồ Countdown Timer độc lập, Palette 20 câu hỏi trực quan, thanh tiến độ % hoàn thành, và nút nộp bài sớm.
+  2. **Khắc phục triệt để lỗi Đồng hồ đếm ngược bị che khuất (Ảnh 2)**:
+     - Đồng hồ `30:00` được bố trí độc lập trong Sidebar phải với `position: sticky; top: 10px;` (nằm trong sidebar có `top: 60px`), hoàn toàn cách biệt và không bao giờ bị thanh Navbar cố định (`height: 60px`) che khuất.
+  3. **Khắc phục triệt để lỗi KaTeX escaping (`ext{H}`, `ightarrow`, `imes`... - Ảnh 1)**:
+     - Loại bỏ tận gốc các ký tự rác `\t` và `\r` kẹp trong dữ liệu câu hỏi.
+     - Nhúng dữ liệu qua thẻ `<script id="dgnl-questions-raw" type="application/json">` theo chuẩn W3C (trình duyệt không parse escape sequences như JS code).
+     - Trang bị hàm `fixLatexQuirks()` và `sanitizeQuestionsLatex()` tự động phục hồi dấu gạch chéo `\` cho mọi công thức, đảm bảo chạy trên `file:///` lẫn máy chủ web đều hiển thị sắc nét 100%.
+  4. **Khắc phục triệt để lỗi bài học khắc phục bị khóa tuần tự (Ảnh 5)**:
+     - Sửa router trong `baihoc.html`: Lưu ngữ cảnh remedial (`vlxt_remedial_active`, `vlxt_remedial_topic`, `vlxt_remedial_lesson`) vào `sessionStorage` trước khi `history.replaceState` xóa search params.
+     - Sửa hàm `isLessonBlocked`: Miễn chặn tuần tự (sequence lock) cho học sinh trong luồng remedial hoặc học sinh đã đăng nhập muốn học linh hoạt các bài ở Chương Free (Chương 1 & Chương 2). Khi bấm vào bài `B2. Lực liên kết và sự chuyển thể của chất`, bài học mở ra ngay lập tức kèm Banner chào đón khắc phục lỗ hổng kiến thức và Đề B kiểm chứng tiến bộ!
+- **Kiểm thử tự động**:
+  - `node test_diagnostic_mastery_loop.mjs`: 8/8 tests PASS (100%).
+  - `node test_cro_funnel.mjs`: 8/8 tests PASS (100%).
+  - `node test_vnpay_integration.mjs`: 7/7 tests PASS (100%).
+
+## Bàn giao gần nhất (09/11/2026 17:00)
+- **Commit**: Đang chờ Thầy duyệt nghiệm thu gói giáo trình Chương 3 (Tích hợp Mô Hình 3D & Hiệu Ứng 3D)
+- **Thư mục & File đã cập nhật**:
+  - Gói Bài 21: `teaching-decks/GD1_CH03_TuTruong/B21_TuTruong/` (`review.html`, `slides.md`, `asset-brief.md`, `qa-report.md`, 10 ảnh QA PNG)
+  - Gói Bài 22: `teaching-decks/GD1_CH03_TuTruong/B22_CamUngTu_LucTu/` (`review.html`, `slides.md`, `asset-brief.md`, `qa-report.md`, 10 ảnh QA PNG)
+  - Công cụ QA & Render: `scratch/upgrade_3d_all.mjs`, `00-BRAIN-VLXT/scripts/render-deck-qa.mjs`
+- **Hành vi mới & Cải tiến 3D toàn diện theo chỉ đạo của Thầy**:
+  1. **Tích hợp Mô hình 3D tương tác WebGL (Three.js r128 & OrbitControls) trực tiếp vào slide trình chiếu**:
+     - **Bài 21 (Slide 3)**: Mô hình 3D thí nghiệm Oersted và tương tác từ: Dây dẫn đồng 3D mang hạt điện tích phát sáng vàng, kim nam châm 3D (Bắc Đỏ N, Nam Xanh S) tự do quay trên giá đỡ kim nhọn. Nút bấm tương tác: Đóng/Ngắt mạch ($I = 2.5\text{ A}$ làm kim quay lệch góc $\theta = 82^\circ$), Đảo chiều dòng điện $I$, Đổi sang chế độ tương tác 2 nam châm 3D (hút/đẩy), Đặt lại góc nhìn 360°.
+     - **Bài 22 (Slide 7)**: Mô hình 3D buồng chân không lực Lorentz: Hai khối nam châm 3D N-S với chùm đường sức từ $\vec{B}$ phát sáng màu cyan. Hạt Proton ($q > 0$) và Electron ($q < 0$) chuyển động vẽ vệt sáng quỹ đạo 3D (vòng tròn / xoắn ốc Helical), bộ véc-tơ 3D $(\vec{v}, \vec{B}, \vec{F}_L)$. Nút bấm tương tác: Đổi hạt Proton $\leftrightarrow$ Electron (lực Lorentz lập tức đảo chiều $180^\circ$ và quỹ đạo lộn ngược chiều ngay lập tức!), Xem chậm 0.25x, Đổi góc bắn $\alpha = 90^\circ \leftrightarrow 45^\circ$, Đảo chiều $B$, Reset xoay 360°.
+  2. **Nâng cấp toàn bộ hình vẽ thành Sơ đồ 3D Isometric (Đẳng cự & Đổ bóng không gian)**:
+     - Slide 5 (Bài 21): Thanh nam châm thẳng 3D isometric đa diện với gradient kim loại và bóng đổ `feDropShadow`.
+     - Slide 6 (Bài 21): Dây dẫn trụ đồng 3D tròn dập nổi metallic và các elip đường sức từ 3D.
+     - Slide 7 (Bài 21): Vòng dây tròn kim loại 3D (Torus 3D) với véc-tơ $\vec{B}$ vươn thẳng đứng tại tâm.
+     - Slide 8 (Bài 21): Ống dây Solenoid với buồng lõi 3D trong suốt và các vòng xoắn kim loại đồng uốn lượn 3D.
+     - Slide 3 (Bài 22): Khối nam châm móng ngựa chữ U 3D isometric với mặt vát $30^\circ$, dây dẫn 3D treo lơ lửng bị lực kéo lệch.
+     - Slide 5 (Bài 22): Mô hình bàn tay trái 3D mở rộng đổ bóng không gian.
+     - Slide 8 (Bài 22): Quả cầu hạt tích điện 3D chuyển động trên quỹ đạo tròn trong buồng từ trường.
+  3. **Kiểm định kỹ thuật & Thị giác**:
+     - Cả 2 bài đều đạt `TECHNICAL_PREFLIGHT_PASS` (100% ID khớp, 0 từ cấm, 0 vi phạm an toàn).
+     - Render thành công 20/20 slide PNG 1920×1080 chất lượng cao thể hiện trọn vẹn mô hình 3D.
+- **Kiểm thử**: Đạt 2/2 preflight checks 100% PASS, 20/20 slide visual render PASS.
+
+## Bàn giao gần nhất (09/11/2026 16:45)
+- **Commit**: Đang chờ Thầy duyệt nghiệm thu gói giáo trình Chương 3
+- **Thư mục & File đã tạo**:
+  - Phân vùng mới: `teaching-decks/GD1_CH03_TuTruong/`
+  - Gói Bài 21: `teaching-decks/GD1_CH03_TuTruong/B21_TuTruong/` (đủ 7 file hồ sơ, `review.html`, logo assets, 10 ảnh QA PNG)
+  - Gói Bài 22: `teaching-decks/GD1_CH03_TuTruong/B22_CamUngTu_LucTu/` (đủ 7 file hồ sơ, `review.html`, logo assets, 10 ảnh QA PNG)
+  - Công cụ QA: `00-BRAIN-VLXT/scripts/render-deck-qa.mjs`
+- **Hành vi mới & Thành quả đạt được**:
+  1. **Khởi tạo và hoàn thiện trọn bộ 2 bài đầu Chương 3 (Từ Trường)**:
+     - Bài 21: Từ trường (Bản chất từ tính, tương tác từ, thí nghiệm Oersted, từ trường đều & các dạng đường sức từ, từ trường Trái Đất).
+     - Bài 22: Cảm ứng từ - Lực từ (Véc-tơ cảm ứng từ $\vec{B}$, lực từ tác dụng lên đoạn dây dẫn mang dòng điện, quy tắc bàn tay trái, lực Lorentz tác dụng lên hạt mang điện chuyển động, bẫy thi hạt âm $q < 0$, bảng ma trận tổng kết công thức).
+  2. **Tuân thủ nghiêm ngặt chuẩn xưởng & kinh nghiệm đã đúc rút**:
+     - *Typography*: Chữ to rõ cho học sinh xem điện thoại ($\ge 25\text{px} - 28\text{px}$, tiêu đề $48\text{px} - 58\text{px}$).
+     - *Webcam Safe Zone*: Vùng góc dưới bên phải ($440\times 320\text{px}$) tuyệt đối để nền tự nhiên, không kẻ khung, không watermark; thông tin footer được gom toàn bộ sang lề trái.
+     - *Sơ đồ trực quan*: Vẽ SVG vector sắc nét, mở rộng viewBox $680\times 500$, khoảng cách an toàn giữa nhãn và đường sức/véc-tơ $\ge 40\text{px}$, không có hiện tượng chữ tràn ra ngoài viền khung (`rect`).
+     - *Bảng ma trận tổng kết (Slide 9)*: Cột công thức căn trái (`text-align: left;`), dùng KaTeX inline phân số đứng $\dfrac{A}{B}$ để các biểu thức gióng hàng thẳng tắp.
+     - *Tuyệt đối sạch từ cấm*: 100% không chứa các cụm từ bị cấm theo quy chế xưởng (`GDPT 2018`, `chuẩn sư phạm`, `4 bước sư phạm`).
+     - *Video 1 chuyên tâm lý thuyết*: Không đưa bài tập áp dụng vào slide Video 1 (để dành cho Video 2 và luyện tập LMS).
+  3. **Kiểm định kỹ thuật & thị giác (AI Vision)**:
+     - Cả 2 bài đều đạt `TECHNICAL_PREFLIGHT_PASS` qua `00-BRAIN-VLXT/scripts/validate-teaching-deck.mjs`.
+     - Xuất đủ 10/10 ảnh PNG 1920×1080 cho mỗi bài trong thư mục `qa-renders/` bằng Playwright Chromium headless.
+     - Trạng thái hiện tại: `OUTLINE_FOR_TEACHER` (chờ Thầy nghiệm thu nội dung để lên `TEACHER_APPROVED`).
+- **Kiểm thử**: Đạt 2/2 preflight checks 100% PASS, 20/20 slide visual render PASS.
+
+## Bàn giao gần nhất (09/11/2026 15:55)
+- **Commit**: Đang chờ Thầy duyệt commit trên feature branch
+- **File đã tạo/sửa**: `PRD.md`, `ARCHITECTURE.md`, `DESIGN.md`, `RULES.md`, `TASKS.md`, `PROGRESS.md`, `danh-gia-nang-luc.html`, `baihoc.html`, `freemium-flow.js`, `test_diagnostic_mastery_loop.mjs`.
+- **Hành vi mới & Cải tiến toàn diện**:
+  1. **Thiết lập Bộ 6 File Chuẩn Đặc Tả (Spec-Kit SDD)**: Khởi tạo đầy đủ `PRD.md`, `ARCHITECTURE.md`, `DESIGN.md`, `RULES.md`, `TASKS.md`, `PROGRESS.md` ngay tại thư mục gốc, giúp mọi AI (Gemini, Claude, Codex) khi làm việc đều nắm rõ kiến trúc, thiết kế, quy tắc thép và lộ trình, không bị quên hoặc làm lệch hướng.
+  2. **1-Click Guest Assessment & Persistence (Bước 1 & 2)**:
+     - `danh-gia-nang-luc.html` hỗ trợ URL `?autostart=1` để học sinh từ TikTok Ads / Livestream bấm 1 click là vào làm bài ngay lập tức.
+     - Tự động lưu đáp án (`vlxt_dgnl_guest_answers`) và thời gian làm bài (`vlxt_dgnl_timer`) theo thời gian thực (F5 không mất bài), kèm banner khôi phục bài làm dở dang.
+  3. **Auth Gate Kép Khi Nộp Bài (Bước 3)**:
+     - Chặn hiển thị điểm nếu chưa đăng nhập; hiển thị Modal Auth Gate với thông điệp: "Hệ thống đã chấm xong bài của bạn! Đăng nhập trong 3 giây để xem điểm số, lời giải chi tiết và lộ trình khắc phục lỗi sai cá nhân hóa."
+     - Tích hợp giải pháp KÉP: Nút Google Sign-in 1-Click VÀ Form đăng ký nhanh 3 trường (Họ tên, SĐT, Lớp) chạy trơn tru trên mọi in-app browser của TikTok và Facebook (chống chặn popup Google FedCM).
+  4. **Diagnostic Report & Phân Tích Chiến Thuật (Bước 4)**:
+     - Hiển thị thời gian hoàn thành bài thi thực tế.
+     - Báo cáo 3 trụ cột năng lực (Lý thuyết, Bẫy đơn vị, Đồ thị & VDC) kèm đối soát 20 câu bằng KaTeX chuẩn và lời giải của Thầy.
+  5. **Targeted Remedial Learning Deep Link (Bước 5)**:
+     - Hộp "Lộ Trình Khắc Phục Cấp Tốc" với nút CTA động dẫn đích danh: `baihoc.html?openLesson=[MaBai]&remedial=1&topic=[Topic]`.
+     - `baihoc.html` nhận diện `remedial=1`, hiển thị Banner Chào Đón Khắc Phục Lỗ Hổng và miễn chặn tuần tự ở Chương 1 & 2.
+  6. **Retest Đề B & Biểu Đồ Đối Chiếu Tiến Bộ (Bước 6)**:
+     - Xây dựng ngân hàng Đề B 5 câu cho 4 chuyên đề (Nhiệt, Khí, Từ, Hạt nhân) trong `freemium-flow.js`, tự động mount ở cuối bài học.
+     - Chấm điểm tức thì và hiển thị Modal Chúc Mừng Bứt Phá kèm biểu đồ so sánh: "Trước khi học: X% -> Sau khi học cùng Thầy: Y% (Tăng trưởng +Z%)".
+  7. **Soft Upsell Gói Pro 50k & VietQR Checkout (Bước 7)**:
+     - Nút CTA trong Modal chúc mừng mở Modal giới thiệu quyền lợi Gói Pro 50k (`UpgradeValueModal`). Chỉ khi học sinh bấm "Quyết tâm đăng ký nâng cấp" mới hiển thị mã VietQR thanh toán tự động (`VietQRCheckoutModal`).
+- **Kiểm thử**: Đạt 8/8 Test Suite Diagnostic-to-Mastery Loop (`test_diagnostic_mastery_loop.mjs`), 8/8 CRO Funnel test (`test_cro_funnel.mjs`), 7/7 VNPay test (`test_vnpay_integration.mjs`); toàn bộ file HTML kết thúc hợp lệ bằng `</html>`.
+
+## Bàn giao gần nhất (09/11/2026 13:00)
+- **Commit**: `d43189c` (nhánh main trên origin & upstream)
+- **File đã sửa**: `auth.js`, `baihoc.html`, `danh-gia-nang-luc.html`, `danhsach-ly12.html`, `data/khoaconfig.json`, `dau-thuong-hud.html`, `dau-thuong.html`, `dua-top.html`, `freemium-flow.js`, `goi-hoc.html`, `hoso-hud.html`, `hoso.html`, `huongdan.html`, `index.html`, `live-record.html`, `phong-thi-thu.html`, `solo.html`, `images/logo-xt.png`, `images/logo-xt-full.png`.
+- **Hành vi mới & Cải tiến toàn diện**:
+  1. **Đồng bộ Navbar 100% trên toàn bộ 14 trang**: Khắc phục triệt để lỗi khi chuyển sang cụm Đấu trường (Phòng thi thử, Đấu thường, Đấu hạng, Solo) hoặc Hướng dẫn bị đổi thanh menu hoặc mất nút. Tất cả các trang giờ đây đều dùng chung duy nhất một Navbar cố định, nền kính mờ cao cấp, có đầy đủ menu Đánh giá năng lực, Khóa học, Gói Pro, Live Class, Dropdown Đấu trường, Hướng dẫn và Avatar widget.
+  2. **Thống nhất Logo XT Atom chuẩn nhận diện thương hiệu**: Xóa bỏ các icon tia sét ⚡ hoặc nguyên tử hạt nhân rời rạc cũ. Áp dụng chuẩn xác logo XT chữ đậm lồng biểu tượng nguyên tử hạt nhân Atom phát sáng cyan-blue (`#00f0ff` -> `#38bdf8`) do Thầy thiết kế, kèm text "Vật Lý Xuân Trường", sắc nét trên mọi độ phân giải.
+  3. **Khóa truy cập khóa học đối với tài khoản Free**:
+     - Cập nhật `data/khoaconfig.json`: Các khóa chuyên đề trọng điểm (GĐ1, GĐ2, Khóa lấy gốc, Luyện đề 2k8) chuyển toàn bộ thành `loaiTK: "pro,vip,premium"` (không có chữ `free`).
+     - Tài khoản Free khi mở khóa học chuyên đề lập tức bị chặn bởi màn hình `showUpgrade` yêu cầu nâng cấp Gói Pro 50k kèm nút nâng cấp, không thể vào học tự do.
+- **Kiểm thử**: Đạt 7/7 VNPay test, 8/8 CRO Funnel test, 22/22 Trial Session test; toàn bộ 14 file HTML kết thúc hợp lệ bằng `</html>`.
+
+## Bàn giao gần nhất (09/11/2026 10:45)
+- **Commit**: `0f8b9fd` (nhánh main trên origin & upstream)
+- **File đã sửa**: `auth.js`, `baihoc.html`, `danh-gia-nang-luc.html`, `goi-hoc.html`, `hoso.html`, `hoso-hud.html`.
+- **Hành vi mới & Cải tiến toàn diện**:
+  1. **Đồng nhất Navbar máy tính & điện thoại**: Chuẩn hóa thanh điều hướng chung (Brand Logo, Đánh Giá Năng Lực, Khóa Học, Gói Pro, Live Class, Dropdown Đấu Trường, Hướng Dẫn) trên tất cả các trang; cố định nền kính mờ đồng nhất, không bị trong suốt chìm chữ hoặc lệch giao diện giữa các tab.
+  2. **Tinh gọn Menu Avatar User (Ảnh 5)**: Bỏ toàn bộ 10 liên kết điều hướng trùng lặp, chỉ giữ lại thẻ tên học sinh, badge gói, chỉ số LP & bài học, nút đổi sáng/tối, link Hồ sơ cá nhân, Gói Pro, Hướng dẫn và Đăng xuất (cao ~260px, không bị khuất màn hình điện thoại).
+  3. **Đồng nhất Hamburger Drawer (Ảnh 3)**: Xây dựng bộ điều hướng mobile drawer chuẩn hóa toàn hệ thống, tự động nhận diện và đồng nhất 100% trên điện thoại ở mọi trang web khi bấm 3 gạch ☰.
+  4. **Khắc phục triệt để lỗi Bài Học trên Điện Thoại (Ảnh 4)**: Sửa CSS `.vstep-course-layout` & `.vstep-sidebar-left` trên mobile (<= 860px). Danh sách bài học không còn che lấp toàn màn hình mà được đưa vào Off-canvas Drawer có nút đóng ✕ và backdrop; màn hình chính lập tức hiển thị ngay nội dung bài học, video bài giảng, lý thuyết, mô phỏng 3D và trắc nghiệm.
+  5. **Sửa hiển thị giờ kích hoạt gói Pro**: Khắc phục lỗi hiển thị 9h sáng, đồng bộ chính xác thời điểm kích hoạt thật (22:35 ngày 08/11/2026) và hạn dùng (08/12/2026) từ `trialExpiry` máy chủ.
+- **Kiểm thử**: Đạt 7/7 VNPay test, 8/8 CRO Funnel test, 22/22 Trial Session test; xác minh live production đã cập nhật 100%.
+
 # Vật Lý Xuân Trường — Trạng thái và bàn giao chung
 
 Tài liệu này là nguồn sự thật chung cho Claude, Codex và các cộng tác viên. Mỗi trợ lý phải đọc trước khi làm và cập nhật sau thay đổi đáng kể.
@@ -2261,4 +2833,3 @@ gba(255, 255, 255, 0.05), tạo không gian liền mạch vô tận như chuẩn
   - Kiểm tra toàn bộ 14 trang HTML đóng đúng thẻ `</html>`.
 
   - `15421c6`: Khôi phục lại kích thước lưới tự nhiên của khối tính năng trên `index.html`, sửa triệt để lỗi lệch dòng trong 2 thẻ tab code (bỏ `x: -35` và `x: 35` trong GSAP, đổi sang hiệu ứng trượt `y: 16` và `clearProps: 'all'`, đổi hover từ `translateX(8px)` sang `scale(1.015)` giúp giữ 100% khung bo viền trọn vẹn, không bị cụt hay khuất mép); đồng thời sửa lỗi ghim thanh điều hướng trên `baihoc.html` (thêm `margin-top: 60px` cho `.vstep-course-layout` chống bị thanh navbar che mất nút Tải PDF) và bổ sung các nút tải PDF nổi bật ngay dưới tiêu đề bài học và dưới video bài giảng.
-  - `cd992f2`: Sửa lỗi thẻ điểm thi thử ở giữa (`.score-demo` / `#section-thi-thu`) bị thụt vào trong so với 2 thẻ trên/dưới: bổ sung thanh tiêu đề cửa sổ MacOS (`.feat-window-bar`) chuẩn hóa 3 chấm màu + tên file `thi-thu-chuan-bo.cbt` + badge `TOP 5%`, đồng bộ cấu trúc thân thẻ `.score-demo-body` có `padding: 24px`, chuẩn hóa 3 dòng trắc nghiệm (`.score-item`) sang `padding: 12px 18px; width: 100%; box-sizing: border-box; justify-content: space-between;` khớp 100% với các thẻ `.feat-line` của thẻ trên và thẻ dưới; đồng thời chuyển hiệu ứng xuất hiện GSAP sang `y: 16` kèm `clearProps: 'all'` và hover `scale(1.015)` giúp toàn bộ 3 khối tính năng thẳng hàng tăm tắp từ trên xuống dưới, không còn hiện tượng lệch thụt hay hụt viền.

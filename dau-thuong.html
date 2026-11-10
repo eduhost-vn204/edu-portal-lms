@@ -66,8 +66,8 @@
     .nav-back:hover { color: var(--text); border-color: rgba(255,255,255,.3); }
 
     /* ─── HERO ─── */
-    .hero {
-      text-align: center; padding: 48px 24px 32px;
+    .hero { text-align: center; padding: 108px 24px 32px !important; }
+    @media (max-width: 600px) { .hero { padding: 96px 16px 28px !important; } }
       background: linear-gradient(180deg, rgba(0,114,255,.06) 0%, transparent 100%);
     }
     .hero-icon { font-size: 52px; margin-bottom: 12px; }
@@ -275,6 +275,7 @@
     }
     body.in-game .hero { display: none; }
     body.in-game .score-bar {
+      margin-top: 80px !important;
       padding: 5px 12px;
       gap: 6px;
       background: rgba(0,0,0,.2);
@@ -663,7 +664,7 @@
   </div>
 </div>
 
-<script src="auth.js?v=20261109p"></script>
+<script src="auth.js?v=7"></script>
 <script src="cache.js?v=1"></script>
 <script src="teaching-scope.js?v=3"></script>
 <script src="xephang-fx.js?v=1"></script>

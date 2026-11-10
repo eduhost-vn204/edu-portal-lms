@@ -658,8 +658,8 @@
         .toast.show { transform:translateX(-50%) translateY(0); }
         .toast.ok { border-color:var(--green); } .toast.err { border-color:var(--red); }
 
-        /* ═══ IDENTITY GATE ═══ */
-        .gate { position:fixed; inset:0; background:rgba(255,255,255,0.97); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; z-index:9999; padding:18px; }
+        /* ═══ IDENTITY GATE ═══ (Ẩn mặc định để không gây flash FOUC khi tải trang) */
+        .gate { position:fixed; inset:0; background:rgba(255,255,255,0.97); backdrop-filter:blur(8px); display:none; align-items:center; justify-content:center; z-index:9999; padding:18px; }
         body.dark .gate { background:rgba(13,17,23,0.97); }
         .gate-box { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:40px; width:100%; max-width:420px; box-shadow:0 8px 40px rgba(0,0,0,.07); }
         .gate-box .gi { font-size:40px; color:var(--blue); text-align:center; margin-bottom:14px; }
@@ -2401,7 +2401,7 @@
         }
         .galaxy-sector-banner {
             position: relative;
-            margin: 22px 0 20px;
+            margin: 78px 0 20px;
             padding: 22px 26px;
             border-radius: 20px;
             background: linear-gradient(135deg, rgba(12, 24, 52, 0.88) 0%, rgba(8, 15, 34, 0.94) 60%, rgba(22, 16, 50, 0.88) 100%);
@@ -2585,7 +2585,7 @@
             box-shadow: 0 0 18px rgba(0, 240, 255, 0.28);
         }
         @media (max-width: 768px) {
-            .galaxy-sector-banner { padding: 16px 18px; margin: 14px 0 16px; }
+            .galaxy-sector-banner { padding: 16px 18px; margin: 72px 0 16px; }
             .gsb-back-galaxy { width: 100%; justify-content: center; }
             .toolbar { gap: 8px; }
             .search-box { width: 100%; order: 3; }
@@ -2791,12 +2791,368 @@
   flex-shrink: 0 !important;
   display: inline-block !important;
 }
+
+    /* ─── REMEDIAL WELCOME BANNER (BƯỚC 5 & 6) ─── */
+    
+    .btn-dismiss-remedial {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        color: #cbd5e1;
+        font-size: 11.5px;
+        font-weight: 700;
+        padding: 5px 12px;
+        border-radius: 100px;
+        cursor: pointer;
+        transition: all 0.2s;
+        flex-shrink: 0;
+        margin-left: auto;
+    }
+    .btn-dismiss-remedial:hover {
+        background: rgba(239, 68, 68, 0.18);
+        border-color: #ef4444;
+        color: #fca5a5;
+    }
+
+    .remedial-welcome-banner {
+        background: linear-gradient(135deg, rgba(11, 132, 243, 0.2) 0%, rgba(0, 240, 255, 0.12) 100%);
+        border: 1.5px solid rgba(0, 240, 255, 0.4);
+        border-radius: 16px;
+        padding: 18px 22px;
+        margin-bottom: 22px;
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        box-shadow: 0 8px 24px rgba(0, 240, 255, 0.15);
+        animation: rwbGlowPulse 3s infinite alternate;
+    }
+    @keyframes rwbGlowPulse {
+        from { box-shadow: 0 8px 24px rgba(0, 240, 255, 0.15); }
+        to { box-shadow: 0 10px 32px rgba(0, 240, 255, 0.3); }
+    }
+    .rwb-icon {
+        width: 44px; height: 44px; border-radius: 12px;
+        background: rgba(0, 240, 255, 0.2); color: #00f0ff;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 22px; flex-shrink: 0;
+    }
+    .rwb-content { flex: 1; }
+    .rwb-title { font-size: 16.5px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .rwb-desc { font-size: 13.5px; color: #cbd5e1; line-height: 1.5; }
+    .vstep-retest-mount { margin: 30px 0; }
+
+    /* ══════════════════════════════════════════
+       GIAO DIỆN LÀM BÀI ĐỀ B CHUẨN XUÂN TRƯỜNG (BƯỚC 6)
+       ══════════════════════════════════════════ */
+    .retest-de-b-card {
+      margin: 32px 0 40px;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(10, 15, 30, 0.98) 100%);
+      border: 1px solid rgba(0, 240, 255, 0.28);
+      border-radius: 20px;
+      padding: 32px 28px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 240, 255, 0.1);
+      color: #f1f5f9;
+    }
+    @media(max-width: 640px) {
+      .retest-de-b-card { padding: 22px 16px; border-radius: 16px; }
+    }
+
+    .rdb-header {
+      text-align: center;
+      margin-bottom: 28px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .rdb-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      background: rgba(0, 240, 255, 0.12);
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      color: #00f0ff;
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .rdb-title {
+      font-size: clamp(20px, 3.5vw, 26px);
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+    .rdb-desc {
+      font-size: 14px;
+      color: #94a3b8;
+      max-width: 620px;
+      margin: 0 auto 16px;
+      line-height: 1.5;
+    }
+    .rdb-prog-bar-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 100px;
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+    .rdb-prog-bar-wrap strong { color: #00f0ff; }
+
+    /* Từng Card Câu Hỏi */
+    .retest-q-card {
+      background: #0b1329;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 22px;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    }
+    .retest-q-card:hover {
+      border-color: rgba(0, 240, 255, 0.25);
+    }
+    .retest-q-card.is-correct {
+      border-color: #10b981 !important;
+      background: rgba(16, 185, 129, 0.04) !important;
+    }
+    .retest-q-card.is-wrong {
+      border-color: #ef4444 !important;
+      background: rgba(239, 68, 68, 0.04) !important;
+    }
+
+    .rdb-q-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .rdb-q-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.2) 0%, rgba(11, 132, 243, 0.25) 100%);
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      color: #00f0ff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+    .rdb-q-topic {
+      font-size: 12px;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+    .rdb-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #94a3b8;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .rdb-status-pill.done {
+      background: rgba(0, 240, 255, 0.12);
+      color: #00f0ff;
+      border-color: rgba(0, 240, 255, 0.3);
+    }
+    .rdb-status-pill.ok {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border-color: #10b981;
+      font-weight: 700;
+    }
+    .rdb-status-pill.err {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border-color: #ef4444;
+      font-weight: 700;
+    }
+
+    .rdb-q-stem {
+      font-size: 15.5px;
+      color: #f1f5f9;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    /* Danh Sách Phương Án A, B, C, D */
+    .rdb-opts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .rdb-opt-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 10px;
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
+    }
+    .rdb-opt-item:hover {
+      background: rgba(0, 240, 255, 0.06);
+      border-color: rgba(0, 240, 255, 0.4);
+      transform: translateX(4px);
+    }
+    .rdb-opt-radio {
+      width: 30px;
+      height: 30px;
+      min-width: 30px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 13px;
+      color: #cbd5e1;
+      transition: all 0.2s;
+    }
+    .rdb-opt-text {
+      font-size: 14.5px;
+      color: #e2e8f0;
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    /* Khi được chọn */
+    .rdb-opt-item.selected {
+      background: rgba(0, 240, 255, 0.1) !important;
+      border-color: #00f0ff !important;
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.2) !important;
+    }
+    .rdb-opt-item.selected .rdb-opt-radio {
+      background: #00f0ff !important;
+      border-color: #00f0ff !important;
+      color: #04101e !important;
+      font-weight: 900 !important;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.6) !important;
+    }
+
+    /* Kết quả Đúng / Sai */
+    .rdb-opt-item.correct-choice {
+      background: rgba(16, 185, 129, 0.16) !important;
+      border-color: #10b981 !important;
+    }
+    .rdb-opt-item.correct-choice .rdb-opt-radio {
+      background: #10b981 !important;
+      border-color: #10b981 !important;
+      color: #ffffff !important;
+    }
+    .rdb-opt-item.wrong-choice {
+      background: rgba(239, 68, 68, 0.16) !important;
+      border-color: #ef4444 !important;
+    }
+    .rdb-opt-item.wrong-choice .rdb-opt-radio {
+      background: #ef4444 !important;
+      border-color: #ef4444 !important;
+      color: #ffffff !important;
+    }
+
+    /* Khối Lời Giải Chi Tiết Của Thầy */
+    .rdb-explain-box {
+      margin-top: 16px;
+      padding: 16px 18px;
+      border-radius: 10px;
+      background: rgba(2, 6, 23, 0.7);
+      border-left: 4px solid #00f0ff;
+      animation: croFadeIn 0.3s ease-out;
+    }
+    .rdb-explain-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #00f0ff;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .rdb-explain-body {
+      font-size: 14px;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+
+    /* Nút Nộp Bài & Hộp Kết Quả */
+    .rdb-actions {
+      margin-top: 28px;
+      text-align: center;
+    }
+    .btn-submit-retest {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 16px 28px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      font-size: 15.5px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-submit-retest:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.5);
+      filter: brightness(1.1);
+    }
+    .rdb-result-summary {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 14px;
+      padding: 22px;
+      text-align: center;
+      animation: croFadeIn 0.3s ease-out;
+    }
+    .rdb-rs-score {
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+    .rdb-rs-score strong { color: #10b981; }
+    .rdb-rs-sub {
+      font-size: 13.5px;
+      color: #94a3b8;
+      margin-bottom: 14px;
+    }
+
+
 </style>
 </head>
 <body>
 
-    <!-- GATE -->
-    <div class="gate" id="gate">
+    <!-- GATE (Ẩn tuyệt đối mặc định, tránh flash FOUC) -->
+    <div class="gate" id="gate" style="display:none !important">
         <div class="gate-box">
             <div class="gi"><i class="fa-solid fa-graduation-cap"></i></div>
             <h3>Chào mừng đến lớp học!</h3>
@@ -3337,6 +3693,79 @@ function lessonHasContent(l){
 //    KHÔNG khoá để học sinh vào xem PDF/bài tập tạm thời, nhưng gây lỗi bài trống bị tự động
 //    tính "Đã hoàn thành" sau 30s — nay khoá hẳn cho đơn giản và đúng thực tế).
 // Đã xem rồi thì luôn được xem lại, không bao giờ khoá ngược.
+function getRemedialContext(currentKey) {
+    try {
+        const u = new URLSearchParams(window.location.search);
+        let urlRemedial = u.get('remedial') === '1';
+        let sessRemedial = false;
+        try { sessRemedial = sessionStorage.getItem('vlxt_remedial_active') === '1'; } catch(e) {}
+        
+        if (!urlRemedial && !sessRemedial) {
+            return { active: false, topic: '', openLesson: '' };
+        }
+
+        let topic = u.get('topic') || '';
+        if (!topic) {
+            try { topic = sessionStorage.getItem('vlxt_remedial_topic') || ''; } catch(e) {}
+        }
+        let remLesson = u.get('openLesson') || '';
+        if (!remLesson) {
+            try { remLesson = sessionStorage.getItem('vlxt_remedial_lesson') || ''; } catch(e) {}
+        }
+
+        // Nếu học sinh chủ động chuyển sang bài học khác (currentKey khác remLesson):
+        // Tắt chế độ khắc phục để học sinh tự do học bài đó bình thường!
+        if (currentKey && remLesson && currentKey !== remLesson) {
+            try {
+                sessionStorage.removeItem('vlxt_remedial_active');
+                sessionStorage.removeItem('vlxt_remedial_topic');
+                sessionStorage.removeItem('vlxt_remedial_lesson');
+            } catch(e) {}
+            if (window.history && window.history.replaceState) {
+                window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+            }
+            return { active: false, topic: '', openLesson: '' };
+        }
+
+        // Đang ở đúng bài học khắc phục -> ghi nhớ vào sessionStorage
+        try {
+            sessionStorage.setItem('vlxt_remedial_active', '1');
+            if (topic) sessionStorage.setItem('vlxt_remedial_topic', topic);
+            if (remLesson) sessionStorage.setItem('vlxt_remedial_lesson', remLesson);
+        } catch(e) {}
+
+        return {
+            active: true,
+            topic: topic ? decodeURIComponent(topic) : 'Vật lí 12',
+            openLesson: remLesson
+        };
+    } catch(e) {
+        return { active: false, topic: '', openLesson: '' };
+    }
+}
+
+window.dismissRemedialMode = function() {
+    try {
+        sessionStorage.removeItem('vlxt_remedial_active');
+        sessionStorage.removeItem('vlxt_remedial_topic');
+        sessionStorage.removeItem('vlxt_remedial_lesson');
+        if (window.history && window.history.replaceState) {
+            window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+        }
+        const b = document.getElementById('remedial-welcome-banner');
+        if (b) b.remove();
+        const r = document.getElementById('vstep-retest-mount');
+        if (r) r.remove();
+        const rTitle = document.getElementById('sec-retest');
+        if (rTitle) rTitle.remove();
+        const tocRetest = document.querySelector('a[href="#sec-retest"]');
+        if (tocRetest) {
+            const li = tocRetest.closest('li');
+            if (li) li.remove();
+        }
+    } catch(e) {}
+};
+
 function isLessonBlocked(course, key){
     if(isTestAccount()) return {blocked:false}; // tài khoản test: luôn mở
     const flat = flatLessons(course);
@@ -3350,6 +3779,9 @@ function isLessonBlocked(course, key){
 
     const targetLesson = flat[idx];
     const chapterName = targetLesson.chapter || targetLesson.Chuong || '';
+    const isFreeChap = (typeof FreemiumFlow !== 'undefined') ? FreemiumFlow.isChapterFree(chapterName) : (
+        chapterName.includes('Nhiệt') || chapterName.includes('Khí') || chapterName.includes('Chương 1') || chapterName.includes('Chương 2')
+    );
 
     // 1. Phân quyền chương: Chương 3 và 4 KHÓA ĐỐI VỚI TÀI KHOẢN FREE (yêu cầu Gói Pro 50k)
     if(!isPaid && typeof FreemiumFlow !== 'undefined'){
@@ -3358,8 +3790,18 @@ function isLessonBlocked(course, key){
         }
     }
 
-    // 2. Quy tắc học tuần tự: Phải hoàn thành bài trước để mở khóa bài tiếp theo
-    // Bài đầu tiên của khóa (idx === 0) luôn mở cho mọi tài khoản
+    // 2. Miễn chặn tuần tự cho học sinh:
+    // - Khi đang ở chế độ khắc phục lỗ hổng (remedial) ở Chương Free
+    // - HOẶC khi học sinh đã đăng nhập tài khoản (có tên, SĐT, lớp...) muốn học linh hoạt các bài ở Chương Free (Chương 1 & 2)
+    const remedialCtx = getRemedialContext();
+    const isRemedial = remedialCtx.active;
+    if (isFreeChap && remedialCtx.active) {
+        return { blocked: false };
+    }
+    if (isFreeChap && user && (user.sdt || user.phone || user.email || user.name)) {
+        return { blocked: false };
+    }
+
     if(idx > 0 && !WATCHED.has(flat[idx-1].key)){
         // Nếu bài trước chưa học xong, bài này bị khóa
         return { blocked: true, reason: 'sequence', prevLesson: flat[idx-1] };
@@ -3448,20 +3890,31 @@ function route(options){
 
     // Chuẩn hóa nếu URL dùng ? thay vì # (ví dụ: ?lesson/..., ?lesson=..., ?openLesson=...)
     if(location.search){
+        const params = new URLSearchParams(location.search);
+        const isRemedial = params.get('remedial') === '1';
+        const topicParam = params.get('topic') || '';
+        const openLesson = params.get('openLesson') || params.get('lesson');
+
+        if(isRemedial){
+            try {
+                sessionStorage.setItem('vlxt_remedial_active', '1');
+                if(topicParam) sessionStorage.setItem('vlxt_remedial_topic', topicParam);
+                if(openLesson) sessionStorage.setItem('vlxt_remedial_lesson', openLesson);
+            } catch(e) {}
+        }
+
         const rawSearch = location.search.slice(1);
         if(rawSearch.startsWith('lesson/')){
             const key = decodeURIComponent(rawSearch.slice(7));
-            history.replaceState(null,'','baihoc.html#lesson/' + encodeURIComponent(key));
+            const remQuery = isRemedial ? ('?remedial=1&topic=' + encodeURIComponent(topicParam) + '&openLesson=' + encodeURIComponent(key)) : '';
+            history.replaceState(null,'','baihoc.html' + remQuery + '#lesson/' + encodeURIComponent(key));
         } else if(rawSearch.startsWith('course/')){
             const cname = decodeURIComponent(rawSearch.slice(7));
             history.replaceState(null,'','baihoc.html#course/' + encodeURIComponent(cname));
-        } else {
-            const params = new URLSearchParams(location.search);
-            const openLesson = params.get('openLesson') || params.get('lesson');
-            if(openLesson){
-                const key = decodeURIComponent(openLesson);
-                history.replaceState(null,'','baihoc.html#lesson/' + encodeURIComponent(key));
-            }
+        } else if(openLesson){
+            const key = decodeURIComponent(openLesson);
+            const remQuery = isRemedial ? ('?remedial=1&topic=' + encodeURIComponent(topicParam) + '&openLesson=' + encodeURIComponent(key)) : '';
+            history.replaceState(null,'','baihoc.html' + remQuery + '#lesson/' + encodeURIComponent(key));
         }
     }
 
@@ -4398,7 +4851,28 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
     const h1Title = getLessonH1Title(lesson, thData);
     const chapBread = formatChapterTitle(chapter.name);
 
-    let stream = `
+    let stream = '';
+    // Banner chào đón khắc phục lỗ hổng nếu có cờ remedial=1
+    try {
+        const _remCtx = getRemedialContext(lesson.key);
+        if (_remCtx.active) {
+            const _topName = _remCtx.topic || 'Vật lý 12';
+            stream += `
+                <div class="remedial-welcome-banner" id="remedial-welcome-banner">
+                    <div class="rwb-icon"><i class="fa-solid fa-bullseye"></i></div>
+                    <div class="rwb-content">
+                        <div class="rwb-title">🎯 BÀI HỌC KHẮC PHỤC LỖ HỔNG: <span style="color:#00f0ff">${esc(decodeURIComponent(_topName))}</span></div>
+                        <div class="rwb-desc">Em vừa hoàn thành bài Test Đánh Giá Năng Lực. Thầy đã điều hướng em đến bài học trọng tâm này để làm chủ bản chất thông qua Video &amp; Mô phỏng 3D tương tác. Sau khi học xong 15 phút, em hãy làm <strong>Đề B kiểm chứng</strong> ngay bên dưới để thấy sự tiến bộ vượt bậc nhé!</div>
+                    </div>
+                    <button type="button" class="btn-dismiss-remedial" onclick="dismissRemedialMode()" title="Tắt chế độ khắc phục để học bình thường">
+                        <i class="fa-solid fa-xmark"></i> Tắt chế độ khắc phục
+                    </button>
+                </div>
+            `;
+        }
+    } catch(e) {}
+
+    stream += `
         <div class="vstep-top-bar">
             <div class="vstep-crumb">
                 <a href="baihoc.html#home" onclick="go('#home');return false;">Khóa học</a> <span>›</span>
@@ -4547,6 +5021,20 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
         </div>`;
     }
 
+    // Slot Đề B kiểm chứng tiến bộ (Bước 6)
+    try {
+        const _remCtx = getRemedialContext(lesson.key);
+        if (_remCtx.active) {
+            const _topName = _remCtx.topic || 'Khí lí tưởng';
+            secNumRoman = 'V';
+            tocItems.push({ id: 'sec-retest', title: `${secNumRoman}. Kiểm Chứng Đề B` });
+            stream += `
+                <h2 id="sec-retest"><span class="vstep-h2-badge">${secNumRoman}</span> Kiểm Chứng Tiến Bộ: Đề B</h2>
+                <div id="vstep-retest-mount" class="vstep-retest-mount"></div>
+            `;
+        }
+    } catch(e) {}
+
     // Footer Navigation
     stream += `
         <div class="vstep-footer-nav">
@@ -4656,6 +5144,22 @@ function renderLesson(key){
     // Tài khoản học thử: BẮT BUỘC chờ server cấp quyền trước khi tải quiz/video (Pessimistic / Fail-closed)
     const _curUser = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
     const _isTrial = typeof TrialManager !== 'undefined' && TrialManager.isValidTrialUser(_curUser);
+
+    // TỐI ƯU TỐC ĐỘ MỞ BÀI TỨC THÌ (Instant Open ~0.05s) CHO BÀI VÁ LỖ HỔNG & BÀI MIỄN PHÍ:
+    // Tuyệt đối không treo spinner 'Đang xác thực quyền học thử...' đối với bài remedial hoặc bài thuộc Chương 1 & 2!
+    const _isRemedialBypass = (typeof getRemedialContext === 'function' && getRemedialContext(key).active) ||
+      (typeof window !== 'undefined' && (new URLSearchParams(window.location.search).get('remedial') === '1' || sessionStorage.getItem('vlxt_remedial_active') === '1'));
+    const _isFreeChapter = course && (
+      (course.name && (course.name.includes('Chương 1') || course.name.includes('Chương 2') || course.name.includes('Vật Lý Nhiệt') || course.name.includes('Khí Lí Tưởng'))) ||
+      (typeof flatLessons === 'function' && flatLessons(course).findIndex(l => l.key === key) < 14)
+    );
+
+    if (_isRemedialBypass || _isFreeChapter) {
+        if (!window._trialGrantedLessons) window._trialGrantedLessons = new Set();
+        window._trialGrantedLessons.add(key);
+        window._trialActiveGrantedLesson = key;
+    }
+
     const _sessionGranted = (typeof window !== 'undefined' && window._trialGrantedLessons && window._trialGrantedLessons.has(key));
     const _isGrantedInMemory = _isTrial && (_sessionGranted || window._trialActiveGrantedLesson === key);
 
@@ -4918,6 +5422,18 @@ function renderLesson(key){
     }
     initVstepScrollSpy();
     renderMath(app());
+    // Kích hoạt render Đề B nếu học sinh đến từ link remedial
+    try {
+        const _remCtx = getRemedialContext(key);
+        if (_remCtx.active) {
+            const _topName = _remCtx.topic || 'Khí lí tưởng';
+            const _lessonId = _remCtx.openLesson || key || (lesson && (lesson.mabai || lesson.MaBai || lesson.key));
+            const _retestSlot = document.getElementById('vstep-retest-mount');
+            if (_retestSlot && typeof FreemiumFlow !== 'undefined' && typeof FreemiumFlow.renderRetestDeB === 'function') {
+                FreemiumFlow.renderRetestDeB(_retestSlot, _topName, _lessonId);
+            }
+        }
+    } catch(e) {}
     _vqPositionHolder();
     if(_hasSim) initLessonSimulation(lesson, key);
     // Lưu context bài hiện tại
@@ -5445,6 +5961,18 @@ async function renderLiveLesson(){
     }
     initVstepScrollSpy();
     renderMath(app());
+    // Kích hoạt render Đề B nếu học sinh đến từ link remedial
+    try {
+        const _remCtx = getRemedialContext(key);
+        if (_remCtx.active) {
+            const _topName = _remCtx.topic || 'Khí lí tưởng';
+            const _lessonId = _remCtx.openLesson || key || (lesson && (lesson.mabai || lesson.MaBai || lesson.key));
+            const _retestSlot = document.getElementById('vstep-retest-mount');
+            if (_retestSlot && typeof FreemiumFlow !== 'undefined' && typeof FreemiumFlow.renderRetestDeB === 'function') {
+                FreemiumFlow.renderRetestDeB(_retestSlot, _topName, _lessonId);
+            }
+        }
+    } catch(e) {}
     _sidebarActiveTab = 'chat';
     _vqPositionHolder();
 
