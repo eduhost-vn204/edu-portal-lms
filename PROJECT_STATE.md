@@ -1,3 +1,26 @@
+## Bàn giao gần nhất (10/11/2026 18:18)
+- **Commit**: Triệt Tiêu Toàn Bộ Hiệu Ứng Sáng Mờ Mờ (AI Glow), Đồng Bộ Chấm Xanh Lá Cho Toàn Bộ Trang Web (auth.js v=20261110r) & Bổ Sung Nguyên Tắc Cấm Thiết Kế Kiểu AI Vào AGENTS.md
+- **Phạm vi hoàn tất (3 Hạng mục nghiêm ngặt theo chỉ đạo của Thầy)**:
+  1. **Triệt tiêu toàn bộ hiệu ứng sáng mờ mờ ("AI Glow") trên toàn trang (`hoso.html` & CSS toàn hệ thống)**:
+     - *Thầy chỉ đạo*: Xóa sạch các hiệu ứng chữ và nút bị phát sáng hào quang mờ nhòe ma mị kiểu AI tạo (như dòng "Gói Tháng PRO", nút "Vào học ngay", badge "Cập nhật từ bài test", điểm số THPT, đường SVG mạng nhện).
+     - *Khắc phục triệt để*:
+       + Xóa sạch toàn bộ `text-shadow: 0 0 ...` làm chữ bị nhòe hào quang.
+       + Xóa sạch `filter: drop-shadow(0 0 ...)` trên SVG biểu đồ mạng nhện, trả lại đường nét vector sắc sảo, tinh tế.
+       + Xóa sạch `box-shadow: 0 0 ...px [color]` (quầng sáng hào quang neon) quanh các nút bấm, huy hiệu và thanh progress bar.
+       + Chuyển toàn bộ sang thiết kế **phẳng, sắc nét, hiện đại, tương phản chuẩn EdTech quốc tế**, chỉ dùng đổ bóng chiều sâu vật lý nhẹ nhàng `box-shadow: 0 2px 8px rgba(0,0,0,0.2)`.
+  2. **Đồng bộ Chấm Xanh Lá Cây (`●`) cho toàn bộ các trang web (`auth.js?v=20261110r`)**:
+     - *Vấn đề Thầy phát hiện*: Chấm xanh lá đã hiện chuẩn ở `hoso.html`, nhưng một số trang khác (`index.html`, `danh-gia-nang-luc.html`, `dau-thuong.html`, v.v.) vẫn bị xanh dương do cache trình duyệt hoặc code riêng cũ.
+     - *Khắc phục*:
+       + Sửa trong `danh-gia-nang-luc.html`: đổi `dot.className = 'dot-status-neon cyan'` thành `dot.className = 'dot-status-neon green'`.
+       + Nâng cache buster lên `auth.js?v=20261110r` đồng bộ trên toàn bộ 38 file HTML của dự án. Ép 100% trình duyệt và CDN GitHub Pages nạp ngay bản mới có chấm xanh lá viên thuốc nền tối mờ.
+  3. **Bổ sung nguyên tắc cấm thiết kế "AI Glow" vào `AGENTS.md`**:
+     - Đã ghi nhận thành luật bất di bất dịch trong `AGENTS.md` và `00-BRAIN-VLXT/AGENTS.md`: **TUYỆT ĐỐI CẤM PHONG CÁCH "AI GLOW / AI DESIGN"**. Cấm lạm dụng hào quang mờ nhòe, bắt buộc thiết kế phẳng, sắc nét, tối giản, chuyên nghiệp.
+- **Kiểm định chất lượng**:
+  - `node scratch/verify_hoso_syntax.js`: PASS 100% (Cú pháp JS 4 script blocks hợp lệ, thẻ `</html>` kết thúc chuẩn).
+  - `node test_cro_funnel.mjs`: PASS 100%.
+  - `node test_diagnostic_mastery_loop.mjs`: PASS 100%.
+- **Trạng thái triển khai**: Đã commit và push nhánh `main` lên GitHub, GitHub Actions tự động deploy lên `https://vatlyxuantruong.io.vn`.
+
 ## Bàn giao gần nhất (10/11/2026 18:08)
 - **Commit**: `de04890` (trên `main` production) — *fix(nav-auth): dong bo widget vien thuoc cham xanh la auth.js va bo tri tien do 4 chuong grid 2x2 can doi khong khuat*
 - **Phạm vi hoàn tất (2 Hạng mục trọng tâm theo chỉ đạo chi tiết của Thầy)**:

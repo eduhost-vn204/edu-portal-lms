@@ -57,7 +57,7 @@
             overflow-x: hidden;
         }
 
-        /* Triệt tiêu hoàn toàn mọi widget avatar xanh nổi ngoài navbar do auth.js sinh ra */
+        /* Triệt tiêu hoàn toàn mọi widget avatar xanh nổi ngoài navbar do auth.js?v=20261110r sinh ra */
         body > #vlxt-user-widget,
         #vlxt-user-widget {
             display: none !important;
@@ -264,9 +264,9 @@
             background: #10b981;
             box-shadow: 0 0 8px #10b981;
         }
-        .dot-status-neon.cyan {
-            background: #00f0ff;
-            box-shadow: 0 0 8px #00f0ff;
+        .dot-status-neon.cyan, .dot-status-neon.green {
+            background: #10b981;
+            box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
         }
         .pill-badge-free {
             font-size: 10.5px;
@@ -1828,7 +1828,7 @@
     </div>
 
     <!-- SCRIPTS HỆ THỐNG -->
-    <script src="auth.js"></script>
+    <script src="auth.js?v=20261110r"></script>
     <script src="vnpay-service.js"></script>
     <script src="freemium-flow.js"></script>
 
@@ -1915,7 +1915,7 @@
             if (isValid) {
                 // Đã đăng nhập: hiển thị dạng pill thanh lịch mang phong cách thẻ cứng
                 var displayName = user.hoten || user.name || user.sdt || 'Học sinh';
-                dot.className = 'dot-status-neon cyan';
+                dot.className = 'dot-status-neon green';
                 label.innerHTML = `${displayName} <span class="pill-badge-free ${user.loaiTK === 'pro' ? 'pro' : ''}">${user.loaiTK === 'pro' ? 'PRO' : 'Free'}</span> <i class="fa-solid fa-chevron-down pill-chevron"></i>`;
                 if (ddName) ddName.textContent = displayName;
                 if (ddSub) ddSub.textContent = `Lớp ${user.lop || '12'} · ${user.sdt}`;

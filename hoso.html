@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hồ Sơ Học Sinh | Vật Lý Xuân Trường</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script defer src="auth.js?v=20261110q"></script>
+  <script defer src="auth.js?v=20261110r"></script>
   <script src="xephang-fx.js?v=1"></script>
   <script defer src="thongbao.js?v=2"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -86,7 +86,7 @@
       color: #04101e; font-size: 26px; font-weight: 900;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
-      box-shadow: 0 0 24px rgba(0, 240, 255, 0.45);
+      
     }
     .profile-info h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; color: #fff; }
     .profile-info p { font-size: 13.5px; color: var(--text-sub); }
@@ -98,7 +98,7 @@
       border-radius: 14px;
       padding: 10px 18px;
       flex-shrink: 0;
-      box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+      
     }
     .rank-name { font-size: 17px; font-weight: 900; color: #fbbf24; }
     .rank-sub { font-size: 12px; font-weight: 800; color: #fde68a; margin-left: 2px; }
@@ -129,9 +129,9 @@
       transform: translateY(-2px);
     }
     .stat-val { font-size: 26px; font-weight: 900; letter-spacing: -0.02em; }
-    .stat-val.lp  { color: #00f0ff; text-shadow: 0 0 16px rgba(0, 240, 255, 0.4); }
-    .stat-val.done { color: #10b981; text-shadow: 0 0 16px rgba(16, 185, 129, 0.4); }
-    .stat-val.score { color: #fbbf24; text-shadow: 0 0 16px rgba(251, 191, 36, 0.4); }
+    .stat-val.lp  { color: #00f0ff;  }
+    .stat-val.done { color: #10b981;  }
+    .stat-val.score { color: #fbbf24;  }
     .stat-lbl { font-size: 12px; color: var(--text-sub); margin-top: 5px; font-weight: 600; }
     @media (max-width: 480px) {
       .stats-row { grid-template-columns: 1fr 1fr; }
@@ -291,7 +291,7 @@
     .progress-dot {
       width: 9px; height: 9px; border-radius: 50%;
       background: #10b981; flex-shrink: 0;
-      box-shadow: 0 0 10px #10b981;
+      
     }
     .progress-name { flex: 1; color: #f1f5f9; font-weight: 600; }
     .progress-khoa { font-size: 12px; color: var(--text-sub); }
@@ -317,9 +317,9 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 15.5px; font-weight: 900; flex-shrink: 0;
     }
-    .score-circle.high  { background: rgba(16, 185, 129, 0.18); color: #10b981; border: 1.5px solid #10b981; box-shadow: 0 0 12px rgba(16,185,129,0.3); }
-    .score-circle.mid   { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1.5px solid #fbbf24; box-shadow: 0 0 12px rgba(245,158,11,0.3); }
-    .score-circle.low   { background: rgba(239, 68, 68, 0.18); color: #ef4444; border: 1.5px solid #ef4444; box-shadow: 0 0 12px rgba(239,68,68,0.3); }
+    .score-circle.high  { background: rgba(16, 185, 129, 0.18); color: #10b981; border: 1.5px solid #10b981;  }
+    .score-circle.mid   { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1.5px solid #fbbf24;  }
+    .score-circle.low   { background: rgba(239, 68, 68, 0.18); color: #ef4444; border: 1.5px solid #ef4444;  }
     .score-info { flex: 1; }
     .score-info .score-date { font-size: 12px; color: var(--text-sub); margin-top: 3px; }
     .score-info .score-name { font-weight: 700; color: #fff; }
@@ -472,7 +472,7 @@
   background: none !important;
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
-  text-shadow: 0 0 10px rgba(0, 240, 255, 0.45) !important;
+  
 }
 .nav-hamburger {
   display: none;
@@ -528,7 +528,7 @@
   height: 7px !important;
   border-radius: 50% !important;
   background: #ef4444 !important;
-  box-shadow: 0 0 8px #ef4444 !important;
+   !important;
   display: inline-block !important;
 }
 .nav-dropdown {
@@ -586,7 +586,7 @@
   background: none !important;
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
-  text-shadow: 0 0 10px rgba(0, 240, 255, 0.45) !important;
+  
 }
 .nav-brand-logo, .nav-logo {
   display: inline-flex !important;
@@ -837,7 +837,7 @@ function renderRadarChart() {
       <span style="display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:900;color:#fff;">
         <i class="fa-solid fa-chart-pie" style="color:#00f0ff"></i> 🕸️ BẢN ĐỒ ĐO LƯỜNG NĂNG LỰC VẬT LÝ 12 (RADAR HUD)
       </span>
-      <span style="font-size:12px;font-weight:800;padding:4px 12px;border-radius:100px;background:${isDemo ? 'rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.4)' : 'rgba(0,240,255,0.15);color:#00f0ff;border:1px solid rgba(0,240,255,0.4)'};box-shadow:0 0 12px ${isDemo ? 'rgba(251,191,36,0.25)' : 'rgba(0,240,255,0.25)'};">
+      <span style="font-size:12px;font-weight:800;padding:4px 12px;border-radius:100px;background:${isDemo ? 'rgba(251,191,36,0.15);color:#fbbf24;border:1px solid rgba(251,191,36,0.4)' : 'rgba(0,240,255,0.15);color:#00f0ff;border:1px solid rgba(0,240,255,0.4)'};">
         ${isDemo ? '⚡ Bản đồ mẫu chuẩn đầu ra THPT 8.5+' : '✓ Cập nhật từ bài Test Chẩn Đoán'}
       </span>
     </div>
@@ -845,7 +845,7 @@ function renderRadarChart() {
     <div style="padding:22px;display:grid;grid-template-columns:1.05fr 1fr;gap:24px;align-items:center;">
       <!-- Cột trái: Biểu đồ SVG Mạng Nhện To Rõ Nét Sắc Sảo -->
       <div style="background:rgba(9,18,36,0.7);border:1.5px solid rgba(0,240,255,0.22);border-radius:20px;padding:18px 12px;text-align:center;box-shadow:inset 0 0 25px rgba(0,240,255,0.05);">
-        <svg viewBox="0 0 320 320" style="width:100%;max-width:340px;height:auto;display:inline-block;filter:drop-shadow(0 0 18px ${isDemo ? 'rgba(251,191,36,0.25)' : 'rgba(0,240,255,0.35)'});">
+        <svg viewBox="0 0 320 320" style="width:100%;max-width:340px;height:auto;display:inline-block;' : 'rgba(0,240,255,0.35)'});">
           ${gridPolys}
           ${axisLines}
           <polygon points="${dataPts}" fill="${polyFill}" stroke="${polyStroke}" stroke-width="2.5" ${polyDash} />
@@ -858,7 +858,7 @@ function renderRadarChart() {
       <div style="display:flex;flex-direction:column;gap:11px;">
         <div style="font-size:14.5px;font-weight:800;color:#ffffff;margin-bottom:2px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">
           <span>🎯 ${isDemo ? 'Chuẩn năng lực mục tiêu:' : 'Điểm THPT dự kiến:'}</span>
-          <span style="color:${isDemo ? '#fbbf24' : '#00f0ff'};font-size:18px;font-weight:900;text-shadow:0 0 16px ${isDemo ? 'rgba(251,191,36,0.6)' : 'rgba(0,240,255,0.6)'};">
+          <span style="color:${isDemo ? '#fbbf24' : '#00f0ff'};font-size:18px;font-weight:900;">
             ${isDemo ? '8.5+/10' : `${attempt.predictedScore || attempt.score10}/10`}
           </span>
         </div>
@@ -869,14 +869,14 @@ function renderRadarChart() {
               <strong style="color:${ax.color};font-weight:900;">${ax.val}%</strong>
             </div>
             <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:100px;overflow:hidden;">
-              <div style="width:${ax.val}%;height:100%;background:${ax.color};border-radius:100px;box-shadow:0 0 10px ${ax.color};"></div>
+              <div style="width:${ax.val}%;height:100%;background:${ax.color};border-radius:100px;"></div>
             </div>
           </div>
         `).join('')}
 
         <div style="margin-top:8px;">
           ${isDemo ? `
-            <a href="danh-gia-nang-luc.html?autostart=1" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 20px;border-radius:100px;background:linear-gradient(135deg,#10b981,#059669);color:#ffffff;box-shadow:0 0 20px rgba(16,185,129,0.45);border:1px solid rgba(52,211,153,0.45);font-weight:900;text-decoration:none;box-shadow:0 0 24px rgba(0,240,255,0.4);font-size:14px;transition:all 0.2s;">
+            <a href="danh-gia-nang-luc.html?autostart=1" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 20px;border-radius:100px;background:linear-gradient(135deg,#10b981,#059669);color:#ffffff;border:1px solid rgba(52,211,153,0.45);font-weight:900;text-decoration:none;font-size:14px;transition:all 0.2s;">
               <i class="fa-solid fa-play"></i> Làm bài test 20 câu để đo bản đồ cá nhân →
             </a>
           ` : `
@@ -1483,12 +1483,12 @@ function renderPage(profile, lb, nvRes, baihocRows) {
     <!-- VIP Status Banner (Obsidian Neon Glassmorphism Với Nút Xanh Lá Chuẩn VStep-O) -->
     <div style="background:rgba(8, 22, 50, 0.55);backdrop-filter:blur(16px);border:1.5px solid var(--border-neon);border-radius:18px;padding:16px 22px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;box-shadow:0 8px 30px rgba(0,0,0,0.5);">
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-        <span style="font-size:15px;font-weight:900;color:${vip.color};text-shadow:0 0 16px ${vip.color};display:inline-flex;align-items:center;gap:6px;"><i class="fa-solid fa-crown"></i> ${vip.label}</span>
+        <span style="font-size:15px;font-weight:900;color:${vip.color};display:inline-flex;align-items:center;gap:6px;"><i class="fa-solid fa-crown"></i> ${vip.label}</span>
         <span style="font-size:13.5px;color:var(--text-sub)">${vip.note}</span>
       </div>
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
         <!-- NÚT XANH LÁ LỤC BẢO NỔI BẬT: VÀO HỌC NGAY / VÀO HỌC THỬ -->
-        <a href="baihoc.html" style="font-size:13.5px;font-weight:800;color:#ffffff;background:linear-gradient(135deg,#10b981 0%,#059669 100%);text-decoration:none;padding:10px 22px;border-radius:100px;box-shadow:0 0 20px rgba(16,185,129,0.5);border:1px solid rgba(52,211,153,0.5);display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;">
+        <a href="baihoc.html" style="font-size:13.5px;font-weight:800;color:#ffffff;background:linear-gradient(135deg,#10b981 0%,#059669 100%);text-decoration:none;padding:10px 22px;border-radius:100px;border:1px solid rgba(52,211,153,0.5);display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;">
           <i class="fa-solid fa-circle-play"></i> ${isPaidUser ? 'Vào học ngay →' : 'Vào học thử miễn phí →'}
         </a>
         <!-- Nút phụ Nâng cấp gói năm nếu là gói Pro, hoặc đăng ký Pro nếu là Free -->
@@ -1544,7 +1544,7 @@ function renderPage(profile, lb, nvRes, baihocRows) {
         <div class="section-card" style="margin-bottom:18px;">
           <div class="section-head" style="display:flex;justify-content:space-between;align-items:center;">
             <span><i class="fa-solid fa-graduation-cap" style="color:#00f0ff"></i> TIẾN ĐỘ 4 CHƯƠNG VẬT LÝ 12</span>
-            <a href="baihoc.html" style="font-size:12px;font-weight:800;color:#10b981;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.35);padding:5px 14px;border-radius:100px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;box-shadow:0 0 12px rgba(16,185,129,0.25);">
+            <a href="baihoc.html" style="font-size:12px;font-weight:800;color:#10b981;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.35);padding:5px 14px;border-radius:100px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
               <i class="fa-solid fa-circle-play" style="font-size:11px;"></i> Vào học ngay →
             </a>
           </div>
@@ -1565,7 +1565,7 @@ function renderPage(profile, lb, nvRes, baihocRows) {
                   <strong style="color:#10b981;font-weight:800;font-size:12px;">${c1Done} / 6 (${c1Pct}%)</strong>
                 </div>
                 <div class="vstep-chap-bar-bg">
-                  <div style="width:${c1Pct}%;height:100%;background:#10b981;border-radius:10px;box-shadow:0 0 8px #10b981;"></div>
+                  <div style="width:${c1Pct}%;height:100%;background:#10b981;border-radius:10px;"></div>
                 </div>
               </div>
 
@@ -1584,7 +1584,7 @@ function renderPage(profile, lb, nvRes, baihocRows) {
                   <strong style="color:#00f0ff;font-weight:800;font-size:12px;">${c2Done} / 7 (${c2Pct}%)</strong>
                 </div>
                 <div class="vstep-chap-bar-bg">
-                  <div style="width:${c2Pct}%;height:100%;background:#00f0ff;border-radius:10px;box-shadow:0 0 8px #00f0ff;"></div>
+                  <div style="width:${c2Pct}%;height:100%;background:#00f0ff;border-radius:10px;"></div>
                 </div>
               </div>
 
@@ -1603,7 +1603,7 @@ function renderPage(profile, lb, nvRes, baihocRows) {
                   <strong style="color:${isPaidUser ? '#a855f7' : '#94a3b8'};font-weight:800;font-size:11.5px;">${isPaidUser ? `${c3Done}/8 (${Math.round((c3Done/8)*100)}%)` : '<i class="fa-solid fa-lock" style="font-size:10px;"></i> Khóa (Pro)'}</strong>
                 </div>
                 <div class="vstep-chap-bar-bg">
-                  <div style="width:${isPaidUser ? Math.round((c3Done/8)*100) : 0}%;height:100%;background:#a855f7;border-radius:10px;box-shadow:0 0 8px #a855f7;"></div>
+                  <div style="width:${isPaidUser ? Math.round((c3Done/8)*100) : 0}%;height:100%;background:#a855f7;border-radius:10px;"></div>
                 </div>
               </div>
 
@@ -1622,7 +1622,7 @@ function renderPage(profile, lb, nvRes, baihocRows) {
                   <strong style="color:${isPaidUser ? '#fbbf24' : '#94a3b8'};font-weight:800;font-size:11.5px;">${isPaidUser ? `${c4Done}/5 (${Math.round((c4Done/5)*100)}%)` : '<i class="fa-solid fa-lock" style="font-size:10px;"></i> Khóa (Pro)'}</strong>
                 </div>
                 <div class="vstep-chap-bar-bg">
-                  <div style="width:${isPaidUser ? Math.round((c4Done/5)*100) : 0}%;height:100%;background:#fbbf24;border-radius:10px;box-shadow:0 0 8px #fbbf24;"></div>
+                  <div style="width:${isPaidUser ? Math.round((c4Done/5)*100) : 0}%;height:100%;background:#fbbf24;border-radius:10px;"></div>
                 </div>
               </div>
             </div>
