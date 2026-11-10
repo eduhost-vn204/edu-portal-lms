@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hồ Sơ Học Sinh | Vật Lý Xuân Trường</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script defer src="auth.js?v=20261109p"></script>
+  <script defer src="auth.js?v=20261110q"></script>
   <script src="xephang-fx.js?v=1"></script>
   <script defer src="thongbao.js?v=2"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -57,7 +57,7 @@
     /* ── VSTEP-O TWO-COLUMN HUD LAYOUT ── */
     .vstep-hoso-grid {
       display: grid;
-      grid-template-columns: 460px 1fr;
+      grid-template-columns: 480px 1fr;
       gap: 24px;
       align-items: start;
       margin-bottom: 24px;
@@ -138,22 +138,26 @@
       .stat-card:last-child { grid-column: span 2; }
     }
 
-    /* ── THẺ TIẾN ĐỘ 4 CHƯƠNG VSTEP-O (DANH SÁCH 4 HÀNG RỘNG RÃI, KHÔNG BAO GIỜ BỊ KHUẤT) ── */
-    .vstep-chap-list {
-      display: flex;
-      flex-direction: column;
+    /* ── THẺ TIẾN ĐỘ 4 CHƯƠNG VSTEP-O (GRID 2x2 CÂN ĐỐI, KHÔNG BAO GIỜ BỊ KHUẤT) ── */
+    .vstep-chap-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 12px;
       margin-top: 14px;
+    }
+    @media (max-width: 480px) {
+      .vstep-chap-grid { grid-template-columns: 1fr; }
     }
     .vstep-chap-card {
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(0, 240, 255, 0.18);
-      border-radius: 16px;
-      padding: 13px 16px;
+      border-radius: 14px;
+      padding: 11px 13px;
       transition: all 0.2s ease;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 5px;
+      position: relative;
     }
     .vstep-chap-card:hover {
       background: rgba(0, 240, 255, 0.06);
@@ -165,41 +169,58 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 6px;
     }
     .vstep-chap-left {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 7px;
       min-width: 0;
     }
     .vstep-chap-icon {
-      font-size: 14px;
-      width: 32px; height: 32px;
-      border-radius: 9px;
+      font-size: 12px;
+      width: 26px; height: 26px;
+      border-radius: 7px;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
     .vstep-chap-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
       color: #fff;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.2px;
+      white-space: nowrap;
     }
     .vstep-chap-badge {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 800;
-      padding: 3px 10px;
-      border-radius: 100px;
+      padding: 2px 7px;
+      border-radius: 6px;
       white-space: nowrap;
       flex-shrink: 0;
+    }
+    .vstep-chap-sub {
+      font-size: 11px;
+      color: #94a3b8;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .vstep-chap-meta {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 12.5px;
+      font-size: 11.5px;
       color: var(--text-sub);
+      margin-top: 2px;
+    }
+    .vstep-chap-bar-bg {
+      height: 5px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 3px;
     }
 
     /* ── TABS BAR VSTEP-O (PILL 100px NEON CYAN) ── */
@@ -1519,7 +1540,7 @@ function renderPage(profile, lb, nvRes, baihocRows) {
           </div>
         </div>
 
-        <!-- Tiến Độ 4 Chương Vật Lý 12 Dạng Danh Sách Full-Width Không Bao Giờ Bị Khuất -->
+        <!-- Tiến Độ 4 Chương Vật Lý 12 Dạng Ô 2x2 Cân Đối Không Bao Giờ Bị Khuất -->
         <div class="section-card" style="margin-bottom:18px;">
           <div class="section-head" style="display:flex;justify-content:space-between;align-items:center;">
             <span><i class="fa-solid fa-graduation-cap" style="color:#00f0ff"></i> TIẾN ĐỘ 4 CHƯƠNG VẬT LÝ 12</span>
@@ -1528,76 +1549,80 @@ function renderPage(profile, lb, nvRes, baihocRows) {
             </a>
           </div>
           <div style="padding:16px 18px;">
-            <div class="vstep-chap-list">
-              <!-- Hàng 1: Chương 1 -->
+            <div class="vstep-chap-grid">
+              <!-- Ô 1: Chương 1 -->
               <div class="vstep-chap-card">
                 <div class="vstep-chap-head">
                   <div class="vstep-chap-left">
                     <span class="vstep-chap-icon" style="background:rgba(16,185,129,0.15);color:#10b981;"><i class="fa-solid fa-atom"></i></span>
-                    <span class="vstep-chap-title">Chương 1: Vật Lí Nhiệt</span>
+                    <span class="vstep-chap-title">C1: Nhiệt</span>
                   </div>
                   <span class="vstep-chap-badge" style="background:rgba(16,185,129,0.18);color:#10b981;border:1px solid rgba(16,185,129,0.35);">Miễn phí</span>
                 </div>
+                <div class="vstep-chap-sub">Vật Lí Nhiệt</div>
                 <div class="vstep-chap-meta">
-                  <span>Tiến độ bài học:</span>
-                  <strong style="color:#10b981;font-weight:800;">${c1Done} / 6 bài (${c1Pct}%)</strong>
+                  <span>Tiến độ:</span>
+                  <strong style="color:#10b981;font-weight:800;font-size:12px;">${c1Done} / 6 (${c1Pct}%)</strong>
                 </div>
-                <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;">
-                  <div style="width:${c1Pct}%;height:100%;background:#10b981;border-radius:10px;box-shadow:0 0 10px #10b981;"></div>
+                <div class="vstep-chap-bar-bg">
+                  <div style="width:${c1Pct}%;height:100%;background:#10b981;border-radius:10px;box-shadow:0 0 8px #10b981;"></div>
                 </div>
               </div>
 
-              <!-- Hàng 2: Chương 2 -->
+              <!-- Ô 2: Chương 2 -->
               <div class="vstep-chap-card">
                 <div class="vstep-chap-head">
                   <div class="vstep-chap-left">
                     <span class="vstep-chap-icon" style="background:rgba(0,240,255,0.15);color:#00f0ff;"><i class="fa-solid fa-cubes"></i></span>
-                    <span class="vstep-chap-title">Chương 2: Khí Lí Tưởng</span>
+                    <span class="vstep-chap-title">C2: Khí</span>
                   </div>
                   <span class="vstep-chap-badge" style="background:rgba(0,240,255,0.18);color:#00f0ff;border:1px solid rgba(0,240,255,0.35);">Miễn phí</span>
                 </div>
+                <div class="vstep-chap-sub">Khí Lí Tưởng</div>
                 <div class="vstep-chap-meta">
-                  <span>Tiến độ bài học:</span>
-                  <strong style="color:#00f0ff;font-weight:800;">${c2Done} / 7 bài (${c2Pct}%)</strong>
+                  <span>Tiến độ:</span>
+                  <strong style="color:#00f0ff;font-weight:800;font-size:12px;">${c2Done} / 7 (${c2Pct}%)</strong>
                 </div>
-                <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;">
-                  <div style="width:${c2Pct}%;height:100%;background:#00f0ff;border-radius:10px;box-shadow:0 0 10px #00f0ff;"></div>
+                <div class="vstep-chap-bar-bg">
+                  <div style="width:${c2Pct}%;height:100%;background:#00f0ff;border-radius:10px;box-shadow:0 0 8px #00f0ff;"></div>
                 </div>
               </div>
 
-              <!-- Hàng 3: Chương 3 -->
+              <!-- Ô 3: Chương 3 -->
               <div class="vstep-chap-card">
                 <div class="vstep-chap-head">
                   <div class="vstep-chap-left">
                     <span class="vstep-chap-icon" style="background:rgba(168,85,247,0.15);color:#a855f7;"><i class="fa-solid fa-bolt"></i></span>
-                    <span class="vstep-chap-title">Chương 3: Từ Trường</span>
+                    <span class="vstep-chap-title">C3: Từ Trường</span>
                   </div>
-                  <span class="vstep-chap-badge" style="background:${isPaidUser ? 'rgba(168,85,247,0.18);color:#c084fc;border:1px solid rgba(168,85,247,0.35)' : 'rgba(148,163,184,0.15);color:#94a3b8;border:1px solid rgba(148,163,184,0.25)'};">${isPaidUser ? 'Đã mở khóa' : 'Gói Pro 50k'}</span>
+                  <span class="vstep-chap-badge" style="background:${isPaidUser ? 'rgba(168,85,247,0.18);color:#c084fc;border:1px solid rgba(168,85,247,0.35)' : 'rgba(148,163,184,0.15);color:#94a3b8;border:1px solid rgba(148,163,184,0.25)'};">${isPaidUser ? 'Đã mở' : 'Gói Pro'}</span>
                 </div>
+                <div class="vstep-chap-sub">Từ Trường &amp; Cảm Ứng</div>
                 <div class="vstep-chap-meta">
-                  <span>Tiến độ bài học:</span>
-                  <strong style="color:${isPaidUser ? '#a855f7' : '#94a3b8'};font-weight:800;">${isPaidUser ? `${c3Done} / 8 bài (${Math.round((c3Done/8)*100)}%)` : '<i class="fa-solid fa-lock" style="font-size:11px;"></i> Khóa · Cần Gói Pro'}</strong>
+                  <span>Tiến độ:</span>
+                  <strong style="color:${isPaidUser ? '#a855f7' : '#94a3b8'};font-weight:800;font-size:11.5px;">${isPaidUser ? `${c3Done}/8 (${Math.round((c3Done/8)*100)}%)` : '<i class="fa-solid fa-lock" style="font-size:10px;"></i> Khóa (Pro)'}</strong>
                 </div>
-                <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;">
-                  <div style="width:${isPaidUser ? Math.round((c3Done/8)*100) : 0}%;height:100%;background:#a855f7;border-radius:10px;box-shadow:0 0 10px #a855f7;"></div>
+                <div class="vstep-chap-bar-bg">
+                  <div style="width:${isPaidUser ? Math.round((c3Done/8)*100) : 0}%;height:100%;background:#a855f7;border-radius:10px;box-shadow:0 0 8px #a855f7;"></div>
                 </div>
               </div>
 
-              <!-- Hàng 4: Chương 4 -->
+              <!-- Ô 4: Chương 4 -->
               <div class="vstep-chap-card">
                 <div class="vstep-chap-head">
                   <div class="vstep-chap-left">
                     <span class="vstep-chap-icon" style="background:rgba(251,191,36,0.15);color:#fbbf24;"><i class="fa-solid fa-radiation"></i></span>
-                    <span class="vstep-chap-title">Chương 4: Vật Lí Hạt Nhân</span>
+                    <span class="vstep-chap-title">C4: Hạt Nhân</span>
                   </div>
-                  <span class="vstep-chap-badge" style="background:${isPaidUser ? 'rgba(251,191,36,0.18);color:#fbbf24;border:1px solid rgba(251,191,36,0.35)' : 'rgba(148,163,184,0.15);color:#94a3b8;border:1px solid rgba(148,163,184,0.25)'};">${isPaidUser ? 'Đã mở khóa' : 'Gói Pro 50k'}</span>
+                  <span class="vstep-chap-badge" style="background:${isPaidUser ? 'rgba(251,191,36,0.18);color:#fbbf24;border:1px solid rgba(251,191,36,0.35)' : 'rgba(148,163,184,0.15);color:#94a3b8;border:1px solid rgba(148,163,184,0.25)'};">${isPaidUser ? 'Đã mở' : 'Gói Pro'}</span>
                 </div>
+                <div class="vstep-chap-sub">Vật Lí Hạt Nhân</div>
                 <div class="vstep-chap-meta">
-                  <span>Tiến độ bài học:</span>
-                  <strong style="color:${isPaidUser ? '#fbbf24' : '#94a3b8'};font-weight:800;">${isPaidUser ? `${c4Done} / 5 bài (${Math.round((c4Done/5)*100)}%)` : '<i class="fa-solid fa-lock" style="font-size:11px;"></i> Khóa · Cần Gói Pro'}</strong>
+                  <span>Tiến độ:</span>
+                  <strong style="color:${isPaidUser ? '#fbbf24' : '#94a3b8'};font-weight:800;font-size:11.5px;">${isPaidUser ? `${c4Done}/5 (${Math.round((c4Done/5)*100)}%)` : '<i class="fa-solid fa-lock" style="font-size:10px;"></i> Khóa (Pro)'}</strong>
                 </div>
-                <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;">
-                  <div style="width:${isPaidUser ? Math.round((c4Done/5)*100) : 0}%;height:100%;background:#fbbf24;border-radius:10px;box-shadow:0 0 10px #fbbf24;"></div>
+                <div class="vstep-chap-bar-bg">
+                  <div style="width:${isPaidUser ? Math.round((c4Done/5)*100) : 0}%;height:100%;background:#fbbf24;border-radius:10px;box-shadow:0 0 8px #fbbf24;"></div>
                 </div>
               </div>
             </div>
@@ -1605,7 +1630,7 @@ function renderPage(profile, lb, nvRes, baihocRows) {
         </div>
       </div>
 
-      <!-- CỘT 2 (PHẢI): TRUNG TÂM NĂNG LỰC & BẢN ĐỒ MẠNG NHỆN HIỂN THỊ TRỰC TIẾP -->
+        <!-- CỘT 2 (PHẢI): TRUNG TÂM NĂNG LỰC & BẢN ĐỒ MẠNG NHỆN HIỂN THỊ TRỰC TIẾP -->
       <div class="vstep-col-right">
         <div class="section-card" id="radar-section-container" style="margin-bottom:18px;">
           <!-- Bản đồ mạng nhện SVG 6 trục được render trực tiếp tại đây! -->

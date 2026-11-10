@@ -80,18 +80,84 @@ function vlxtLocalDoneCount(sdt){
 
 // Render widget — inline nếu có #vlxt-nav-user-area, fixed nếu không
 function vlxtRenderWidget(user){
-  if(!user) return;
-  // Trong phòng thi thử CBT (thithu.html), không hiện widget nổi để học sinh tập trung tối đa làm bài
-  if(window.location.pathname.includes('thithu.html')) return;
-  const ex=document.getElementById('vlxt-user-widget');
+  // Trong phòng thi thử CBT (thithu.html, phong-thi-thu.html), không hiện widget nổi để học sinh tập trung tối đa làm bài
+  if(window.location.pathname.includes('thithu.html') || window.location.pathname.includes('phong-thi-thu.html')) return;
+  const ex = document.getElementById('vlxt-user-widget');
   if(ex) ex.remove();
 
-  const initials=(user.hoten||'HS').split(' ').map(w=>w[0]).slice(-2).join('').toUpperCase();
-  const words=(user.hoten||'Học sinh').trim().split(/\s+/);
-  const shortName=words.slice(-2).join(' ');
-  const navArea=document.getElementById('vlxt-nav-user-area');
-  const widget=document.createElement('div');
-  widget.id='vlxt-user-widget';
+  const navArea = document.getElementById('vlxt-nav-user-area');
+  const isValidUser = Boolean(user && user.sdt && user.sdt !== 'FREE');
+
+  // Nếu là KHÁCH (chưa đăng nhập)
+  if(!isValidUser) {
+    if(!navArea) return; // Nếu không có navArea thì không làm gì
+    navArea.innerHTML = '';
+    const guestWidget = document.createElement('div');
+    guestWidget.id = 'vlxt-user-widget';
+    guestWidget.style.position = 'relative';
+
+    const guestCSS = `
+      .vlxt-pill-btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.14) !important;
+        padding: 5px 14px !important;
+        border-radius: 100px !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        color: #e2e8f0 !important;
+        cursor: pointer !important;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        user-select: none !important;
+      }
+      .vlxt-pill-btn:hover {
+        background: rgba(16, 185, 129, 0.1) !important;
+        border-color: rgba(16, 185, 129, 0.4) !important;
+        color: #ffffff !important;
+        box-shadow: 0 0 14px rgba(16, 185, 129, 0.25) !important;
+      }
+      .vlxt-dot-neon {
+        width: 8px !important;
+        height: 8px !important;
+        border-radius: 50% !important;
+        flex-shrink: 0 !important;
+        display: inline-block !important;
+      }
+      .vlxt-dot-neon.green {
+        background: #10b981 !important;
+        box-shadow: 0 0 8px #10b981, 0 0 12px rgba(16, 185, 129, 0.5) !important;
+        animation: vlxtDotPulse 2s infinite !important;
+      }
+      @keyframes vlxtDotPulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.6; transform: scale(1.15); }
+      }
+      .vlxt-pill-name {
+        font-size: 13px !important;
+        font-weight: 600 !important;
+        color: #e2e8f0 !important;
+        white-space: nowrap !important;
+      }
+    `;
+
+    guestWidget.innerHTML = `
+      <style>${guestCSS}</style>
+      <div id="vlxt-avatar-btn" class="vlxt-pill-btn guest" onclick="vlxtHandleGuestClick(event)">
+        <span class="vlxt-dot-neon green"></span>
+        <span class="vlxt-pill-name">Khách trải nghiệm</span>
+      </div>
+    `;
+    navArea.appendChild(guestWidget);
+    return;
+  }
+
+  // Nếu ĐÃ ĐĂNG NHẬP
+  const words = (user.hoten || 'Học sinh').trim().split(/\s+/);
+  const shortName = words.slice(-2).join(' ');
+  const widget = document.createElement('div');
+  widget.id = 'vlxt-user-widget';
 
   // VIP badge
   const loaiTK = user.loaiTK || 'vip';
@@ -105,15 +171,15 @@ function vlxtRenderWidget(user){
     (loaiTK === 'vip' && daysLeft > 8) ||
     (typeof localStorage !== 'undefined' && localStorage.getItem('vlxt_is_paid') === 'true')
   );
-  const vipBadge = loaiTK === 'premium' ? '<span style="font-size:10px;font-weight:800;background:rgba(124,58,237,.25);color:#c4b5fd;padding:1px 6px;border-radius:4px;margin-left:4px">💎 VIP</span>'
-    : isPaidLocal ? '<span style="font-size:10px;font-weight:800;background:rgba(16,185,129,.22);color:#34d399;padding:1px 6px;border-radius:4px;margin-left:4px">👑 PRO</span>'
-    : (loaiTK === 'vip' && msLeft > 0) ? `<span style="font-size:10px;font-weight:800;background:rgba(217,119,6,.2);color:#d97706;padding:1px 6px;border-radius:4px;margin-left:4px">⭐ ${daysLeft}d</span>`
-    : '<span style="font-size:10px;font-weight:700;background:rgba(107,114,128,.15);color:#888;padding:1px 6px;border-radius:4px;margin-left:4px">Free</span>';
+  const vipBadge = loaiTK === 'premium' ? '<span class="vlxt-pill-badge pro">💎 VIP</span>'
+    : isPaidLocal ? '<span class="vlxt-pill-badge pro">👑 PRO</span>'
+    : (loaiTK === 'vip' && msLeft > 0) ? `<span class="vlxt-pill-badge pro">⭐ ${daysLeft}d</span>`
+    : '<span class="vlxt-pill-badge free">Free</span>';
 
-  // Số bài từ localStorage — hiện ngay, không cần chờ GAS
+  // Số bài từ localStorage
   const localDone = vlxtLocalDoneCount(user.sdt);
 
-  const ddCSS=[
+  const ddCSS = [
     '#vlxt-dropdown{display:none;position:absolute;top:calc(100% + 8px);right:0;',
     'background:#0f172a;border:1px solid rgba(0,240,255,0.25);border-radius:14px;',
     'padding:14px;min-width:230px;max-width:280px;box-shadow:0 12px 36px rgba(0,0,0,0.75);',
@@ -137,12 +203,10 @@ function vlxtRenderWidget(user){
     '@media(max-width:600px){#vlxt-dropdown{right:0;left:auto;min-width:220px;max-width:92vw;}}'
   ].join('');
 
-  // Nhãn nút đổi giao diện, đọc trạng thái dark hiện tại của trang (đã được set từ
-  // sớm bởi script chống nháy màn hình ở đầu mỗi trang) để hiển thị đúng ngay từ đầu.
   var _isDarkNow = document.body.classList.contains('dark');
   var _themeLabel = _isDarkNow ? '☀️ Chuyển sang giao diện sáng' : '🌙 Chuyển sang giao diện tối';
 
-  const ddHTML='<div id="vlxt-dropdown">'
+  const ddHTML = '<div id="vlxt-dropdown">'
     +'<div class="vlxt-user-name"><span>'+user.hoten+'</span>'+vipBadge+'</div>'
     +'<div class="vlxt-user-meta">Lớp '+(user.lop || '12')+' · '+(user.sdt || '')+'</div>'
     +'<div class="vlxt-stats">'
@@ -159,48 +223,44 @@ function vlxtRenderWidget(user){
     +'</div>';
 
   if(navArea){
-    navArea.innerHTML = ''; // Dọn sạch fallback đăng nhập
-    var inlineCSS=[
+    navArea.innerHTML = '';
+    var inlineCSS = [
       '#vlxt-user-widget{position:relative;font-family:\'Inter\',system-ui,sans-serif;}',
-      '#vlxt-avatar-btn{display:flex;align-items:center;gap:8px;padding:5px 12px 5px 6px;background:rgba(0,114,255,0.08);border:1.5px solid rgba(0,114,255,0.25);border-radius:50px;cursor:pointer;user-select:none;transition:all 0.15s;}',
-      '#vlxt-avatar-btn:hover{background:rgba(0,114,255,0.15);border-color:rgba(0,114,255,0.5);}',
-      '#vlxt-avatar-circle{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#0072ff,#00c6ff);color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}',
-      // Mac dinh la chu TOI (vi da so trang co nen SANG khi chua bat dark mode) —
-      // truoc day mac dinh la mau sang (#e6edf3) => chu 'trang mo' tren nen sang,
-      // gan nhu khong doc duoc o moi trang (tru index.html co gan san thuoc tinh
-      // data-vlxt-nav="light" de vá rieng). Gio sua tan goc: mac dinh toi, dark mode
-      // (body.dark) moi chuyen sang sang, ap dung dung cho TAT CA cac trang.
-      '#vlxt-avatar-name{font-size:13px;font-weight:600;color:#0f0f0f;white-space:nowrap;}',
-      '#vlxt-nav-user-area[data-vlxt-nav="light"] #vlxt-avatar-name{color:#0f0f0f;}',
-      'body.dark #vlxt-avatar-btn{background:linear-gradient(135deg,rgba(0,114,255,0.2),rgba(0,240,255,0.1));border-color:rgba(0,240,255,0.4);}',
-      'body.dark #vlxt-avatar-name{color:#e6edf3!important;}',
+      '.vlxt-pill-btn{display:inline-flex!important;align-items:center!important;gap:8px!important;',
+      'background:rgba(255,255,255,0.05)!important;border:1px solid rgba(255,255,255,0.14)!important;',
+      'padding:5px 14px!important;border-radius:100px!important;font-size:13px!important;font-weight:600!important;',
+      'color:#f1f5f9!important;cursor:pointer!important;transition:all 0.2s cubic-bezier(0.4,0,0.2,1)!important;',
+      'user-select:none!important;}',
+      '.vlxt-pill-btn:hover{background:rgba(16,185,129,0.1)!important;border-color:rgba(16,185,129,0.4)!important;',
+      'color:#fff!important;box-shadow:0 0 14px rgba(16,185,129,0.25)!important;}',
+      '.vlxt-dot-neon{width:8px!important;height:8px!important;border-radius:50%!important;flex-shrink:0!important;display:inline-block!important;}',
+      '.vlxt-dot-neon.green{background:#10b981!important;box-shadow:0 0 8px #10b981,0 0 12px rgba(16,185,129,0.5)!important;animation:vlxtDotPulse 2s infinite!important;}',
+      '@keyframes vlxtDotPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.6;transform:scale(1.15);}}',
+      '.vlxt-pill-name{font-size:13px!important;font-weight:600!important;color:#f1f5f9!important;white-space:nowrap!important;}',
+      '.vlxt-pill-badge{font-size:10.5px!important;font-weight:800!important;padding:1px 6px!important;border-radius:4px!important;}',
+      '.vlxt-pill-badge.free{background:rgba(255,255,255,0.1)!important;color:#94a3b8!important;}',
+      '.vlxt-pill-badge.pro{background:rgba(245,158,11,0.2)!important;color:#fbbf24!important;border:1px solid rgba(245,158,11,0.4)!important;}',
+      '.vlxt-pill-chevron{font-size:10px!important;color:#94a3b8!important;margin-left:2px!important;}',
       ddCSS
     ].join('');
-    widget.innerHTML='<style>'+inlineCSS+'</style>'
-      +'<div id="vlxt-avatar-btn" onclick="vlxtToggleDropdown()">'
-      +'<div id="vlxt-avatar-circle">'+initials+'</div>'
-      +'<span id="vlxt-avatar-name">'+shortName+vipBadge+'</span>'
-      +'</div>'+ddHTML;
+
+    widget.innerHTML = '<style>' + inlineCSS + '</style>'
+      + '<div id="vlxt-avatar-btn" class="vlxt-pill-btn" onclick="vlxtToggleDropdown(event)">'
+      + '<span class="vlxt-dot-neon green"></span>'
+      + '<span class="vlxt-pill-name">' + shortName + '</span>'
+      + vipBadge
+      + '<i class="fa-solid fa-chevron-down vlxt-pill-chevron"></i>'
+      + '</div>' + ddHTML;
     navArea.appendChild(widget);
+
     if(isPaidLocal){
       document.querySelectorAll('a.nav-item-pro, .nav-item-pro').forEach(function(el){
         el.innerHTML = '👑 Gói Pro <span class="nav-pro-badge" style="background:rgba(16,185,129,0.22);color:#34d399;border:1px solid rgba(16,185,129,0.45)">ĐANG BẬT</span>';
       });
     }
   } else {
-    var fixedCSS=[
-      '#vlxt-user-widget{position:fixed;top:72px;right:16px;z-index:99999;font-family:\'Inter\',system-ui,sans-serif;}',
-      '#vlxt-avatar-btn{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#0072ff,#00f0ff);',
-      'border:2px solid rgba(0,240,255,0.4);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;',
-      'display:flex;align-items:center;justify-content:center;',
-      'box-shadow:0 3px 14px rgba(0,114,255,0.35);transition:transform 0.15s;user-select:none;}',
-      '#vlxt-avatar-btn:hover{transform:scale(1.08);}',
-      ddCSS
-    ].join('');
-    widget.innerHTML='<style>'+fixedCSS+'</style>'
-      +'<div id="vlxt-avatar-btn" onclick="vlxtToggleDropdown()" title="'+user.hoten+'">'+initials+'</div>'
-      +ddHTML;
-    document.body.appendChild(widget);
+    // Nếu không có navArea, không render widget nổi đè lên màn hình nữa
+    return;
   }
 
   // Cập nhật LP từ GAS qua POST body (async, không chặn render, không lộ token trên URL)
@@ -282,9 +342,21 @@ function vlxtRenderWidget(user){
   }
 }
 
-document.addEventListener('DOMContentLoaded',function(){
-  var user=vlxtGetUser();
-  if(user&&!document.getElementById('vlxt-user-widget')) vlxtRenderWidget(user);
+// Click khi là Khách trải nghiệm
+window.vlxtHandleGuestClick = function(e) {
+  if (e) e.stopPropagation();
+  if (typeof vlxtShowLoginModal === 'function') {
+    vlxtShowLoginModal();
+  } else {
+    var g = document.getElementById('gate');
+    if (g) g.style.display = 'flex';
+    else window.location.href = 'login.html';
+  }
+};
+
+document.addEventListener('DOMContentLoaded', function(){
+  var user = vlxtGetUser();
+  if(!document.getElementById('vlxt-user-widget')) vlxtRenderWidget(user);
 });
 
 
@@ -385,3 +457,6 @@ function vlxtEnsureGlobalDrawer() {
 document.addEventListener('DOMContentLoaded', function() {
   setTimeout(vlxtEnsureGlobalDrawer, 50);
 });
+
+window.vlxtRenderWidget = vlxtRenderWidget;
+window.vlxtToggleDropdown = vlxtToggleDropdown;
