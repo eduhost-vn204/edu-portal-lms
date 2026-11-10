@@ -1,3 +1,32 @@
+## Bàn giao gần nhất (10/11/2026 18:08)
+- **Commit**: `de04890` (trên `main` production) — *fix(nav-auth): dong bo widget vien thuoc cham xanh la auth.js va bo tri tien do 4 chuong grid 2x2 can doi khong khuat*
+- **Phạm vi hoàn tất (2 Hạng mục trọng tâm theo chỉ đạo chi tiết của Thầy)**:
+  1. **Đồng bộ Widget Tài Khoản Navbar chuẩn Viên Thuốc Nền Tối + Chấm Xanh Lá (`auth.js`)**:
+     - *Hiện tượng Thầy chỉ ra (Ảnh 2 & 3)*: Trên thanh navbar trang chủ và toàn hệ thống, widget tài khoản vẫn bị hiện nút avatar hình tròn màu xanh dương cũ (`#0072ff -> #00f0ff`) và bị lặp text `sgdgdfg PRO` bên dưới. Trong khi Thầy yêu cầu phải mang phong cách thẻ cứng khách trải nghiệm với **chấm tròn xanh lá cây** (`●`) phát sáng.
+     - *Nguyên nhân kỹ thuật*: Nhánh `main` của production trước đó chưa được cập nhật file `auth.js` mới nhất.
+     - *Khắc phục triệt để*:
+       + Đồng bộ 100% `auth.js` chuẩn sang nhánh `main` production: Thiết kế dạng Viên thuốc (Capsule Pill `border-radius: 100px;`) nền tối mờ `rgba(255, 255, 255, 0.05)`, viền `rgba(255, 255, 255, 0.14)`.
+       + BÊN TRÁI: **Chấm tròn xanh lá cây lục bảo (`#10b981`)** phát sáng nhịp tim (`vlxt-dot-neon green`).
+       + Ở GIỮA: Tên học sinh màu trắng sáng rõ nét.
+       + BÊN PHẢI: Badge đẳng cấp `👑 PRO` / `★ 7d` / `Free` kèm icon chevron-down `⌄`.
+       + Triệt tiêu hoàn toàn nút xanh dương cũ và dòng text lặp bên dưới.
+       + Bump version `auth.js?v=20261110q` trên tất cả 8 file HTML để ép trình duyệt và CDN GitHub Pages nạp ngay tức thì bản mới.
+  2. **Tối ưu Bố Cục Tiến Độ 4 Chương — Grid 2x2 Cân Đối Vàng 1:1 Với Radar Chart Không Bao Giờ Bị Che Khuất (`hoso.html`)**:
+     - *Hiện tượng Thầy chỉ ra (Ảnh 1)*: Xếp 4 hàng dọc làm cột bên trái bị kéo dài thượt xuống dưới, gây mất cân đối chiều cao so với Radar Chart cột phải. Bố trí dạng ô Grid 2x2 như trước nhìn cân đối và đẹp hơn rất nhiều, nhưng cần xử lý để không bị che khuất chữ.
+     - *Giải pháp thiết kế Grid 2x2 hoàn mỹ*:
+       + Tăng chiều rộng cột trái từ `460px` lên `480px` (`grid-template-columns: 480px 1fr;`), tạo không gian rộng rãi cho mỗi ô grid 2x2 (~220px/ô).
+       + Thiết kế phân cấp 4 tầng thông minh trong từng ô `.vstep-chap-card`:
+         * Tầng 1: Icon tròn chuyên đề + Tên rút gọn sắc bén (`C1: Nhiệt`, `C2: Khí`, `C3: Từ Trường`, `C4: Hạt Nhân`) + Badge nhỏ gọn (`Miễn phí`, `Đã mở`, `Gói Pro`).
+         * Tầng 2: Dòng phụ chú chuyên đề rõ ràng (`Vật Lí Nhiệt`, `Khí Lí Tưởng`, `Từ Trường & Cảm Ứng`, `Vật Lí Hạt Nhân`).
+         * Tầng 3: Dòng tiến độ hiển thị trọn vẹn số bài và %: `Tiến độ: 0 / 6 (0%)`, `0 / 7 (0%)`, `Khóa (Pro)`. Loại bỏ hoàn toàn `nowrap/ellipsis` gây cắt chữ!
+         * Tầng 4: Thanh progress bar neon phát sáng.
+       + Tổng chiều cao khối trái khớp cân đối chuẩn 1:1 với Radar Chart bên phải, giao diện sang trọng, thoáng đãng, không một chữ nào bị che khuất.
+- **Kiểm định chất lượng**:
+  - `node scratch/verify_hoso_syntax.js`: PASS 100% (Cú pháp JS 4 script blocks hợp lệ, thẻ `</html>` kết thúc chuẩn).
+  - `node test_cro_funnel.mjs`: PASS 100%.
+  - `node test_diagnostic_mastery_loop.mjs`: PASS 100%.
+- **Trạng thái triển khai**: Đã commit và push nhánh `main` lên GitHub, GitHub Actions tự động deploy lên `https://vatlyxuantruong.io.vn`.
+
 ## Bàn giao gần nhất (10/11/2026 17:58)
 - **Commit**: `d46a4a7` (trên `main` production) / `bc15887` (trên `feature/arena`) — *fix(hoso): render radar chart 0ms, nut xanh la luc bao tren banner va danh sach tien do 4 chuong full-width*
 - **Phạm vi hoàn tất (3 Hạng mục trọng tâm theo chỉ đạo sát sao của Thầy)**:
