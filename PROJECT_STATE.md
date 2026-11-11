@@ -1,3 +1,30 @@
+## Bàn giao gần nhất (11/11/2026 07:30)
+- **Commit**: Khôi Phục & Tối Ưu Pop-Up 2 Tầng Cho Khách Trải Nghiệm Trên index.html & Triệt Tiêu 100% AI Glow
+- **Phạm vi hoàn tất (3 Hạng mục nghiêm ngặt theo yêu cầu của Thầy)**:
+  1. **Khôi phục thẻ nhúng Smart Marketing Pop-up trên `index.html`**:
+     - Gắn lại thẻ `<script src="smart-marketing-popup.js?v=20261111a"></script>` ngay trước thẻ đóng `</body>` của `index.html`.
+     - Đảm bảo thẻ đóng `</html>` nguyên vẹn ở cuối file.
+  2. **Tối ưu hóa logic 2 tầng thông minh & Quản lý phiên cho Khách trải nghiệm (`smart-marketing-popup.js`)**:
+     - *Kiểm tra kết quả test thực tế*: Chỉ coi là đã test nếu trong `localStorage` thực sự có dữ liệu kết quả đã nộp (`localStorage.getItem('vlxt_dgnl_latest_result')`). Không còn lưu cứng `hasTakenTest` vào `localStorage` khi học sinh chỉ mới click nút bắt đầu.
+     - *Quản lý phiên khách trải nghiệm*: Sử dụng `sessionStorage` (key `vlxt_popup_session_guest`), hỗ trợ tham số `?reset_popup=1` và `?welcome=1` để reset và chạy lại luồng chuẩn.
+     - *Độ trễ 3000ms tính sau Preloader*: Tích hợp `waitForPreloaderThen()` lắng nghe Preloader (`#vlxt-preloader`) kết thúc (khi chuyển sang `fade-out` / `display: none`), sau đó đợi đúng 3000ms để học sinh chiêm ngưỡng giao diện vũ trụ 3D rồi mới kích hoạt Pop-up 1.
+     - *Luồng tuần tự 2 tầng*:
+       + Bước 1: Hiện **Pop-up 1: Test Điểm Thi THPT & Quét Lỗ Hổng Vật Lý 12**.
+       + Bước 2: Khi học sinh bấm nút đóng `[×]` (`#vlxt-btn-close-p1`) -> Đóng Pop-up 1 và sau đúng 300ms hiện ngay **Pop-up 2: Vào Học Thử Miễn Phí Khóa Vật Lý 12 (Chương 1 & Chương 2)**.
+       + Nếu học sinh đã có kết quả test thực tế trong `localStorage`: Tự động bỏ qua Pop-up 1 và hiện thẳng Pop-up 2.
+  3. **Chuẩn hóa UI/UX — Triệt tiêu 100% hiệu ứng AI Glow (AGENTS.md)**:
+     - Đổi font-family sang `'Plus Jakarta Sans', system-ui, -apple-system, sans-serif`.
+     - Xóa sạch toàn bộ `text-shadow: 0 0 ...` trên `.vlxt-smart-title` (`text-shadow: none !important;`).
+     - Xóa sạch các quầng sáng neon `box-shadow: 0 0 ...px [color]` trên `.vlxt-smart-card`, `.vlxt-smart-badge`, `.vlxt-smart-btn-action`.
+     - Áp dụng viền sắc nét `border: 1px solid rgba(56, 189, 248, 0.35)` và bóng đổ vật lý tự nhiên `box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7)`.
+     - Giữ nguyên cơ chế nâng `#quantum-cursor-ring` lên `z-index: 2147483647` để con trỏ tàu vũ trụ bay lướt mượt mà trên mặt pop-up.
+- **Kiểm định chất lượng**:
+  - `node -c smart-marketing-popup.js`: PASS 100% (0 lỗi cú pháp).
+  - `node test_smart_marketing_popup.mjs`: PASS 100% (Tất cả 4/4 test cases kiểm thử preloader, 3s delay, Pop-up 1, [×] Pop-up 1 -> Pop-up 2 sau 300ms, guest session, và kiểm tra AI glow).
+  - `node test_cro_funnel.mjs`: PASS 100%.
+  - `node test_diagnostic_mastery_loop.mjs`: PASS 100%.
+- **Trạng thái triển khai**: Đã commit và push nhánh `main` lên GitHub, GitHub Actions tự động deploy lên `https://vatlyxuantruong.io.vn`.
+
 ## Bàn giao gần nhất (10/11/2026 18:18)
 - **Commit**: Triệt Tiêu Toàn Bộ Hiệu Ứng Sáng Mờ Mờ (AI Glow), Đồng Bộ Chấm Xanh Lá Cho Toàn Bộ Trang Web (auth.js v=20261110r) & Bổ Sung Nguyên Tắc Cấm Thiết Kế Kiểu AI Vào AGENTS.md
 - **Phạm vi hoàn tất (3 Hạng mục nghiêm ngặt theo chỉ đạo của Thầy)**:
