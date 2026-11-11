@@ -927,14 +927,14 @@
             color: #94a3b8;
         }
 
-        /* Hộp Remedial Spotlight (Vào học khắc phục ngay) */
+        /* Hộp Remedial Spotlight (Vào học khắc phục ngay) - Chuẩn EdTech Phẳng Sắc Nét */
         .remedial-box {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(11, 132, 243, 0.12) 100%);
-            border: 1px solid rgba(16, 185, 129, 0.4);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(14, 116, 144, 0.08) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.35);
             border-radius: 16px;
             padding: 24px;
             margin-bottom: 32px;
-            box-shadow: 0 0 30px rgba(16, 185, 129, 0.15);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
         }
         .remedial-badge {
             display: inline-flex;
@@ -944,8 +944,9 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            color: var(--emerald);
-            background: rgba(16, 185, 129, 0.15);
+            color: #38bdf8;
+            background: rgba(14, 116, 144, 0.2);
+            border: 1px solid rgba(56, 189, 248, 0.35);
             padding: 4px 12px;
             border-radius: 100px;
             margin-bottom: 12px;
@@ -955,37 +956,141 @@
             font-weight: 800;
             color: #fff;
             margin-bottom: 10px;
+            text-shadow: none !important;
         }
         .remedial-desc {
             font-size: 14px;
             color: #cbd5e1;
             line-height: 1.6;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         .btn-remedial-go {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
-            padding: 15px 32px;
+            padding: 14px 28px;
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: #ffffff !important;
             text-decoration: none;
             font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
-            font-size: 15.5px !important;
+            font-size: 14.5px !important;
             font-weight: 800 !important;
             letter-spacing: -0.01em !important;
             border-radius: 999px !important;
             border: 1px solid rgba(52, 211, 153, 0.45);
-            box-shadow: 0 8px 28px rgba(16, 185, 129, 0.45);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
         }
         .btn-remedial-go:hover {
             background: linear-gradient(135deg, #059669 0%, #047857 100%);
             transform: translateY(-2px);
-            box-shadow: 0 10px 36px rgba(16, 185, 129, 0.65);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
             filter: brightness(1.1);
+        }
+
+        /* Danh sách thẻ Lỗ hổng đa chuyên đề */
+        .remedial-topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 14px;
+            margin-top: 14px;
+        }
+        .remedial-topic-card {
+            background: rgba(15, 23, 42, 0.65);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            border-radius: 14px;
+            padding: 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+        .remedial-topic-card:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            transform: translateY(-2px);
+        }
+        .remedial-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .remedial-card-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14.5px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        .remedial-card-index {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+        }
+        .remedial-card-tag {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 100px;
+            letter-spacing: 0.02em;
+        }
+        .remedial-card-tag.critical {
+            background: rgba(239, 68, 68, 0.18);
+            border: 1px solid rgba(239, 68, 68, 0.45);
+            color: #fca5a5;
+        }
+        .remedial-card-tag.warning {
+            background: rgba(245, 158, 11, 0.18);
+            border: 1px solid rgba(245, 158, 11, 0.45);
+            color: #fcd34d;
+        }
+        .remedial-card-progress-wrap {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+        .remedial-card-progress-bar {
+            height: 100%;
+            border-radius: 100px;
+            transition: width 0.4s ease;
+        }
+        .btn-remedial-card-action {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 11px 16px;
+            background: rgba(16, 185, 129, 0.14);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 13.5px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .btn-remedial-card-action:hover {
+            background: rgba(16, 185, 129, 0.28);
+            border-color: #10b981;
+            transform: translateY(-1px);
         }
 
         /* Danh sách câu chữa chi tiết */
@@ -1652,8 +1757,8 @@ svg.logo-atom-icon,
             <div class="vstep-top-bar">
                 <div id="dgnl-resume-slot"></div>
                 <div class="vstep-crumb">
-                    <a href="index.html">Trang chủ</a> / 
-                    <a href="baihoc.html">Vật Lý 12</a> / 
+                    <a href="index.html">Trang chủ</a> /
+                    <a href="baihoc.html">Vật Lý 12</a> /
                     <span style="color:var(--primary);">Đánh Giá Năng Lực Toàn Diện</span>
                 </div>
                 <div>
@@ -2416,21 +2521,8 @@ svg.logo-atom-icon,
             const finalScore = ((correctTotal / questions.length) * 10).toFixed(1);
             const rawScore = Number(finalScore);
 
-            // Điểm dự kiến phản ánh trung thực bài làm: nếu làm 0 câu thì dự kiến là 0.0
-            let predScore = 0;
-            if (correctTotal === 0 || rawScore === 0) {
-                predScore = 0.0;
-            } else if (rawScore >= 9.5) {
-                predScore = 9.25;
-            } else if (rawScore >= 8.5) {
-                predScore = 8.5;
-            } else if (rawScore >= 7.0) {
-                predScore = 7.25;
-            } else if (rawScore >= 5.0) {
-                predScore = 6.0;
-            } else {
-                predScore = Number((rawScore * 0.85).toFixed(1));
-            }
+            // Điểm thi THPT dự kiến phản ánh chính xác điểm số thực tế bài làm của học sinh theo thang điểm 10
+            const predScore = rawScore;
 
             // Cập nhật UI Hero Card
             document.getElementById('rep-score-num').textContent = finalScore;
@@ -2463,6 +2555,7 @@ svg.logo-atom-icon,
                     correct: correctTotal,
                     total: questions.length,
                     tagStats: tagStats,
+                    topicStats: topicStats,
                     score10: finalScore,
                     predictedScore: predScore
                 });
@@ -2492,7 +2585,8 @@ svg.logo-atom-icon,
                     timeSpent: timeFormatted,
                     predictedScore: predScore,
                     targetScore: 8.5,
-                    tagStats: tagStats
+                    tagStats: tagStats,
+                    topicStats: topicStats
                 });
             }
 
@@ -2540,45 +2634,158 @@ svg.logo-atom-icon,
             const slotBottom = document.getElementById('remedial-bottom-spotlight-slot');
             if (!slotTop && !slotBottom) return;
 
-            let weakestTopic = 'Khí lí tưởng';
-            let maxWrong = -1;
-            Object.keys(topicStats).forEach(t => {
-                const wrong = topicStats[t].total - topicStats[t].correct;
-                if (wrong > maxWrong) {
-                    maxWrong = wrong;
-                    weakestTopic = t;
+            // 4 chuyên đề chuẩn theo ma trận đề thi Vật Lý 12
+            const standardTopics = [
+                {
+                    key: 'B04e20f0ec67d',
+                    code: 'B2',
+                    name: 'B2. Lực liên kết và sự chuyển thể của chất',
+                    topic: 'Vật lí nhiệt',
+                    chapter: 'Chương 1: Vật lí nhiệt',
+                    matchKeyword: 'nhiệt',
+                    icon: 'fa-temperature-high',
+                    accentColor: '#f97316'
+                },
+                {
+                    key: 'B4ca24b64572f',
+                    code: 'B11',
+                    name: 'B11. Định luật Boyle – Quá trình đẳng nhiệt',
+                    topic: 'Khí lí tưởng',
+                    chapter: 'Chương 2: Khí lí tưởng',
+                    matchKeyword: 'khí',
+                    icon: 'fa-wind',
+                    accentColor: '#06b6d4'
+                },
+                {
+                    key: 'Bc71adbcb4dce',
+                    code: 'B22',
+                    name: 'B22. Cảm ứng từ - Lực từ',
+                    topic: 'Từ trường',
+                    chapter: 'Chương 3: Từ trường',
+                    matchKeyword: 'từ trường',
+                    icon: 'fa-magnet',
+                    accentColor: '#8b5cf6'
+                },
+                {
+                    key: 'B600c414815cd',
+                    code: 'B32',
+                    name: 'B32. Năng lượng liên kết hạt nhân',
+                    topic: 'Vật lí hạt nhân',
+                    chapter: 'Chương 4: Vật lí hạt nhân',
+                    matchKeyword: 'hạt nhân',
+                    icon: 'fa-atom',
+                    accentColor: '#ec4899'
+                }
+            ];
+
+            // Phân tích kết quả thực tế trên từng chuyên đề
+            const weakList = [];
+            standardTopics.forEach(st => {
+                let foundTopicKey = Object.keys(topicStats).find(k => k.toLowerCase().includes(st.matchKeyword));
+                let stat = foundTopicKey ? topicStats[foundTopicKey] : { total: 5, correct: 0 };
+                let totalQ = stat.total || 5;
+                let correctQ = stat.correct || 0;
+                let wrongQ = totalQ - correctQ;
+                let pct = totalQ > 0 ? Math.round((correctQ / totalQ) * 100) : 0;
+
+                // Tìm bài học tương ứng trong allLessons nếu có để lấy tên chính xác
+                let actualLesson = (allLessons && allLessons.length > 0)
+                    ? allLessons.find(l => l.MaBai === st.key || (l.TenBai && l.TenBai.toLowerCase().includes(st.matchKeyword)))
+                    : null;
+                let lessonKey = actualLesson ? actualLesson.MaBai : st.key;
+                let lessonName = actualLesson ? actualLesson.TenBai : st.name;
+
+                if (wrongQ > 0) {
+                    weakList.push({
+                        ...st,
+                        total: totalQ,
+                        correct: correctQ,
+                        wrong: wrongQ,
+                        pct: pct,
+                        lessonKey: lessonKey,
+                        lessonName: lessonName
+                    });
                 }
             });
 
-            let targetLesson = null;
-            const topicLower = weakestTopic.toLowerCase();
-            if (topicLower.includes('nhiệt')) {
-                targetLesson = allLessons.find(l => l.MaBai === 'B04e20f0ec67d' || (l.TenBai && l.TenBai.includes('LỰC LIÊN KẾT')));
-            } else if (topicLower.includes('khí')) {
-                targetLesson = allLessons.find(l => l.MaBai === 'B4ca24b64572f' || (l.TenBai && l.TenBai.includes('BOYLE')));
-            } else if (topicLower.includes('từ trường')) {
-                targetLesson = allLessons.find(l => l.MaBai === 'Bc71adbcb4dce' || (l.TenBai && l.TenBai.includes('CẢM ỨNG TỪ')));
-            } else if (topicLower.includes('hạt nhân')) {
-                targetLesson = allLessons.find(l => l.MaBai === 'B600c414815cd' || (l.TenBai && l.TenBai.includes('NĂNG LƯỢNG LIÊN KẾT')));
+            // Sắp xếp chuyên đề sai nhiều nhất lên trước; nếu bằng nhau thì giữ thứ tự chương trình
+            weakList.sort((a, b) => b.wrong - a.wrong);
+
+            let remedialHTML = '';
+
+            // Trường hợp xuất sắc: 20/20 câu không sai câu nào
+            if (weakList.length === 0) {
+                remedialHTML = `
+                    <div class="remedial-box" style="border-color:rgba(16,185,129,0.4);background:rgba(16,185,129,0.06);">
+                        <div class="remedial-badge" style="background:rgba(16,185,129,0.18);color:#34d399;"><i class="fa-solid fa-crown"></i> THÀNH TỰU XUẤT SẮC · KHÔNG CÓ LỖ HỔNG</div>
+                        <h3 class="remedial-title" style="color:#ffffff;">🎉 Em Đã Làm Chủ Trọn Vẹn 4 Chuyên Đề Vật Lý 12!</h3>
+                        <p class="remedial-desc">
+                            Bài làm đạt độ chính xác tuyệt đối 20/20 câu trên cả 4 chuyên đề (Nhiệt, Khí, Từ trường, Hạt nhân).
+                            Không phát hiện lỗ hổng kiến thức nào! Em hãy tiếp tục rèn luyện kỹ năng phòng thi tại Phòng Khảo Thí Chuẩn Bộ.
+                        </p>
+                        <a href="phong-thi-thu.html" class="btn-remedial-go" style="background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%);border-color:rgba(56,189,248,0.4);">
+                            <i class="fa-solid fa-graduation-cap" style="font-size:17px;color:#a5f3fc"></i> Vào Phòng Thi Thử Chuẩn Bộ GD&amp;ĐT (Miễn Phí) <i class="fa-solid fa-arrow-right" style="font-size:14px"></i>
+                        </a>
+                    </div>
+                `;
+            } else {
+                const countWeak = weakList.length;
+                const summaryNames = weakList.map(w => `<strong style="color:#38bdf8">${w.topic}</strong> (sai ${w.wrong}/${w.total} câu)`).join(', ');
+
+                remedialHTML = `
+                    <div class="remedial-box">
+                        <div class="remedial-badge"><i class="fa-solid fa-bullseye"></i> LỘ TRÌNH KHẮC PHỤC CẤP TỐC TỪ THẦY</div>
+                        <h3 class="remedial-title">
+                            ${countWeak === 1
+                                ? `🎯 Lỗ Hổng Kiến Thức Của Em: <span style="color:#38bdf8;">${weakList[0].topic}</span> (Sai ${weakList[0].wrong}/${weakList[0].total} câu)`
+                                : `🎯 Phát Hiện <span style="color:#38bdf8;">${countWeak} Lỗ Hổng Kiến Thức</span> Cần Khắc Phục Cấp Tốc`}
+                        </h3>
+                        <p class="remedial-desc">
+                            Dữ liệu bài làm cho thấy em bị mất điểm ở <strong>${countWeak} chuyên đề trọng tâm</strong>: ${summaryNames}.
+                            Thầy đã chuẩn bị sẵn bài học trọng tâm tương ứng để em lấp kín từng lỗ hổng bản chất qua <strong>Video bài giảng + Mô phỏng 3D</strong>.
+                            Sau khi học xong mỗi bài, em sẽ làm ngay <strong>Đề B kiểm chứng tiến bộ</strong> để tự tin lấy trọn điểm!
+                        </p>
+
+                        <!-- DANH SÁCH CHI TIẾT TẤT CẢ CÁC CHUYÊN ĐỀ BỊ HỔNG -->
+                        <div class="remedial-topics-grid">
+                            ${weakList.map((w, idx) => `
+                                <div class="remedial-topic-card">
+                                    <div class="remedial-card-header">
+                                        <div class="remedial-card-title">
+                                            <span class="remedial-card-index">${idx + 1}</span>
+                                            <i class="fa-solid ${w.icon}" style="color:${w.accentColor};font-size:16px;"></i>
+                                            <span>${w.chapter}</span>
+                                        </div>
+                                        <span class="remedial-card-tag ${w.pct === 0 ? 'critical' : 'warning'}">
+                                            ${w.pct === 0 ? 'Hổng 100% · Sai ' + w.wrong + '/' + w.total : 'Sai ' + w.wrong + '/' + w.total + ' câu (' + (100 - w.pct) + '% hổng)'}
+                                        </span>
+                                    </div>
+                                    <div class="remedial-card-progress-wrap">
+                                        <div class="remedial-card-progress-bar" style="width:${w.pct}%;background:${w.pct === 0 ? '#ef4444' : (w.pct < 50 ? '#f59e0b' : '#38bdf8')};"></div>
+                                    </div>
+                                    <div class="remedial-card-action">
+                                        <button type="button" class="btn-remedial-card-action" onclick="goToRemedialLesson('${w.lessonKey}', '${w.topic}')">
+                                            <i class="fa-solid fa-circle-play" style="font-size:16px;color:#a7f3d0"></i>
+                                            <span>Khắc phục ngay: <strong>${w.lessonName}</strong></span>
+                                            <i class="fa-solid fa-arrow-right" style="font-size:13px"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        ${countWeak > 1 ? `
+                            <div style="margin-top:20px;text-align:center;">
+                                <button type="button" class="btn-remedial-go" onclick="goToRemedialLesson('${weakList[0].lessonKey}', '${weakList[0].topic}')">
+                                    <i class="fa-solid fa-bolt" style="font-size:16px;color:#fbbf24"></i>
+                                    <span>Bắt Đầu Khắc Phục Lỗ Hổng Đầu Tiên: <strong>${weakList[0].lessonName}</strong></span>
+                                    <i class="fa-solid fa-arrow-right" style="font-size:14px"></i>
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
             }
-
-            const lessonKey = targetLesson ? targetLesson.MaBai : 'B04e20f0ec67d';
-            const lessonName = targetLesson ? targetLesson.TenBai : 'Bài 2: Lực liên kết và sự chuyển thể của chất';
-
-            const remedialHTML = `
-                <div class="remedial-box">
-                    <div class="remedial-badge"><i class="fa-solid fa-bullseye"></i> LỘ TRÌNH KHẮC PHỤC CẤP TỐC TỪ THẦY</div>
-                    <h3 class="remedial-title">Lỗ Hổng Lớn Nhất Của Em: <span style="color:var(--primary);">${weakestTopic}</span></h3>
-                    <p class="remedial-desc">
-                        Bài làm cho thấy em mất điểm nhiều nhất ở chuyên đề <strong>${weakestTopic}</strong> (${maxWrong > 0 ? `sai ${maxWrong} câu` : 'chưa đạt điểm tối đa'}). 
-                        Thầy đã mở khóa riêng bài học trọng tâm này để em làm chủ bản chất qua <strong>Video bài giảng + Mô phỏng 3D</strong>. 
-                        Sau khi học xong, em sẽ làm ngay <strong>Đề B kiểm chứng tiến bộ</strong> để tự tin lấy trọn điểm!
-                    </p>
-                    <button type="button" class="btn-remedial-go" onclick="goToRemedialLesson('${lessonKey}', '${weakestTopic}')">
-                        <i class="fa-solid fa-circle-play" style="font-size:17px;color:#a7f3d0"></i> Vào Học Bài Khắc Phục Ngay (Miễn Phí): <span style="font-weight:900;text-decoration:underline;text-underline-offset:3px">${lessonName}</span> <i class="fa-solid fa-arrow-right" style="font-size:14px"></i>
-                    </button>
-                </div>
-            `;
 
             if (slotTop) slotTop.innerHTML = remedialHTML;
             if (slotBottom) slotBottom.innerHTML = remedialHTML;

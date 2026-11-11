@@ -1,3 +1,30 @@
+## Bàn giao gần nhất (11/11/2026 09:15)
+- **Commit**: Khắc Phục Triệt Để Sai Lệch Điểm Thi THPT Dự Kiến & Hiển Thị Đầy Đủ Đa Lỗ Hổng Kiến Thức (Từ Trường & Hạt Nhân)
+- **Phạm vi hoàn tất (2 Vấn đề trọng tâm do Thầy chỉ ra)**:
+  1. **Khắc phục triệt để sai lệch giữa Điểm thi thực tế và Điểm thi dự kiến (`danh-gia-nang-luc.html` & `freemium-flow.js`)**:
+     - *Hiện tượng Thầy phát hiện*: Làm đúng 10/20 câu (5.0 điểm), nhưng Điểm thi thử THPT Quốc gia dự kiến lại nhảy lên 6.0 điểm (`6/10`).
+     - *Nguyên nhân kỹ thuật*: Bảng ánh xạ cũ hardcode điều kiện `else if (rawScore >= 5.0) predictedScore = 6.0;` khiến điểm thi dự kiến bị nhảy bậc tùy tiện, làm sai lệch điểm số thực tế.
+     - *Giải pháp triệt để*: Điểm thi THPT dự kiến phản ánh chính xác và trung thực 100% điểm số thực tế theo thang 10 của bài test: `predictedScore = Number(((correct / total) * 10).toFixed(1));`. Làm đúng 10/20 câu -> Điểm thực tế: `5.0 / 10`, Điểm thi THPT dự kiến: `5.0 / 10`. Đồng bộ hoàn toàn trên cả Hero Card (`rep-pred-score`), Báo Cáo Chẩn Đoán Bước 4 (`<DiagnosticReportCard />`), `saveZeroFrictionProgress` và `vlxt_dgnl_latest_result`.
+  2. **Nhận diện và hiển thị đầy đủ TẤT CẢ các lỗ hổng kiến thức thay vì chỉ 1 chuyên đề (`danh-gia-nang-luc.html` & `freemium-flow.js`)**:
+     - *Hiện tượng Thầy phát hiện*: Bỏ cả Chương 3 (Từ trường - sai 5/5 câu) và Chương 4 (Hạt nhân - sai 5/5 câu), nhưng hệ thống chỉ nói "Lỗ hổng lớn nhất của em: Từ trường" và giấu tiệt lỗ hổng Hạt nhân.
+     - *Nguyên nhân kỹ thuật*: Hàm `renderRemedialSpotlight` trước đây chỉ dùng `if (wrong > maxWrong)` để tìm 1 chuyên đề duy nhất. Khi cả 2 chuyên đề đều sai 5 câu thì chuyên đề duyệt sau (Hạt nhân) bị bỏ qua hoàn toàn.
+     - *Giải pháp nâng cấp toàn diện*:
+       + Phân tích toàn bộ 4 chuyên đề theo ma trận: Quét tất cả chuyên đề có câu sai (`wrong > 0`).
+       + Tự động sắp xếp chuyên đề sai nhiều nhất lên đầu; nếu số câu sai bằng nhau thì xếp theo trình tự chương trình (Nhiệt -> Khí -> Từ trường -> Hạt nhân).
+       + Hiển thị tiêu đề chuẩn xác: `🎯 Phát Hiện 2 Lỗ Hổng Kiến Thức Cần Khắc Phục Cấp Tốc` (hoặc N lỗ hổng tương ứng).
+       + Đoạn mô tả chân tình, sư phạm nêu đích danh tất cả các chuyên đề bị hổng: `Từ trường (sai 5/5 câu), Vật lí hạt nhân (sai 5/5 câu)`.
+       + **Lưới các thẻ chuyên đề bị hổng (`.remedial-topics-grid`)**: Mỗi chuyên đề bị hổng có 1 card riêng biệt, sắc nét, phẳng, chuẩn EdTech (TUYỆT ĐỐI CẤM AI GLOW), có thanh tiến độ thể hiện mức độ hổng và nút CTA trực tiếp:
+         * Nút 1: `Khắc phục ngay: B22. CẢM ỨNG TỪ - LỰC TỪ →`
+         * Nút 2: `Khắc phục ngay: B32. NĂNG LƯỢNG LIÊN KẾT HẠT NHÂN →`
+       + Bổ sung nút tổng quan: `⚡ Bắt Đầu Khắc Phục Lỗ Hổng Đầu Tiên: B22. CẢM ỨNG TỪ - LỰC TỪ →`.
+       + Tích hợp nhận xét chiến lược từ Thầy trong Báo Cáo Bước 4 nêu chính xác các chuyên đề bị hổng.
+- **Kiểm định chất lượng**:
+  - `node test_remedial_and_prediction.mjs`: PASS 100% (Kiểm thử bài làm 10 câu đúng, điểm dự kiến 5.0, phát hiện cả 2 lỗ hổng Từ trường & Hạt nhân, cung cấp đủ link học cho cả 2 bài B22 & B32, trường hợp 20/20 câu báo không có lỗ hổng).
+  - `node test_cro_funnel.mjs`: PASS 100%.
+  - `node test_diagnostic_mastery_loop.mjs`: PASS 100%.
+  - `node test_smart_marketing_popup.mjs`: PASS 100%.
+- **Trạng thái triển khai**: Đã commit và push nhánh `main` lên GitHub, GitHub Actions tự động deploy lên `https://vatlyxuantruong.io.vn`.
+
 ## Bàn giao gần nhất (11/11/2026 07:30)
 - **Commit**: Khôi Phục & Tối Ưu Pop-Up 2 Tầng Cho Khách Trải Nghiệm Trên index.html & Triệt Tiêu 100% AI Glow
 - **Phạm vi hoàn tất (3 Hạng mục nghiêm ngặt theo yêu cầu của Thầy)**:

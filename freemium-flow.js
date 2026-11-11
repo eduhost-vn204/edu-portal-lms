@@ -165,23 +165,9 @@
           item.pct = item.total > 0 ? Math.round((item.correct / item.total) * 100) : 100;
         });
 
-        // Tính điểm thi THPT dự kiến (Ma trận thang điểm 10)
+        // Tính điểm thi THPT dự kiến (Ma trận thang điểm 10 phản ánh chính xác kết quả bài test)
         const rawScore = total > 0 ? (correct / total) * 10 : 0;
-        let predictedScore = 0;
-        if (correct === 0 || rawScore === 0) {
-          predictedScore = 0.0;
-        } else if (rawScore >= 9.5) {
-          predictedScore = 9.25;
-        } else if (rawScore >= 8.5) {
-          predictedScore = 8.5;
-        } else if (rawScore >= 7.0) {
-          predictedScore = 7.25;
-        } else if (rawScore >= 5.0) {
-          predictedScore = 6.0;
-        } else {
-          predictedScore = Number((rawScore * 0.85).toFixed(1));
-        }
-        predictedScore = Number(predictedScore.toFixed(1));
+        const predictedScore = Number(rawScore.toFixed(1));
 
         const attemptData = {
           lessonKey: payload.lessonKey || 'packet_free',
@@ -194,6 +180,7 @@
           targetScore: 8.5,
           wrongIds: wrongIds,
           tagStats: tagStats,
+          topicStats: payload.topicStats || {},
           timestamp: Date.now()
         };
 
@@ -253,9 +240,18 @@
       const isZero = (stats.correct === 0 || predicted === 0);
 
       // Nhận xét sư phạm động và trung thực từ Thầy
+      const topicStats = stats.topicStats || {};
+      const weakTopics = Object.keys(topicStats).filter(t => {
+        const item = topicStats[t];
+        return item && (item.total - item.correct > 0);
+      });
+      const weakTopicNames = weakTopics.join(', ');
+
       let teacherAdvice = '';
       if (isZero) {
         teacherAdvice = 'Em chưa trả lời đúng câu nào trong bài test này (hoặc đã nộp bài khi chưa chọn đáp án). Đừng lo lắng! Kiến thức Vật lý 12 chương trình mới đòi hỏi hiểu sâu bản chất hiện tượng. Thầy đã mở sẵn bài học nền tảng trọng tâm ở Chương 1 & Chương 2 cho em, hãy bắt đầu ngay từ Video bài giảng và Mô phỏng 3D để lấy lại gốc và từng bước bứt phá nhé!';
+      } else if (weakTopics.length > 0 && predicted < 8.5) {
+        teacherAdvice = `Dữ liệu bài làm cho thấy em đã nỗ lực đạt <strong>${predicted}/10 điểm</strong>, tuy nhiên đang bị mất điểm ở chuyên đề <strong>${weakTopicNames}</strong>. Hãy bấm vào các bài học khắc phục tương ứng ngay bên dưới để lấp trọn vẹn lỗ hổng và bứt phá lên mốc 8.5+!`;
       } else if (predicted < 5.0) {
         teacherAdvice = 'Em đang bị hổng khá nhiều kiến thức nền tảng và thường xuyên mất điểm ở các câu hỏi lý thuyết cốt lõi cũng như đổi đơn vị. Hãy tập trung học lại các bài giảng nền tảng trọng tâm để xây chắc gốc trước khi làm bài tập nâng cao.';
       } else if (predicted < 7.0) {
@@ -2736,7 +2732,7 @@
         total: total,
         correct: correct,
         score10: total > 0 ? ((correct / total) * 10).toFixed(1) : '0.0',
-        predictedScore: total > 0 ? Number(((correct / total) * 9.2).toFixed(1)) : 5.0,
+        predictedScore: total > 0 ? Number(((correct / total) * 10).toFixed(1)) : 0.0,
         targetScore: 8.5
       });
     },
