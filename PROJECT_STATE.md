@@ -1,3 +1,28 @@
+## Bàn giao gần nhất (11/11/2026 09:40)
+- **Commit**: Tích Hợp Đề Thi Số 2 (Kiểm Chứng Tiến Bộ Đột Phá), Tự Động Đổi Đề Cho Học Sinh Đã Test, Pop-Up Luyện Tập Đề Mới & Tối Ưu Bản Đồ Radar HUD 4 Chương Vật Lý 12 Trên hoso.html
+- **Phạm vi hoàn tất (3 Yêu cầu đột phá từ Thầy)**:
+  1. **Tích hợp Đề thi số 2 & Tự động đổi đề khi học sinh làm lại (`data/danhgianangluc_de2.json` & `danh-gia-nang-luc.html`)**:
+     - Cung cấp bộ câu hỏi Đề số 2 (20 câu mới chuẩn ma trận 4 chuyên đề: C1 - Nhiệt 5 câu, C2 - Khí 5 câu, C3 - Từ trường 5 câu, C4 - Hạt nhân 5 câu).
+     - Bổ sung bộ chọn đề thi linh hoạt (`.vstep-exam-selector-wrap`, `#btn-choice-exam1`, `#btn-choice-exam2`) với CSS chuẩn EdTech phẳng, sắc nét.
+     - Tự động nhận diện: Nếu học sinh đã có kết quả test trước đó trong `localStorage` -> Tự động kích hoạt **Đề số 2** (kèm thông báo tự động và chuyển đổi qua lại giữa Đề 1 và Đề 2 mượt mà qua hàm `switchExam(examNum)`).
+     - Sửa triệt để điểm dự kiến trung thực (`predScore = Number(rawScore.toFixed(1))`) tránh tình trạng làm 5.0 điểm mà dự kiến nhảy lên 6.0 điểm; hiển thị đầy đủ đa lỗ hổng khi học sinh bỏ cả Chương 3 và Chương 4 kèm các nút bài học khắc phục tương ứng cho từng chuyên đề.
+  2. **Cập nhật Smart Marketing Pop-up phân tầng thông minh (`smart-marketing-popup.js`)**:
+     - Khi học sinh đã có kết quả test trước đó: Pop-up tự động hiển thị thông điệp luyện tập đề mới *"🚀 LUYỆN TẬP ĐỀ SỐ 2: KIỂM CHỨNG TIẾN BỘ ĐỘT PHÁ"* dẫn thẳng đến `danh-gia-nang-luc.html?exam=2&autostart=1` thay vì mời chào bài test khảo sát ban đầu.
+     - Sau khi học sinh đóng pop-up Đề 2, sau 300ms hệ thống tiếp tục hiển thị Pop-up 2 (vào học thử miễn phí Chương 1 & Chương 2).
+  3. **Tối ưu Bản Đồ Đo Lường Năng Lực (Radar HUD trên `hoso.html`)**:
+     - Bắt buộc hiển thị rõ **4 CHƯƠNG VẬT LÝ 12** (C1: Nhiệt, C2: Khí, C3: Từ trường, C4: Hạt nhân) để học sinh đối soát trực tiếp điểm mạnh/điểm yếu bài làm.
+     - Cột phải: Bổ sung khối "Năng Lực 4 Chương Trọng Tâm (Từ Bài Test)" hiển thị trực quan thanh tiến độ, số câu đúng và tỷ lệ %, tự động gắn cờ đỏ `· YẾU` nếu tỷ lệ < 60% (phản ánh trung thực kịch bản Thầy test bỏ C3 và C4 bị 0%).
+     - Thu gọn 3 Trụ Cột Kỹ Năng Đề Thi (Lý thuyết, Bẫy đơn vị, Đồ thị & VDC) thành thẻ ngang tinh gọn.
+     - Biểu đồ mạng nhện SVG 6 đỉnh: 4 đỉnh biểu diễn trực tiếp 4 Chương + 2 đỉnh kỹ năng cốt lõi.
+     - Nút CTA chuyển đổi: Dẫn thẳng học sinh vào làm Đề số 2 để kiểm chứng tiến bộ và cập nhật lại bản đồ năng lực.
+- **Kiểm định chất lượng**:
+  - `node scratch/test_all_features_comprehensive.mjs`: PASS 100% (Cả 4 cổng kiểm định Đề 2, Exam Switcher, Pop-up Đề 2, Bản đồ 4 Chương và sửa lệch điểm dự kiến).
+  - `node test_smart_marketing_popup.mjs`: PASS 100%.
+  - `node test_remedial_and_prediction.mjs`: PASS 100%.
+  - `node -c smart-marketing-popup.js`: PASS (0 lỗi cú pháp).
+  - Kiểm tra thẻ đóng `</html>`: 100% các file `danh-gia-nang-luc.html`, `hoso.html`, `index.html` đều kết thúc chuẩn xác.
+- **Trạng thái triển khai**: Đã commit và push nhánh `main` lên GitHub, GitHub Actions tự động deploy lên `https://vatlyxuantruong.io.vn`.
+
 ## Bàn giao gần nhất (11/11/2026 09:15)
 - **Commit**: Khắc Phục Triệt Để Sai Lệch Điểm Thi THPT Dự Kiến & Hiển Thị Đầy Đủ Đa Lỗ Hổng Kiến Thức (Từ Trường & Hạt Nhân)
 - **Phạm vi hoàn tất (2 Vấn đề trọng tâm do Thầy chỉ ra)**:

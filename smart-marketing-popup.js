@@ -373,6 +373,90 @@
     }
   }
 
+  // POP-UP RETEST: Luyện Tập Đề Số 2 (Kiểm Chứng Tiến Bộ Đột Phá)
+  function showPopupRetest_Exam2() {
+    injectPopupStyles();
+
+    var existing = document.getElementById('vlxt-smart-popup-overlay-retest');
+    if (existing) existing.remove();
+
+    var overlay = document.createElement('div');
+    overlay.className = 'vlxt-smart-overlay';
+    overlay.id = 'vlxt-smart-popup-overlay-retest';
+
+    overlay.innerHTML = `
+      <div class="vlxt-smart-card">
+        <button type="button" class="vlxt-smart-close" id="vlxt-btn-close-pretest" title="Đóng">&times;</button>
+        <div class="vlxt-smart-badge cyan"><i class="fa-solid fa-arrows-rotate"></i> ĐỀ THI MỚI CHUẨN MA TRẬN 2026</div>
+        <h2 class="vlxt-smart-title">🚀 LUYỆN TẬP ĐỀ SỐ 2: KIỂM CHỨNG TIẾN BỘ ĐỘT PHÁ</h2>
+        <p class="vlxt-smart-desc">
+          Em đã hoàn thành bài test khảo sát đầu vào! Thầy đã mở khóa riêng <strong>Bộ Đề Kiểm Chứng Số 2 (20 câu mới toanh)</strong> để em kiểm tra lại kiến thức và chứng thực sự tiến bộ sau khi vá lỗ hổng.
+        </p>
+
+        <div class="vlxt-smart-features">
+          <div class="vlxt-smart-feat-item">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Bộ 20 câu hỏi mới 100% không trùng lặp đề khảo sát đầu vào.</span>
+          </div>
+          <div class="vlxt-smart-feat-item">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Quét sâu 4 chuyên đề: Nhiệt, Khí, Từ trường, Hạt nhân chuẩn Bộ GD&amp;ĐT.</span>
+          </div>
+          <div class="vlxt-smart-feat-item">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>Tự động cập nhật trực tiếp vào Bản Đồ Đo Lường Năng Lực (Radar HUD).</span>
+          </div>
+        </div>
+
+        <a href="danh-gia-nang-luc.html?exam=2&autostart=1" class="vlxt-smart-btn-action cyan" id="vlxt-btn-go-retest">
+          <i class="fa-solid fa-play"></i> BẮT ĐẦU LÀM ĐỀ SỐ 2 NGAY (MIỄN PHÍ) →
+        </a>
+
+        <div class="vlxt-smart-footer-note">
+          Thời gian làm bài: 30 phút · Chấm điểm &amp; đối soát chi tiết ngay lập tức
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+    liftRocketCursorToTop();
+
+    attachCursorHover(document.getElementById('vlxt-btn-close-pretest'));
+    attachCursorHover(document.getElementById('vlxt-btn-go-retest'));
+
+    setTimeout(function () {
+      overlay.classList.add('is-active');
+      liftRocketCursorToTop();
+    }, 50);
+
+    var btnGo = document.getElementById('vlxt-btn-go-retest');
+    if (btnGo) {
+      btnGo.addEventListener('click', function () {
+        var s = getSessionState();
+        s.clickedGoTest = true;
+        saveSessionState(s);
+      });
+    }
+
+    var btnClose = document.getElementById('vlxt-btn-close-pretest');
+    if (btnClose) {
+      btnClose.addEventListener('click', function () {
+        var s = getSessionState();
+        s.p1Dismissed = true;
+        saveSessionState(s);
+
+        overlay.classList.remove('is-active');
+        setTimeout(function () {
+          overlay.remove();
+          // Sau khi tắt pop-up Đề 2, hiện tiếp Pop-up học thử miễn phí
+          setTimeout(function () {
+            showPopup2_FreeTrial();
+          }, 300);
+        }, 300);
+      });
+    }
+  }
+
   // POP-UP 2: Vào Học Thử Miễn Phí (Chương 1 & Chương 2)
   function showPopup2_FreeTrial() {
     injectPopupStyles();
@@ -557,11 +641,13 @@
       var hasTested = hasActualTestResult();
 
       if (!hasTested) {
-        // Chưa có kết quả test thực tế -> Hiện Pop-up 1
+        // Chưa có kết quả test thực tế -> Hiện Pop-up 1 (Đề 1 chẩn đoán)
         showPopup1_DiagnosticTest();
       } else {
-        // Đã có kết quả test thực tế -> Bỏ qua Pop-up 1, hiện Pop-up 2 (Học Thử Miễn Phí)
+        // Đã có kết quả test thực tế -> Hiện Pop-up Luyện tập Đề 2 (Đề mới)
         if (!currentSession.p1Dismissed) {
+          showPopupRetest_Exam2();
+        } else if (!currentSession.p2Dismissed) {
           showPopup2_FreeTrial();
         }
       }
@@ -576,6 +662,9 @@
   }
 
   // Export helper toàn cục để kích hoạt chủ động nếu cần
+  window.vlxtShowRetestPopup = function () {
+    showPopupRetest_Exam2();
+  };
   window.vlxtShowDiagnosticPopup = function () {
     showPopup1_DiagnosticTest();
   };

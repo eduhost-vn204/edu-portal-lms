@@ -19,11 +19,6 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
-        /* ─── CHUẨN HÓA TYPOGRAPHY BUTTON TOÀN BỘ THEO PLUS JAKARTA SANS ─── */
-        button, input, select, textarea, .vstep-btn {
-            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
-        }
-
         /* ═══════════════════════════════════════════
            RESET & BIẾN MÀU SẮC CHUẨN VẬT LÝ XUÂN TRƯỜNG
         ═══════════════════════════════════════════ */
@@ -62,7 +57,7 @@
             overflow-x: hidden;
         }
 
-        /* Triệt tiêu hoàn toàn mọi widget avatar xanh nổi ngoài navbar do auth.js?v=20261110s sinh ra */
+        /* Triệt tiêu hoàn toàn mọi widget avatar xanh nổi ngoài navbar do auth.js?v=20261110r sinh ra */
         body > #vlxt-user-widget,
         #vlxt-user-widget {
             display: none !important;
@@ -102,7 +97,7 @@
             max-height: 24px !important;
             flex-shrink: 0 !important;
             display: inline-block !important;
-            filter: none !important;
+            filter: drop-shadow(0 0 8px #00f0ff) !important;
         }
         .brand-glow-text {
             color: #ffffff !important;
@@ -114,8 +109,8 @@
             background: none !important;
             -webkit-text-fill-color: #ffffff !important;
             -webkit-background-clip: border-box !important;
-            text-shadow: none !important;
-         filter: none !important;}
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.7), 0 0 22px rgba(0, 240, 255, 0.35) !important;
+        }
 
         .nav-menu-links {
             display: flex; align-items: center; gap: clamp(4px, 0.6vw, 12px);
@@ -530,6 +525,45 @@
             width: 100% !important;
             background: #0c1222 !important;
         }
+        /* Bộ chọn đề thi ĐGNL (Đề 1 vs Đề 2) */
+        .vstep-exam-selector-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 14px 0 18px;
+            flex-wrap: wrap;
+            padding: 10px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            border-radius: 12px;
+        }
+        .btn-exam-choice {
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+        }
+        .btn-exam-choice:hover {
+            color: #ffffff;
+            border-color: rgba(56, 189, 248, 0.4);
+            background: rgba(56, 189, 248, 0.1);
+        }
+        .btn-exam-choice.active {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            border-color: #38bdf8;
+            color: #ffffff;
+            box-shadow: 0 2px 10px rgba(2, 132, 199, 0.35);
+        }
+
         .vstep-top-bar {
             display: flex !important;
             align-items: center !important;
@@ -927,14 +961,14 @@
             color: #94a3b8;
         }
 
-        /* Hộp Remedial Spotlight (Vào học khắc phục ngay) - Chuẩn EdTech Phẳng Sắc Nét */
+        /* Hộp Remedial Spotlight (Vào học khắc phục ngay) */
         .remedial-box {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(14, 116, 144, 0.08) 100%);
-            border: 1px solid rgba(56, 189, 248, 0.35);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(11, 132, 243, 0.12) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.4);
             border-radius: 16px;
             padding: 24px;
             margin-bottom: 32px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.15);
         }
         .remedial-badge {
             display: inline-flex;
@@ -944,9 +978,8 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            color: #38bdf8;
-            background: rgba(14, 116, 144, 0.2);
-            border: 1px solid rgba(56, 189, 248, 0.35);
+            color: var(--emerald);
+            background: rgba(16, 185, 129, 0.15);
             padding: 4px 12px;
             border-radius: 100px;
             margin-bottom: 12px;
@@ -956,141 +989,37 @@
             font-weight: 800;
             color: #fff;
             margin-bottom: 10px;
-            text-shadow: none !important;
         }
         .remedial-desc {
             font-size: 14px;
             color: #cbd5e1;
             line-height: 1.6;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
         .btn-remedial-go {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
-            padding: 14px 28px;
+            padding: 15px 32px;
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: #ffffff !important;
             text-decoration: none;
             font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
-            font-size: 14.5px !important;
+            font-size: 15.5px !important;
             font-weight: 800 !important;
             letter-spacing: -0.01em !important;
             border-radius: 999px !important;
             border: 1px solid rgba(52, 211, 153, 0.45);
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 8px 28px rgba(16, 185, 129, 0.45);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
         }
         .btn-remedial-go:hover {
             background: linear-gradient(135deg, #059669 0%, #047857 100%);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+            box-shadow: 0 10px 36px rgba(16, 185, 129, 0.65);
             filter: brightness(1.1);
-        }
-
-        /* Danh sách thẻ Lỗ hổng đa chuyên đề */
-        .remedial-topics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 14px;
-            margin-top: 14px;
-        }
-        .remedial-topic-card {
-            background: rgba(15, 23, 42, 0.65);
-            border: 1px solid rgba(56, 189, 248, 0.25);
-            border-radius: 14px;
-            padding: 16px 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-            transition: border-color 0.2s ease, transform 0.2s ease;
-        }
-        .remedial-topic-card:hover {
-            border-color: rgba(56, 189, 248, 0.5);
-            transform: translateY(-2px);
-        }
-        .remedial-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .remedial-card-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14.5px;
-            font-weight: 700;
-            color: #ffffff;
-        }
-        .remedial-card-index {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: rgba(56, 189, 248, 0.2);
-            color: #38bdf8;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 800;
-        }
-        .remedial-card-tag {
-            font-size: 11px;
-            font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 100px;
-            letter-spacing: 0.02em;
-        }
-        .remedial-card-tag.critical {
-            background: rgba(239, 68, 68, 0.18);
-            border: 1px solid rgba(239, 68, 68, 0.45);
-            color: #fca5a5;
-        }
-        .remedial-card-tag.warning {
-            background: rgba(245, 158, 11, 0.18);
-            border: 1px solid rgba(245, 158, 11, 0.45);
-            color: #fcd34d;
-        }
-        .remedial-card-progress-wrap {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 100px;
-            overflow: hidden;
-        }
-        .remedial-card-progress-bar {
-            height: 100%;
-            border-radius: 100px;
-            transition: width 0.4s ease;
-        }
-        .btn-remedial-card-action {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            padding: 11px 16px;
-            background: rgba(16, 185, 129, 0.14);
-            border: 1px solid rgba(16, 185, 129, 0.4);
-            border-radius: 10px;
-            color: #ffffff;
-            font-size: 13.5px;
-            font-weight: 700;
-            font-family: inherit;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-        .btn-remedial-card-action:hover {
-            background: rgba(16, 185, 129, 0.28);
-            border-color: #10b981;
-            transform: translateY(-1px);
         }
 
         /* Danh sách câu chữa chi tiết */
@@ -1273,43 +1202,6 @@
             }
         }
     </style>
-
-<style id="vlxt-anti-ai-glow-logo">
-/* ─── TRIỆT TIÊU HOÀN TOÀN AI GLOW TRÊN LOGO & BRAND (PHẲNG, SẮC NÉT EDTECH) ─── */
-.nav-brand-logo,
-.nav-logo,
-.logo-atom-icon,
-svg.logo-atom-icon,
-.brand-glow-text {
-  filter: none !important;
-  -webkit-filter: none !important;
-  text-shadow: none !important;
-  box-shadow: none !important;
-}
-.logo-atom-icon {
-  width: 46px !important;
-  height: 24px !important;
-  max-width: 46px !important;
-  max-height: 24px !important;
-  flex-shrink: 0 !important;
-  display: inline-block !important;
-  filter: none !important;
-  -webkit-filter: none !important;
-}
-.brand-glow-text {
-  color: #ffffff !important;
-  font-weight: 800 !important;
-  font-size: 15.5px !important;
-  letter-spacing: 0.2px !important;
-  white-space: nowrap !important;
-  display: inline-block !important;
-  background: none !important;
-  -webkit-text-fill-color: #ffffff !important;
-  -webkit-background-clip: border-box !important;
-  text-shadow: none !important;
-  filter: none !important;
-}
-</style>
 </head>
 <body>
 
@@ -1704,6 +1596,292 @@ svg.logo-atom-icon,
 ]
 </script>
 
+    <!-- DỮ LIỆU ĐỀ THI SỐ 2 (ĐỀ KIỂM CHỨNG ĐỘT PHÁ NĂNG LỰC) -->
+    <script id="dgnl-questions-de2-raw" type="application/json">
+[
+  {
+    "id": 1,
+    "topic": "Vật lí nhiệt",
+    "level": "NB",
+    "question": "Theo mô hình động học phân tử chất khí, nhận định nào sau đây là **đúng** về tính chất chuyển động của các phân tử?",
+    "options": [
+      "Các phân tử chỉ dao động quanh các vị trí cân bằng cố định trong không gian.",
+      "Các phân tử chuyển động hỗn loạn không ngừng; nhiệt độ càng cao thì chuyển động càng nhanh.",
+      "Các phân tử chuyển động thẳng đều cùng vận tốc và không va chạm vào nhau.",
+      "Các phân tử chỉ chuyển động khi có tác dụng của ngoại lực như gió hoặc khuấy đảo."
+    ],
+    "answer": 1,
+    "explain": "Theo nội dung cơ bản của mô hình động học phân tử: Các chất được cấu tạo từ các hạt riêng biệt là phân tử/nguyên tử. Các phân tử chuyển động nhiệt hỗn loạn không ngừng về mọi phía; nhiệt độ của vật càng cao thì các phân tử chuyển động càng nhanh."
+  },
+  {
+    "id": 2,
+    "topic": "Vật lí nhiệt",
+    "level": "TH",
+    "question": "Nhiệt độ không tuyệt đối ($0\\text{ K}$) là nhiệt độ mà tại đó",
+    "options": [
+      "nước bắt đầu đóng băng thành đá ở áp suất chuẩn.",
+      "động năng chuyển động nhiệt hỗn loạn của các phân tử đạt giá trị cực tiểu triệt tiêu.",
+      "tất cả các chất lỏng đều bắt đầu sôi mãnh liệt.",
+      "áp suất của khối khí đạt cực đại."
+    ],
+    "answer": 1,
+    "explain": "Nhiệt độ $0\\text{ K}$ (tương ứng $-273,15^\\circ\\text{C}$) là độ không tuyệt đối, tại đó mọi chuyển động nhiệt của phân tử về mặt vĩ mô coi như dừng lại và động năng nhiệt đạt giá trị nhỏ nhất."
+  },
+  {
+    "id": 3,
+    "topic": "Vật lí nhiệt",
+    "level": "TH",
+    "question": "Một ấm đun nước chứa $1,5\\text{ lít}$ nước ở $25^\\circ\\text{C}$. Bỏ qua hao phí nhiệt và khối lượng ấm, biết $c_{\\text{nước}} = 4200\\text{ J/(kg}\\cdot\\text{K)}$ và khối lượng riêng $D = 1000\\text{ kg/m}^3$. Nhiệt lượng cần cung cấp để đun sôi nước đến $100^\\circ\\text{C}$ là",
+    "options": [
+      "$472,5\\text{ kJ}$.",
+      "$315,0\\text{ kJ}$.",
+      "$630,0\\text{ kJ}$.",
+      "$47250\\text{ J}$."
+    ],
+    "answer": 0,
+    "explain": "$m = V \\cdot D = 1,5\\text{ kg}$.<br>Nhiệt lượng cần cung cấp:<br>$Q = mc\\Delta t = 1,5 \\cdot 4200 \\cdot (100 - 25) = 1,5 \\cdot 4200 \\cdot 75 = 472500\\text{ J} = 472,5\\text{ kJ}$."
+  },
+  {
+    "id": 4,
+    "topic": "Vật lí nhiệt",
+    "level": "VD",
+    "question": "Nội năng của một lượng khí lí tưởng chỉ phụ thuộc vào",
+    "options": [
+      "nhiệt độ của khối khí.",
+      "thể tích của bình chứa.",
+      "áp suất tác dụng lên khối khí.",
+      "hình dạng của bình chứa khí."
+    ],
+    "answer": 0,
+    "explain": "Với khí lí tưởng, tương tác thế năng giữa các phân tử khí bỏ qua, do đó nội năng chỉ là tổng động năng của các phân tử và chỉ phụ thuộc duy nhất vào nhiệt độ tuyệt đối $T$ của chất khí."
+  },
+  {
+    "id": 5,
+    "topic": "Vật lí nhiệt",
+    "level": "VDC",
+    "question": "**[Đồ thị chu trình & Công suất]** Một động cơ nhiệt thực hiện $20\\text{ chu trình}$ trong mỗi giây. Mỗi chu trình nhận nhiệt $Q_1 = 1200\\text{ J}$ và sinh công $A = 360\\text{ J}$. Công suất có ích của động cơ này là",
+    "options": [
+      "$7,2\\text{ kW}$.",
+      "$24\\text{ kW}$.",
+      "$360\\text{ W}$.",
+      "$16,8\\text{ kW}$."
+    ],
+    "answer": 0,
+    "explain": "💡 **Cảnh báo tần số chu trình**: Động cơ thực hiện $f = 20\\text{ chu trình/giây}$.<br>Công sinh ra trong $1\\text{ giây}$ (công suất có ích):<br>$P = A \\cdot f = 360\\text{ J} \\cdot 20\\text{ s}^{-1} = 7200\\text{ W} = 7,2\\text{ kW}$."
+  },
+  {
+    "id": 6,
+    "topic": "Khí lí tưởng",
+    "level": "NB",
+    "question": "Mô hình khí lí tưởng bỏ qua yếu tố nào sau đây đối với các phân tử khí?",
+    "options": [
+      "Bỏ qua thể tích riêng của phân tử và lực tương tác giữa các phân tử khi chưa va chạm.",
+      "Bỏ qua vận tốc chuyển động nhiệt hỗn loạn của các phân tử.",
+      "Bỏ qua hoàn toàn khối lượng của phân tử khí.",
+      "Bỏ qua sự va chạm đàn hồi của phân tử vào thành bình."
+    ],
+    "answer": 0,
+    "explain": "Khí lí tưởng là chất khí mà các phân tử được coi là các chất điểm (thể tích riêng không đáng kể so với thể tích bình chứa) và chỉ tương tác với nhau khi va chạm đàn hồi."
+  },
+  {
+    "id": 7,
+    "topic": "Khí lí tưởng",
+    "level": "TH",
+    "question": "Một khối khí ở trạng thái 1 có $(p_1 = 1\\text{ atm}, V_1 = 6\\text{ lít}, T_1 = 300\\text{ K})$. Sau khi bị nung nóng và nén, khí chuyển sang trạng thái 2 có $(p_2 = 3\\text{ atm}, T_2 = 450\\text{ K})$. Thể tích $V_2$ là",
+    "options": [
+      "$3,0\\text{ lít}$.",
+      "$2,0\\text{ lít}$.",
+      "$4,0\\text{ lít}$.",
+      "$1,5\\text{ lít}$."
+    ],
+    "answer": 0,
+    "explain": "Áp dụng $\\dfrac{p_1 V_1}{T_1} = \\dfrac{p_2 V_2}{T_2} \\Rightarrow V_2 = V_1 \\cdot \\dfrac{p_1}{p_2} \\cdot \\dfrac{T_2}{T_1} = 6 \\cdot \\dfrac{1}{3} \\cdot \\dfrac{450}{300} = 2 \\cdot 1,5 = 3,0\\text{ lít}$."
+  },
+  {
+    "id": 8,
+    "topic": "Khí lí tưởng",
+    "level": "TH",
+    "question": "Đồ thị biểu diễn quá trình đẳng áp trong hệ tọa độ $(V, T)$ là",
+    "options": [
+      "đường thẳng kéo dài đi qua gốc tọa độ $O$.",
+      "đường thẳng song song với trục hoành $T$.",
+      "đường hypebol dốc xuống.",
+      "đường tròn tâm $O$."
+    ],
+    "answer": 0,
+    "explain": "Vì $V = \\text{const} \\cdot T$, phương trình đường biểu diễn quá trình đẳng áp trong hệ tọa độ $(V, T)$ là đường thẳng đi qua gốc tọa độ (phần gần $0\\text{ K}$ vẽ nét đứt)."
+  },
+  {
+    "id": 9,
+    "topic": "Khí lí tưởng",
+    "level": "VD",
+    "question": "Một bóng đèn dây tóc chứa khí trơ ở $27^\\circ\\text{C}$ và áp suất $0,6\\text{ atm}$. Khi bóng đèn sáng ổn định, áp suất khí tăng lên $1,0\\text{ atm}$. Coi dung tích bóng đèn không đổi, nhiệt độ khí trong đèn khi sáng là",
+    "options": [
+      "$500\\text{ K} = 227^\\circ\\text{C}$.",
+      "$450\\text{ K} = 177^\\circ\\text{C}$.",
+      "$350\\text{ K} = 77^\\circ\\text{C}$.",
+      "$45^\\circ\\text{C}$."
+    ],
+    "answer": 0,
+    "explain": "$T_1 = 27 + 273 = 300\\text{ K}$.<br>Đẳng tích: $\\dfrac{p_1}{T_1} = \\dfrac{p_2}{T_2} \\Rightarrow T_2 = T_1 \\cdot \\dfrac{p_2}{p_1} = 300 \\cdot \\dfrac{1,0}{0,6} = 500\\text{ K} = 227^\\circ\\text{C}$."
+  },
+  {
+    "id": 10,
+    "topic": "Khí lí tưởng",
+    "level": "VDC",
+    "question": "**[Bẫy thể tích mol & Rò rỉ khí]** Một bình kim loại chứa khí heli ở $27^\\circ\\text{C}$ và $10\\text{ atm}$. Sau một thời gian do van hở, một nửa lượng khí thoát ra ngoài và nhiệt độ giảm còn $7^\\circ\\text{C}$. Áp suất khí còn lại trong bình là",
+    "options": [
+      "$4,67\\text{ atm}$.",
+      "$5,0\\text{ atm}$.",
+      "$2,33\\text{ atm}$.",
+      "$1,30\\text{ atm}$."
+    ],
+    "answer": 0,
+    "explain": "💡 **Cảnh báo thay đổi số mol**: $n_2 = 0,5 n_1$; thể tích $V = \\text{const}$.<br>$p_1 = \\dfrac{n_1 R T_1}{V}$; $p_2 = \\dfrac{n_2 R T_2}{V} = 0,5 \\cdot \\dfrac{n_1 R T_2}{V}$.<br>Suy ra: $\\dfrac{p_2}{p_1} = 0,5 \\cdot \\dfrac{T_2}{T_1} = 0,5 \\cdot \\dfrac{280}{300} = \\dfrac{14}{30}$.<br>$p_2 = 10 \\cdot \\dfrac{14}{30} \\approx 4,67\\text{ atm}$."
+  },
+  {
+    "id": 11,
+    "topic": "Từ trường",
+    "level": "NB",
+    "question": "Đặc điểm nào sau đây của các đường sức từ là **không đúng**?",
+    "options": [
+      "Các đường sức từ có thể cắt nhau tại các điểm có từ trường rất mạnh.",
+      "Các đường sức từ là những đường cong khép kín hoặc vô hạn ở hai đầu.",
+      "Chiều của đường sức từ tuân theo quy tắc vào Nam ra Bắc ($S$ vào, $N$ ra).",
+      "Nơi nào từ trường mạnh thì các đường sức từ mau (dày), nơi nào yếu thì thưa."
+    ],
+    "answer": 0,
+    "explain": "Qua mỗi điểm trong không gian chỉ vẽ được duy nhất một đường sức từ, do đó các đường sức từ **tuyệt đối không bao giờ cắt nhau**."
+  },
+  {
+    "id": 12,
+    "topic": "Từ trường",
+    "level": "TH",
+    "question": "Từ thông qua một khung dây phẳng có giá trị bằng $0$ khi",
+    "options": [
+      "mặt phẳng khung dây song song với các đường sức từ.",
+      "mặt phẳng khung dây vuông góc với các đường sức từ.",
+      "góc giữa véc tơ pháp tuyến và cảm ứng từ bằng $0^\\circ$.",
+      "từ trường có cường độ rất lớn."
+    ],
+    "answer": 0,
+    "explain": "Khi mặt phẳng khung dây song song với $\\vec{B}$, véc tơ pháp tuyến $\\vec{n} \\perp \\vec{B} \\Rightarrow \\alpha = 90^\\circ \\Rightarrow \\cos 90^\\circ = 0 \\Rightarrow \\Phi = 0$."
+  },
+  {
+    "id": 13,
+    "topic": "Từ trường",
+    "level": "TH",
+    "question": "Đưa cực Bắc của một thanh nam châm lại gần một vòng nhôm kín treo tự do thì hiện tượng quan sát được là",
+    "options": [
+      "vòng nhôm bị đẩy ra xa cực Bắc của nam châm.",
+      "vòng nhôm bị hút lại gần cực Bắc của nam châm.",
+      "vòng nhôm đứng yên không có tương tác lực.",
+      "vòng nhôm quay tròn liên tục theo chiều kim đồng hồ."
+    ],
+    "answer": 0,
+    "explain": "Khi đưa cực Bắc nam châm lại gần vòng nhôm, từ thông qua vòng nhôm tăng lên. Theo định luật Lenz, vòng nhôm xuất hiện dòng điện cảm ứng sinh ra mặt Bắc hướng về nam châm để chống lại chuyển động lại gần (hai cực Bắc đẩy nhau) $\\Rightarrow$ vòng nhôm bị đẩy lùi ra xa."
+  },
+  {
+    "id": 14,
+    "topic": "Từ trường",
+    "level": "VD",
+    "question": "Một cuộn dây gồm $N = 200\\text{ vòng}$ dây. Từ thông qua mỗi vòng dây giảm đều từ $0,05\\text{ Wb}$ về $0$ trong thời gian $0,1\\text{ s}$. Độ lớn suất điện động cảm ứng xuất hiện trong cuộn dây là",
+    "options": [
+      "$100\\text{ V}$.",
+      "$0,5\\text{ V}$.",
+      "$50\\text{ V}$.",
+      "$10\\text{ V}$."
+    ],
+    "answer": 0,
+    "explain": "Suất điện động cảm ứng của cả cuộn dây gồm $N$ vòng:<br>$|e_c| = N \\cdot \\left|\\dfrac{\\Delta \\Phi}{\\Delta t}\\right| = 200 \\cdot \\dfrac{0,05}{0,1} = 200 \\cdot 0,5 = 100\\text{ V}$."
+  },
+  {
+    "id": 15,
+    "topic": "Từ trường",
+    "level": "VDC",
+    "question": "**[Bẫy nhiệt lượng & Giá trị hiệu dụng]** Cho dòng điện xoay chiều $i = 4 \\cos(100\\pi t)\\text{ (A)}$ chạy qua điện trở thuần $R = 50\\text{ }\\Omega$. Nhiệt lượng tỏa ra trên điện trở trong thời gian $1\\text{ phút}$ là",
+    "options": [
+      "$24000\\text{ J} = 24\\text{ kJ}$.",
+      "$48000\\text{ J} = 48\\text{ kJ}$.",
+      "$800\\text{ J}$.",
+      "$12000\\text{ J} = 12\\text{ kJ}$."
+    ],
+    "answer": 0,
+    "explain": "💡 **Cảnh báo tính nhiệt lượng bằng giá trị hiệu dụng**: $I = \\dfrac{I_0}{\\sqrt{2}} = \\dfrac{4}{\\sqrt{2}} = 2\\sqrt{2}\\text{ A}$.<br>Thời gian: $t = 1\\text{ phút} = 60\\text{ s}$.<br>Nhiệt lượng tỏa ra theo định luật Joule-Lenz:<br>$Q = R I^2 t = 50 \\cdot (2\\sqrt{2})^2 \\cdot 60 = 50 \\cdot 8 \\cdot 60 = 24000\\text{ J} = 24\\text{ kJ}$."
+  },
+  {
+    "id": 16,
+    "topic": "Vật lí hạt nhân",
+    "level": "NB",
+    "question": "Hạt nhân nguyên tử kí hiệu là ${}_Z^A X$ được cấu tạo từ",
+    "options": [
+      "$Z$ proton và $(A - Z)$ neutron.",
+      "$Z$ neutron và $A$ proton.",
+      "$A$ proton và $Z$ electron.",
+      "$(A + Z)$ nucleon liên kết chặt chẽ."
+    ],
+    "answer": 0,
+    "explain": "Kí hiệu hạt nhân ${}_Z^A X$: $Z$ là số hiệu nguyên tử (số proton mang điện tích $+e$), $A$ là số khối (tổng số nucleon). Do đó số neutron là $N = A - Z$."
+  },
+  {
+    "id": 17,
+    "topic": "Vật lí hạt nhân",
+    "level": "TH",
+    "question": "Hạt nhân heli ${}_2^4\\text{He}$ có độ hụt khối $\\Delta m = 0,03038\\text{ u}$. Lấy $1\\text{ u} = 931,5\\text{ MeV}/c^2$. Năng lượng liên kết của hạt nhân heli xấp xỉ bằng",
+    "options": [
+      "$28,30\\text{ MeV}$.",
+      "$7,07\\text{ MeV}$.",
+      "$14,15\\text{ MeV}$.",
+      "$56,60\\text{ MeV}$."
+    ],
+    "answer": 0,
+    "explain": "$W_{lk} = \\Delta m \\cdot c^2 = 0,03038 \\cdot 931,5\\text{ MeV} \\approx 28,30\\text{ MeV}$."
+  },
+  {
+    "id": 18,
+    "topic": "Vật lí hạt nhân",
+    "level": "TH",
+    "question": "Phản ứng nhiệt hạch là quá trình",
+    "options": [
+      "kết hợp hai hạt nhân rất nhẹ thành một hạt nhân nặng hơn ở nhiệt độ cực kì cao.",
+      "một hạt nhân rất nặng vỡ thành hai mảnh nhẹ hơn khi hấp thụ một neutron chậm.",
+      "hạt nhân tự phát phát ra các tia phóng xạ và biến đổi thành hạt nhân khác.",
+      "bắn phá hạt nhân bằng chùm electron năng lượng cao."
+    ],
+    "answer": 0,
+    "explain": "Phản ứng nhiệt hạch là phản ứng kết hợp hai hạt nhân rất nhẹ (như các đồng vị hydro ${}_1^2H$, ${}_1^3H$) thành một hạt nhân nặng hơn (như heli ${}_2^4He$) ở nhiệt độ hàng triệu độ Kelvin."
+  },
+  {
+    "id": 19,
+    "topic": "Vật lí hạt nhân",
+    "level": "VD",
+    "question": "Chất phóng xạ Poloni ${}_{84}^{210}\\text{Po}$ có chu kì bán rã là $T = 138\\text{ ngày}$. Ban đầu có $40\\text{ gam}$ chất Po tinh khiết. Sau $414\\text{ ngày}$, khối lượng Poloni còn lại là",
+    "options": [
+      "$5\\text{ gam}$.",
+      "$10\\text{ gam}$.",
+      "$2,5\\text{ gam}$.",
+      "$35\\text{ gam}$."
+    ],
+    "answer": 0,
+    "explain": "Số chu kì bán rã đã trôi qua: $k = \\dfrac{t}{T} = \\dfrac{414}{138} = 3$.<br>Khối lượng còn lại: $m(t) = m_0 \\cdot 2^{-k} = 40 \\cdot 2^{-3} = \\dfrac{40}{8} = 5\\text{ gam}$."
+  },
+  {
+    "id": 20,
+    "topic": "Vật lí hạt nhân",
+    "level": "VDC",
+    "question": "**[Định tuổi cổ vật & Bẫy hàm ln]** Một tượng gỗ cổ có hoạt độ phóng xạ beta của đồng vị ${}_6^{14}\\text{C}$ bằng $0,707$ lần hoạt độ phóng xạ của một khúc gỗ tươi cùng loại cùng khối lượng. Biết chu kì bán rã của ${}_6^{14}\\text{C}$ là $5730\\text{ năm}$. Tuổi của tượng gỗ xấp xỉ là",
+    "options": [
+      "$2865\\text{ năm}$ (nửa chu kì bán rã vì $0,707 \\approx \\dfrac{1}{\\sqrt{2}}$).",
+      "$4051\\text{ năm}$.",
+      "$1690\\text{ năm}$.",
+      "$5730\\text{ năm}$."
+    ],
+    "answer": 0,
+    "explain": "💡 **Nhận diện nhanh của Thầy**: $0,707 \\approx \\dfrac{1}{\\sqrt{2}} = 2^{-0,5}$.<br>Ta có: $\\dfrac{H}{H_0} = 2^{-t/T} = 2^{-0,5} \\Rightarrow \\dfrac{t}{T} = 0,5$.<br>Tuổi tượng gỗ là: $t = 0,5 \\cdot T = 0,5 \\times 5730 = 2865\\text{ năm}$."
+  }
+]
+    </script>
+
     <!-- LAYOUT VSTEP OWL 3 CỘT -->
     <div class="vstep-course-layout">
 
@@ -1769,7 +1947,22 @@ svg.logo-atom-icon,
             </div>
 
             <!-- H1 TIÊU ĐỀ HỌC THUẬT -->
-            <h1 class="vstep-h1">Bài Test Đánh Giá Năng Lực Vật Lý 12 — Chẩn Đoán Lỗ Hổng Kiến Thức</h1>
+            <!-- BỘ CHỌN ĐỀ THI ĐÁNH GIÁ NĂNG LỰC (ĐỀ 1 & ĐỀ 2) -->
+            <div class="vstep-exam-selector-wrap">
+                <span style="font-size:13px;font-weight:700;color:#94a3b8;"><i class="fa-solid fa-layer-group"></i> Chọn bộ đề:</span>
+                <button type="button" class="btn-exam-choice active" id="btn-choice-exam1" onclick="switchExam(1)">
+                    <i class="fa-solid fa-file-lines"></i> Đề 1: Khảo sát đầu vào
+                </button>
+                <button type="button" class="btn-exam-choice" id="btn-choice-exam2" onclick="switchExam(2)">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Đề 2: Kiểm chứng tiến bộ (20 câu mới)
+                </button>
+                <span id="exam-auto-notice" style="margin-left:auto;font-size:12px;color:#10b981;font-weight:700;display:none;">
+                    <i class="fa-solid fa-circle-check"></i> Đã tự động chọn Đề 2 vì em đã hoàn thành Đề 1 trước đó
+                </span>
+            </div>
+
+            <!-- H1 TIÊU ĐỀ HỌC THUẬT -->
+            <h1 class="vstep-h1" id="dgnl-main-heading">Bài Test Đánh Giá Năng Lực Vật Lý 12 — Chẩn Đoán Lỗ Hổng Kiến Thức</h1>
 
             <!-- META BADGES -->
             <div class="vstep-meta">
@@ -1887,11 +2080,11 @@ svg.logo-atom-icon,
 
     <!-- MODAL KHỞI ĐỘNG XÁC NHẬN BẮT ĐẦU LÀM BÀI 20 CÂU -->
     <div class="modal-overlay" id="start-exam-modal" style="display:flex;">
-        <div class="modal-card" style="max-width:540px;border-color:rgba(0,240,255,0.45);box-shadow: 0 20px 60px rgba(0,0,0,0.85), 0 1px 3px rgba(0,0,0,0.5);text-align:center;padding:36px 32px;">
+        <div class="modal-card" style="max-width:540px;border-color:rgba(0,240,255,0.45);box-shadow:0 25px 70px rgba(0,0,0,0.85), 0 0 35px rgba(0,240,255,0.25);text-align:center;padding:36px 32px;">
             <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;background:rgba(0,240,255,0.12);border:1px solid rgba(0,240,255,0.4);color:#00f0ff;font-size:12.5px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:16px;">
                 <i class="fa-solid fa-bolt"></i> CHUẨN MA TRẬN BỘ GD&amp;ĐT 2026
             </div>
-            <h3 style="font-size:22px;font-weight:900;color:#fff;margin-bottom:12px;line-height:1.35;text-shadow: none;">
+            <h3 style="font-size:22px;font-weight:900;color:#fff;margin-bottom:12px;line-height:1.35;text-shadow:0 0 20px rgba(0,240,255,0.3);">
                 🎯 BÀI TEST CHẨN ĐOÁN NĂNG LỰC VẬT LÝ 12
             </h3>
             <p style="font-size:14.5px;color:#cbd5e1;line-height:1.65;margin-bottom:22px;">
@@ -1917,8 +2110,8 @@ svg.logo-atom-icon,
                 <a href="index.html" class="vstep-btn secondary" style="flex:1;padding:14px 18px;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;">
                     <i class="fa-solid fa-arrow-left"></i> Để sau
                 </a>
-                <button type="button" class="vstep-btn submit" onclick="startExamNow()" style="flex:2;padding:14px 22px;border-radius:12px;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif !important;font-size:15px;font-weight:700;letter-spacing:0.2px;background:linear-gradient(135deg, #10b981 0%, #059669 100%);color:#ffffff;border:1px solid rgba(52,211,153,0.3);box-shadow:0 4px 14px rgba(16,185,129,0.35);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
-                    <i class="fa-solid fa-play"></i> Bắt đầu làm bài →
+                <button type="button" class="vstep-btn submit" onclick="startExamNow()" style="flex:2;padding:14px 22px;border-radius:12px;font-size:15px;font-weight:800;background:linear-gradient(135deg, #00f0ff 0%, #0b84f3 100%);color:#04101e;box-shadow:0 6px 25px rgba(0,240,255,0.45);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+                    <i class="fa-solid fa-play"></i> BẮT ĐẦU LÀM BÀI →
                 </button>
             </div>
         </div>
@@ -1926,7 +2119,7 @@ svg.logo-atom-icon,
 
     <!-- MODAL XÁC NHẬN NỘP BÀI CĂN GIỮA MÀN HÌNH (THAY THẾ WINDOW.CONFIRM) -->
     <div class="modal-overlay" id="submit-confirm-modal" style="display:none;">
-        <div class="modal-card" style="max-width:460px;border-color:rgba(0,240,255,0.4);box-shadow:0 20px 60px rgba(0,0,0,0.85);">
+        <div class="modal-card" style="max-width:460px;border-color:rgba(0,240,255,0.4);box-shadow:0 20px 60px rgba(0,0,0,0.8), 0 0 30px rgba(0,240,255,0.2);">
             <div class="modal-icon" style="color:#00f0ff;font-size:46px;margin-bottom:14px;"><i class="fa-solid fa-clipboard-question"></i></div>
             <h3 class="modal-title" id="sc-modal-title" style="font-size:21px;font-weight:800;color:#fff;margin-bottom:10px;">Xác Nhận Nộp Bài</h3>
             <p class="modal-sub" id="sc-modal-desc" style="font-size:14px;color:#cbd5e1;line-height:1.6;margin-bottom:26px;">
@@ -1936,7 +2129,7 @@ svg.logo-atom-icon,
                 <button type="button" class="vstep-btn secondary" onclick="closeSubmitConfirmModal()" style="flex:1;padding:12px 16px;border-radius:10px;font-size:14px;font-weight:700;">
                     <i class="fa-solid fa-pen"></i> Làm Tiếp
                 </button>
-                <button type="button" class="vstep-btn submit" onclick="executeFinalSubmit()" style="flex:1.4;padding:12px 16px;border-radius:10px;font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif !important;font-size:14px;font-weight:700;background:linear-gradient(135deg,#10b981,#059669);color:#ffffff;border:1px solid rgba(52,211,153,0.3);box-shadow:0 2px 8px rgba(0,0,0,0.25);cursor:pointer;">
+                <button type="button" class="vstep-btn submit" onclick="executeFinalSubmit()" style="flex:1.4;padding:12px 16px;border-radius:10px;font-size:14px;font-weight:800;background:linear-gradient(135deg,#00f0ff,#0b84f3);color:#04101e;box-shadow:0 0 16px rgba(0,240,255,0.4);border:none;cursor:pointer;">
                     <i class="fa-solid fa-paper-plane"></i> Nộp Bài Ngay
                 </button>
             </div>
@@ -1975,7 +2168,7 @@ svg.logo-atom-icon,
     </div>
 
     <!-- SCRIPTS HỆ THỐNG -->
-    <script src="auth.js?v=20261110s"></script>
+    <script src="auth.js?v=20261110r"></script>
     <script src="vnpay-service.js"></script>
     <script src="freemium-flow.js"></script>
 
@@ -1996,6 +2189,9 @@ svg.logo-atom-icon,
         var DGNL_CLIENT_ID = '912620759392-56s7s14b0g5477m2i8310q45hpl4g8h9.apps.googleusercontent.com';
         var DGNL_GAS_URL = (typeof window.VLXT_GAS !== 'undefined') ? window.VLXT_GAS : 'https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec';
 
+        var currentExamNumber = 1;
+        var questionsDe1 = [];
+        var questionsDe2 = [];
         var questions = [];
         var currentIndex = 0;
         var userAnswers = {};
@@ -2004,14 +2200,108 @@ svg.logo-atom-icon,
         var allLessons = [];
 
         // Nạp trực tiếp dữ liệu sạch từ thẻ raw script (KHÔNG CHẠY REGEX LÀM HỎNG CHUỖI)
+        // Parse cả 2 đề thi từ raw script JSON
         try {
-            var rawEl = document.getElementById('dgnl-questions-raw');
-            if (rawEl && rawEl.textContent.trim()) {
-                questions = JSON.parse(rawEl.textContent.trim());
+            var rawEl1 = document.getElementById('dgnl-questions-raw');
+            if (rawEl1 && rawEl1.textContent.trim()) {
+                questionsDe1 = JSON.parse(rawEl1.textContent.trim());
             }
         } catch(e) {
-            console.error('Lỗi parse raw questions:', e);
+            console.error('Lỗi parse raw questions De 1:', e);
         }
+
+        try {
+            var rawEl2 = document.getElementById('dgnl-questions-de2-raw');
+            if (rawEl2 && rawEl2.textContent.trim()) {
+                questionsDe2 = JSON.parse(rawEl2.textContent.trim());
+            }
+        } catch(e) {
+            console.error('Lỗi parse raw questions De 2:', e);
+        }
+
+        // Tự động nhận diện đề: URL ?exam=2 hoặc nếu học sinh đã từng hoàn thành Đề 1 trước đó
+        var urlParams = new URLSearchParams(window.location.search);
+        var reqExam = urlParams.get('exam');
+        var hasDonePrevious = false;
+        try {
+            hasDonePrevious = !!(localStorage.getItem('vlxt_dgnl_latest_result') || localStorage.getItem('vlxt_zero_friction_state'));
+        } catch(e) {}
+
+        if (reqExam === '2') {
+            currentExamNumber = 2;
+        } else if (reqExam === '1') {
+            currentExamNumber = 1;
+        } else if (hasDonePrevious) {
+            currentExamNumber = 2; // Tự động cấp Đề 2 khi đã từng làm test trước đó!
+        } else {
+            currentExamNumber = 1;
+        }
+
+        questions = (currentExamNumber === 2 && questionsDe2.length > 0) ? questionsDe2 : questionsDe1;
+
+        // Hàm chuyển đổi đề thi chủ động
+        window.switchExam = function(examNum) {
+            if (examNum === currentExamNumber) return;
+            currentExamNumber = examNum;
+            questions = (currentExamNumber === 2 && questionsDe2.length > 0) ? questionsDe2 : questionsDe1;
+
+            var btn1 = document.getElementById('btn-choice-exam1');
+            var btn2 = document.getElementById('btn-choice-exam2');
+            if (btn1 && btn2) {
+                if (currentExamNumber === 2) {
+                    btn1.classList.remove('active');
+                    btn2.classList.add('active');
+                } else {
+                    btn2.classList.remove('active');
+                    btn1.classList.add('active');
+                }
+            }
+
+            var heading = document.getElementById('dgnl-main-heading');
+            if (heading) {
+                heading.textContent = (currentExamNumber === 2)
+                    ? 'Bài Test Kiểm Chứng Đột Phá Vật Lý 12 — Đo Lường Sự Tiến Bộ (Đề Số 2)'
+                    : 'Bài Test Đánh Giá Năng Lực Vật Lý 12 — Chẩn Đoán Lỗ Hổng Kiến Thức (Đề Số 1)';
+            }
+
+            currentIndex = 0;
+            userAnswers = {};
+            try {
+                localStorage.removeItem('vlxt_dgnl_guest_answers_de' + currentExamNumber);
+            } catch(e) {}
+
+            renderPalette();
+            renderQuestion(0);
+            updateProgress();
+
+            var scrQuiz = document.getElementById('screen-quiz');
+            var scrRep = document.getElementById('screen-report');
+            if (scrQuiz) scrQuiz.style.display = 'block';
+            if (scrRep) scrRep.style.display = 'none';
+
+            window.scrollTo({ top: 120, behavior: 'smooth' });
+        };
+
+        // Cập nhật nút active và heading ban đầu
+        setTimeout(function() {
+            var btn1 = document.getElementById('btn-choice-exam1');
+            var btn2 = document.getElementById('btn-choice-exam2');
+            var notice = document.getElementById('exam-auto-notice');
+            if (btn1 && btn2) {
+                if (currentExamNumber === 2) {
+                    btn1.classList.remove('active');
+                    btn2.classList.add('active');
+                    if (notice && !reqExam) notice.style.display = 'inline-flex';
+                } else {
+                    btn2.classList.remove('active');
+                    btn1.classList.add('active');
+                }
+            }
+            var heading = document.getElementById('dgnl-main-heading');
+            if (heading && currentExamNumber === 2) {
+                heading.textContent = 'Bài Test Kiểm Chứng Đột Phá Vật Lý 12 — Đo Lường Sự Tiến Bộ (Đề Số 2)';
+            }
+        }, 50);
 
         // Khôi phục dữ liệu đã lưu nếu có
         try {
@@ -2521,8 +2811,8 @@ svg.logo-atom-icon,
             const finalScore = ((correctTotal / questions.length) * 10).toFixed(1);
             const rawScore = Number(finalScore);
 
-            // Điểm thi THPT dự kiến phản ánh chính xác điểm số thực tế bài làm của học sinh theo thang điểm 10
-            const predScore = rawScore;
+            // Điểm thi THPT dự kiến phản ánh trung thực và đồng nhất với điểm bài làm thực tế (tránh lệch điểm)
+            const predScore = Number(rawScore.toFixed(1));
 
             // Cập nhật UI Hero Card
             document.getElementById('rep-score-num').textContent = finalScore;
@@ -2534,7 +2824,8 @@ svg.logo-atom-icon,
             try {
                 localStorage.setItem('vlxt_dgnl_latest_result', JSON.stringify({
                     lessonKey: 'danh_gia_nang_luc_20c',
-                    title: 'Đánh giá năng lực Vật Lý 12 Toàn Diện (20 câu)',
+                    title: (currentExamNumber === 2 ? 'Đánh giá năng lực Đề 2 (Kiểm chứng tiến bộ)' : 'Đánh giá năng lực Vật Lý 12 Toàn Diện (20 câu)'),
+                    examNumber: currentExamNumber,
                     total: questions.length,
                     correct: correctTotal,
                     score10: finalScore,
@@ -2548,14 +2839,14 @@ svg.logo-atom-icon,
             if (typeof FreemiumFlow !== 'undefined') {
                 FreemiumFlow.saveZeroFrictionProgress({
                     lessonKey: 'danh_gia_nang_luc_20c',
-                    title: 'Đánh giá năng lực Vật Lý 12 Toàn Diện (20 câu)',
+                    title: (currentExamNumber === 2 ? 'Đánh giá năng lực Đề 2 (Kiểm chứng tiến bộ)' : 'Đánh giá năng lực Vật Lý 12 Toàn Diện (20 câu)'),
+                    examNumber: currentExamNumber,
                     packetOrder: 1,
                     questions: questions,
                     wrongIndices: wrongIndices,
                     correct: correctTotal,
                     total: questions.length,
                     tagStats: tagStats,
-                    topicStats: topicStats,
                     score10: finalScore,
                     predictedScore: predScore
                 });
@@ -2575,7 +2866,7 @@ svg.logo-atom-icon,
                 }
             });
 
-            // Render Component <DiagnosticReportCard /> (Bước 4) truyền tagStats và predictedScore THỰC TẾ
+            // Render Component <DiagnosticReportCard /> (Bước 4) truyền tagStats, topicStats và predictedScore THỰC TẾ
             const cardSlot = document.getElementById('cro-diagnostic-card-slot');
             if (cardSlot && typeof FreemiumFlow !== 'undefined' && typeof FreemiumFlow.renderDiagnosticReportCard === 'function') {
                 FreemiumFlow.renderDiagnosticReportCard(cardSlot, {
@@ -2634,155 +2925,91 @@ svg.logo-atom-icon,
             const slotBottom = document.getElementById('remedial-bottom-spotlight-slot');
             if (!slotTop && !slotBottom) return;
 
-            // 4 chuyên đề chuẩn theo ma trận đề thi Vật Lý 12
-            const standardTopics = [
-                {
-                    key: 'B04e20f0ec67d',
-                    code: 'B2',
-                    name: 'B2. Lực liên kết và sự chuyển thể của chất',
-                    topic: 'Vật lí nhiệt',
-                    chapter: 'Chương 1: Vật lí nhiệt',
-                    matchKeyword: 'nhiệt',
-                    icon: 'fa-temperature-high',
-                    accentColor: '#f97316'
-                },
-                {
-                    key: 'B4ca24b64572f',
-                    code: 'B11',
-                    name: 'B11. Định luật Boyle – Quá trình đẳng nhiệt',
-                    topic: 'Khí lí tưởng',
-                    chapter: 'Chương 2: Khí lí tưởng',
-                    matchKeyword: 'khí',
-                    icon: 'fa-wind',
-                    accentColor: '#06b6d4'
-                },
-                {
-                    key: 'Bc71adbcb4dce',
-                    code: 'B22',
-                    name: 'B22. Cảm ứng từ - Lực từ',
-                    topic: 'Từ trường',
-                    chapter: 'Chương 3: Từ trường',
-                    matchKeyword: 'từ trường',
-                    icon: 'fa-magnet',
-                    accentColor: '#8b5cf6'
-                },
-                {
-                    key: 'B600c414815cd',
-                    code: 'B32',
-                    name: 'B32. Năng lượng liên kết hạt nhân',
-                    topic: 'Vật lí hạt nhân',
-                    chapter: 'Chương 4: Vật lí hạt nhân',
-                    matchKeyword: 'hạt nhân',
-                    icon: 'fa-atom',
-                    accentColor: '#ec4899'
-                }
-            ];
-
-            // Phân tích kết quả thực tế trên từng chuyên đề
+            // Tìm tất cả các chuyên đề bị mất điểm
             const weakList = [];
-            standardTopics.forEach(st => {
-                let foundTopicKey = Object.keys(topicStats).find(k => k.toLowerCase().includes(st.matchKeyword));
-                let stat = foundTopicKey ? topicStats[foundTopicKey] : { total: 5, correct: 0 };
-                let totalQ = stat.total || 5;
-                let correctQ = stat.correct || 0;
-                let wrongQ = totalQ - correctQ;
-                let pct = totalQ > 0 ? Math.round((correctQ / totalQ) * 100) : 0;
-
-                // Tìm bài học tương ứng trong allLessons nếu có để lấy tên chính xác
-                let actualLesson = (allLessons && allLessons.length > 0)
-                    ? allLessons.find(l => l.MaBai === st.key || (l.TenBai && l.TenBai.toLowerCase().includes(st.matchKeyword)))
-                    : null;
-                let lessonKey = actualLesson ? actualLesson.MaBai : st.key;
-                let lessonName = actualLesson ? actualLesson.TenBai : st.name;
-
-                if (wrongQ > 0) {
+            let maxWrong = 0;
+            Object.keys(topicStats).forEach(t => {
+                const total = topicStats[t].total;
+                const correct = topicStats[t].correct;
+                const wrong = total - correct;
+                if (wrong > maxWrong) maxWrong = wrong;
+                if (wrong > 0) {
                     weakList.push({
-                        ...st,
-                        total: totalQ,
-                        correct: correctQ,
-                        wrong: wrongQ,
-                        pct: pct,
-                        lessonKey: lessonKey,
-                        lessonName: lessonName
+                        topic: t,
+                        wrong: wrong,
+                        total: total,
+                        correct: correct,
+                        pct: total > 0 ? Math.round((correct / total) * 100) : 0
                     });
                 }
             });
 
-            // Sắp xếp chuyên đề sai nhiều nhất lên trước; nếu bằng nhau thì giữ thứ tự chương trình
+            // Sắp xếp các chuyên đề yếu nhất (số câu sai nhiều nhất) lên đầu
             weakList.sort((a, b) => b.wrong - a.wrong);
 
-            let remedialHTML = '';
+            // Xác định các chuyên đề bị hổng nặng nhất (cùng có số câu sai tối đa hoặc sai >= 2 câu)
+            const topWeakTopics = weakList.filter(item => item.wrong === maxWrong || item.wrong >= 2);
+            const activeWeakList = topWeakTopics.length > 0 ? topWeakTopics : weakList;
 
-            // Trường hợp xuất sắc: 20/20 câu không sai câu nào
-            if (weakList.length === 0) {
+            // Ánh xạ bài học trọng tâm tương ứng cho từng chuyên đề
+            function getLessonForTopic(topicName) {
+                const tl = topicName.toLowerCase();
+                let lesson = null;
+                if (tl.includes('nhiệt')) {
+                    lesson = allLessons.find(l => l.MaBai === 'B04e20f0ec67d' || (l.TenBai && l.TenBai.includes('LỰC LIÊN KẾT')));
+                } else if (tl.includes('khí')) {
+                    lesson = allLessons.find(l => l.MaBai === 'B4ca24b64572f' || (l.TenBai && l.TenBai.includes('BOYLE')));
+                } else if (tl.includes('từ trường')) {
+                    lesson = allLessons.find(l => l.MaBai === 'Bc71adbcb4dce' || (l.TenBai && l.TenBai.includes('CẢM ỨNG TỪ')));
+                } else if (tl.includes('hạt nhân')) {
+                    lesson = allLessons.find(l => l.MaBai === 'B600c414815cd' || (l.TenBai && l.TenBai.includes('NĂNG LƯỢNG LIÊN KẾT')));
+                }
+                const key = lesson ? lesson.MaBai : 'B04e20f0ec67d';
+                const name = lesson ? lesson.TenBai : ('Chuyên đề ' + topicName);
+                return { key, name };
+            }
+
+            let remedialHTML = '';
+            if (activeWeakList.length === 0) {
+                // Làm đúng toàn bộ 100%
                 remedialHTML = `
-                    <div class="remedial-box" style="border-color:rgba(16,185,129,0.4);background:rgba(16,185,129,0.06);">
-                        <div class="remedial-badge" style="background:rgba(16,185,129,0.18);color:#34d399;"><i class="fa-solid fa-crown"></i> THÀNH TỰU XUẤT SẮC · KHÔNG CÓ LỖ HỔNG</div>
-                        <h3 class="remedial-title" style="color:#ffffff;">🎉 Em Đã Làm Chủ Trọn Vẹn 4 Chuyên Đề Vật Lý 12!</h3>
+                    <div class="remedial-box" style="border-color:rgba(52,211,153,0.4);background:rgba(6,78,59,0.2);">
+                        <div class="remedial-badge" style="background:rgba(52,211,153,0.2);color:#34d399;border-color:rgba(52,211,153,0.4);">
+                            <i class="fa-solid fa-trophy"></i> THÀNH TÍCH XUẤT SẮC
+                        </div>
+                        <h3 class="remedial-title" style="color:#34d399">Chúc Mừng Em! KHÔNG CÓ LỖ HỔNG KIẾN THỨC NÀO</h3>
                         <p class="remedial-desc">
-                            Bài làm đạt độ chính xác tuyệt đối 20/20 câu trên cả 4 chuyên đề (Nhiệt, Khí, Từ trường, Hạt nhân).
-                            Không phát hiện lỗ hổng kiến thức nào! Em hãy tiếp tục rèn luyện kỹ năng phòng thi tại Phòng Khảo Thí Chuẩn Bộ.
+                            Em đã làm chủ hoàn hảo toàn bộ 4 chuyên đề trọng tâm của Vật Lý 12. Hãy tiếp tục thử sức với Đề số 2 hoặc vào phòng thi thử chuẩn Bộ để rèn luyện tốc độ làm bài tối ưu nhé!
                         </p>
-                        <a href="phong-thi-thu.html" class="btn-remedial-go" style="background:linear-gradient(135deg, #0284c7 0%, #0369a1 100%);border-color:rgba(56,189,248,0.4);">
-                            <i class="fa-solid fa-graduation-cap" style="font-size:17px;color:#a5f3fc"></i> Vào Phòng Thi Thử Chuẩn Bộ GD&amp;ĐT (Miễn Phí) <i class="fa-solid fa-arrow-right" style="font-size:14px"></i>
-                        </a>
                     </div>
                 `;
             } else {
-                const countWeak = weakList.length;
-                const summaryNames = weakList.map(w => `<strong style="color:#38bdf8">${w.topic}</strong> (sai ${w.wrong}/${w.total} câu)`).join(', ');
+                // Liệt kê đầy đủ tên các chuyên đề bị hổng
+                const weakTopicTitles = activeWeakList.map(w => w.topic).join(' & ');
+                const detailsDesc = activeWeakList.map(w => `<strong>${w.topic}</strong> (sai ${w.wrong}/${w.total} câu)`).join(' và ');
+
+                // Tạo danh sách nút bấm bài học khắc phục tương ứng cho TỪNG chuyên đề bị hổng
+                const buttonsHTML = activeWeakList.map(w => {
+                    const lInfo = getLessonForTopic(w.topic);
+                    return `
+                        <button type="button" class="btn-remedial-go" style="margin-top:8px" onclick="goToRemedialLesson('${lInfo.key}', '${w.topic}')">
+                            <i class="fa-solid fa-circle-play" style="font-size:17px;color:#a7f3d0"></i> Vào Học Bài Khắc Phục (${w.topic}): <span style="font-weight:900;text-decoration:underline;text-underline-offset:3px">${lInfo.name}</span> <i class="fa-solid fa-arrow-right" style="font-size:14px"></i>
+                        </button>
+                    `;
+                }).join('');
 
                 remedialHTML = `
                     <div class="remedial-box">
                         <div class="remedial-badge"><i class="fa-solid fa-bullseye"></i> LỘ TRÌNH KHẮC PHỤC CẤP TỐC TỪ THẦY</div>
-                        <h3 class="remedial-title">
-                            ${countWeak === 1
-                                ? `🎯 Lỗ Hổng Kiến Thức Của Em: <span style="color:#38bdf8;">${weakList[0].topic}</span> (Sai ${weakList[0].wrong}/${weakList[0].total} câu)`
-                                : `🎯 Phát Hiện <span style="color:#38bdf8;">${countWeak} Lỗ Hổng Kiến Thức</span> Cần Khắc Phục Cấp Tốc`}
-                        </h3>
+                        <h3 class="remedial-title">Phát hiện ${activeWeakList.length} chuyên đề lỗ hổng: <span style="color:var(--primary);">${weakTopicTitles}</span></h3>
                         <p class="remedial-desc">
-                            Dữ liệu bài làm cho thấy em bị mất điểm ở <strong>${countWeak} chuyên đề trọng tâm</strong>: ${summaryNames}.
-                            Thầy đã chuẩn bị sẵn bài học trọng tâm tương ứng để em lấp kín từng lỗ hổng bản chất qua <strong>Video bài giảng + Mô phỏng 3D</strong>.
-                            Sau khi học xong mỗi bài, em sẽ làm ngay <strong>Đề B kiểm chứng tiến bộ</strong> để tự tin lấy trọn điểm!
+                            Bài làm cho thấy em mất điểm ở chuyên đề ${detailsDesc}.
+                            Thầy đã mở khóa riêng các bài học trọng tâm tương ứng để em làm chủ bản chất qua <strong>Video bài giảng + Mô phỏng 3D</strong>.
+                            Sau khi học xong, em sẽ làm ngay <strong>Đề B kiểm chứng tiến bộ</strong> để tự tin lấy trọn điểm!
                         </p>
-
-                        <!-- DANH SÁCH CHI TIẾT TẤT CẢ CÁC CHUYÊN ĐỀ BỊ HỔNG -->
-                        <div class="remedial-topics-grid">
-                            ${weakList.map((w, idx) => `
-                                <div class="remedial-topic-card">
-                                    <div class="remedial-card-header">
-                                        <div class="remedial-card-title">
-                                            <span class="remedial-card-index">${idx + 1}</span>
-                                            <i class="fa-solid ${w.icon}" style="color:${w.accentColor};font-size:16px;"></i>
-                                            <span>${w.chapter}</span>
-                                        </div>
-                                        <span class="remedial-card-tag ${w.pct === 0 ? 'critical' : 'warning'}">
-                                            ${w.pct === 0 ? 'Hổng 100% · Sai ' + w.wrong + '/' + w.total : 'Sai ' + w.wrong + '/' + w.total + ' câu (' + (100 - w.pct) + '% hổng)'}
-                                        </span>
-                                    </div>
-                                    <div class="remedial-card-progress-wrap">
-                                        <div class="remedial-card-progress-bar" style="width:${w.pct}%;background:${w.pct === 0 ? '#ef4444' : (w.pct < 50 ? '#f59e0b' : '#38bdf8')};"></div>
-                                    </div>
-                                    <div class="remedial-card-action">
-                                        <button type="button" class="btn-remedial-card-action" onclick="goToRemedialLesson('${w.lessonKey}', '${w.topic}')">
-                                            <i class="fa-solid fa-circle-play" style="font-size:16px;color:#a7f3d0"></i>
-                                            <span>Khắc phục ngay: <strong>${w.lessonName}</strong></span>
-                                            <i class="fa-solid fa-arrow-right" style="font-size:13px"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            `).join('')}
+                        <div style="display:flex;flex-direction:column;gap:8px;">
+                            ${buttonsHTML}
                         </div>
-
-                        ${countWeak > 1 ? `
-                            <div style="margin-top:20px;text-align:center;">
-                                <button type="button" class="btn-remedial-go" onclick="goToRemedialLesson('${weakList[0].lessonKey}', '${weakList[0].topic}')">
-                                    <i class="fa-solid fa-bolt" style="font-size:16px;color:#fbbf24"></i>
-                                    <span>Bắt Đầu Khắc Phục Lỗ Hổng Đầu Tiên: <strong>${weakList[0].lessonName}</strong></span>
-                                    <i class="fa-solid fa-arrow-right" style="font-size:14px"></i>
-                                </button>
-                            </div>
-                        ` : ''}
                     </div>
                 `;
             }

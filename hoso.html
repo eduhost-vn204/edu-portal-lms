@@ -46,7 +46,7 @@
     }
     body {
       background: var(--bg-base);
-      background-image: 
+      background-image:
         radial-gradient(circle at 15% 15%, rgba(0, 240, 255, 0.05) 0%, transparent 40%),
         radial-gradient(circle at 85% 65%, rgba(11, 132, 243, 0.05) 0%, transparent 45%),
         linear-gradient(180deg, #060a12 0%, #0c1222 100%);
@@ -91,7 +91,7 @@
       color: #04101e; font-size: 26px; font-weight: 900;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
-      
+
     }
     .profile-info h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; color: #fff; text-shadow: none !important; }
     .profile-info p { font-size: 13.5px; color: var(--text-sub); }
@@ -103,7 +103,7 @@
       border-radius: 14px;
       padding: 10px 18px;
       flex-shrink: 0;
-      
+
     }
     .rank-name { font-size: 17px; font-weight: 900; color: #fbbf24; }
     .rank-sub { font-size: 12px; font-weight: 800; color: #fde68a; margin-left: 2px; }
@@ -296,7 +296,7 @@
     .progress-dot {
       width: 9px; height: 9px; border-radius: 50%;
       background: #10b981; flex-shrink: 0;
-      
+
     }
     .progress-name { flex: 1; color: #f1f5f9; font-weight: 600; }
     .progress-khoa { font-size: 12px; color: var(--text-sub); }
@@ -477,7 +477,7 @@
   background: none !important;
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
-  
+
  text-shadow: none !important; filter: none !important;}
 .nav-hamburger {
   display: none;
@@ -591,7 +591,7 @@
   background: none !important;
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
-  
+
  text-shadow: none !important; filter: none !important;}
 .nav-brand-logo, .nav-logo {
   display: inline-flex !important;
@@ -652,7 +652,7 @@ svg.logo-atom-icon,
 
 <!-- NAV -->
 
-  
+
   <!-- ─── THANH ĐIỀU HƯỚNG CHUẨN ĐỒNG NHẤT TOÀN HỆ THỐNG (VẬT LÝ XUÂN TRƯỜNG) ─── -->
   <header class="top-bar" id="main-top-bar">
     <div class="nav-left-wrap">
@@ -809,23 +809,47 @@ function renderRadarChart() {
 
   const isDemo = !attempt;
 
-  const tags = (attempt && attempt.tagStats) ? attempt.tagStats : {};
-  const lt = tags.ly_thuyet || { total: 8, correct: 0, pct: isDemo ? 85 : 0 };
-  const bv = tags.bay_don_vi || { total: 9, correct: 0, pct: isDemo ? 75 : 0 };
-  const dt = tags.do_thi_vdc || { total: 3, correct: 0, pct: isDemo ? 70 : 0 };
+  // Lấy dữ liệu 4 chương thực tế từ bài test
+  const topics = (attempt && attempt.topicStats) ? attempt.topicStats : {};
+  let c1 = { total: 5, correct: isDemo ? 4 : 0 };
+  let c2 = { total: 5, correct: isDemo ? 4 : 0 };
+  let c3 = { total: 5, correct: isDemo ? 3 : 0 };
+  let c4 = { total: 5, correct: isDemo ? 3 : 0 };
 
-  // 6 Trục năng lực (thang 100%)
+  Object.keys(topics).forEach(t => {
+    const tl = t.toLowerCase();
+    if (tl.includes('nhiệt')) c1 = topics[t];
+    else if (tl.includes('khí')) c2 = topics[t];
+    else if (tl.includes('từ trường')) c3 = topics[t];
+    else if (tl.includes('hạt nhân')) c4 = topics[t];
+  });
+
+  const pct1 = c1.total > 0 ? Math.round((c1.correct / c1.total) * 100) : (isDemo ? 85 : 0);
+  const pct2 = c2.total > 0 ? Math.round((c2.correct / c2.total) * 100) : (isDemo ? 80 : 0);
+  const pct3 = c3.total > 0 ? Math.round((c3.correct / c3.total) * 100) : (isDemo ? 70 : 0);
+  const pct4 = c4.total > 0 ? Math.round((c4.correct / c4.total) * 100) : (isDemo ? 75 : 0);
+
+  // Lấy dữ liệu 3 nhóm kỹ năng cốt lõi (thu gọn)
+  const tags = (attempt && attempt.tagStats) ? attempt.tagStats : {};
+  const lt = tags.ly_thuyet || { total: 8, correct: isDemo ? 7 : 0, pct: isDemo ? 85 : 0 };
+  const bv = tags.bay_don_vi || { total: 9, correct: isDemo ? 7 : 0, pct: isDemo ? 75 : 0 };
+  const dt = tags.do_thi_vdc || { total: 3, correct: isDemo ? 2 : 0, pct: isDemo ? 66 : 0 };
+
+  // Điểm thi THPT dự kiến chính xác
+  const predScore = attempt ? (attempt.predictedScore !== undefined ? attempt.predictedScore : attempt.score10) : '8.5+';
+
+  // 6 Trục năng lực phản ánh trực tiếp 4 CHƯƠNG TRỌNG TÂM + 2 KỸ NĂNG CỐT LÕI
   const axes = [
-    { label: 'Lý Thuyết Cốt Lõi', val: isDemo ? 85 : (lt.pct || 0), color: '#10b981' },
-    { label: 'Phản Xạ Bẫy Đơn Vị', val: isDemo ? 75 : (bv.pct || 0), color: '#f59e0b' },
-    { label: 'Đồ Thị & Chu Trình', val: isDemo ? 70 : (dt.pct || 0), color: '#a855f7' },
-    { label: 'Toán & Biến Đổi', val: isDemo ? 80 : (Math.round(((lt.pct + bv.pct) / 2)) || 0), color: '#38bdf8' },
-    { label: 'Vận Dụng Cao (VDC)', val: isDemo ? 65 : (Math.round((dt.pct * 0.9)) || 0), color: '#ec4899' },
-    { label: 'Tốc Độ Phản Xạ', val: isDemo ? 80 : (attempt.score10 >= 5 ? 75 : 45), color: '#00f0ff' }
+    { label: 'C1: Nhiệt', val: pct1, color: '#10b981' },
+    { label: 'C2: Khí', val: pct2, color: '#06b6d4' },
+    { label: 'C3: Từ Trường', val: pct3, color: '#8b5cf6' },
+    { label: 'C4: Hạt Nhân', val: pct4, color: '#ec4899' },
+    { label: 'Lý Thuyết Cốt Lõi', val: isDemo ? 85 : (lt.pct || 0), color: '#34d399' },
+    { label: 'Đồ Thị & VDC', val: isDemo ? 70 : (dt.pct || 0), color: '#f59e0b' }
   ];
 
-  // Tính tọa độ SVG mạng nhện 6 đỉnh (bán kính R = 100, tâm 160, 160)
-  const cx = 160, cy = 160, r = 100;
+  // Tính tọa độ SVG mạng nhện 6 đỉnh (bán kính R = 98, tâm 160, 160)
+  const cx = 160, cy = 160, r = 98;
   const numAxes = axes.length;
 
   function getPoint(index, ratio) {
@@ -852,27 +876,35 @@ function renderRadarChart() {
   axes.forEach((ax, i) => {
     const endP = getPoint(i, 1.0);
     axisLines += `<line x1="${cx}" y1="${cy}" x2="${endP.x}" y2="${endP.y}" stroke="rgba(255,255,255,0.12)" stroke-width="1" />`;
-    const labelP = getPoint(i, 1.25);
-    labelsSvg += `<text x="${labelP.x}" y="${labelP.y}" fill="#94a3b8" font-size="10.5" font-weight="700" text-anchor="middle" dominant-baseline="middle">${ax.label}</text>`;
+    const labelP = getPoint(i, 1.26);
+    labelsSvg += `<text x="${labelP.x}" y="${labelP.y}" fill="#94a3b8" font-size="10.5" font-weight="800" text-anchor="middle" dominant-baseline="middle">${ax.label}</text>`;
   });
 
-  // Tọa độ đa giác dữ liệu
+  // Tọa độ đa giác dữ liệu (nếu giá trị = 0 thì hiển thị chấm sát tâm để thấy rõ lỗ hổng)
   const dataPts = axes.map((ax, i) => {
-    const ratio = Math.max(0.08, ax.val / 100);
+    const ratio = Math.max(0.06, ax.val / 100);
     const p = getPoint(i, ratio);
     return `${p.x},${p.y}`;
   }).join(' ');
 
   let dotsSvg = '';
   axes.forEach((ax, i) => {
-    const ratio = Math.max(0.08, ax.val / 100);
+    const ratio = Math.max(0.06, ax.val / 100);
     const p = getPoint(i, ratio);
     dotsSvg += `<circle cx="${p.x}" cy="${p.y}" r="4.5" fill="${ax.color}" stroke="#0b1329" stroke-width="2" />`;
   });
 
-  const polyFill = isDemo ? 'rgba(251, 191, 36, 0.14)' : 'rgba(0, 240, 255, 0.22)';
+  const polyFill = isDemo ? 'rgba(251, 191, 36, 0.14)' : 'rgba(0, 240, 255, 0.2)';
   const polyStroke = isDemo ? '#fbbf24' : '#00f0ff';
   const polyDash = isDemo ? 'stroke-dasharray="5,4"' : '';
+
+  // Danh sách 4 Chương chi tiết
+  const chaptersList = [
+    { name: 'Chương 1: Vật Lí Nhiệt', correct: c1.correct, total: c1.total, pct: pct1, color: '#10b981', icon: 'fa-temperature-high' },
+    { name: 'Chương 2: Khí Lí Tưởng', correct: c2.correct, total: c2.total, pct: pct2, color: '#06b6d4', icon: 'fa-wind' },
+    { name: 'Chương 3: Từ Trường', correct: c3.correct, total: c3.total, pct: pct3, color: '#8b5cf6', icon: 'fa-magnet' },
+    { name: 'Chương 4: Vật Lí Hạt Nhân', correct: c4.correct, total: c4.total, pct: pct4, color: '#ec4899', icon: 'fa-atom' }
+  ];
 
   container.innerHTML = `
     <div class="section-head" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
@@ -884,10 +916,10 @@ function renderRadarChart() {
       </span>
     </div>
 
-    <div style="padding:22px;display:grid;grid-template-columns:1.05fr 1fr;gap:24px;align-items:center;">
+    <div style="padding:20px;display:grid;grid-template-columns:1.05fr 1fr;gap:22px;align-items:center;">
       <!-- Cột trái: Biểu đồ SVG Mạng Nhện To Rõ Nét Sắc Sảo -->
-      <div style="background:rgba(9,18,36,0.7);border:1.5px solid rgba(0,240,255,0.22);border-radius:20px;padding:18px 12px;text-align:center;box-shadow:inset 0 0 25px rgba(0,240,255,0.05);">
-        <svg viewBox="0 0 320 320" style="width:100%;max-width:340px;height:auto;display:inline-block;' : 'rgba(0,240,255,0.35)'});">
+      <div style="background:rgba(9,18,36,0.7);border:1.5px solid rgba(0,240,255,0.22);border-radius:20px;padding:18px 10px;text-align:center;box-shadow:inset 0 0 25px rgba(0,240,255,0.05);">
+        <svg viewBox="0 0 320 320" style="width:100%;max-width:340px;height:auto;display:inline-block;">
           ${gridPolys}
           ${axisLines}
           <polygon points="${dataPts}" fill="${polyFill}" stroke="${polyStroke}" stroke-width="2.5" ${polyDash} />
@@ -896,35 +928,74 @@ function renderRadarChart() {
         </svg>
       </div>
 
-      <!-- Cột phải: Bảng chỉ số chi tiết 6 khía cạnh -->
-      <div style="display:flex;flex-direction:column;gap:11px;">
-        <div style="font-size:14.5px;font-weight:800;color:#ffffff;margin-bottom:2px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">
+      <!-- Cột phải: Khối Đo Lường 4 Chương & 3 Trụ Cột Kỹ Năng -->
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="font-size:14.5px;font-weight:800;color:#ffffff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,0.08);">
           <span>🎯 ${isDemo ? 'Chuẩn năng lực mục tiêu:' : 'Điểm THPT dự kiến:'}</span>
           <span style="color:${isDemo ? '#fbbf24' : '#00f0ff'};font-size:18px;font-weight:900;">
-            ${isDemo ? '8.5+/10' : `${attempt.predictedScore || attempt.score10}/10`}
+            ${isDemo ? '8.5+/10' : `${predScore}/10`}
           </span>
         </div>
-        ${axes.map(ax => `
-          <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:9px 14px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:5px;">
-              <span style="font-weight:700;color:#e2e8f0;">${ax.label}</span>
-              <strong style="color:${ax.color};font-weight:900;">${ax.val}%</strong>
+
+        <!-- MỤC 1 (TRỌNG TÂM): ĐO LƯỜNG 4 CHƯƠNG VẬT LÝ 12 (BIẾT NGAY YẾU CHƯƠNG NÀO) -->
+        <div style="background:rgba(15,23,42,0.65);border:1px solid rgba(56,189,248,0.25);border-radius:14px;padding:12px 14px;">
+          <div style="font-size:11.5px;font-weight:800;color:#38bdf8;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:9px;display:flex;align-items:center;gap:6px;">
+            <i class="fa-solid fa-layer-group"></i> Năng Lực 4 Chương Trọng Tâm (Từ Bài Test):
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            ${chaptersList.map(ch => {
+              const isWeak = ch.pct < 60;
+              const isMaster = ch.pct === 100;
+              return `
+                <div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px;margin-bottom:4px;">
+                    <span style="font-weight:700;color:#e2e8f0;display:inline-flex;align-items:center;gap:6px;">
+                      <i class="fa-solid ${ch.icon}" style="color:${ch.color};font-size:12px;"></i>
+                      ${ch.name}
+                    </span>
+                    <span style="font-size:11.5px;font-weight:800;${isWeak ? 'color:#f87171;background:rgba(239,68,68,0.18);padding:1px 7px;border-radius:100px;border:1px solid rgba(239,68,68,0.35);' : (isMaster ? 'color:#34d399;' : 'color:#94a3b8;')}">
+                      ${ch.correct}/${ch.total} câu (${ch.pct}%)${isWeak ? ' · YẾU' : ''}
+                    </span>
+                  </div>
+                  <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:100px;overflow:hidden;">
+                    <div style="width:${ch.pct}%;height:100%;background:${isWeak ? '#ef4444' : ch.color};border-radius:100px;"></div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <!-- MỤC 2 (THU GỌN): 3 TRỤ CỘT KỸ NĂNG CỐT LÕI -->
+        <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:9px 12px;">
+          <div style="font-size:11px;font-weight:800;color:#94a3b8;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:7px;">
+            <i class="fa-solid fa-chart-column"></i> Trụ Cột Kỹ Năng Đề Thi (Thu Gọn):
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+            <div style="background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);text-align:center;">
+              <div style="font-size:10.5px;color:#94a3b8;font-weight:700;">Lý Thuyết</div>
+              <div style="font-size:13px;color:#34d399;font-weight:900;">${isDemo ? '85%' : `${lt.pct || 0}%`}</div>
             </div>
-            <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:100px;overflow:hidden;">
-              <div style="width:${ax.val}%;height:100%;background:${ax.color};border-radius:100px;"></div>
+            <div style="background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);text-align:center;">
+              <div style="font-size:10.5px;color:#94a3b8;font-weight:700;">Bẫy Đơn Vị</div>
+              <div style="font-size:13px;color:#f59e0b;font-weight:900;">${isDemo ? '75%' : `${bv.pct || 0}%`}</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);text-align:center;">
+              <div style="font-size:10.5px;color:#94a3b8;font-weight:700;">Đồ Thị &amp; VDC</div>
+              <div style="font-size:13px;color:#a855f7;font-weight:900;">${isDemo ? '66%' : `${dt.pct || 0}%`}</div>
             </div>
           </div>
-        `).join('')}
+        </div>
 
-        <div style="margin-top:8px;">
+        <div style="margin-top:4px;">
           ${isDemo ? `
-            <a href="danh-gia-nang-luc.html?autostart=1" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 20px;border-radius:100px;background:linear-gradient(135deg,#10b981,#059669);color:#ffffff;border:1px solid rgba(52,211,153,0.45);font-weight:900;text-decoration:none;font-size:14px;transition:all 0.2s;">
+            <a href="danh-gia-nang-luc.html?autostart=1" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:100px;background:linear-gradient(135deg,#10b981,#059669);color:#ffffff;border:1px solid rgba(52,211,153,0.45);font-weight:900;text-decoration:none;font-size:13.5px;transition:all 0.2s;">
               <i class="fa-solid fa-play"></i> Làm bài test 20 câu để đo bản đồ cá nhân →
             </a>
           ` : `
             <div style="text-align:right;">
-              <a href="danh-gia-nang-luc.html?autostart=1" style="font-size:13px;color:#10b981;text-decoration:none;font-weight:800;display:inline-flex;align-items:center;gap:6px;">
-                <i class="fa-solid fa-arrows-rotate"></i> Làm lại bài test để cập nhật bản đồ →
+              <a href="danh-gia-nang-luc.html?exam=2&autostart=1" style="font-size:13px;color:#10b981;text-decoration:none;font-weight:800;display:inline-flex;align-items:center;gap:6px;">
+                <i class="fa-solid fa-arrows-rotate"></i> Luyện tập Đề số 2 để kiểm chứng tiến bộ &amp; cập nhật bản đồ →
               </a>
             </div>
           `}
@@ -1477,7 +1548,7 @@ function renderPage(profile, lb, nvRes, baihocRows) {
   // Merge server scores and local CBT scores
   const allScores = [...scores];
   localCbtScores.forEach(loc => {
-    const exists = allScores.some(s => 
+    const exists = allScores.some(s =>
       (s.examId && loc.examId && s.examId === loc.examId) ||
       (s.ngay && loc.ngay && Math.abs(new Date(s.ngay).getTime() - new Date(loc.ngay).getTime()) < 30000)
     );

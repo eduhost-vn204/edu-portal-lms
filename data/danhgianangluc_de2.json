@@ -1,0 +1,282 @@
+[
+  {
+    "id": 1,
+    "topic": "Vật lí nhiệt",
+    "level": "NB",
+    "question": "Theo mô hình động học phân tử chất khí, nhận định nào sau đây là **đúng** về tính chất chuyển động của các phân tử?",
+    "options": [
+      "Các phân tử chỉ dao động quanh các vị trí cân bằng cố định trong không gian.",
+      "Các phân tử chuyển động hỗn loạn không ngừng; nhiệt độ càng cao thì chuyển động càng nhanh.",
+      "Các phân tử chuyển động thẳng đều cùng vận tốc và không va chạm vào nhau.",
+      "Các phân tử chỉ chuyển động khi có tác dụng của ngoại lực như gió hoặc khuấy đảo."
+    ],
+    "answer": 1,
+    "explain": "Theo nội dung cơ bản của mô hình động học phân tử: Các chất được cấu tạo từ các hạt riêng biệt là phân tử/nguyên tử. Các phân tử chuyển động nhiệt hỗn loạn không ngừng về mọi phía; nhiệt độ của vật càng cao thì các phân tử chuyển động càng nhanh."
+  },
+  {
+    "id": 2,
+    "topic": "Vật lí nhiệt",
+    "level": "TH",
+    "question": "Nhiệt độ không tuyệt đối ($0\\text{ K}$) là nhiệt độ mà tại đó",
+    "options": [
+      "nước bắt đầu đóng băng thành đá ở áp suất chuẩn.",
+      "động năng chuyển động nhiệt hỗn loạn của các phân tử đạt giá trị cực tiểu triệt tiêu.",
+      "tất cả các chất lỏng đều bắt đầu sôi mãnh liệt.",
+      "áp suất của khối khí đạt cực đại."
+    ],
+    "answer": 1,
+    "explain": "Nhiệt độ $0\\text{ K}$ (tương ứng $-273,15^\\circ\\text{C}$) là độ không tuyệt đối, tại đó mọi chuyển động nhiệt của phân tử về mặt vĩ mô coi như dừng lại và động năng nhiệt đạt giá trị nhỏ nhất."
+  },
+  {
+    "id": 3,
+    "topic": "Vật lí nhiệt",
+    "level": "TH",
+    "question": "Một ấm đun nước chứa $1,5\\text{ lít}$ nước ở $25^\\circ\\text{C}$. Bỏ qua hao phí nhiệt và khối lượng ấm, biết $c_{\\text{nước}} = 4200\\text{ J/(kg}\\cdot\\text{K)}$ và khối lượng riêng $D = 1000\\text{ kg/m}^3$. Nhiệt lượng cần cung cấp để đun sôi nước đến $100^\\circ\\text{C}$ là",
+    "options": [
+      "$472,5\\text{ kJ}$.",
+      "$315,0\\text{ kJ}$.",
+      "$630,0\\text{ kJ}$.",
+      "$47250\\text{ J}$."
+    ],
+    "answer": 0,
+    "explain": "$m = V \\cdot D = 1,5\\text{ kg}$.<br>Nhiệt lượng cần cung cấp:<br>$Q = mc\\Delta t = 1,5 \\cdot 4200 \\cdot (100 - 25) = 1,5 \\cdot 4200 \\cdot 75 = 472500\\text{ J} = 472,5\\text{ kJ}$."
+  },
+  {
+    "id": 4,
+    "topic": "Vật lí nhiệt",
+    "level": "VD",
+    "question": "Nội năng của một lượng khí lí tưởng chỉ phụ thuộc vào",
+    "options": [
+      "nhiệt độ của khối khí.",
+      "thể tích của bình chứa.",
+      "áp suất tác dụng lên khối khí.",
+      "hình dạng của bình chứa khí."
+    ],
+    "answer": 0,
+    "explain": "Với khí lí tưởng, tương tác thế năng giữa các phân tử khí bỏ qua, do đó nội năng chỉ là tổng động năng của các phân tử và chỉ phụ thuộc duy nhất vào nhiệt độ tuyệt đối $T$ của chất khí."
+  },
+  {
+    "id": 5,
+    "topic": "Vật lí nhiệt",
+    "level": "VDC",
+    "question": "**[Đồ thị chu trình & Công suất]** Một động cơ nhiệt thực hiện $20\\text{ chu trình}$ trong mỗi giây. Mỗi chu trình nhận nhiệt $Q_1 = 1200\\text{ J}$ và sinh công $A = 360\\text{ J}$. Công suất có ích của động cơ này là",
+    "options": [
+      "$7,2\\text{ kW}$.",
+      "$24\\text{ kW}$.",
+      "$360\\text{ W}$.",
+      "$16,8\\text{ kW}$."
+    ],
+    "answer": 0,
+    "explain": "💡 **Cảnh báo tần số chu trình**: Động cơ thực hiện $f = 20\\text{ chu trình/giây}$.<br>Công sinh ra trong $1\\text{ giây}$ (công suất có ích):<br>$P = A \\cdot f = 360\\text{ J} \\cdot 20\\text{ s}^{-1} = 7200\\text{ W} = 7,2\\text{ kW}$."
+  },
+  {
+    "id": 6,
+    "topic": "Khí lí tưởng",
+    "level": "NB",
+    "question": "Mô hình khí lí tưởng bỏ qua yếu tố nào sau đây đối với các phân tử khí?",
+    "options": [
+      "Bỏ qua thể tích riêng của phân tử và lực tương tác giữa các phân tử khi chưa va chạm.",
+      "Bỏ qua vận tốc chuyển động nhiệt hỗn loạn của các phân tử.",
+      "Bỏ qua hoàn toàn khối lượng của phân tử khí.",
+      "Bỏ qua sự va chạm đàn hồi của phân tử vào thành bình."
+    ],
+    "answer": 0,
+    "explain": "Khí lí tưởng là chất khí mà các phân tử được coi là các chất điểm (thể tích riêng không đáng kể so với thể tích bình chứa) và chỉ tương tác với nhau khi va chạm đàn hồi."
+  },
+  {
+    "id": 7,
+    "topic": "Khí lí tưởng",
+    "level": "TH",
+    "question": "Một khối khí ở trạng thái 1 có $(p_1 = 1\\text{ atm}, V_1 = 6\\text{ lít}, T_1 = 300\\text{ K})$. Sau khi bị nung nóng và nén, khí chuyển sang trạng thái 2 có $(p_2 = 3\\text{ atm}, T_2 = 450\\text{ K})$. Thể tích $V_2$ là",
+    "options": [
+      "$3,0\\text{ lít}$.",
+      "$2,0\\text{ lít}$.",
+      "$4,0\\text{ lít}$.",
+      "$1,5\\text{ lít}$."
+    ],
+    "answer": 0,
+    "explain": "Áp dụng $\\dfrac{p_1 V_1}{T_1} = \\dfrac{p_2 V_2}{T_2} \\Rightarrow V_2 = V_1 \\cdot \\dfrac{p_1}{p_2} \\cdot \\dfrac{T_2}{T_1} = 6 \\cdot \\dfrac{1}{3} \\cdot \\dfrac{450}{300} = 2 \\cdot 1,5 = 3,0\\text{ lít}$."
+  },
+  {
+    "id": 8,
+    "topic": "Khí lí tưởng",
+    "level": "TH",
+    "question": "Đồ thị biểu diễn quá trình đẳng áp trong hệ tọa độ $(V, T)$ là",
+    "options": [
+      "đường thẳng kéo dài đi qua gốc tọa độ $O$.",
+      "đường thẳng song song với trục hoành $T$.",
+      "đường hypebol dốc xuống.",
+      "đường tròn tâm $O$."
+    ],
+    "answer": 0,
+    "explain": "Vì $V = \\text{const} \\cdot T$, phương trình đường biểu diễn quá trình đẳng áp trong hệ tọa độ $(V, T)$ là đường thẳng đi qua gốc tọa độ (phần gần $0\\text{ K}$ vẽ nét đứt)."
+  },
+  {
+    "id": 9,
+    "topic": "Khí lí tưởng",
+    "level": "VD",
+    "question": "Một bóng đèn dây tóc chứa khí trơ ở $27^\\circ\\text{C}$ và áp suất $0,6\\text{ atm}$. Khi bóng đèn sáng ổn định, áp suất khí tăng lên $1,0\\text{ atm}$. Coi dung tích bóng đèn không đổi, nhiệt độ khí trong đèn khi sáng là",
+    "options": [
+      "$500\\text{ K} = 227^\\circ\\text{C}$.",
+      "$450\\text{ K} = 177^\\circ\\text{C}$.",
+      "$350\\text{ K} = 77^\\circ\\text{C}$.",
+      "$45^\\circ\\text{C}$."
+    ],
+    "answer": 0,
+    "explain": "$T_1 = 27 + 273 = 300\\text{ K}$.<br>Đẳng tích: $\\dfrac{p_1}{T_1} = \\dfrac{p_2}{T_2} \\Rightarrow T_2 = T_1 \\cdot \\dfrac{p_2}{p_1} = 300 \\cdot \\dfrac{1,0}{0,6} = 500\\text{ K} = 227^\\circ\\text{C}$."
+  },
+  {
+    "id": 10,
+    "topic": "Khí lí tưởng",
+    "level": "VDC",
+    "question": "**[Bẫy thể tích mol & Rò rỉ khí]** Một bình kim loại chứa khí heli ở $27^\\circ\\text{C}$ và $10\\text{ atm}$. Sau một thời gian do van hở, một nửa lượng khí thoát ra ngoài và nhiệt độ giảm còn $7^\\circ\\text{C}$. Áp suất khí còn lại trong bình là",
+    "options": [
+      "$4,67\\text{ atm}$.",
+      "$5,0\\text{ atm}$.",
+      "$2,33\\text{ atm}$.",
+      "$1,30\\text{ atm}$."
+    ],
+    "answer": 0,
+    "explain": "💡 **Cảnh báo thay đổi số mol**: $n_2 = 0,5 n_1$; thể tích $V = \\text{const}$.<br>$p_1 = \\dfrac{n_1 R T_1}{V}$; $p_2 = \\dfrac{n_2 R T_2}{V} = 0,5 \\cdot \\dfrac{n_1 R T_2}{V}$.<br>Suy ra: $\\dfrac{p_2}{p_1} = 0,5 \\cdot \\dfrac{T_2}{T_1} = 0,5 \\cdot \\dfrac{280}{300} = \\dfrac{14}{30}$.<br>$p_2 = 10 \\cdot \\dfrac{14}{30} \\approx 4,67\\text{ atm}$."
+  },
+  {
+    "id": 11,
+    "topic": "Từ trường",
+    "level": "NB",
+    "question": "Đặc điểm nào sau đây của các đường sức từ là **không đúng**?",
+    "options": [
+      "Các đường sức từ có thể cắt nhau tại các điểm có từ trường rất mạnh.",
+      "Các đường sức từ là những đường cong khép kín hoặc vô hạn ở hai đầu.",
+      "Chiều của đường sức từ tuân theo quy tắc vào Nam ra Bắc ($S$ vào, $N$ ra).",
+      "Nơi nào từ trường mạnh thì các đường sức từ mau (dày), nơi nào yếu thì thưa."
+    ],
+    "answer": 0,
+    "explain": "Qua mỗi điểm trong không gian chỉ vẽ được duy nhất một đường sức từ, do đó các đường sức từ **tuyệt đối không bao giờ cắt nhau**."
+  },
+  {
+    "id": 12,
+    "topic": "Từ trường",
+    "level": "TH",
+    "question": "Từ thông qua một khung dây phẳng có giá trị bằng $0$ khi",
+    "options": [
+      "mặt phẳng khung dây song song với các đường sức từ.",
+      "mặt phẳng khung dây vuông góc với các đường sức từ.",
+      "góc giữa véc tơ pháp tuyến và cảm ứng từ bằng $0^\\circ$.",
+      "từ trường có cường độ rất lớn."
+    ],
+    "answer": 0,
+    "explain": "Khi mặt phẳng khung dây song song với $\\vec{B}$, véc tơ pháp tuyến $\\vec{n} \\perp \\vec{B} \\Rightarrow \\alpha = 90^\\circ \\Rightarrow \\cos 90^\\circ = 0 \\Rightarrow \\Phi = 0$."
+  },
+  {
+    "id": 13,
+    "topic": "Từ trường",
+    "level": "TH",
+    "question": "Đưa cực Bắc của một thanh nam châm lại gần một vòng nhôm kín treo tự do thì hiện tượng quan sát được là",
+    "options": [
+      "vòng nhôm bị đẩy ra xa cực Bắc của nam châm.",
+      "vòng nhôm bị hút lại gần cực Bắc của nam châm.",
+      "vòng nhôm đứng yên không có tương tác lực.",
+      "vòng nhôm quay tròn liên tục theo chiều kim đồng hồ."
+    ],
+    "answer": 0,
+    "explain": "Khi đưa cực Bắc nam châm lại gần vòng nhôm, từ thông qua vòng nhôm tăng lên. Theo định luật Lenz, vòng nhôm xuất hiện dòng điện cảm ứng sinh ra mặt Bắc hướng về nam châm để chống lại chuyển động lại gần (hai cực Bắc đẩy nhau) $\\Rightarrow$ vòng nhôm bị đẩy lùi ra xa."
+  },
+  {
+    "id": 14,
+    "topic": "Từ trường",
+    "level": "VD",
+    "question": "Một cuộn dây gồm $N = 200\\text{ vòng}$ dây. Từ thông qua mỗi vòng dây giảm đều từ $0,05\\text{ Wb}$ về $0$ trong thời gian $0,1\\text{ s}$. Độ lớn suất điện động cảm ứng xuất hiện trong cuộn dây là",
+    "options": [
+      "$100\\text{ V}$.",
+      "$0,5\\text{ V}$.",
+      "$50\\text{ V}$.",
+      "$10\\text{ V}$."
+    ],
+    "answer": 0,
+    "explain": "Suất điện động cảm ứng của cả cuộn dây gồm $N$ vòng:<br>$|e_c| = N \\cdot \\left|\\dfrac{\\Delta \\Phi}{\\Delta t}\\right| = 200 \\cdot \\dfrac{0,05}{0,1} = 200 \\cdot 0,5 = 100\\text{ V}$."
+  },
+  {
+    "id": 15,
+    "topic": "Từ trường",
+    "level": "VDC",
+    "question": "**[Bẫy nhiệt lượng & Giá trị hiệu dụng]** Cho dòng điện xoay chiều $i = 4 \\cos(100\\pi t)\\text{ (A)}$ chạy qua điện trở thuần $R = 50\\text{ }\\Omega$. Nhiệt lượng tỏa ra trên điện trở trong thời gian $1\\text{ phút}$ là",
+    "options": [
+      "$24000\\text{ J} = 24\\text{ kJ}$.",
+      "$48000\\text{ J} = 48\\text{ kJ}$.",
+      "$800\\text{ J}$.",
+      "$12000\\text{ J} = 12\\text{ kJ}$."
+    ],
+    "answer": 0,
+    "explain": "💡 **Cảnh báo tính nhiệt lượng bằng giá trị hiệu dụng**: $I = \\dfrac{I_0}{\\sqrt{2}} = \\dfrac{4}{\\sqrt{2}} = 2\\sqrt{2}\\text{ A}$.<br>Thời gian: $t = 1\\text{ phút} = 60\\text{ s}$.<br>Nhiệt lượng tỏa ra theo định luật Joule-Lenz:<br>$Q = R I^2 t = 50 \\cdot (2\\sqrt{2})^2 \\cdot 60 = 50 \\cdot 8 \\cdot 60 = 24000\\text{ J} = 24\\text{ kJ}$."
+  },
+  {
+    "id": 16,
+    "topic": "Vật lí hạt nhân",
+    "level": "NB",
+    "question": "Hạt nhân nguyên tử kí hiệu là ${}_Z^A X$ được cấu tạo từ",
+    "options": [
+      "$Z$ proton và $(A - Z)$ neutron.",
+      "$Z$ neutron và $A$ proton.",
+      "$A$ proton và $Z$ electron.",
+      "$(A + Z)$ nucleon liên kết chặt chẽ."
+    ],
+    "answer": 0,
+    "explain": "Kí hiệu hạt nhân ${}_Z^A X$: $Z$ là số hiệu nguyên tử (số proton mang điện tích $+e$), $A$ là số khối (tổng số nucleon). Do đó số neutron là $N = A - Z$."
+  },
+  {
+    "id": 17,
+    "topic": "Vật lí hạt nhân",
+    "level": "TH",
+    "question": "Hạt nhân heli ${}_2^4\\text{He}$ có độ hụt khối $\\Delta m = 0,03038\\text{ u}$. Lấy $1\\text{ u} = 931,5\\text{ MeV}/c^2$. Năng lượng liên kết của hạt nhân heli xấp xỉ bằng",
+    "options": [
+      "$28,30\\text{ MeV}$.",
+      "$7,07\\text{ MeV}$.",
+      "$14,15\\text{ MeV}$.",
+      "$56,60\\text{ MeV}$."
+    ],
+    "answer": 0,
+    "explain": "$W_{lk} = \\Delta m \\cdot c^2 = 0,03038 \\cdot 931,5\\text{ MeV} \\approx 28,30\\text{ MeV}$."
+  },
+  {
+    "id": 18,
+    "topic": "Vật lí hạt nhân",
+    "level": "TH",
+    "question": "Phản ứng nhiệt hạch là quá trình",
+    "options": [
+      "kết hợp hai hạt nhân rất nhẹ thành một hạt nhân nặng hơn ở nhiệt độ cực kì cao.",
+      "một hạt nhân rất nặng vỡ thành hai mảnh nhẹ hơn khi hấp thụ một neutron chậm.",
+      "hạt nhân tự phát phát ra các tia phóng xạ và biến đổi thành hạt nhân khác.",
+      "bắn phá hạt nhân bằng chùm electron năng lượng cao."
+    ],
+    "answer": 0,
+    "explain": "Phản ứng nhiệt hạch là phản ứng kết hợp hai hạt nhân rất nhẹ (như các đồng vị hydro ${}_1^2H$, ${}_1^3H$) thành một hạt nhân nặng hơn (như heli ${}_2^4He$) ở nhiệt độ hàng triệu độ Kelvin."
+  },
+  {
+    "id": 19,
+    "topic": "Vật lí hạt nhân",
+    "level": "VD",
+    "question": "Chất phóng xạ Poloni ${}_{84}^{210}\\text{Po}$ có chu kì bán rã là $T = 138\\text{ ngày}$. Ban đầu có $40\\text{ gam}$ chất Po tinh khiết. Sau $414\\text{ ngày}$, khối lượng Poloni còn lại là",
+    "options": [
+      "$5\\text{ gam}$.",
+      "$10\\text{ gam}$.",
+      "$2,5\\text{ gam}$.",
+      "$35\\text{ gam}$."
+    ],
+    "answer": 0,
+    "explain": "Số chu kì bán rã đã trôi qua: $k = \\dfrac{t}{T} = \\dfrac{414}{138} = 3$.<br>Khối lượng còn lại: $m(t) = m_0 \\cdot 2^{-k} = 40 \\cdot 2^{-3} = \\dfrac{40}{8} = 5\\text{ gam}$."
+  },
+  {
+    "id": 20,
+    "topic": "Vật lí hạt nhân",
+    "level": "VDC",
+    "question": "**[Định tuổi cổ vật & Bẫy hàm ln]** Một tượng gỗ cổ có hoạt độ phóng xạ beta của đồng vị ${}_6^{14}\\text{C}$ bằng $0,707$ lần hoạt độ phóng xạ của một khúc gỗ tươi cùng loại cùng khối lượng. Biết chu kì bán rã của ${}_6^{14}\\text{C}$ là $5730\\text{ năm}$. Tuổi của tượng gỗ xấp xỉ là",
+    "options": [
+      "$2865\\text{ năm}$ (nửa chu kì bán rã vì $0,707 \\approx \\dfrac{1}{\\sqrt{2}}$).",
+      "$4051\\text{ năm}$.",
+      "$1690\\text{ năm}$.",
+      "$5730\\text{ năm}$."
+    ],
+    "answer": 0,
+    "explain": "💡 **Nhận diện nhanh của Thầy**: $0,707 \\approx \\dfrac{1}{\\sqrt{2}} = 2^{-0,5}$.<br>Ta có: $\\dfrac{H}{H_0} = 2^{-t/T} = 2^{-0,5} \\Rightarrow \\dfrac{t}{T} = 0,5$.<br>Tuổi tượng gỗ là: $t = 0,5 \\cdot T = 0,5 \\times 5730 = 2865\\text{ năm}$."
+  }
+]
