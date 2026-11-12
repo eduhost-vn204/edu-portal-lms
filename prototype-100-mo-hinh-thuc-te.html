@@ -1,0 +1,3075 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>100 Câu Mô Hình Thực Tế Nâng Cao — Chương 1: Vật Lý Nhiệt (17 Câu Đúng/Sai) | Vật Lý Xuân Trường</title>
+
+    <!-- KaTeX Thư viện Toán học -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <!-- Font chữ & Icon đồng bộ baihoc.html -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Thư viện Mô hình SVG Motion Graphics dùng chung toàn hệ thống -->
+    <script src="data/mo-hinh-thuc-te-models.js"></script>
+
+    <style>
+        /* ═════════════════════════════════════════════════════════════════════
+           1. RESET & BIẾN MÀU THEME VSTEP TỐI CHUẨN EDTECH
+           TUYỆT ĐỐI CẤM AI GLOW / NEON PHÁT SÁNG THEO AGENTS.MD
+           THIẾT KẾ PHẲNG, SẮC NÉT, BÓNG ĐỔ VẬT LÝ TỰ NHIÊN
+           ═════════════════════════════════════════════════════════════════════ */
+        :root {
+            --bg-body: #0b1120;
+            --bg-wrap: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-sub: rgba(255, 255, 255, 0.025);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-medium: rgba(255, 255, 255, 0.14);
+            --border-strong: #334155;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-subtle: #64748b;
+            
+            --blue: #0b84f3;
+            --cyan: #38bdf8;
+            --cyan-subtle: rgba(56, 189, 248, 0.1);
+            --green: #10b981;
+            --green-subtle: rgba(16, 185, 129, 0.12);
+            --green-text: #6ee7b7;
+            --amber: #f59e0b;
+            --amber-subtle: rgba(245, 158, 11, 0.12);
+            --red: #ef4444;
+            --red-subtle: rgba(239, 68, 68, 0.14);
+            --red-text: #fca5a5;
+            
+            --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            --font-mono: 'DM Mono', monospace;
+            --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.35);
+            --shadow-subtle: 0 4px 16px rgba(0, 0, 0, 0.28);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            font-size: 15px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* ═════════════════════════════════════════════════════════════════════
+           2. THANH ĐIỀU HƯỚNG CỐ ĐỊNH (FIXED NAVBAR SAFETY THEO AGENTS.MD)
+           ═════════════════════════════════════════════════════════════════════ */
+        .vlxt-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: #0b1120;
+            border-bottom: 1px solid var(--border-subtle);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+        .vlxt-nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 800;
+            font-size: 16px;
+            letter-spacing: 0.3px;
+        }
+        .vlxt-nav-logo-icon {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, #0284c7, #0b84f3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 17px;
+        }
+        .vlxt-nav-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .vlxt-nav-badge {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--cyan);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .vlxt-nav-link {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+        .vlxt-nav-link:hover {
+            color: #fff;
+        }
+
+        /* Khoảng đệm an toàn theo AGENTS.md (90px trên desktop, 80px trên mobile) */
+        .vlxt-page-container {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 90px 20px 60px;
+        }
+        @media (max-width: 768px) {
+            .vlxt-navbar {
+                padding: 0 12px;
+                gap: 8px;
+                max-width: 100%;
+            }
+            .vlxt-nav-brand {
+                font-size: 14px;
+                gap: 8px;
+                min-width: 0;
+                flex-shrink: 1;
+            }
+            .vlxt-nav-brand span {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .vlxt-nav-logo-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 15px;
+                flex-shrink: 0;
+            }
+            .vlxt-nav-badge {
+                display: none;
+            }
+            .vlxt-nav-meta {
+                gap: 8px;
+                flex-shrink: 0;
+            }
+            .vlxt-nav-link {
+                font-size: 12.5px;
+                white-space: nowrap;
+            }
+            .vlxt-page-container {
+                padding-top: 80px;
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+            .proto-hero {
+                padding: 18px 16px;
+            }
+            .proto-hero-title {
+                font-size: 18px;
+                line-height: 1.35;
+            }
+            .vlxt-toolbar-stack {
+                padding: 14px 12px;
+            }
+            .topic-tab-btn {
+                font-size: 12px;
+                padding: 6px 10px;
+                max-width: 100%;
+                white-space: normal;
+                text-align: left;
+            }
+            .filter-btn {
+                padding: 6px 10px;
+                font-size: 12.5px;
+            }
+            .global-actions {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+        }
+
+        /* ═════════════════════════════════════════════════════════════════════
+           3. BANNER GIỚI THIỆU 100 CÂU MÔ HÌNH THỰC TẾ NÂNG CAO
+           ═════════════════════════════════════════════════════════════════════ */
+        .proto-hero {
+            background: var(--bg-wrap);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 24px 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-card);
+        }
+        .proto-hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--green-text);
+            background: var(--green-subtle);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 4px 10px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        .proto-hero-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+        .proto-hero-desc {
+            font-size: 14.5px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        .proto-spec-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .proto-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12.5px;
+            color: #cbd5e1;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+        }
+
+        /* ═════════════════════════════════════════════════════════════════════
+           4. THANH ĐIỀU HƯỚNG NHANH, TAB CHỦ ĐỀ CON Đ/S & LỌC CÂU HỎI
+           ═════════════════════════════════════════════════════════════════════ */
+        .vlxt-toolbar-stack {
+            background: var(--bg-wrap);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            box-shadow: var(--shadow-subtle);
+        }
+        .vlxt-topic-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .vlxt-topic-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .vlxt-topic-title {
+            font-size: 12.5px;
+            font-weight: 800;
+            color: var(--cyan);
+            text-transform: uppercase;
+            letter-spacing: 0.45px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .vlxt-topic-sub {
+            font-size: 12px;
+            color: var(--text-subtle);
+            font-weight: 500;
+        }
+        .topic-tabs-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .topic-tab-btn {
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid var(--border-strong);
+            color: #cbd5e1;
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+            font-family: var(--font-sans);
+        }
+        .topic-tab-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(56, 189, 248, 0.45);
+            color: #fff;
+        }
+        .topic-tab-btn.active {
+            background: rgba(11, 132, 243, 0.18);
+            border-color: var(--blue);
+            color: #fff;
+        }
+        .topic-tab-btn.is-planned {
+            color: var(--text-muted);
+            border-style: dashed;
+            border-color: rgba(148, 163, 184, 0.28);
+        }
+        .topic-tab-btn.is-planned.active {
+            background: rgba(245, 158, 11, 0.12);
+            border-style: solid;
+            border-color: rgba(245, 158, 11, 0.55);
+            color: #fde68a;
+        }
+        .topic-count-pill {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--border-subtle);
+            color: var(--cyan);
+        }
+        .topic-tab-btn.is-planned .topic-count-pill {
+            color: #fbbf24;
+        }
+        .topic-empty-notice {
+            display: none;
+            background: var(--bg-wrap);
+            border: 1px dashed rgba(245, 158, 11, 0.45);
+            border-radius: 12px;
+            padding: 24px 26px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-subtle);
+        }
+        .topic-empty-notice.show {
+            display: block;
+        }
+        .topic-empty-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #fde68a;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .topic-empty-desc {
+            font-size: 14px;
+            color: #cbd5e1;
+            line-height: 1.65;
+            margin-bottom: 14px;
+        }
+        .vlxt-nav-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            padding: 7px 14px;
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-family: var(--font-sans);
+        }
+        .filter-btn:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .filter-btn.active {
+            background: var(--blue);
+            color: #fff;
+            border-color: var(--blue);
+        }
+        .filter-btn.dimmed {
+            opacity: 0.42;
+        }
+        .global-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-action-all {
+            background: transparent;
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            color: var(--cyan);
+            padding: 7px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+        .btn-action-all:hover {
+            background: rgba(56, 189, 248, 0.1);
+        }
+        .progress-pill {
+            font-family: var(--font-mono);
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #cbd5e1;
+            padding: 5px 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 6px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        /* ═════════════════════════════════════════════════════════════════════
+           5. KHỐI CÂU HỎI VSTEP & BỐ CỤC NỘI DUNG (.pq-card / .pq-block)
+           ═════════════════════════════════════════════════════════════════════ */
+        .pq-block {
+            background: var(--bg-wrap);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 26px 28px;
+            margin-bottom: 28px;
+            box-shadow: var(--shadow-card);
+            transition: border-color 0.2s ease;
+            min-width: 0;
+            max-width: 100%;
+        }
+        .pq-block:hover {
+            border-color: rgba(255, 255, 255, 0.14);
+        }
+        .pq-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .pq-header-left {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .pq-badge {
+            font-size: 12.5px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.28);
+            color: var(--cyan);
+            font-family: var(--font-mono);
+        }
+        .pq-topic-badge {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.32);
+            color: var(--green-text);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .pq-model-tag {
+            font-size: 11.5px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 5px;
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #fbbf24;
+            font-family: var(--font-mono);
+        }
+        .pq-source-tag {
+            font-size: 12px;
+            color: var(--text-subtle);
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border-subtle);
+        }
+        .pq-type-label {
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .pq-text {
+            font-size: 15.5px;
+            color: #f1f5f9;
+            line-height: 1.7;
+            font-weight: 500;
+            margin-bottom: 18px;
+        }
+        .pq-text strong {
+            color: #fff;
+            font-weight: 700;
+        }
+        .pq-sub-list {
+            margin: 8px 0 12px 20px;
+            color: #cbd5e1;
+            font-size: 14.5px;
+            line-height: 1.65;
+        }
+        .pq-sub-list li {
+            margin-bottom: 6px;
+        }
+
+        /* ═════════════════════════════════════════════════════════════════════
+           6. KHUNG TRỰC QUAN MOTION GRAPHICS (CHỈ QUAN SÁT TỰ NHIÊN)
+           CẢI TIẾN: RỘNG RÃI, CỠ CHỮ TO, SẮC NÉT, KHÔNG BỊ KHUẤT CHE
+           ═════════════════════════════════════════════════════════════════════ */
+        .vlxt-visual-container {
+            margin: 20px 0 24px;
+            background: #090e1a;
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 18px;
+        }
+        .vlxt-visual-container.centered {
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .vlxt-grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            align-items: stretch;
+        }
+        .vlxt-grid-2col > * {
+            min-width: 0;
+            max-width: 100%;
+        }
+        @media (max-width: 900px) {
+            .vlxt-grid-2col {
+                grid-template-columns: 1fr;
+            }
+        }
+        .vlxt-stage-wrap {
+            position: relative;
+            background: #050811;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 14px;
+            min-width: 0;
+            max-width: 100%;
+        }
+        .stage-caption {
+            font-size: 13.5px;
+            font-weight: 800;
+            color: var(--cyan);
+            margin-bottom: 12px;
+            text-align: center;
+            letter-spacing: 0.3px;
+        }
+        .vlxt-stage-wrap svg {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* ═════════════════════════════════════════════════════════════════════
+           7. BẢNG SỐ LIỆU TĨNH HTML (.vstep-data-table)
+           ═════════════════════════════════════════════════════════════════════ */
+        .vstep-data-panel {
+            margin: 18px 0 22px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 14px 16px;
+            overflow-x: auto;
+        }
+        .vstep-data-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--cyan);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.3px;
+        }
+        .vstep-data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            color: #e2e8f0;
+            text-align: center;
+        }
+        .vstep-data-table th,
+        .vstep-data-table td {
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            padding: 8px 12px;
+        }
+        .vstep-data-table th {
+            background: rgba(255, 255, 255, 0.04);
+            font-weight: 700;
+            color: #94a3b8;
+            font-size: 12.5px;
+            white-space: nowrap;
+        }
+        .vstep-data-table tbody tr {
+            background: rgba(255, 255, 255, 0.015);
+        }
+        .vstep-data-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.035);
+        }
+        .vstep-data-table td.text-left {
+            text-align: left;
+            font-weight: 600;
+        }
+
+        /* ═════════════════════════════════════════════════════════════════════
+           8. BẢNG TRẮC NGHIỆM ĐÚNG/SAI 4 MỆNH ĐỀ (.pq-tf-rows)
+           ═════════════════════════════════════════════════════════════════════ */
+        .pq-tf-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 14px;
+        }
+        .pq-tf-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 12px 16px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.15s ease;
+        }
+        .pq-tf-stmt {
+            flex: 1;
+            font-size: 14.5px;
+            line-height: 1.6;
+            color: #e2e8f0;
+        }
+        .pq-tf-stmt strong {
+            color: var(--cyan);
+            font-family: var(--font-mono);
+            margin-right: 6px;
+        }
+        .pq-tf-choices {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+            align-items: center;
+        }
+        .pq-tf-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-subtle);
+            background: rgba(255, 255, 255, 0.03);
+            color: #94a3b8;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.15s ease;
+        }
+        .pq-tf-btn:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+        .pq-tf-btn.active-true {
+            border-color: var(--green);
+            background: var(--green-subtle);
+            color: #6ee7b7;
+        }
+        .pq-tf-btn.active-false {
+            border-color: var(--red);
+            background: var(--red-subtle);
+            color: #fca5a5;
+        }
+        
+        /* Hiển thị kết quả chấm điểm Đúng/Sai */
+        .pq-tf-row.result-correct {
+            border-color: rgba(16, 185, 129, 0.6);
+            background: rgba(16, 185, 129, 0.08);
+        }
+        .pq-tf-row.result-wrong {
+            border-color: rgba(239, 68, 68, 0.6);
+            background: rgba(239, 68, 68, 0.08);
+        }
+        .pq-result-badge {
+            font-size: 12px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 6px;
+        }
+        .pq-result-badge.ok {
+            background: rgba(16, 185, 129, 0.2);
+            color: #6ee7b7;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+        }
+        .pq-result-badge.fail {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.35);
+        }
+
+        /* ═════════════════════════════════════════════════════════════════════
+           9. NÚT KIỂM TRA ĐÁP ÁN & KHỐI LỜI GIẢI CHI TIẾT
+           ═════════════════════════════════════════════════════════════════════ */
+        .quiz-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-subtle);
+        }
+        .btn-check {
+            background: #10b981;
+            color: #042f2e;
+            border: none;
+            padding: 9px 20px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 13.5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.15s ease;
+        }
+        .btn-check:hover {
+            background: #059669;
+            color: #fff;
+        }
+        .btn-reset {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            color: #cbd5e1;
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13.5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+        .btn-reset:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+        .btn-toggle-exp {
+            background: transparent;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--cyan);
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: auto;
+            transition: all 0.15s ease;
+        }
+        .btn-toggle-exp:hover {
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        /* Khối Lời giải Chi tiết */
+        .vlxt-explain-box {
+            margin-top: 18px;
+            padding: 20px 22px;
+            border-radius: 10px;
+            background: #070c18;
+            border: 1px solid var(--border-subtle);
+            border-left: 4px solid var(--cyan);
+            display: none;
+            animation: fadeInExp 0.25s ease-out forwards;
+        }
+        .vlxt-explain-box.open {
+            display: block;
+        }
+        @keyframes fadeInExp {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .vlxt-explain-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--cyan);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .vlxt-explain-body {
+            font-size: 14.5px;
+            color: #cbd5e1;
+            line-height: 1.7;
+        }
+        .exp-stmt-item {
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .exp-stmt-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        .exp-key-badge {
+            font-size: 12px;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 4px;
+            margin-right: 6px;
+            display: inline-block;
+        }
+        .exp-key-badge.true {
+            background: var(--green-subtle);
+            color: #6ee7b7;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        .exp-key-badge.false {
+            background: var(--red-subtle);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .vlxt-math-callout {
+            background: rgba(56, 189, 248, 0.05);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 6px;
+            padding: 8px 14px;
+            margin: 8px 0;
+            font-size: 14px;
+            color: #e2e8f0;
+            max-width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .katex-display {
+            max-width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 4px 0;
+        }
+        .pq-block .katex-mathml {
+            left: 0;
+            max-width: 100%;
+        }
+
+        /* ═════════════════════════════════════════════════════════════════════
+           10. AMBIENT ANIMATIONS CHO CÁC MÔ HÌNH SVG (CHỈ CHUYỂN ĐỘNG TỰ NHIÊN)
+           ═════════════════════════════════════════════════════════════════════ */
+        /* Sóng nước lăn tăn */
+        @keyframes waterRipples {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+        }
+        .ambient-water-wave {
+            animation: waterRipples 3s ease-in-out infinite;
+        }
+
+        /* Đá bập bềnh trong nước */
+        @keyframes iceBobbing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(2.5px); }
+        }
+        .ambient-ice-bob {
+            animation: iceBobbing 3s ease-in-out infinite;
+        }
+
+        /* Que khuấy nhấp nhô nhẹ */
+        @keyframes stirrerMotion {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3.5px); }
+        }
+        .ambient-stirrer {
+            animation: stirrerMotion 2.4s ease-in-out infinite;
+        }
+
+        /* Xung điện nhẹ chạy qua dây */
+        @keyframes circuitPulse {
+            0% { stroke-dashoffset: 40; }
+            100% { stroke-dashoffset: 0; }
+        }
+        .ambient-wire-pulse {
+            stroke-dasharray: 8, 8;
+            animation: circuitPulse 2s linear infinite;
+        }
+
+        /* Mũi tên nhiệt mờ nhẹ */
+        @keyframes heatArrowPulse {
+            0%, 100% { opacity: 0.35; }
+            50% { opacity: 0.95; }
+        }
+        .ambient-heat-arrow {
+            animation: heatArrowPulse 2s ease-in-out infinite;
+        }
+        .quiz-feedback-msg {
+            font-size: 13px;
+            font-weight: 600;
+            color: #fbbf24;
+            margin-left: 4px;
+        }
+        .pq-tf-row.needs-choice {
+            border-color: rgba(245, 158, 11, 0.75);
+            background: rgba(245, 158, 11, 0.07);
+        }
+        @media (max-width: 640px) {
+            .pq-block {
+                padding: 16px 14px;
+            }
+            .vlxt-visual-container {
+                padding: 10px;
+                margin: 14px 0 18px;
+            }
+            .vlxt-stage-wrap {
+                padding: 8px;
+            }
+            .vstep-data-panel {
+                padding: 10px;
+                max-width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .vstep-data-table {
+                font-size: 12px;
+            }
+            .vstep-data-table th,
+            .vstep-data-table td {
+                padding: 6px 7px;
+                white-space: normal;
+            }
+            .pq-tf-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                padding: 12px;
+            }
+            .pq-tf-choices {
+                justify-content: flex-end;
+            }
+            .btn-toggle-exp {
+                margin-left: 0;
+            }
+            .vlxt-explain-box {
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body class="vlxt-dark-page">
+
+    <!-- THANH NAVBAR CỐ ĐỊNH THEO AGENTS.MD -->
+    <header class="vlxt-navbar">
+        <a href="index.html" class="vlxt-nav-brand">
+            <div class="vlxt-nav-logo-icon">
+                <i class="fa-solid fa-atom"></i>
+            </div>
+            <span>VẬT LÝ XUÂN TRƯỜNG</span>
+        </a>
+        <div class="vlxt-nav-meta">
+            <span class="vlxt-nav-badge">
+                <i class="fa-solid fa-microscope"></i> Chương 1: Vật Lý Nhiệt (17 Câu Đúng / Sai)
+            </span>
+            <a href="baihoc.html" class="vlxt-nav-link">
+                <i class="fa-solid fa-arrow-left"></i> Về khóa học
+            </a>
+        </div>
+    </header>
+
+    <!-- TRANG CHÍNH -->
+    <main class="vlxt-page-container">
+
+        <!-- THẺ GIỚI THIỆU -->
+        <section class="proto-hero">
+            <span class="proto-hero-tag">
+                <i class="fa-solid fa-vial-circle-check"></i> Chương 1: Vật Lý Nhiệt · Mô Hình Thực Tế Nâng Cao
+            </span>
+            <h1 class="proto-hero-title">100 Câu Mô Hình Thực Tế Nâng Cao — Chương 1 (17 Câu Trắc Nghiệm Đúng / Sai)</h1>
+            <p class="proto-hero-desc">
+                Bộ 17 câu hỏi Đúng/Sai Phần II sử dụng thư viện mô hình SVG Motion Graphics quan sát tự nhiên (<em>Ambient Observational Loop</em>) dùng chung đồng bộ giữa Admin, Bài học và Phòng thi thử CBT. Đã tách riêng 4 câu Trả lời ngắn (Câu 8, 16, 20, 22) và cụm Trắc nghiệm 4 lựa chọn (Câu 17) ra khỏi ngân hàng Phần II theo ma trận đề thi THPT Quốc gia 2025–2026.
+            </p>
+            <div class="proto-spec-pills">
+                <span class="proto-pill"><i class="fa-solid fa-layer-group"></i> 17 Câu Đúng / Sai (Câu 1 → 21)</span>
+                <span class="proto-pill"><i class="fa-solid fa-sitemap"></i> 6 Chủ Đề Con (DS-C1.1 → DS-C1.6)</span>
+                <span class="proto-pill"><i class="fa-solid fa-bezier-curve"></i> Thư viện VLXTModels Dùng Chung</span>
+                <span class="proto-pill"><i class="fa-solid fa-check-double"></i> Chấm Điểm &amp; Lời Giải KaTeX Chi Tiết</span>
+            </div>
+        </section>
+
+        <!-- THANH ĐIỀU HƯỚNG NHANH, PHÂN LOẠI CHỦ ĐỀ CON Đ/S & LỌC CÂU -->
+        <div class="vlxt-toolbar-stack">
+            <div class="vlxt-topic-bar">
+                <div class="vlxt-topic-head">
+                    <span class="vlxt-topic-title">
+                        <i class="fa-solid fa-sitemap"></i> Chủ đề con Phần II (Đúng / Sai — Chương 1: Vật lý nhiệt)
+                    </span>
+                    <span class="vlxt-topic-sub">Phân nhóm theo hiện tượng &amp; mô hình thực nghiệm (đầy đủ 17/17 câu Đúng/Sai)</span>
+                </div>
+                <div class="topic-tabs-group" id="ds-topic-tabs">
+                    <button type="button" class="topic-tab-btn active" data-topic-filter="all" onclick="filterByTopic('all')">
+                        <span>Tất cả chủ đề</span>
+                        <span class="topic-count-pill">17/17</span>
+                    </button>
+                    <button type="button" class="topic-tab-btn" data-topic-filter="DS-C1.1" onclick="filterByTopic('DS-C1.1')">
+                        <span>C1.1 · Truyền nhiệt &amp; Cân bằng nhiệt</span>
+                        <span class="topic-count-pill">2</span>
+                    </button>
+                    <button type="button" class="topic-tab-btn" data-topic-filter="DS-C1.2" onclick="filterByTopic('DS-C1.2')">
+                        <span>C1.2 · TN Đo Nhiệt dung riêng</span>
+                        <span class="topic-count-pill">2</span>
+                    </button>
+                    <button type="button" class="topic-tab-btn" data-topic-filter="DS-C1.3" onclick="filterByTopic('DS-C1.3')">
+                        <span>C1.3 · TN Đo Nhiệt nóng chảy riêng</span>
+                        <span class="topic-count-pill">2</span>
+                    </button>
+                    <button type="button" class="topic-tab-btn" data-topic-filter="DS-C1.4" onclick="filterByTopic('DS-C1.4')">
+                        <span>C1.4 · Chuyển hóa NL &amp; Cấp nhiệt</span>
+                        <span class="topic-count-pill">5</span>
+                    </button>
+                    <button type="button" class="topic-tab-btn" data-topic-filter="DS-C1.5" onclick="filterByTopic('DS-C1.5')">
+                        <span>C1.5 · Làm mát, Hút ẩm &amp; Chuyển thể</span>
+                        <span class="topic-count-pill">5</span>
+                    </button>
+                    <button type="button" class="topic-tab-btn" data-topic-filter="DS-C1.6" onclick="filterByTopic('DS-C1.6')">
+                        <span>C1.6 · Động cơ nhiệt 4 kỳ &amp; Hiệu suất</span>
+                        <span class="topic-count-pill">1</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="vlxt-nav-toolbar">
+                <div class="filter-group">
+                    <span style="font-size: 13px; font-weight: 700; color: var(--text-muted); margin-right: 4px;">
+                        <i class="fa-solid fa-filter"></i> Lọc nhanh:
+                    </span>
+                    <button type="button" class="filter-btn active" data-q-filter="all" onclick="filterQuestion('all')">Hiển thị tất cả 17 câu</button>
+                    <button type="button" class="filter-btn" data-q-filter="1" onclick="filterQuestion(1)">Câu 1</button>
+                    <button type="button" class="filter-btn" data-q-filter="2" onclick="filterQuestion(2)">Câu 2</button>
+                    <button type="button" class="filter-btn" data-q-filter="3" onclick="filterQuestion(3)">Câu 3</button>
+                    <button type="button" class="filter-btn" data-q-filter="4" onclick="filterQuestion(4)">Câu 4</button>
+                    <button type="button" class="filter-btn" data-q-filter="5" onclick="filterQuestion(5)">Câu 5</button>
+                    <button type="button" class="filter-btn" data-q-filter="6" onclick="filterQuestion(6)">Câu 6</button>
+                    <button type="button" class="filter-btn" data-q-filter="7" onclick="filterQuestion(7)">Câu 7</button>
+                    <button type="button" class="filter-btn" data-q-filter="9" onclick="filterQuestion(9)">Câu 9</button>
+                    <button type="button" class="filter-btn" data-q-filter="10" onclick="filterQuestion(10)">Câu 10</button>
+                    <button type="button" class="filter-btn" data-q-filter="11" onclick="filterQuestion(11)">Câu 11</button>
+                    <button type="button" class="filter-btn" data-q-filter="12" onclick="filterQuestion(12)">Câu 12</button>
+                    <button type="button" class="filter-btn" data-q-filter="13" onclick="filterQuestion(13)">Câu 13</button>
+                    <button type="button" class="filter-btn" data-q-filter="14" onclick="filterQuestion(14)">Câu 14</button>
+                    <button type="button" class="filter-btn" data-q-filter="15" onclick="filterQuestion(15)">Câu 15</button>
+                    <button type="button" class="filter-btn" data-q-filter="18" onclick="filterQuestion(18)">Câu 18</button>
+                    <button type="button" class="filter-btn" data-q-filter="19" onclick="filterQuestion(19)">Câu 19</button>
+                    <button type="button" class="filter-btn" data-q-filter="21" onclick="filterQuestion(21)">Câu 21</button>
+                </div>
+                <div class="global-actions">
+                    <span class="progress-pill" id="global-progress">Tiến độ: 0/17 câu (0/68 ý)</span>
+                    <button type="button" class="btn-action-all" onclick="toggleAllExplanations()">
+                        <i class="fa-solid fa-book-open"></i> <span id="btn-toggle-all-text">Hiện tất cả lời giải</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="topic-empty-notice" id="ds-topic-placeholder">
+            <div class="topic-empty-title" id="ds-topic-placeholder-title"></div>
+            <div class="topic-empty-desc" id="ds-topic-placeholder-desc"></div>
+            <button type="button" class="filter-btn active" onclick="filterByTopic('all')">
+                <i class="fa-solid fa-rotate-left"></i> Hiển thị tất cả 17 câu Chương 1
+            </button>
+        </div>
+
+        <!-- ═════════════════════════════════════════════════════════════════
+             CÂU 1 (VLXT-G12-C1-MH-01 | DS-C1.1 | MH-C1-01)
+             ═════════════════════════════════════════════════════════════════ -->
+        <article class="pq-block" id="question-block-1" data-q="1" data-id="VLXT-G12-C1-MH-01" data-topic="DS-C1.1" data-ds-type="DS-C1">
+            <div class="pq-header">
+                <div class="pq-header-left">
+                    <span class="pq-badge">CÂU 1</span>
+                    <span class="pq-topic-badge"><i class="fa-solid fa-sitemap"></i> C1.1 – Truyền nhiệt &amp; Cân bằng nhiệt trong thực tế</span>
+                    <span class="pq-model-tag">DS-TN · Đối chứng 2 thí nghiệm</span>
+                    <span class="pq-source-tag">Sở Bình Phước | Cuối kì I — Nhiệt học</span>
+                </div>
+                <span class="pq-type-label">Đúng / Sai · TH</span>
+            </div>
+
+            <div class="pq-text">
+<p>Để tìm hiểu sự truyền năng lượng nhiệt giữa các vật, một nhóm học sinh đã chuẩn bị một số dụng cụ thí nghiệm gồm: một cốc nhôm; một cốc thủy tinh (loại lớn chứa được cốc nhôm); hai nhiệt kế; một bình đựng nước nóng và một bình đựng nước lạnh. Nhóm đã tiến hành hai thí nghiệm như sau:</p>
+<ul class="pq-sub-list">
+<li><strong>Thí nghiệm 1:</strong> Đổ nước từ bình nước lạnh vào cốc nhôm và cốc thủy tinh rồi dùng hai nhiệt kế đồng thời đo nhiệt độ nước trong hai cốc (lúc $t = 0$). Sau đó, đặt cốc nhôm vào trong cốc thủy tinh sao cho nước của cốc thủy tinh không tràn vào cốc nhôm, đồng thời đo nhiệt độ nước trong hai cốc và ghi số liệu từ hai nhiệt kế vào các thời điểm cách nhau $1\text{ phút}$.</li>
+<li><strong>Thí nghiệm 2:</strong> Đưa cốc nhôm ra khỏi cốc thủy tinh và thay nước trong cốc thủy tinh bằng nước nóng còn nước trong cốc nhôm vẫn giữ nguyên. Đo đồng thời nhiệt độ nước trong hai cốc (lúc $t = 0$). Sau đó lại đặt cốc nhôm chứa nước lạnh vào cốc thủy tinh chứa nước nóng sao cho nước từ cốc thủy tinh không tràn vào cốc nhôm, đồng thời đo nhiệt độ nước trong hai cốc và ghi số liệu từ hai nhiệt kế vào các thời điểm cách nhau $1\text{ phút}$.</li>
+</ul>
+<p>Kết quả hai lần thí nghiệm được ghi ở bảng dưới. Dựa vào kết quả thí nghiệm, nhóm học sinh đã đi đến các kết luận:</p>
+<div class="vlxt-model-slot" data-model-id="MH-C1-01" data-model-topic="DS-C1.1"></div>
+<div class="vstep-data-panel">
+<div class="vstep-data-title"><i class="fa-solid fa-table-list"></i> Bảng Kết Quả Thực Nghiệm Đo Nhiệt Độ Hai Cốc Theo Thời Gian</div>
+<table class="vstep-data-table"><thead><tr><th rowspan="2" style="vertical-align: middle;">Thí nghiệm</th><th rowspan="2" style="vertical-align: middle;" class="text-left">Đại lượng đo</th><th colspan="6">Thời gian (phút)</th></tr><tr><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
+<tbody>
+<tr><td rowspan="2" style="vertical-align: middle; font-weight: 700;">Thí nghiệm 1<br><span style="font-size: 11px; font-weight: normal; opacity: 0.8;">(Cùng nhiệt độ)</span></td><td class="text-left">Nhiệt độ ($^\circ\text{C}$) của cốc nhôm</td><td>23</td><td>23</td><td>23</td><td>23</td><td>—</td><td>—</td></tr>
+<tr><td class="text-left">Nhiệt độ ($^\circ\text{C}$) của cốc thủy tinh</td><td>23</td><td>23</td><td>23</td><td>23</td><td>—</td><td>—</td></tr>
+<tr><td rowspan="2" style="vertical-align: middle; font-weight: 700; color: #d97706;">Thí nghiệm 2<br><span style="font-size: 11px; font-weight: normal; opacity: 0.8;">(Chênh lệch nhiệt độ)</span></td><td class="text-left">Nhiệt độ ($^\circ\text{C}$) của cốc nhôm</td><td>23</td><td>40</td><td>57</td><td>55</td><td>53</td><td>49</td></tr>
+<tr><td class="text-left">Nhiệt độ ($^\circ\text{C}$) của cốc thủy tinh</td><td>85</td><td>72</td><td>61</td><td>55</td><td>53</td><td>49</td></tr>
+</tbody></table></div>
+            </div>
+
+            <div class="pq-tf-rows" id="tf-group-1">
+                <div class="pq-tf-row" id="row-q1-a">
+                    <div class="pq-tf-stmt">
+                        <strong>a)</strong> Kết quả thí nghiệm 2 cho thấy khi hai vật tiếp xúc thì năng lượng nhiệt chỉ truyền từ vật có nhiệt độ cao hơn sang vật có nhiệt độ thấp hơn cho đến khi trạng thái cân bằng nhiệt được thiết lập.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(1, 'a', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(1, 'a', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q1-b">
+                    <div class="pq-tf-stmt">
+                        <strong>b)</strong> Kết quả thí nghiệm 2 cho thấy ở thời điểm $t = 3\text{ phút}$, nội năng của nước trong cốc nhôm đang tăng.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(1, 'b', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(1, 'b', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q1-c">
+                    <div class="pq-tf-stmt">
+                        <strong>c)</strong> Kết quả thí nghiệm 1 cho thấy khi hai vật tiếp xúc ở cùng một nhiệt độ thì không có sự truyền năng lượng nhiệt giữa chúng.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(1, 'c', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(1, 'c', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q1-d">
+                    <div class="pq-tf-stmt">
+                        <strong>d)</strong> Kết quả thí nghiệm 2 cho thấy trong phút thứ 2, nước trong cốc thủy tinh đang truyền năng lượng nhiệt cho nước trong cốc nhôm.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(1, 'd', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(1, 'd', false)">Sai</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-actions">
+                <button type="button" class="btn-check" onclick="checkQ(1)">
+                    <i class="fa-solid fa-circle-check"></i> Kiểm tra đáp án &amp; Xem lời giải
+                </button>
+                <button type="button" class="btn-reset" onclick="resetQ(1)">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Làm lại câu này
+                </button>
+                <button type="button" class="btn-toggle-exp" onclick="toggleExp(1)">
+                    <i class="fa-solid fa-lightbulb"></i> <span id="toggle-exp-text-1">Xem lời giải</span>
+                </button>
+                <span class="quiz-feedback-msg" id="feedback-q1" aria-live="polite"></span>
+            </div>
+
+            <div class="vlxt-explain-box" id="exp-q1">
+                <div class="vlxt-explain-title">
+                    <i class="fa-solid fa-graduation-cap"></i> Lời Giải Chi Tiết Của Thầy — Câu 1
+                </div>
+                <div class="vlxt-explain-body">
+<div class="exp-stmt-item"><span class="exp-key-badge true">a — ĐÚNG</span> Trong thí nghiệm 2 (từ $t = 0$ đến $t = 3\text{ phút}$), nhiệt độ nước trong cốc thủy tinh giảm từ $85^\circ\text{C}$ xuống $55^\circ\text{C}$, còn nhiệt độ nước trong cốc nhôm tăng từ $23^\circ\text{C}$ lên $55^\circ\text{C}$. Năng lượng nhiệt truyền tự phát từ vật có nhiệt độ cao hơn sang vật có nhiệt độ thấp hơn cho đến khi đạt trạng thái cân bằng nhiệt ($55^\circ\text{C}$ ở phút thứ 3).</div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">b — SAI</span> Từ phút thứ 3 trở đi ($t = 3 \to 5\text{ phút}$), hai cốc đã đạt cân bằng nhiệt ($55^\circ\text{C}$) và cả hệ truyền nhiệt ra môi trường không khí bên ngoài làm nhiệt độ giảm dần ($55^\circ\text{C} \to 53^\circ\text{C} \to 49^\circ\text{C}$). Do nhiệt độ nước cốc nhôm giảm nên động năng chuyển động nhiệt của các phân tử giảm $\Rightarrow$ nội năng của nước trong cốc nhôm <strong>đang giảm</strong> chứ không tăng.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">c — ĐÚNG</span> Ở thí nghiệm 1, hai cốc có cùng nhiệt độ ban đầu là $23^\circ\text{C}$ và giữ nguyên $23^\circ\text{C}$ trong suốt $3\text{ phút}$ tiếp xúc, chứng tỏ không có sự truyền năng lượng nhiệt vĩ mô giữa hai vật ở cùng nhiệt độ.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">d — ĐÚNG</span> Trong phút thứ 2 (khoảng thời gian từ $t = 1\text{ phút}$ đến $t = 2\text{ phút}$), nhiệt độ nước trong cốc thủy tinh ($72^\circ\text{C} \to 61^\circ\text{C}$) luôn cao hơn nhiệt độ nước cốc nhôm ($40^\circ\text{C} \to 57^\circ\text{C}$), do đó nước trong cốc thủy tinh đang truyền năng lượng nhiệt cho nước trong cốc nhôm.</div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════
+             CÂU 2 (VLXT-G12-C1-MH-02 | DS-C1.2 | MH-C1-02)
+             ═════════════════════════════════════════════════════════════════ -->
+        <article class="pq-block" id="question-block-2" data-q="2" data-id="VLXT-G12-C1-MH-02" data-topic="DS-C1.2" data-ds-type="DS-C1">
+            <div class="pq-header">
+                <div class="pq-header-left">
+                    <span class="pq-badge">CÂU 2</span>
+                    <span class="pq-topic-badge"><i class="fa-solid fa-sitemap"></i> C1.2 – Thí nghiệm đo Nhiệt dung riêng</span>
+                    <span class="pq-model-tag">DS-TN · Oát kế &amp; Đồ thị t(τ)</span>
+                    <span class="pq-source-tag">THPT Phù Cừ - Sở Hưng Yên | KSCL Lần 1</span>
+                </div>
+                <span class="pq-type-label">Đúng / Sai · VD</span>
+            </div>
+
+            <div class="pq-text">
+<p>Để xác định nhiệt dung riêng của nước người ta sử dụng các thiết bị thí nghiệm sau (Hình 4.1):</p>
+<ul class="pq-sub-list">
+<li>Biến thế nguồn (1).</li>
+<li>Bộ đo công suất nguồn điện (oát kế) có tích hợp chức năng đo thời gian (2).</li>
+<li>Nhiệt kế điện tử hoặc cảm biến nhiệt độ có thang đo từ $-20^\circ\text{C}$ đến $110^\circ\text{C}$ và độ phân giải $\pm 0{,}1^\circ\text{C}$ (3).</li>
+<li>Nhiệt lượng kế bằng nhựa có vỏ xốp, kèm điện trở nhiệt (gắn ở trong bình) (4).</li>
+<li>Cân điện tử (5) (hoặc bình đong) và các dây nối.</li>
+</ul>
+<p>Sau đó tiến hành thí nghiệm với khối lượng nước $m_{\text{nước}} = 0{,}25\text{ kg}$, thu được bảng kết quả và đồ thị nhiệt độ – thời gian như bên dưới.</p>
+<div class="vlxt-model-slot" data-model-id="MH-C1-02" data-model-topic="DS-C1.2"></div>
+<div class="vstep-data-panel">
+<div class="vstep-data-title"><i class="fa-solid fa-table-list"></i> Bảng Số Liệu Đo Nhiệt Dung Riêng Của Nước ($m_{\text{nước}} = 0{,}25\text{ kg}$)</div>
+<table class="vstep-data-table"><thead><tr><th>Lần ghi</th><th>Nhiệt độ $t\ (^\circ\text{C})$</th><th>Thời gian $\tau\ (\text{s})$</th><th>Công suất $\mathcal{P}\ (\text{W})$</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>25,2</td><td>60</td><td>15,04</td></tr>
+<tr><td>2</td><td>25,4</td><td>120</td><td>15,07</td></tr>
+<tr><td>3</td><td>27,0</td><td>180</td><td>15,03</td></tr>
+<tr><td>4</td><td>28,7</td><td>240</td><td>15,94</td></tr>
+<tr><td>5</td><td>31,2</td><td>300</td><td>15,84</td></tr>
+<tr><td>6</td><td>32,3</td><td>360</td><td>15,94</td></tr>
+<tr><td>7</td><td>33,8</td><td>420</td><td>15,94</td></tr>
+</tbody></table></div>
+            </div>
+
+            <div class="pq-tf-rows" id="tf-group-2">
+                <div class="pq-tf-row" id="row-q2-a">
+                    <div class="pq-tf-stmt">
+                        <strong>a)</strong> Để xác định nhiệt dung riêng của một chất bằng thực nghiệm thì cần đo công suất, thời gian, khối lượng nước, nhiệt độ.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(2, 'a', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(2, 'a', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q2-b">
+                    <div class="pq-tf-stmt">
+                        <strong>b)</strong> Nhiệt lượng cung cấp cho nước bằng công suất tiêu thụ của nhiệt lượng kế.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(2, 'b', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(2, 'b', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q2-c">
+                    <div class="pq-tf-stmt">
+                        <strong>c)</strong> Có thể xác định được nhiệt dung riêng của nước qua độ dốc của đồ thị nhiệt độ – thời gian đun.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(2, 'c', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(2, 'c', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q2-d">
+                    <div class="pq-tf-stmt">
+                        <strong>d)</strong> Nhiệt dung riêng của nước trong thí nghiệm trên bằng $4200\text{ J/(kg.K)}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(2, 'd', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(2, 'd', false)">Sai</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-actions">
+                <button type="button" class="btn-check" onclick="checkQ(2)">
+                    <i class="fa-solid fa-circle-check"></i> Kiểm tra đáp án &amp; Xem lời giải
+                </button>
+                <button type="button" class="btn-reset" onclick="resetQ(2)">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Làm lại câu này
+                </button>
+                <button type="button" class="btn-toggle-exp" onclick="toggleExp(2)">
+                    <i class="fa-solid fa-lightbulb"></i> <span id="toggle-exp-text-2">Xem lời giải</span>
+                </button>
+                <span class="quiz-feedback-msg" id="feedback-q2" aria-live="polite"></span>
+            </div>
+
+            <div class="vlxt-explain-box" id="exp-q2">
+                <div class="vlxt-explain-title">
+                    <i class="fa-solid fa-graduation-cap"></i> Lời Giải Chi Tiết Của Thầy — Câu 2
+                </div>
+                <div class="vlxt-explain-body">
+<div class="exp-stmt-item"><span class="exp-key-badge true">a — ĐÚNG</span> Ta có phương trình cân bằng nhiệt lượng:<div class="vlxt-math-callout">$$Q = m \cdot c \cdot \Delta t = \mathcal{P} \cdot \Delta\tau \implies c = \frac{\mathcal{P} \cdot \Delta\tau}{m \cdot \Delta t}$$</div>Do đó, để xác định nhiệt dung riêng $c$ bằng thực nghiệm ta cần đo: công suất điện $\mathcal{P}$, thời gian đun $\Delta\tau$, khối lượng nước $m$ và độ tăng nhiệt độ $\Delta t$.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">b — SAI</span> Nhiệt lượng cung cấp cho nước bằng công suất tiêu thụ <strong>nhân với thời gian đun</strong> ($Q = \mathcal{P} \cdot \Delta\tau$), không thể đồng nhất nhiệt lượng ($Q$, đơn vị Jun) với công suất ($\mathcal{P}$, đơn vị Oát).</div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">c — ĐÚNG</span> Độ dốc của đồ thị nhiệt độ – thời gian biểu diễn tốc độ tăng nhiệt độ:<div class="vlxt-math-callout">$$k = \frac{\Delta t}{\Delta\tau} \implies c = \frac{\mathcal{P}}{m \cdot k}$$</div>Vì vậy hoàn toàn có thể xác định được nhiệt dung riêng của nước thông qua độ dốc $k$ của đường thẳng hồi quy trên đồ thị.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">d — SAI</span> Công suất trung bình trong thí nghiệm:<div class="vlxt-math-callout">$$\bar{\mathcal{P}} = \frac{15{,}04 + 15{,}07 + 15{,}03 + 15{,}94 + 15{,}84 + 15{,}94 + 15{,}94}{7} \approx 15{,}54\text{ W}$$</div>Tính theo khoảng đo thực nghiệm từ $\tau_1 = 60\text{ s}$ ($t_1 = 25{,}2^\circ\text{C}$) đến $\tau_7 = 420\text{ s}$ ($t_7 = 33{,}8^\circ\text{C}$):<div class="vlxt-math-callout">$$c = \frac{\bar{\mathcal{P}} \cdot \Delta\tau}{m \cdot \Delta t} = \frac{15{,}54 \cdot (420 - 60)}{0{,}25 \cdot (33{,}8 - 25{,}2)} \approx 2602\text{ J/(kg.K)} \neq 4200\text{ J/(kg.K)}$$</div>(Hoặc tính theo hai điểm mẫu $M(100; 25{,}6)$ và $N(400; 33{,}5)$: $k = \dfrac{33{,}5 - 25{,}6}{400 - 100} = \dfrac{7{,}9}{300} \approx 0{,}02633^\circ\text{C/s} \implies c = \dfrac{15{,}54}{0{,}25 \cdot 0{,}02633} \approx 2360\text{ J/(kg.K)}$ — do hao phí nhiệt ra môi trường và vỏ nhiệt lượng kế trong thực nghiệm học sinh nên kết quả thu được khác xa giá trị lý thuyết $4200\text{ J/(kg.K)}$).</div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════
+             CÂU 3 (VLXT-G12-C1-MH-03 | DS-C1.3 | MH-C1-03)
+             ═════════════════════════════════════════════════════════════════ -->
+        <article class="pq-block" id="question-block-3" data-q="3" data-id="VLXT-G12-C1-MH-03" data-topic="DS-C1.3" data-ds-type="DS-C1">
+            <div class="pq-header">
+                <div class="pq-header-left">
+                    <span class="pq-badge">CÂU 3</span>
+                    <span class="pq-topic-badge"><i class="fa-solid fa-sitemap"></i> C1.3 – Thí nghiệm đo Nhiệt nóng chảy riêng của nước đá</span>
+                    <span class="pq-model-tag">DS-TN · Đồ thị ngoại suy τ = 640s</span>
+                    <span class="pq-source-tag">Sở GD&amp;ĐT Bắc Ninh 2025 | Khảo Sát Chất Lượng</span>
+                </div>
+                <span class="pq-type-label">Đúng / Sai · VD</span>
+            </div>
+
+            <div class="pq-text">
+<p>Một nhóm học sinh lớp 12 thực hiện thí nghiệm thực hành đo nhiệt nóng chảy riêng của nước đá. Họ đã lựa chọn bộ dụng cụ thí nghiệm như Hình 1 gồm: biến thế nguồn (1), bộ đo công suất nguồn điện có tích hợp chức năng đo thời gian (2), nhiệt kế điện tử có độ phân giải nhiệt độ $\pm 0{,}1^\circ\text{C}$ (3), nhiệt lượng kế bằng nhựa có vỏ xốp kèm dây điện trở (4), cân điện tử (5), các dây nối.</p>
+<p>Họ cho viên nước đá có khối lượng $0{,}02\text{ kg}$ và một ít nước vào bình nhiệt lượng kế sao cho dây điện trở chìm trong hỗn hợp nước và nước đá. Khi tiến hành đo họ khuấy liên tục nước đá, cứ sau mỗi hai phút lại ghi số đo công suất trên oát kế và nhiệt độ trên nhiệt kế. Kết quả đo được ở bảng sau. Từ bảng số liệu họ vẽ được đồ thị biểu diễn sự thay đổi nhiệt độ theo thời gian của nước trong bình nhiệt lượng kế như Hình 2.</p>
+<div class="vlxt-model-slot" data-model-id="MH-C1-03" data-model-topic="DS-C1.3"></div>
+<div class="vstep-data-panel">
+<div class="vstep-data-title"><i class="fa-solid fa-table-list"></i> Bảng Số Liệu Đo Nhiệt Nóng Chảy Riêng Nước Đá ($m_{\text{đá}} = 0{,}02\text{ kg}$)</div>
+<table class="vstep-data-table"><thead><tr><th>Thời gian $\tau\ (\text{s})$</th><th>Nhiệt độ $(^\circ\text{C})$</th><th>Công suất $\mathcal{P}\ (\text{W})$</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>11,13</td></tr>
+<tr><td>120</td><td>0</td><td>11,09</td></tr>
+<tr><td>240</td><td>0</td><td>11,10</td></tr>
+<tr><td>350</td><td>0</td><td>11,14</td></tr>
+<tr><td>480</td><td>0</td><td>11,18</td></tr>
+<tr><td>600</td><td>0</td><td>11,13</td></tr>
+<tr><td>720</td><td>0,3</td><td>11,12</td></tr>
+<tr><td>840</td><td>0,6</td><td>11,15</td></tr>
+<tr><td>960</td><td>1,1</td><td>11,12</td></tr>
+</tbody></table></div>
+            </div>
+
+            <div class="pq-tf-rows" id="tf-group-3">
+                <div class="pq-tf-row" id="row-q3-a">
+                    <div class="pq-tf-stmt">
+                        <strong>a)</strong> Công suất trung bình của dòng điện qua điện trở trong nhiệt lượng kế là $11{,}13\text{ W}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(3, 'a', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(3, 'a', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q3-b">
+                    <div class="pq-tf-stmt">
+                        <strong>b)</strong> Với kết quả họ thu được thì nhiệt nóng chảy riêng trung bình của nước đá đo được là $3{,}45 \cdot 10^5\text{ J/kg}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(3, 'b', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(3, 'b', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q3-c">
+                    <div class="pq-tf-stmt">
+                        <strong>c)</strong> Trên đồ thị vẽ được, họ tìm ra thời điểm kết thúc quá trình nóng chảy của viên nước đá nằm trong khoảng thời gian từ thời điểm $600\text{ s}$ đến thời điểm $700\text{ s}$ là không phù hợp với bảng số liệu.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(3, 'c', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(3, 'c', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q3-d">
+                    <div class="pq-tf-stmt">
+                        <strong>d)</strong> Khi tiến hành đo, họ khuấy liên tục nước đá để nhiệt độ của hỗn hợp nước và nước đá đồng đều.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(3, 'd', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(3, 'd', false)">Sai</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-actions">
+                <button type="button" class="btn-check" onclick="checkQ(3)">
+                    <i class="fa-solid fa-circle-check"></i> Kiểm tra đáp án &amp; Xem lời giải
+                </button>
+                <button type="button" class="btn-reset" onclick="resetQ(3)">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Làm lại câu này
+                </button>
+                <button type="button" class="btn-toggle-exp" onclick="toggleExp(3)">
+                    <i class="fa-solid fa-lightbulb"></i> <span id="toggle-exp-text-3">Xem lời giải</span>
+                </button>
+                <span class="quiz-feedback-msg" id="feedback-q3" aria-live="polite"></span>
+            </div>
+
+            <div class="vlxt-explain-box" id="exp-q3">
+                <div class="vlxt-explain-title">
+                    <i class="fa-solid fa-graduation-cap"></i> Lời Giải Chi Tiết Của Thầy — Câu 3
+                </div>
+                <div class="vlxt-explain-body">
+<div class="exp-stmt-item"><span class="exp-key-badge true">a — ĐÚNG</span> Công suất trung bình của dòng điện qua dây điện trở trong cả quá trình đo:<div class="vlxt-math-callout">$$\bar{\mathcal{P}} = \frac{11{,}13 + 11{,}09 + 11{,}10 + 11{,}14 + 11{,}18 + 11{,}13 + 11{,}12 + 11{,}15 + 11{,}12}{9} \approx 11{,}13\text{ W}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">b — SAI</span> Từ đồ thị Hình 2, thời điểm kết thúc quá trình nóng chảy của viên nước đá tương ứng với điểm gãy khúc trên trục thời gian là $\tau = 640\text{ s}$. Nhiệt lượng cung cấp để viên đá nóng chảy hoàn toàn:<div class="vlxt-math-callout">$$Q = \bar{\mathcal{P}} \cdot \Delta\tau = m \cdot \lambda \implies \lambda = \frac{\bar{\mathcal{P}} \cdot \Delta\tau}{m} = \frac{11{,}13 \cdot 640}{0{,}02} = 356\,160\text{ J/kg} \approx 3{,}56 \cdot 10^5\text{ J/kg}$$</div>Giá trị $3{,}56 \cdot 10^5\text{ J/kg} \neq 3{,}45 \cdot 10^5\text{ J/kg}$.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">c — SAI</span> Các số liệu ở những thời điểm $720\text{ s}$ ($0{,}3^\circ\text{C}$), $840\text{ s}$ ($0{,}6^\circ\text{C}$) và $960\text{ s}$ ($1{,}1^\circ\text{C}$) nhằm mục đích xác định đường tăng nhiệt độ của nước sau khi đá tan hết. Đường thẳng đi qua những điểm này ngoại suy cắt trục hoành tại $\tau = 640\text{ s}$. Do đó thời điểm kết thúc nóng chảy nằm trong khoảng từ $600\text{ s}$ đến $700\text{ s}$ là <strong>hoàn toàn phù hợp</strong> với bảng số liệu.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">d — ĐÚNG</span> Việc khuấy nhẹ liên tục bằng que khuấy giúp nhiệt lượng từ điện trở tỏa ra được phân bố đều trong toàn bộ thể tích, giữ cho nhiệt độ của hỗn hợp nước và nước đá đồng đều, tránh hiện tượng quá nhiệt cục bộ gần bề mặt dây điện trở.</div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════
+             CÂU 4 (VLXT-G12-C1-MH-04 | DS-C1.2 | MH-C1-04)
+             ═════════════════════════════════════════════════════════════════ -->
+        <article class="pq-block" id="question-block-4" data-q="4" data-id="VLXT-G12-C1-MH-04" data-topic="DS-C1.2" data-ds-type="DS-C1">
+            <div class="pq-header">
+                <div class="pq-header-left">
+                    <span class="pq-badge">CÂU 4</span>
+                    <span class="pq-topic-badge"><i class="fa-solid fa-sitemap"></i> C1.2 – Thí nghiệm đo Nhiệt dung riêng</span>
+                    <span class="pq-model-tag">DS-TN · Mạch đo U, I, ΔT</span>
+                    <span class="pq-source-tag">Vật Lý 12 | Thí Nghiệm Đo Nhiệt Dung Riêng Chất Lỏng</span>
+                </div>
+                <span class="pq-type-label">Đúng / Sai · VD</span>
+            </div>
+
+            <div class="pq-text">
+<p>Có thể sử dụng bộ thí nghiệm như hình bên để đo nhiệt dung riêng của chất lỏng. Cho biết khối lượng nước trong bình là $m_n = 150{,}0\text{ g}$, cường độ dòng điện chạy qua dây điện trở và hiệu điện thế giữa hai đầu sợi dây điện trở coi như không thay đổi, lần lượt là $I = 2{,}5\text{ A}$ và $U = 1{,}6\text{ V}$. Bỏ qua sự trao đổi nhiệt của hệ với que khuấy, với bình nhiệt lượng kế và môi trường. Điện trở của nhiệt lượng kế luôn không đổi.</p>
+<div class="vlxt-model-slot" data-model-id="MH-C1-04" data-model-topic="DS-C1.2"></div>
+<div class="vstep-data-panel">
+<div class="vstep-data-title"><i class="fa-solid fa-table-list"></i> Bảng Số Liệu Đo Độ Tăng Nhiệt Độ Theo Thời Gian ($m_n = 150{,}0\text{ g}$, $U = 1{,}6\text{ V}$, $I = 2{,}5\text{ A}$)</div>
+<table class="vstep-data-table"><thead><tr><th>Lần đo</th><th>$\Delta T = (T - T_0)\ (\text{K})$</th><th>Thời gian đun $t\ (\text{s})$</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>1,0</td><td>171,00</td></tr>
+<tr><td>2</td><td>2,0</td><td>350,00</td></tr>
+<tr><td>3</td><td>3,0</td><td>528,00</td></tr>
+</tbody></table></div>
+            </div>
+
+            <div class="pq-tf-rows" id="tf-group-4">
+                <div class="pq-tf-row" id="row-q4-a">
+                    <div class="pq-tf-stmt">
+                        <strong>a)</strong> Với giá trị thu được ở bảng bên, công thức nhiệt dung riêng của nước là $c_n = \dfrac{UIt}{m_n(T - T_0)}$, $m_n$ đo bằng $\text{kg}$, $t$ đo bằng $\text{s}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(4, 'a', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(4, 'a', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q4-b">
+                    <div class="pq-tf-stmt">
+                        <strong>b)</strong> Trình tự thí nghiệm: Nối Oát kế với biến áp nguồn và nhiệt lượng kế. Giữ nguyên điện áp nguồn; Ghi giá trị các thời điểm mà nhiệt kế tăng thêm $1\text{ K}, 2\text{ K}, 3\text{ K}$; Lặp lại các thao tác.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(4, 'b', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(4, 'b', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q4-c">
+                    <div class="pq-tf-stmt">
+                        <strong>c)</strong> Giá trị trung bình của nhiệt dung riêng chất lỏng đo được là $c_n = 4640{,}00\text{ J/(kg.K)}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(4, 'c', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(4, 'c', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q4-d">
+                    <div class="pq-tf-stmt">
+                        <strong>d)</strong> Điện năng tiêu thụ trong lần đo thứ nhất là $884\text{ J}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(4, 'd', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(4, 'd', false)">Sai</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-actions">
+                <button type="button" class="btn-check" onclick="checkQ(4)">
+                    <i class="fa-solid fa-circle-check"></i> Kiểm tra đáp án &amp; Xem lời giải
+                </button>
+                <button type="button" class="btn-reset" onclick="resetQ(4)">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Làm lại câu này
+                </button>
+                <button type="button" class="btn-toggle-exp" onclick="toggleExp(4)">
+                    <i class="fa-solid fa-lightbulb"></i> <span id="toggle-exp-text-4">Xem lời giải</span>
+                </button>
+                <span class="quiz-feedback-msg" id="feedback-q4" aria-live="polite"></span>
+            </div>
+
+            <div class="vlxt-explain-box" id="exp-q4">
+                <div class="vlxt-explain-title">
+                    <i class="fa-solid fa-graduation-cap"></i> Lời Giải Chi Tiết Của Thầy — Câu 4
+                </div>
+                <div class="vlxt-explain-body">
+<div class="exp-stmt-item"><span class="exp-key-badge true">a — ĐÚNG</span> Bỏ qua trao đổi nhiệt với môi trường và nhiệt lượng kế:<div class="vlxt-math-callout">$$Q_{\text{tỏa}} = Q_{\text{thu}} \iff U \cdot I \cdot t = m_n \cdot c_n \cdot (T - T_0) \implies c_n = \frac{UIt}{m_n(T - T_0)}$$</div>với $m_n$ đo bằng $\text{kg}$, $t$ đo bằng $\text{s}$, $U$ tính bằng $\text{V}$, $I$ tính bằng $\text{A}$.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">b — ĐÚNG</span> Trình tự thao tác thực hành: Mắc mạch chuẩn xác giữa nguồn, oát kế và bình; Giữ điện áp và dòng điện ổn định; Ghi lại các mốc thời gian khi nhiệt kế tăng thêm tương ứng $1\text{ K}, 2\text{ K}, 3\text{ K}$; Lặp lại các phép đo để tính trung bình.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">c — ĐÚNG</span> Với $m_n = 150{,}0\text{ g} = 0{,}15\text{ kg}$, $U = 1{,}6\text{ V}$, $I = 2{,}5\text{ A}$ (công suất $\mathcal{P} = UI = 4{,}0\text{ W}$):<div class="vlxt-math-callout">$$c_1 = \frac{1{,}6 \cdot 2{,}5 \cdot 171}{0{,}15 \cdot 1{,}0} = 4560\text{ J/(kg.K)},\quad c_2 = \frac{1{,}6 \cdot 2{,}5 \cdot 350}{0{,}15 \cdot 2{,}0} = \frac{14000}{3}\text{ J/(kg.K)},\quad c_3 = \frac{1{,}6 \cdot 2{,}5 \cdot 528}{0{,}15 \cdot 3{,}0} = \frac{14080}{3}\text{ J/(kg.K)}$$</div>Giá trị trung bình của nhiệt dung riêng:<div class="vlxt-math-callout">$$\bar{c}_n = \frac{c_1 + c_2 + c_3}{3} = \frac{4560 + \frac{14000}{3} + \frac{14080}{3}}{3} = 4640{,}00\text{ J/(kg.K)}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">d — SAI</span> Điện năng tiêu thụ của dây điện trở trong lần đo thứ nhất:<div class="vlxt-math-callout">$$A_1 = U \cdot I \cdot t_1 = 1{,}6 \cdot 2{,}5 \cdot 171 = 684\text{ J} \neq 884\text{ J}$$</div></div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════
+             CÂU 5 (VLXT-G12-C1-MH-05 | DS-C1.3 | MH-C1-05)
+             ═════════════════════════════════════════════════════════════════ -->
+        <article class="pq-block" id="question-block-5" data-q="5" data-id="VLXT-G12-C1-MH-05" data-topic="DS-C1.3" data-ds-type="DS-C1">
+            <div class="pq-header">
+                <div class="pq-header-left">
+                    <span class="pq-badge">CÂU 5</span>
+                    <span class="pq-topic-badge"><i class="fa-solid fa-sitemap"></i> C1.3 – Thí nghiệm đo Nhiệt nóng chảy riêng của nước đá</span>
+                    <span class="pq-model-tag">DS-TN · Phương pháp trộn &amp; Sai số</span>
+                    <span class="pq-source-tag">Vật Lý 12 | Phương Pháp Trộn Lẫn &amp; Cân Bằng Nhiệt</span>
+                </div>
+                <span class="pq-type-label">Đúng / Sai · VD</span>
+            </div>
+
+            <div class="pq-text">
+<p>Một nhóm học sinh thực hiện thí nghiệm đo nhiệt nóng chảy riêng của nước đá bằng dụng cụ thực hành. Họ chuẩn bị các dụng cụ gồm: Chai nước (1); bình nhiệt lượng kế (2) cách nhiệt (có que khuấy); cốc nước cùng các viên nước đá (3); cân điện tử (4) có độ chính xác là $0{,}01\text{ g}$; nhiệt kế điện tử (5) có độ chính xác là $0{,}1^\circ\text{C}$ (hình bên).</p>
+<p>Họ đã tiến hành thí nghiệm, kết quả thu được như sau:</p>
+<ul class="pq-sub-list">
+<li>Cân khối lượng nước và nước đá (ở $0{,}0^\circ\text{C}$), kết quả các lần cân như bảng bên.</li>
+<li>Nhiệt độ ban đầu của nước và bộ dụng cụ kèm theo (bình nhiệt lượng kế, nhiệt kế, que khuấy) là $t_0 = 32{,}0^\circ\text{C}$.</li>
+<li>Nhiệt độ của nước trong bình nhiệt lượng kế ổn định khi nước đá vừa tan hết là $t = 15{,}5^\circ\text{C}$.</li>
+</ul>
+<p>Nhóm học sinh đã xác định được nhiệt dung (nhiệt lượng cần cung cấp cho vật để tăng nhiệt độ thêm $1{,}0^\circ\text{C}$) của bộ dụng cụ kèm theo (gồm bình nhiệt lượng kế, nhiệt kế, que khuấy) là $C_0 = 41{,}9\text{ J/K}$. Nhiệt dung riêng của nước là $4180\text{ J/(kg.K)}$.</p>
+<div class="vlxt-model-slot" data-model-id="MH-C1-05" data-model-topic="DS-C1.3"></div>
+<div class="vstep-data-panel">
+<div class="vstep-data-title"><i class="fa-solid fa-table-list"></i> Bảng Số Liệu Các Lần Cân Khối Lượng Nước Và Nước Đá</div>
+<table class="vstep-data-table"><thead><tr><th>Lần đo</th><th>Khối lượng của nước $m_n\ (\text{g})$</th><th>Khối lượng của khối nước đá $m_d\ (\text{g})$</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>192,92</td><td>36,71</td></tr>
+<tr><td>2</td><td>192,94</td><td>36,74</td></tr>
+<tr><td>3</td><td>192,91</td><td>36,75</td></tr>
+</tbody></table></div>
+            </div>
+
+            <div class="pq-tf-rows" id="tf-group-5">
+                <div class="pq-tf-row" id="row-q5-a">
+                    <div class="pq-tf-stmt">
+                        <strong>a)</strong> Trình tự thí nghiệm: Cân khối lượng của nước rồi cho vào nhiệt lượng kế; Đo nhiệt độ ban đầu của nước và bộ dụng cụ kèm theo; Cân khối lượng của khối nước đá rồi cho vào nhiệt lượng kế; Đo nhiệt độ ổn định của nước khi nước đá vừa tan hết.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(5, 'a', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(5, 'a', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q5-b">
+                    <div class="pq-tf-stmt">
+                        <strong>b)</strong> Để giữ cho nhiệt độ nóng chảy của nước đá không thay đổi trong suốt quá trình thí nghiệm phải giữ áp suất tác dụng lên viên đá không đổi.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(5, 'b', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(5, 'b', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q5-c">
+                    <div class="pq-tf-stmt">
+                        <strong>c)</strong> Kết quả phép đo khối lượng nước sử dụng trong thí nghiệm là $m_n = 192{,}92 \pm 0{,}01\text{ g}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(5, 'c', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(5, 'c', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q5-d">
+                    <div class="pq-tf-stmt">
+                        <strong>d)</strong> Giá trị trung bình của nhiệt nóng chảy riêng của nước đá ở nhiệt độ $0{,}0^\circ\text{C}$ đo được bởi nhóm học sinh này là $3{,}16 \cdot 10^5\text{ J/kg}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(5, 'd', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(5, 'd', false)">Sai</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-actions">
+                <button type="button" class="btn-check" onclick="checkQ(5)">
+                    <i class="fa-solid fa-circle-check"></i> Kiểm tra đáp án &amp; Xem lời giải
+                </button>
+                <button type="button" class="btn-reset" onclick="resetQ(5)">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Làm lại câu này
+                </button>
+                <button type="button" class="btn-toggle-exp" onclick="toggleExp(5)">
+                    <i class="fa-solid fa-lightbulb"></i> <span id="toggle-exp-text-5">Xem lời giải</span>
+                </button>
+                <span class="quiz-feedback-msg" id="feedback-q5" aria-live="polite"></span>
+            </div>
+
+            <div class="vlxt-explain-box" id="exp-q5">
+                <div class="vlxt-explain-title">
+                    <i class="fa-solid fa-graduation-cap"></i> Lời Giải Chi Tiết Của Thầy — Câu 5
+                </div>
+                <div class="vlxt-explain-body">
+<div class="exp-stmt-item"><span class="exp-key-badge true">a — ĐÚNG</span> Trình tự thí nghiệm hoàn toàn chuẩn xác: Cân khối lượng nước $m_n$ rồi rót vào bình nhiệt lượng kế $\to$ Đo nhiệt độ ban đầu $t_0$ $\to$ Cân nhanh khối lượng nước đá $m_d$ (ở $0^\circ\text{C}$) rồi thả vào bình và khuấy đều $\to$ Theo dõi nhiệt kế, ghi nhiệt độ ổn định thấp nhất $t$ khi toàn bộ đá vừa tan hết.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">b — ĐÚNG</span> Nhiệt độ nóng chảy của chất rắn kết tinh phụ thuộc vào áp suất ngoài tác dụng lên chất rắn. Do đó, việc duy trì áp suất khí quyển ổn định không đổi trong phòng thí nghiệm là điều kiện bắt buộc để giữ nhiệt độ nóng chảy của nước đá cố định ở $0{,}0^\circ\text{C}$.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">c — SAI</span> Khối lượng trung bình của nước qua 3 lần đo:<div class="vlxt-math-callout">$$\bar{m}_n = \frac{192{,}92 + 192{,}94 + 192{,}91}{3} \approx 192{,}92\text{ g}$$</div>Sai số ngẫu nhiên tuyệt đối của từng lần: $\Delta m_{n1} = 0{,}00\text{ g}$, $\Delta m_{n2} = 0{,}02\text{ g}$, $\Delta m_{n3} = 0{,}01\text{ g} \implies \overline{\Delta m_n} = \dfrac{0{,}00 + 0{,}02 + 0{,}01}{3} = 0{,}01\text{ g}$. Sai số dụng cụ $\Delta m_{\text{dc}} = 0{,}01\text{ g}$. Suy ra sai số tuyệt đối toàn phần:<div class="vlxt-math-callout">$$\Delta m_n = \overline{\Delta m_n} + \Delta m_{\text{dc}} = 0{,}01 + 0{,}01 = 0{,}02\text{ g}$$</div>Vậy kết quả đo khối lượng nước phải viết là: $m_n = 192{,}92 \pm 0{,}02\text{ g}$. Mệnh đề ghi $\pm 0{,}01\text{ g}$ là <strong>Sai</strong> (do bỏ quên sai số dụng cụ).</div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">d — ĐÚNG</span> Phương trình cân bằng nhiệt lượng khi đá tan hết ở nhiệt độ cân bằng $t = 15{,}5^\circ\text{C}$:<div class="vlxt-math-callout">$$Q_{\text{thu}} = Q_{\text{tỏa}} \iff m_d \lambda + m_d c (t - 0) = (m_n c + C_0)(t_0 - t) \implies \lambda = \frac{(m_n c + C_0)(t_0 - t) - m_d c t}{m_d}$$</div>Với $t_0 - t = 32{,}0 - 15{,}5 = 16{,}5^\circ\text{C}$; $c = 4180\text{ J/(kg.K)}$; $C_0 = 41{,}9\text{ J/K}$:<ul class="pq-sub-list"><li>Lần 1 ($m_n = 0{,}19292\text{ kg}$, $m_d = 0{,}03671\text{ kg}$): $\lambda_1 \approx 3{,}16497 \cdot 10^5\text{ J/kg}$.</li><li>Lần 2 ($m_n = 0{,}19294\text{ kg}$, $m_d = 0{,}03674\text{ kg}$): $\lambda_2 \approx 3{,}16223 \cdot 10^5\text{ J/kg}$.</li><li>Lần 3 ($m_n = 0{,}19291\text{ kg}$, $m_d = 0{,}03675\text{ kg}$): $\lambda_3 \approx 3{,}16063 \cdot 10^5\text{ J/kg}$.</li></ul>Giá trị trung bình: $$\bar{\lambda} = \frac{\lambda_1 + \lambda_2 + \lambda_3}{3} \approx 3{,}16 \cdot 10^5\text{ J/kg}$$</div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════
+             CÂU 6 (VLXT-G12-C1-MH-06 | DS-C1.4 | MH-C1-06)
+             ═════════════════════════════════════════════════════════════════ -->
+        <article class="pq-block" id="question-block-6" data-q="6" data-id="VLXT-G12-C1-MH-06" data-topic="DS-C1.4" data-ds-type="DS-C1">
+            <div class="pq-header">
+                <div class="pq-header-left">
+                    <span class="pq-badge">CÂU 6</span>
+                    <span class="pq-topic-badge"><i class="fa-solid fa-sitemap"></i> C1.4 – Chuyển hóa năng lượng &amp; Công suất cấp nhiệt thực tế</span>
+                    <span class="pq-model-tag">DS-UD · Bình nước nóng NLMT</span>
+                    <span class="pq-source-tag">THPT Chuyên Chu Văn An - Lạng Sơn | KSCL Lần 1</span>
+                </div>
+                <span class="pq-type-label">Đúng / Sai · VD</span>
+            </div>
+
+            <div class="pq-text">
+<p>Năng lượng mặt trời là một nguồn năng lượng thân thiện với môi trường, ngày nay để tiết kiệm điện và bảo vệ môi trường rất nhiều hộ gia đình đã sử dụng bình nước nóng năng lượng mặt trời. Hình bên là bình nước nóng năng lượng mặt trời, diện tích tấm hấp thụ năng lượng mặt trời là $2\text{ m}^2$ và thể tích bình chứa $200\text{ lít}$ nước ở nhiệt độ $25^\circ\text{C}$. Giả sử cường độ sáng trung bình của mặt trời những ngày có nắng là $1370\text{ W/m}^2$, chỉ $60\%$ năng lượng mặt trời được hấp thụ truyền cho nước trong bình và bỏ qua sự trao đổi nhiệt của bình với môi trường. Cho khối lượng riêng của nước là $1000\text{ kg/m}^3$, nhiệt dung riêng của nước là $4200\text{ J/(kg.K)}$.</p>
+<div class="vlxt-model-slot" data-model-id="MH-C1-06" data-model-topic="DS-C1.4"></div>
+            </div>
+
+            <div class="pq-tf-rows" id="tf-group-6">
+                <div class="pq-tf-row" id="row-q6-a">
+                    <div class="pq-tf-stmt">
+                        <strong>a)</strong> Trong bình nước nóng năng lượng mặt trời, quang năng được chuyển hóa thành điện năng.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(6, 'a', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(6, 'a', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q6-b">
+                    <div class="pq-tf-stmt">
+                        <strong>b)</strong> Trong khoảng thời gian $2\text{ h}$ có nắng, nước trong bình đã nóng thêm $23{,}5^\circ\text{C}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(6, 'b', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(6, 'b', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q6-c">
+                    <div class="pq-tf-stmt">
+                        <strong>c)</strong> Thời gian có nắng để lượng nước trong bình sôi là $8{,}5\text{ h}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(6, 'c', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(6, 'c', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q6-d">
+                    <div class="pq-tf-stmt">
+                        <strong>d)</strong> Biết giá tiền điện là $1800\text{ đồng/kWh}$, so với việc sử dụng bếp điện có hiệu suất $80\%$ để làm nước trong bình nóng đến $75^\circ\text{C}$, dùng bình nước nóng năng lượng mặt trời đã tiết kiệm được số tiền điện là $26\,250\text{ đồng}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(6, 'd', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(6, 'd', false)">Sai</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-actions">
+                <button type="button" class="btn-check" onclick="checkQ(6)">
+                    <i class="fa-solid fa-circle-check"></i> Kiểm tra đáp án &amp; Xem lời giải
+                </button>
+                <button type="button" class="btn-reset" onclick="resetQ(6)">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Làm lại câu này
+                </button>
+                <button type="button" class="btn-toggle-exp" onclick="toggleExp(6)">
+                    <i class="fa-solid fa-lightbulb"></i> <span id="toggle-exp-text-6">Xem lời giải</span>
+                </button>
+                <span class="quiz-feedback-msg" id="feedback-q6" aria-live="polite"></span>
+            </div>
+
+            <div class="vlxt-explain-box" id="exp-q6">
+                <div class="vlxt-explain-title">
+                    <i class="fa-solid fa-graduation-cap"></i> Lời Giải Chi Tiết Của Thầy — Câu 6
+                </div>
+                <div class="vlxt-explain-body">
+<div class="exp-stmt-item"><span class="exp-key-badge false">a — SAI</span> Trong bình nước nóng năng lượng mặt trời, quang năng (năng lượng bức xạ Mặt Trời) được tấm thu nhiệt hấp thụ và chuyển hóa trực tiếp thành <strong>nhiệt năng</strong> làm nóng nước, không chuyển hóa thành điện năng.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">b — SAI</span> Nhiệt lượng cung cấp để làm nóng nước trong $2\text{ h}$:<div class="vlxt-math-callout">$$Q = \mathcal{P} \cdot t \cdot 60\% = (1370 \cdot 2) \cdot (2 \cdot 3600) \cdot 0{,}6 = 11\,836\,800\text{ J}$$</div>Độ tăng nhiệt độ của $200\text{ kg}$ nước:<div class="vlxt-math-callout">$$Q = m c \Delta t \implies 11\,836\,800 = 200 \cdot 4200 \cdot \Delta t \implies \Delta t \approx 14{,}1^\circ\text{C} \neq 23{,}5^\circ\text{C}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">c — SAI</span> Nhiệt lượng cần thiết để $200\text{ lít}$ nước tăng từ $25^\circ\text{C}$ lên $100^\circ\text{C}$:<div class="vlxt-math-callout">$$Q' = m c \Delta t = 200 \cdot 4200 \cdot (100 - 25) = 63\,000\,000\text{ J}$$</div>Thời gian chiếu nắng cần thiết:<div class="vlxt-math-callout">$$(1370 \cdot 2) \cdot 0{,}6 \cdot t = 63\,000\,000 \implies t \approx 38\,321\text{ s} \approx 10{,}6\text{ h} \neq 8{,}5\text{ h}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">d — ĐÚNG</span> Khi dùng bếp điện hiệu suất $80\%$ để đun $200\text{ kg}$ nước từ $25^\circ\text{C}$ lên $75^\circ\text{C}$, điện năng tiêu thụ của bếp điện:<div class="vlxt-math-callout">$$A \cdot 80\% = m c \Delta t = 200 \cdot 4200 \cdot (75 - 25) = 42\,000\,000\text{ J} \implies A = 52{,}5\text{ MJ}$$</div>Quy đổi ra $\text{kWh}$ và tính tiền điện tiết kiệm:<div class="vlxt-math-callout">$$\text{Số điện} = \frac{52{,}5 \cdot 10^6}{10^3 \cdot 60 \cdot 60} = \frac{175}{12}\text{ kWh} \implies \text{Tiền điện} = \frac{175}{12} \cdot 1800 = 26\,250\text{ đồng}$$</div></div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════
+             CÂU 7 (VLXT-G12-C1-MH-07 | DS-C1.4 | MH-C1-07)
+             ═════════════════════════════════════════════════════════════════ -->
+        <article class="pq-block" id="question-block-7" data-q="7" data-id="VLXT-G12-C1-MH-07" data-topic="DS-C1.4" data-ds-type="DS-C1">
+            <div class="pq-header">
+                <div class="pq-header-left">
+                    <span class="pq-badge">CÂU 7</span>
+                    <span class="pq-topic-badge"><i class="fa-solid fa-sitemap"></i> C1.4 – Chuyển hóa năng lượng &amp; Công suất cấp nhiệt thực tế</span>
+                    <span class="pq-model-tag">DS-UD · Bình nóng lạnh gián tiếp</span>
+                    <span class="pq-source-tag">Sở Hà Tĩnh | Kiểm tra HK I</span>
+                </div>
+                <span class="pq-type-label">Đúng / Sai · VD</span>
+            </div>
+
+            <div class="pq-text">
+<p>Hình bên là sơ đồ nguyên lí hoạt động của một máy làm nóng nước có dung tích $20\text{ lít}$ và công suất tiêu thụ điện $2500\text{ W}$. Vào một ngày mùa đông khi bật máy, nhiệt độ nguồn nước lạnh đưa vào là $18^\circ\text{C}$, khi nước đã được làm nóng đến nhiệt độ tối đa là $70^\circ\text{C}$ thì rơ le của máy tự ngắt (trong quá trình này ống dẫn nước nóng ra đang khóa). Nước có khối lượng riêng $\rho = 1000\text{ kg/m}^3$, nhiệt dung riêng $c = 4180\text{ J/(kg.K)}$. Hiệu suất làm nóng nước của máy là $H = 95\%$.</p>
+<div class="vlxt-model-slot" data-model-id="MH-C1-07" data-model-topic="DS-C1.4"></div>
+            </div>
+
+            <div class="pq-tf-rows" id="tf-group-7">
+                <div class="pq-tf-row" id="row-q7-a">
+                    <div class="pq-tf-stmt">
+                        <strong>a)</strong> Thời gian để làm nóng nước từ khi bật máy đến khi rơ le ngắt là $30{,}5\text{ phút}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(7, 'a', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(7, 'a', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q7-b">
+                    <div class="pq-tf-stmt">
+                        <strong>b)</strong> Nhiệt lượng cần thiết cung cấp cho nước trong máy tăng nhiệt độ từ $18^\circ\text{C}$ lên $70^\circ\text{C}$ là $4\,347\,200\text{ J}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(7, 'b', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(7, 'b', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q7-c">
+                    <div class="pq-tf-stmt">
+                        <strong>c)</strong> Công của dòng điện cung cấp cho máy từ khi bật máy đến khi rơ le ngắt là $456\,700\text{ J}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(7, 'c', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(7, 'c', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q7-d">
+                    <div class="pq-tf-stmt">
+                        <strong>d)</strong> Khi nước được đưa vào máy đến lúc rơ le ngắt thì nhiệt độ của nước đã tăng $325\text{ K}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(7, 'd', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(7, 'd', false)">Sai</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-actions">
+                <button type="button" class="btn-check" onclick="checkQ(7)">
+                    <i class="fa-solid fa-circle-check"></i> Kiểm tra đáp án &amp; Xem lời giải
+                </button>
+                <button type="button" class="btn-reset" onclick="resetQ(7)">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Làm lại câu này
+                </button>
+                <button type="button" class="btn-toggle-exp" onclick="toggleExp(7)">
+                    <i class="fa-solid fa-lightbulb"></i> <span id="toggle-exp-text-7">Xem lời giải</span>
+                </button>
+                <span class="quiz-feedback-msg" id="feedback-q7" aria-live="polite"></span>
+            </div>
+
+            <div class="vlxt-explain-box" id="exp-q7">
+                <div class="vlxt-explain-title">
+                    <i class="fa-solid fa-graduation-cap"></i> Lời Giải Chi Tiết Của Thầy — Câu 7
+                </div>
+                <div class="vlxt-explain-body">
+<div class="exp-stmt-item"><span class="exp-key-badge true">a — ĐÚNG</span> Thời gian làm nóng nước từ $18^\circ\text{C}$ lên $70^\circ\text{C}$ đến khi rơ le ngắt:<div class="vlxt-math-callout">$$\tau = \frac{A}{\mathcal{P}} = \frac{4\,576\,000}{2500} = 1830{,}4\text{ s} \approx 30{,}5\text{ phút}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">b — ĐÚNG</span> Nhiệt lượng cần thiết cung cấp cho $20\text{ kg}$ nước tăng nhiệt độ từ $18^\circ\text{C}$ lên $70^\circ\text{C}$:<div class="vlxt-math-callout">$$Q = m c \Delta t = 20 \cdot 4180 \cdot (70 - 18) = 4\,347\,200\text{ J}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">c — SAI</span> Công của dòng điện cung cấp cho máy từ khi bật máy đến khi rơ le ngắt:<div class="vlxt-math-callout">$$H = \frac{Q}{A} \cdot 100\% \iff 95\% = \frac{4\,347\,200}{A} \cdot 100\% \implies A = 4\,576\,000\text{ J} \neq 456\,700\text{ J}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">d — SAI</span> Độ tăng nhiệt độ trong thang Kelvin bằng đúng độ tăng nhiệt độ trong thang Celsius:<div class="vlxt-math-callout">$$\Delta T = \Delta t = t_2 - t_1 = 70 - 18 = 52\text{ K} \neq 325\text{ K}$$</div></div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════
+             CÂU 9 (VLXT-G12-C1-MH-09 | DS-C1.4 | MH-C1-09)
+             ═════════════════════════════════════════════════════════════════ -->
+        <article class="pq-block" id="question-block-9" data-q="9" data-id="VLXT-G12-C1-MH-09" data-topic="DS-C1.4" data-ds-type="DS-C1">
+            <div class="pq-header">
+                <div class="pq-header-left">
+                    <span class="pq-badge">CÂU 9</span>
+                    <span class="pq-topic-badge"><i class="fa-solid fa-sitemap"></i> C1.4 – Chuyển hóa năng lượng &amp; Công suất cấp nhiệt thực tế</span>
+                    <span class="pq-model-tag">DS-UD · Hệ thống trộn nước vòi sen</span>
+                    <span class="pq-source-tag">Vật Lý 12 | Tắm Nóng Lạnh Gián Tiếp &amp; Lưu Lượng</span>
+                </div>
+                <span class="pq-type-label">Đúng / Sai · VDC</span>
+            </div>
+
+            <div class="pq-text">
+<p>Hệ thống tắm nóng lạnh gián tiếp của nhà Phương Anh có một bình chứa nước với thể tích $15\text{ lít}$ và công suất điện ổn định là $2{,}5\text{ kW}$. Bình chứa nước được cách nhiệt hoàn toàn và hiệu suất chuyển hóa điện năng thành nhiệt cung cấp cho bình nước nóng đạt $97\%$. Khối lượng riêng của nước là $1000\text{ kg/m}^3$ và nhiệt dung riêng là $4200\text{ J/(kg.K)}$. Ban đầu bình chứa đầy nước ở nhiệt độ $20^\circ\text{C}$.</p>
+<div class="vlxt-model-slot" data-model-id="MH-C1-09" data-model-topic="DS-C1.4"></div>
+            </div>
+
+            <div class="pq-tf-rows" id="tf-group-9">
+                <div class="pq-tf-row" id="row-q9-a">
+                    <div class="pq-tf-stmt">
+                        <strong>a)</strong> Khối lượng nước ban đầu trong bình là $15\text{ kg}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(9, 'a', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(9, 'a', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q9-b">
+                    <div class="pq-tf-stmt">
+                        <strong>b)</strong> Phương Anh bật cầu dao để bắt đầu đun nước. Sau $21\text{ phút } 39\text{ giây}$ thì nhiệt độ nước trong bình là $70^\circ\text{C}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(9, 'b', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(9, 'b', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q9-c">
+                    <div class="pq-tf-stmt">
+                        <strong>c)</strong> Phương Anh nên tắt cầu dao trước khi sử dụng nước nóng để đảm bảo an toàn.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(9, 'c', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(9, 'c', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q9-d">
+                    <div class="pq-tf-stmt">
+                        <strong>d)</strong> Khi nước trong bình có nhiệt độ $70^\circ\text{C}$ thì Phương Anh tắt cầu dao, van tự động đóng không cho dòng nước lạnh chảy vào bình. Khi bật vòi sen để tắm, nước lạnh (có nhiệt độ $20^\circ\text{C}$) từ hệ thống sẽ hòa trộn với nước nóng chảy ra từ bình theo tỉ lệ phù hợp để tạo ra nước có nhiệt độ tắm thích hợp rồi chảy qua vòi hoa sen. Biết vòi hoa sen có tổng tiết diện các tia nước là $30\text{ mm}^2$. Phương Anh điều chỉnh cho các tia nước phun ra với tốc độ $4\text{ m/s}$ và nhiệt độ các tia nước đều là $30^\circ\text{C}$. Nếu xả nước liên tục thì thời gian nước nóng trong bình chảy hết là $9\text{ phút } 25\text{ giây}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(9, 'd', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(9, 'd', false)">Sai</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-actions">
+                <button type="button" class="btn-check" onclick="checkQ(9)">
+                    <i class="fa-solid fa-circle-check"></i> Kiểm tra đáp án &amp; Xem lời giải
+                </button>
+                <button type="button" class="btn-reset" onclick="resetQ(9)">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Làm lại câu này
+                </button>
+                <button type="button" class="btn-toggle-exp" onclick="toggleExp(9)">
+                    <i class="fa-solid fa-lightbulb"></i> <span id="toggle-exp-text-9">Xem lời giải</span>
+                </button>
+                <span class="quiz-feedback-msg" id="feedback-q9" aria-live="polite"></span>
+            </div>
+
+            <div class="vlxt-explain-box" id="exp-q9">
+                <div class="vlxt-explain-title">
+                    <i class="fa-solid fa-graduation-cap"></i> Lời Giải Chi Tiết Của Thầy — Câu 9
+                </div>
+                <div class="vlxt-explain-body">
+<div class="exp-stmt-item"><span class="exp-key-badge true">a — ĐÚNG</span> Khối lượng nước ban đầu trong bình chứa $15\text{ lít}$:<div class="vlxt-math-callout">$$m_n = V \cdot \rho = 15 \cdot 10^{-3} \cdot 1000 = 15\text{ kg}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">b — ĐÚNG</span> Điện năng tiêu thụ sau $\tau = 21\cdot 60 + 39 = 1299\text{ s}$:<div class="vlxt-math-callout">$$A = \mathcal{P} \cdot \tau = 2{,}5 \cdot 10^3 \cdot 1299 = 3\,247\,500\text{ J}$$</div>Nhiệt lượng nước nhận được với hiệu suất $H = 97\%$:<div class="vlxt-math-callout">$$Q = H \cdot A = 0{,}97 \cdot 3\,247\,500 = 3\,150\,075\text{ J}$$</div>Suy ra nhiệt độ cuối cùng của nước trong bình:<div class="vlxt-math-callout">$$Q = m_n c (t_b - 20) \implies 3\,150\,075 = 15 \cdot 4200 \cdot (t_b - 20) \implies t_b = 70^\circ\text{C}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">c — ĐÚNG</span> Tắt cầu dao điện của bình nóng lạnh gián tiếp trước khi tắm giúp loại bỏ hoàn toàn nguy cơ rò rỉ điện khi đang sử dụng nước, đảm bảo an toàn tính mạng.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">d — SAI</span> Áp dụng phương trình cân bằng nhiệt khi trộn $15\text{ kg}$ nước nóng ở $70^\circ\text{C}$ với khối lượng $m_l$ nước lạnh ở $20^\circ\text{C}$ để thu được nước tắm ở $30^\circ\text{C}$:<div class="vlxt-math-callout">$$m_n c (t_n - t) = m_l c (t - t_l) \implies 15 \cdot (70 - 30) = m_l \cdot (30 - 20) \implies m_l = 60\text{ kg}$$</div>Tổng khối lượng nước xả ra là $m = m_n + m_l = 15 + 60 = 75\text{ kg}$, ứng với thể tích $V = \dfrac{m}{\rho} = 0{,}075\text{ m}^3$. Chiều dài dòng nước chảy qua tổng tiết diện $S = 30\text{ mm}^2 = 30 \cdot 10^{-6}\text{ m}^2$ là $l = \dfrac{V}{S} = \dfrac{0{,}075}{30 \cdot 10^{-6}} = 2500\text{ m}$. Thời gian xả hết bình nước nóng:<div class="vlxt-math-callout">$$t = \frac{l}{v} = \frac{2500}{4} = 625\text{ s} = 10\text{ phút } 25\text{ giây} \neq 9\text{ phút } 25\text{ giây}$$</div></div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════
+             CÂU 10 (VLXT-G12-C1-MH-10 | DS-C1.4 | MH-C1-10)
+             ═════════════════════════════════════════════════════════════════ -->
+        <article class="pq-block" id="question-block-10" data-q="10" data-id="VLXT-G12-C1-MH-10" data-topic="DS-C1.4" data-ds-type="DS-C1">
+            <div class="pq-header">
+                <div class="pq-header-left">
+                    <span class="pq-badge">CÂU 10</span>
+                    <span class="pq-topic-badge"><i class="fa-solid fa-sitemap"></i> C1.4 – Chuyển hóa năng lượng &amp; Công suất cấp nhiệt thực tế</span>
+                    <span class="pq-model-tag">DS-UD · Sục điện đun nước</span>
+                    <span class="pq-source-tag">Vật Lý 12 | Mô Hình Thực Tế Đời Sống &amp; An Toàn Điện</span>
+                </div>
+                <span class="pq-type-label">Đúng / Sai · TH</span>
+            </div>
+
+            <div class="pq-text">
+<p>Sinh viên thế hệ 8X (những người sinh ra trong thập niên 1980) thường dùng &ldquo;sục điện&rdquo; để đun nước. Vào thời kỳ đó, hầu hết sinh viên đều có điều kiện kinh tế hạn chế, nên việc sắm một chiếc ấm đun nước điện là khá tốn kém. Sục điện là một lựa chọn vừa rẻ tiền, nhỏ gọn, linh hoạt, tiện dụng và đặc biệt tiết kiệm thời gian. Một đầu sục điện là một sợi kim loại xoắn kép — thường là nhôm, nối giữa hai đầu dây nhôm là dây điện có phích cắm. Lúc đun thì thả cái lõi kim loại đó vào trong cốc nhựa, xô nhựa chứa nước rồi cắm điện.</p>
+<p>Một sinh viên dùng chiếc sục điện có ghi $2500\text{ W} - 220\text{ V}$ để đun $10\text{ lít}$ nước ở $20^\circ\text{C}$ chứa trong một xô nhựa. Ổ điện cắm sục có hiệu điện thế là $220\text{ V}$. Nước thu được $90\%$ nhiệt do dây xoắn kép tỏa ra. Biết khối lượng riêng của nước là $1000\text{ kg/m}^3$, nhiệt dung riêng của nước là $4200\text{ J/(kg.K)}$. Nhiệt độ sôi của nước là $100^\circ\text{C}$.</p>
+<div class="vlxt-model-slot" data-model-id="MH-C1-10" data-model-topic="DS-C1.4"></div>
+            </div>
+
+            <div class="pq-tf-rows" id="tf-group-10">
+                <div class="pq-tf-row" id="row-q10-a">
+                    <div class="pq-tf-stmt">
+                        <strong>a)</strong> Để đun nước trong xô đến sôi, sinh viên đó cần đun trong $20{,}2\text{ phút}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(10, 'a', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(10, 'a', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q10-b">
+                    <div class="pq-tf-stmt">
+                        <strong>b)</strong> Muốn có nước tắm ở $40^\circ\text{C}$, sinh viên đó cần pha thêm $40\text{ lít}$ nước ở $20^\circ\text{C}$ vào $10\text{ lít}$ nước sôi.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(10, 'b', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(10, 'b', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q10-c">
+                    <div class="pq-tf-stmt">
+                        <strong>c)</strong> Thiết bị này đã biến đổi trực tiếp điện năng thành nhiệt năng.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(10, 'c', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(10, 'c', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q10-d">
+                    <div class="pq-tf-stmt">
+                        <strong>d)</strong> Đây là thiết bị đun nước rất an toàn và đảm bảo sức khỏe nên được sinh viên chọn dùng phổ biến.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(10, 'd', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(10, 'd', false)">Sai</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-actions">
+                <button type="button" class="btn-check" onclick="checkQ(10)">
+                    <i class="fa-solid fa-circle-check"></i> Kiểm tra đáp án &amp; Xem lời giải
+                </button>
+                <button type="button" class="btn-reset" onclick="resetQ(10)">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Làm lại câu này
+                </button>
+                <button type="button" class="btn-toggle-exp" onclick="toggleExp(10)">
+                    <i class="fa-solid fa-lightbulb"></i> <span id="toggle-exp-text-10">Xem lời giải</span>
+                </button>
+                <span class="quiz-feedback-msg" id="feedback-q10" aria-live="polite"></span>
+            </div>
+
+            <div class="vlxt-explain-box" id="exp-q10">
+                <div class="vlxt-explain-title">
+                    <i class="fa-solid fa-graduation-cap"></i> Lời Giải Chi Tiết Của Thầy — Câu 10
+                </div>
+                <div class="vlxt-explain-body">
+<div class="exp-stmt-item"><span class="exp-key-badge false">a — SAI</span> Nhiệt lượng cần cung cấp cho $10\text{ lít}$ ($10\text{ kg}$) nước ở $20^\circ\text{C}$ đến sôi ở $100^\circ\text{C}$:<div class="vlxt-math-callout">$$Q_1 = m c \Delta t = 10 \cdot 4200 \cdot (100 - 20) = 3{,}36 \cdot 10^6\text{ J}$$</div>Do nước thu được $90\%$ nhiệt lượng tỏa ra từ sục điện công suất $\mathcal{P} = 2500\text{ W}$:<div class="vlxt-math-callout">$$t = \frac{Q_1}{0{,}9 \cdot \mathcal{P}} = \frac{3{,}36 \cdot 10^6}{0{,}9 \cdot 2500} = \frac{4480}{3}\text{ s} \approx 24{,}89\text{ phút} \neq 20{,}2\text{ phút}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">b — SAI</span> Phương trình cân bằng nhiệt khi pha $10\text{ kg}$ nước sôi ở $100^\circ\text{C}$ với $m\text{ (kg)}$ nước lạnh ở $20^\circ\text{C}$ để thu được nước ở $40^\circ\text{C}$:<div class="vlxt-math-callout">$$10 \cdot 4200 \cdot (100 - 40) = m \cdot 4200 \cdot (40 - 20) \implies m = 30\text{ kg} = 30\text{ lít} \neq 40\text{ lít}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">c — ĐÚNG</span> Khi dòng điện chạy qua lõi kim loại xoắn kép có điện trở, điện năng chuyển hóa trực tiếp thành nhiệt năng theo hiệu ứng Joule–Lenz để đun nóng nước.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">d — SAI</span> Sục điện thả trực tiếp dây kim loại trần vào nước chứa trong xô nhựa rất thiếu an toàn: dễ gây điện giật chết người nếu chạm tay hoặc nước tràn, quá nhiệt làm chảy nhựa xô và sinh chất độc hại, dễ gây chập cháy điện.</div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════
+             CÂU 11 (VLXT-G12-C1-MH-11 | DS-C1.5 | MH-C1-11)
+             ═════════════════════════════════════════════════════════════════ -->
+        <article class="pq-block" id="question-block-11" data-q="11" data-id="VLXT-G12-C1-MH-11" data-topic="DS-C1.5" data-ds-type="DS-C1">
+            <div class="pq-header">
+                <div class="pq-header-left">
+                    <span class="pq-badge">CÂU 11</span>
+                    <span class="pq-topic-badge"><i class="fa-solid fa-sitemap"></i> C1.5 – Hệ thống làm mát, hút ẩm &amp; Chuyển thể kỹ thuật</span>
+                    <span class="pq-model-tag">DS-UD · Tản nhiệt chất lỏng CPU</span>
+                    <span class="pq-source-tag">Sở Bà Rịa - Vũng Tàu | Đề Thi Thử TN THPT Lần 1</span>
+                </div>
+                <span class="pq-type-label">Đúng / Sai · VD</span>
+            </div>
+
+            <div class="pq-text">
+<p>Một hệ thống tản nhiệt cho CPU có cấu trúc như hình bên. Bộ làm mát tiếp xúc trực tiếp với CPU, giúp hấp thụ nhiệt từ CPU. Chất lỏng (dung dịch EKWB CryoFuel) làm mát sẽ chảy qua bộ làm mát, hấp thụ nhiệt và nóng lên. Các ống dẫn giúp lưu thông chất lỏng từ bộ làm mát đến bộ tản nhiệt và ngược lại. Tại bộ tản nhiệt, nhiệt lượng được giải phóng ra ngoài không khí nhờ luồng không khí mát được quạt thổi liên tục. Hệ thống này có các thông số sau:</p>
+<ul class="pq-sub-list">
+<li>Lưu lượng nước: $0{,}4\text{ lít/phút}$.</li>
+<li>Nhiệt dung riêng của nước: $4200\text{ J/(kg.K)}$.</li>
+<li>Khối lượng riêng của nước: $1000\text{ kg/m}^3$.</li>
+<li>Công suất tỏa nhiệt của CPU khi hoạt động bình thường là $210\text{ W}$.</li>
+<li>Hiệu suất làm mát của hệ thống là $80\%$ (tức là $80\%$ nhiệt lượng tỏa ra từ CPU được nước hấp thụ).</li>
+</ul>
+<div class="vlxt-model-slot" data-model-id="MH-C1-11" data-model-topic="DS-C1.5"></div>
+            </div>
+
+            <div class="pq-tf-rows" id="tf-group-11">
+                <div class="pq-tf-row" id="row-q11-a">
+                    <div class="pq-tf-stmt">
+                        <strong>a)</strong> Bộ làm mát hấp thụ nhiệt từ CPU làm giảm nhiệt độ của CPU.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(11, 'a', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(11, 'a', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q11-b">
+                    <div class="pq-tf-stmt">
+                        <strong>b)</strong> Nhiệt lượng CPU tỏa ra trong một giờ khi hoạt động bình thường là $750\text{ kJ}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(11, 'b', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(11, 'b', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q11-c">
+                    <div class="pq-tf-stmt">
+                        <strong>c)</strong> Lưu lượng chất lỏng qua bộ làm mát và lưu lượng khí do quạt thổi quyết định hiệu suất làm mát của hệ thống.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(11, 'c', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(11, 'c', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q11-d">
+                    <div class="pq-tf-stmt">
+                        <strong>d)</strong> Chênh lệch nhiệt độ của nước đầu vào và đầu ra ở bộ làm mát là $6^\circ\text{C}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(11, 'd', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(11, 'd', false)">Sai</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-actions">
+                <button type="button" class="btn-check" onclick="checkQ(11)">
+                    <i class="fa-solid fa-circle-check"></i> Kiểm tra đáp án &amp; Xem lời giải
+                </button>
+                <button type="button" class="btn-reset" onclick="resetQ(11)">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Làm lại câu này
+                </button>
+                <button type="button" class="btn-toggle-exp" onclick="toggleExp(11)">
+                    <i class="fa-solid fa-lightbulb"></i> <span id="toggle-exp-text-11">Xem lời giải</span>
+                </button>
+                <span class="quiz-feedback-msg" id="feedback-q11" aria-live="polite"></span>
+            </div>
+
+            <div class="vlxt-explain-box" id="exp-q11">
+                <div class="vlxt-explain-title">
+                    <i class="fa-solid fa-graduation-cap"></i> Lời Giải Chi Tiết Của Thầy — Câu 11
+                </div>
+                <div class="vlxt-explain-body">
+<div class="exp-stmt-item"><span class="exp-key-badge true">a — ĐÚNG</span> Bộ làm mát (water block) tiếp xúc nhiệt trực tiếp với bề mặt CPU, dẫn nhiệt từ CPU sang dòng chất lỏng đang lưu thông, giúp hạ và ổn định nhiệt độ làm việc của CPU.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">b — SAI</span> Nhiệt lượng CPU tỏa ra trong $1\text{ giờ}$ ($3600\text{ s}$) khi hoạt động ở công suất $210\text{ W}$:<div class="vlxt-math-callout">$$Q = \mathcal{P} \cdot t = 210 \cdot 3600 = 756\,000\text{ J} = 756\text{ kJ} \neq 750\text{ kJ}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">c — ĐÚNG</span> Lưu lượng chất lỏng qua bộ làm mát quyết định tốc độ vận chuyển nhiệt từ CPU ra két tản nhiệt, còn lưu lượng khí do quạt thổi quyết định tốc độ giải phóng nhiệt ra không khí tại các lá tản nhiệt; cả hai thông số cùng với bản chất chất lỏng quyết định hiệu suất làm mát của hệ thống.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">d — ĐÚNG</span> Xét trong $t = 1\text{ s}$, lưu lượng khối lượng chất lỏng chảy qua là $m/t = \dfrac{1000 \cdot 0{,}4}{60} \cdot 10^{-3}\text{ kg/s}$. Từ hiệu suất làm mát $H = 80\%$:<div class="vlxt-math-callout">$$H = \frac{Q'}{Q} = \frac{D V c \Delta t}{\mathcal{P} t} \iff 0{,}8 = \frac{\frac{1000 \cdot 0{,}4}{60} \cdot 10^{-3} \cdot 4200 \cdot \Delta t}{210 \cdot 1} \implies \Delta t = 6^\circ\text{C}$$</div></div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════
+             CÂU 12 (VLXT-G12-C1-MH-12 | DS-C1.5 | MH-C1-12)
+             ═════════════════════════════════════════════════════════════════ -->
+        <article class="pq-block" id="question-block-12" data-q="12" data-id="VLXT-G12-C1-MH-12" data-topic="DS-C1.5" data-ds-type="DS-C1">
+            <div class="pq-header">
+                <div class="pq-header-left">
+                    <span class="pq-badge">CÂU 12</span>
+                    <span class="pq-topic-badge"><i class="fa-solid fa-sitemap"></i> C1.5 – Hệ thống làm mát, hút ẩm &amp; Chuyển thể kỹ thuật</span>
+                    <span class="pq-model-tag">DS-UD · Két nước làm mát ô tô</span>
+                    <span class="pq-source-tag">Sở Ninh Bình - Cụm các trường THPT | KSCL</span>
+                </div>
+                <span class="pq-type-label">Đúng / Sai · VDC</span>
+            </div>
+
+            <div class="pq-text">
+<p>Hình vẽ bên dưới biểu diễn hệ thống làm mát của động cơ ô tô. Trong một lần thử nghiệm hệ thống này, các số liệu được thống kê ở bảng bên dưới. Cho rằng, khi nhiên liệu bị đốt cháy hoàn toàn thì $30\%$ nhiệt năng từ nhiên liệu sẽ chuyển hóa thành cơ năng có ích.</p>
+<div class="vlxt-model-slot" data-model-id="MH-C1-12" data-model-topic="DS-C1.5"></div>
+<div class="vstep-data-panel">
+<div class="vstep-data-title"><i class="fa-solid fa-table-list"></i> Bảng Thông Số Thử Nghiệm Hệ Thống Làm Mát Động Cơ Ô Tô</div>
+<table class="vstep-data-table"><thead><tr><th class="text-left">Thông số thử nghiệm</th><th>Giá trị</th></tr></thead>
+<tbody>
+<tr><td class="text-left">Khối lượng nhiên liệu tiêu thụ</td><td>$0{,}08\text{ kg}$</td></tr>
+<tr><td class="text-left">Năng suất tỏa nhiệt của nhiên liệu</td><td>$4{,}6 \cdot 10^7\text{ J/kg}$</td></tr>
+<tr><td class="text-left">Lưu lượng dòng nước làm mát</td><td>$0{,}22\text{ kg/s}$</td></tr>
+<tr><td class="text-left">Nhiệt độ của nước làm mát</td><td>$30^\circ\text{C}$</td></tr>
+<tr><td class="text-left">Nhiệt độ của nước nóng</td><td>$80^\circ\text{C}$</td></tr>
+<tr><td class="text-left">Lưu lượng không khí qua các lá tản nhiệt</td><td>$1{,}25\text{ kg/s}$</td></tr>
+<tr><td class="text-left">Nhiệt độ ban đầu của không khí</td><td>$20{,}0^\circ\text{C}$</td></tr>
+<tr><td class="text-left">Nhiệt dung riêng của glycerine</td><td>$2430\text{ J/(kg.K)}$</td></tr>
+<tr><td class="text-left">Nhiệt dung riêng của nước</td><td>$4200\text{ J/(kg.K)}$</td></tr>
+<tr><td class="text-left">Nhiệt dung riêng của không khí</td><td>$760\text{ J/(kg.K)}$</td></tr>
+</tbody></table></div>
+            </div>
+
+            <div class="pq-tf-rows" id="tf-group-12">
+                <div class="pq-tf-row" id="row-q12-a">
+                    <div class="pq-tf-stmt">
+                        <strong>a)</strong> Trong thực tế người ta dùng nước (thay vì glycerine) để làm vận hành hệ thống làm mát trên.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(12, 'a', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(12, 'a', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q12-b">
+                    <div class="pq-tf-stmt">
+                        <strong>b)</strong> Nhiệt lượng hao phí của động cơ là $25{,}76 \cdot 10^{-6}\text{ J}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(12, 'b', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(12, 'b', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q12-c">
+                    <div class="pq-tf-stmt">
+                        <strong>c)</strong> Nhiệt độ của dòng không khí khi đi qua các cánh tản nhiệt là $68{,}6^\circ\text{C}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(12, 'c', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(12, 'c', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q12-d">
+                    <div class="pq-tf-stmt">
+                        <strong>d)</strong> Tốc độ làm mát qua các cánh tản nhiệt là $42\,600\text{ W}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(12, 'd', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(12, 'd', false)">Sai</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-actions">
+                <button type="button" class="btn-check" onclick="checkQ(12)">
+                    <i class="fa-solid fa-circle-check"></i> Kiểm tra đáp án &amp; Xem lời giải
+                </button>
+                <button type="button" class="btn-reset" onclick="resetQ(12)">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Làm lại câu này
+                </button>
+                <button type="button" class="btn-toggle-exp" onclick="toggleExp(12)">
+                    <i class="fa-solid fa-lightbulb"></i> <span id="toggle-exp-text-12">Xem lời giải</span>
+                </button>
+                <span class="quiz-feedback-msg" id="feedback-q12" aria-live="polite"></span>
+            </div>
+
+            <div class="vlxt-explain-box" id="exp-q12">
+                <div class="vlxt-explain-title">
+                    <i class="fa-solid fa-graduation-cap"></i> Lời Giải Chi Tiết Của Thầy — Câu 12
+                </div>
+                <div class="vlxt-explain-body">
+<div class="exp-stmt-item"><span class="exp-key-badge true">a — ĐÚNG</span> Vì nhiệt dung riêng của nước ($4200\text{ J/(kg.K)}$) lớn hơn nhiều so với glycerine ($2430\text{ J/(kg.K)}$) nên cùng một lưu lượng và độ tăng nhiệt độ, nước mang đi nhiệt lượng lớn hơn và làm mát hiệu quả hơn; đồng thời nguồn nước dồi dào, chi phí thấp.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">b — SAI</span> Nhiệt lượng tỏa ra từ việc đốt cháy nhiên liệu là $Q = q m = 4{,}6 \cdot 10^7 \cdot 0{,}08 = 3{,}68 \cdot 10^6\text{ J}$. Nhiệt lượng hao phí là:<div class="vlxt-math-callout">$$Q_{\text{hp}} = (1 - H) Q = (1 - 0{,}3) \cdot 3{,}68 \cdot 10^6 = 2{,}576 \cdot 10^6\text{ J} \neq 25{,}76 \cdot 10^{-6}\text{ J}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">c — ĐÚNG</span> Khi dòng nước nóng đi qua két tản nhiệt, nhiệt lượng dòng không khí hấp thụ trong mỗi giây bằng nhiệt lượng dòng nước tỏa ra (hệ đạt cân bằng trao đổi nhiệt theo lưu lượng $\mu_{\text{kk}} c_{\text{kk}} \Delta t_{\text{kk}} = \mu_n c_n \Delta t_n$):<div class="vlxt-math-callout">$$1{,}25 \cdot 760 \cdot (t - 20) = 0{,}22 \cdot 4200 \cdot (80 - 30) \implies 950(t - 20) = 46\,200 \implies t \approx 68{,}6^\circ\text{C}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">d — SAI</span> Tốc độ truyền nhiệt (công suất làm mát) qua các cánh tản nhiệt:<div class="vlxt-math-callout">$$\mathcal{P} = \frac{Q_n}{t} = 0{,}22 \cdot 4200 \cdot (80 - 30) = 46\,200\text{ W} \neq 42\,600\text{ W}$$</div></div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════
+             CÂU 13 (VLXT-G12-C1-MH-13 | DS-C1.5 | MH-C1-13)
+             ═════════════════════════════════════════════════════════════════ -->
+        <article class="pq-block" id="question-block-13" data-q="13" data-id="VLXT-G12-C1-MH-13" data-topic="DS-C1.5" data-ds-type="DS-C1">
+            <div class="pq-header">
+                <div class="pq-header-left">
+                    <span class="pq-badge">CÂU 13</span>
+                    <span class="pq-topic-badge"><i class="fa-solid fa-sitemap"></i> C1.5 – Hệ thống làm mát, hút ẩm &amp; Chuyển thể kỹ thuật</span>
+                    <span class="pq-model-tag">DS-UD · Máy hút ẩm ngưng tụ</span>
+                    <span class="pq-source-tag">Sở Hòa Bình | Đề Thi Thử TN THPT Lần 1 (2024–2025)</span>
+                </div>
+                <span class="pq-type-label">Đúng / Sai · VD</span>
+            </div>
+
+            <div class="pq-text">
+<p>Hình bên là sơ đồ cấu tạo một máy hút ẩm dạng ngưng tụ. Không khí ẩm (chứa nhiều hơi nước) đi vào bên trong máy hút, khi qua dàn lạnh được làm lạnh để hơi nước ngưng tụ, hơi nước hóa lỏng sẽ chảy vào một cái khay hứng đặt bên trong máy, tiếp sau đó không khí đi qua dàn nóng để trở lại nhiệt độ gần với nhiệt độ môi trường trước khi được quạt thổi ra.</p>
+<div class="vlxt-model-slot" data-model-id="MH-C1-13" data-model-topic="DS-C1.5"></div>
+<p>Xét một khối không khí có khối lượng $20\text{ g}$ trong đó khối lượng hơi nước chiếm $80\%$ khối lượng không khí. Khối không khí nhiệt độ $30^\circ\text{C}$ đi qua dàn lạnh, nó được làm lạnh xuống nhiệt độ $5^\circ\text{C}$ trong khoảng thời gian $5\text{ s}$ với công suất làm lạnh bằng $400\text{ W}$. Biết nhiệt dung riêng của không khí khô là $900\text{ J/(kg.K)}$ và của hơi nước là $1860\text{ J/(kg.K)}$. Trong điều kiện hoạt động của máy, để $1\text{ kg}$ nước chuyển từ thể hơi sang thể lỏng cần trao đổi nhiệt lượng $2{,}4 \cdot 10^6\text{ J}$. Bỏ qua sự trao đổi nhiệt với môi trường xung quanh.</p>
+            </div>
+
+            <div class="pq-tf-rows" id="tf-group-13">
+                <div class="pq-tf-row" id="row-q13-a">
+                    <div class="pq-tf-stmt">
+                        <strong>a)</strong> Khi đi qua dàn lạnh khối không khí tỏa nhiệt.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(13, 'a', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(13, 'a', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q13-b">
+                    <div class="pq-tf-stmt">
+                        <strong>b)</strong> Trước khi đi qua dàn lạnh khối lượng không khí khô là $16\text{ g}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(13, 'b', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(13, 'b', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q13-c">
+                    <div class="pq-tf-stmt">
+                        <strong>c)</strong> Nhiệt lượng không khí khô trao đổi ở dàn lạnh là $92{,}7\text{ J}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(13, 'c', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(13, 'c', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q13-d">
+                    <div class="pq-tf-stmt">
+                        <strong>d)</strong> Khối lượng hơi nước ngưng tụ ở dàn lạnh xấp xỉ $0{,}49\text{ g}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(13, 'd', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(13, 'd', false)">Sai</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-actions">
+                <button type="button" class="btn-check" onclick="checkQ(13)">
+                    <i class="fa-solid fa-circle-check"></i> Kiểm tra đáp án &amp; Xem lời giải
+                </button>
+                <button type="button" class="btn-reset" onclick="resetQ(13)">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Làm lại câu này
+                </button>
+                <button type="button" class="btn-toggle-exp" onclick="toggleExp(13)">
+                    <i class="fa-solid fa-lightbulb"></i> <span id="toggle-exp-text-13">Xem lời giải</span>
+                </button>
+                <span class="quiz-feedback-msg" id="feedback-q13" aria-live="polite"></span>
+            </div>
+
+            <div class="vlxt-explain-box" id="exp-q13">
+                <div class="vlxt-explain-title">
+                    <i class="fa-solid fa-graduation-cap"></i> Lời Giải Chi Tiết Của Thầy — Câu 13
+                </div>
+                <div class="vlxt-explain-body">
+<div class="exp-stmt-item"><span class="exp-key-badge true">a — ĐÚNG</span> Khi đi qua dàn lạnh, khối không khí giảm nhiệt độ từ $30^\circ\text{C}$ xuống $5^\circ\text{C}$ và có một phần hơi nước ngưng tụ thành lỏng nên khối không khí <strong>tỏa nhiệt</strong> cho dàn lạnh.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">b — SAI</span> Khối lượng hơi nước trong $20\text{ g}$ không khí ẩm là $m_{\text{hn}} = 0{,}8 \cdot 20 = 16\text{ g}$. Suy ra khối lượng không khí khô trước khi qua dàn lạnh:<div class="vlxt-math-callout">$$m_{\text{khô}} = m_{\text{kk}} - m_{\text{hn}} = 20 - 16 = 4\text{ g} \neq 16\text{ g}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">c — SAI</span> Nhiệt lượng không khí khô tỏa ra khi hạ từ $30^\circ\text{C}$ xuống $5^\circ\text{C}$:<div class="vlxt-math-callout">$$Q_{\text{khô}} = m_{\text{khô}} c_{\text{khô}} \Delta t = 4 \cdot 10^{-3} \cdot 900 \cdot (30 - 5) = 90\text{ J} \neq 92{,}7\text{ J}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">d — ĐÚNG</span> Nhiệt lượng hơi nước tỏa ra khi hạ từ $30^\circ\text{C}$ xuống $5^\circ\text{C}$:<div class="vlxt-math-callout">$$Q_{\text{hn}} = m_{\text{hn}} c_{\text{hn}} \Delta t = 16 \cdot 10^{-3} \cdot 1860 \cdot (30 - 5) = 744\text{ J}$$</div>Gọi $m_{\text{ng}}$ là khối lượng hơi nước bị ngưng tụ thành lỏng tại dàn lạnh. Tổng nhiệt lượng thu tại dàn lạnh trong $5\text{ s}$:<div class="vlxt-math-callout">$$Q_{\text{tp}} = \mathcal{P} \cdot t = Q_{\text{khô}} + Q_{\text{hn}} + m_{\text{ng}} \cdot L \implies 400 \cdot 5 = 90 + 744 + m_{\text{ng}} \cdot 2{,}4 \cdot 10^6 \implies m_{\text{ng}} \approx 0{,}49 \cdot 10^{-3}\text{ kg} = 0{,}49\text{ g}$$</div></div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════
+             CÂU 14 (VLXT-G12-C1-MH-14 | DS-C1.5 | MH-C1-14)
+             ═════════════════════════════════════════════════════════════════ -->
+        <article class="pq-block" id="question-block-14" data-q="14" data-id="VLXT-G12-C1-MH-14" data-topic="DS-C1.5" data-ds-type="DS-C1">
+            <div class="pq-header">
+                <div class="pq-header-left">
+                    <span class="pq-badge">CÂU 14</span>
+                    <span class="pq-topic-badge"><i class="fa-solid fa-sitemap"></i> C1.5 – Hệ thống làm mát, hút ẩm &amp; Chuyển thể kỹ thuật</span>
+                    <span class="pq-model-tag">DS-UD · Làm nguội Anode ống Tia X</span>
+                    <span class="pq-source-tag">Sở Hà Tĩnh | Đề Thi Thử TN THPT</span>
+                </div>
+                <span class="pq-type-label">Đúng / Sai · VD</span>
+            </div>
+
+            <div class="pq-text">
+<p>Hình ảnh dưới đây là ống phát tia X, khi sợi nung $FF'$ được đốt nóng, electron bức xạ nhiệt ra khỏi cathode (K), khi ra khỏi cathode electron được tăng tốc bởi điện trường mạnh giữa cathode và anode (A), electron thu được động năng lớn và đập vào anode tạo ra tia X. Do hiệu suất phát tia X của ống rất thấp chỉ là $1{,}0\%$, phần năng lượng còn lại làm nóng anode vì vậy luôn có dòng nước chảy vào và chảy ra để làm nguội anode. Biết hiệu điện thế $U_{AK} = 1{,}0 \cdot 10^4\text{ V}$, cường độ dòng điện qua ống $I = 10\text{ A}$, nhiệt độ nước chảy vào $25^\circ\text{C}$, nhiệt độ nước chảy ra $55^\circ\text{C}$, nhiệt dung riêng của nước là $4200\text{ J/(kg.K)}$, khối lượng riêng của nước $1000\text{ kg/m}^3$.</p>
+<div class="vlxt-model-slot" data-model-id="MH-C1-14" data-model-topic="DS-C1.5"></div>
+            </div>
+
+            <div class="pq-tf-rows" id="tf-group-14">
+                <div class="pq-tf-row" id="row-q14-a">
+                    <div class="pq-tf-stmt">
+                        <strong>a)</strong> Độ tăng nhiệt độ của nước khi ra khỏi anode là $303\text{ K}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(14, 'a', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(14, 'a', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q14-b">
+                    <div class="pq-tf-stmt">
+                        <strong>b)</strong> Công suất tiêu thụ điện năng của ống là $10^5\text{ W}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(14, 'b', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(14, 'b', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q14-c">
+                    <div class="pq-tf-stmt">
+                        <strong>c)</strong> Nhiệt lượng mà anode truyền cho dòng nước trong mỗi giây là $100\text{ kJ}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(14, 'c', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(14, 'c', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q14-d">
+                    <div class="pq-tf-stmt">
+                        <strong>d)</strong> Lưu lượng nước chảy vào làm mát anode là $0{,}79\text{ lít/giây}$ (lấy hai chữ số có nghĩa).
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(14, 'd', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(14, 'd', false)">Sai</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-actions">
+                <button type="button" class="btn-check" onclick="checkQ(14)">
+                    <i class="fa-solid fa-circle-check"></i> Kiểm tra đáp án &amp; Xem lời giải
+                </button>
+                <button type="button" class="btn-reset" onclick="resetQ(14)">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Làm lại câu này
+                </button>
+                <button type="button" class="btn-toggle-exp" onclick="toggleExp(14)">
+                    <i class="fa-solid fa-lightbulb"></i> <span id="toggle-exp-text-14">Xem lời giải</span>
+                </button>
+                <span class="quiz-feedback-msg" id="feedback-q14" aria-live="polite"></span>
+            </div>
+
+            <div class="vlxt-explain-box" id="exp-q14">
+                <div class="vlxt-explain-title">
+                    <i class="fa-solid fa-graduation-cap"></i> Lời Giải Chi Tiết Của Thầy — Câu 14
+                </div>
+                <div class="vlxt-explain-body">
+<div class="exp-stmt-item"><span class="exp-key-badge false">a — SAI</span> Độ tăng nhiệt độ của nước khi ra khỏi anode:<div class="vlxt-math-callout">$$\Delta T = \Delta t = 55 - 25 = 30\text{ K} \neq 303\text{ K}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">b — ĐÚNG</span> Công suất tiêu thụ điện năng của ống Cu-lít-giơ:<div class="vlxt-math-callout">$$\mathcal{P} = U \cdot I = 10^4 \cdot 10 = 10^5\text{ W}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">c — SAI</span> Hiệu suất phát tia X là $1{,}0\%$ nên $99\%$ công suất chuyển thành nhiệt làm nóng anode. Nhiệt lượng anode truyền cho dòng nước trong $t = 1\text{ s}$:<div class="vlxt-math-callout">$$Q = 0{,}99 \cdot \mathcal{P} \cdot t = 0{,}99 \cdot 10^5 \cdot 1 = 99\,000\text{ J} = 99\text{ kJ} \neq 100\text{ kJ}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">d — ĐÚNG</span> Khối lượng nước làm mát cần chảy qua mỗi giây:<div class="vlxt-math-callout">$$Q = m c \Delta t \implies m = \frac{Q}{c \Delta t} = \frac{99\,000}{4200 \cdot 30} \approx 0{,}79\text{ kg/s} = 0{,}79\text{ lít/giây}$$</div></div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════
+             CÂU 15 (VLXT-G12-C1-MH-15 | DS-C1.5 | MH-C1-15)
+             ═════════════════════════════════════════════════════════════════ -->
+        <article class="pq-block" id="question-block-15" data-q="15" data-id="VLXT-G12-C1-MH-15" data-topic="DS-C1.5" data-ds-type="DS-C1">
+            <div class="pq-header">
+                <div class="pq-header-left">
+                    <span class="pq-badge">CÂU 15</span>
+                    <span class="pq-topic-badge"><i class="fa-solid fa-sitemap"></i> C1.5 – Hệ thống làm mát, hút ẩm &amp; Chuyển thể kỹ thuật</span>
+                    <span class="pq-model-tag">DS-UD · Quạt hơi nước làm mát phòng</span>
+                    <span class="pq-source-tag">Sở Bắc Ninh | Đề KSCL Lần 2</span>
+                </div>
+                <span class="pq-type-label">Đúng / Sai · VD</span>
+            </div>
+
+            <div class="pq-text">
+<p>Dùng quạt hơi nước để làm mát căn phòng có kích thước $4\text{ m} \times 5\text{ m} \times 4\text{ m}$. Khi quạt hoạt động, không khí trong phòng được quạt hút vào sau đó đi qua tấm làm mát đã được làm ướt để tạo ra hiện tượng bay hơi nước. Biết lưu lượng nước bay hơi từ quạt là $0{,}5\text{ g/s}$; nhiệt hóa hơi riêng của nước ở nhiệt độ phòng (không đổi) là $2{,}25 \cdot 10^6\text{ J/kg}$; khối lượng riêng của không khí trong phòng là $1{,}2\text{ kg/m}^3$ và nhiệt dung riêng của không khí là $1005\text{ J/(kg.K)}$.</p>
+<div class="vlxt-model-slot" data-model-id="MH-C1-15" data-model-topic="DS-C1.5"></div>
+            </div>
+
+            <div class="pq-tf-rows" id="tf-group-15">
+                <div class="pq-tf-row" id="row-q15-a">
+                    <div class="pq-tf-stmt">
+                        <strong>a)</strong> Giả sử toàn bộ nhiệt lượng lấy từ không khí trong phòng dùng để làm bay hơi nước. Sau $10\text{ phút}$ mở quạt, nhiệt độ phòng giảm đi $7^\circ\text{C}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(15, 'a', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(15, 'a', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q15-b">
+                    <div class="pq-tf-stmt">
+                        <strong>b)</strong> Khi nước bay hơi thì nước đã tỏa nhiệt ra không khí xung quanh.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(15, 'b', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(15, 'b', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q15-c">
+                    <div class="pq-tf-stmt">
+                        <strong>c)</strong> Khối lượng của không khí trong phòng là $65\text{ kg}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(15, 'c', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(15, 'c', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q15-d">
+                    <div class="pq-tf-stmt">
+                        <strong>d)</strong> Khối lượng của nước bay hơi trong thời gian $10\text{ phút}$ là $0{,}3\text{ kg}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(15, 'd', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(15, 'd', false)">Sai</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-actions">
+                <button type="button" class="btn-check" onclick="checkQ(15)">
+                    <i class="fa-solid fa-circle-check"></i> Kiểm tra đáp án &amp; Xem lời giải
+                </button>
+                <button type="button" class="btn-reset" onclick="resetQ(15)">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Làm lại câu này
+                </button>
+                <button type="button" class="btn-toggle-exp" onclick="toggleExp(15)">
+                    <i class="fa-solid fa-lightbulb"></i> <span id="toggle-exp-text-15">Xem lời giải</span>
+                </button>
+                <span class="quiz-feedback-msg" id="feedback-q15" aria-live="polite"></span>
+            </div>
+
+            <div class="vlxt-explain-box" id="exp-q15">
+                <div class="vlxt-explain-title">
+                    <i class="fa-solid fa-graduation-cap"></i> Lời Giải Chi Tiết Của Thầy — Câu 15
+                </div>
+                <div class="vlxt-explain-body">
+<div class="exp-stmt-item"><span class="exp-key-badge true">a — ĐÚNG</span> Lượng nước bay hơi từ quạt trong $10\text{ phút}$ ($600\text{ s}$) là $m_0 = 0{,}5 \cdot 600 = 300\text{ g} = 0{,}3\text{ kg}$. Cân bằng nhiệt giữa không khí trong phòng tỏa nhiệt và nước thu nhiệt để bay hơi:<div class="vlxt-math-callout">$$Q_{\text{tỏa}} = Q_{\text{thu}} \implies 1{,}2 \cdot (4 \cdot 5 \cdot 4) \cdot 1005 \cdot \Delta t = 0{,}3 \cdot 2{,}25 \cdot 10^6 \implies \Delta t \approx 7^\circ\text{C}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">b — SAI</span> Khi nước bay hơi (chuyển từ thể lỏng sang thể hơi), các phân tử nước phải phá vỡ lực liên kết với các phân tử lỏng nên <strong>nước đã thu nhiệt</strong> từ không khí xung quanh.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">c — SAI</span> Khối lượng của không khí trong căn phòng:<div class="vlxt-math-callout">$$m_{\text{kk}} = \rho \cdot V = 1{,}2 \cdot 4 \cdot 5 \cdot 4 = 96\text{ kg} \neq 65\text{ kg}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">d — ĐÚNG</span> Khối lượng nước bay hơi sau $10\text{ phút} = 600\text{ s}$:<div class="vlxt-math-callout">$$m_0 = 0{,}5\text{ g/s} \cdot 600\text{ s} = 300\text{ g} = 0{,}3\text{ kg}$$</div></div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════
+             CÂU 18 (VLXT-G12-C1-MH-18 | DS-C1.4 | MH-C1-18)
+             ═════════════════════════════════════════════════════════════════ -->
+        <article class="pq-block" id="question-block-18" data-q="18" data-id="VLXT-G12-C1-MH-18" data-topic="DS-C1.4" data-ds-type="DS-C1">
+            <div class="pq-header">
+                <div class="pq-header-left">
+                    <span class="pq-badge">CÂU 18</span>
+                    <span class="pq-topic-badge"><i class="fa-solid fa-sitemap"></i> C1.4 – Chuyển hóa năng lượng &amp; Công suất cấp nhiệt thực tế</span>
+                    <span class="pq-model-tag">DS-UD · Đúc chuông đồng Trà Đông</span>
+                    <span class="pq-source-tag">Vật Lý 12 | Làng Nghề Đúc Đồng Trà Đông</span>
+                </div>
+                <span class="pq-type-label">Đúng / Sai · VD</span>
+            </div>
+
+            <div class="pq-text">
+<p>Làng Trà Đông, xưa kia gọi là Sơn Trang, tên nôm là Kẻ Chè, một vùng đất cổ cách tỉnh lỵ Thanh Hóa $12\text{ km}$ về phía Tây Bắc (nay thuộc xã Thiệu Trung, huyện Thiệu Hóa, tỉnh Thanh Hóa) nằm trong địa vực của nền văn hóa Đông Sơn vốn nổi tiếng với nghề đúc đồng. Ở một cơ sở đúc đồng tại làng Trà Đông, người ta tiến hành đúc một quả chuông bằng đồng nguyên chất có khối lượng $20\text{ kg}$ qua $6$ bước sau đây:</p>
+<ol class="pq-sub-list">
+<li>Tạo mẫu.</li>
+<li>Tạo khuôn.</li>
+<li>Nấu chảy đồng.</li>
+<li>Rót khuôn.</li>
+<li>Làm nguội và tách sản phẩm khỏi khuôn.</li>
+<li>Hoàn thiện sản phẩm.</li>
+</ol>
+<p>Biết đồng có nhiệt độ nóng chảy là $1084^\circ\text{C}$, nhiệt nóng chảy riêng là $180\text{ kJ/kg}$, nhiệt dung riêng là $380\text{ J/(kg.K)}$, nhiệt độ ban đầu của môi trường và hỗn hợp nguyên liệu là $31^\circ\text{C}$. Biết trong quá trình đúc có $40\%$ lượng nhiệt bị hao phí ra môi trường. Xét tính đúng/sai trong các phát biểu sau:</p>
+<div class="vlxt-model-slot" data-model-id="MH-C1-18" data-model-topic="DS-C1.4"></div>
+            </div>
+
+            <div class="pq-tf-rows" id="tf-group-18">
+                <div class="pq-tf-row" id="row-q18-a">
+                    <div class="pq-tf-stmt">
+                        <strong>a)</strong> Biết năng suất tỏa nhiệt của than đá là $27\text{ MJ/kg}$. Khối lượng than đá ít nhất có thể dùng để đúc được quả chuông đồng là $7{,}20\text{ kg}$ (làm tròn kết quả đến chữ số hàng phần trăm).
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(18, 'a', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(18, 'a', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q18-b">
+                    <div class="pq-tf-stmt">
+                        <strong>b)</strong> Cần cung cấp nhiệt lượng $11{,}6\text{ MJ}$ cho lượng đồng dùng để đúc chuông nóng chảy hoàn toàn từ nhiệt độ ban đầu (làm tròn kết quả đến chữ số hàng phần mười).
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(18, 'b', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(18, 'b', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q18-c">
+                    <div class="pq-tf-stmt">
+                        <strong>c)</strong> Quá trình nóng chảy diễn ra trong bước $5$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(18, 'c', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(18, 'c', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q18-d">
+                    <div class="pq-tf-stmt">
+                        <strong>d)</strong> Cơ sở này dùng nhiên liệu hóa thạch để đun nóng chảy đồng, nên nếu thiết kế ống khói của cơ sở đúc đồng này không đạt tiêu chuẩn thì sẽ làm ảnh hưởng lớn đến môi trường và sức khỏe của người dân.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(18, 'd', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(18, 'd', false)">Sai</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-actions">
+                <button type="button" class="btn-check" onclick="checkQ(18)">
+                    <i class="fa-solid fa-circle-check"></i> Kiểm tra đáp án &amp; Xem lời giải
+                </button>
+                <button type="button" class="btn-reset" onclick="resetQ(18)">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Làm lại câu này
+                </button>
+                <button type="button" class="btn-toggle-exp" onclick="toggleExp(18)">
+                    <i class="fa-solid fa-lightbulb"></i> <span id="toggle-exp-text-18">Xem lời giải</span>
+                </button>
+                <span class="quiz-feedback-msg" id="feedback-q18" aria-live="polite"></span>
+            </div>
+
+            <div class="vlxt-explain-box" id="exp-q18">
+                <div class="vlxt-explain-title">
+                    <i class="fa-solid fa-graduation-cap"></i> Lời Giải Chi Tiết Của Thầy — Câu 18
+                </div>
+                <div class="vlxt-explain-body">
+<div class="exp-stmt-item"><span class="exp-key-badge false">a — SAI</span> Nhiệt lượng có ích cần cung cấp để $20\text{ kg}$ đồng nóng lên đến $1084^\circ\text{C}$ và nóng chảy hoàn toàn:<div class="vlxt-math-callout">$$Q' = m c \Delta t + m \lambda = 20 \cdot 380 \cdot (1084 - 31) + 20 \cdot 180 \cdot 10^3 \approx 11{,}6 \cdot 10^6\text{ J} = 11{,}6\text{ MJ}$$</div>Do có $40\%$ nhiệt lượng bị hao phí ($60\%$ có ích) từ than đá $Q = m q$:<div class="vlxt-math-callout">$$Q' = 0{,}6 Q = 0{,}6 m q \implies m = \frac{11{,}6 \cdot 10^6}{0{,}6 \cdot 27 \cdot 10^6} \approx 0{,}72\text{ kg} \neq 7{,}20\text{ kg}$$</div></div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">b — ĐÚNG</span> Theo phép tính ở ý a): $Q' = 20 \cdot 380 \cdot (1084 - 31) + 20 \cdot 180 \cdot 10^3 = 11\,602\,800\text{ J} \approx 11{,}6\text{ MJ}$.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">c — SAI</span> Quá trình nóng chảy của đồng diễn ra ở <strong>bước 3 (Nấu chảy đồng)</strong>, còn bước 5 là quá trình đông đặc — làm nguội và tách sản phẩm khỏi khuôn.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">d — ĐÚNG</span> Thành phần chính của than đá là carbon và một số nguyên tố khác như hydro, lưu huỳnh, oxy, nitơ nên khi đốt cháy phát thải các khí $\text{CO}_x, \text{NO}_x, \text{SO}_x, \dots$ rất độc hại, có thể tạo thành axit $\text{H}_2\text{SO}_4$ khi gặp hơi nước gây ăn mòn và ô nhiễm môi trường, ảnh hưởng nghiêm trọng tới hô hấp và sức khỏe người dân.</div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════
+             CÂU 19 (VLXT-G12-C1-MH-19 | DS-C1.1 | MH-C1-19)
+             ═════════════════════════════════════════════════════════════════ -->
+        <article class="pq-block" id="question-block-19" data-q="19" data-id="VLXT-G12-C1-MH-19" data-topic="DS-C1.1" data-ds-type="DS-C1">
+            <div class="pq-header">
+                <div class="pq-header-left">
+                    <span class="pq-badge">CÂU 19</span>
+                    <span class="pq-topic-badge"><i class="fa-solid fa-sitemap"></i> C1.1 – Truyền nhiệt &amp; Cân bằng nhiệt trong thực tế</span>
+                    <span class="pq-model-tag">DS-UD · Ủ lạnh két bia bằng nước đá</span>
+                    <span class="pq-source-tag">Vật Lý 12 | Cân Bằng Nhiệt Trong Thực Tế</span>
+                </div>
+                <span class="pq-type-label">Đúng / Sai · VD</span>
+            </div>
+
+            <div class="pq-text">
+<p>Vào mùa hè, trong các nhà hàng, nhân viên thường cho lon bia vào thùng cách nhiệt chứa đá lạnh để làm lạnh bia với mục đích phục vụ khách hàng uống bia ngon hơn. Biết nhiệt dung riêng của bia, đá lạnh, nước và vỏ lon lần lượt là $4100\text{ J/(kg.K)}$, $1800\text{ J/(kg.K)}$, $4200\text{ J/(kg.K)}$ và $880\text{ J/(kg.K)}$; nhiệt nóng chảy riêng của đá là $3{,}34 \cdot 10^5\text{ J/kg}$, khối lượng của một vỏ lon bia là $m = 14\text{ g}$, khối lượng riêng của nước và của bia bằng nhau và bằng $1\text{ kg/lít}$. Nhiệt lượng thất thoát ra môi trường bên ngoài không đáng kể.</p>
+<div class="vlxt-model-slot" data-model-id="MH-C1-19" data-model-topic="DS-C1.1"></div>
+            </div>
+
+            <div class="pq-tf-rows" id="tf-group-19">
+                <div class="pq-tf-row" id="row-q19-a">
+                    <div class="pq-tf-stmt">
+                        <strong>a)</strong> Thùng xốp cách nhiệt nên đá lạnh hấp thụ nhiệt từ các lon bia làm cho bia lạnh đi.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(19, 'a', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(19, 'a', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q19-b">
+                    <div class="pq-tf-stmt">
+                        <strong>b)</strong> Để làm lạnh một két bia ($24\text{ lon}$, mỗi lon có dung tích $330\text{ ml}$) ở nhiệt độ $35^\circ\text{C}$, nhân viên nhà hàng dùng $2\text{ kg}$ đá ở nhiệt độ $-5^\circ\text{C}$. Lúc đó nhiệt độ của bia khi hệ đạt trạng thái cân bằng nhiệt là $10^\circ\text{C}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(19, 'b', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(19, 'b', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q19-c">
+                    <div class="pq-tf-stmt">
+                        <strong>c)</strong> Trong thực tế để bia lạnh nhanh hơn, nhân viên nhà hàng đổ nước vào cho ngập các lon bia rồi mới cho đá lạnh vào.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(19, 'c', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(19, 'c', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q19-d">
+                    <div class="pq-tf-stmt">
+                        <strong>d)</strong> Biết lượng nước đổ vào thùng có thể tích $3\text{ lít}$ ở nhiệt độ $30^\circ\text{C}$. Lúc đó, khối lượng đá tối thiểu để làm lạnh lượng bia như ý b) đến nhiệt độ $12^\circ\text{C}$ là $3\text{ kg}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(19, 'd', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(19, 'd', false)">Sai</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-actions">
+                <button type="button" class="btn-check" onclick="checkQ(19)">
+                    <i class="fa-solid fa-circle-check"></i> Kiểm tra đáp án &amp; Xem lời giải
+                </button>
+                <button type="button" class="btn-reset" onclick="resetQ(19)">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Làm lại câu này
+                </button>
+                <button type="button" class="btn-toggle-exp" onclick="toggleExp(19)">
+                    <i class="fa-solid fa-lightbulb"></i> <span id="toggle-exp-text-19">Xem lời giải</span>
+                </button>
+                <span class="quiz-feedback-msg" id="feedback-q19" aria-live="polite"></span>
+            </div>
+
+            <div class="vlxt-explain-box" id="exp-q19">
+                <div class="vlxt-explain-title">
+                    <i class="fa-solid fa-graduation-cap"></i> Lời Giải Chi Tiết Của Thầy — Câu 19
+                </div>
+                <div class="vlxt-explain-body">
+<div class="exp-stmt-item"><span class="exp-key-badge true">a — ĐÚNG</span> Do thùng xốp cách nhiệt tốt với bên ngoài nên chủ yếu có sự truyền nhiệt nội bộ từ các lon bia có nhiệt độ cao sang nước đá có nhiệt độ thấp, làm bia lạnh đi.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">b — SAI</span> Nhiệt lượng két $24\text{ lon}$ bia tỏa ra khi hạ nhiệt độ từ $35^\circ\text{C}$ xuống $10^\circ\text{C}$:<div class="vlxt-math-callout">$$Q_1 = (m_1 c_1 + m_b c_b) \cdot N \cdot \Delta t = (0{,}014 \cdot 880 + 0{,}33 \cdot 4100) \cdot 24 \cdot (35 - 10) = 819\,192\text{ J}$$</div>Nhiệt lượng tối đa mà $2\text{ kg}$ đá ở $-5^\circ\text{C}$ thu vào để tăng lên $0^\circ\text{C}$, tan hết và tăng lên $10^\circ\text{C}$:<div class="vlxt-math-callout">$$Q_2 = m c_{\text{đ}} (0 - t_{\text{đ}}) + m \lambda + m c_n (10 - 0) = 2 \cdot 1800 \cdot 5 + 2 \cdot 3{,}34 \cdot 10^5 + 2 \cdot 4200 \cdot 10 = 770\,000\text{ J}$$</div>Ta thấy $Q_1 > Q_2$, nghĩa là tại $10^\circ\text{C}$ lượng nhiệt bia tỏa ra vẫn dư so với lượng nhiệt đá cần thu, nên nhiệt độ cân bằng thực tế của hệ cao hơn $10^\circ\text{C}$ ($t_{\text{cb}} \approx 11{,}19^\circ\text{C} \neq 10^\circ\text{C}$).</div>
+<div class="exp-stmt-item"><span class="exp-key-badge true">c — ĐÚNG</span> Đổ nước ngập lon bia giúp tăng tối đa diện tích tiếp xúc dẫn nhiệt và đối lưu quanh vỏ lon (thay thế các khe không khí dẫn nhiệt kém), nhờ đó bia hạ nhiệt nhanh và đều hơn nhiều.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">d — SAI</span> Khi có thêm $3\text{ lít}$ nước ($\Delta m = 3\text{ kg}$) ở $30^\circ\text{C}$, tổng nhiệt lượng cần tỏa ra để cả bia và $3\text{ lít}$ nước hạ xuống $12^\circ\text{C}$:<div class="vlxt-math-callout">$$Q_{\text{tỏa}} = (0{,}014 \cdot 880 + 0{,}33 \cdot 4100) \cdot 24 \cdot (35 - 12) + 3 \cdot 4200 \cdot (30 - 12) = 753\,656{,}64 + 226\,800 = 980\,456{,}64\text{ J}$$</div>Mỗi $1\text{ kg}$ đá ở $-5^\circ\text{C}$ khi tan hoàn toàn thành nước ở $12^\circ\text{C}$ thu vào nhiệt lượng $q_{\text{đá}} = 1800 \cdot 5 + 3{,}34 \cdot 10^5 + 4200 \cdot 12 = 393\,400\text{ J/kg}$. Suy ra khối lượng đá tối thiểu cần dùng:<div class="vlxt-math-callout">$$m_{\text{đá, min}} = \frac{Q_{\text{tỏa}}}{q_{\text{đá}}} = \frac{980\,456{,}64}{393\,400} \approx 2{,}49\text{ kg} \neq 3\text{ kg}$$</div></div>
+                </div>
+            </div>
+        </article>
+
+        <!-- ═════════════════════════════════════════════════════════════════
+             CÂU 21 (VLXT-G12-C1-MH-21 | DS-C1.6 | MH-C1-21)
+             ═════════════════════════════════════════════════════════════════ -->
+        <article class="pq-block" id="question-block-21" data-q="21" data-id="VLXT-G12-C1-MH-21" data-topic="DS-C1.6" data-ds-type="DS-C1">
+            <div class="pq-header">
+                <div class="pq-header-left">
+                    <span class="pq-badge">CÂU 21</span>
+                    <span class="pq-topic-badge"><i class="fa-solid fa-sitemap"></i> C1.6 – Động cơ nhiệt 4 kỳ &amp; Hiệu suất chu trình</span>
+                    <span class="pq-model-tag">DS-UD · Động cơ xăng 4 kỳ (Nạp-Nén-Nổ-Xả)</span>
+                    <span class="pq-source-tag">Vật Lý 12 | Động Cơ Nhiệt &amp; Chu Trình 4 Kỳ</span>
+                </div>
+                <span class="pq-type-label">Đúng / Sai · VD</span>
+            </div>
+
+            <div class="pq-text">
+<p>Một động cơ xăng đốt trong $4$ kỳ cấu tạo như hình bên, sẽ sinh công thông qua $4$ hành trình của piston: nạp, nén, nổ, xả.</p>
+<ol class="pq-sub-list">
+<li><strong>Nạp:</strong> van nạp mở, piston đi xuống, khí và nhiên liệu được hút vào xi lanh.</li>
+<li><strong>Nén:</strong> tất cả các van được đóng, piston đi lên nén khí, bugi đánh lửa.</li>
+<li><strong>Nổ:</strong> khí và nhiên liệu nén phát nổ, đẩy piston đi xuống.</li>
+<li><strong>Xả:</strong> van xả mở, piston đi lên đẩy khí thải ra ngoài.</li>
+</ol>
+<div class="vlxt-model-slot" data-model-id="MH-C1-21" data-model-topic="DS-C1.6"></div>
+            </div>
+
+            <div class="pq-tf-rows" id="tf-group-21">
+                <div class="pq-tf-row" id="row-q21-a">
+                    <div class="pq-tf-stmt">
+                        <strong>a)</strong> Động cơ $4$ kỳ chuyển đổi năng lượng hóa học của nhiên liệu thành năng lượng cơ học.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(21, 'a', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(21, 'a', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q21-b">
+                    <div class="pq-tf-stmt">
+                        <strong>b)</strong> Hành trình nén là hành trình động cơ sinh công.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(21, 'b', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(21, 'b', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q21-c">
+                    <div class="pq-tf-stmt">
+                        <strong>c)</strong> Trong hành trình nổ với khối khí trong xi lanh, ta có $Q > 0$, $A > 0$, $\Delta U > 0$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(21, 'c', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(21, 'c', false)">Sai</button>
+                    </div>
+                </div>
+                <div class="pq-tf-row" id="row-q21-d">
+                    <div class="pq-tf-stmt">
+                        <strong>d)</strong> Một động cơ xăng $4$ kỳ gắn vào một xe máy có hiệu suất đạt $30\%$. Cho biết năng suất tỏa nhiệt của xăng $q = 44{,}8\text{ MJ/kg}$, xăng có khối lượng riêng $D = 700\text{ kg/m}^3$. Biết trung bình để xe máy đi $1\text{ km}$ cần cung cấp năng lượng $190\text{ kJ}$. Nếu động cơ tiêu thụ hết $1\text{ lít}$ xăng thì xe máy đã đi một quãng đường là $49{,}51\text{ km}$.
+                    </div>
+                    <div class="pq-tf-choices">
+                        <button type="button" class="pq-tf-btn" data-choice="true" onclick="selectTf(21, 'd', true)">Đúng</button>
+                        <button type="button" class="pq-tf-btn" data-choice="false" onclick="selectTf(21, 'd', false)">Sai</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-actions">
+                <button type="button" class="btn-check" onclick="checkQ(21)">
+                    <i class="fa-solid fa-circle-check"></i> Kiểm tra đáp án &amp; Xem lời giải
+                </button>
+                <button type="button" class="btn-reset" onclick="resetQ(21)">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Làm lại câu này
+                </button>
+                <button type="button" class="btn-toggle-exp" onclick="toggleExp(21)">
+                    <i class="fa-solid fa-lightbulb"></i> <span id="toggle-exp-text-21">Xem lời giải</span>
+                </button>
+                <span class="quiz-feedback-msg" id="feedback-q21" aria-live="polite"></span>
+            </div>
+
+            <div class="vlxt-explain-box" id="exp-q21">
+                <div class="vlxt-explain-title">
+                    <i class="fa-solid fa-graduation-cap"></i> Lời Giải Chi Tiết Của Thầy — Câu 21
+                </div>
+                <div class="vlxt-explain-body">
+<div class="exp-stmt-item"><span class="exp-key-badge true">a — ĐÚNG</span> Xăng được cấu tạo từ các hiđrocacbon; khi đốt cháy, năng lượng hóa học của nhiên liệu giải phóng thành nhiệt năng và qua chu trình giãn nở của khí trong xi lanh được chuyển đổi thành cơ năng quay trục khuỷu.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">b — SAI</span> Trong hành trình <strong>nén</strong>, piston đi lên nén khối hòa khí trong xi lanh nên khối khí nhận công từ piston; hành trình <strong>nổ (cháy – giãn nở)</strong> mới là hành trình sinh công có ích của động cơ.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">c — SAI</span> Trong hành trình nổ, piston đi xuống nên khối khí giãn nở sinh công ($A < 0$ theo quy ước nhận công là dương). Với mô hình chu trình Otto lý tưởng, kỳ giãn nở sau khi cháy gần như đoạn nhiệt ($Q \approx 0$), do đó $\Delta U = A + Q < 0$, không thể có đồng thời $Q > 0, A > 0, \Delta U > 0$.</div>
+<div class="exp-stmt-item"><span class="exp-key-badge false">d — SAI</span> Năng lượng cơ học có ích thu được khi động cơ tiêu thụ hết $1\text{ lít} = 10^{-3}\text{ m}^3$ xăng:<div class="vlxt-math-callout">$$Q_{\text{ci}} = H \cdot Q_{\text{tp}} = H \cdot D \cdot V \cdot q = 0{,}3 \cdot 700 \cdot 10^{-3} \cdot 44{,}8 \cdot 10^6 = 9\,408\,000\text{ J}$$</div>Quãng đường xe máy đi được:<div class="vlxt-math-callout">$$s = \frac{Q_{\text{ci}}}{Q_0} = \frac{9\,408\,000}{190\,000} \approx 49{,}52\text{ km} \neq 49{,}51\text{ km}$$</div></div>
+                </div>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- ═════════════════════════════════════════════════════════════════════
+         LOGIC JAVASCRIPT: TRẮC NGHIỆM ĐÚNG/SAI (17 CÂU), CHẤM ĐIỂM, KATEX
+         ═════════════════════════════════════════════════════════════════════ -->
+    <script>
+        const Q_ORDER = [1,2,3,4,5,6,7,9,10,11,12,13,14,15,18,19,21];
+        const QUIZ_KEYS = {
+          "1": {
+                    "a": true,
+                    "b": false,
+                    "c": true,
+                    "d": true
+          },
+          "2": {
+                    "a": true,
+                    "b": false,
+                    "c": true,
+                    "d": false
+          },
+          "3": {
+                    "a": true,
+                    "b": false,
+                    "c": false,
+                    "d": true
+          },
+          "4": {
+                    "a": true,
+                    "b": true,
+                    "c": true,
+                    "d": false
+          },
+          "5": {
+                    "a": true,
+                    "b": true,
+                    "c": false,
+                    "d": true
+          },
+          "6": {
+                    "a": false,
+                    "b": false,
+                    "c": false,
+                    "d": true
+          },
+          "7": {
+                    "a": true,
+                    "b": true,
+                    "c": false,
+                    "d": false
+          },
+          "9": {
+                    "a": true,
+                    "b": true,
+                    "c": true,
+                    "d": false
+          },
+          "10": {
+                    "a": false,
+                    "b": false,
+                    "c": true,
+                    "d": false
+          },
+          "11": {
+                    "a": true,
+                    "b": false,
+                    "c": true,
+                    "d": true
+          },
+          "12": {
+                    "a": true,
+                    "b": false,
+                    "c": true,
+                    "d": false
+          },
+          "13": {
+                    "a": true,
+                    "b": false,
+                    "c": false,
+                    "d": true
+          },
+          "14": {
+                    "a": false,
+                    "b": true,
+                    "c": false,
+                    "d": true
+          },
+          "15": {
+                    "a": true,
+                    "b": false,
+                    "c": false,
+                    "d": true
+          },
+          "18": {
+                    "a": false,
+                    "b": true,
+                    "c": false,
+                    "d": true
+          },
+          "19": {
+                    "a": true,
+                    "b": false,
+                    "c": true,
+                    "d": false
+          },
+          "21": {
+                    "a": true,
+                    "b": false,
+                    "c": false,
+                    "d": false
+          }
+};
+
+        const userAnswers = {};
+        Q_ORDER.forEach(q => {
+            userAnswers[q] = { a: null, b: null, c: null, d: null };
+        });
+
+        let allExplanationsOpen = false;
+        let activeTopicFilter = 'all';
+        let activeQuestionFilter = 'all';
+
+        function selectTf(qNum, stmtKey, isTrue) {
+            if (!userAnswers[qNum]) userAnswers[qNum] = { a: null, b: null, c: null, d: null };
+            userAnswers[qNum][stmtKey] = isTrue;
+            const row = document.getElementById(`row-q${qNum}-${stmtKey}`);
+            if (!row) return;
+
+            row.classList.remove('result-correct', 'result-wrong', 'needs-choice');
+            const existingBadge = row.querySelector('.pq-result-badge');
+            if (existingBadge) existingBadge.remove();
+
+            const fb = document.getElementById(`feedback-q${qNum}`);
+            if (fb) fb.textContent = '';
+
+            const btns = row.querySelectorAll('.pq-tf-btn');
+            btns.forEach(btn => {
+                const choice = btn.getAttribute('data-choice') === 'true';
+                btn.classList.remove('active-true', 'active-false');
+                if (choice === isTrue) {
+                    btn.classList.add(isTrue ? 'active-true' : 'active-false');
+                }
+            });
+
+            updateGlobalProgress();
+        }
+
+        function checkQ(qNum) {
+            const keys = ['a', 'b', 'c', 'd'];
+            const missingKeys = keys.filter(k => userAnswers[qNum][k] === null);
+            const fb = document.getElementById(`feedback-q${qNum}`);
+
+            if (missingKeys.length > 0) {
+                missingKeys.forEach(k => {
+                    const r = document.getElementById(`row-q${qNum}-${k}`);
+                    if (r) r.classList.add('needs-choice');
+                });
+                if (fb) {
+                    fb.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Còn thiếu ${missingKeys.map(x => x + ')').join(', ')} — hãy chọn Đúng/Sai đủ 4 ý.`;
+                }
+                return;
+            }
+
+            if (fb) fb.textContent = '';
+
+            const standardKey = QUIZ_KEYS[qNum];
+            let correctCount = 0;
+
+            keys.forEach(k => {
+                const row = document.getElementById(`row-q${qNum}-${k}`);
+                if (!row) return;
+
+                row.classList.remove('result-correct', 'result-wrong', 'needs-choice');
+                const oldBadge = row.querySelector('.pq-result-badge');
+                if (oldBadge) oldBadge.remove();
+
+                const userVal = userAnswers[qNum][k];
+                const correctVal = standardKey[k];
+
+                const badge = document.createElement('span');
+                badge.className = 'pq-result-badge';
+
+                if (userVal === correctVal) {
+                    correctCount++;
+                    row.classList.add('result-correct');
+                    badge.classList.add('ok');
+                    badge.innerHTML = '<i class="fa-solid fa-check"></i> Đúng';
+                } else {
+                    row.classList.add('result-wrong');
+                    badge.classList.add('fail');
+                    const standardText = correctVal ? 'ĐÚNG' : 'SAI';
+                    badge.innerHTML = `<i class="fa-solid fa-xmark"></i> Sai (Đáp án: ${standardText})`;
+                }
+
+                const choicesWrap = row.querySelector('.pq-tf-choices');
+                if (choicesWrap) choicesWrap.appendChild(badge);
+            });
+
+            const exp = document.getElementById(`exp-q${qNum}`);
+            if (exp) {
+                exp.classList.add('open');
+                const toggleBtnText = document.getElementById(`toggle-exp-text-${qNum}`);
+                if (toggleBtnText) toggleBtnText.textContent = 'Ẩn lời giải';
+            }
+
+            if (fb) {
+                fb.style.color = correctCount === 4 ? '#6ee7b7' : '#38bdf8';
+                fb.textContent = `Kết quả: Đúng ${correctCount}/4 ý`;
+            }
+
+            updateGlobalProgress();
+        }
+
+        function resetQ(qNum) {
+            ['a', 'b', 'c', 'd'].forEach(k => {
+                userAnswers[qNum][k] = null;
+                const row = document.getElementById(`row-q${qNum}-${k}`);
+                if (row) {
+                    row.classList.remove('result-correct', 'result-wrong', 'needs-choice');
+                    row.querySelectorAll('.pq-tf-btn').forEach(b => b.classList.remove('active-true', 'active-false'));
+                    const badge = row.querySelector('.pq-result-badge');
+                    if (badge) badge.remove();
+                }
+            });
+
+            const fb = document.getElementById(`feedback-q${qNum}`);
+            if (fb) { fb.textContent = ''; fb.style.color = '#fbbf24'; }
+
+            const exp = document.getElementById(`exp-q${qNum}`);
+            if (exp) {
+                exp.classList.remove('open');
+                const toggleBtnText = document.getElementById(`toggle-exp-text-${qNum}`);
+                if (toggleBtnText) toggleBtnText.textContent = 'Xem lời giải';
+            }
+
+            updateGlobalProgress();
+        }
+
+        function toggleExp(qNum) {
+            const exp = document.getElementById(`exp-q${qNum}`);
+            const toggleBtnText = document.getElementById(`toggle-exp-text-${qNum}`);
+            if (!exp) return;
+
+            if (exp.classList.contains('open')) {
+                exp.classList.remove('open');
+                if (toggleBtnText) toggleBtnText.textContent = 'Xem lời giải';
+            } else {
+                exp.classList.add('open');
+                if (toggleBtnText) toggleBtnText.textContent = 'Ẩn lời giải';
+            }
+        }
+
+        function toggleAllExplanations() {
+            allExplanationsOpen = !allExplanationsOpen;
+            const btnText = document.getElementById('btn-toggle-all-text');
+
+            Q_ORDER.forEach(q => {
+                const exp = document.getElementById(`exp-q${q}`);
+                const toggleBtnText = document.getElementById(`toggle-exp-text-${q}`);
+                if (exp) {
+                    if (allExplanationsOpen) {
+                        exp.classList.add('open');
+                        if (toggleBtnText) toggleBtnText.textContent = 'Ẩn lời giải';
+                    } else {
+                        exp.classList.remove('open');
+                        if (toggleBtnText) toggleBtnText.textContent = 'Xem lời giải';
+                    }
+                }
+            });
+
+            if (btnText) {
+                btnText.textContent = allExplanationsOpen ? 'Ẩn tất cả lời giải' : 'Hiện tất cả lời giải';
+            }
+        }
+
+        function filterByTopic(topicCode) {
+            activeTopicFilter = topicCode || 'all';
+            activeQuestionFilter = 'all';
+            applyQuestionFilters();
+        }
+
+        function filterQuestion(qNum) {
+            activeQuestionFilter = (qNum === 'all') ? 'all' : String(qNum);
+            if (activeQuestionFilter !== 'all') {
+                const targetBlock = document.getElementById('question-block-' + activeQuestionFilter);
+                const blockTopic = targetBlock ? targetBlock.getAttribute('data-topic') : '';
+                if (activeTopicFilter !== 'all' && activeTopicFilter !== blockTopic) {
+                    activeTopicFilter = 'all';
+                }
+            }
+            applyQuestionFilters();
+        }
+
+        function applyQuestionFilters() {
+            document.querySelectorAll('.topic-tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-topic-filter') === activeTopicFilter);
+            });
+
+            const filterBtns = document.querySelectorAll('.filter-btn[data-q-filter]');
+            filterBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-q-filter') === activeQuestionFilter);
+            });
+
+            const blocks = document.querySelectorAll('.pq-block');
+            const matchingQs = new Set();
+            let visibleCount = 0;
+
+            blocks.forEach(b => {
+                const qId = String(b.getAttribute('data-q') || '');
+                const bTopic = b.getAttribute('data-topic') || '';
+                const topicMatch = (activeTopicFilter === 'all' || bTopic === activeTopicFilter);
+                if (topicMatch) matchingQs.add(qId);
+
+                const qMatch = (activeQuestionFilter === 'all' || qId === activeQuestionFilter);
+                const show = topicMatch && qMatch;
+                b.style.display = show ? 'block' : 'none';
+                if (show) visibleCount++;
+            });
+
+            filterBtns.forEach(btn => {
+                const qf = btn.getAttribute('data-q-filter');
+                if (qf === 'all') {
+                    btn.classList.toggle('dimmed', visibleCount === 0);
+                } else {
+                    btn.classList.toggle('dimmed', !matchingQs.has(qf));
+                }
+            });
+
+            const notice = document.getElementById('ds-topic-placeholder');
+            if (notice) {
+                notice.classList.toggle('show', visibleCount === 0);
+            }
+        }
+
+        function updateGlobalProgress() {
+            let completedQuestions = 0;
+            let answeredParts = 0;
+
+            Q_ORDER.forEach(q => {
+                let qFull = true;
+                ['a', 'b', 'c', 'd'].forEach(k => {
+                    if (userAnswers[q] && userAnswers[q][k] !== null) {
+                        answeredParts++;
+                    } else {
+                        qFull = false;
+                    }
+                });
+                if (qFull) completedQuestions++;
+            });
+
+            const pill = document.getElementById('global-progress');
+            if (pill) {
+                pill.textContent = `Tiến độ: ${completedQuestions}/${Q_ORDER.length} câu (${answeredParts}/${Q_ORDER.length * 4} ý)`;
+            }
+        }
+
+        function initKaTeX() {
+            if (typeof renderMathInElement === 'function') {
+                try {
+                    renderMathInElement(document.body, {
+                        delimiters: [
+                            { left: '$$', right: '$$', display: true },
+                            { left: '$', right: '$', display: false },
+                            { left: '\\(', right: '\\)', display: false },
+                            { left: '\\[', right: '\\]', display: true }
+                        ],
+                        throwOnError: false
+                    });
+                } catch (e) {
+                    console.error('Lỗi nạp KaTeX:', e);
+                }
+            } else {
+                setTimeout(initKaTeX, 100);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (window.VLXTModels && typeof window.VLXTModels.mountAll === 'function') {
+                window.VLXTModels.mountAll(document);
+            }
+            initKaTeX();
+            updateGlobalProgress();
+            applyQuestionFilters();
+        });
+    </script>
+</body>
+</html>

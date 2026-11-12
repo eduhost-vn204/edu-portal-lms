@@ -1,3 +1,41 @@
+## Bàn giao gần nhất (12/11/2026 10:18)
+- **Nhánh feature (chưa merge `main`, chưa push, chưa đụng dữ liệu production)**:
+  - **Student (`_worktree_c1_ds`)**: nhánh `antigravity/20261112-c1-mo-hinh-ds` (tách từ `a8deed3`)
+  - **Admin (`_worktree_admin_c1_ds`)**: nhánh `antigravity/20261112-admin-c1-ds` (tách từ `a5b5584`)
+- **Phạm vi hoàn tất — Hệ thống 17 Mô Hình Thực Tế Đúng/Sai Chương 1 (Vật Lý Nhiệt) đồng bộ Showcase · Admin · Bài Học · Phòng Thi Thử CBT**:
+  1. **Thư viện SVG Motion Graphics dùng chung (`data/mo-hinh-thuc-te-models.js` bên Student & bản sao đồng nhất SHA-256 `assets/mo-hinh-thuc-te-models.js` bên Admin)**:
+     - Cài đặt `VLXTModels` v1.0.0 gồm 17 mô hình Đúng/Sai Chương 1 (`MH-C1-01..07, 09..15, 18, 19, 21`, hỗ trợ bố cục đơn & kép `vlxt-grid-2col` cho sơ đồ mạch + đồ thị thực nghiệm).
+     - Chuyển động quan sát tự nhiên (*Ambient Observational Loop*), vector phẳng sắc nét (Zero AI Glow), tuyệt đối không lồng `.katex` vào `<svg>`, không đặt nút điều khiển hay HUD làm lộ đáp án trên đề.
+     - CSS dùng chung chuẩn hóa `.vlxt-visual-container`, `.vstep-data-panel`, `.vstep-data-table` (tự chuyển theme tối trong showcase / `baihoc` / danh sách bank Admin và giữ nền sáng trong CBT `thithu.html` / modal Admin; responsive mobile `390px` bọc cuộn ngang nội bộ cho bảng nhiều cột).
+  2. **Trang Prototype & Bộ Batch Đúng/Sai Chương 1 (`prototype-100-mo-hinh-thuc-te.html` & `data/batches/100-mohinh-c1-ds.json`)**:
+     - Tổ chức đủ 17 câu Đúng/Sai Chương 1 theo 6 chủ đề con riêng của Phần II (`DS-C1.1` → `DS-C1.6`), loại bỏ hoàn toàn 4 câu Trả lời ngắn (`Câu 8, 16, 20, 22`) và cụm 3 câu Trắc nghiệm (`Câu 17`) theo cấu trúc ma trận THPT Quốc gia 2025–2026.
+     - Khoảng đệm an toàn cố định chống khuất navbar (`padding-top: 90px` desktop, `80px` mobile; ẩn badge phụ trên header mobile để giữ thanh trên cùng gọn trong `390px`), lọc nhanh theo chủ đề/câu, chấm Đúng/Sai từng ý + mở lời giải KaTeX + làm lại.
+  3. **Admin Ngân hàng đề & Xuất Word `.docx` (`ngan-hang-de.html`, `src/Mã.js`, `apps-script-CAPNHAT.txt`)**:
+     - Bổ sung 6 chủ đề con `DS-C1.1..DS-C1.6` tách biệt khỏi 56 chủ đề Trắc nghiệm lý thuyết Phần I, kèm hàng chip lọc nhanh `#nh-subtopic-summary-bar`.
+     - Nạp batch `data/batches/100-mohinh-c1-ds.json` qua dry-run và xác nhận commit an toàn; đồng bộ `src/Mã.js` ↔ `apps-script-CAPNHAT.txt` (SHA-256 giống hệt) bổ sung cột `modelId`, schema `23` cột `NganHangCauHoi`, bảo toàn `loai`, `tnType`, `subTopic`, `deBaiChung`, `giaiThich`, fail-closed quarantine & `importnganhang` idempotent.
+     - Modal sửa câu hỏi hiển thị preview trực tiếp `#nhe-preview-box` (render SVG `VLXTModels` + KaTeX). Xuất `.docx` tự rasterize các `.vlxt-model-slot` SVG sang PNG (`word/media/image*.png` + `<a:blip>`), xuất bảng HTML thành `<w:tbl>` và KaTeX thành OMML `<m:oMath>`.
+  4. **Tích hợp trang Học sinh (`baihoc.html` & `thithu.html`)**:
+     - `baihoc.html`: Nhúng `data/mo-hinh-thuc-te-models.js`, gọi `VLXTModels.mountAll` sau `renderMath`, hỗ trợ đề bài HTML + `.vstep-data-table` + lời giải chi tiết `_renderPracticeExplanation`, ép tương phản chữ sáng trên nền tối `.vstep-quiz-wrap` kể cả khi `vlxt_theme='light'`.
+     - `thithu.html`: Nhúng `data/mo-hinh-thuc-te-models.js`, bảo toàn 100% theme sáng CBT chuẩn Bộ GD&ĐT (`#ffffff`), gọi `VLXTModels.mountAll` cho câu đang thi và danh sách review sau khi nạp lazy `?type=examsolutions`.
+- **Kiểm định đã chạy & quan sát trực tiếp**:
+  - **Cú pháp & HTML & Hash**: `node --check` trên `mo-hinh-thuc-te-models.js`, VM parse toàn bộ `<script>` nội tuyến + kiểm tra thẻ đóng `</html>` trên `prototype-100-mo-hinh-thuc-te.html`, `baihoc.html`, `thithu.html`, `ngan-hang-de.html` — đều PASS. Xác nhận SHA-256 khớp `Student data/mo-hinh-thuc-te-models.js === Admin assets/mo-hinh-thuc-te-models.js` và `Admin src/Mã.js === Admin apps-script-CAPNHAT.txt`.
+  - **Zero AI Glow & Secret Scan**: 0 vi phạm (`text-shadow: 0 0`, `drop-shadow(0 0)`, `feGaussianBlur`, hoặc secret) trên toàn bộ file mới và diff.
+  - **GAS Backend VM Integration**: `9/9` suites PASS (`100-mohinh-c1-ds.json` schema 17/17 + 5 câu loại trừ vắng mặt, `importnganhang` dryRun/commit 23 cột, `getNganHang` bảo toàn metadata/SVG/table/giaiThich, idempotent re-import, fail-closed quarantine & `AccountingMismatch=0`, `updatenganhang`, `bulksetbainganhang`, `saveQuestions` → `getExamQuestions` không lộ lời giải → `getExamSolutions`).
+  - **Chrome Headless CDP E2E (`Chrome/157.0.8103.78`, `6/6` suites PASS & đã soi ảnh chụp desktop `1440×900` + mobile `390×844`)**:
+    - *Suite A (`prototype-100-mo-hinh-thuc-te.html`)*: 17 cards, 19 SVGs, 454 KaTeX, 0 KaTeX trong SVG, hero top `80px`, filter `DS-C1.4`, chấm Đ/S + mở lời giải + reset, mobile `390/390` (0 tràn ngang), 0 console/page error.
+    - *Suite B (`ngan-hang-de.html` + Word Export)*: dry-run & commit 17 câu, lọc `DS` hiện đủ 6 chip `DS-C1.*`, mở modal sửa & preview SVG/KaTeX, xuất `Test-C1-DS-Export.docx` (`656 KB`, giải nén ZIP kiểm chứng đủ `5` file PNG `word/media/image1..5.png` kèm `<a:blip>`, `<w:tbl>`, `<m:oMath>`).
+    - *Suite C1/C2/C3 (`baihoc.html`)*: chế độ sáng `vlxt_theme='light'` vẫn giữ chữ `#f1f5f9` trên `.vstep-quiz-wrap` `#0f172a` tương phản cao; dark mode chấm 3 câu mở 3 lời giải (`52` KaTeX) + reset về `0`; mobile `390/390` kèm drawer mục lục.
+    - *Suite D (`thithu.html`)*: giữ nền trắng CBT `rgb(255, 255, 255)`, điều hướng Câu 1 → Câu 2 (dual-SVG) → Câu 3 → nộp bài kích hoạt lazy GET `?type=examsolutions`, render đủ 5 review SVG + 18 KaTeX lời giải.
+  - **Test nền có sẵn trước đó trong repo (ngoài phạm vi sửa)**: Admin `scripts/test-auth-hotfix.mjs`, `scripts/test-katex-parse.mjs` (đường dẫn hardcode `C:\Users\Xuan Truong\...`), Admin `scripts/test-admin-init-draft-revalidate.mjs` (`admin/index.html` chưa sửa), Student `scripts/test-student-stable-session-num.mjs` test `2.3`.
+- **Điều phải giữ nguyên**:
+  - Tuyệt đối giữ nguyên `phong-thi-thu.html` và giao diện CBT sáng của `thithu.html`.
+  - Giữ ranh giới 6 chủ đề con `DS-C1.*` cho Đúng/Sai tách riêng khỏi 56 chủ đề Trắc nghiệm lý thuyết; giữ cặp file đồng bộ `mo-hinh-thuc-te-models.js` và `src/Mã.js` ↔ `apps-script-CAPNHAT.txt`.
+  - Không phụ thuộc GAS khi tải khóa học công khai, không tải trước toàn kho `BaiTapTracNghiem`, bảo toàn hàng đợi đồng bộ tiến độ ngoại tuyến và menu mobile.
+- **Việc còn lại (chờ chỉ thị của Thầy)**:
+  1. Kiểm tra diff 2 nhánh `antigravity/20261112-c1-mo-hinh-ds` (Student) & `antigravity/20261112-admin-c1-ds` (Admin) trước khi merge vào `main` và push GitHub.
+  2. Triển khai Apps Script backend (`clasp push && clasp deploy`) khi Thầy cho phép thao tác production.
+  3. Mở `ngan-hang-de.html` production → Nạp nhanh JSON Batch → chọn `data/batches/100-mohinh-c1-ds.json` → Dry run → Nạp thật 17 câu lên Sheet `NganHangCauHoi`.
+
 ## Bàn giao gần nhất (11/11/2026 09:40)
 - **Commit**: Tích Hợp Đề Thi Số 2 (Kiểm Chứng Tiến Bộ Đột Phá), Tự Động Đổi Đề Cho Học Sinh Đã Test, Pop-Up Luyện Tập Đề Mới & Tối Ưu Bản Đồ Radar HUD 4 Chương Vật Lý 12 Trên hoso.html
 - **Phạm vi hoàn tất (3 Yêu cầu đột phá từ Thầy)**:

@@ -9,6 +9,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
     <script src="data/bundle_theories.js"></script>
     <script src="data/bundle_quizzes.js"></script>
+    <script src="data/mo-hinh-thuc-te-models.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
@@ -2592,6 +2593,148 @@
             .container { padding: 0 12px; }
         }
 
+        /* ═══ MÔ HÌNH THỰC TẾ, BẢNG SỐ LIỆU & LỜI GIẢI CHI TIẾT (PHẲNG, ZERO AI GLOW) ═══ */
+        .pq-text p { margin-bottom: 8px; line-height: 1.68; }
+        .pq-text p:last-child { margin-bottom: 0; }
+        .vstep-main-stream .pq-text p { font-size: 15px !important; line-height: 1.68 !important; margin-bottom: 8px !important; }
+        .vstep-main-stream .pq-text p:last-child { margin-bottom: 0 !important; }
+        .vq-panel .pq-text p, #wr-card .pq-text p { color: var(--text) !important; }
+        .vstep-quiz-wrap .pq-text p { color: #f1f5f9 !important; }
+        .pq-sub-list { margin: 8px 0 10px 18px; padding-left: 14px; list-style: disc; font-size: 14.5px; line-height: 1.65; }
+        .pq-sub-list li { margin-bottom: 5px; }
+
+        /* Ghi đè nền tối cho .vstep-quiz-wrap kể cả khi localStorage vlxt_theme='light' */
+        .vstep-quiz-wrap .vstep-data-panel { background: #0b1120; border-color: #334155; color: #e2e8f0; }
+        .vstep-quiz-wrap .vstep-data-title { color: #38bdf8; }
+        .vstep-quiz-wrap .vstep-data-table { background: #0f172a; color: #e2e8f0; }
+        .vstep-quiz-wrap .vstep-data-table th,
+        .vstep-quiz-wrap .vstep-data-table td { border-color: #334155; }
+        .vstep-quiz-wrap .vstep-data-table th { background: #1e293b; color: #cbd5e1; }
+        .vstep-quiz-wrap .vstep-data-table tbody tr:nth-child(even) { background: #131c31; }
+        .vstep-quiz-wrap .vstep-data-table tbody tr:hover { background: #1e293b; }
+
+        .vstep-quiz-wrap .pq-tf-row {
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            background: rgba(255, 255, 255, 0.03) !important;
+            color: #cbd5e1 !important;
+            border-radius: 8px !important;
+            padding: 10px 14px !important;
+            margin-bottom: 8px;
+        }
+        .vstep-quiz-wrap .pq-tf-stmt { color: #e2e8f0 !important; }
+        .vstep-quiz-wrap .pq-tf-btn { color: #e2e8f0 !important; }
+        .vstep-quiz-wrap .pq-letter { color: #94a3b8 !important; }
+        .vstep-quiz-wrap .pq-tf-instruction { color: #94a3b8 !important; }
+        .vstep-quiz-wrap .pq-short-wrap { color: #e2e8f0; }
+        .vstep-quiz-wrap .pq-tf-row.result-correct,
+        body.dark .pq-tf-row.result-correct {
+            border-color: #10b981 !important;
+            background: rgba(16, 185, 129, 0.14) !important;
+        }
+        .vstep-quiz-wrap .pq-tf-row.result-wrong,
+        body.dark .pq-tf-row.result-wrong {
+            border-color: #ef4444 !important;
+            background: rgba(239, 68, 68, 0.14) !important;
+        }
+        .vstep-quiz-wrap .pq-tf-row.result-correct .pq-tf-stmt,
+        body.dark .pq-tf-row.result-correct .pq-tf-stmt { color: #dcfce7 !important; }
+        .vstep-quiz-wrap .pq-tf-row.result-wrong .pq-tf-stmt,
+        body.dark .pq-tf-row.result-wrong .pq-tf-stmt { color: #fee2e2 !important; }
+
+        @media (max-width: 640px) {
+            .pq-tf-row { flex-wrap: wrap; align-items: flex-start; gap: 8px; }
+            .pq-tf-stmt { flex: 1 1 calc(100% - 34px); }
+            .pq-tf-choice { width: 100%; justify-content: flex-end; padding-top: 6px; border-top: 1px dashed rgba(148, 163, 184, 0.22); }
+        }
+
+        /* Khung lời giải chi tiết */
+        .pq-explanation {
+            margin-top: 14px;
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            color: #1e293b;
+            font-size: 13.5px;
+            line-height: 1.65;
+        }
+        .pq-explanation p { margin-bottom: 8px; color: inherit !important; font-size: 13.5px !important; line-height: 1.65 !important; }
+        .pq-explanation p:last-child { margin-bottom: 0; }
+        .pq-exp-title {
+            font-size: 12.5px;
+            font-weight: 800;
+            color: #0369a1;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .exp-stmt-item {
+            margin-bottom: 10px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #1e293b;
+        }
+        .exp-stmt-item:last-child { margin-bottom: 0; }
+        .exp-key-badge {
+            display: inline-block;
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 5px;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+        .exp-key-badge.true { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+        .exp-key-badge.false { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+        .vlxt-math-callout {
+            margin: 8px 0;
+            padding: 9px 12px;
+            border-left: 3px solid #0284c7;
+            background: #eff6ff;
+            border-radius: 0 7px 7px 0;
+            color: #0f172a;
+            font-size: 13.5px;
+            overflow-x: auto;
+        }
+        .vstep-quiz-wrap .pq-explanation,
+        body.dark .pq-explanation {
+            background: #0b1120;
+            border-color: #334155;
+            color: #cbd5e1;
+        }
+        .vstep-quiz-wrap .pq-exp-title,
+        body.dark .pq-exp-title { color: #38bdf8; }
+        .vstep-quiz-wrap .exp-stmt-item,
+        body.dark .exp-stmt-item {
+            background: #0f172a;
+            border-color: #1e293b;
+            color: #cbd5e1;
+        }
+        .vstep-quiz-wrap .exp-key-badge.true,
+        body.dark .exp-key-badge.true {
+            background: rgba(16, 185, 129, 0.16);
+            color: #34d399;
+            border-color: rgba(16, 185, 129, 0.45);
+        }
+        .vstep-quiz-wrap .exp-key-badge.false,
+        body.dark .exp-key-badge.false {
+            background: rgba(239, 68, 68, 0.16);
+            color: #f87171;
+            border-color: rgba(239, 68, 68, 0.45);
+        }
+        .vstep-quiz-wrap .vlxt-math-callout,
+        body.dark .vlxt-math-callout {
+            background: rgba(56, 189, 248, 0.08);
+            border-left-color: #38bdf8;
+            color: #e2e8f0;
+        }
+
 </style>
   <script src="auth.js?v=20261110s"></script>
   <script src="trial-manager.js?v=20261109p"></script>
@@ -3364,7 +3507,28 @@ function pqSafe(s){
 }
 function field(row,names){ for(const k in row){ const nk=norm(k); for(const n of names){ if(nk===norm(n)) return row[k]; } } return ''; }
 function toast(msg,type){ const t=$('#toast'); t.className='toast show '+(type||''); t.innerHTML=msg; clearTimeout(t._t); t._t=setTimeout(()=>t.className='toast',2600); }
-function renderMath(el){ if(typeof renderMathInElement==='function'){ try{ renderMathInElement(el,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\(',right:'\\)',display:false},{left:'\\[',right:'\\]',display:true}]}); }catch(e){} } }
+function renderMath(el){
+    if(!el) return;
+    if(window.VLXTModels && typeof window.VLXTModels.mountAll === 'function'){
+        try{
+            const compact = !!(el.id && (el.id === 'vq-holder' || el.id === 'cungthay-holder' || el.id === 'wr-overlay')) || !!(el.closest && el.closest('#vq-holder,#cungthay-holder,#wr-overlay'));
+            window.VLXTModels.mountAll(el, compact ? { compact: true } : undefined);
+        }catch(e){}
+    }
+    if(typeof renderMathInElement==='function'){
+        try{
+            renderMathInElement(el,{
+                delimiters:[
+                    {left:'$$',right:'$$',display:true},
+                    {left:'$',right:'$',display:false},
+                    {left:'\\(',right:'\\)',display:false},
+                    {left:'\\[',right:'\\]',display:true}
+                ],
+                ignoredTags:['script','noscript','style','textarea','pre','code','option','svg']
+            });
+        }catch(e){}
+    }
+}
 /* Chuẩn hoá vài lỗi công thức hay gặp khi bóc từ Word/MathType (giống hệt bản
    dùng cho trang thi thử thithu.html — trước đây trang bài học KHÔNG có, nên
    câu hỏi trong "Luyện tập trắc nghiệm"/"Câu hỏi trong video" hiển thị công
@@ -3515,7 +3679,8 @@ function mapQuizRows(rows){
             A: (rw.optA||rw.A||'').toString(), B: (rw.optB||rw.B||'').toString(),
             C: (rw.optC||rw.C||'').toString(), D: (rw.optD||rw.D||'').toString(),
             ans: String(rw.correct||rw.ans||'').toUpperCase().trim(),
-            correct: (rw.correct||rw.ans||'').toString()
+            correct: (rw.correct||rw.ans||'').toString(),
+            giaiThich: (rw.giaiThich||rw.giaithich||rw.explain||'').toString()
     }));
 }
 async function loadLessonQuiz(key,lesson){
@@ -5268,7 +5433,7 @@ function renderLesson(key){
         let _qz = `<p class="quiz-threshold-hint" id="quiz-threshold-hint">Cần làm đúng ≥90% số câu (từ ${_needCnt}/${lesson.baitap.length} câu trở lên) để đạt phần này.</p>`;
         lesson.baitap.forEach((q,qi)=>{
             const _qType=(q.type==='tf'||q.type==='short')?q.type:'mc';
-            const _qText=fixLatexQuirks(q.q||q.question||'');
+            const _qText=pqSafe(fixLatexQuirks(q.q||q.question||''));
             if(_qType==='tf'){
                 _qz += `<div class="pq-block pq-tf" id="pq-${qi}" data-type="tf">
                     <div class="pq-text">Câu ${qi+1}: ${_qText}</div>
@@ -5840,7 +6005,7 @@ async function renderLiveLesson(){
         let _qz = `<p class="quiz-threshold-hint" id="quiz-threshold-hint">Cần làm đúng ≥90% số câu (từ ${_needCnt}/${lesson.baitap.length} câu trở lên) để đạt phần này.</p>`;
         lesson.baitap.forEach((q,qi)=>{
             const _qType=(q.type==='tf'||q.type==='short')?q.type:'mc';
-            const _qText=fixLatexQuirks(q.q||q.question||'');
+            const _qText=pqSafe(fixLatexQuirks(q.q||q.question||''));
             if(_qType==='tf'){
                 _qz += `<div class="pq-block pq-tf" id="pq-${qi}" data-type="tf">
                     <div class="pq-text">Câu ${qi+1}: ${_qText}</div>
@@ -6533,7 +6698,8 @@ function loadVideoQuiz(key, vtype){
                     A: (r.optA||'').toString(), B: (r.optB||'').toString(),
                     C: (r.optC||'').toString(), D: (r.optD||'').toString(),
                     ans: String(r.correct||'').toUpperCase().trim(),
-                    correct: (r.correct||'').toString()
+                    correct: (r.correct||'').toString(),
+                    giaiThich: (r.giaiThich||r.giaithich||r.explain||'').toString()
                 }))
                 .sort((a,b) => a.t - b.t);
             // Bug: fetch mốc câu hỏi là bất đồng bộ. Nếu video đã bắt đầu phát
@@ -6712,7 +6878,8 @@ function lvLoadCungThayTab(key){
                     A: (r.optA||'').toString(), B: (r.optB||'').toString(),
                     C: (r.optC||'').toString(), D: (r.optD||'').toString(),
                     ans: String(r.correct||'').toUpperCase().trim(),
-                    correct: (r.correct||'').toString()
+                    correct: (r.correct||'').toString(),
+                    giaiThich: (r.giaiThich||r.giaithich||r.explain||'').toString()
                 }));
             if(btn) btn.style.display = _lvCungThayData.length ? '' : 'none';
             _lvRenderCungThay();
@@ -6731,7 +6898,7 @@ function _lvRenderCungThay(){
         </div>
         <div class="lv-ct-body">`;
     _lvCungThayData.forEach((q,qi)=>{
-        const qText = fixLatexQuirks(q.q||'');
+        const qText = pqSafe(fixLatexQuirks(q.q||''));
         if(q.type==='tf'){
             h += `<div class="pq-block pq-tf" id="lvpq-${qi}" data-type="tf">
                 <div class="pq-text">Câu ${qi+1}: ${qText}</div>
@@ -6860,6 +7027,9 @@ function lvCheckCungThay(){
         }
     });
     if(answered<qs.length){ toast('<i class="fa-solid fa-triangle-exclamation"></i> Hãy trả lời đủ các câu nhé!','err'); }
+    else if(typeof _renderPracticeExplanation==='function'){
+        qs.forEach((q,qi)=>_renderPracticeExplanation(document.getElementById(`lvpq-${qi}`),q));
+    }
     const scoreEl=document.getElementById('lvpq-score');
     if(scoreEl){
         const pct10 = qs.length>0 ? (correct/qs.length*10) : 0;
@@ -6878,6 +7048,7 @@ function lvResetCungThay(){
     holder.querySelectorAll('.pq-tf-row input[type=radio]').forEach(r=>r.checked=false);
     holder.querySelectorAll('.pq-short-input').forEach(i=>{ i.value=''; i.classList.remove('result-correct','result-wrong'); });
     holder.querySelectorAll('.pq-short-answer-hint').forEach(hh=>hh.remove());
+    holder.querySelectorAll('.pq-explanation').forEach(ex=>ex.remove());
     const s=document.getElementById('lvpq-score'); if(s) s.style.display='none';
 }
 
@@ -7199,9 +7370,11 @@ function openWrongReviewOverlay(items){
     items.forEach(function(it){
         const q = it.q;
         const qType=(q.type==='tf'||q.type==='short')?q.type:'mc';
+        const _expTxt = fixLatexQuirks((q.giaiThich||q.giaithich||q.explain||'').toString().trim());
+        const _expHtml = _expTxt ? `<div class="pq-explanation"><div class="pq-exp-title"><i class="fa-solid fa-lightbulb"></i> Lời giải chi tiết</div>${pqSafe(_expTxt)}</div>` : '';
         if(qType==='tf'){
             const corr=(q.correct||q.dapan||'').toString();
-            html += `<div class="wr-block"><div class="wr-qtext">Câu ${it.qi + 1}: ${fixLatexQuirks(q.q||q.question||'')}</div><div class="wr-opts">`;
+            html += `<div class="wr-block"><div class="wr-qtext">Câu ${it.qi + 1}: ${pqSafe(fixLatexQuirks(q.q||q.question||''))}</div><div class="wr-opts">`;
             ['A','B','C','D'].forEach(function(L,li){
                 if(!q[L] && !q[L.toLowerCase()]) return;
                 const txt = fixLatexQuirks(q[L] || q[L.toLowerCase()] || '');
@@ -7212,18 +7385,18 @@ function openWrongReviewOverlay(items){
                     <span class="wr-badge"><i class="fa-solid fa-check"></i> ${dung?'Đúng':'Sai'}</span>
                 </div>`;
             });
-            html += `</div></div>`;
+            html += `</div>${_expHtml}</div>`;
             return;
         }
         if(qType==='short'){
-            html += `<div class="wr-block"><div class="wr-qtext">Câu ${it.qi + 1}: ${fixLatexQuirks(q.q||q.question||'')}</div>
+            html += `<div class="wr-block"><div class="wr-qtext">Câu ${it.qi + 1}: ${pqSafe(fixLatexQuirks(q.q||q.question||''))}</div>
                 <div class="wr-opts"><div class="wr-opt wr-correct"><span>Đáp án đúng: <b>${pqSafe((q.correct||q.dapan||'').toString())}</b></span>
-                <span class="wr-badge"><i class="fa-solid fa-check"></i> Đáp án đúng</span></div></div></div>`;
+                <span class="wr-badge"><i class="fa-solid fa-check"></i> Đáp án đúng</span></div></div>${_expHtml}</div>`;
             return;
         }
         const ans = (q.ans || q.correct || q.dapan || '').toString().toUpperCase().trim();
         html += `<div class="wr-block">
-            <div class="wr-qtext">Câu ${it.qi + 1}: ${fixLatexQuirks(q.q || q.question || '')}</div>
+            <div class="wr-qtext">Câu ${it.qi + 1}: ${pqSafe(fixLatexQuirks(q.q || q.question || ''))}</div>
             <div class="wr-opts">`;
         ['A','B','C','D'].forEach(function(L){
             if(!q[L] && !q[L.toLowerCase()]) return;
@@ -7234,7 +7407,7 @@ function openWrongReviewOverlay(items){
                 ${isCorrect ? '<span class="wr-badge"><i class="fa-solid fa-check"></i> Đáp án đúng</span>' : ''}
             </div>`;
         });
-        html += `</div></div>`;
+        html += `</div>${_expHtml}</div>`;
     });
     html += `</div>
         <div class="wr-actions">
@@ -7281,6 +7454,18 @@ function confirmWrongReviewed(){
 /* ═══════════════════════════════════════════
    QUIZ LOGIC
 ═══════════════════════════════════════════ */
+function _renderPracticeExplanation(blockEl, q){
+    if(!blockEl || !q) return;
+    blockEl.querySelector('.pq-explanation')?.remove();
+    const expTxt = fixLatexQuirks((q.giaiThich || q.giaithich || q.explain || '').toString().trim());
+    if(!expTxt) return;
+    const box = document.createElement('div');
+    box.className = 'pq-explanation';
+    box.innerHTML = `<div class="pq-exp-title"><i class="fa-solid fa-lightbulb"></i> Lời giải chi tiết</div>${pqSafe(expTxt)}`;
+    blockEl.appendChild(box);
+    renderMath(box);
+}
+
 function checkPractice(key,force){
     clearQuizTimer();
     if(typeof window._triggerTrialStart === 'function'){
@@ -7372,6 +7557,7 @@ function checkPractice(key,force){
     // để nhắc ôn trước khi sang bài tiếp — xem goNextLessonWithReview().
     if(wrongThisAttempt.length) addWrongQIndices(_lessonCurrentKey, wrongThisAttempt);
     if(answered<qs.length && !force){ toast('<i class="fa-solid fa-triangle-exclamation"></i> Hãy trả lời đủ các câu nhé!','err'); return; }
+    qs.forEach((q,qi)=>_renderPracticeExplanation(document.getElementById(`pq-${qi}`),q));
     clearQuizProgress(_lessonCurrentKey);
     // Đã kiểm tra xong (dù đúng hay sai) → mở khoá Video chữa bài luyện tập cho bài này.
     // (Không gọi toast() ở đây — dồn hết thông báo vào 1 toast cuối cùng bên dưới vì
@@ -7461,6 +7647,7 @@ function resetPractice(){
     document.querySelectorAll('.pq-tf-row input[type=radio]').forEach(r=>r.checked=false);
     document.querySelectorAll('.pq-short-input').forEach(i=>{ i.value=''; i.classList.remove('result-correct','result-wrong'); });
     document.querySelectorAll('.pq-short-answer-hint').forEach(h=>h.remove());
+    document.querySelectorAll('.pq-explanation').forEach(ex=>ex.remove());
     const s=document.getElementById('quiz-score'); if(s) s.style.display='none';
     const b=document.getElementById('quiz-unlock-banner'); if(b) b.remove();
     const w=document.getElementById('quiz-warn'); if(w) w.remove();
