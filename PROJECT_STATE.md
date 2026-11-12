@@ -1,3 +1,10 @@
+## Bàn giao gần nhất (12/11/2026 20:30)
+- **Triển khai hợp nhất Production (GAS `v162` + Student + Admin)**:
+  - **Apps Script (`edu-portal-console/src/Mã.js` @ `v162`)**: đã push, version `162` và deploy lên endpoint production (23 cột `NganHangCauHoi` thêm `tnType` & `subTopic`, `importnganhang` idempotent upsert, `updatenganhang` & `bulksetbainganhang` giữ `tnType`/`subTopic`).
+  - **Admin (`edu-portal-console`, nhánh `feat/admin-index-dashboard` → merge `main`)**: giữ nguyên hệ **16 Chủ đề lớn (2025–2026) `CD01..CD16`**, bốc **18 câu chuẩn Bộ (`official_18`)**, tag bài học gỡ từng chip (`×` / `Chỉ giữ bài đầu`), lưu **0ms tức thì** (`_bgBankSyncQueue`), đã gộp toàn bộ **226 câu chỉnh tay** của Thầy vào `APPROVED_QUESTION_OVERRIDES` (xác minh parity 0 diff trên toàn bộ `2.584` câu: `1.304 TN Lý thuyết`, `1.280 TN Tính toán`), kết hợp đầy đủ tính năng **6 Chủ đề Đúng/Sai Chương 1 (`DS-C1.1..DS-C1.6`)**, preview SVG `VLXTModels` + KaTeX (`ignoredTags` chứa `svg`) và xuất Word `.docx` kèm PNG SVG/bảng/lời giải.
+  - **Student (`edu-portal-lms`, cherry-pick lên `main` `d86d447`)**: hợp nhất `data/mo-hinh-thuc-te-models.js`, `data/batches/100-mohinh-c1-ds.json`, `prototype-100-mo-hinh-thuc-te.html`, `baihoc.html` và `thithu.html` (giữ nguyên `phong-thi-thu.html` và theme sáng CBT).
+  - **Rollback tags**: đã gắn tag dự phòng trên cả 2 repo trước khi merge `main`.
+
 ## Bàn giao gần nhất (12/11/2026 10:18)
 - **Nhánh feature (chưa merge `main`, chưa push, chưa đụng dữ liệu production)**:
   - **Student (`_worktree_c1_ds`)**: nhánh `antigravity/20261112-c1-mo-hinh-ds` (tách từ `a8deed3`)
