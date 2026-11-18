@@ -1,3 +1,9 @@
+## Bàn giao gần nhất (18/11/2026 16:01)
+- **Tinh chỉnh thanh điều khiển Sân khấu 60 FPS (`danh-gia-nang-luc.html`)**:
+  - Gỡ bỏ hoàn toàn 3 nút tốc độ `0.5x`, `1x`, `2x` ở cả thanh điều khiển chính lẫn modal `Phóng to Lab`, bỏ hậu tố `· 1x` ở bộ đếm `t = ...s`, cập nhật mô tả `#start-exam-modal`.
+  - Đổi nhãn nút & `alt` từ `"Ảnh đề gốc"` sang **`"Ảnh thực tế"`**.
+  - Kiểm định: `6/6` suite Node.js LMS PASS 100%, Playwright Retina `2x` xác nhận thanh nút chỉ còn `['Tạm dừng', 'Đặt lại', 'Ảnh thực tế', 'Phóng to Lab']` và `CLOCK: t = ...s`, soi trực quan ảnh PNG.
+
 ## Bàn giao gần nhất (18/11/2026 15:55)
 - **Tối Ưu Hóa Thị Giác 1-Khung Full-Width & Phím Tắt Thông Minh cho Trang Làm Bài THPTQG (`danh-gia-nang-luc.html`)**:
 - **Mục tiêu (theo góp ý trực tiếp từ ảnh chụp màn hình của Thầy)**:

@@ -2852,9 +2852,6 @@
                 <div style="font-size:15px;font-weight:800;color:#fff" id="wow-fs-title">Mô phỏng thí nghiệm Vật Lý 60 FPS</div>
                 <div class="wow-stage-controls">
                     <button type="button" class="wow-ctrl-btn" id="wow-fs-playpause" onclick="toggleWowPlayPause()"><i class="fa-solid fa-pause"></i> Tạm dừng</button>
-                    <button type="button" class="wow-ctrl-btn" id="wow-fs-s05" onclick="setWowSpeed(0.5)">0.5x</button>
-                    <button type="button" class="wow-ctrl-btn active" id="wow-fs-s1" onclick="setWowSpeed(1)">1x</button>
-                    <button type="button" class="wow-ctrl-btn" id="wow-fs-s2" onclick="setWowSpeed(2)">2x</button>
                     <button type="button" class="wow-ctrl-btn" onclick="resetWowCanvas()"><i class="fa-solid fa-rotate-left"></i> Đặt lại</button>
                     <button type="button" class="wow-ctrl-btn" style="border-color:#ef4444;color:#fca5a5" onclick="closeWowFullscreen()"><i class="fa-solid fa-xmark"></i> Đóng</button>
                 </div>
@@ -2897,7 +2894,7 @@
                 </div>
                 <div style="display:flex;align-items:center;gap:10px;">
                     <i class="fa-solid fa-cubes" style="color:#10b981;width:18px;"></i>
-                    <span>Trải nghiệm <strong id="start-modal-models">8 mô hình Vật Lý 60 FPS</strong>: Tạm dừng, Tua 0.5x/2x, Phóng to toàn màn hình.</span>
+                    <span>Trải nghiệm <strong id="start-modal-models">8 mô hình Vật Lý 60 FPS</strong>: Tạm dừng, Xem ảnh thực tế, Phóng to toàn màn hình.</span>
                 </div>
                 <div style="display:flex;align-items:center;gap:10px;">
                     <i class="fa-solid fa-graduation-cap" style="color:#fbbf24;width:18px;"></i>
@@ -3203,7 +3200,7 @@
                 }
             }
             var timeLabel = document.getElementById('wow-sim-clock');
-            if (timeLabel) timeLabel.textContent = 't = ' + wowState.simTime.toFixed(1) + 's · ' + wowState.speed + 'x';
+            if (timeLabel) timeLabel.textContent = 't = ' + wowState.simTime.toFixed(1) + 's';
             wowState.rafId = requestAnimationFrame(wowAnimationTick);
         }
 
@@ -3259,7 +3256,7 @@
             var wrap = document.getElementById('wow-stage-media-wrap');
             if (wrap) {
                 if (wowState.showOriginImg) {
-                    wrap.innerHTML = '<img class="wow-stage-origin-img" src="' + escHtml(wowState.originImgUrl) + '" alt="Hình gốc đề thi">';
+                    wrap.innerHTML = '<img class="wow-stage-origin-img" src="' + escHtml(wowState.originImgUrl) + '" alt="Ảnh thực tế">';
                 } else {
                     wrap.innerHTML = '<canvas id="wow-main-canvas" width="1560" height="610"></canvas>';
                     var drawFn = getCanvasDrawFn(wowState.modelId);
@@ -3748,16 +3745,13 @@
             var drawFn = getCanvasDrawFn(mid);
             if (mid && drawFn) {
                 var origBtn = img
-                    ? '<button type="button" class="wow-ctrl-btn" id="wow-btn-origin-img" onclick="toggleWowOriginImage()"><i class="fa-regular fa-image"></i> Ảnh đề gốc</button>'
+                    ? '<button type="button" class="wow-ctrl-btn" id="wow-btn-origin-img" onclick="toggleWowOriginImage()"><i class="fa-regular fa-image"></i> Ảnh thực tế</button>'
                     : '';
                 return '<div class="wow-stage-card" id="wow-canvas-stage">' +
                     '<div class="wow-stage-head">' +
                         '<span class="wow-stage-badge"><i class="fa-solid fa-cubes"></i> 60 FPS · MÔ PHỎNG TƯƠNG TÁC (' + escHtml(mid) + ')</span>' +
                         '<div class="wow-stage-controls">' +
                             '<button type="button" class="wow-ctrl-btn" id="wow-btn-playpause" onclick="toggleWowPlayPause()"><i class="fa-solid fa-pause"></i> Tạm dừng</button>' +
-                            '<button type="button" class="wow-ctrl-btn" id="wow-speed-05" onclick="setWowSpeed(0.5)">0.5x</button>' +
-                            '<button type="button" class="wow-ctrl-btn active" id="wow-speed-1" onclick="setWowSpeed(1)">1x</button>' +
-                            '<button type="button" class="wow-ctrl-btn" id="wow-speed-2" onclick="setWowSpeed(2)">2x</button>' +
                             '<button type="button" class="wow-ctrl-btn" id="wow-btn-reset" onclick="resetWowCanvas()"><i class="fa-solid fa-rotate-left"></i> Đặt lại</button>' +
                             origBtn +
                             '<button type="button" class="wow-ctrl-btn" id="wow-btn-fullscreen" style="border-color:#38bdf8;color:#38bdf8" onclick="openWowFullscreen()"><i class="fa-solid fa-expand"></i> Phóng to Lab</button>' +
@@ -3768,7 +3762,7 @@
                     '</div>' +
                     '<div class="wow-stage-foot">' +
                         '<span><i class="fa-solid fa-flask" style="color:#38bdf8"></i> ' + escHtml(getModelCaptionText(mid)) + '</span>' +
-                        '<span id="wow-sim-clock" style="font-family:var(--font-mono);color:#38bdf8;font-weight:700">t = 0.0s · 1x</span>' +
+                        '<span id="wow-sim-clock" style="font-family:var(--font-mono);color:#38bdf8;font-weight:700">t = 0.0s</span>' +
                     '</div>' +
                 '</div>';
             }
