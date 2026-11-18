@@ -5,12 +5,18 @@
 - **File đã sửa (15 file)**:
   - 14 trang HTML có thanh điều hướng (`index.html`, `danh-gia-nang-luc.html`, `baihoc.html`, `phong-thi-thu.html`, `huongdan.html`, `goi-hoc.html`, `hoso.html`, `hoso-hud.html`, `live-record.html`, `danhsach-ly12.html`, `dau-thuong-hud.html`, `dau-thuong.html`, `dua-top.html`, `solo.html`) và `auth.js`.
 - **Hành vi mới**:
-  1. **Bỏ hẳn mục Live Class** khỏi toàn bộ thanh điều hướng Desktop, Mobile Drawer (`auth.js` + 7 drawer nội tuyến), sao 3D (`lbl-1`/`hit-1`) trên `index.html`, và bước/liên kết Live trong `huongdan.html`.
-  2. **Tạm thời ẩn trên web**: Phòng Kiểm Tra (`danhsach-ly12.html`), Đấu Thường (`dau-thuong-hud.html` / `dau-thuong.html`), Đấu Hạng (`dua-top.html`) và Solo 1-1 (`solo.html`) khỏi toàn bộ Desktop Navbar, Mobile Drawer, và sao 3D `index.html` (`lbl-4`, `lbl-5`). Các file trang nguồn vẫn được giữ nguyên trong repo để tiếp tục phát triển sau.
-  3. **Đổi dropdown "Đấu Trường" thành link trực tiếp `Phòng Thi Thử`** (bỏ chữ `(Chuẩn Bộ)`), trỏ thẳng tới `phong-thi-thu.html`.
-  4. **Thứ tự điều hướng mới thống nhất toàn bộ Desktop & Mobile**:
+  1. **Bỏ hẳn mục Live Class** khỏi toàn bộ thanh điều hướng Desktop, Mobile Drawer (`auth.js` + 7 drawer nội tuyến), và bước/liên kết Live trong `huongdan.html`.
+  2. **Tạm thời ẩn trên web**: Phòng Kiểm Tra (`danhsach-ly12.html`), Đấu Thường (`dau-thuong-hud.html` / `dau-thuong.html`), Đấu Hạng (`dua-top.html`) và Solo 1-1 (`solo.html`) khỏi toàn bộ Desktop Navbar và Mobile Drawer. Các file trang nguồn vẫn được giữ nguyên trong repo để tiếp tục phát triển sau.
+  3. **Lấp đầy bản đồ sao 3D trên `index.html`** (không để trống chòm Bảo Bình): thay 3 ngôi sao cũ (`Live & Xem Lại`, `Đấu Thường`, `Đấu Hạng`) bằng 3 mục hoạt động còn lại:
+     - `SADALMELIK` → **Gói Pro** (`goi-hoc.html`)
+     - `SADACHBIA` → **Phòng Thi Thử** (`phong-thi-thu.html`, giữ nguyên)
+     - `SHATABHISHA` → **Hướng Dẫn** (`huongdan.html`)
+     - `SKAT` → **Hồ Sơ Cá Nhân** (`hoso.html`)
+     - Kết hợp cùng **SINGULARITY** (`Test Điểm Thi THPT`) và **PULSAR** (`Học Thử Miễn Phí`) giữ đủ 6 thiên thể cân đối.
+  4. **Đổi dropdown "Đấu Trường" thành link trực tiếp `Phòng Thi Thử`** (bỏ chữ `(Chuẩn Bộ)`), trỏ thẳng tới `phong-thi-thu.html`.
+  5. **Thứ tự điều hướng mới thống nhất toàn bộ Desktop & Mobile**:
      `🎯 Đánh Giá Năng Lực` → `Khóa Học` → `Phòng Thi Thử` → `Hướng Dẫn` → `Gói Pro` (đặt cuối cùng).
-  5. **Chống cache trình duyệt**: nâng query param `auth.js?v=20261118a` trên cả 14 trang.
+  6. **Chống cache trình duyệt**: nâng query param `auth.js?v=20261118a` trên cả 14 trang.
 - **Kiểm tra đã chạy**:
   - Script kiểm định tự động 14 file HTML + `auth.js` (thẻ đóng `</html>`, đúng 5 mục, đúng thứ tự, 0 dropdown/mục ẩn còn sót): **PASS 100%**.
   - `node --check auth.js` & `git diff --check`: **PASS (0 lỗi)**.

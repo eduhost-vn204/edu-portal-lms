@@ -1885,9 +1885,9 @@ svg.logo-atom-icon,
       <span class="star-code">Sadalsuud</span>
       <span class="star-vn">Khóa Học</span>
     </div>
-    <div class="star-label" id="lbl-1" style="display:none !important">
+    <div class="star-label" id="lbl-1">
       <span class="star-code">Sadalmelik</span>
-      <span class="star-vn">Live &amp; Xem Lại</span>
+      <span class="star-vn">Gói Pro</span>
     </div>
     <div class="star-label" id="lbl-2">
       <span class="star-code">Sadachbia</span>
@@ -1897,22 +1897,22 @@ svg.logo-atom-icon,
       <span class="star-code">Albali</span>
       <span class="star-vn">Đánh Giá Năng Lực</span>
     </div>
-    <div class="star-label" id="lbl-4" style="display:none !important">
+    <div class="star-label" id="lbl-4">
       <span class="star-code">Shatabhisha</span>
-      <span class="star-vn">Đấu Thường</span>
+      <span class="star-vn">Hướng Dẫn</span>
     </div>
-    <div class="star-label" id="lbl-5" style="display:none !important">
+    <div class="star-label" id="lbl-5">
       <span class="star-code">Skat</span>
-      <span class="star-vn">Đấu Hạng</span>
+      <span class="star-vn">Hồ Sơ Cá Nhân</span>
     </div>
 
     <!-- HITBOX TƯƠNG TÁC -->
     <div class="star-hitbox" id="hit-0" data-idx="0" style="display:none !important; pointer-events:none !important"></div>
-    <div class="star-hitbox" id="hit-1" data-idx="1" style="display:none !important; pointer-events:none !important"></div>
+    <div class="star-hitbox" id="hit-1" data-idx="1" title="Gói Pro (Sadalmelik)"></div>
     <div class="star-hitbox" id="hit-2" data-idx="2" title="Phòng Thi Thử (Sadachbia)"></div>
     <div class="star-hitbox" id="hit-3" data-idx="3" style="display:none !important; pointer-events:none !important"></div>
-    <div class="star-hitbox" id="hit-4" data-idx="4" style="display:none !important; pointer-events:none !important"></div>
-    <div class="star-hitbox" id="hit-5" data-idx="5" style="display:none !important; pointer-events:none !important"></div>
+    <div class="star-hitbox" id="hit-4" data-idx="4" title="Hướng Dẫn (Shatabhisha)"></div>
+    <div class="star-hitbox" id="hit-5" data-idx="5" title="Hồ Sơ Cá Nhân (Skat)"></div>
 
     <!-- HỐ ĐEN GARGANTUA (BÊN TRÁI): TEST ĐIỂM THI THPT -->
     <div class="star-label celestial-label" id="lbl-blackhole">
@@ -2782,11 +2782,11 @@ scene.add(dustPoints);
 var UNIFIED_STAR_COLOR = 0xa5f3fc;
 var aquariusTabStars = [
   { idx:0, starCode:'SADALSUUD',   tabName:'Khóa Học',          link:'baihoc.html',            x: 245, y:  96, z:-595, color:UNIFIED_STAR_COLOR, planetColor:0x0284c7, atmoColor:0x38bdf8, baseScale:15.5, isConstellationNodeOnly:true },
-  { idx:1, starCode:'SADALMELIK',  tabName:'Live & Xem Lại',    link:'live-record.html',       x:-215, y:  74, z:-580, color:UNIFIED_STAR_COLOR, planetColor:0xd97706, atmoColor:0xfbbf24, baseScale:16.0, isConstellationNodeOnly:true },
+  { idx:1, starCode:'SADALMELIK',  tabName:'Gói Pro',           link:'goi-hoc.html',           x:-215, y:  74, z:-580, color:UNIFIED_STAR_COLOR, planetColor:0xd97706, atmoColor:0xfbbf24, baseScale:35.0 },
   { idx:2, starCode:'SADACHBIA',   tabName:'Phòng Thi Thử',     link:'phong-thi-thu.html',     x: 138, y:  34, z:-590, color:UNIFIED_STAR_COLOR, planetColor:0x9333ea, atmoColor:0xe879f9, baseScale:35.0 },
   { idx:3, starCode:'ALBALI',      tabName:'Đánh Giá Năng Lực', link:'danh-gia-nang-luc.html', x: -32, y: 112, z:-590, color:UNIFIED_STAR_COLOR, planetColor:0x0ea5e9, atmoColor:0x7dd3fc, baseScale:16.0, isConstellationNodeOnly:true },
-  { idx:4, starCode:'SHATABHISHA', tabName:'Đấu Thường',        link:'dau-thuong-hud.html',    x:-135, y: -72, z:-580, color:UNIFIED_STAR_COLOR, planetColor:0x059669, atmoColor:0x34d399, baseScale:16.0, isConstellationNodeOnly:true },
-  { idx:5, starCode:'SKAT',        tabName:'Đấu Hạng',          link:'dua-top.html',           x: 205, y: -68, z:-600, color:UNIFIED_STAR_COLOR, planetColor:0xea580c, atmoColor:0xf97316, baseScale:16.0, isConstellationNodeOnly:true }
+  { idx:4, starCode:'SHATABHISHA', tabName:'Hướng Dẫn',         link:'huongdan.html',          x:-135, y: -72, z:-580, color:UNIFIED_STAR_COLOR, planetColor:0x059669, atmoColor:0x34d399, baseScale:35.0 },
+  { idx:5, starCode:'SKAT',        tabName:'Hồ Sơ Cá Nhân',     link:'hoso.html',              x: 205, y: -68, z:-600, color:UNIFIED_STAR_COLOR, planetColor:0xea580c, atmoColor:0xf97316, baseScale:35.0 }
 ];
 
 var aquariusSecondaryStars = [
@@ -4582,7 +4582,7 @@ function prefetchDestination(url) {
     linkEl.rel = 'prefetch';
     linkEl.href = url;
     document.head.appendChild(linkEl);
-    if (url.indexOf('baihoc') !== -1 || url.indexOf('live-record') !== -1) {
+    if (url.indexOf('baihoc') !== -1) {
       ['data/baihoc.json', 'data/khoaconfig.json'].forEach(function(dUrl) {
         if (!_prefetchedUrls[dUrl]) {
           _prefetchedUrls[dUrl] = true;
@@ -5289,10 +5289,10 @@ if(location.hash) {
     }, 350);
   } else {
     var aliasMap = {
-      'live': 1, 'xemlai': 1, 'liverecord': 1, 'sadalmelik': 1,
+      'goipro': 1, 'goi-pro': 1, 'goihoc': 1, 'goi-hoc': 1, 'sadalmelik': 1,
       'thithu': 2, 'thi-thu': 2, 'phongthithu': 2, 'sadachbia': 2,
-      'dauthuong': 4, 'dau-thuong': 4, 'shatabhisha': 4,
-      'duatop': 5, 'dua-top': 5, 'dauthang': 5, 'skat': 5
+      'huongdan': 4, 'huong-dan': 4, 'shatabhisha': 4,
+      'hoso': 5, 'ho-so': 5, 'profile': 5, 'skat': 5
     };
     var targetIdx = aliasMap[rawHash];
     if(targetIdx !== undefined && tabMeshes[targetIdx]) {
