@@ -1,3 +1,8 @@
+## Bàn giao gần nhất (18/11/2026 16:09)
+- **Chuyển thanh điều khiển Mô phỏng 60 FPS xuống phía dưới mô hình (`danh-gia-nang-luc.html`)**:
+  - Di chuyển `.wow-stage-head` (thêm class `.wow-stage-bottom-bar` với `border-top: 1px solid #1e293b; border-bottom: none`) xuống ngay dưới `#wow-stage-media-wrap` cho cả mô phỏng Canvas 60 FPS và sơ đồ SVG dự phòng, giúp học sinh đọc đề xong nhìn thẳng vào mô hình mà không bị phân tán.
+  - Kiểm định: `6/6` suite Node.js LMS PASS 100%, Playwright Retina `2x` xác nhận `Media: 295.6 -> 506.8`, `ControlBar: 506.8 -> 578.4`, `TotalBottom: 674.8 / 730` và soi trực quan ảnh PNG.
+
 ## Bàn giao gần nhất (18/11/2026 16:01)
 - **Tinh chỉnh thanh điều khiển Sân khấu 60 FPS (`danh-gia-nang-luc.html`)**:
   - Gỡ bỏ hoàn toàn 3 nút tốc độ `0.5x`, `1x`, `2x` ở cả thanh điều khiển chính lẫn modal `Phóng to Lab`, bỏ hậu tố `· 1x` ở bộ đếm `t = ...s`, cập nhật mô tả `#start-exam-modal`.
