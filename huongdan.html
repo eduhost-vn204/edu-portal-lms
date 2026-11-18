@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="cache.js?v=5"></script>
-    <script src="auth.js?v=20261110s"></script>
+    <script src="auth.js?v=20261118a"></script>
   <script src="thongbao.js?v=2"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
@@ -400,19 +400,9 @@ svg.logo-atom-icon,
       <nav class="nav-menu-links">
         <a href="danh-gia-nang-luc.html">🎯 Đánh Giá Năng Lực</a>
         <a href="baihoc.html">Khóa Học</a>
-        <a href="goi-hoc.html" class="nav-item-pro">Gói Pro <span class="nav-pro-badge">50k</span></a>
-        <a href="live-record.html"><span class="nav-live-dot"></span> Live Class</a>
-        <div class="nav-dropdown">
-          <button type="button" class="nav-dropdown-btn">Đấu Trường <i class="fa-solid fa-chevron-down" style="font-size:9px;opacity:0.6"></i></button>
-          <div class="nav-dropdown-content">
-            <a href="phong-thi-thu.html"><i class="fa-solid fa-clipboard-check" style="color:#00f0ff;width:18px"></i> Phòng Thi Thử (Chuẩn Bộ)</a>
-            <a href="danhsach-ly12.html"><i class="fa-solid fa-file-pen" style="color:#34d399;width:18px"></i> Phòng Kiểm Tra (Theo bài)</a>
-            <a href="dau-thuong-hud.html"><i class="fa-solid fa-khanda" style="color:#38bdf8;width:18px"></i> Đấu Thường (PvP)</a>
-            <a href="dua-top.html"><i class="fa-solid fa-crown" style="color:#fbbf24;width:18px"></i> Đấu Hạng (Đua Top)</a>
-            <a href="solo.html"><i class="fa-solid fa-crosshairs" style="color:#f472b6;width:18px"></i> Solo (1vs1)</a>
-          </div>
-        </div>
+        <a href="phong-thi-thu.html">Phòng Thi Thử</a>
         <a href="huongdan.html" class="active">Hướng Dẫn</a>
+        <a href="goi-hoc.html" class="nav-item-pro">Gói Pro <span class="nav-pro-badge">50k</span></a>
       </nav>
     </div>
 
@@ -523,36 +513,11 @@ svg.logo-atom-icon,
         </div>
     </div>
 
-    <!-- BƯỚC 4: Live -->
-    <div class="step-section">
-        <div class="step-section-title">
-            <div class="icon" style="background:rgba(220,38,38,.1)">📡</div>
-            Bước 4: Tham gia buổi Live
-        </div>
-        <div class="step-list">
-            <div class="step-item">
-                <div class="step-num">1</div>
-                <div class="step-body">
-                    <div class="step-title">Kiểm tra Lịch Live</div>
-                    <div class="step-desc">Vào mục <b>Lịch Live</b> để xem lịch dạy trực tiếp của thầy. Thầy cũng sẽ thông báo qua nhóm Zalo.</div>
-                </div>
-            </div>
-            <div class="step-item">
-                <div class="step-num">2</div>
-                <div class="step-body">
-                    <div class="step-title">Vào trang Đang Live</div>
-                    <div class="step-desc">Khi thầy bắt đầu live, vào mục <b>Đang Live</b> để xem video trực tiếp và nhắn bình luận trong khung chat bên phải.</div>
-                    <div class="step-tip"><i class="fa-solid fa-heart" style="color:#e53e3e"></i> Nhấn tim để cổ vũ thầy!</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- BƯỚC 5: Hồ sơ & LP -->
+    <!-- BƯỚC 4: Hồ sơ & LP -->
     <div class="step-section">
         <div class="step-section-title">
             <div class="icon" style="background:rgba(124,58,237,.1)">⚡</div>
-            Bước 5: Theo dõi tiến độ & LP
+            Bước 4: Theo dõi tiến độ & LP
         </div>
         <div class="step-list">
             <div class="step-item">
@@ -610,30 +575,30 @@ svg.logo-atom-icon,
             Truy cập nhanh
         </div>
         <div class="links-grid">
-            <a href="login.html" class="link-card">
-                <div class="lc-icon">👤</div>
-                <div class="lc-name">Đăng nhập</div>
-                <div class="lc-desc">Tạo tài khoản học</div>
+            <a href="danh-gia-nang-luc.html" class="link-card">
+                <div class="lc-icon">🎯</div>
+                <div class="lc-name">Đánh Giá Năng Lực</div>
+                <div class="lc-desc">Khảo sát điểm thi THPT</div>
             </a>
             <a href="baihoc.html" class="link-card">
                 <div class="lc-icon">📚</div>
                 <div class="lc-name">Khóa Học</div>
                 <div class="lc-desc">Video bài giảng</div>
             </a>
-            <a href="danhsach-ly12.html" class="link-card">
+            <a href="phong-thi-thu.html" class="link-card">
                 <div class="lc-icon">📝</div>
-                <div class="lc-name">Đề Thi</div>
-                <div class="lc-desc">Luyện đề trắc nghiệm</div>
+                <div class="lc-name">Phòng Thi Thử</div>
+                <div class="lc-desc">Thi thử trắc nghiệm CBT</div>
             </a>
-            <a href="lichlive.html" class="link-card">
-                <div class="lc-icon">📡</div>
-                <div class="lc-name">Lịch Live</div>
-                <div class="lc-desc">Lịch dạy trực tiếp</div>
+            <a href="goi-hoc.html" class="link-card">
+                <div class="lc-icon">👑</div>
+                <div class="lc-name">Gói Pro</div>
+                <div class="lc-desc">Mở khóa toàn bộ lộ trình</div>
             </a>
-            <a href="live.html" class="link-card">
-                <div class="lc-icon">🔴</div>
-                <div class="lc-name">Đang Live</div>
-                <div class="lc-desc">Vào xem trực tiếp</div>
+            <a href="login.html" class="link-card">
+                <div class="lc-icon">👤</div>
+                <div class="lc-name">Đăng nhập</div>
+                <div class="lc-desc">Tạo tài khoản học</div>
             </a>
             <a href="hoso.html" class="link-card">
                 <div class="lc-icon">⚡</div>

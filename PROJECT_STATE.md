@@ -1,3 +1,26 @@
+## Bàn giao gần nhất (18/11/2026 15:56)
+- **Tinh Gọn Thanh Điều Hướng Toàn Hệ Thống (Bỏ Live Class, Tạm Ẩn Phòng Kiểm Tra/Đấu Thường/Đấu Hạng/Solo 1-1, Đổi Tab Thành Phòng Thi Thử & Sắp Xếp Lại Thứ Tự)**:
+- **Nhánh feature (chưa merge `main`, chờ Thầy duyệt trước khi đẩy production)**:
+  - Nhánh `feat/nav-cleanup-20261118` (tách sạch từ `origin/main` @ `9109e22`, worktree `C:/Users/Xuan Truong/.gemini/antigravity/worktrees/nav_cleanup_20261118`).
+- **File đã sửa (15 file)**:
+  - 14 trang HTML có thanh điều hướng (`index.html`, `danh-gia-nang-luc.html`, `baihoc.html`, `phong-thi-thu.html`, `huongdan.html`, `goi-hoc.html`, `hoso.html`, `hoso-hud.html`, `live-record.html`, `danhsach-ly12.html`, `dau-thuong-hud.html`, `dau-thuong.html`, `dua-top.html`, `solo.html`) và `auth.js`.
+- **Hành vi mới**:
+  1. **Bỏ hẳn mục Live Class** khỏi toàn bộ thanh điều hướng Desktop, Mobile Drawer (`auth.js` + 7 drawer nội tuyến), sao 3D (`lbl-1`/`hit-1`) trên `index.html`, và bước/liên kết Live trong `huongdan.html`.
+  2. **Tạm thời ẩn trên web**: Phòng Kiểm Tra (`danhsach-ly12.html`), Đấu Thường (`dau-thuong-hud.html` / `dau-thuong.html`), Đấu Hạng (`dua-top.html`) và Solo 1-1 (`solo.html`) khỏi toàn bộ Desktop Navbar, Mobile Drawer, và sao 3D `index.html` (`lbl-4`, `lbl-5`). Các file trang nguồn vẫn được giữ nguyên trong repo để tiếp tục phát triển sau.
+  3. **Đổi dropdown "Đấu Trường" thành link trực tiếp `Phòng Thi Thử`** (bỏ chữ `(Chuẩn Bộ)`), trỏ thẳng tới `phong-thi-thu.html`.
+  4. **Thứ tự điều hướng mới thống nhất toàn bộ Desktop & Mobile**:
+     `🎯 Đánh Giá Năng Lực` → `Khóa Học` → `Phòng Thi Thử` → `Hướng Dẫn` → `Gói Pro` (đặt cuối cùng).
+  5. **Chống cache trình duyệt**: nâng query param `auth.js?v=20261118a` trên cả 14 trang.
+- **Kiểm tra đã chạy**:
+  - Script kiểm định tự động 14 file HTML + `auth.js` (thẻ đóng `</html>`, đúng 5 mục, đúng thứ tự, 0 dropdown/mục ẩn còn sót): **PASS 100%**.
+  - `node --check auth.js` & `git diff --check`: **PASS (0 lỗi)**.
+  - `node test_cro_funnel.mjs` (`8/8`), `node test_smart_marketing_popup.mjs` (`100%`), `node scripts/test-live-record-guest.mjs` (`11/11`): **PASS 100%**.
+  - Playwright trực quan Desktop (`1440×900` trên `baihoc.html`, `phong-thi-thu.html`, `danh-gia-nang-luc.html`) & Mobile Drawer (`390×844` qua `auth.js`): **PASS**, đã kiểm tra ảnh chụp xác nhận giao diện phẳng sắc nét và giữ nguyên hoàn toàn giao diện CBT sáng của `phong-thi-thu.html`.
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên hoàn toàn giao diện CBT sáng của `phong-thi-thu.html`, không xóa file `danhsach-ly12.html` / `dau-thuong*.html` / `dua-top.html` / `solo.html` / `live-record.html`, giữ nguyên `.nav-item-pro` để `auth.js` tự hiển thị nhãn `ĐANG BẬT` cho tài khoản Pro.
+- **Việc còn lại (chờ Thầy xác nhận)**:
+  - Thầy xác nhận để merge nhánh `feat/nav-cleanup-20261118` vào `main` và push lên GitHub Pages (`vatlyxuantruong.io.vn`).
+
 ## Bàn giao gần nhất (18/11/2026 14:35)
 - **Nâng Cấp Bài Test Điểm Thi THPT Quốc Gia 2026 (`danh-gia-nang-luc.html`) Thành Kho 50 Đề Chuẩn Bộ 28 Câu · Tích Hợp Mô Phỏng Vật Lý 60 FPS Tương tác Trực Tiếp**:
 - **Mục tiêu**:
