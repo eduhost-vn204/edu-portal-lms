@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hồ Sơ Học Sinh | Vật Lý Xuân Trường</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
   <script defer src="auth.js?v=20261118a"></script>
   <script src="xephang-fx.js?v=1"></script>
   <script defer src="thongbao.js?v=2"></script>
@@ -13,6 +16,8 @@
   <script src="device-id.js?v=1"></script>
   <script src="ho-tro-chat.js?v=1"></script>
   <script src="ban-be.js?v=4"></script>
+  <script src="wrong-bank.js?v=20261118a"></script>
+  <script src="wrong-bank-ui.js?v=20261118a"></script>
   <style>
     /* ─── TYPOGRAPHY TOÀN CỤC CHUẨN EDTECH ─── */
     button, input, select, textarea {
@@ -113,10 +118,10 @@
       .rank-badge { margin-left: 0; width: 100%; align-items: flex-start; flex-direction: row; align-items: center; gap: 12px; }
     }
 
-    /* ── STATS ROW HUD (3 Ô CHỈ SỐ NHANH) ── */
+    /* ── STATS ROW HUD (4 Ô CHỈ SỐ NHANH 2x2 CÂN ĐỐI) ── */
     .stats-row {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 12px;
       margin-bottom: 18px;
     }
@@ -124,7 +129,7 @@
       background: var(--bg-card);
       border: 1.5px solid var(--border-neon);
       border-radius: 18px;
-      padding: 16px 12px;
+      padding: 15px 12px;
       text-align: center;
       box-shadow: 0 8px 24px rgba(0,0,0,0.4);
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -133,14 +138,16 @@
       border-color: rgba(0, 240, 255, 0.45);
       transform: translateY(-2px);
     }
-    .stat-val { font-size: 26px; font-weight: 900; letter-spacing: -0.02em; }
+    .stat-card.is-clickable { cursor: pointer; }
+    .stat-card.is-clickable:hover { border-color: rgba(248, 113, 113, 0.65); }
+    .stat-val { font-size: 25px; font-weight: 900; letter-spacing: -0.02em; }
     .stat-val.lp  { color: #00f0ff;  }
     .stat-val.done { color: #10b981;  }
     .stat-val.score { color: #fbbf24;  }
+    .stat-val.wrong { color: #f87171; }
     .stat-lbl { font-size: 12px; color: var(--text-sub); margin-top: 5px; font-weight: 600; }
     @media (max-width: 480px) {
       .stats-row { grid-template-columns: 1fr 1fr; }
-      .stat-card:last-child { grid-column: span 2; }
     }
 
     /* ── THẺ TIẾN ĐỘ 4 CHƯƠNG VSTEP-O (GRID 2x2 CÂN ĐỐI, KHÔNG BAO GIỜ BỊ KHUẤT) ── */
@@ -761,6 +768,15 @@ function formatDate(d) {
 // và ném lỗi "Cannot access '_lbLastUser' before initialization", làm hỏng toàn bộ script
 // phía sau khiến trang hồ sơ hiện đen thui không có gì (bug từ lần fix 14/8).
 let _lbLastUser = null;
+let _activeProfileTab = (function() {
+  try {
+    const h = (window.location.hash || '').replace('#', '').trim();
+    const p = new URLSearchParams(window.location.search).get('tab') || '';
+    const pick = p || h;
+    if (['tiendo', 'causai', 'diem', 'lb', 'banbe', 'goihoc'].includes(pick)) return pick;
+  } catch (e) {}
+  return 'tiendo';
+})();
 
 // Require auth
 const user = (function() {
@@ -769,6 +785,13 @@ const user = (function() {
 
 if (!user) {
   window.location.href = 'login.html?from=hoso.html';
+} else if (typeof VlxtWrongBank !== 'undefined') {
+  try {
+    const _initWbAcc = VlxtWrongBank.normalizeAccountKey(user.sdt || user.email || '');
+    if (_initWbAcc !== 'guest') {
+      VlxtWrongBank.migrateGuestToAccount(_initWbAcc);
+    }
+  } catch (e) {}
 }
 
 var _latestPaymentCheck = { ok: false, paid: false };
@@ -998,7 +1021,20 @@ document.getElementById('loading').style.display = 'none';
 document.getElementById('content').style.display = 'block';
 renderPage({ ok: true, user: user, scores: [], tiendo: [] }, { ok: false, data: [] }, { ok: false, data: null }, []);
 renderRadarChart();
-renderRadarChart();
+
+// Đồng bộ nền Sổ Tay Câu Làm Sai đa thiết bị (fail-silent, không chặn render)
+if (user && typeof VlxtWrongBank !== 'undefined') {
+  try {
+    const _syncWbAcc = VlxtWrongBank.normalizeAccountKey(user.sdt || user.email || '');
+    if (_syncWbAcc !== 'guest') {
+      VlxtWrongBank.syncFromCloud(_syncWbAcc).then(function(res) {
+        if (res && res.changed && typeof vlxtRenderWrongBankTab === 'function') {
+          vlxtRenderWrongBankTab();
+        }
+      }).catch(function() {});
+    }
+  } catch (e) {}
+}
 
 // Sau đó fetch GAS để cập nhật dữ liệu thực (async, không chặn render)
 // Tự động thử POST getprofile (có token), nếu không có token hoặc token lỗi sẽ fallback GET ?type=profile&hs= để lấy chính xác trialExpiry từ sheet TaiKhoan
@@ -1579,6 +1615,12 @@ function renderPage(profile, lb, nvRes, baihocRows) {
   const c1Pct = Math.min(100, Math.round((c1Done / 6) * 100));
   const c2Pct = Math.min(100, Math.round((c2Done / 7) * 100));
   const isPaidUser = (typeof isUserPaidProOrPremium === 'function') ? isUserPaidProOrPremium(u) : (vip.code === 'PRO' || vip.code === 'VIP');
+  const wbAccKey = (typeof VlxtWrongBank !== 'undefined')
+    ? VlxtWrongBank.normalizeAccountKey((u && (u.sdt || u.email)) || (user && (user.sdt || user.email)) || '')
+    : 'guest';
+  const wbStats = (typeof VlxtWrongBank !== 'undefined')
+    ? VlxtWrongBank.getStats(wbAccKey)
+    : { total: 0, needReview: 0, mastered: 0, repeated: 0, masteryPct: 0 };
 
   document.getElementById('content').innerHTML = `
     <!-- VIP Status Banner (Obsidian Neon Glassmorphism Với Nút Xanh Lá Chuẩn VStep-O) -->
@@ -1625,7 +1667,7 @@ function renderPage(profile, lb, nvRes, baihocRows) {
           </div>
         </div>
 
-        <!-- Stats Row HUD (3 Ô Chỉ Số Nhanh) -->
+        <!-- Stats Row HUD (4 Ô Chỉ Số Nhanh 2x2) -->
         <div class="stats-row">
           <div class="stat-card">
             <div class="stat-val lp">${lp}</div>
@@ -1638,6 +1680,10 @@ function renderPage(profile, lb, nvRes, baihocRows) {
           <div class="stat-card">
             <div class="stat-val score">${allScores.length > 0 ? (bestScore % 1 === 0 ? bestScore : bestScore.toFixed(2)) : '—'}</div>
             <div class="stat-lbl">🏅 Điểm cao nhất</div>
+          </div>
+          <div class="stat-card is-clickable" onclick="switchTab('causai');document.getElementById('hoso-tabs-bar')?.scrollIntoView({behavior:'smooth',block:'start'})" title="Bấm để mở Sổ Tay Câu Làm Sai">
+            <div class="stat-val wrong" id="wb-profile-stat-val">${wbStats.needReview}</div>
+            <div class="stat-lbl">❌ Câu sai cần ôn</div>
           </div>
         </div>
 
@@ -1739,9 +1785,10 @@ function renderPage(profile, lb, nvRes, baihocRows) {
       </div>
     </div>
 
-    <!-- Tabs Chi Tiết VStep-O (Pills Bo Tròn Phát Sáng) -->
-    <div class="tabs-bar">
+    <!-- Tabs Chi Tiết VStep-O -->
+    <div class="tabs-bar" id="hoso-tabs-bar">
       <button class="tab-btn active" onclick="switchTab('tiendo')"><i class="fa-solid fa-book-open"></i> Bài Đã Hoàn Thành (${displayTiendo.length})</button>
+      <button class="tab-btn" onclick="switchTab('causai')"><i class="fa-solid fa-circle-exclamation"></i> Câu Làm Sai <span id="wb-tab-badge-count" style="font-size:11px;font-weight:800;padding:1px 7px;border-radius:999px;background:${wbStats.needReview > 0 ? 'rgba(239,68,68,0.22);color:#fca5a5' : 'rgba(16,185,129,0.22);color:#6ee7b7'}">${wbStats.needReview}</span></button>
       <button class="tab-btn" onclick="switchTab('diem')"><i class="fa-solid fa-file-signature"></i> Lịch Sử Thi (${allScores.length})</button>
       <button class="tab-btn" onclick="switchTab('lb')"><i class="fa-solid fa-trophy"></i> Bảng Xếp Hạng</button>
       <button class="tab-btn" onclick="switchTab('banbe')"><i class="fa-solid fa-users"></i> Bạn Bè</button>
@@ -1766,6 +1813,9 @@ function renderPage(profile, lb, nvRes, baihocRows) {
         </div>
       </div>
     </div>
+
+    <!-- Tab: Sổ tay câu làm sai theo từng tài khoản -->
+    <div class="tab-panel" id="tab-causai"></div>
 
     <!-- Tab: Điểm thi -->
     <div class="tab-panel" id="tab-diem">
@@ -1816,10 +1866,17 @@ function renderPage(profile, lb, nvRes, baihocRows) {
   // Cập nhật lại ảnh đại diện/bio/tab Bạn bè (ban-be.js) sau khi DOM vừa được dựng lại
   if (typeof vlxtBanBeRefreshProfileUI === 'function') vlxtBanBeRefreshProfileUI();
   if (typeof vlxtRenderBanBeTab === 'function') vlxtRenderBanBeTab(); // an toàn gọi nhiều lần — tự bỏ qua nếu chưa init xong hoặc đã mount rồi
+  if (typeof vlxtRenderWrongBankTab === 'function') vlxtRenderWrongBankTab();
   renderRadarChart();
+  switchTab(_activeProfileTab, true);
 }
 
-function switchTab(name) {
+function switchTab(name, silent) {
+  if (name === 'nangluc') {
+    renderRadarChart();
+    return;
+  }
+  if (!silent) _activeProfileTab = name;
   document.querySelectorAll('.tab-btn').forEach(b => {
     const onclickStr = b.getAttribute('onclick') || '';
     b.classList.toggle('active', onclickStr.includes("'" + name + "'"));
@@ -1827,8 +1884,8 @@ function switchTab(name) {
   document.querySelectorAll('.tab-panel').forEach(p => {
     p.classList.toggle('active', p.id === 'tab-' + name);
   });
-  if (name === 'nangluc') {
-    renderRadarChart();
+  if (name === 'causai' && typeof vlxtRenderWrongBankTab === 'function') {
+    vlxtRenderWrongBankTab();
   }
 }
 </script>
@@ -1839,13 +1896,16 @@ if(localStorage.getItem('vlxt_theme')==='dark')document.body.classList.add('dark
 <script src="hoat-dong.js?v=1"></script>
 <script src="huongdan-popup.js?v=1"></script>
 <script>if(typeof vlxtAutoShowGuide==='function') vlxtAutoShowGuide('hoso');
-// Tự động kích hoạt tab nếu URL có hash #nangluc hoặc search ?tab=nangluc
+// Tự động kích hoạt tab nếu URL có hash (#causai/#nangluc/...) hoặc search (?tab=causai)
 window.addEventListener('DOMContentLoaded', function() {
   try {
     const h = window.location.hash.replace('#', '');
     const p = new URLSearchParams(window.location.search).get('tab');
-    if (h === 'nangluc' || p === 'nangluc') {
+    const pick = p || h;
+    if (pick === 'nangluc') {
       setTimeout(function() { switchTab('nangluc'); }, 120);
+    } else if (['tiendo', 'causai', 'diem', 'lb', 'banbe', 'goihoc'].includes(pick)) {
+      setTimeout(function() { switchTab(pick); }, 80);
     }
   } catch(e) {}
 });

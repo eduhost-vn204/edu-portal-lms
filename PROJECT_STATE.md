@@ -1,3 +1,24 @@
+## Bàn giao gần nhất (18/11/2026 20:42)
+- **Sổ Tay Câu Làm Sai & Phòng Phục Thù Theo Từng Tài Khoản Trên Hồ Sơ Học Sinh (`wrong-bank.js`, `wrong-bank-ui.js`, `hoso.html`, `danh-gia-nang-luc.html`, `baihoc.html`, `thithu.html`)**:
+- **Mục tiêu**:
+  - Tự động thống kê, phân loại và lưu giữ toàn bộ những câu học sinh từng làm sai **cô lập tuyệt đối theo từng tài khoản** ngay trên trang Hồ Sơ Cá Nhân (`hoso.html`), hỗ trợ đồng bộ nền đa thiết bị (offline-first) và cho phép học sinh ôn tập / làm lại để phục thù trực tiếp tại hồ sơ.
+- **Nhánh & File đã tạo/sửa (`eduhost-vn204/edu-portal-lms`, nhánh `antigravity/20261118-wrong-questions-profile` tách từ `3f26799`)**:
+  - `wrong-bank.js` *(mới)*: Engine quản lý kho câu làm sai theo từng tài khoản (`vlxt_wrong_bank_v1_<accountKey>`), chuẩn hóa đủ 3 dạng Bộ GD&ĐT 2026 (`mc`, `tf` 4 ý, `short` hỗ trợ `,` và `.`), tự nhận diện 4 chương (`C1..C4`), tự trích `modelId` từ `.vlxt-model-slot`, cộng dồn số lần sai lặp lại (`wrongCount`), tự chuyển `mastered` khi làm đúng lại ở bài thi mới hoặc chế độ ôn tập, chuyển giao câu sai từ phiên Khách (`guest`) sang tài khoản ngay khi đăng nhập (`migrateGuestToAccount`), đồng bộ nền fail-silent lên Firebase RTDB `profiles/<accountKey>/wrongBank`.
+  - `wrong-bank-ui.js` *(mới)*: Giao diện phẳng chuẩn EdTech (Zero AI Glow) cho tab `#tab-causai` trên `hoso.html`: 4 thẻ KPI (`Cần ôn tập ngay`, `Đã chinh phục`, `Hay sai lặp lại`, `Tỉ lệ khắc phục`), thống kê lỗ hổng theo 4 chương Vật Lý 12 bấm để lọc nhanh, thanh lọc theo trạng thái / nguồn / dạng câu / sắp xếp / tìm kiếm, render KaTeX + lazy-load mô hình Canvas 60 FPS (`VLXTModels`) / ảnh đề gốc, **Làm lại tại chỗ (Inline Re-Practice)** trên từng câu, và **Modal Phòng Phục Thù Câu Sai (`#wb-practice-modal`)** luyện tập tập trung từng câu có chấm điểm + tổng kết.
+  - `hoso.html`: Nạp KaTeX (`defer`) + `wrong-bank.js` + `wrong-bank-ui.js`, nâng lưới chỉ số nhanh `.stats-row` lên 4 ô 2×2 cân đối (thêm ô bấm nhanh `❌ Câu sai cần ôn`), thêm tab `Câu Làm Sai` kèm badge số câu cần ôn và panel `#tab-causai`, giữ nguyên tab đang mở khi GAS tải bất đồng bộ xong, hỗ trợ deep-link `?tab=causai` / `#causai`, tự chạy `migrateGuestToAccount` & `syncFromCloud` nền.
+  - `danh-gia-nang-luc.html`: Ghi nhận toàn bộ kết quả câu sai & tự động đánh dấu khắc phục câu từng sai khi nộp bài (`processAndShowReport`), thêm nút dẫn trực tiếp `Sổ Tay Câu Sai Trong Hồ Sơ` ở màn hình báo cáo kết quả.
+  - `baihoc.html`: Ghi nhận câu làm sai ở cả **Bài tập luyện tập (`checkPractice`)** và **Câu hỏi dừng video (`vqAnswer`, `vqSubmitTF`, `vqSubmitShort`)**.
+  - `thithu.html`: Ghi nhận câu làm sai + tự động khắc phục sau khi nộp bài CBT (`doSubmitExam`, kèm `giaiThich` từ `examsolutions`) và thêm nút `Sổ Tay Câu Sai` ở màn hình kết quả; giữ nguyên 100% giao diện CBT sáng.
+  - `test_wrong_bank.mjs` *(mới)*: Bộ kiểm thử unit & static (8 test) cho cô lập tài khoản, migration guest→account, lặp lỗi, tự động khắc phục, merge cloud, parse inline `<script>`, thẻ `</html>` và Zero AI Glow.
+- **Kiểm tra đã chạy sau chỉnh sửa cuối**:
+  - `node --check wrong-bank.js`, `node --check wrong-bank-ui.js`, `git diff --check`: **PASS (0 lỗi)**.
+  - `node test_wrong_bank.mjs` (`8/8`), `node test_cro_funnel.mjs` (`8/8`), `node test_smart_marketing_popup.mjs` (`100%`), `node test_remedial_and_prediction.mjs` (`100%`), `node test_diagnostic_mastery_loop.mjs` (`100%`), `node scripts/test-quiz-merge.mjs` (`6/6`), `node scripts/test-quiz-publish.mjs` (`12/12`): **PASS 100%**.
+  - Playwright Chromium Retina `2x` (`1440×900` & Mobile `390×844`, chặn mọi ghi lên GAS/Firebase thật): **PASS 4/4 kịch bản (`0` console error, `0` page error)** — xác nhận làm đề thật `danh-gia-nang-luc.html` ghi chính xác `27` câu sai (1 câu đúng không bị ghi nhầm), lazy-load `3` mô hình Canvas Retina `1560×610` + `15` công thức KaTeX, lọc chương + làm lại tại chỗ cập nhật KPI `3 → 2`, Phòng Phục Thù Modal hiển thị bảng số liệu nền tối sắc nét, cô lập tuyệt đối Tài khoản A (`0912345678`) vs Tài khoản B (`0987654321`), Mobile `390/390` (`padding-top: 70px`). Đã soi trực quan toàn bộ ảnh chụp PNG Retina 2x.
+- **Điều phải giữ nguyên**:
+  - Không sửa `phong-thi-thu.html`; giữ nguyên giao diện CBT sáng của `thithu.html`; giữ nguyên menu mobile, Radar HUD, `ban-be.js` và lưu cục bộ trước khi đồng bộ nền.
+- **Việc còn lại**:
+  - Chờ Thầy xem và xác nhận để merge nhánh `antigravity/20261118-wrong-questions-profile` vào `main` triển khai lên `https://vatlyxuantruong.io.vn`.
+
 ## Bàn giao gần nhất (18/11/2026 16:11)
 - **Tinh Gọn Thanh Điều Hướng Toàn Hệ Thống & Lấp Đầy Bản Đồ Sao 3D `index.html` (Đã triển khai `main`)**:
 - **Trạng thái triển khai**:

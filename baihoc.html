@@ -10,6 +10,7 @@
     <script src="data/bundle_theories.js"></script>
     <script src="data/bundle_quizzes.js"></script>
     <script src="data/mo-hinh-thuc-te-models.js"></script>
+    <script src="wrong-bank.js?v=20261118a"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
@@ -7210,6 +7211,19 @@ function vqAnswer(L){
     } else {
         if(el){ el.classList.remove('vq-wrong'); void el.offsetWidth; el.classList.add('vq-wrong'); }
         _vqMarkWrong();
+        if (typeof VlxtWrongBank !== 'undefined') {
+            try {
+                const _vqInf = findLesson(_vqKey);
+                VlxtWrongBank.recordWrong(cp, {
+                    userAnswer: L,
+                    source: 'video_quiz',
+                    sourceLabel: (_vqInf && _vqInf.lesson && _vqInf.lesson.name) ? ('Video: ' + _vqInf.lesson.name) : 'Câu hỏi trong video',
+                    lessonName: (_vqInf && _vqInf.lesson && _vqInf.lesson.name) || '',
+                    chapterHint: (_vqInf && _vqInf.chapter && _vqInf.chapter.name) || '',
+                    sourceUrl: _vqKey ? ('baihoc.html?openLesson=' + encodeURIComponent(_vqKey)) : 'baihoc.html'
+                });
+            } catch(e){}
+        }
     }
 }
 
@@ -7219,6 +7233,7 @@ function vqSubmitTF(){
     const letters=['A','B','C','D'].filter(L=>(cp[L]||'').toString().trim());
     const corr=(cp.correct||'').toString();
     let allAnswered=true, allRight=true;
+    const pickedTf=[null,null,null,null];
     letters.forEach(function(L){
         const pos={A:0,B:1,C:2,D:3}[L];
         const want=corr[pos]==='Đ'?'Đ':'S';
@@ -7226,6 +7241,7 @@ function vqSubmitTF(){
         const row=document.getElementById('vq-tf-'+L);
         if(row) row.classList.remove('result-correct','result-wrong');
         if(!sel){ allAnswered=false; return; }
+        pickedTf[pos]=(sel.value==='Đ');
         const ok=sel.value===want;
         if(!ok) allRight=false;
         if(row) row.classList.add(ok?'result-correct':'result-wrong');
@@ -7236,6 +7252,19 @@ function vqSubmitTF(){
         _vqMarkCorrect(cp);
     } else {
         _vqMarkWrong('<i class="fa-solid fa-rotate-left" style="color:var(--red)"></i> Còn ý chưa đúng — xem lại và nộp lại nhé!');
+        if (typeof VlxtWrongBank !== 'undefined') {
+            try {
+                const _vqInf = findLesson(_vqKey);
+                VlxtWrongBank.recordWrong(Object.assign({ type: 'tf' }, cp), {
+                    userAnswer: pickedTf,
+                    source: 'video_quiz',
+                    sourceLabel: (_vqInf && _vqInf.lesson && _vqInf.lesson.name) ? ('Video: ' + _vqInf.lesson.name) : 'Câu hỏi trong video',
+                    lessonName: (_vqInf && _vqInf.lesson && _vqInf.lesson.name) || '',
+                    chapterHint: (_vqInf && _vqInf.chapter && _vqInf.chapter.name) || '',
+                    sourceUrl: _vqKey ? ('baihoc.html?openLesson=' + encodeURIComponent(_vqKey)) : 'baihoc.html'
+                });
+            } catch(e){}
+        }
     }
 }
 
@@ -7253,6 +7282,19 @@ function vqSubmitShort(){
     } else {
         if(inp){ inp.classList.add('result-wrong'); inp.disabled=true; }
         _vqWrong++;
+        if (typeof VlxtWrongBank !== 'undefined') {
+            try {
+                const _vqInf = findLesson(_vqKey);
+                VlxtWrongBank.recordWrong(Object.assign({ type: 'short' }, cp), {
+                    userAnswer: val.trim(),
+                    source: 'video_quiz',
+                    sourceLabel: (_vqInf && _vqInf.lesson && _vqInf.lesson.name) ? ('Video: ' + _vqInf.lesson.name) : 'Câu hỏi trong video',
+                    lessonName: (_vqInf && _vqInf.lesson && _vqInf.lesson.name) || '',
+                    chapterHint: (_vqInf && _vqInf.chapter && _vqInf.chapter.name) || '',
+                    sourceUrl: _vqKey ? ('baihoc.html?openLesson=' + encodeURIComponent(_vqKey)) : 'baihoc.html'
+                });
+            } catch(e){}
+        }
         _vqRevealShort(cp);
     }
 }
@@ -7461,6 +7503,7 @@ function checkPractice(key,force){
     const qs=info.lesson.baitap;
     let correct=0, answered=0;
     const wrongThisAttempt=[];
+    const wbPracticeEntries=[];
     qs.forEach((q,qi)=>{
         const qType=(q.type==='tf'||q.type==='short')?q.type:'mc';
         if(qType==='tf'){
@@ -7468,17 +7511,20 @@ function checkPractice(key,force){
             const letters=['A','B','C','D'].filter(L=>q[L]||q[L.toLowerCase()]);
             document.querySelectorAll(`#pq-${qi} .pq-tf-row`).forEach(row=>row.classList.remove('result-correct','result-wrong'));
             let allAnswered=letters.length>0, allRight=true;
+            const pickedArr=[null,null,null,null];
             letters.forEach(L=>{
                 const pos={A:0,B:1,C:2,D:3}[L];
                 const want=corr[pos]==='Đ'?'Đ':(corr[pos]==='S'?'S':'');
                 const sel=document.querySelector(`input[name="pq${qi}_${L}"]:checked`);
                 const row=document.getElementById(`pq-${qi}-${L}`);
                 if(!sel){ allAnswered=false; allRight=false; return; }
+                pickedArr[pos]=(sel.value==='Đ');
                 const ok=sel.value===want;
                 if(!ok) allRight=false;
                 if(row) row.classList.add(ok?'result-correct':'result-wrong');
             });
-            if(allAnswered){ answered++; if(allRight) correct++; else wrongThisAttempt.push(qi); }
+            if(allAnswered){ answered++; if(allRight) correct++; else wrongThisAttempt.push(qi); wbPracticeEntries.push({ question: q, isCorrect: allRight, userAnswer: pickedArr }); }
+            else if(force){ wbPracticeEntries.push({ question: q, isCorrect: false, userAnswer: pickedArr }); }
             return;
         }
         if(qType==='short'){
@@ -7493,6 +7539,7 @@ function checkPractice(key,force){
                 const gotN=normNum(rawVal);
                 const isRight=gotN!==''&&gotN===wantN;
                 if(isRight) correct++; else wrongThisAttempt.push(qi);
+                wbPracticeEntries.push({ question: q, isCorrect: isRight, userAnswer: rawVal.trim() });
                 if(inp) inp.classList.add(isRight?'result-correct':'result-wrong');
                 if(!isRight && block){
                     const hint=document.createElement('div');
@@ -7501,6 +7548,8 @@ function checkPractice(key,force){
                     hint.innerHTML='Đáp án đúng: <b>'+pqSafe((q.correct||q.dapan||'').toString())+'</b>';
                     block.appendChild(hint);
                 }
+            } else if(force){
+                wbPracticeEntries.push({ question: q, isCorrect: false, userAnswer: '' });
             }
             return;
         }
@@ -7517,6 +7566,7 @@ function checkPractice(key,force){
             const isRight=got===ans;
             if(isRight) correct++;
             else wrongThisAttempt.push(qi);
+            wbPracticeEntries.push({ question: q, isCorrect: isRight, userAnswer: got });
             const chosenOpt=document.querySelector(`#pq-${qi}-${got}`);
             if(chosenOpt){
                 chosenOpt.classList.add(isRight?'result-correct':'result-wrong');
@@ -7525,6 +7575,8 @@ function checkPractice(key,force){
                 tag.textContent=isRight?'✓ Đúng':'✗ Sai';
                 chosenOpt.appendChild(tag);
             }
+        } else if(force){
+            wbPracticeEntries.push({ question: q, isCorrect: false, userAnswer: '' });
         }
         // Luôn hiển thị đáp án đúng
         if(ans){
@@ -7542,6 +7594,20 @@ function checkPractice(key,force){
     // để nhắc ôn trước khi sang bài tiếp — xem goNextLessonWithReview().
     if(wrongThisAttempt.length) addWrongQIndices(_lessonCurrentKey, wrongThisAttempt);
     if(answered<qs.length && !force){ toast('<i class="fa-solid fa-triangle-exclamation"></i> Hãy trả lời đủ các câu nhé!','err'); return; }
+    if (typeof VlxtWrongBank !== 'undefined' && wbPracticeEntries.length) {
+        try {
+            const decKey = decodeURIComponent(key);
+            const wbAcc = VlxtWrongBank.normalizeAccountKey((HS && HS.sdt) ? HS.sdt : VlxtWrongBank.getCurrentAccountKey());
+            VlxtWrongBank.recordBatch(wbPracticeEntries, {
+                accountKey: wbAcc,
+                source: 'baihoc',
+                sourceLabel: (info.lesson && info.lesson.name) ? info.lesson.name : 'Bài tập luyện tập',
+                lessonName: (info.lesson && info.lesson.name) || '',
+                chapterHint: (info.chapter && info.chapter.name) || '',
+                sourceUrl: 'baihoc.html?openLesson=' + encodeURIComponent(decKey)
+            });
+        } catch(e){}
+    }
     qs.forEach((q,qi)=>_renderPracticeExplanation(document.getElementById(`pq-${qi}`),q));
     clearQuizProgress(_lessonCurrentKey);
     // Đã kiểm tra xong (dù đúng hay sai) → mở khoá Video chữa bài luyện tập cho bài này.

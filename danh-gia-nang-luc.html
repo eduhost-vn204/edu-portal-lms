@@ -2750,6 +2750,9 @@
                                 <button type="button" class="btn-open-50-drawer" style="padding:5px 12px;font-size:12.5px" onclick="openCampaign50Drawer()">
                                     <i class="fa-solid fa-layer-group"></i> Làm Đề Khác (Kho 50 Đề)
                                 </button>
+                                <a href="hoso.html?tab=causai" class="btn-open-50-drawer" style="padding:5px 12px;font-size:12.5px;text-decoration:none;border-color:rgba(248,113,113,0.4);color:#fca5a5;background:rgba(239,68,68,0.12)">
+                                    <i class="fa-solid fa-bookmark"></i> Sổ Tay Câu Sai Trong Hồ Sơ
+                                </a>
                             </div>
                             <div class="rep-parts-grid" id="rep-parts-breakdown" style="display:none"></div>
                         </div>
@@ -2959,6 +2962,7 @@
 
     <!-- SCRIPTS HỆ THỐNG -->
     <script src="auth.js?v=20261118a"></script>
+    <script src="wrong-bank.js?v=20261118a"></script>
     <script src="vnpay-service.js"></script>
     <script src="freemium-flow.js"></script>
 
@@ -4421,6 +4425,27 @@
                     score10: g.finalScore,
                     predictedScore: g.predScore
                 });
+            }
+
+            if (typeof VlxtWrongBank !== 'undefined') {
+                try {
+                    var wbAccKey = VlxtWrongBank.normalizeAccountKey(user && (user.sdt || user.email) ? (user.sdt || user.email) : VlxtWrongBank.getCurrentAccountKey());
+                    if (wbAccKey !== 'guest') VlxtWrongBank.migrateGuestToAccount(wbAccKey);
+                    var wbSourceLabel = currentExamTitle || ('Đề THPTQG 2026 Số ' + currentExamNumber);
+                    var wbSourceUrl = 'danh-gia-nang-luc.html?exam=' + encodeURIComponent(String(currentExamNumber || 1));
+                    var wbEntries = questions.map(function(q, idx) {
+                        var isWrong = g.wrongIndices.indexOf(idx) !== -1;
+                        return {
+                            question: q,
+                            isCorrect: !isWrong,
+                            userAnswer: userAnswers[idx],
+                            source: 'dgnl',
+                            sourceLabel: wbSourceLabel,
+                            sourceUrl: wbSourceUrl
+                        };
+                    });
+                    VlxtWrongBank.recordBatch(wbEntries, { accountKey: wbAccKey });
+                } catch(e) {}
             }
 
             questions.forEach(function(q, idx) {

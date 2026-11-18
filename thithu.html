@@ -9,6 +9,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
     <script src="data/mo-hinh-thuc-te-models.js"></script>
+    <script src="wrong-bank.js?v=20261118a"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -699,6 +700,9 @@ svg.logo-atom-icon,
         <button class="btn-q-nav" onclick="scrollToReview()">
             <i class="fa-solid fa-list-check"></i> Xem Chi Tiết Bài Làm
         </button>
+        <a href="hoso.html?tab=causai" class="btn-q-nav" style="text-decoration:none">
+            <i class="fa-solid fa-bookmark"></i> Sổ Tay Câu Sai
+        </a>
     </div>
 
     <!-- Review items list -->
@@ -1338,6 +1342,7 @@ async function doSubmitExam() {
     const tfScheme = { 0: 0, 1: 0.1, 2: 0.25, 3: 0.5, 4: 1.0 };
     let correctCount = 0;
     let reviewHtml = '';
+    const wbExamEntries = [];
 
     questions.forEach(q => {
         const type = getQType(q);
@@ -1346,6 +1351,7 @@ async function doSubmitExam() {
             const got = answers[q.id] || '';
             const ok = (got === q.correct);
             if (ok) { score += W_MC; correctCount++; }
+            wbExamEntries.push({ question: Object.assign({}, q, { type: 'mc' }), isCorrect: ok, userAnswer: got });
 
             let optsHtml = '';
             ['A','B','C','D'].forEach(L => {
@@ -1399,6 +1405,11 @@ async function doSubmitExam() {
             score += tfPts;
             const allOk = (nc === letters.length && letters.length > 0);
             if (allOk) correctCount++;
+            const tfPickedArr = ['A','B','C','D'].map(L => {
+                const v = answers[q.id + '_' + L] || '';
+                return v === 'Đ' ? true : (v === 'S' ? false : null);
+            });
+            wbExamEntries.push({ question: Object.assign({}, q, { type: 'tf' }), isCorrect: allOk, userAnswer: tfPickedArr });
 
             reviewHtml += `
                 <div class="rv-item-block ${allOk?'correct':'wrong'}">
@@ -1418,6 +1429,7 @@ async function doSubmitExam() {
             const want = String(q.correct || '').trim().replace(/\s/g,'').replace(',','.');
             const ok = (got !== '' && got === want);
             if (ok) { score += W_SHORT; correctCount++; }
+            wbExamEntries.push({ question: Object.assign({}, q, { type: 'short' }), isCorrect: ok, userAnswer: String(answers[q.id] || '').trim() });
 
             reviewHtml += `
                 <div class="rv-item-block ${ok?'correct':'wrong'}">
@@ -1459,6 +1471,17 @@ async function doSubmitExam() {
         submittedAt: new Date().toISOString()
     };
     localStorage.setItem('vlxt_cbt_result_' + _examId + '_' + sdt, JSON.stringify(resultObj));
+    if (typeof VlxtWrongBank !== 'undefined' && wbExamEntries.length) {
+        try {
+            const wbAcc = VlxtWrongBank.normalizeAccountKey(currentUser && (currentUser.sdt || currentUser.email) ? (currentUser.sdt || currentUser.email) : VlxtWrongBank.getCurrentAccountKey());
+            VlxtWrongBank.recordBatch(wbExamEntries, {
+                accountKey: wbAcc,
+                source: 'thithu',
+                sourceLabel: resultObj.examName,
+                sourceUrl: 'phong-thi-thu.html'
+            });
+        } catch(e){}
+    }
 
     // Save score to server BangVang for persistent profile history (SAFE: Does NOT touch TaiKhoan LP)
     if (currentUser && currentUser.sdt && !String(currentUser.sdt).includes('guest') && !String(currentUser.sdt).includes('HS-THITHU')) {
