@@ -16,8 +16,8 @@
   - Playwright Chromium Retina `2x` (`1440×900` & Mobile `390×844`, chặn mọi ghi lên GAS/Firebase thật): **PASS 4/4 kịch bản (`0` console error, `0` page error)** — xác nhận làm đề thật `danh-gia-nang-luc.html` ghi chính xác `27` câu sai (1 câu đúng không bị ghi nhầm), lazy-load `3` mô hình Canvas Retina `1560×610` + `15` công thức KaTeX, lọc chương + làm lại tại chỗ cập nhật KPI `3 → 2`, Phòng Phục Thù Modal hiển thị bảng số liệu nền tối sắc nét, cô lập tuyệt đối Tài khoản A (`0912345678`) vs Tài khoản B (`0987654321`), Mobile `390/390` (`padding-top: 70px`). Đã soi trực quan toàn bộ ảnh chụp PNG Retina 2x.
 - **Điều phải giữ nguyên**:
   - Không sửa `phong-thi-thu.html`; giữ nguyên giao diện CBT sáng của `thithu.html`; giữ nguyên menu mobile, Radar HUD, `ban-be.js` và lưu cục bộ trước khi đồng bộ nền.
-- **Việc còn lại**:
-  - Chờ Thầy xem và xác nhận để merge nhánh `antigravity/20261118-wrong-questions-profile` vào `main` triển khai lên `https://vatlyxuantruong.io.vn`.
+- **Trạng thái triển khai**:
+  - Đã kiểm định đầy đủ và đẩy fast-forward lên nhánh `main` (`eduhost-vn204/edu-portal-lms` → `https://vatlyxuantruong.io.vn`).
 
 ## Bàn giao gần nhất (18/11/2026 16:11)
 - **Tinh Gọn Thanh Điều Hướng Toàn Hệ Thống & Lấp Đầy Bản Đồ Sao 3D `index.html` (Đã triển khai `main`)**:
