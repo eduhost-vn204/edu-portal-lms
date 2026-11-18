@@ -384,7 +384,7 @@
         ═══════════════════════════════════════════ */
         .vstep-course-layout {
             display: grid !important;
-            grid-template-columns: 280px minmax(0, 1fr) 268px !important;
+            grid-template-columns: 264px minmax(0, 1fr) 264px !important;
             min-height: 100vh !important;
             padding-top: 60px !important;
             width: 100% !important;
@@ -393,7 +393,7 @@
             font-family: var(--font-sans) !important;
         }
 
-        /* ── CỘT 1: SIDEBAR TRÁI (Lộ trình 20 câu theo 4 chuyên đề) ── */
+        /* ── CỘT 1: SIDEBAR TRÁI (Lộ trình 28 câu theo 4 chuyên đề) ── */
         .vstep-sidebar-left {
             display: block !important;
             background: #0c1222 !important;
@@ -402,7 +402,7 @@
             position: sticky !important;
             top: 60px !important;
             overflow-y: auto !important;
-            padding: 20px 16px 60px !important;
+            padding: 14px 12px 32px !important;
             scrollbar-width: none !important;
             z-index: 10 !important;
         }
@@ -414,23 +414,23 @@
             letter-spacing: 0.08em !important;
             text-transform: uppercase !important;
             color: #64748b !important;
-            padding: 0 6px 14px !important;
+            padding: 0 6px 10px !important;
             display: flex !important;
             align-items: center !important;
             gap: 8px !important;
             border-bottom: 1px solid var(--border-subtle) !important;
-            margin-bottom: 16px !important;
+            margin-bottom: 10px !important;
         }
         .vstep-side-head i { color: var(--primary); }
 
         .vstep-chap-group {
-            margin-bottom: 20px !important;
+            margin-bottom: 14px !important;
         }
         .vstep-chap-title {
-            font-size: 12px !important;
+            font-size: 11.5px !important;
             font-weight: 700 !important;
             color: #94a3b8 !important;
-            padding: 8px 6px !important;
+            padding: 6px 6px !important;
             cursor: pointer !important;
             display: flex !important;
             align-items: center !important;
@@ -445,20 +445,20 @@
         }
         .vstep-lesson-list {
             list-style: none !important;
-            padding: 4px 0 0 !important;
+            padding: 2px 0 0 !important;
             margin: 0 !important;
         }
         .vstep-lesson-item {
             display: flex !important;
             align-items: center !important;
-            gap: 10px !important;
-            padding: 8px 10px !important;
+            gap: 8px !important;
+            padding: 6px 8px !important;
             border-radius: 8px !important;
             color: #94a3b8 !important;
             text-decoration: none !important;
-            font-size: 12.5px !important;
+            font-size: 12px !important;
             font-weight: 500 !important;
-            line-height: 1.4 !important;
+            line-height: 1.35 !important;
             transition: all 0.15s ease !important;
             margin-bottom: 2px !important;
             cursor: pointer !important;
@@ -475,12 +475,12 @@
         }
         .vstep-num-pill {
             flex-shrink: 0 !important;
-            width: 28px !important;
-            height: 24px !important;
+            width: 26px !important;
+            height: 22px !important;
             border-radius: 6px !important;
             background: rgba(255, 255, 255, 0.06) !important;
             color: #94a3b8 !important;
-            font-size: 11px !important;
+            font-size: 10.5px !important;
             font-weight: 700 !important;
             display: flex !important;
             align-items: center !important;
@@ -510,12 +510,13 @@
         .vstep-status-tag.done { color: var(--emerald) !important; }
         .vstep-status-tag.wrong { color: var(--danger) !important; }
 
-        /* ── CỘT 2: VÙNG GIỮA (Main Stream Học Thuật) ── */
+        /* ── CỘT 2: VÙNG GIỮA (Full-Width 1-Frame Học Thuật) ── */
         .vstep-main-stream {
-            padding: 28px 36px 80px !important;
-            max-width: 980px !important;
-            margin: 0 auto !important;
+            padding: 18px 20px 24px !important;
+            max-width: none !important;
+            margin: 0 !important;
             width: 100% !important;
+            min-width: 0 !important;
             background: #0c1222 !important;
         }
         /* Bộ chọn đề thi ĐGNL (Đề 1 vs Đề 2) */
@@ -656,33 +657,32 @@
         .vstep-q-box {
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            padding: 28px;
-            margin-bottom: 24px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
             transition: all 0.2s ease;
-            min-height: 240px;
         }
         .vstep-q-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 18px;
-            padding-bottom: 14px;
+            margin-bottom: 10px;
+            padding-bottom: 9px;
             border-bottom: 1px solid var(--border-subtle);
         }
         .vstep-q-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 800;
             color: #fff;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         .vstep-badge {
-            padding: 3px 10px;
+            padding: 3px 9px;
             border-radius: 6px;
-            font-size: 11.5px;
+            font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
         }
@@ -698,42 +698,70 @@
         }
 
         .vstep-q-stem {
-            font-size: 15.5px;
+            font-size: 15px;
             font-weight: 500;
             color: #f1f5f9;
-            line-height: 1.7;
-            margin-bottom: 24px;
+            line-height: 1.55;
+            margin-bottom: 12px;
         }
 
         .vstep-options-grid {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 9px;
+        }
+        @media (min-width: 900px) {
+            .vstep-options-grid.cols-2 {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
         }
         .vstep-option-card {
             display: flex;
             align-items: center;
-            padding: 14px 18px;
+            gap: 10px;
+            padding: 11px 14px;
             background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            font-size: 14.5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 14px;
             color: #e2e8f0;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: background 0.15s, border-color 0.15s;
             user-select: none;
+            line-height: 1.45;
         }
         .vstep-option-card:hover {
             background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(0, 240, 255, 0.4);
-            transform: translateX(4px);
+            border-color: rgba(56, 189, 248, 0.5);
         }
         .vstep-option-card.selected {
-            background: rgba(56, 189, 248, 0.14);
+            background: rgba(56, 189, 248, 0.15);
             border-color: #38bdf8;
             color: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
             font-weight: 600;
+        }
+        .wow-opt-key {
+            flex-shrink: 0;
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #94a3b8;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .vstep-option-card.selected .wow-opt-key {
+            background: #0284c7;
+            border-color: #38bdf8;
+            color: #ffffff;
         }
 
         /* Thanh điều hướng footer câu hỏi */
@@ -741,20 +769,20 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: 24px;
-            gap: 14px;
+            margin-top: 10px;
+            gap: 12px;
         }
         .vstep-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 10px 20px;
-            border-radius: 10px;
+            padding: 9px 18px;
+            border-radius: 9px;
             font-size: 13.5px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s;
             border: none;
         }
         .vstep-btn.secondary {
@@ -762,21 +790,36 @@
             color: #cbd5e1;
             border: 1px solid var(--border-subtle);
         }
-        .vstep-btn.secondary:hover {
+        .vstep-btn.secondary:hover:not(:disabled) {
             background: rgba(255, 255, 255, 0.12);
             color: #fff;
+        }
+        .vstep-btn.secondary:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .vstep-btn.primary-next {
+            background: #0284c7;
+            border: 1px solid #38bdf8;
+            color: #ffffff;
+        }
+        .vstep-btn.primary-next:hover:not(:disabled) {
+            background: #0369a1;
+        }
+        .vstep-btn.primary-next:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
         }
         .vstep-btn.submit {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: #fff;
-            padding: 12px 28px;
+            padding: 11px 22px;
             font-size: 14px;
-            box-shadow: 0 4px 18px rgba(16, 185, 129, 0.35);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
         }
         .vstep-btn.submit:hover {
             background: linear-gradient(135deg, #059669 0%, #047857 100%);
             transform: translateY(-1px);
-            box-shadow: 0 6px 24px rgba(16, 185, 129, 0.5);
         }
 
         /* ── CỘT 3: SIDEBAR PHẢI (Control & HUD Panel) ── */
@@ -788,32 +831,29 @@
             position: sticky !important;
             top: 60px !important;
             overflow-y: auto !important;
-            padding: 20px 16px 60px !important;
+            padding: 14px 14px 24px !important;
             scrollbar-width: none !important;
             z-index: 10 !important;
         }
         .vstep-sidebar-right::-webkit-scrollbar { display: none !important; }
 
-        /* KHỐI ĐỒNG HỒ CỐ ĐỊNH STICKY (KHÔNG BỊ CHE KHUẤT) */
+        /* KHỐI ĐỒNG HỒ CỐ ĐỊNH STICKY */
         .vstep-timer-card {
-            position: sticky;
-            top: 10px;
-            background: linear-gradient(135deg, rgba(8, 25, 45, 0.8) 0%, rgba(13, 20, 36, 0.95) 100%);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            border-radius: 14px;
-            padding: 16px;
-            margin-bottom: 20px;
+            background: #0d1628;
+            border: 1px solid rgba(56, 189, 248, 0.28);
+            border-radius: 12px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
             text-align: center;
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
-            z-index: 20;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
         }
         .vstep-timer-title {
-            font-size: 11px;
+            font-size: 10.5px;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: #94a3b8;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -822,27 +862,27 @@
         .vstep-timer-title i { color: var(--primary); }
         .vstep-timer-val {
             font-family: var(--font-mono);
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 800;
             color: #38bdf8;
             letter-spacing: 1px;
         }
 
-        /* Bảng Palette 20 câu hỏi */
+        /* Bảng Palette 28 câu hỏi */
         .vstep-palette-box {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border-subtle);
             border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 20px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
         }
         .vstep-palette-head {
-            font-size: 11.5px;
+            font-size: 11px;
             font-weight: 700;
             color: #94a3b8;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -850,15 +890,15 @@
         .vstep-palette-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
+            gap: 5px;
         }
         .vstep-pal-btn {
-            aspect-ratio: 1;
-            border-radius: 8px;
+            height: 30px;
+            border-radius: 7px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.08);
             color: #94a3b8;
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -1168,9 +1208,14 @@
             transform: translateY(-1px);
         }
 
-        @media (max-width: 1100px) {
+        @media (max-width: 1260px) {
             .vstep-course-layout {
-                grid-template-columns: 240px minmax(0, 1fr) !important;
+                grid-template-columns: 230px minmax(0, 1fr) 244px !important;
+            }
+        }
+        @media (max-width: 1024px) {
+            .vstep-course-layout {
+                grid-template-columns: 230px minmax(0, 1fr) !important;
             }
             .vstep-sidebar-right {
                 display: none !important;
@@ -1185,7 +1230,7 @@
                 display: none !important;
             }
             .vstep-main-stream {
-                padding: 18px 14px 64px !important;
+                padding: 14px 14px 60px !important;
             }
             .report-hero-grid {
                 grid-template-columns: 1fr;
@@ -1196,7 +1241,7 @@
         }
 
         /* ═══════════════════════════════════════════
-           CHIẾN DỊCH 50 ĐỀ THPTQG 2026 & STAGE MÔ PHỎNG 60 FPS (FLAT EDTECH)
+           CHIẾN DỊCH 50 ĐỀ THPTQG 2026 & ONE-FRAME 60 FPS WORKSPACE
         ═══════════════════════════════════════════ */
         .wow-mobile-hud {
             display: none;
@@ -1207,13 +1252,13 @@
             border: 1px solid #1e3a5f;
             border-radius: 10px;
             padding: 8px 12px;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
             align-items: center;
             justify-content: space-between;
             gap: 8px;
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
         }
-        @media (max-width: 1100px) {
+        @media (max-width: 1024px) {
             .wow-mobile-hud { display: flex; }
         }
         .wow-mhud-timer {
@@ -1237,10 +1282,88 @@
             cursor: pointer;
             font-family: inherit;
         }
+
+        /* Thanh tiêu đề + chọn đề 1 dòng siêu gọn */
+        .wow-top-command-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 10px;
+            padding: 7px 12px;
+            margin-bottom: 8px;
+        }
+        .wow-cmd-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+            flex: 1;
+        }
+        .wow-compact-h1 {
+            font-size: 14.5px !important;
+            font-weight: 800 !important;
+            color: #ffffff !important;
+            margin: 0 !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .wow-compact-meta {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            padding: 2px 8px;
+            border-radius: 6px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .wow-cmd-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+            max-width: 100%;
+        }
+        @media (max-width: 768px) {
+            .wow-cmd-right {
+                flex-shrink: 1;
+                width: 100%;
+            }
+            .wow-cmd-right .btn-open-50-drawer {
+                display: none;
+            }
+            .wow-part-tabs-left {
+                display: grid !important;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                width: 100%;
+                gap: 5px;
+            }
+            .wow-part-tab {
+                padding: 6px 6px !important;
+                justify-content: center;
+                flex-direction: column;
+                gap: 2px !important;
+                text-align: center !important;
+            }
+            .wow-part-name { font-size: 11px !important; }
+            .wow-part-sub { display: none; }
+        }
+        .wow-cmd-right .btn-exam-choice {
+            padding: 5px 11px;
+            font-size: 12px;
+            border-radius: 8px;
+        }
         .btn-open-50-drawer {
-            padding: 8px 15px;
-            border-radius: 999px;
-            font-size: 13px;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 12px;
             font-weight: 800;
             background: #0f766e;
             border: 1px solid #14b8a6;
@@ -1248,30 +1371,61 @@
             cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 7px;
+            gap: 6px;
             font-family: inherit;
             transition: background 0.15s;
         }
         .btn-open-50-drawer:hover { background: #0d9488; }
-
-        /* Thanh chuyển 3 Phần chuẩn Bộ GD&ĐT */
-        .wow-part-tabs {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 10px;
-            margin-bottom: 18px;
+        .btn-toggle-info {
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #334155;
+            color: #cbd5e1;
+            cursor: pointer;
+            font-family: inherit;
         }
-        @media (max-width: 768px) {
-            .wow-part-tabs { grid-template-columns: 1fr; gap: 6px; }
+        .btn-toggle-info:hover, .btn-toggle-info.active {
+            border-color: #38bdf8;
+            color: #38bdf8;
+        }
+        .wow-collapsible-info {
+            display: none;
+            margin-bottom: 10px;
+        }
+        .wow-collapsible-info.open {
+            display: block;
+        }
+        #dgnl-resume-slot:empty { display: none; }
+
+        /* Thanh chuyển 3 Phần siêu gọn (1 dòng) */
+        .wow-part-tabs {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .wow-part-tabs-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
         }
         .wow-part-tab {
             background: #0f172a;
             border: 1px solid #1e293b;
-            border-radius: 10px;
-            padding: 10px 12px;
+            border-radius: 8px;
+            padding: 6px 12px;
             text-align: left;
             cursor: pointer;
             font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
             transition: border-color 0.15s, background 0.15s;
         }
         .wow-part-tab:hover { border-color: #38bdf8; background: #131d35; }
@@ -1282,72 +1436,106 @@
         .wow-part-tag {
             font-size: 11px;
             font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
             color: #38bdf8;
+            white-space: nowrap;
         }
         .wow-part-name {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             color: #f8fafc;
-            margin-top: 2px;
+            white-space: nowrap;
         }
         .wow-part-sub {
+            font-size: 11px;
+            color: #94a3b8;
+            white-space: nowrap;
+        }
+        .wow-kbd-legend {
             font-size: 11.5px;
             color: #94a3b8;
-            margin-top: 1px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
         }
+        .wow-kbd-pill {
+            font-family: var(--font-mono);
+            font-size: 10.5px;
+            font-weight: 700;
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #cbd5e1;
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+        @media (max-width: 1180px) { .wow-kbd-legend { display: none; } }
+
+        /* Side-by-side Split Grid bên trong Câu hỏi (Zero Scroll) */
+        .wow-q-split {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        @media (min-width: 1120px) {
+            .wow-q-split {
+                display: grid;
+                grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+                gap: 16px;
+                align-items: start;
+            }
+        }
+        .wow-split-left, .wow-split-right { min-width: 0; }
 
         /* Interactive 60 FPS Physics Stage */
         .wow-stage-card {
             background: #09111f;
             border: 1px solid #1e3a5f;
-            border-radius: 14px;
+            border-radius: 12px;
             overflow: hidden;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+            margin-bottom: 0;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
         }
         .wow-stage-head {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 8px;
-            padding: 10px 14px;
+            gap: 6px;
+            padding: 7px 11px;
             background: #0f172a;
             border-bottom: 1px solid #1e293b;
         }
         .wow-stage-badge {
             display: inline-flex;
             align-items: center;
-            gap: 7px;
-            font-size: 11.5px;
+            gap: 6px;
+            font-size: 11px;
             font-weight: 800;
             color: #38bdf8;
             background: rgba(56, 189, 248, 0.12);
             border: 1px solid rgba(56, 189, 248, 0.32);
-            padding: 4px 10px;
+            padding: 3px 8px;
             border-radius: 6px;
         }
         .wow-stage-controls {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             flex-wrap: wrap;
         }
         .wow-ctrl-btn {
             background: #1e293b;
             border: 1px solid #334155;
             color: #e2e8f0;
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 700;
-            padding: 5px 10px;
+            padding: 4px 8px;
             border-radius: 6px;
             cursor: pointer;
             font-family: inherit;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
         .wow-ctrl-btn:hover { border-color: #38bdf8; color: #ffffff; }
         .wow-ctrl-btn.active {
@@ -1361,9 +1549,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 8px;
+            padding: 6px;
         }
-        #wow-main-canvas, #wow-fs-canvas {
+        #wow-main-canvas {
+            width: 100%;
+            max-width: 780px;
+            max-height: 264px;
+            height: auto;
+            aspect-ratio: 780 / 305;
+            object-fit: contain;
+            display: block;
+            border-radius: 6px;
+        }
+        #wow-fs-canvas {
             width: 100%;
             max-width: 780px;
             height: auto;
@@ -1378,7 +1576,7 @@
         }
         .wow-stage-origin-img {
             max-width: 100%;
-            max-height: 320px;
+            max-height: 260px;
             border-radius: 8px;
             border: 1px solid #334155;
             display: block;
@@ -1388,24 +1586,24 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
-            padding: 8px 14px;
+            gap: 8px;
+            padding: 6px 11px;
             background: #0d1628;
             border-top: 1px solid #1e293b;
-            font-size: 12.5px;
+            font-size: 11.5px;
             color: #94a3b8;
         }
         .wow-static-fig {
             background: #0f172a;
             border: 1px solid #1e293b;
             border-radius: 12px;
-            padding: 12px;
+            padding: 10px;
             text-align: center;
-            margin-bottom: 18px;
+            margin-bottom: 0;
         }
         .wow-static-fig img {
             max-width: 100%;
-            max-height: 320px;
+            max-height: 260px;
             border-radius: 8px;
         }
 
@@ -1427,28 +1625,28 @@
             color: #fbbf24;
         }
         .vstep-data-panel {
-            margin: 12px 0;
+            margin: 8px 0;
             overflow-x: auto;
-            border-radius: 10px;
+            border-radius: 9px;
             border: 1px solid #334155;
             background: #0f172a;
         }
         .vstep-data-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 13px;
+            font-size: 12.5px;
             color: #e2e8f0;
         }
         .vstep-data-table th {
             background: #172542;
             color: #38bdf8;
             font-weight: 700;
-            padding: 8px 10px;
+            padding: 5px 8px;
             border-bottom: 1px solid #334155;
             text-align: center;
         }
         .vstep-data-table td {
-            padding: 7px 10px;
+            padding: 4px 8px;
             border-top: 1px solid #1e293b;
             text-align: center;
         }
@@ -1457,41 +1655,41 @@
         .wow-tf-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
         .wow-tf-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 14px;
-            padding: 13px 16px;
+            gap: 12px;
+            padding: 9px 12px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid #1e293b;
-            border-radius: 10px;
+            border-radius: 9px;
         }
         @media (max-width: 680px) {
             .wow-tf-row { flex-direction: column; align-items: stretch; }
         }
         .wow-tf-stmt {
-            font-size: 14.5px;
+            font-size: 13.5px;
             color: #f1f5f9;
-            line-height: 1.55;
+            line-height: 1.48;
             flex: 1;
         }
         .wow-tf-toggle {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-shrink: 0;
         }
         .wow-tf-btn {
-            min-width: 78px;
-            padding: 8px 14px;
-            border-radius: 8px;
+            min-width: 66px;
+            padding: 6px 11px;
+            border-radius: 7px;
             border: 1px solid #334155;
             background: #0f172a;
             color: #94a3b8;
             font-weight: 800;
-            font-size: 13px;
+            font-size: 12.5px;
             cursor: pointer;
             font-family: inherit;
         }
@@ -2436,86 +2634,92 @@
                 </div>
             </div>
 
-            <!-- TOP BAR & BREADCRUMB -->
-            <div class="vstep-top-bar">
-                <div id="dgnl-resume-slot"></div>
-                <div class="vstep-crumb">
-                    <a href="index.html">Trang chủ</a> /
-                    <a href="baihoc.html">Vật Lý 12</a> /
-                    <span style="color:#38bdf8;">Chiến Dịch 50 Đề THPTQG 2026</span>
+            <!-- THANH TIÊU ĐỀ & CHỌN ĐỀ 1 DÒNG SIÊU GỌN -->
+            <div class="wow-top-command-bar" id="wow-top-command-bar">
+                <div class="wow-cmd-left">
+                    <h1 class="wow-compact-h1" id="dgnl-main-heading">Đề Thi Thử THPTQG 2026 – Đề số 01 (Khảo sát năng lực chuẩn Bộ)</h1>
+                    <span class="wow-compact-meta" id="compact-meta-pill">50p · 28 câu · 8 MH 60FPS</span>
                 </div>
-                <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-                    <span class="vstep-meta-badge" style="background:rgba(56,189,248,0.12);color:#38bdf8;border-color:rgba(56,189,248,0.3);">
-                        <i class="fa-solid fa-cubes"></i> Mô phỏng Vật Lý 60 FPS
-                    </span>
-                    <span class="vstep-meta-badge" style="background:rgba(16,185,129,0.12);color:#10b981;border-color:rgba(16,185,129,0.3);">
-                        <i class="fa-solid fa-bolt"></i> Guest 1-Click Active
-                    </span>
+                <div class="wow-cmd-right">
+                    <button type="button" class="btn-exam-choice active" id="btn-choice-exam1" onclick="switchExam(1)">Đề 01</button>
+                    <button type="button" class="btn-exam-choice" id="btn-choice-exam2" onclick="switchExam(2)">Đề 02</button>
+                    <button type="button" class="btn-exam-choice" id="btn-choice-exam3" onclick="switchExam(3)">Đề 03</button>
+                    <button type="button" class="btn-open-50-drawer" id="btn-open-50exams-drawer" onclick="openCampaign50Drawer()">
+                        <i class="fa-solid fa-book-open"></i> <span id="drawer50-btn-label">Kho 50 Đề (Đề 01)</span>
+                    </button>
+                    <button type="button" class="btn-toggle-info" id="btn-toggle-exam-info" onclick="toggleExamInfoPanel()">
+                        <i class="fa-solid fa-circle-info"></i> Chi tiết
+                    </button>
                 </div>
             </div>
 
-            <!-- BỘ CHỌN ĐỀ THI CHIẾN DỊCH 50 ĐỀ CHUẨN BỘ 2026 -->
-            <div class="vstep-exam-selector-wrap">
-                <span style="font-size:13px;font-weight:700;color:#94a3b8;"><i class="fa-solid fa-layer-group"></i> Đề thi nhanh:</span>
-                <button type="button" class="btn-exam-choice active" id="btn-choice-exam1" onclick="switchExam(1)">
-                    <i class="fa-solid fa-file-lines"></i> Đề 01 · Khảo sát Free (8 Mô hình 60 FPS)
-                </button>
-                <button type="button" class="btn-exam-choice" id="btn-choice-exam2" onclick="switchExam(2)">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> Đề 02 · Kiểm chứng tiến bộ (6 Mô hình)
-                </button>
-                <button type="button" class="btn-exam-choice" id="btn-choice-exam3" onclick="switchExam(3)">
-                    <i class="fa-solid fa-flask"></i> Đề 03
-                </button>
-                <button type="button" class="btn-open-50-drawer" id="btn-open-50exams-drawer" onclick="openCampaign50Drawer()">
-                    <i class="fa-solid fa-book-open"></i> <span id="drawer50-btn-label">Kho 50 Đề Bộ 2026 (Đang chọn: Đề 01)</span>
-                </button>
-                <span id="exam-auto-notice" style="margin-left:auto;font-size:12px;color:#10b981;font-weight:700;display:none;">
-                    <i class="fa-solid fa-circle-check"></i> Đã tự động chuyển đề tiếp theo dựa trên lịch sử làm bài của em
-                </span>
+            <div id="dgnl-resume-slot"></div>
+            <div id="exam-auto-notice" style="margin-bottom:8px;font-size:12px;color:#10b981;font-weight:700;display:none;align-items:center;gap:6px;">
+                <i class="fa-solid fa-circle-check"></i> Đã tự động chuyển đề tiếp theo dựa trên lịch sử làm bài của em
             </div>
 
-            <!-- H1 TIÊU ĐỀ HỌC THUẬT -->
-            <h1 class="vstep-h1" id="dgnl-main-heading">Đề Thi Thử THPTQG 2026 – Đề số 01 (Khảo sát năng lực chuẩn Bộ)</h1>
-
-            <!-- META BADGES -->
-            <div class="vstep-meta" id="dgnl-meta-badges">
-                <span class="vstep-meta-badge" id="meta-badge-time"><i class="fa-regular fa-clock"></i> 50 phút</span>
-                <span class="vstep-meta-badge" id="meta-badge-qcount"><i class="fa-solid fa-list-check"></i> 28 câu chuẩn Bộ GD&amp;ĐT (3 Phần)</span>
-                <span class="vstep-meta-badge" id="meta-badge-models"><i class="fa-solid fa-cubes"></i> 8 Mô hình Vật Lý 60 FPS</span>
-                <span class="vstep-meta-badge"><i class="fa-solid fa-user-tie"></i> Biên soạn: Thầy Nguyễn Xuân Trường</span>
-            </div>
-
-            <!-- MỤC TIÊU BÀI TEST CHẨN ĐOÁN -->
-            <div class="vstep-goals">
-                <div class="vstep-goals-title">
-                    <i class="fa-solid fa-bullseye"></i> CẤU TRÚC CHUẨN BỘ GD&amp;ĐT 2026 &amp; THÍ NGHIỆM TRỰC QUAN
+            <!-- KHỐI THÔNG TIN CHI TIẾT (THU GỌN MẶC ĐỊNH ĐỂ DÀNH KHÔNG GIAN CHO ĐỀ BÀI) -->
+            <div class="wow-collapsible-info" id="exam-collapsible-info">
+                <div class="vstep-top-bar" style="margin-bottom:10px !important;">
+                    <div class="vstep-crumb">
+                        <a href="index.html">Trang chủ</a> /
+                        <a href="baihoc.html">Vật Lý 12</a> /
+                        <span style="color:#38bdf8;">Chiến Dịch 50 Đề THPTQG 2026</span>
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+                        <span class="vstep-meta-badge" style="background:rgba(56,189,248,0.12);color:#38bdf8;border-color:rgba(56,189,248,0.3);">
+                            <i class="fa-solid fa-cubes"></i> Mô phỏng Vật Lý 60 FPS
+                        </span>
+                        <span class="vstep-meta-badge" style="background:rgba(16,185,129,0.12);color:#10b981;border-color:rgba(16,185,129,0.3);">
+                            <i class="fa-solid fa-bolt"></i> Guest 1-Click Active
+                        </span>
+                    </div>
                 </div>
-                <ul class="vstep-goals-list">
-                    <li><span class="vstep-check-ic">✓</span> Phần I (18 câu · 4,5đ): Lý thuyết nền tảng phủ kín 16 chủ đề cốt lõi.</li>
-                    <li><span class="vstep-check-ic">✓</span> Phần II (4 câu Đ/S · 4,0đ): 100% tích hợp Mô phỏng Thí nghiệm 60 FPS trực quan.</li>
-                    <li><span class="vstep-check-ic">✓</span> Phần III (6 câu TLN · 1,5đ): Cụm tính toán thực tế chuẩn 3 chương trọng tâm.</li>
-                    <li><span class="vstep-check-ic">✓</span> Chấm điểm chuẩn Bộ (10 điểm) &amp; Mở lộ trình bài giảng khắc phục ngay.</li>
-                </ul>
+                <div class="vstep-meta" id="dgnl-meta-badges" style="margin-bottom:12px !important;">
+                    <span class="vstep-meta-badge" id="meta-badge-time"><i class="fa-regular fa-clock"></i> 50 phút</span>
+                    <span class="vstep-meta-badge" id="meta-badge-qcount"><i class="fa-solid fa-list-check"></i> 28 câu chuẩn Bộ GD&amp;ĐT (3 Phần)</span>
+                    <span class="vstep-meta-badge" id="meta-badge-models"><i class="fa-solid fa-cubes"></i> 8 Mô hình Vật Lý 60 FPS</span>
+                    <span class="vstep-meta-badge"><i class="fa-solid fa-user-tie"></i> Biên soạn: Thầy Nguyễn Xuân Trường</span>
+                </div>
+                <div class="vstep-goals" style="margin-bottom:10px !important;padding:14px 18px !important;">
+                    <div class="vstep-goals-title">
+                        <i class="fa-solid fa-bullseye"></i> CẤU TRÚC CHUẨN BỘ GD&amp;ĐT 2026 &amp; THÍ NGHIỆM TRỰC QUAN
+                    </div>
+                    <ul class="vstep-goals-list">
+                        <li><span class="vstep-check-ic">✓</span> Phần I (18 câu · 4,5đ): Lý thuyết nền tảng phủ kín 16 chủ đề cốt lõi.</li>
+                        <li><span class="vstep-check-ic">✓</span> Phần II (4 câu Đ/S · 4,0đ): 100% tích hợp Mô phỏng Thí nghiệm 60 FPS trực quan.</li>
+                        <li><span class="vstep-check-ic">✓</span> Phần III (6 câu TLN · 1,5đ): Cụm tính toán thực tế chuẩn 3 chương trọng tâm.</li>
+                        <li><span class="vstep-check-ic">✓</span> Chấm điểm chuẩn Bộ (10 điểm) &amp; Mở lộ trình bài giảng khắc phục ngay.</li>
+                    </ul>
+                </div>
             </div>
 
             <!-- MÀN HÌNH 1: LÀM BÀI TEST -->
             <div id="screen-quiz">
                 <div class="wow-part-tabs" id="wow-part-tabs">
-                    <button type="button" class="wow-part-tab active" id="wow-part-tab-1" onclick="jumpToPart(1)">
-                        <div class="wow-part-tag">PHẦN I · 4,5 ĐIỂM</div>
-                        <div class="wow-part-name">Trắc nghiệm 4 phương án</div>
-                        <div class="wow-part-sub">Câu 1 – 18 (0,25đ/câu)</div>
-                    </button>
-                    <button type="button" class="wow-part-tab" id="wow-part-tab-2" onclick="jumpToPart(2)">
-                        <div class="wow-part-tag">PHẦN II · 4,0 ĐIỂM</div>
-                        <div class="wow-part-name">Đúng / Sai thực nghiệm</div>
-                        <div class="wow-part-sub">Câu 19 – 22 (Tối đa 1,0đ/câu)</div>
-                    </button>
-                    <button type="button" class="wow-part-tab" id="wow-part-tab-3" onclick="jumpToPart(3)">
-                        <div class="wow-part-tag">PHẦN III · 1,5 ĐIỂM</div>
-                        <div class="wow-part-name">Trả lời ngắn tính toán</div>
-                        <div class="wow-part-sub">Câu 23 – 28 (0,25đ/câu)</div>
-                    </button>
+                    <div class="wow-part-tabs-left">
+                        <button type="button" class="wow-part-tab active" id="wow-part-tab-1" onclick="jumpToPart(1)">
+                            <span class="wow-part-tag">PHẦN I</span>
+                            <span class="wow-part-name">Trắc nghiệm (1–18)</span>
+                            <span class="wow-part-sub">· 4,5đ</span>
+                        </button>
+                        <button type="button" class="wow-part-tab" id="wow-part-tab-2" onclick="jumpToPart(2)">
+                            <span class="wow-part-tag">PHẦN II</span>
+                            <span class="wow-part-name">Đúng/Sai (19–22)</span>
+                            <span class="wow-part-sub">· 4,0đ</span>
+                        </button>
+                        <button type="button" class="wow-part-tab" id="wow-part-tab-3" onclick="jumpToPart(3)">
+                            <span class="wow-part-tag">PHẦN III</span>
+                            <span class="wow-part-name">Trả lời ngắn (23–28)</span>
+                            <span class="wow-part-sub">· 1,5đ</span>
+                        </button>
+                    </div>
+                    <div class="wow-kbd-legend">
+                        <span>Phím tắt:</span>
+                        <span class="wow-kbd-pill">← / →</span> Chuyển câu
+                        <span class="wow-kbd-pill">A–D / 1–4</span> Chọn nhanh
+                        <span class="wow-kbd-pill">Space</span> Tạm dừng Lab
+                    </div>
                 </div>
 
                 <div class="vstep-q-box" id="question-card-container">
@@ -2523,14 +2727,14 @@
                 </div>
 
                 <div class="vstep-nav-footer">
-                    <button class="vstep-btn secondary" id="btn-prev" onclick="prevQuestion()">
-                        <i class="fa-solid fa-arrow-left"></i> Câu trước
+                    <button type="button" class="vstep-btn secondary" id="btn-prev" onclick="prevQuestion()">
+                        <i class="fa-solid fa-arrow-left"></i> Câu trước (←)
                     </button>
-                    <button class="vstep-btn submit" onclick="confirmSubmit()">
-                        <i class="fa-solid fa-paper-plane"></i> Nộp Bài &amp; Chấm Điểm Chuẩn Bộ
-                    </button>
-                    <button class="vstep-btn secondary" id="btn-next" onclick="nextQuestion()">
-                        Câu tiếp <i class="fa-solid fa-arrow-right"></i>
+                    <div class="wow-kbd-legend" style="font-size:12px;">
+                        Bấm mũi tên <span class="wow-kbd-pill">→</span> hoặc <span class="wow-kbd-pill">A</span><span class="wow-kbd-pill">B</span><span class="wow-kbd-pill">C</span><span class="wow-kbd-pill">D</span> để làm nhanh không cần cuộn
+                    </div>
+                    <button type="button" class="vstep-btn primary-next" id="btn-next" onclick="nextQuestion()">
+                        Câu tiếp (→) <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
@@ -2686,7 +2890,7 @@
                 Bài thi chuẩn cấu trúc Bộ GD&amp;ĐT gồm <strong>28 câu (3 Phần: Trắc nghiệm · Đúng/Sai · Trả lời ngắn)</strong> tích hợp <strong>Mô phỏng Thí nghiệm Vật Lý 60 FPS tương tác trực tiếp</strong>. Hệ thống chấm điểm tự động thang 10 và định vị lỗ hổng tức thì!
             </p>
 
-            <div style="background:#0b1329;border:1px solid #1e3a5f;border-radius:12px;padding:14px 18px;text-align:left;margin-bottom:24px;display:flex;flex-direction:column;gap:9px;font-size:13.5px;color:#e2e8f0;">
+            <div style="background:#0b1329;border:1px solid #1e3a5f;border-radius:12px;padding:14px 18px;text-align:left;margin-bottom:22px;display:flex;flex-direction:column;gap:9px;font-size:13.5px;color:#e2e8f0;">
                 <div style="display:flex;align-items:center;gap:10px;">
                     <i class="fa-solid fa-clock" style="color:#38bdf8;width:18px;"></i>
                     <span>Thời gian làm bài: <strong id="start-modal-time">50 phút</strong> (Đồng hồ chỉ bắt đầu đếm khi em bấm Bắt Đầu).</span>
@@ -2697,7 +2901,11 @@
                 </div>
                 <div style="display:flex;align-items:center;gap:10px;">
                     <i class="fa-solid fa-graduation-cap" style="color:#fbbf24;width:18px;"></i>
-                    <span>Mỗi đề trong Kho 50 Đề hoàn toàn độc lập không trùng lặp (1.400 câu chuẩn hóa).</span>
+                    <span>Cấu trúc 3 Phần chuẩn Bộ: P1 (18 câu · 4,5đ), P2 Đúng/Sai (4 câu · 4,0đ), P3 TLN (6 câu · 1,5đ).</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;padding-top:6px;border-top:1px solid #1e293b;">
+                    <i class="fa-solid fa-keyboard" style="color:#a78bfa;width:18px;"></i>
+                    <span>Phím tắt thông minh: <strong>← / →</strong> chuyển câu, <strong>A–D / 1–4</strong> chọn đáp án, <strong>Space</strong> tạm dừng mô phỏng, <strong>F</strong> đánh dấu.</span>
                 </div>
             </div>
 
@@ -3159,6 +3367,14 @@
             if (open) renderPalette();
         };
 
+        window.toggleExamInfoPanel = function() {
+            var panel = document.getElementById('exam-collapsible-info');
+            var btn = document.getElementById('btn-toggle-exam-info');
+            if (!panel) return;
+            var isOpen = panel.classList.toggle('open');
+            if (btn) btn.classList.toggle('active', isOpen);
+        };
+
         function updateExamChromeUI() {
             var btn1 = document.getElementById('btn-choice-exam1');
             var btn2 = document.getElementById('btn-choice-exam2');
@@ -3168,13 +3384,16 @@
             if (btn3) btn3.classList.toggle('active', currentExamNumber === 3);
 
             var drawerLbl = document.getElementById('drawer50-btn-label');
-            if (drawerLbl) drawerLbl.textContent = 'Kho 50 Đề Bộ 2026 (Đang chọn: Đề ' + pad2(currentExamNumber) + ')';
+            if (drawerLbl) drawerLbl.textContent = 'Kho 50 Đề (Đề ' + pad2(currentExamNumber) + ')';
 
             var heading = document.getElementById('dgnl-main-heading');
             if (heading) heading.textContent = currentExamTitle || ('Đề Thi Thử THPTQG 2026 – Đề số ' + pad2(currentExamNumber));
 
             var modCnt = questions.filter(function(q) { return !!q.modelId; }).length;
             var mins = Math.round(currentExamDurationSec / 60);
+            var compactMeta = document.getElementById('compact-meta-pill');
+            if (compactMeta) compactMeta.textContent = mins + 'p · ' + questions.length + ' câu · ' + modCnt + ' MH 60FPS';
+
             var bTime = document.getElementById('meta-badge-time');
             var bQ = document.getElementById('meta-badge-qcount');
             var bMod = document.getElementById('meta-badge-models');
@@ -3607,29 +3826,57 @@
             } else {
                 var selectedAns = userAnswers[idx];
                 var letters = ['A', 'B', 'C', 'D'];
-                interactionHtml = '<div class="vstep-options-grid">' + (q.options || []).map(function(opt, oIdx) {
+                var maxOptLen = 0;
+                var optCardsHtml = (q.options || []).map(function(opt, oIdx) {
                     var isSel = selectedAns === oIdx;
-                    var optTextClean = formatOptionText(letters[oIdx], opt);
-                    return '<div class="vstep-option-card ' + (isSel ? 'selected' : '') + '" id="mc-opt-' + idx + '-' + oIdx + '" onclick="selectOption(' + idx + ', ' + oIdx + ')">' + optTextClean + '</div>';
-                }).join('') + '</div>';
+                    var bodyClean = fixFormulaStrings(String(opt || '').trim()).replace(/^[A-D]\.\s*/i, '');
+                    var plainLen = bodyClean.replace(/<[^>]*>?/g, '').replace(/\$[^$]*\$/g, '1234').length;
+                    if (plainLen > maxOptLen) maxOptLen = plainLen;
+                    return '<div class="vstep-option-card ' + (isSel ? 'selected' : '') + '" id="mc-opt-' + idx + '-' + oIdx + '" onclick="selectOption(' + idx + ', ' + oIdx + ')">' +
+                        '<span class="wow-opt-key">' + letters[oIdx] + '</span>' +
+                        '<span style="flex:1;min-width:0">' + bodyClean + '</span>' +
+                    '</div>';
+                }).join('');
+                var useCols2 = !stageHtml && maxOptLen <= 90;
+                interactionHtml = '<div class="vstep-options-grid ' + (useCols2 ? 'cols-2' : '') + '">' + optCardsHtml + '</div>';
+            }
+
+            var hasTableInStem = /<table\b/i.test(qStemHtml);
+            var bodySectionHtml = '';
+            if (stageHtml) {
+                if (partNum === 3 && q.type === 'short') {
+                    bodySectionHtml = ctxHtml +
+                        '<div class="wow-q-split">' +
+                            '<div class="wow-split-left">' + stageHtml + '</div>' +
+                            '<div class="wow-split-right"><div class="vstep-q-stem" style="margin-bottom:10px">' + qStemHtml + '</div>' + interactionHtml + '</div>' +
+                        '</div>';
+                } else {
+                    bodySectionHtml = ctxHtml +
+                        '<div class="vstep-q-stem">' + qStemHtml + '</div>' +
+                        '<div class="wow-q-split">' +
+                            '<div class="wow-split-left">' + stageHtml + '</div>' +
+                            '<div class="wow-split-right">' + interactionHtml + '</div>' +
+                        '</div>';
+                }
+            } else {
+                bodySectionHtml = ctxHtml +
+                    '<div class="vstep-q-stem">' + qStemHtml + '</div>' +
+                    interactionHtml;
             }
 
             container.innerHTML =
-                '<div class="vstep-q-header" style="flex-wrap:wrap;gap:10px">' +
+                '<div class="vstep-q-header" style="flex-wrap:wrap;gap:8px">' +
                     '<div class="vstep-q-title">' +
                         '<i class="fa-solid fa-file-pen" style="color:#38bdf8"></i> Câu ' + (idx + 1) + ' / ' + questions.length +
-                        '<span style="font-size:12px;font-weight:700;color:#94a3b8;background:rgba(255,255,255,0.06);padding:2px 9px;border-radius:6px">' + partTagLabel + '</span>' +
+                        '<span style="font-size:11.5px;font-weight:700;color:#94a3b8;background:rgba(255,255,255,0.06);padding:2px 8px;border-radius:6px">' + partTagLabel + '</span>' +
                     '</div>' +
-                    '<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">' +
+                    '<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">' +
                         '<span class="vstep-badge topic">' + escHtml(q.topic) + '</span>' +
                         '<span class="vstep-badge level">' + escHtml(q.level || 'TH') + '</span>' +
-                        '<button type="button" class="wow-flag-btn ' + (flaggedQuestions[idx] ? 'active' : '') + '" id="wow-flag-btn" onclick="toggleFlagQuestion(' + idx + ')"><i class="fa-solid fa-flag"></i> Đánh dấu</button>' +
+                        '<button type="button" class="wow-flag-btn ' + (flaggedQuestions[idx] ? 'active' : '') + '" id="wow-flag-btn" onclick="toggleFlagQuestion(' + idx + ')"><i class="fa-solid fa-flag"></i> Đánh dấu (F)</button>' +
                     '</div>' +
                 '</div>' +
-                ctxHtml +
-                stageHtml +
-                '<div class="vstep-q-stem">' + qStemHtml + '</div>' +
-                interactionHtml;
+                bodySectionHtml;
 
             // Khởi chạy 60 FPS loop nếu câu này có Canvas model
             stopWowCanvasLoop();
@@ -3646,10 +3893,19 @@
                 wowState.rafId = requestAnimationFrame(wowAnimationTick);
             }
 
-            // Cập nhật Sidebar trái + Palette không re-mount toàn DOM
+            // Cập nhật Sidebar trái + Palette và cuộn nhẹ câu hiện tại vào tầm nhìn sidebar trái
+            var activeSideEl = null;
             document.querySelectorAll('.vstep-lesson-item').forEach(function(el) {
-                el.classList.toggle('active', el.id === 'sidebar-q-' + idx);
+                var isAct = (el.id === 'sidebar-q-' + idx);
+                el.classList.toggle('active', isAct);
+                if (isAct) activeSideEl = el;
             });
+            if (activeSideEl && activeSideEl.scrollIntoView) {
+                try { activeSideEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch(e) {}
+            }
+            if (window.scrollY > 40) {
+                try { window.scrollTo({ top: 0, behavior: 'instant' }); } catch(e) { window.scrollTo(0, 0); }
+            }
             renderPalette();
 
             var prevBtn = document.getElementById('btn-prev');
@@ -3711,6 +3967,167 @@
         function prevQuestion() { if (currentIndex > 0) renderQuestion(currentIndex - 1); }
         function nextQuestion() { if (currentIndex < questions.length - 1) renderQuestion(currentIndex + 1); }
         function goToQuestion(idx) { renderQuestion(idx); }
+
+        /* ═══════════════════════════════════════════
+           PHÍM TẮT THÔNG MINH (SMART KEYBOARD SHORTCUTS)
+           ← / →: Chuyển câu trước / tiếp
+           1, 2, 3, 4 hoặc A, B, C, D: Chọn đáp án trắc nghiệm
+           F: Đánh dấu xem lại
+           Space: Tạm dừng / Tiếp tục mô phỏng Canvas 60 FPS
+           Z: Phóng to / Thu nhỏ mô phỏng Lab toàn màn hình
+           Enter: Bắt đầu thi (trong popup) / Nộp bài (trong confirm) / Next câu (trong TLN)
+           Escape: Đóng các modal/popup đang mở
+        ═══════════════════════════════════════════ */
+        document.addEventListener('keydown', function(e) {
+            // Không can thiệp nếu đang dùng tổ hợp phím hệ thống Ctrl / Alt / Meta
+            if (e.ctrlKey || e.altKey || e.metaKey) return;
+
+            var target = e.target;
+            var isInput = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT' || target.isContentEditable);
+
+            // Phím Escape: đóng các modal nếu đang mở
+            if (e.key === 'Escape') {
+                var fsModal = document.getElementById('wow-fullscreen-modal');
+                if (fsModal && fsModal.style.display === 'flex') {
+                    closeWowFullscreen();
+                    return;
+                }
+                var drawerModal = document.getElementById('campaign-50-drawer-modal');
+                if (drawerModal && drawerModal.style.display === 'flex') {
+                    closeCampaign50Drawer();
+                    return;
+                }
+                var mobilePalette = document.getElementById('mobile-palette-modal');
+                if (mobilePalette && mobilePalette.style.display === 'flex') {
+                    if (typeof toggleMobilePaletteDrawer === 'function') toggleMobilePaletteDrawer(false);
+                    return;
+                }
+                var confirmModal = document.getElementById('submit-confirm-modal');
+                if (confirmModal && confirmModal.style.display === 'flex') {
+                    closeSubmitConfirmModal();
+                    return;
+                }
+                return;
+            }
+
+            // Xử lý khi đang gõ trong ô Trả lời ngắn Part III
+            if (isInput) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    target.blur();
+                    if (currentIndex < questions.length - 1) {
+                        nextQuestion();
+                    }
+                }
+                return;
+            }
+
+            // Nếu popup bắt đầu đang mở và bấm Enter -> bắt đầu làm bài ngay
+            var startModal = document.getElementById('start-exam-modal');
+            if (startModal && startModal.style.display === 'flex') {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (typeof startExamNow === 'function') startExamNow();
+                }
+                return;
+            }
+
+            // Nếu popup xác nhận nộp bài đang mở và bấm Enter -> nộp bài ngay
+            var scModal = document.getElementById('submit-confirm-modal');
+            if (scModal && scModal.style.display === 'flex') {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    executeFinalSubmit();
+                }
+                return;
+            }
+
+            // Nếu đang ở màn hình báo cáo kết quả (report-view visible) -> không điều hướng câu nữa
+            var reportView = document.getElementById('report-view');
+            if (reportView && reportView.style.display !== 'none') return;
+
+            // 1. Chuyển câu bằng phím mũi tên Trái / Phải hoặc PageUp / PageDown
+            if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+                e.preventDefault();
+                nextQuestion();
+                return;
+            }
+            if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                e.preventDefault();
+                prevQuestion();
+                return;
+            }
+
+            // 2. Chọn đáp án Part I (Trắc nghiệm 4 lựa chọn) & Part II (Đúng/Sai)
+            var q = questions[currentIndex];
+            if (!q) return;
+
+            var keyLower = e.key.toLowerCase();
+
+            if (q.type === 'mc') {
+                var optIdx = -1;
+                if (keyLower === 'a' || e.key === '1') optIdx = 0;
+                else if (keyLower === 'b' || e.key === '2') optIdx = 1;
+                else if (keyLower === 'c' || e.key === '3') optIdx = 2;
+                else if (keyLower === 'd' || e.key === '4') optIdx = 3;
+
+                if (optIdx >= 0 && optIdx < (q.options || []).length) {
+                    e.preventDefault();
+                    selectOption(currentIndex, optIdx);
+                    return;
+                }
+            } else if (q.type === 'tf') {
+                var tfSubIdx = -1;
+                if (keyLower === 'a' || e.key === '1') tfSubIdx = 0;
+                else if (keyLower === 'b' || e.key === '2') tfSubIdx = 1;
+                else if (keyLower === 'c' || e.key === '3') tfSubIdx = 2;
+                else if (keyLower === 'd' || e.key === '4') tfSubIdx = 3;
+                if (tfSubIdx >= 0 && tfSubIdx < 4) {
+                    e.preventDefault();
+                    var currArr = Array.isArray(userAnswers[currentIndex]) ? userAnswers[currentIndex] : [null, null, null, null];
+                    var nextVal = currArr[tfSubIdx] === true ? false : (currArr[tfSubIdx] === false ? null : true);
+                    selectTfSubOption(currentIndex, tfSubIdx, nextVal);
+                    return;
+                }
+            } else if (q.type === 'short') {
+                // Nếu bấm Enter ở ngoài khi đang ở câu Short -> focus vào ô nhập
+                if (e.key === 'Enter') {
+                    var inputEl = document.getElementById('short-ans-input-' + currentIndex);
+                    if (inputEl) {
+                        e.preventDefault();
+                        inputEl.focus();
+                        return;
+                    }
+                }
+            }
+
+            // 3. Phím F: Đánh dấu câu (Flag)
+            if (keyLower === 'f') {
+                e.preventDefault();
+                toggleFlagQuestion(currentIndex);
+                return;
+            }
+
+            // 4. Phím Space: Tạm dừng / tiếp tục Canvas loop nếu có
+            if (e.key === ' ' || e.code === 'Space') {
+                if (q.modelId && getCanvasDrawFn(q.modelId)) {
+                    e.preventDefault();
+                    toggleWowPlayPause();
+                    return;
+                }
+            }
+
+            // 5. Phím Z: Phóng to / Thu nhỏ mô phỏng Lab toàn màn hình
+            if (keyLower === 'z') {
+                if (q.modelId && getCanvasDrawFn(q.modelId)) {
+                    e.preventDefault();
+                    var fsModal = document.getElementById('wow-fullscreen-modal');
+                    if (fsModal && fsModal.style.display === 'flex') closeWowFullscreen();
+                    else openWowFullscreen();
+                    return;
+                }
+            }
+        });
 
         /* ═══════════════════════════════════════════
            ĐỒNG HỒ ĐẾM NGƯỢC

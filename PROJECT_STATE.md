@@ -1,3 +1,23 @@
+## Bàn giao gần nhất (18/11/2026 15:55)
+- **Tối Ưu Hóa Thị Giác 1-Khung Full-Width & Phím Tắt Thông Minh cho Trang Làm Bài THPTQG (`danh-gia-nang-luc.html`)**:
+- **Mục tiêu (theo góp ý trực tiếp từ ảnh chụp màn hình của Thầy)**:
+  1. Xóa sạch khoảng trống 2 bên giữa main stream và 2 cột sidebar (`grid-template-columns: 264px minmax(0, 1fr) 264px`, bỏ `max-width: 980px`).
+  2. Thu gọn phần đầu trang thành 1 dòng thanh lệnh mỏng (`.wow-top-command-bar`) + nút `ⓘ Chi tiết` mở/đóng `#exam-collapsible-info` (mặc định thu gọn) và đưa giới thiệu + hướng dẫn phím tắt vào modal khởi động `#start-exam-modal`.
+  3. Chia bố cục ngang 2 cột `.wow-q-split` (`1.15fr` sân khấu 60 FPS Canvas bên trái / `0.85fr` phương án bên phải) và lưới 2 cột `.cols-2` cho trắc nghiệm ngắn giúp trọn bộ 1 câu hỏi + mô phỏng + đáp án + thanh chuyển câu **nằm gọn trong 1 khung màn hình Laptop `1536×730` không cần cuộn**.
+  4. Xóa nút `Nộp Bài & Chấm Điểm` trùng lặp ở giữa chân thẻ câu hỏi (giữ duy nhất nút Nộp bài cố định ở Sidebar phải trên Desktop và Mobile HUD trên điện thoại).
+  5. Bổ sung hệ thống **Phím tắt thông minh**: `← / →` (hoặc `PageUp/PageDown`) chuyển câu, `A–D` / `1–4` chọn nhanh Phần I & chuyển trạng thái Đúng/Sai Phần II, `Enter` lưu & chuyển câu tiếp trong ô Trả lời ngắn Phần III (hoặc bắt đầu/xác nhận trong modal), `F` đánh dấu câu, `Space` tạm dừng/chạy mô phỏng 60 FPS, `Z` phóng to Lab toàn màn hình, `Escape` đóng modal.
+- **File đã sửa (`eduhost-vn204/edu-portal-lms`, nhánh `main`, trên nền `9109e22`)**:
+  - `danh-gia-nang-luc.html`
+- **Kiểm định sau chỉnh sửa cuối**:
+  - **6/6 suite Node.js LMS PASS 100%**: `test_cro_funnel.mjs`, `test_diagnostic_mastery_loop.mjs`, `test_remedial_and_prediction.mjs`, `test_smart_marketing_popup.mjs`, `scripts/test-quiz-merge.mjs`, `scripts/test-quiz-publish.mjs`.
+  - **Audit tĩnh**: `jsOk: true` (3 inline scripts), `endsHtml: true`, `hasGlowText: false`, `hasGlowFilter: false` (Zero AI Glow).
+  - **Playwright Retina `2x` (`scratch/pw_verify_lms_ux.py`)**:
+    - Laptop `1536×730` (Windows 125%): `gap_left=0.0px`, `gap_right=0.0px`, chân điều hướng chỉ còn `['Câu trước (←)', 'Câu tiếp (→)']`, đáy toàn bộ câu hỏi kèm Canvas `y=674.8px <= 730px` (1 khung không cuộn), PASS phím `b`, `f`, `ArrowRight`, `1`, `ArrowLeft` & nút thu gọn/mở rộng `#exam-collapsible-info`.
+    - Desktop `1920×960`: Đã soi ảnh PNG cho `Đề 02 Câu 1` (4 hình `MH-TN220-C1-28`), Phần II Đúng/Sai (`Câu 19` + phím `1` bật Đúng/Sai), Phần III Trả lời ngắn (`Câu 23` nhập số + `Enter` sang `Câu 24`).
+    - Mobile `390×844`: `y=131.0px >= 60px` chống khuất navbar, `scrollWidth=390 === innerWidth=390` (0 tràn ngang), tab 3 phần xếp gọn 1 hàng 3 cột.
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên toàn bộ `phong-thi-thu.html`, các hợp đồng CRO/Auth Gate/Remedial và cấu trúc dữ liệu 50 đề `data/thptqg-*`.
+
 ## Bàn giao gần nhất (18/11/2026 14:35)
 - **Nâng Cấp Bài Test Điểm Thi THPT Quốc Gia 2026 (`danh-gia-nang-luc.html`) Thành Kho 50 Đề Chuẩn Bộ 28 Câu · Tích Hợp Mô Phỏng Vật Lý 60 FPS Tương tác Trực Tiếp**:
 - **Mục tiêu**:
