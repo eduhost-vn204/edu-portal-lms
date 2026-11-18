@@ -1,7 +1,7 @@
-## Bàn giao gần nhất (18/11/2026 16:09)
+## Bàn giao gần nhất (18/11/2026 16:11)
 - **Tinh Gọn Thanh Điều Hướng Toàn Hệ Thống & Lấp Đầy Bản Đồ Sao 3D `index.html` (Đã triển khai `main`)**:
 - **Trạng thái triển khai**:
-  - Đã merge đồng bộ nền mới nhất `origin/main` (`3a2e5d4`, giữ nguyên toàn bộ nâng cấp `danh-gia-nang-luc.html`), hoàn tất kiểm định và đẩy thẳng lên nhánh `main` (`eduhost-vn204/edu-portal-lms` → `https://vatlyxuantruong.io.vn`).
+  - Đã merge đồng bộ nền mới nhất `origin/main` (`1e2e0e9`, giữ nguyên toàn bộ nâng cấp `danh-gia-nang-luc.html`), hoàn tất kiểm định và đẩy thẳng lên nhánh `main` (`eduhost-vn204/edu-portal-lms` → `https://vatlyxuantruong.io.vn`).
 - **File đã sửa (15 file)**:
   - 14 trang HTML có thanh điều hướng (`index.html`, `danh-gia-nang-luc.html`, `baihoc.html`, `phong-thi-thu.html`, `huongdan.html`, `goi-hoc.html`, `hoso.html`, `hoso-hud.html`, `live-record.html`, `danhsach-ly12.html`, `dau-thuong-hud.html`, `dau-thuong.html`, `dua-top.html`, `solo.html`) và `auth.js`.
 - **Hành vi mới**:
@@ -24,6 +24,11 @@
   - Playwright trực quan Desktop (`1440×900` trên `index.html`, `baihoc.html`, `phong-thi-thu.html`, `danh-gia-nang-luc.html`) & Mobile Drawer (`390×844` qua `auth.js`): **PASS**, đã soi ảnh chụp xác nhận 6 thiên thể cân đối trên `index.html`, thanh điều hướng sắc nét và giữ nguyên hoàn toàn giao diện CBT sáng của `phong-thi-thu.html`.
 - **Điều phải giữ nguyên**:
   - Giữ nguyên hoàn toàn giao diện CBT sáng của `phong-thi-thu.html`, không xóa file `danhsach-ly12.html` / `dau-thuong*.html` / `dua-top.html` / `solo.html` / `live-record.html`, giữ nguyên `.nav-item-pro` để `auth.js` tự hiển thị nhãn `ĐANG BẬT` cho tài khoản Pro.
+
+## Bàn giao gần nhất (18/11/2026 16:09)
+- **Chuyển thanh điều khiển Mô phỏng 60 FPS xuống phía dưới mô hình (`danh-gia-nang-luc.html`)**:
+  - Di chuyển `.wow-stage-head` (thêm class `.wow-stage-bottom-bar` với `border-top: 1px solid #1e293b; border-bottom: none`) xuống ngay dưới `#wow-stage-media-wrap` cho cả mô phỏng Canvas 60 FPS và sơ đồ SVG dự phòng, giúp học sinh đọc đề xong nhìn thẳng vào mô hình mà không bị phân tán.
+  - Kiểm định: `6/6` suite Node.js LMS PASS 100%, Playwright Retina `2x` xác nhận `Media: 295.6 -> 506.8`, `ControlBar: 506.8 -> 578.4`, `TotalBottom: 674.8 / 730` và soi trực quan ảnh PNG.
 
 ## Bàn giao gần nhất (18/11/2026 16:01)
 - **Tinh chỉnh thanh điều khiển Sân khấu 60 FPS (`danh-gia-nang-luc.html`)**:
