@@ -1,3 +1,26 @@
+## Bàn giao gần nhất (18/11/2026 14:35)
+- **Nâng Cấp Bài Test Điểm Thi THPT Quốc Gia 2026 (`danh-gia-nang-luc.html`) Thành Kho 50 Đề Chuẩn Bộ 28 Câu · Tích Hợp Mô Phỏng Vật Lý 60 FPS Tương tác Trực Tiếp**:
+- **Mục tiêu**:
+  1. Đưa trọn **50 đề thi 28 câu độc lập (`1.400` câu chuẩn Bộ GD&ĐT 2026: Phần I 18 TN · Phần II 4 Đ/S 100% Canvas · Phần III 6 TLN)** từ Ngân hàng đề `3.514` câu sang trang `danh-gia-nang-luc.html` phục vụ học sinh trải nghiệm `"Ồ WOW"` với mô phỏng Vật Lý 60 FPS tương tác được ngay trong đề thi.
+  2. Giữ nguyên **100%** các hợp đồng tương thích ngược của chuỗi CRO Funnel / Auth Gate / Remedial Deep Link / Smart Marketing Popup và giữ nguyên hoàn toàn `phong-thi-thu.html`.
+- **Commit & File đã sửa (`eduhost-vn204/edu-portal-lms`, nhánh `main`, trên nền `7d7ed13`)**:
+  - `assets/canvas-core-helpers.js`, `assets/mo-hinh-thuc-te-models.js`, `assets/staging-ds-models.js`, `assets/staging-tn50-models.js`, `assets/staging-tn220-models.js`, `assets/tln-thuc-te-models.js`, `data/mo-hinh-thuc-te-models.js`: Đồng bộ trọn bộ 6 thư viện mô hình Vật Lý 60 FPS (gồm `MH-TN220-C2-47`, `MH-TN220-C1-48` và `MH-TLN-2026-03` Canvas 60 FPS).
+  - `assets/images/{staging,staging-220,staging-ds}/...`: Đồng bộ trọn `129` ảnh minh họa cục bộ được 50 đề tham chiếu (`0` ảnh thiếu).
+  - `data/thptqg-50-manifest.js` & `data/thptqg-exams/de-01.json..de-50.json`: Manifest danh mục 50 đề nạp sẵn `Đề 01 & 02` (`0ms` boot) và `50` file đề tĩnh JSON (`de-01..de-50.json`) cho tải tức thì từng đề.
+  - `danh-gia-nang-luc.html`: Nâng cấp toàn diện giao diện phẳng EdTech (loại bỏ sạch AI Glow, thêm `padding-top: 60px` chống khuất dưới Fixed Navbar):
+    - **Sân khấu Mô phỏng 60 FPS Retina (`1560×610`)**: Nút `Tạm dừng / Tiếp tục`, tua tốc độ `0.5x | 1x | 2x`, `Đặt lại`, chuyển `Ảnh đề gốc` và `Phóng to Lab` toàn màn hình.
+    - **Kho 50 Đề Chuẩn Bộ (`#campaign-50-drawer-modal`)**: Lọc theo 4 nhóm chiến dịch (`Khảo sát Free 1–5`, `Thực chiến 8+ 6–20`, `Về đích 9+ 21–40`, `Tổng duyệt 41–50`), tìm kiếm, hiển thị số mô hình & điểm đã làm.
+    - **Chấm điểm chuẩn Bộ GD&ĐT 10 điểm**: Phần I (`0,25đ/câu`), Phần II Đúng/Sai (`0,1 / 0,25 / 0,5 / 1,0đ`), Phần III Trả lời ngắn (`0,25đ/câu` hỗ trợ `,` & `.`), hiển thị phân rã 3 phần & lời giải KaTeX kèm nút mở lại mô phỏng 60 FPS cho từng câu.
+    - Bảo toàn toàn bộ DOM IDs/localStorage/Auth Gate/`renderRemedialSpotlight` cho kiểm thử CRO & Remedial hiện hữu.
+  - `freemium-flow.js`: Giữ nguyên tương thích 20 câu và truyền đúng điểm thực 3 phần (`score10` / `predictedScore`) qua `saveZeroFrictionProgress()`.
+  - `index.html`: Cập nhật nội dung `#dgnl-bootup-overlay` giới thiệu Kho 50 Đề 28 câu mô phỏng 60 FPS (giữ nguyên cấu trúc và `smart-marketing-popup.js`).
+- **Kiểm tra đã chạy sau chỉnh sửa cuối**:
+  - Đạt 100% trên 6/6 suite liên quan: `test_cro_funnel.mjs` (`8/8`), `test_diagnostic_mastery_loop.mjs`, `test_remedial_and_prediction.mjs`, `test_smart_marketing_popup.mjs`, `scripts/test-quiz-merge.mjs` (`6/6`), `scripts/test-quiz-publish.mjs` (`12/12`). *(Lưu ý nền có sẵn của repo upstream `7d7ed13`: `test_full_student_journey.mjs` dòng 131 kỳ vọng `>= 18` file trong `data/exams/` trong khi nhánh gốc đang có `15` file — ngoài phạm vi sửa.)*
+  - `verify_50exams_lms.mjs`: PASS `phong-thi-thu.html` không đổi, `vm.Script` 8 file JS + HTML inline script, Zero AI Glow, `1.400/1.400` câu & `0` ảnh thiếu trong 50 JSON, `git diff --check` và quét secret sạch.
+  - Playwright Retina `2x` (`pw_verify_lms_50exams.py` trên Desktop `1440×960` & Mobile `390×844`): PASS `Đề 01` Canvas `1560×610` hoạt động thay đổi pixel theo thời gian thực, điều khiển `0.5x/2x/Pause/Fullscreen`, chuyển `Đề 25` qua Kho 50 đề, chấm Phần I (`0.50`) + Phần II (`0.50 + 0.25`) + Phần III `"2,67"` (`0.25`) = **`1.5`** chính xác, Remedial Spotlight, `28` thẻ chữa chi tiết, Mobile HUD `y=78px >= 60`, `0` lỗi JS/`404`; kiểm tra trực quan 5 ảnh PNG Retina `2x`.
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên hoàn toàn `phong-thi-thu.html`; không để `sync-public-data.yml` ghi đè `data/thptqg-*` hoặc `assets/*`; giữ mọi hợp đồng CRO & Remedial trên `danh-gia-nang-luc.html`.
+
 ## Bàn giao gần nhất (12/11/2026 20:30)
 - **Triển khai hợp nhất Production (GAS `v162` + Student + Admin)**:
   - **Apps Script (`edu-portal-console/src/Mã.js` @ `v162`)**: đã push, version `162` và deploy lên endpoint production (23 cột `NganHangCauHoi` thêm `tnType` & `subTopic`, `importnganhang` idempotent upsert, `updatenganhang` & `bulksetbainganhang` giữ `tnType`/`subTopic`).

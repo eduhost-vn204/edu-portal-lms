@@ -166,8 +166,11 @@
         });
 
         // Tính điểm thi THPT dự kiến (Ma trận thang điểm 10 phản ánh chính xác kết quả bài test)
-        const rawScore = total > 0 ? (correct / total) * 10 : 0;
-        const predictedScore = Number(rawScore.toFixed(1));
+        const hasCustomScore = payload.score10 !== undefined && payload.score10 !== null && !isNaN(Number(payload.score10));
+        const rawScore = hasCustomScore ? Number(payload.score10) : (total > 0 ? (correct / total) * 10 : 0);
+        const predictedScore = (payload.predictedScore !== undefined && payload.predictedScore !== null && !isNaN(Number(payload.predictedScore)))
+          ? Number(payload.predictedScore)
+          : Number(rawScore.toFixed(1));
 
         const attemptData = {
           lessonKey: payload.lessonKey || 'packet_free',
@@ -175,7 +178,7 @@
           order: payload.packetOrder || 1,
           total: total,
           correct: correct,
-          score10: rawScore.toFixed(1),
+          score10: hasCustomScore ? String(payload.score10) : rawScore.toFixed(1),
           predictedScore: predictedScore,
           targetScore: 8.5,
           wrongIds: wrongIds,
@@ -237,7 +240,7 @@
       const bayDonVi = tags.bay_don_vi || { total: 9, correct: 0, pct: 0, wrong: 9 };
       const doThiVdc = tags.do_thi_vdc || { total: 3, correct: 0, pct: 0, wrong: 3 };
 
-      const isZero = (stats.correct === 0 || predicted === 0);
+      const isZero = (predicted === 0 && stats.correct === 0);
 
       // Nhận xét sư phạm động và trung thực từ Thầy
       const topicStats = stats.topicStats || {};
