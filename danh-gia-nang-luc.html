@@ -384,7 +384,7 @@
         ═══════════════════════════════════════════ */
         .vstep-course-layout {
             display: grid !important;
-            grid-template-columns: 264px minmax(0, 1fr) 264px !important;
+            grid-template-columns: minmax(0, 1fr) 268px !important;
             min-height: 100vh !important;
             padding-top: 60px !important;
             width: 100% !important;
@@ -393,20 +393,45 @@
             font-family: var(--font-sans) !important;
         }
 
-        /* ── CỘT 1: SIDEBAR TRÁI (Lộ trình 28 câu theo 4 chuyên đề) ── */
+        /* ── CỘT 1: SIDEBAR TRÁI (Off-canvas Drawer cấu trúc 28 câu chuẩn Bộ) ── */
         .vstep-sidebar-left {
-            display: block !important;
-            background: #0c1222 !important;
-            border-right: 1px solid var(--border-subtle) !important;
-            height: calc(100vh - 60px) !important;
-            position: sticky !important;
+            position: fixed !important;
             top: 60px !important;
+            left: 0 !important;
+            bottom: 0 !important;
+            width: 320px !important;
+            max-width: 86vw !important;
+            height: calc(100vh - 60px) !important;
+            background: #0c1527 !important;
+            border-right: 1px solid #1e3a5f !important;
+            z-index: 10050 !important;
+            transform: translateX(-100%);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.6) !important;
             overflow-y: auto !important;
             padding: 14px 12px 32px !important;
             scrollbar-width: none !important;
-            z-index: 10 !important;
+            display: block !important;
+        }
+        .vstep-sidebar-left.drawer-open {
+            transform: translateX(0) !important;
         }
         .vstep-sidebar-left::-webkit-scrollbar { display: none !important; }
+
+        .struct-drawer-overlay {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(2px);
+            z-index: 10040;
+            display: none;
+        }
+        .struct-drawer-overlay.active {
+            display: block;
+        }
 
         .vstep-side-head {
             font-size: 11px !important;
@@ -1208,14 +1233,9 @@
             transform: translateY(-1px);
         }
 
-        @media (max-width: 1260px) {
-            .vstep-course-layout {
-                grid-template-columns: 230px minmax(0, 1fr) 244px !important;
-            }
-        }
         @media (max-width: 1024px) {
             .vstep-course-layout {
-                grid-template-columns: 230px minmax(0, 1fr) !important;
+                grid-template-columns: 1fr !important;
             }
             .vstep-sidebar-right {
                 display: none !important;
@@ -1416,16 +1436,16 @@
             flex-wrap: wrap;
         }
         .wow-part-tab {
-            background: #0f172a;
-            border: 1px solid #1e293b;
-            border-radius: 8px;
-            padding: 6px 12px;
+            background: #0c1527;
+            border: 1px solid #1e2d4a;
+            border-radius: 6px;
+            padding: 4px 10px;
             text-align: left;
             cursor: pointer;
             font-family: inherit;
             display: inline-flex;
             align-items: center;
-            gap: 7px;
+            gap: 6px;
             transition: border-color 0.15s, background 0.15s;
         }
         .wow-part-tab:hover { border-color: #38bdf8; background: #131d35; }
@@ -1487,7 +1507,313 @@
         .wow-split-left, .wow-split-right { min-width: 0; }
 
         /* Interactive 60 FPS Physics Stage */
-        .wow-stage-card {
+        
+        /* Nút mở Drawer Cấu trúc đề trên Top Command Bar */
+        .btn-struct-drawer-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: #131d35;
+            border: 1px solid #1e3a5f;
+            color: #e2e8f0;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 5px 11px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            white-space: nowrap;
+            transition: all 0.15s ease;
+            flex-shrink: 0;
+        }
+        .btn-struct-drawer-toggle:hover, .btn-struct-drawer-toggle.active {
+            background: #17264a;
+            border-color: #38bdf8;
+            color: #38bdf8;
+        }
+
+        /* Bộ chọn đề Dropdown tinh gọn (Gộp Đề 1/2/3 và Kho 50 Đề) */
+        .wow-exam-dropdown-wrap {
+            position: relative;
+            display: inline-block;
+        }
+        .btn-exam-dropdown-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            background: #131d35;
+            border: 1px solid #1e3a5f;
+            color: #f1f5f9;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s ease;
+        }
+        .btn-exam-dropdown-trigger:hover, .btn-exam-dropdown-trigger.active {
+            border-color: #38bdf8;
+            color: #38bdf8;
+            background: #17264a;
+        }
+        .wow-exam-dropdown-panel {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            width: 300px;
+            background: #0f172a;
+            border: 1px solid #1e3a5f;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            padding: 8px;
+        }
+        .wow-exam-dropdown-panel.open {
+            display: block;
+        }
+        .wow-dropdown-header {
+            font-size: 10.5px;
+            font-weight: 800;
+            color: #64748b;
+            padding: 4px 8px 6px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+        .wow-dropdown-item {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 10px;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 7px;
+            color: #cbd5e1;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            text-align: left;
+            transition: all 0.15s ease;
+        }
+        .wow-dropdown-item:hover {
+            background: #162444;
+            color: #ffffff;
+            border-color: rgba(56, 189, 248, 0.2);
+        }
+        .wow-dropdown-item.active {
+            background: #172e59;
+            border-color: #38bdf8;
+            color: #38bdf8;
+        }
+        .wow-dropdown-item .de-chip {
+            font-size: 10.5px;
+            font-weight: 800;
+            background: rgba(56, 189, 248, 0.12);
+            color: #38bdf8;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            white-space: nowrap;
+        }
+        .wow-dropdown-divider {
+            height: 1px;
+            background: #1e293b;
+            margin: 6px 4px;
+        }
+        .wow-dropdown-item.btn-open-all-50 {
+            color: #34d399;
+            font-weight: 700;
+        }
+        .wow-dropdown-item.btn-open-all-50:hover {
+            background: rgba(16, 185, 129, 0.12);
+            border-color: rgba(16, 185, 129, 0.3);
+            color: #6ee7b7;
+        }
+
+        /* Popover Phím tắt thông minh */
+        .wow-shortcut-popover-wrap {
+            position: relative;
+            display: inline-block;
+        }
+        .btn-shortcut-toggle {
+            padding: 5px 11px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #334155;
+            color: #cbd5e1;
+            cursor: pointer;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+        .btn-shortcut-toggle:hover, .btn-shortcut-toggle.active {
+            border-color: #38bdf8;
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.08);
+        }
+        .wow-shortcut-popover {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            width: 320px;
+            background: #0f172a;
+            border: 1px solid #1e3a5f;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            padding: 12px 14px;
+        }
+        .wow-shortcut-popover.open {
+            display: block;
+        }
+        .wow-shortcut-popover-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11.5px;
+            font-weight: 800;
+            color: #38bdf8;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #1e293b;
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
+        }
+        .wow-shortcut-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .wow-shortcut-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 11.5px;
+            color: #cbd5e1;
+        }
+
+        /* Floating Toast tự ẩn sau 4 giây */
+        .wow-toast-notice {
+            position: fixed;
+            top: 72px;
+            right: 20px;
+            z-index: 10050;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            background: #064e3b;
+            border: 1px solid #10b981;
+            color: #ecfdf5;
+            padding: 9px 14px;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+            font-size: 12px;
+            font-weight: 700;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+        .wow-toast-notice.show {
+            display: flex !important;
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+        .wow-toast-notice.fade-out {
+            opacity: 0 !important;
+            transform: translateY(-8px) !important;
+        }
+        .btn-toast-close {
+            background: none;
+            border: none;
+            color: #a7f3d0;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 2px 4px;
+            line-height: 1;
+            margin-left: 4px;
+            border-radius: 4px;
+        }
+        .btn-toast-close:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Badge 60 FPS nằm gọn góc trên-trái bên trong Canvas */
+        .wow-canvas-overlay-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 5;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(10, 16, 30, 0.8);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            color: #38bdf8;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 6px;
+            pointer-events: none;
+            letter-spacing: 0.3px;
+        }
+
+        /* Thanh điều khiển Canvas 4 nút nới thoáng */
+        .wow-stage-controls-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+        .wow-stage-controls-row .wow-ctrl-btn {
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 7px;
+            background: #162238;
+            border: 1px solid #294066;
+            color: #e2e8f0;
+            transition: all 0.15s ease;
+        }
+        .wow-stage-controls-row .wow-ctrl-btn:hover {
+            background: #1e3252;
+            border-color: #38bdf8;
+            color: #ffffff;
+        }
+
+        /* Footer phím tắt tinh giản */
+        .btn-subtle-shortcut {
+            background: transparent;
+            border: 1px dashed #334155;
+            color: #94a3b8;
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease;
+        }
+        .btn-subtle-shortcut:hover {
+            border-color: #38bdf8;
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+.wow-stage-card {
             background: #09111f;
             border: 1px solid #1e3a5f;
             border-radius: 12px;
@@ -2568,10 +2894,19 @@
     <!-- LAYOUT VSTEP OWL 3 CỘT -->
     <div class="vstep-course-layout">
 
-        <!-- CỘT 1: SIDEBAR TRÁI (Lộ trình 28 câu 4 chuyên đề) -->
+        <!-- LỚP PHỦ OVERLAY KHI MỞ DRAWER CẤU TRÚC ĐỀ -->
+        <div class="struct-drawer-overlay" id="struct-drawer-overlay" onclick="toggleStructDrawer(false)"></div>
+
+        <!-- CỘT 1: SIDEBAR TRÁI (Off-canvas Drawer cấu trúc 28 câu chuẩn Bộ) -->
         <aside class="vstep-sidebar-left" id="vstep-sidebar-left">
-            <div class="vstep-side-head">
-                <i class="fa-solid fa-list-ol"></i> <span id="sidebar-struct-title">CẤU TRÚC ĐỀ CHUẨN BỘ (28 CÂU)</span>
+            <div class="vstep-side-head" style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#0d1628;border-bottom:1px solid #1e293b;border-radius:8px;margin-bottom:12px;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <i class="fa-solid fa-list-ol" style="color:#38bdf8"></i>
+                    <span id="sidebar-struct-title" style="font-weight:800;font-size:12px;letter-spacing:0.5px;color:#f8fafc">CẤU TRÚC ĐỀ (28 CÂU)</span>
+                </div>
+                <button type="button" class="btn-close-drawer" onclick="toggleStructDrawer(false)" title="Đóng ngăn kéo" style="background:#1e293b;border:1px solid #334155;color:#94a3b8;font-size:12px;cursor:pointer;padding:3px 8px;border-radius:5px;display:inline-flex;align-items:center;gap:4px;">
+                    <i class="fa-solid fa-xmark"></i> <span>Đóng</span>
+                </button>
             </div>
 
             <!-- Nhóm 1: Nhiệt -->
@@ -2627,16 +2962,94 @@
             <!-- THANH TIÊU ĐỀ & CHỌN ĐỀ 1 DÒNG SIÊU GỌN -->
             <div class="wow-top-command-bar" id="wow-top-command-bar">
                 <div class="wow-cmd-left">
+                    <button type="button" class="btn-struct-drawer-toggle" id="btn-toggle-struct-drawer" onclick="toggleStructDrawer()" title="Xem cấu trúc 28 câu của đề">
+                        <i class="fa-solid fa-bars-staggered"></i>
+                        <span>Cấu trúc đề</span>
+                    </button>
                     <h1 class="wow-compact-h1" id="dgnl-main-heading">Đề Thi Thử THPTQG 2026 – Đề số 01 (Khảo sát năng lực chuẩn Bộ)</h1>
                     <span class="wow-compact-meta" id="compact-meta-pill">50p · 28 câu · 8 MH 60FPS</span>
                 </div>
                 <div class="wow-cmd-right">
-                    <button type="button" class="btn-exam-choice active" id="btn-choice-exam1" onclick="switchExam(1)">Đề 01</button>
-                    <button type="button" class="btn-exam-choice" id="btn-choice-exam2" onclick="switchExam(2)">Đề 02</button>
-                    <button type="button" class="btn-exam-choice" id="btn-choice-exam3" onclick="switchExam(3)">Đề 03</button>
-                    <button type="button" class="btn-open-50-drawer" id="btn-open-50exams-drawer" onclick="openCampaign50Drawer()">
-                        <i class="fa-solid fa-book-open"></i> <span id="drawer50-btn-label">Kho 50 Đề (Đề 01)</span>
-                    </button>
+                    <!-- BỘ CHỌN ĐỀ DROPDOWN GỌN GÀNG -->
+                    <div class="wow-exam-dropdown-wrap" id="wow-exam-dropdown-wrap">
+                        <button type="button" class="btn-exam-dropdown-trigger" id="btn-exam-dropdown-trigger" onclick="toggleExamDropdown(event)">
+                            <i class="fa-solid fa-layer-group" style="color:#38bdf8"></i>
+                            <span id="dropdown-active-exam-label">Đề 01 (Khảo sát)</span>
+                            <i class="fa-solid fa-chevron-down" style="font-size:10px;margin-left:4px;color:#94a3b8"></i>
+                        </button>
+                        <div class="wow-exam-dropdown-panel" id="wow-exam-dropdown-panel">
+                            <div class="wow-dropdown-header">CHỌN ĐỀ THI TRỌNG TÂM</div>
+                            <button type="button" class="wow-dropdown-item active" id="btn-choice-exam1" onclick="switchExamFromDropdown(1)">
+                                <span class="de-chip">ĐỀ 01</span>
+                                <span class="de-desc">Khảo sát năng lực (Free)</span>
+                            </button>
+                            <button type="button" class="wow-dropdown-item" id="btn-choice-exam2" onclick="switchExamFromDropdown(2)">
+                                <span class="de-chip">ĐỀ 02</span>
+                                <span class="de-desc">Kiểm chứng tiến bộ (Free)</span>
+                            </button>
+                            <button type="button" class="wow-dropdown-item" id="btn-choice-exam3" onclick="switchExamFromDropdown(3)">
+                                <span class="de-chip">ĐỀ 03</span>
+                                <span class="de-desc">Rèn luyện nâng cao (Free)</span>
+                            </button>
+                            <div class="wow-dropdown-divider"></div>
+                            <button type="button" class="wow-dropdown-item btn-open-all-50" id="btn-open-50exams-drawer" onclick="open50FromDropdown()">
+                                <i class="fa-solid fa-book-open" style="color:#10b981"></i>
+                                <span id="drawer50-btn-label">Mở Kho 50 Đề THPTQG 2026...</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- NÚT PHÍM TẮT THÔNG MINH (POPOVER) -->
+                    <div class="wow-shortcut-popover-wrap">
+                        <button type="button" class="btn-shortcut-toggle" id="btn-toggle-shortcuts" onclick="toggleShortcutsPopover(event)" title="Xem bảng phím tắt làm bài nhanh">
+                            <i class="fa-solid fa-keyboard" style="color:#38bdf8"></i>
+                            <span>Phím tắt</span>
+                        </button>
+                        <div class="wow-shortcut-popover" id="wow-shortcut-popover">
+                            <div class="wow-shortcut-popover-head">
+                                <div style="display:flex;align-items:center;gap:6px;">
+                                    <i class="fa-solid fa-bolt" style="color:#38bdf8"></i>
+                                    <span>PHÍM TẮT LÀM BÀI NHANH</span>
+                                </div>
+                                <button type="button" onclick="toggleShortcutsPopover(false)" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:14px;padding:2px 6px;"><i class="fa-solid fa-xmark"></i></button>
+                            </div>
+                            <div class="wow-shortcut-list">
+                                <div class="wow-shortcut-row">
+                                    <span class="wow-kbd-pill">← / →</span>
+                                    <span>Chuyển câu trước / câu tiếp</span>
+                                </div>
+                                <div class="wow-shortcut-row">
+                                    <span class="wow-kbd-pill">A, B, C, D</span>
+                                    <span>Chọn đáp án (Phần I) / Chuyển Đúng-Sai (Phần II)</span>
+                                </div>
+                                <div class="wow-shortcut-row">
+                                    <span class="wow-kbd-pill">1, 2, 3, 4</span>
+                                    <span>Tương ứng các phương án A–D hoặc mệnh đề a–d</span>
+                                </div>
+                                <div class="wow-shortcut-row">
+                                    <span class="wow-kbd-pill">Space</span>
+                                    <span>Tạm dừng / Tiếp tục mô phỏng Canvas 60 FPS</span>
+                                </div>
+                                <div class="wow-shortcut-row">
+                                    <span class="wow-kbd-pill">F</span>
+                                    <span>Đánh dấu câu hỏi cần xem lại</span>
+                                </div>
+                                <div class="wow-shortcut-row">
+                                    <span class="wow-kbd-pill">Z</span>
+                                    <span>Phóng to phòng Lab toàn màn hình</span>
+                                </div>
+                                <div class="wow-shortcut-row">
+                                    <span class="wow-kbd-pill">Enter</span>
+                                    <span>Lưu đáp án &amp; sang câu tiếp (Phần III)</span>
+                                </div>
+                                <div class="wow-shortcut-row">
+                                    <span class="wow-kbd-pill">Esc</span>
+                                    <span>Đóng popup / thoát toàn màn hình</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <button type="button" class="btn-toggle-info" id="btn-toggle-exam-info" onclick="toggleExamInfoPanel()">
                         <i class="fa-solid fa-circle-info"></i> Chi tiết
                     </button>
@@ -2644,8 +3057,13 @@
             </div>
 
             <div id="dgnl-resume-slot"></div>
-            <div id="exam-auto-notice" style="margin-bottom:8px;font-size:12px;color:#10b981;font-weight:700;display:none;align-items:center;gap:6px;">
-                <i class="fa-solid fa-circle-check"></i> Đã tự động chuyển đề tiếp theo dựa trên lịch sử làm bài của em
+            <!-- FLOATING TOAST THÔNG BÁO TỰ ẨN SAU 4 GIÂY (KHÔNG CHIẾM DIỆN TÍCH DỌC) -->
+            <div id="exam-auto-notice" class="wow-toast-notice">
+                <i class="fa-solid fa-circle-check" style="color:#34d399;font-size:15px;"></i>
+                <span id="exam-auto-notice-text">Đã tự động chuyển đề tiếp theo dựa trên lịch sử làm bài của em</span>
+                <button type="button" class="btn-toast-close" onclick="closeExamAutoNotice()" title="Đóng thông báo">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
 
             <!-- KHỐI THÔNG TIN CHI TIẾT (THU GỌN MẶC ĐỊNH ĐỂ DÀNH KHÔNG GIAN CHO ĐỀ BÀI) -->
@@ -2704,12 +3122,6 @@
                             <span class="wow-part-sub">· 1,5đ</span>
                         </button>
                     </div>
-                    <div class="wow-kbd-legend">
-                        <span>Phím tắt:</span>
-                        <span class="wow-kbd-pill">← / →</span> Chuyển câu
-                        <span class="wow-kbd-pill">A–D / 1–4</span> Chọn nhanh
-                        <span class="wow-kbd-pill">Space</span> Tạm dừng Lab
-                    </div>
                 </div>
 
                 <div class="vstep-q-box" id="question-card-container">
@@ -2720,8 +3132,10 @@
                     <button type="button" class="vstep-btn secondary" id="btn-prev" onclick="prevQuestion()">
                         <i class="fa-solid fa-arrow-left"></i> Câu trước (←)
                     </button>
-                    <div class="wow-kbd-legend" style="font-size:12px;">
-                        Bấm mũi tên <span class="wow-kbd-pill">→</span> hoặc <span class="wow-kbd-pill">A</span><span class="wow-kbd-pill">B</span><span class="wow-kbd-pill">C</span><span class="wow-kbd-pill">D</span> để làm nhanh không cần cuộn
+                    <div class="vstep-nav-center-hint">
+                        <button type="button" class="btn-subtle-shortcut" onclick="toggleShortcutsPopover(event)">
+                            <i class="fa-solid fa-keyboard" style="color:#38bdf8"></i> Phím tắt (← → A B C D Space)
+                        </button>
                     </div>
                     <button type="button" class="vstep-btn primary-next" id="btn-next" onclick="nextQuestion()">
                         Câu tiếp (→) <i class="fa-solid fa-arrow-right"></i>
@@ -3377,6 +3791,14 @@
             var drawerLbl = document.getElementById('drawer50-btn-label');
             if (drawerLbl) drawerLbl.textContent = 'Kho 50 Đề (Đề ' + pad2(currentExamNumber) + ')';
 
+            var ddActiveLbl = document.getElementById('dropdown-active-exam-label');
+            if (ddActiveLbl) {
+                if (currentExamNumber === 1) ddActiveLbl.textContent = 'Đề 01 (Khảo sát)';
+                else if (currentExamNumber === 2) ddActiveLbl.textContent = 'Đề 02 (Kiểm chứng)';
+                else if (currentExamNumber === 3) ddActiveLbl.textContent = 'Đề 03 (Nâng cao)';
+                else ddActiveLbl.textContent = 'Đề ' + pad2(currentExamNumber) + ' / 50';
+            }
+
             var heading = document.getElementById('dgnl-main-heading');
             if (heading) heading.textContent = currentExamTitle || ('Đề Thi Thử THPTQG 2026 – Đề số ' + pad2(currentExamNumber));
 
@@ -3410,6 +3832,88 @@
             if (tEl) tEl.textContent = tStr;
             if (tmEl) tmEl.textContent = tStr;
         }
+
+        
+        /* ═══════════════════════════════════════════
+           HỆ THỐNG ĐIỀU KHIỂN DRAWER, DROPDOWN, PHÍM TẮT & TOAST THÔNG MINH
+        ═══════════════════════════════════════════ */
+        window.toggleStructDrawer = function(forceState) {
+            var drawer = document.getElementById('vstep-sidebar-left');
+            var overlay = document.getElementById('struct-drawer-overlay');
+            var btn = document.getElementById('btn-toggle-struct-drawer');
+            if (!drawer) return;
+            var isOpen = (typeof forceState === 'boolean') ? forceState : !drawer.classList.contains('drawer-open');
+            drawer.classList.toggle('drawer-open', isOpen);
+            if (overlay) overlay.classList.toggle('active', isOpen);
+            if (btn) btn.classList.toggle('active', isOpen);
+            if (isOpen) {
+                var actEl = drawer.querySelector('.vstep-lesson-item.active');
+                if (actEl) actEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            }
+        };
+
+        window.toggleExamDropdown = function(e) {
+            if (e && e.stopPropagation) e.stopPropagation();
+            var panel = document.getElementById('wow-exam-dropdown-panel');
+            var btn = document.getElementById('btn-exam-dropdown-trigger');
+            if (!panel) return;
+            var isOpen = panel.classList.toggle('open');
+            if (btn) btn.classList.toggle('active', isOpen);
+        };
+
+        window.switchExamFromDropdown = function(n) {
+            var panel = document.getElementById('wow-exam-dropdown-panel');
+            var btn = document.getElementById('btn-exam-dropdown-trigger');
+            if (panel) panel.classList.remove('open');
+            if (btn) btn.classList.remove('active');
+            switchExam(n);
+        };
+
+        window.open50FromDropdown = function() {
+            var panel = document.getElementById('wow-exam-dropdown-panel');
+            var btn = document.getElementById('btn-exam-dropdown-trigger');
+            if (panel) panel.classList.remove('open');
+            if (btn) btn.classList.remove('active');
+            openCampaign50Drawer();
+        };
+
+        window.toggleShortcutsPopover = function(e) {
+            if (e && e.stopPropagation) e.stopPropagation();
+            var pop = document.getElementById('wow-shortcut-popover');
+            var btn = document.getElementById('btn-toggle-shortcuts');
+            if (!pop) return;
+            var isOpen = (typeof e === 'boolean') ? e : !pop.classList.contains('open');
+            pop.classList.toggle('open', isOpen);
+            if (btn) btn.classList.toggle('active', isOpen);
+        };
+
+        window.showExamAutoNoticeToast = function(msg) {
+            var notice = document.getElementById('exam-auto-notice');
+            if (!notice) return;
+            if (msg) {
+                var msgSpan = document.getElementById('exam-auto-notice-text');
+                if (msgSpan) msgSpan.textContent = msg;
+            }
+            notice.classList.remove('fade-out');
+            notice.classList.add('show');
+            if (notice._hideTimer) clearTimeout(notice._hideTimer);
+            notice._hideTimer = setTimeout(function() {
+                notice.classList.add('fade-out');
+                setTimeout(function() {
+                    notice.classList.remove('show', 'fade-out');
+                }, 350);
+            }, 4000);
+        };
+
+        window.closeExamAutoNotice = function() {
+            var notice = document.getElementById('exam-auto-notice');
+            if (!notice) return;
+            if (notice._hideTimer) clearTimeout(notice._hideTimer);
+            notice.classList.add('fade-out');
+            setTimeout(function() {
+                notice.classList.remove('show', 'fade-out');
+            }, 350);
+        };
 
         window.switchExam = async function(examArg) {
             var examNum = parseRequestedExam(examArg) || Number(examArg) || 1;
@@ -3451,10 +3955,11 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        // Notice ban đầu nếu tự chuyển sang Đề 2
+        // Notice ban đầu nếu tự chuyển sang Đề 2: Hiện Toast tự ẩn sau 4s
         setTimeout(function() {
-            var notice = document.getElementById('exam-auto-notice');
-            if (notice && currentExamNumber === 2 && !reqExam) notice.style.display = 'inline-flex';
+            if (currentExamNumber === 2 && !reqExam) {
+                showExamAutoNoticeToast();
+            }
             updateExamChromeUI();
         }, 50);
 
@@ -3642,7 +4147,7 @@
                 var item = document.createElement('div');
                 item.className = 'vstep-lesson-item ' + (idx === currentIndex ? 'active' : '') + ' ' + (isAns ? 'answered' : '');
                 item.id = 'sidebar-q-' + idx;
-                item.onclick = function() { goToQuestion(idx); };
+                item.onclick = function() { goToQuestion(idx); toggleStructDrawer(false); };
                 var plainQ = String(q.question || '').replace(/<[^>]*>?/gm, ' ').replace(/\$[^$]*\$/g, '...').replace(/\s+/g, ' ').trim();
                 var shortTitle = plainQ.substring(0, 26);
                 var modelIcon = q.modelId ? ' 🎬' : '';
@@ -3743,20 +4248,19 @@
                     : '';
                 return '<div class="wow-stage-card" id="wow-canvas-stage">' +
                     '<div class="wow-stage-canvas-wrap" id="wow-stage-media-wrap">' +
+                        '<div class="wow-canvas-overlay-badge">' +
+                            '<i class="fa-solid fa-bolt" style="color:#38bdf8"></i> ' +
+                            '<span>60 FPS · MÔ PHỎNG TƯƠNG TÁC</span>' +
+                        '</div>' +
                         '<canvas id="wow-main-canvas" width="1560" height="610"></canvas>' +
                     '</div>' +
                     '<div class="wow-stage-head wow-stage-bottom-bar">' +
-                        '<span class="wow-stage-badge"><i class="fa-solid fa-cubes"></i> 60 FPS · MÔ PHỎNG TƯƠNG TÁC (' + escHtml(mid) + ')</span>' +
-                        '<div class="wow-stage-controls">' +
+                        '<div class="wow-stage-controls-row">' +
                             '<button type="button" class="wow-ctrl-btn" id="wow-btn-playpause" onclick="toggleWowPlayPause()"><i class="fa-solid fa-pause"></i> Tạm dừng</button>' +
                             '<button type="button" class="wow-ctrl-btn" id="wow-btn-reset" onclick="resetWowCanvas()"><i class="fa-solid fa-rotate-left"></i> Đặt lại</button>' +
                             origBtn +
                             '<button type="button" class="wow-ctrl-btn" id="wow-btn-fullscreen" style="border-color:#38bdf8;color:#38bdf8" onclick="openWowFullscreen()"><i class="fa-solid fa-expand"></i> Phóng to Lab</button>' +
                         '</div>' +
-                    '</div>' +
-                    '<div class="wow-stage-foot">' +
-                        '<span><i class="fa-solid fa-flask" style="color:#38bdf8"></i> ' + escHtml(getModelCaptionText(mid)) + '</span>' +
-                        '<span id="wow-sim-clock" style="font-family:var(--font-mono);color:#38bdf8;font-weight:700">t = 0.0s</span>' +
                     '</div>' +
                 '</div>';
             }
@@ -3973,8 +4477,14 @@
             var target = e.target;
             var isInput = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT' || target.isContentEditable);
 
-            // Phím Escape: đóng các modal nếu đang mở
+            // Phím Escape: đóng drawer, popover và các modal nếu đang mở
             if (e.key === 'Escape') {
+                if (window.toggleStructDrawer) toggleStructDrawer(false);
+                var examDd = document.getElementById('wow-exam-dropdown-panel');
+                if (examDd) examDd.classList.remove('open');
+                var examDdBtn = document.getElementById('btn-exam-dropdown-trigger');
+                if (examDdBtn) examDdBtn.classList.remove('active');
+                if (window.toggleShortcutsPopover) toggleShortcutsPopover(false);
                 var fsModal = document.getElementById('wow-fullscreen-modal');
                 if (fsModal && fsModal.style.display === 'flex') {
                     closeWowFullscreen();
@@ -4672,6 +5182,24 @@
         } else {
             initApp();
         }
-    </script>
+    
+        // Đóng Dropdown và Popover khi bấm ra ngoài
+        document.addEventListener('click', function(e) {
+            var ddWrap = document.getElementById('wow-exam-dropdown-wrap');
+            if (ddWrap && !ddWrap.contains(e.target)) {
+                var p = document.getElementById('wow-exam-dropdown-panel');
+                if (p) p.classList.remove('open');
+                var b = document.getElementById('btn-exam-dropdown-trigger');
+                if (b) b.classList.remove('active');
+            }
+            var scWrap = document.querySelector('.wow-shortcut-popover-wrap');
+            if (scWrap && !scWrap.contains(e.target)) {
+                var scPop = document.getElementById('wow-shortcut-popover');
+                if (scPop) scPop.classList.remove('open');
+                var scBtn = document.getElementById('btn-toggle-shortcuts');
+                if (scBtn) scBtn.classList.remove('active');
+            }
+        });
+</script>
 </body>
 </html>
