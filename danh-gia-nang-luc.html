@@ -1542,7 +1542,7 @@
         }
 
         /* Interactive 60 FPS Physics Stage */
-        
+
         /* Nút mở Drawer Cấu trúc đề trên Top Command Bar */
         .btn-struct-drawer-toggle {
             display: inline-flex;
@@ -2086,7 +2086,8 @@
             font-size: 11px;
             font-weight: 800;
             color: #38bdf8;
-            text-transform: uppercase;
+            text-transform: none;
+            font-size: 13px;
             margin-bottom: 6px;
         }
         .wow-short-box {
@@ -3001,15 +3002,14 @@
                         <i class="fa-solid fa-bars-staggered"></i>
                         <span>Cấu trúc đề</span>
                     </button>
-                    <h1 class="wow-compact-h1" id="dgnl-main-heading">Đề Thi Thử THPTQG 2026 – Đề số 01 (Khảo sát năng lực chuẩn Bộ)</h1>
-                    <span class="wow-compact-meta" id="compact-meta-pill">50p · 28 câu · 8 MH 60FPS</span>
+                    <h1 class="wow-compact-h1" id="dgnl-main-heading">Đề Thi Thử THPTQG 2026 – Đề số 01</h1>
                 </div>
                 <div class="wow-cmd-right">
                     <!-- BỘ CHỌN ĐỀ DROPDOWN GỌN GÀNG -->
                     <div class="wow-exam-dropdown-wrap" id="wow-exam-dropdown-wrap">
                         <button type="button" class="btn-exam-dropdown-trigger" id="btn-exam-dropdown-trigger" onclick="toggleExamDropdown(event)">
                             <i class="fa-solid fa-layer-group" style="color:#38bdf8"></i>
-                            <span id="dropdown-active-exam-label">Đề 01 (Khảo sát)</span>
+                            <span id="dropdown-active-exam-label">Đề 01</span>
                             <i class="fa-solid fa-chevron-down" style="font-size:10px;margin-left:4px;color:#94a3b8"></i>
                         </button>
                         <div class="wow-exam-dropdown-panel" id="wow-exam-dropdown-panel">
@@ -3821,21 +3821,21 @@
             var drawerLbl = document.getElementById('drawer50-btn-label');
             if (drawerLbl) drawerLbl.textContent = 'Kho 50 Đề (Đề ' + pad2(currentExamNumber) + ')';
 
-            var ddActiveLbl = document.getElementById('dropdown-active-exam-label');
+                        var ddActiveLbl = document.getElementById('dropdown-active-exam-label');
             if (ddActiveLbl) {
-                if (currentExamNumber === 1) ddActiveLbl.textContent = 'Đề 01 (Khảo sát)';
-                else if (currentExamNumber === 2) ddActiveLbl.textContent = 'Đề 02 (Kiểm chứng)';
-                else if (currentExamNumber === 3) ddActiveLbl.textContent = 'Đề 03 (Nâng cao)';
-                else ddActiveLbl.textContent = 'Đề ' + pad2(currentExamNumber) + ' / 50';
+                ddActiveLbl.textContent = 'Đề ' + pad2(currentExamNumber);
             }
 
             var heading = document.getElementById('dgnl-main-heading');
-            if (heading) heading.textContent = currentExamTitle || ('Đề Thi Thử THPTQG 2026 – Đề số ' + pad2(currentExamNumber));
+            if (heading) {
+                var rawTitle = currentExamTitle || ('Đề Thi Thử THPTQG 2026 – Đề số ' + pad2(currentExamNumber));
+                heading.textContent = rawTitle.replace(/\s*\([^)]*\)\s*$/g, '').trim();
+            }
 
             var modCnt = questions.filter(function(q) { return !!q.modelId; }).length;
             var mins = Math.round(currentExamDurationSec / 60);
             var compactMeta = document.getElementById('compact-meta-pill');
-            if (compactMeta) compactMeta.textContent = mins + 'p · ' + questions.length + ' câu · ' + modCnt + ' MH 60FPS';
+            if (compactMeta) compactMeta.style.display = 'none';
 
             var bTime = document.getElementById('meta-badge-time');
             var bQ = document.getElementById('meta-badge-qcount');
@@ -3863,7 +3863,7 @@
             if (tmEl) tmEl.textContent = tStr;
         }
 
-        
+
         /* ═══════════════════════════════════════════
            HỆ THỐNG ĐIỀU KHIỂN DRAWER, DROPDOWN, PHÍM TẮT & TOAST THÔNG MINH
         ═══════════════════════════════════════════ */
@@ -4158,14 +4158,14 @@
             return 3;
         }
 
-        
+
         function getQuestionPartInfo(idx) {
             if (!questions || !questions[idx]) {
                 return { part: 1, partRoman: 'I', partName: 'Trắc nghiệm', partQNum: idx + 1, totalInPart: 18, globalIdx: idx + 1, totalGlobal: (questions ? questions.length : 28) };
             }
             var q = questions[idx];
             var part = Number(q.part || (idx < 18 ? 1 : (idx < 22 ? 2 : 3)));
-            
+
             var partQNum = 1;
             var totalInPart = 0;
             for (var i = 0; i < questions.length; i++) {
@@ -4178,10 +4178,10 @@
                     }
                 }
             }
-            
+
             var partRoman = part === 1 ? 'I' : (part === 2 ? 'II' : 'III');
             var partName = part === 1 ? 'Trắc nghiệm' : (part === 2 ? 'Đúng / Sai' : 'Trả lời ngắn');
-            
+
             return {
                 part: part,
                 partRoman: partRoman,
@@ -4197,12 +4197,12 @@
             if (!questions || !questions[idx]) return null;
             var q = questions[idx];
             if (!q.deBaiChung || !String(q.deBaiChung).trim()) return null;
-            
+
             var pInfo = getQuestionPartInfo(idx);
             var targetText = String(q.deBaiChung).replace(/<[^>]*>?/g, '').replace(/\s+/g, ' ').trim();
             var clusterPartQNums = [];
             var clusterGlobalNums = [];
-            
+
             for (var i = 0; i < questions.length; i++) {
                 var qi = questions[i];
                 if (!qi || !qi.deBaiChung) continue;
@@ -4215,21 +4215,21 @@
                     }
                 }
             }
-            
+
             clusterPartQNums.sort(function(a, b) { return a - b; });
             clusterGlobalNums.sort(function(a, b) { return a - b; });
-            
+
             var label = '';
             if (clusterPartQNums.length === 1) {
-                label = 'Dùng cho Câu ' + clusterPartQNums[0] + ' – Phần ' + pInfo.partRoman;
+                label = 'Đề bài dùng chung cho câu ' + clusterPartQNums[0];
             } else if (clusterPartQNums.length === 2) {
-                label = 'Dùng cho Câu ' + clusterPartQNums[0] + ' và Câu ' + clusterPartQNums[1] + ' – Phần ' + pInfo.partRoman;
+                label = 'Đề bài dùng chung cho câu ' + clusterPartQNums[0] + ' và câu ' + clusterPartQNums[1];
             } else if (clusterPartQNums.length > 2) {
-                label = 'Dùng cho Câu ' + clusterPartQNums[0] + ' đến Câu ' + clusterPartQNums[clusterPartQNums.length - 1] + ' – Phần ' + pInfo.partRoman;
+                label = 'Đề bài dùng chung cho câu ' + clusterPartQNums[0] + ' đến câu ' + clusterPartQNums[clusterPartQNums.length - 1];
             } else {
-                label = 'Dùng cho cụm câu hỏi Phần ' + pInfo.partRoman;
+                label = 'Đề bài dùng chung';
             }
-            
+
             return {
                 part: pInfo.part,
                 partRoman: pInfo.partRoman,
@@ -4405,9 +4405,9 @@
 
             var partTagLabel = partNum === 1 ? 'Phần I · Trắc nghiệm 4 lựa chọn' : (partNum === 2 ? 'Phần II · Đúng / Sai thực nghiệm' : 'Phần III · Trả lời ngắn');
             var stageHtml = buildWowStageHtml(q);
-            
+
             var clusterInfo = getClusterQuestionsInfo(idx);
-            var clusterTagText = clusterInfo ? ('Đề bài chung (' + clusterInfo.label + ')') : ('Đề bài chung (Dùng cho cụm câu hỏi Phần ' + pInfo.partRoman + ')');
+            var clusterTagText = clusterInfo ? clusterInfo.label : 'Đề bài dùng chung';
             var ctxHtml = q.deBaiChung
                 ? '<div class="wow-cluster-context"><div class="wow-cluster-tag"><i class="fa-solid fa-book-open"></i> ' + escHtml(clusterTagText) + '</div><div>' + fixFormulaStrings(stripModelSlotTags(q.deBaiChung)) + '</div></div>'
                 : '';
@@ -4431,9 +4431,9 @@
             } else if (q.type === 'short') {
                 var curVal = userAnswers[idx] !== undefined && userAnswers[idx] !== null ? String(userAnswers[idx]) : '';
                 interactionHtml = '<div class="wow-short-box">' +
-                    '<label for="short-ans-input-' + idx + '" style="display:block;font-size:13px;font-weight:700;color:#cbd5e1;margin-bottom:8px">Nhập đáp án số của em (chuẩn Bộ GD&amp;ĐT tối đa 4 kí tự, dùng dấu phẩy hoặc chấm đều hợp lệ):</label>' +
-                    '<input type="text" inputmode="decimal" class="wow-short-input" id="short-ans-input-' + idx + '" value="' + escHtml(curVal) + '" placeholder="VD: 2,67 hoặc 90" oninput="inputShortAnswer(' + idx + ', this.value)">' +
-                    '<div class="wow-short-hint"><i class="fa-solid fa-circle-info" style="color:#38bdf8"></i> Ví dụ: <code>2,67</code> và <code>2.67</code> đều được hệ thống chấm chuẩn xác.</div>' +
+                    '<label for="short-ans-input-' + idx + '" style="display:block;font-size:13px;font-weight:700;color:#cbd5e1;margin-bottom:8px">Nhập đáp số của em:</label>' +
+                    '<input type="text" inputmode="decimal" class="wow-short-input" id="short-ans-input-' + idx + '" value="' + escHtml(curVal) + '" oninput="inputShortAnswer(' + idx + ', this.value)">' +
+                    '<div class="wow-short-hint"><i class="fa-solid fa-circle-info" style="color:#38bdf8"></i> Dùng dấu phẩy (,) hoặc chấm (.) đều hợp lệ.</div>' +
                 '</div>';
             } else {
                 var selectedAns = userAnswers[idx];
@@ -5229,7 +5229,7 @@
                 var isWrong = wrongIndices.indexOf(idx) !== -1;
                 var qStemClean = fixFormulaStrings(stripModelSlotTags(q.question || ''));
                 var rClusterInfo = getClusterQuestionsInfo(idx);
-                var rClusterTag = rClusterInfo ? ('Đề bài chung (' + rClusterInfo.label + ')') : 'Đề bài chung';
+                var rClusterTag = rClusterInfo ? rClusterInfo.label : 'Đề bài dùng chung';
                 var qCtxClean = q.deBaiChung ? '<div class="wow-cluster-context" style="margin-bottom:10px"><div class="wow-cluster-tag"><i class="fa-solid fa-book-open"></i> ' + escHtml(rClusterTag) + '</div><div>' + fixFormulaStrings(stripModelSlotTags(q.deBaiChung)) + '</div></div>' : '';
                 var qExplainClean = fixFormulaStrings(q.explain || 'Xem lại kiến thức trọng tâm tương ứng trong bài giảng.');
 
@@ -5305,7 +5305,7 @@
         } else {
             initApp();
         }
-    
+
         // Đóng Dropdown và Popover khi bấm ra ngoài
         document.addEventListener('click', function(e) {
             var ddWrap = document.getElementById('wow-exam-dropdown-wrap');
