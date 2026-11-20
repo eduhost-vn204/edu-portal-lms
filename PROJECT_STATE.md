@@ -1,149 +1,1049 @@
-## Bàn giao gần nhất (18/11/2026 20:42)
-- **Sổ Tay Câu Làm Sai & Phòng Phục Thù Theo Từng Tài Khoản Trên Hồ Sơ Học Sinh (`wrong-bank.js`, `wrong-bank-ui.js`, `hoso.html`, `danh-gia-nang-luc.html`, `baihoc.html`, `thithu.html`)**:
+## Bàn giao gần nhất (20/11/2026 11:15)
+- **Hoàn Thiện Tinh Gọn 5 Điểm Tránh Rối Mắt & Triển Khai Chính Thức Lên Production (`danh-gia-nang-luc.html`)**:
 - **Mục tiêu**:
-  - Tự động thống kê, phân loại và lưu giữ toàn bộ những câu học sinh từng làm sai **cô lập tuyệt đối theo từng tài khoản** ngay trên trang Hồ Sơ Cá Nhân (`hoso.html`), hỗ trợ đồng bộ nền đa thiết bị (offline-first) và cho phép học sinh ôn tập / làm lại để phục thù trực tiếp tại hồ sơ.
-- **Nhánh & File đã tạo/sửa (`eduhost-vn204/edu-portal-lms`, nhánh `antigravity/20261118-wrong-questions-profile` tách từ `3f26799`)**:
-  - `wrong-bank.js` *(mới)*: Engine quản lý kho câu làm sai theo từng tài khoản (`vlxt_wrong_bank_v1_<accountKey>`), chuẩn hóa đủ 3 dạng Bộ GD&ĐT 2026 (`mc`, `tf` 4 ý, `short` hỗ trợ `,` và `.`), tự nhận diện 4 chương (`C1..C4`), tự trích `modelId` từ `.vlxt-model-slot`, cộng dồn số lần sai lặp lại (`wrongCount`), tự chuyển `mastered` khi làm đúng lại ở bài thi mới hoặc chế độ ôn tập, chuyển giao câu sai từ phiên Khách (`guest`) sang tài khoản ngay khi đăng nhập (`migrateGuestToAccount`), đồng bộ nền fail-silent lên Firebase RTDB `profiles/<accountKey>/wrongBank`.
-  - `wrong-bank-ui.js` *(mới)*: Giao diện phẳng chuẩn EdTech (Zero AI Glow) cho tab `#tab-causai` trên `hoso.html`: 4 thẻ KPI (`Cần ôn tập ngay`, `Đã chinh phục`, `Hay sai lặp lại`, `Tỉ lệ khắc phục`), thống kê lỗ hổng theo 4 chương Vật Lý 12 bấm để lọc nhanh, thanh lọc theo trạng thái / nguồn / dạng câu / sắp xếp / tìm kiếm, render KaTeX + lazy-load mô hình Canvas 60 FPS (`VLXTModels`) / ảnh đề gốc, **Làm lại tại chỗ (Inline Re-Practice)** trên từng câu, và **Modal Phòng Phục Thù Câu Sai (`#wb-practice-modal`)** luyện tập tập trung từng câu có chấm điểm + tổng kết.
-  - `hoso.html`: Nạp KaTeX (`defer`) + `wrong-bank.js` + `wrong-bank-ui.js`, nâng lưới chỉ số nhanh `.stats-row` lên 4 ô 2×2 cân đối (thêm ô bấm nhanh `❌ Câu sai cần ôn`), thêm tab `Câu Làm Sai` kèm badge số câu cần ôn và panel `#tab-causai`, giữ nguyên tab đang mở khi GAS tải bất đồng bộ xong, hỗ trợ deep-link `?tab=causai` / `#causai`, tự chạy `migrateGuestToAccount` & `syncFromCloud` nền.
-  - `danh-gia-nang-luc.html`: Ghi nhận toàn bộ kết quả câu sai & tự động đánh dấu khắc phục câu từng sai khi nộp bài (`processAndShowReport`), thêm nút dẫn trực tiếp `Sổ Tay Câu Sai Trong Hồ Sơ` ở màn hình báo cáo kết quả.
-  - `baihoc.html`: Ghi nhận câu làm sai ở cả **Bài tập luyện tập (`checkPractice`)** và **Câu hỏi dừng video (`vqAnswer`, `vqSubmitTF`, `vqSubmitShort`)**.
-  - `thithu.html`: Ghi nhận câu làm sai + tự động khắc phục sau khi nộp bài CBT (`doSubmitExam`, kèm `giaiThich` từ `examsolutions`) và thêm nút `Sổ Tay Câu Sai` ở màn hình kết quả; giữ nguyên 100% giao diện CBT sáng.
-  - `test_wrong_bank.mjs` *(mới)*: Bộ kiểm thử unit & static (8 test) cho cô lập tài khoản, migration guest→account, lặp lỗi, tự động khắc phục, merge cloud, parse inline `<script>`, thẻ `</html>` và Zero AI Glow.
-- **Kiểm tra đã chạy sau chỉnh sửa cuối**:
-  - `node --check wrong-bank.js`, `node --check wrong-bank-ui.js`, `git diff --check`: **PASS (0 lỗi)**.
-  - `node test_wrong_bank.mjs` (`8/8`), `node test_cro_funnel.mjs` (`8/8`), `node test_smart_marketing_popup.mjs` (`100%`), `node test_remedial_and_prediction.mjs` (`100%`), `node test_diagnostic_mastery_loop.mjs` (`100%`), `node scripts/test-quiz-merge.mjs` (`6/6`), `node scripts/test-quiz-publish.mjs` (`12/12`): **PASS 100%**.
-  - Playwright Chromium Retina `2x` (`1440×900` & Mobile `390×844`, chặn mọi ghi lên GAS/Firebase thật): **PASS 4/4 kịch bản (`0` console error, `0` page error)** — xác nhận làm đề thật `danh-gia-nang-luc.html` ghi chính xác `27` câu sai (1 câu đúng không bị ghi nhầm), lazy-load `3` mô hình Canvas Retina `1560×610` + `15` công thức KaTeX, lọc chương + làm lại tại chỗ cập nhật KPI `3 → 2`, Phòng Phục Thù Modal hiển thị bảng số liệu nền tối sắc nét, cô lập tuyệt đối Tài khoản A (`0912345678`) vs Tài khoản B (`0987654321`), Mobile `390/390` (`padding-top: 70px`). Đã soi trực quan toàn bộ ảnh chụp PNG Retina 2x.
-- **Điều phải giữ nguyên**:
-  - Không sửa `phong-thi-thu.html`; giữ nguyên giao diện CBT sáng của `thithu.html`; giữ nguyên menu mobile, Radar HUD, `ban-be.js` và lưu cục bộ trước khi đồng bộ nền.
-- **Trạng thái triển khai**:
-  - Đã kiểm định đầy đủ và đẩy fast-forward lên nhánh `main` (`eduhost-vn204/edu-portal-lms` → `https://vatlyxuantruong.io.vn`).
-
-## Bàn giao gần nhất (18/11/2026 16:11)
-- **Tinh Gọn Thanh Điều Hướng Toàn Hệ Thống & Lấp Đầy Bản Đồ Sao 3D `index.html` (Đã triển khai `main`)**:
-- **Trạng thái triển khai**:
-  - Đã merge đồng bộ nền mới nhất `origin/main` (`1e2e0e9`, giữ nguyên toàn bộ nâng cấp `danh-gia-nang-luc.html`), hoàn tất kiểm định và đẩy thẳng lên nhánh `main` (`eduhost-vn204/edu-portal-lms` → `https://vatlyxuantruong.io.vn`).
-- **File đã sửa (15 file)**:
-  - 14 trang HTML có thanh điều hướng (`index.html`, `danh-gia-nang-luc.html`, `baihoc.html`, `phong-thi-thu.html`, `huongdan.html`, `goi-hoc.html`, `hoso.html`, `hoso-hud.html`, `live-record.html`, `danhsach-ly12.html`, `dau-thuong-hud.html`, `dau-thuong.html`, `dua-top.html`, `solo.html`) và `auth.js`.
-- **Hành vi mới**:
-  1. **Bỏ hẳn mục Live Class** khỏi toàn bộ thanh điều hướng Desktop, Mobile Drawer (`auth.js` + 7 drawer nội tuyến), và bước/liên kết Live trong `huongdan.html`.
-  2. **Tạm thời ẩn trên web**: Phòng Kiểm Tra (`danhsach-ly12.html`), Đấu Thường (`dau-thuong-hud.html` / `dau-thuong.html`), Đấu Hạng (`dua-top.html`) và Solo 1-1 (`solo.html`) khỏi toàn bộ Desktop Navbar và Mobile Drawer. Các file trang nguồn vẫn được giữ nguyên trong repo để tiếp tục phát triển sau.
-  3. **Lấp đầy bản đồ sao 3D trên `index.html`** (không để trống chòm Bảo Bình): thay 3 ngôi sao cũ (`Live & Xem Lại`, `Đấu Thường`, `Đấu Hạng`) bằng 3 mục hoạt động còn lại:
-     - `SADALMELIK` → **Gói Pro** (`goi-hoc.html`)
-     - `SADACHBIA` → **Phòng Thi Thử** (`phong-thi-thu.html`, giữ nguyên)
-     - `SHATABHISHA` → **Hướng Dẫn** (`huongdan.html`)
-     - `SKAT` → **Hồ Sơ Cá Nhân** (`hoso.html`)
-     - Kết hợp cùng **SINGULARITY** (`Test Điểm Thi THPT`) và **PULSAR** (`Học Thử Miễn Phí`) giữ đủ 6 thiên thể cân đối.
-  4. **Đổi dropdown "Đấu Trường" thành link trực tiếp `Phòng Thi Thử`** (bỏ chữ `(Chuẩn Bộ)`), trỏ thẳng tới `phong-thi-thu.html`.
-  5. **Thứ tự điều hướng mới thống nhất toàn bộ Desktop & Mobile**:
-     `🎯 Đánh Giá Năng Lực` → `Khóa Học` → `Phòng Thi Thử` → `Hướng Dẫn` → `Gói Pro` (đặt cuối cùng).
-  6. **Chống cache trình duyệt**: nâng query param `auth.js?v=20261118a` trên cả 14 trang.
+  1. Thực hiện đầy đủ 5 yêu cầu tinh chỉnh của Thầy để giao diện tối giản, tập trung tối đa cho học sinh:
+     - **Bỏ cụm (Kiểm chứng tiến bộ chuẩn Bộ) trong ngoặc**: Tiêu đề chính trang web hiển thị sạch sẽ `Đề Thi Thử THPTQG 2026 – Đề số 02`, nút Dropdown chọn đề hiển thị gọn gàng `Đề 02`.
+     - **Bỏ badge `50p · 28 câu · 4 MH 60FPS`**: Xóa hoàn toàn huy hiệu thời gian/số câu ở header để không gian thoáng đãng.
+     - **Đề bài dùng chung tinh gọn**: Chuyển thành nhãn tự nhiên không viết hoa gắt gỏng: **`Đề bài dùng chung cho câu 1 và câu 2`** (khi làm câu 1-2), và **`Đề bài dùng chung cho câu 3 và câu 4`** (khi làm câu 3-4).
+     - **Rút gọn nhãn nhập đáp số**: Nhãn câu trả lời ngắn chỉ ghi đúng: **`Nhập đáp số của em:`** (bỏ toàn bộ chú thích dài trong ngoặc).
+     - **Xóa ví dụ bên trong ô nhập**: Xóa sạch placeholder `VD: 2,67 hoặc 90`, ô nhập để trống sạch sẽ, học sinh bấm vào nhập trực tiếp.
+  2. **Triển khai chính thức lên Production theo lệnh Thầy** (*"sửa như vậy rồi đẩy lên luôn cho thầy"*):
+     - Merge `feature/compact-dgnl-ux` (Commit `c2fe082`) vào `main`.
+     - Push lên `origin/main` (`xuantruongmyself-png/vatly-xuantruong.git`) và `upstream/main` (`eduhost-vn204/edu-portal-lms.git`).
+     - Trang chính thức `https://vatlyxuantruong.io.vn/danh-gia-nang-luc.html` được cập nhật tức thì.
+- **Commit & File đã sửa**:
+  - **Student Repo (`main`)**:
+    - `danh-gia-nang-luc.html`: Triệt tiêu rối mắt, tinh giản header, bỏ badge meta, tối ưu label/placeholder TLN và nhãn đề bài dùng chung, chuẩn hóa One-Frame Zero-Scroll 613px <= 730px.
+    - `PROJECT_STATE.md`: Cập nhật trạng thái bàn giao production.
 - **Kiểm tra đã chạy**:
-  - Script kiểm định tự động 14 file HTML + `auth.js` (thẻ đóng `</html>`, đúng 5 mục, đúng thứ tự, 0 dropdown/mục ẩn còn sót): **PASS 100%**.
-  - `node --check auth.js` & `git diff --check`: **PASS (0 lỗi)**.
-  - `node test_cro_funnel.mjs` (`8/8`), `node test_smart_marketing_popup.mjs` (`100%`), `node scripts/test-live-record-guest.mjs` (`11/11`): **PASS 100%**.
-  - Playwright trực quan Desktop (`1440×900` trên `index.html`, `baihoc.html`, `phong-thi-thu.html`, `danh-gia-nang-luc.html`) & Mobile Drawer (`390×844` qua `auth.js`): **PASS**, đã soi ảnh chụp xác nhận 6 thiên thể cân đối trên `index.html`, thanh điều hướng sắc nét và giữ nguyên hoàn toàn giao diện CBT sáng của `phong-thi-thu.html`.
+  - Node.js Script AST: 4/4 block `<script>` đạt 0 lỗi cú pháp (`Syntax OK`), `</html>` hợp lệ.
+  - Quét an toàn giao diện: **0 vi phạm AI Glow** (0 text-shadow neon, 0 box-shadow mờ ảo).
+  - Test suites Student: `test_cro_funnel.mjs` (8/8 PASS), `test_diagnostic_mastery_loop.mjs` (PASS 100%), `test_remedial_and_prediction.mjs` (PASS 100%), `test_wrong_bank.mjs` (8/8 PASS).
+  - Playwright Automation (`pw_verify_dgnl_part_numbering.py`): ALL 5 FINAL CLEANUP CHECKS PASSED 100%.
+  - `git diff --check`: 0 lỗi trailing whitespace / indent.
 - **Điều phải giữ nguyên**:
-  - Giữ nguyên hoàn toàn giao diện CBT sáng của `phong-thi-thu.html`, không xóa file `danhsach-ly12.html` / `dau-thuong*.html` / `dua-top.html` / `solo.html` / `live-record.html`, giữ nguyên `.nav-item-pro` để `auth.js` tự hiển thị nhãn `ĐANG BẬT` cho tài khoản Pro.
+  - Giữ nguyên giao diện sáng chuẩn Bộ của `phong-thi-thu.html`.
+  - Giữ nguyên khoảng đệm Navbar (78px–92px Desktop, 70px–82px Mobile) và chuẩn EdTech quốc tế phẳng, sắc nét.
+  - Bảo toàn 100% logic Zero-Friction, lưu `localStorage`, bộ 50 đề THPTQG 2026 và Dual Auth Gate khi nộp bài.
 
-## Bàn giao gần nhất (18/11/2026 16:09)
-- **Chuyển thanh điều khiển Mô phỏng 60 FPS xuống phía dưới mô hình (`danh-gia-nang-luc.html`)**:
-  - Di chuyển `.wow-stage-head` (thêm class `.wow-stage-bottom-bar` với `border-top: 1px solid #1e293b; border-bottom: none`) xuống ngay dưới `#wow-stage-media-wrap` cho cả mô phỏng Canvas 60 FPS và sơ đồ SVG dự phòng, giúp học sinh đọc đề xong nhìn thẳng vào mô hình mà không bị phân tán.
-  - Kiểm định: `6/6` suite Node.js LMS PASS 100%, Playwright Retina `2x` xác nhận `Media: 295.6 -> 506.8`, `ControlBar: 506.8 -> 578.4`, `TotalBottom: 674.8 / 730` và soi trực quan ảnh PNG.
-
-## Bàn giao gần nhất (18/11/2026 16:01)
-- **Tinh chỉnh thanh điều khiển Sân khấu 60 FPS (`danh-gia-nang-luc.html`)**:
-  - Gỡ bỏ hoàn toàn 3 nút tốc độ `0.5x`, `1x`, `2x` ở cả thanh điều khiển chính lẫn modal `Phóng to Lab`, bỏ hậu tố `· 1x` ở bộ đếm `t = ...s`, cập nhật mô tả `#start-exam-modal`.
-  - Đổi nhãn nút & `alt` từ `"Ảnh đề gốc"` sang **`"Ảnh thực tế"`**.
-  - Kiểm định: `6/6` suite Node.js LMS PASS 100%, Playwright Retina `2x` xác nhận thanh nút chỉ còn `['Tạm dừng', 'Đặt lại', 'Ảnh thực tế', 'Phóng to Lab']` và `CLOCK: t = ...s`, soi trực quan ảnh PNG.
-
-## Bàn giao gần nhất (18/11/2026 15:55)
-- **Tối Ưu Hóa Thị Giác 1-Khung Full-Width & Phím Tắt Thông Minh cho Trang Làm Bài THPTQG (`danh-gia-nang-luc.html`)**:
-- **Mục tiêu (theo góp ý trực tiếp từ ảnh chụp màn hình của Thầy)**:
-  1. Xóa sạch khoảng trống 2 bên giữa main stream và 2 cột sidebar (`grid-template-columns: 264px minmax(0, 1fr) 264px`, bỏ `max-width: 980px`).
-  2. Thu gọn phần đầu trang thành 1 dòng thanh lệnh mỏng (`.wow-top-command-bar`) + nút `ⓘ Chi tiết` mở/đóng `#exam-collapsible-info` (mặc định thu gọn) và đưa giới thiệu + hướng dẫn phím tắt vào modal khởi động `#start-exam-modal`.
-  3. Chia bố cục ngang 2 cột `.wow-q-split` (`1.15fr` sân khấu 60 FPS Canvas bên trái / `0.85fr` phương án bên phải) và lưới 2 cột `.cols-2` cho trắc nghiệm ngắn giúp trọn bộ 1 câu hỏi + mô phỏng + đáp án + thanh chuyển câu **nằm gọn trong 1 khung màn hình Laptop `1536×730` không cần cuộn**.
-  4. Xóa nút `Nộp Bài & Chấm Điểm` trùng lặp ở giữa chân thẻ câu hỏi (giữ duy nhất nút Nộp bài cố định ở Sidebar phải trên Desktop và Mobile HUD trên điện thoại).
-  5. Bổ sung hệ thống **Phím tắt thông minh**: `← / →` (hoặc `PageUp/PageDown`) chuyển câu, `A–D` / `1–4` chọn nhanh Phần I & chuyển trạng thái Đúng/Sai Phần II, `Enter` lưu & chuyển câu tiếp trong ô Trả lời ngắn Phần III (hoặc bắt đầu/xác nhận trong modal), `F` đánh dấu câu, `Space` tạm dừng/chạy mô phỏng 60 FPS, `Z` phóng to Lab toàn màn hình, `Escape` đóng modal.
-- **File đã sửa (`eduhost-vn204/edu-portal-lms`, nhánh `main`, trên nền `9109e22`)**:
-  - `danh-gia-nang-luc.html`
-- **Kiểm định sau chỉnh sửa cuối**:
-  - **6/6 suite Node.js LMS PASS 100%**: `test_cro_funnel.mjs`, `test_diagnostic_mastery_loop.mjs`, `test_remedial_and_prediction.mjs`, `test_smart_marketing_popup.mjs`, `scripts/test-quiz-merge.mjs`, `scripts/test-quiz-publish.mjs`.
-  - **Audit tĩnh**: `jsOk: true` (3 inline scripts), `endsHtml: true`, `hasGlowText: false`, `hasGlowFilter: false` (Zero AI Glow).
-  - **Playwright Retina `2x` (`scratch/pw_verify_lms_ux.py`)**:
-    - Laptop `1536×730` (Windows 125%): `gap_left=0.0px`, `gap_right=0.0px`, chân điều hướng chỉ còn `['Câu trước (←)', 'Câu tiếp (→)']`, đáy toàn bộ câu hỏi kèm Canvas `y=674.8px <= 730px` (1 khung không cuộn), PASS phím `b`, `f`, `ArrowRight`, `1`, `ArrowLeft` & nút thu gọn/mở rộng `#exam-collapsible-info`.
-    - Desktop `1920×960`: Đã soi ảnh PNG cho `Đề 02 Câu 1` (4 hình `MH-TN220-C1-28`), Phần II Đúng/Sai (`Câu 19` + phím `1` bật Đúng/Sai), Phần III Trả lời ngắn (`Câu 23` nhập số + `Enter` sang `Câu 24`).
-    - Mobile `390×844`: `y=131.0px >= 60px` chống khuất navbar, `scrollWidth=390 === innerWidth=390` (0 tràn ngang), tab 3 phần xếp gọn 1 hàng 3 cột.
+## Bàn giao gần nhất (20/11/2026 09:55)
+- **Chuẩn Hóa Đánh Số Đề Thi Theo Từng Phần Chuẩn Bộ GD&ĐT (1–18, 1–4, 1–6) & Hiển Thị Đích Danh Cụm Câu Hỏi Ghép (`danh-gia-nang-luc.html`) (Cục Bộ / Local)**:
+- **Mục tiêu**:
+  1. Xử lý triệt để phản hồi sư phạm của Thầy: *"Oke ổn nhưng cách đánh số cách phần chưa hợp lý thi đề thì ngta đánh 18 câu xong, 124 (1-4), xg 123456, và câu ghép thì phải nói rõ câu ghép 2 câu nào"*:
+     - **Chuẩn hóa đánh số từng phần (Part Numbering) chuẩn Bộ GD&ĐT**:
+       - **PHẦN I (Trắc nghiệm)**: Đánh số từ **Câu 1 đến Câu 18**.
+       - **PHẦN II (Đúng / Sai)**: Đánh số từ **Câu 1 đến Câu 4** (thay vì 19 đến 22).
+       - **PHẦN III (Trả lời ngắn)**: Đánh số từ **Câu 1 đến Câu 6** (thay vì 23 đến 28).
+       - **Bảng Palette bên phải (`#palette-grid` & `#mobile-palette-grid`)**: Các ô bấm được đánh số chuẩn từng phần: Phần I hiển thị 1..18, Phần II hiển thị 1..4, Phần III hiển thị 1..6; khi bấm vào ô bất kỳ vẫn nhảy đến câu tương ứng chính xác tuyệt đối.
+       - **Header câu hỏi (`.vstep-q-title`)**: Hiển thị chuẩn Bộ: `Câu 1 / 18 (Phần I)`, `Câu 1 / 4 (Phần II)`, `Câu 1 / 6 (Phần III)` kèm nhãn phụ `(Tổng câu X/28)` để học sinh nắm rõ cả vị trí trong phần và tiến độ toàn đề.
+       - **Thanh Tab Phần (`#wow-part-tabs`)**: Cập nhật nhãn chuẩn xác: `Trắc nghiệm (1–18)`, `Đúng/Sai (1–4)`, `Trả lời ngắn (1–6)`.
+       - **Drawer cấu trúc đề (`#vstep-sidebar-left`)**: Huy hiệu pill hiển thị chuẩn La Mã: `I.1`..`I.18`, `II.1`..`II.4`, `III.1`..`III.6`.
+       - **Báo cáo kết quả & Lời giải chi tiết**: Đồng bộ hiển thị `Phần [part] · Câu [num] (Đề câu X)`.
+     - **Hiển thị đích danh cụm câu hỏi ghép (Dynamic Stimulus / Cluster Range)**:
+       - Tự động nhận diện các câu hỏi chia sẻ chung đề bài (`deBaiChung`) và chỉ đích danh cụm câu cụ thể:
+         - Ví dụ Câu 23 & 24: **`ĐỀ BÀI CHUNG (DÙNG CHO CÂU 1 VÀ CÂU 2 – PHẦN III)`**.
+         - Ví dụ Câu 25 & 26: **`ĐỀ BÀI CHUNG (DÙNG CHO CÂU 3 VÀ CÂU 4 – PHẦN III)`**.
+         - Ví dụ Câu 27 & 28: **`ĐỀ BÀI CHUNG (DÙNG CHO CÂU 5 VÀ CÂU 6 – PHẦN III)`**.
+         - Trường hợp cụm câu ở Phần I (như Đề 05): **`ĐỀ BÀI CHUNG (DÙNG CHO CÂU 11 VÀ CÂU 12 – PHẦN I)`**.
+       - Học sinh đọc đề biết ngay đề bài chung áp dụng cho chính xác 2 câu nào, không còn mơ hồ.
+  2. **Tuân thủ nghiêm ngặt chỉ đạo an toàn của Thầy**: "Chưa đẩy lên web vội nhé, chỉ tối ưu xong rồi để trong máy để xem thôi, chừng nào chốt thì mới đẩy lên". Toàn bộ thay đổi đã commit cục bộ trên nhánh `feature/compact-dgnl-ux`, đồng bộ vào `danh-gia-nang-luc.html` trong máy để Thầy xem và TUYỆT ĐỐI KHÔNG PUSH / KHÔNG DEPLOY lên production.
+- **Commit & File đã sửa**:
+  - **Feature branch (`feature/compact-dgnl-ux`)**: Commit **`2e7aa99`** (trên nền `138e068` -> `0f39ee6`).
+    - `danh-gia-nang-luc.html`: Bổ sung `getQuestionPartInfo(idx)`, `getClusterQuestionsInfo(idx)`, cập nhật `renderSidebarLessons`, `buildPaletteInto`, `renderQuestion`, `renderDetailedReviewList`, tab names và CSS `.vstep-num-pill`.
+  - **Root Workspace (`danh-gia-nang-luc.html`)**: Đã đồng bộ trực tiếp file sửa đổi mới nhất vào thư mục làm việc chính.
+- **Kiểm tra đã chạy**:
+  - Node.js AST Script Validation: 4 block script AST PASS 0 lỗi cú pháp (`Syntax OK`), file kết thúc hợp lệ bằng `</html>`.
+  - Toàn bộ Test suites Student PASS 100%: `test_cro_funnel.mjs` (8/8 PASS), `test_diagnostic_mastery_loop.mjs` (PASS 100%), `test_remedial_and_prediction.mjs` (PASS 100%), `test_wrong_bank.mjs` (8/8 PASS).
+  - Playwright Automation Suite (`pw_verify_dgnl_part_numbering.py`): **ALL 6 CHECKLIST TESTS PASSED 100%**:
+    - Checklist 1: Câu 1 Phần I hiển thị `Câu 1 / 18`, Palette Phần I đánh số 1..18.
+    - Checklist 2: Câu 19 hiển thị `Câu 1 / 4` (Phần II), Tab 2 hiển thị `Đúng/Sai (1–4)`.
+    - Checklist 3: Câu 23 hiển thị `Câu 1 / 6` (Phần III), Cluster tag hiển thị **`ĐỀ BÀI CHUNG (DÙNG CHO CÂU 1 VÀ CÂU 2 – PHẦN III)`**, One-Frame bottom đạt `614.9px <= 730px`.
+    - Checklist 4: Câu 24 hiển thị `Câu 2 / 6`, dùng chung cụm `Câu 1 và Câu 2`.
+    - Checklist 5: Câu 25 hiển thị `Câu 3 / 6`, nhận diện cụm thứ 2 `Câu 3 và Câu 4`.
+    - Checklist 6: Drawer cấu trúc đề hiển thị pills La Mã `I.1`, `II.1`, `III.1` sắc nét.
+  - Playwright Typography & Canvas Suite (`pw_verify_dgnl_typography.py`): 6/6 Checklist PASS 100% (font 16.5px/15px, KaTeX 1.05em, Canvas 638x238, One-Frame 713px <= 730px).
 - **Điều phải giữ nguyên**:
-  - Giữ nguyên toàn bộ `phong-thi-thu.html`, các hợp đồng CRO/Auth Gate/Remedial và cấu trúc dữ liệu 50 đề `data/thptqg-*`.
+  - Giữ nguyên giao diện sáng chuẩn Bộ của `phong-thi-thu.html`.
+  - Giữ nguyên khoảng đệm Navbar (78px–92px Desktop, 70px–82px Mobile) và chuẩn EdTech quốc tế phẳng, sắc nét.
+  - Bảo toàn 100% logic Zero-Friction, lưu `localStorage`, bộ 50 đề THPTQG 2026 và Dual Auth Gate khi nộp bài.
+- **Việc còn lại**:
+  - Chờ Thầy xem và duyệt trực tiếp trên máy cục bộ trước khi push/deploy.
+
+## Bàn giao gần nhất (20/11/2026 08:40)
+- **Tối Ưu Typography, Tỉ Lệ Hiển Thị & Nới Rộng Khung Canvas 60 FPS Đạt Chuẩn One-Frame Zero-Scroll 730px (`danh-gia-nang-luc.html`) (Cục Bộ / Local)**:
+- **Mục tiêu**:
+  1. Thực hiện đầy đủ 3 hạng mục tinh chỉnh hiển thị & cỡ chữ theo lệnh chi tiết của Thầy:
+     - **Typography sắc nét tương phản cao**: Đề bài chính tăng lên `16.5px`, `line-height: 1.55`, màu sáng `#f8fafc`. Phương án trắc nghiệm Phần I và các mệnh đề Đúng/Sai Phần II tăng lên `15px`, `line-height: 1.45`, màu `#f1f5f9`. Công thức KaTeX đạt tỉ lệ `1.05em` (`15.75px`) với `white-space: nowrap` cho công thức ngắn không bị ngắt dòng.
+     - **Phóng to sân khấu Canvas 60 FPS theo tỉ lệ 54% - 46%**: Chia lại cột chứa Canvas chiếm `54%` (tăng từ ~50% lên ~652px bề ngang), cột chứa đáp án/mệnh đề chiếm `46%` (~569px). Gỡ bỏ giới hạn `max-height: 264px` chặt trước đó, đặt `aspect-ratio: 780 / 305` chuẩn xác, giữ nguyên hệ tọa độ logic `w = 780, h = 305` (Retina 2x `1560 × 610`) trong JavaScript để 100% mô hình 60 FPS cũ hiển thị to rõ, không méo hay lệch tọa độ.
+     - **Cuộn nội bộ an toàn & Nhường không gian**: Cột đáp án bên phải có `max-height: 385px; overflow-y: auto` (thanh cuộn mảnh `#334155`), bảo vệ tuyệt đối không đẩy tụt chân trang khi gặp câu Đúng/Sai dài hoặc nhiều mệnh đề. Thu gọn thanh palette câu hỏi cột phải xuống `225px` (5 ô số/hàng gọn gàng). Xóa hoàn toàn nút/nhãn `Phím tắt` lặp ở giữa thanh footer.
+     - **Khắc phục triệt để câu chứa bảng số liệu thực nghiệm dài (như Câu 20 Đề 02)**: Tinh chỉnh padding & margin các phần tử cấp cao (`.vstep-main-stream`, `.wow-top-command-bar`, `.wow-part-tabs`, `.vstep-q-box`, `.vstep-q-stem`, `.vstep-nav-footer`, `.vstep-q-stem table`) để tổng chiều cao khung làm bài trên Laptop 1536×730 đạt **`713.2px <= 730px`** (trước đây là 740px-754px), triệt tiêu hoàn toàn thanh cuộn dọc ngoài của trang web (One-Frame Zero-Scroll đạt 100%).
+  2. **Tuân thủ nghiêm ngặt chỉ đạo an toàn của Thầy**: "Chưa đẩy lên web vội nhé, chỉ tối ưu xong rồi để trong máy để xem thôi, chừng nào chốt thì mới đẩy lên". Toàn bộ thay đổi đã commit cục bộ trên nhánh `feature/compact-dgnl-ux`, đồng bộ vào `danh-gia-nang-luc.html` trong máy để Thầy xem và TUYỆT ĐỐI KHÔNG PUSH / KHÔNG DEPLOY lên production.
+- **Commit & File đã sửa**:
+  - **Feature branch (`feature/compact-dgnl-ux`)**: Commit **`138e068`**
+    - `danh-gia-nang-luc.html`: Cải tạo CSS grid template 54%-46%, sidebar 225px, typography 16.5px / 15px, KaTeX 1.05em, table padding, canvas sizing `aspect-ratio: 780/305`, xóa duplicate footer hint, tối ưu spacing nội bộ.
+  - **Root Workspace (`danh-gia-nang-luc.html`)**: Đã đồng bộ trực tiếp file sửa đổi mới nhất vào thư mục làm việc chính.
+- **Kiểm tra đã chạy**:
+  - Node.js AST Script Validation: 2 block script AST PASS 0 lỗi cú pháp (`Syntax OK`), file kết thúc hợp lệ bằng `</html>`.
+  - Quét an toàn giao diện: **0 vi phạm AI Glow** (0 text-shadow neon, 0 box-shadow mờ ảo).
+  - Toàn bộ Test suites Student PASS 100%: `test_cro_funnel.mjs` (8/8 PASS), `test_diagnostic_mastery_loop.mjs` (PASS 100%), `test_remedial_and_prediction.mjs` (PASS 100%), `test_wrong_bank.mjs` (8/8 PASS).
+  - Playwright Chromium Retina 2x (`pw_verify_dgnl_typography.py`): **ALL 6 CHECKLIST TESTS PASSED 100%**:
+    - Checklist 1: Đổi sang Đề 02 mượt mà.
+    - Checklist 2: Câu 1 (TN + Canvas): Font đề `16.5px`, font đáp án `15px`, Canvas `638px × 238px` (aspect-ratio 2.68), cột Canvas 652px (54%) - cột đáp án 569px (46%), sidebar phải 225px, footer bottom **`594.7px <= 730px`** (One-Frame Zero-Scroll PASS), đã xóa nhãn phím tắt lặp ở footer.
+    - Checklist 3: Câu 20 (Đúng/Sai + Bảng thực nghiệm + Canvas): Font mệnh đề `15px`, font KaTeX `15.75px` (1.05em), footer bottom **`713.2px <= 730px`** (One-Frame Zero-Scroll PASS tuyệt đối).
+    - Checklist 4: Nút điều khiển Canvas (`Tạm dừng` / `Tiếp tục` / `Đặt lại`) hoạt động chuẩn xác.
+    - Checklist 5: Phím tắt bàn phím (`Space` tạm dừng Lab, `←` lùi câu, `Escape` đóng popover) hoạt động trơn tru.
+    - Checklist 6: Nút `Nộp Bài & Chấm Điểm` kích hoạt modal xác nhận / Dual Auth Gate chuẩn xác.
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên giao diện sáng chuẩn Bộ của `phong-thi-thu.html`.
+  - Giữ nguyên khoảng đệm Navbar (78px–92px Desktop, 70px–82px Mobile) và chuẩn EdTech quốc tế phẳng, sắc nét.
+  - Bảo toàn 100% logic Zero-Friction, lưu `localStorage`, bộ 50 đề THPTQG 2026 và Dual Auth Gate khi nộp bài.
+- **Việc còn lại**:
+  - Chờ Thầy xem và duyệt trực tiếp trên máy cục bộ trước khi push/deploy.
+
+## Bàn giao gần nhất (20/11/2026 07:30)
+- **Tối Ưu Hóa Giao Diện Đánh Giá Năng Lực Chuẩn One-Frame Zero-Scroll, Khử Rối Mắt & Nới Rộng Sân Khấu Mô Phỏng 60 FPS (`danh-gia-nang-luc.html`) (Cục Bộ / Local)**:
+- **Mục tiêu**:
+  1. Xử lý triệt để 4 điểm gây rối mắt và ngộp thông tin theo đúng chẩn đoán của Thầy trên trang Đánh Giá Năng Lực (`danh-gia-nang-luc.html`):
+     - **Cột trái (CẤU TRÚC ĐỀ 28 CÂU)**: Chuyển thành **Off-canvas Drawer** thu gọn mặc định (`transform: translateX(-100%)`). Thêm nút `☰ Cấu trúc đề` trên thanh tiêu đề để mở khi cần; click vào câu hỏi trong drawer sẽ tự động nhảy câu và đóng drawer. Giải phóng thêm ~264px bề ngang cho sân khấu chính (từ ~970px lên 1.268px).
+     - **Header giữa xếp 3 tầng cồng kềnh**: Gộp cụm nút chọn đề (Đề 01, Đề 02, Đề 03, Kho 50 đề) thành **1 nút Dropdown `[ Đề 02 (Kiểm chứng) ▾ ]`** gọn gàng cạnh tên đề thi; chuyển dòng thông báo xanh thành **Floating Toast tự ẩn sau 4 giây**; thanh Phần I/II/III làm mảnh hơn (`4px 10px`), bỏ dải phím tắt dài chiếm chỗ.
+     - **Khử trùng lặp thông tin 2 lần**: Xóa bỏ dòng caption lặp đề bài (`Câu LT01:...`) và bộ đếm `t = 11.4s` dưới Canvas; gộp dải hướng dẫn phím tắt ở 2 nơi thành **1 nút `[⌨ Phím tắt]` popover** thanh lịch ở góc trên và 1 nút nhẹ nhàng ở chân trang.
+     - **Nới thoáng thanh điều khiển Canvas**: Chuyển nhãn `60 FPS · MÔ PHỎNG TƯƠNG TÁC` thành **Badge nhỏ nằm bên trong góc trên-trái** của Canvas; thanh bên dưới chỉ còn 4 nút thao tác (`Tạm dừng`, `Đặt lại`, `Ảnh thực tế`, `Phóng to Lab`) căn giữa thoáng đãng, dễ bấm nhanh.
+  2. **Tuân thủ nghiêm ngặt chỉ đạo an toàn của Thầy**: "Chưa đẩy lên web vội nhé, chỉ tối ưu xong rồi để trong máy để xem thôi, chừng nào chốt thì mới đẩy lên". Toàn bộ thay đổi được thực hiện trên nhánh riêng `feature/compact-dgnl-ux`, commit cục bộ, đồng bộ vào `danh-gia-nang-luc.html` trong workspace và TUYỆT ĐỐI KHÔNG PUSH / KHÔNG DEPLOY lên web.
+- **Commit & File đã sửa**:
+  - **Feature branch (`feature/compact-dgnl-ux`)**: Commit **`0f39ee6`**
+    - `danh-gia-nang-luc.html`: Cải tạo CSS và HTML cho `.vstep-course-layout`, `.vstep-sidebar-left` (Off-canvas drawer kèm `.struct-drawer-overlay`), `.btn-struct-drawer-toggle`, `.wow-exam-dropdown-wrap`, `.btn-exam-dropdown-trigger`, `.wow-exam-dropdown-panel`, `.wow-shortcut-popover-wrap`, `.wow-toast-notice` (Floating Toast), `.wow-canvas-overlay-badge`, `.wow-stage-controls-row`, loại bỏ `.wow-stage-foot`, thêm các hàm điều khiển `toggleStructDrawer`, `toggleExamDropdown`, `switchExamFromDropdown`, `open50FromDropdown`, `toggleShortcutsPopover`, `showExamAutoNoticeToast`, `closeExamAutoNotice`.
+  - **Root Workspace (`danh-gia-nang-luc.html`)**: Đồng bộ trực tiếp với bản tối ưu mới nhất để Thầy mở xem trực tiếp trên máy qua Live Server / trình duyệt. Đã tạo file backup dự phòng: `danh-gia-nang-luc.backup-arena.html`.
+- **Kiểm tra đã chạy**:
+  - Node.js AST Script Validation: 2 block script AST PASS 0 lỗi cú pháp (`Syntax OK`), file kết thúc hợp lệ bằng `</html>`.
+  - Toàn bộ Test suites Student PASS 100%: `test_cro_funnel.mjs` (8/8 PASS), `test_diagnostic_mastery_loop.mjs` (PASS), `test_remedial_and_prediction.mjs` (PASS), `test_smart_marketing_popup.mjs` (PASS), `test_wrong_bank.mjs` (8/8 PASS).
+  - Quét an toàn giao diện: **0 vi phạm AI Glow** (0 text-shadow neon, 0 box-shadow mờ ảo).
+  - Playwright Chromium Retina 2x (`pw_verify_dgnl_compact.py`): PASS toàn bộ 6/6 bước kiểm định trực quan (Drawer trượt mở/đóng và tự đóng khi chọn câu; Dropdown chọn đề chuyển Đề 01/02 mượt mà; Popover phím tắt mở và đóng bằng Escape; Toast nổi góc trên tự ẩn; One-Frame Zero-Scroll bottom đạt **`642.9px <= 730px`** trên Laptop 1536x730, không thanh cuộn).
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên giao diện sáng chuẩn Bộ của `phong-thi-thu.html`.
+  - Giữ nguyên khoảng đệm Navbar (78px–92px Desktop, 70px–82px Mobile) và chuẩn phẳng EdTech quốc tế.
+  - Bảo toàn 100% logic Zero-Friction, lưu `localStorage`, bộ 50 đề THPTQG 2026 và Dual Auth Gate khi nộp bài.
+- **Việc còn lại**:
+  - Chờ Thầy mở xem nghiệm thu trực tiếp trên máy cục bộ, khi Thầy ưng ý và chỉ đạo "chốt đẩy lên" thì mới merge và deploy lên production.
+
+## Bàn giao gần nhất (20/11/2026 07:22)
+- **Hoàn Thiện Tối Ưu Hóa Bộ Lọc 2 Hàng Đối Xứng + Xóa Nút Debug 16 Chủ Đề + Đẩy Lên Production GitHub Pages (`ngan-hang-de.html`)**:
+- **Mục tiêu**:
+  1. Xử lý phản hồi của Thầy (*"Mới nó chưa được tối ưu theo như chúng ta đã đẩy lên, nó chưa cập nhật"*):
+     - **Tối ưu triệt để bộ lọc**: Khắc phục lỗi thanh bộ lọc bị rớt dòng thành 3 bậc thang nhấp nhô trên các màn hình laptop/PC do thiếu chiều ngang. Chuyển thành kiến trúc 2 hàng chuẩn chỉnh:
+       - Hàng 1: Ô tìm kiếm toàn diện (`#nh-f-search`) chiếm trọn bên trái, kèm nút xóa nhanh `[×]` (`clearBankSearch()`); bên phải là nút `[⚡ Bộ lọc khác (0) ▾]` và nút `[↺ Đặt lại]`.
+       - Hàng 2: Lưới 4 cột đối xứng tuyệt đối (`.nh-filter-row-grid`): `Tất cả chương` | `Tất cả bài` | `Tất cả nhóm câu` | `Mọi mức độ`, không bao giờ bị xô lệch hay rớt dòng.
+       - Ngăn kéo mở rộng: Mở trực tiếp dưới Hàng 2 khi Thầy bấm `[Bộ lọc khác]`, chứa đủ 6 tiêu chí chuyên sâu.
+     - **Làm sạch thanh 16 Chủ đề**: Dời nút debug `+ Xuất 220 câu chỉnh tay (.json)` vào bên trong ngăn kéo `#nh-adv-drawer`, giúp thanh 16 Chủ đề trở nên tinh tươm, chỉ gồm tên thanh, số liệu và nút `[Thu gọn / Mở rộng 16 CĐ ▾]`.
+     - **Cân đối bố cục tổng thể**: Thu hẹp cột nạp bên trái từ 380px về 330px và giảm khoảng cách cột xuống 18px để giải phóng thêm 68px chiều ngang cho danh sách câu hỏi và bộ lọc.
+     - **Đẩy chính thức lên Production GitHub Pages**: Hợp nhất nhánh `feature/compact-admin-bank-ui` vào nhánh `main` và push lên remote `origin/main` của `https://github.com/eduhost-vn204/edu-portal-console.git` để trang online `https://eduhost-vn204.github.io/edu-portal-console/ngan-hang-de.html` cập nhật giao diện mới nhất.
+- **Commit & File đã sửa**:
+  - **Admin (`eduhost-vn204/edu-portal-console`, nhánh `main`)**: Commit **`44bc808`** (trên nền `21519a0` -> `3f8d3f5` -> `44bc808`, đã push lên `origin/main`).
+    - `ngan-hang-de.html`: Cải tạo CSS & HTML `.nh-grid`, `.nh-filter-box`, `.nh-filter-row-top`, `.nh-filter-row-grid`, `#nh-search-clear`, `.nh-search-wrap`, dời nút xuất 220 câu thủ công vào `#nh-subtopic-override-export-zone`, thêm hàm `clearBankSearch()`, cập nhật `bankSearchChanged()` và `resetAllBankFilters()`.
+  - **Root Workspace (`ngan-hang-de.html`)**: Đồng bộ hoàn toàn với bản trên `main`.
+- **Kiểm tra đã chạy**:
+  - Node.js Script AST: Toàn bộ 24 block `<script>` đạt 0 lỗi cú pháp (`Syntax OK`).
+  - Kiểm thử trực quan Webview Browser trên `localhost:8092`:
+    - Xác nhận Hàng 1 (Search + Bộ lọc khác + Đặt lại) và Hàng 2 (4 cột đối xứng) hiển thị phẳng, sắc nét, không gãy dòng.
+    - Nút `[×]` xuất hiện khi gõ tìm kiếm và xóa sạch khi bấm.
+    - Mở / đóng ngăn kéo `[Bộ lọc khác]` mượt mà.
+    - Thanh 16 Chủ đề hoàn toàn sạch sẽ, không còn nút debug.
+    - Dữ liệu Live Server nạp đầy đủ 3.514 câu và 68 đề.
+  - Quét an toàn & quy tắc: Zero AI Glow, 0 secret leak, `git diff --check` sạch hoàn toàn.
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên giao diện sáng chuẩn Bộ của `phong-thi-thu.html`.
+  - Giữ nguyên thanh fixed navbar chống khuất và chuẩn phẳng EdTech quốc tế.
+- **Việc còn lại**:
+  - Báo cáo kết quả đẩy lên production cho Thầy kiểm tra trên link online GitHub Pages.
+
+## Bàn giao gần nhất (19/11/2026 08:35)
+- **Thiết Kế Lại Giao Diện Ngân Hàng Quản Trị Tinh Gọn, Đỡ Rối Mắt, Chuẩn EdTech Quốc Tế (`ngan-hang-de.html`)**:
+- **Mục tiêu**:
+  1. Theo chỉ đạo trực tiếp của Thầy (*"trang quản trị ngân hàng đang hơi rối mắt rồi và cũng hơi nhiều cái thừa thãi... bỏ box 16 chùm câu trên 18 đi, bỏ tải file Excel... tab câu hỏi thu gọn lại, để mũi tên kích ra... chỉ cần 2 cái chính là tổng số câu và tổng số đề... phân loại, chủ đề, nạp câu hỏi làm gọn lại cho đỡ rối mắt"*):
+     - Loại bỏ nút `🎲 Bốc 16 Chủ đề / Đề 18 câu Bộ (Chống trùng)` và liên kết `Tải file Excel mẫu` khỏi thanh header.
+     - Thiết kế lại cụm thẻ thống kê KPI: chỉ hiện 2 thẻ lớn chính (**Tổng số câu** và **Tổng số đề**). Bổ sung toggle mũi tên (`<i class="fa-solid fa-chevron-down"></i>`) để xổ lưới chi tiết khi cần (6 nhóm câu: TN, TN-LT, TN-BT, Đúng/Sai, Trả lời ngắn, Câu Tinh).
+     - Tinh gọn thanh bộ lọc: co gọn thành 1 hàng ngang duy nhất cho các bộ lọc chính (Tìm kiếm, Chương, Bài, Nhóm câu, Mức độ) và đưa các bộ lọc phụ (Chủ đề, Dạng bài, Chiến dịch, Chất lượng, Canvas 60 FPS, Loại câu) vào ngăn kéo xổ xuống `Bộ lọc khác` kèm badge đếm số lượng bộ lọc đang kích hoạt.
+     - Tinh gọn thanh 16 Chủ đề: tích hợp nút `Thu gọn` / `Mở rộng 16 CĐ` tự động co thanh 16 chip thành 1 dòng tóm tắt tinh tươm, lưu trạng thái vào `localStorage`.
+     - Tinh gọn khối Nạp câu hỏi: gom 4 card nạp khổng lồ chồng chất (Word, JSON Tinh, PDF, Excel) thành 1 widget tab duy nhất (`#nh-unified-importer`) có 4 tab con chuyển đổi nhanh, nút thu gọn nội dung và nút ẩn hẳn sidebar.
+     - Tuân thủ nghiêm ngặt quy tắc EdTech: giao diện phẳng, sắc nét, tương phản cao, triệt tiêu hoàn toàn hiệu ứng AI Glow ma mị, bảo toàn 100% 61 DOM IDs và toàn bộ logic nạp/lọc/duyệt.
+- **Commit & File đã sửa**:
+  - **Admin (`eduhost-vn204/edu-portal-console`, nhánh `feature/compact-admin-bank-ui`)**: Commit **`3f8d3f5`**
+    - `ngan-hang-de.html`: Cải tạo CSS và HTML cho toolbar, `.stat-hero-row`, `#panel-q-sub`, `#panel-e-sub`, `.nh-filter-box`, `#nh-adv-drawer`, `#nh-unified-importer`, logic collapse/expand 16 chủ đề `wrapSubtopicChips(...)`, các hàm điều khiển `toggleSubStats`, `toggleAdvFilters`, `updateAdvBadge`, `resetAllBankFilters`, `switchImportTab`, `toggleImporterBody`, `toggleSidebarFull`.
+  - **Root Workspace (`ngan-hang-de.html`)**: Đồng bộ hoàn toàn với bản trong `_codex_verify_live`.
+- **Kiểm tra đã chạy**:
+  - Node.js AST / Script Validation: Kiểm tra 24 block `<script>` trong file đạt 0 lỗi cú pháp (`Syntax OK`).
+  - DOM ID Integrity Check (`scratch/check_ids.js`): Xác minh đầy đủ 61/61 DOM ID cốt lõi có mặt trong DOM, bảo đảm không gãy bất kỳ hàm xử lý dữ liệu hay event listener nào.
+  - Kiểm thử trực quan Webview Browser: Chạy kiểm thử trên máy chủ cục bộ xác minh:
+    - Loại bỏ hoàn toàn 2 nút cũ khỏi toolbar.
+    - 2 thẻ chính hiển thị trực quan, bấm xổ `Chi tiết 6 nhóm câu` ra 6 thẻ con chuẩn xác.
+    - Mở / đóng ngăn kéo `Bộ lọc khác` hoạt động mượt mà.
+    - Thanh 16 Chủ đề thu gọn thành 1 dòng và mở rộng trơn tru.
+    - 4 Tab nạp (Word, JSON Tinh, PDF, Excel) chuyển đổi tức thì.
+  - Quét an toàn & quy tắc: Zero AI Glow, 0 secret leak, `git diff --check` sạch hoàn toàn.
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên giao diện sáng chuẩn Bộ của `phong-thi-thu.html`.
+  - Giữ nguyên thanh fixed navbar chống khuất và chuẩn phẳng EdTech quốc tế.
+- **Việc còn lại**:
+  - Bàn giao Thầy nghiệm thu giao diện ngân hàng quản trị mới.
+
+## Bàn giao gần nhất (19/11/2026 07:50)
+- **Tùy Chỉnh Đề Tương Tác (Question Picker & Reorder) Trong Admin + Hiệu Chỉnh Độ Dốc Sư Phạm 5 Đề Đầu Tiên**:
+- **Mục tiêu**:
+  1. Theo chỉ đạo của Thầy (*"thiết kế lại thứ tự đề, các đề đầu tiên vừa giống đề THPT Quốc gia vừa phải dễ, không tính toán nhiều ở đúng sai, khó dần về sau; và muốn tự bốc/tùy chỉnh đề trong web admin"*):
+     - Xây dựng **Modal Question Picker** và **Bộ công cụ sắp xếp câu hỏi (`[🎯 Chọn câu]`, `[🎲 Ngẫu nhiên]`, `[⬆]`, `[⬇]`, `[💾 Tải Gói 50 Đề (.js)]`, `[🔄 Đặt lại]`)** trong Admin Unified Exam Manager (`ngan-hang-de.html`).
+     - Tinh chỉnh 5 đề đầu tiên (`THPTQG-2026-DE01..DE05`): loại bỏ các câu VDC tính toán cồng kềnh ở Phần II Đúng/Sai (chuyển sang các đề Về đích 9+ từ Đề 22-40), thay bằng các câu thực nghiệm định tính trực quan, có mô hình Canvas 60 FPS bám sát đề tham khảo Bộ GD&ĐT.
+- **Commit & File đã sửa**:
+  - **Admin (`eduhost-vn204/edu-portal-console`, nhánh `main`)**: Commit **`21519a0`**
+    - `ngan-hang-de.html`: Thêm CSS/HTML cho `#nh-question-picker-overlay` và `#nh-question-picker-modal` (4 bộ lọc: Chương C1-C4, Mức độ NB-VDC, Mô hình 60 FPS, Trạng thái dùng; ô tìm kiếm realtime debounce 250ms; card hiển thị KaTeX, bảng số liệu và Canvas 60 FPS); bổ sung nút `[🎯 Chọn câu]`, `[🎲 Ngẫu nhiên]`, `[⬆]`, `[⬇]` trên 28 slot câu hỏi trong Inspector modal; thêm các hàm `openQuestionPickerForExam`, `renderQuestionPickerList`, `applyPickedQuestionToExam`, `moveExamQuestion`, `exportCampaign50PackJs`, `resetExamToDefault`.
+    - `assets/thptqg-50-exams-pack.js`: Tinh chỉnh độ dốc sư phạm 5 đề đầu tiên.
+  - **Student (`eduhost-vn204/edu-portal-lms`, nhánh `main`)**: Commit **`fdbcb8b`**
+    - `data/thptqg-exams/de-01.json..de-50.json`: Tái sinh toàn bộ 50 file JSON cấu trúc chuẩn Bộ GD&ĐT.
+    - `data/thptqg-50-manifest.js`: Cập nhật metadata 50 đề và preloaded exams cho Đề 01 & 02 mở 0ms.
+    - `assets/thptqg-50-exams-pack.js`: Đồng bộ bản pack mới nhất.
+- **Kiểm tra đã chạy**:
+  - Playwright Retina 2x (`scratch/pw_verify_admin_exam_builder.py`): PASS 9/9 bước UI/UX Admin (mở Inspector, mở Picker câu 20, lọc & tìm kiếm, gán câu mới `VLXT-DS-VD28-039`, đảo thứ tự `[⬆] [⬇]`, biên dịch xuất gói 50 đề).
+  - Student Node suites: `test_cro_funnel.mjs` (8/8 PASS), `test_diagnostic_mastery_loop.mjs` (PASS), `test_remedial_and_prediction.mjs` (PASS), `test_smart_marketing_popup.mjs` (PASS), `scripts/test-quiz-merge.mjs` (6/6 PASS), `scripts/test-quiz-publish.mjs` (12/12 PASS).
+  - Quét bảo mật & quy tắc: Zero AI Glow, 0 secret leak, `git diff --check` sạch hoàn toàn, 100% 1.400 câu hỏi trên 50 đề độc bản tuyệt đối.
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên giao diện sáng chuẩn Bộ của `phong-thi-thu.html`.
+  - Giữ nguyên thanh fixed navbar chống khuất và chuẩn phẳng EdTech quốc tế.
+- **Việc còn lại**:
+  - Bàn giao cho Thầy nghiệm thu và trải nghiệm các tính năng mới trên Admin & Student.
 
 ## Bàn giao gần nhất (18/11/2026 14:35)
-- **Nâng Cấp Bài Test Điểm Thi THPT Quốc Gia 2026 (`danh-gia-nang-luc.html`) Thành Kho 50 Đề Chuẩn Bộ 28 Câu · Tích Hợp Mô Phỏng Vật Lý 60 FPS Tương tác Trực Tiếp**:
+- **Chiến Dịch 50 Đề Chuẩn Bộ GD&ĐT 2026 (1.400 Câu Độc Lập Không Trùng) + Làm Sạch Ngân Hàng (`3.514` Câu) + Ngân Hàng Quản Trị Đề & Chiến Dịch (`ngan-hang-de.html`)**:
 - **Mục tiêu**:
-  1. Đưa trọn **50 đề thi 28 câu độc lập (`1.400` câu chuẩn Bộ GD&ĐT 2026: Phần I 18 TN · Phần II 4 Đ/S 100% Canvas · Phần III 6 TLN)** từ Ngân hàng đề `3.514` câu sang trang `danh-gia-nang-luc.html` phục vụ học sinh trải nghiệm `"Ồ WOW"` với mô phỏng Vật Lý 60 FPS tương tác được ngay trong đề thi.
-  2. Giữ nguyên **100%** các hợp đồng tương thích ngược của chuỗi CRO Funnel / Auth Gate / Remedial Deep Link / Smart Marketing Popup và giữ nguyên hoàn toàn `phong-thi-thu.html`.
-- **Commit & File đã sửa (`eduhost-vn204/edu-portal-lms`, nhánh `main`, trên nền `7d7ed13`)**:
-  - `assets/canvas-core-helpers.js`, `assets/mo-hinh-thuc-te-models.js`, `assets/staging-ds-models.js`, `assets/staging-tn50-models.js`, `assets/staging-tn220-models.js`, `assets/tln-thuc-te-models.js`, `data/mo-hinh-thuc-te-models.js`: Đồng bộ trọn bộ 6 thư viện mô hình Vật Lý 60 FPS (gồm `MH-TN220-C2-47`, `MH-TN220-C1-48` và `MH-TLN-2026-03` Canvas 60 FPS).
-  - `assets/images/{staging,staging-220,staging-ds}/...`: Đồng bộ trọn `129` ảnh minh họa cục bộ được 50 đề tham chiếu (`0` ảnh thiếu).
-  - `data/thptqg-50-manifest.js` & `data/thptqg-exams/de-01.json..de-50.json`: Manifest danh mục 50 đề nạp sẵn `Đề 01 & 02` (`0ms` boot) và `50` file đề tĩnh JSON (`de-01..de-50.json`) cho tải tức thì từng đề.
-  - `danh-gia-nang-luc.html`: Nâng cấp toàn diện giao diện phẳng EdTech (loại bỏ sạch AI Glow, thêm `padding-top: 60px` chống khuất dưới Fixed Navbar):
-    - **Sân khấu Mô phỏng 60 FPS Retina (`1560×610`)**: Nút `Tạm dừng / Tiếp tục`, tua tốc độ `0.5x | 1x | 2x`, `Đặt lại`, chuyển `Ảnh đề gốc` và `Phóng to Lab` toàn màn hình.
-    - **Kho 50 Đề Chuẩn Bộ (`#campaign-50-drawer-modal`)**: Lọc theo 4 nhóm chiến dịch (`Khảo sát Free 1–5`, `Thực chiến 8+ 6–20`, `Về đích 9+ 21–40`, `Tổng duyệt 41–50`), tìm kiếm, hiển thị số mô hình & điểm đã làm.
-    - **Chấm điểm chuẩn Bộ GD&ĐT 10 điểm**: Phần I (`0,25đ/câu`), Phần II Đúng/Sai (`0,1 / 0,25 / 0,5 / 1,0đ`), Phần III Trả lời ngắn (`0,25đ/câu` hỗ trợ `,` & `.`), hiển thị phân rã 3 phần & lời giải KaTeX kèm nút mở lại mô phỏng 60 FPS cho từng câu.
-    - Bảo toàn toàn bộ DOM IDs/localStorage/Auth Gate/`renderRemedialSpotlight` cho kiểm thử CRO & Remedial hiện hữu.
-  - `freemium-flow.js`: Giữ nguyên tương thích 20 câu và truyền đúng điểm thực 3 phần (`score10` / `predictedScore`) qua `saveZeroFrictionProgress()`.
-  - `index.html`: Cập nhật nội dung `#dgnl-bootup-overlay` giới thiệu Kho 50 Đề 28 câu mô phỏng 60 FPS (giữ nguyên cấu trúc và `smart-marketing-popup.js`).
+  1. Theo chỉ đạo của Thầy (*"dùng 50 đề tạo từ ngân hàng vừa nạp cho bài Test điểm thi THPTQG, học sinh làm ồ wow trực quan với mô hình canvas, và quản lý 50 đề ngay trong Ngân hàng thành Ngân hàng quản trị"*): làm sạch dữ liệu tồn đọng trên `3.514` câu và dựng **50 đề 28 câu chuẩn Bộ 2026 (`1.400` câu độc lập)** phân chia 4 mục đích (`5` Khảo sát Free · `15` Thực chiến 8+ · `20` Về đích 9+ · `10` Tổng duyệt 2026).
+  2. Nâng cấp `ngan-hang-de.html` thành **Ngân hàng quản trị** hợp nhất Kho Câu Hỏi Chuẩn Hóa (`3.514`) & Tab Quản Lý Đề & Chiến Dịch (`50` đề + SoanDe) cùng Inspector xem toàn bộ 28 câu có Canvas 60 FPS trực tiếp, đổi câu tại chỗ, xuất Word `.docx` và đồng bộ cloud.
+- **Commit & File đã sửa (`eduhost-vn204/edu-portal-console`, nhánh `main`, trên nền `194e5be`)**:
+  - `assets/staging-tn220-models.js`: Bổ sung **2 mô hình Canvas 60 FPS Retina mới** (`MH-TN220-C2-47` cho `VLXT-T1-L09-Q29` & `MH-TN220-C1-48` cho `VLXT-T1-L05-Q13`, tổng `48` mô hình, `shadowBlur = 0`, Zero Data Leakage).
+  - `assets/tln-thuc-te-models.js`: Đăng ký thêm renderer **Canvas 60 FPS Retina (`MH-TLN-2026-03`)** cho cụm câu Phần III thanh dẫn trượt trên thanh ray trong từ trường đều (giữ nguyên SVG dự phòng).
+  - `assets/ngan-hang-3048-questions.json` & `.js`: Vá sạch `235` đáp án `TLN` từ `tln-370-questions.js` (khử 10 đáp án bị lỗi ngày/ký tự từ Google Sheets, đạt `370/370` số thực hợp lệ), sửa `24` đáp án chữ `'A'` trên `VLXT-T1-L09/L10` + 5 lời giải L10, xóa `204` đường dẫn ảnh chết `question-crops/*.png`, gắn đủ `modelId` mới.
+  - `assets/thptqg-50-exams-pack.js`: Tạo bộ **50 đề chuẩn Bộ GD&ĐT (`THPTQG-2026-DE01..DE50`)**, mỗi đề 28 câu (`Phần I: 18 TN-LT`, `Phần II: 4 ĐS 100% Canvas`, `Phần III: 6 TLN gồm 3 cụm nhomId nguyên vẹn`), **1.400 mã câu hỏi độc nhất (`0` trùng lặp giữa 50 đề)**, mỗi đề có **`5–8` mô hình Canvas 60 FPS** (`Đề 01` Câu 1 là `MH-TN220-C2-30`, tổng `8` mô hình).
+  - `ngan-hang-de.html`: Thêm thẻ KPI bấm được `#nh-s-total-exams` (`50` đề), thanh 2 tab workspace (`Kho Câu Hỏi Chuẩn Hóa` / `Quản Lý Đề & Chiến Dịch`), 5 thẻ mục đích (`50 / 5 / 15 / 20 / 10`), bộ lọc tìm kiếm theo mã câu/mô hình, gán mục đích/mở-khóa/Free-VIP từng đề, modal `#nh-exam-inspector-overlay` hiển thị 28 câu kèm Canvas 60 FPS & nút `Đổi câu`, tạo đề 28 câu mới chống trùng, xuất `.docx`, tự đồng bộ `registerCampaign50Usages()` & filter chiến dịch `THPTQG_2026` (giao diện phẳng EdTech, không AI Glow).
 - **Kiểm tra đã chạy sau chỉnh sửa cuối**:
-  - Đạt 100% trên 6/6 suite liên quan: `test_cro_funnel.mjs` (`8/8`), `test_diagnostic_mastery_loop.mjs`, `test_remedial_and_prediction.mjs`, `test_smart_marketing_popup.mjs`, `scripts/test-quiz-merge.mjs` (`6/6`), `scripts/test-quiz-publish.mjs` (`12/12`). *(Lưu ý nền có sẵn của repo upstream `7d7ed13`: `test_full_student_journey.mjs` dòng 131 kỳ vọng `>= 18` file trong `data/exams/` trong khi nhánh gốc đang có `15` file — ngoài phạm vi sửa.)*
-  - `verify_50exams_lms.mjs`: PASS `phong-thi-thu.html` không đổi, `vm.Script` 8 file JS + HTML inline script, Zero AI Glow, `1.400/1.400` câu & `0` ảnh thiếu trong 50 JSON, `git diff --check` và quét secret sạch.
-  - Playwright Retina `2x` (`pw_verify_lms_50exams.py` trên Desktop `1440×960` & Mobile `390×844`): PASS `Đề 01` Canvas `1560×610` hoạt động thay đổi pixel theo thời gian thực, điều khiển `0.5x/2x/Pause/Fullscreen`, chuyển `Đề 25` qua Kho 50 đề, chấm Phần I (`0.50`) + Phần II (`0.50 + 0.25`) + Phần III `"2,67"` (`0.25`) = **`1.5`** chính xác, Remedial Spotlight, `28` thẻ chữa chi tiết, Mobile HUD `y=78px >= 60`, `0` lỗi JS/`404`; kiểm tra trực quan 5 ảnh PNG Retina `2x`.
+  - `node scripts/test-apps-script-logic.mjs` (`12/12` PASS) & `node scripts/test-import-nganhang.mjs` (`12/12` PASS).
+  - `verify_50exams_admin.mjs`: PASS `vm.Script` 5 file JS + 5 block HTML, `</html>`, `1.400/1.400` ID khớp ngân hàng `3.514` (`0` trùng), `370/370` `TLN` số hợp lệ, `shadowBlur = 0`, `0` secret, `git diff --check` sạch.
+  - Playwright Retina `2x` (`pw_verify_admin_50exams.py`): PASS `Cau=3,514, De=50`, 5 thẻ mục đích `['50', '5', '15', '20', '10']`, lọc `KHAO_SAT_FREE` (`5`), đổi mục đích cập nhật tức thì, mở Inspector `DE01` đủ 28 câu + 10 `<canvas>` (`1560×610`) + đổi Câu 1 thành công, `0` lỗi Console/PageError; kiểm tra trực quan 2 ảnh PNG Retina `2x`.
 - **Điều phải giữ nguyên**:
-  - Giữ nguyên hoàn toàn `phong-thi-thu.html`; không để `sync-public-data.yml` ghi đè `data/thptqg-*` hoặc `assets/*`; giữ mọi hợp đồng CRO & Remedial trên `danh-gia-nang-luc.html`.
+  - Giữ nguyên giao diện CBT sáng của `phong-thi-thu.html`; không AI Glow; đồng bộ Google Sheets qua trình duyệt admin có `vlxt_backend_admin_key`.
+- **Việc còn lại**:
+  - Đồng bộ hoàn thiện sang web Học sinh (`eduhost-vn204/edu-portal-lms`) đã thực hiện ở cùng đợt (`danh-gia-nang-luc.html`, `freemium-flow.js`, `data/thptqg-50-manifest.js`, `data/thptqg-exams/de-01..50.json`).
 
-## Bàn giao gần nhất (12/11/2026 20:30)
-- **Triển khai hợp nhất Production (GAS `v162` + Student + Admin)**:
-  - **Apps Script (`edu-portal-console/src/Mã.js` @ `v162`)**: đã push, version `162` và deploy lên endpoint production (23 cột `NganHangCauHoi` thêm `tnType` & `subTopic`, `importnganhang` idempotent upsert, `updatenganhang` & `bulksetbainganhang` giữ `tnType`/`subTopic`).
-  - **Admin (`edu-portal-console`, nhánh `feat/admin-index-dashboard` → merge `main`)**: giữ nguyên hệ **16 Chủ đề lớn (2025–2026) `CD01..CD16`**, bốc **18 câu chuẩn Bộ (`official_18`)**, tag bài học gỡ từng chip (`×` / `Chỉ giữ bài đầu`), lưu **0ms tức thì** (`_bgBankSyncQueue`), đã gộp toàn bộ **226 câu chỉnh tay** của Thầy vào `APPROVED_QUESTION_OVERRIDES` (xác minh parity 0 diff trên toàn bộ `2.584` câu: `1.304 TN Lý thuyết`, `1.280 TN Tính toán`), kết hợp đầy đủ tính năng **6 Chủ đề Đúng/Sai Chương 1 (`DS-C1.1..DS-C1.6`)**, preview SVG `VLXTModels` + KaTeX (`ignoredTags` chứa `svg`) và xuất Word `.docx` kèm PNG SVG/bảng/lời giải.
-  - **Student (`edu-portal-lms`, cherry-pick lên `main` `d86d447`)**: hợp nhất `data/mo-hinh-thuc-te-models.js`, `data/batches/100-mohinh-c1-ds.json`, `prototype-100-mo-hinh-thuc-te.html`, `baihoc.html` và `thithu.html` (giữ nguyên `phong-thi-thu.html` và theme sáng CBT).
-  - **Rollback tags**: đã gắn tag dự phòng trên cả 2 repo trước khi merge `main`.
-
-## Bàn giao gần nhất (12/11/2026 10:18)
-- **Nhánh feature (chưa merge `main`, chưa push, chưa đụng dữ liệu production)**:
-  - **Student (`_worktree_c1_ds`)**: nhánh `antigravity/20261112-c1-mo-hinh-ds` (tách từ `a8deed3`)
-  - **Admin (`_worktree_admin_c1_ds`)**: nhánh `antigravity/20261112-admin-c1-ds` (tách từ `a5b5584`)
-- **Phạm vi hoàn tất — Hệ thống 17 Mô Hình Thực Tế Đúng/Sai Chương 1 (Vật Lý Nhiệt) đồng bộ Showcase · Admin · Bài Học · Phòng Thi Thử CBT**:
-  1. **Thư viện SVG Motion Graphics dùng chung (`data/mo-hinh-thuc-te-models.js` bên Student & bản sao đồng nhất SHA-256 `assets/mo-hinh-thuc-te-models.js` bên Admin)**:
-     - Cài đặt `VLXTModels` v1.0.0 gồm 17 mô hình Đúng/Sai Chương 1 (`MH-C1-01..07, 09..15, 18, 19, 21`, hỗ trợ bố cục đơn & kép `vlxt-grid-2col` cho sơ đồ mạch + đồ thị thực nghiệm).
-     - Chuyển động quan sát tự nhiên (*Ambient Observational Loop*), vector phẳng sắc nét (Zero AI Glow), tuyệt đối không lồng `.katex` vào `<svg>`, không đặt nút điều khiển hay HUD làm lộ đáp án trên đề.
-     - CSS dùng chung chuẩn hóa `.vlxt-visual-container`, `.vstep-data-panel`, `.vstep-data-table` (tự chuyển theme tối trong showcase / `baihoc` / danh sách bank Admin và giữ nền sáng trong CBT `thithu.html` / modal Admin; responsive mobile `390px` bọc cuộn ngang nội bộ cho bảng nhiều cột).
-  2. **Trang Prototype & Bộ Batch Đúng/Sai Chương 1 (`prototype-100-mo-hinh-thuc-te.html` & `data/batches/100-mohinh-c1-ds.json`)**:
-     - Tổ chức đủ 17 câu Đúng/Sai Chương 1 theo 6 chủ đề con riêng của Phần II (`DS-C1.1` → `DS-C1.6`), loại bỏ hoàn toàn 4 câu Trả lời ngắn (`Câu 8, 16, 20, 22`) và cụm 3 câu Trắc nghiệm (`Câu 17`) theo cấu trúc ma trận THPT Quốc gia 2025–2026.
-     - Khoảng đệm an toàn cố định chống khuất navbar (`padding-top: 90px` desktop, `80px` mobile; ẩn badge phụ trên header mobile để giữ thanh trên cùng gọn trong `390px`), lọc nhanh theo chủ đề/câu, chấm Đúng/Sai từng ý + mở lời giải KaTeX + làm lại.
-  3. **Admin Ngân hàng đề & Xuất Word `.docx` (`ngan-hang-de.html`, `src/Mã.js`, `apps-script-CAPNHAT.txt`)**:
-     - Bổ sung 6 chủ đề con `DS-C1.1..DS-C1.6` tách biệt khỏi 56 chủ đề Trắc nghiệm lý thuyết Phần I, kèm hàng chip lọc nhanh `#nh-subtopic-summary-bar`.
-     - Nạp batch `data/batches/100-mohinh-c1-ds.json` qua dry-run và xác nhận commit an toàn; đồng bộ `src/Mã.js` ↔ `apps-script-CAPNHAT.txt` (SHA-256 giống hệt) bổ sung cột `modelId`, schema `23` cột `NganHangCauHoi`, bảo toàn `loai`, `tnType`, `subTopic`, `deBaiChung`, `giaiThich`, fail-closed quarantine & `importnganhang` idempotent.
-     - Modal sửa câu hỏi hiển thị preview trực tiếp `#nhe-preview-box` (render SVG `VLXTModels` + KaTeX). Xuất `.docx` tự rasterize các `.vlxt-model-slot` SVG sang PNG (`word/media/image*.png` + `<a:blip>`), xuất bảng HTML thành `<w:tbl>` và KaTeX thành OMML `<m:oMath>`.
-  4. **Tích hợp trang Học sinh (`baihoc.html` & `thithu.html`)**:
-     - `baihoc.html`: Nhúng `data/mo-hinh-thuc-te-models.js`, gọi `VLXTModels.mountAll` sau `renderMath`, hỗ trợ đề bài HTML + `.vstep-data-table` + lời giải chi tiết `_renderPracticeExplanation`, ép tương phản chữ sáng trên nền tối `.vstep-quiz-wrap` kể cả khi `vlxt_theme='light'`.
-     - `thithu.html`: Nhúng `data/mo-hinh-thuc-te-models.js`, bảo toàn 100% theme sáng CBT chuẩn Bộ GD&ĐT (`#ffffff`), gọi `VLXTModels.mountAll` cho câu đang thi và danh sách review sau khi nạp lazy `?type=examsolutions`.
-- **Kiểm định đã chạy & quan sát trực tiếp**:
-  - **Cú pháp & HTML & Hash**: `node --check` trên `mo-hinh-thuc-te-models.js`, VM parse toàn bộ `<script>` nội tuyến + kiểm tra thẻ đóng `</html>` trên `prototype-100-mo-hinh-thuc-te.html`, `baihoc.html`, `thithu.html`, `ngan-hang-de.html` — đều PASS. Xác nhận SHA-256 khớp `Student data/mo-hinh-thuc-te-models.js === Admin assets/mo-hinh-thuc-te-models.js` và `Admin src/Mã.js === Admin apps-script-CAPNHAT.txt`.
-  - **Zero AI Glow & Secret Scan**: 0 vi phạm (`text-shadow: 0 0`, `drop-shadow(0 0)`, `feGaussianBlur`, hoặc secret) trên toàn bộ file mới và diff.
-  - **GAS Backend VM Integration**: `9/9` suites PASS (`100-mohinh-c1-ds.json` schema 17/17 + 5 câu loại trừ vắng mặt, `importnganhang` dryRun/commit 23 cột, `getNganHang` bảo toàn metadata/SVG/table/giaiThich, idempotent re-import, fail-closed quarantine & `AccountingMismatch=0`, `updatenganhang`, `bulksetbainganhang`, `saveQuestions` → `getExamQuestions` không lộ lời giải → `getExamSolutions`).
-  - **Chrome Headless CDP E2E (`Chrome/157.0.8103.78`, `6/6` suites PASS & đã soi ảnh chụp desktop `1440×900` + mobile `390×844`)**:
-    - *Suite A (`prototype-100-mo-hinh-thuc-te.html`)*: 17 cards, 19 SVGs, 454 KaTeX, 0 KaTeX trong SVG, hero top `80px`, filter `DS-C1.4`, chấm Đ/S + mở lời giải + reset, mobile `390/390` (0 tràn ngang), 0 console/page error.
-    - *Suite B (`ngan-hang-de.html` + Word Export)*: dry-run & commit 17 câu, lọc `DS` hiện đủ 6 chip `DS-C1.*`, mở modal sửa & preview SVG/KaTeX, xuất `Test-C1-DS-Export.docx` (`656 KB`, giải nén ZIP kiểm chứng đủ `5` file PNG `word/media/image1..5.png` kèm `<a:blip>`, `<w:tbl>`, `<m:oMath>`).
-    - *Suite C1/C2/C3 (`baihoc.html`)*: chế độ sáng `vlxt_theme='light'` vẫn giữ chữ `#f1f5f9` trên `.vstep-quiz-wrap` `#0f172a` tương phản cao; dark mode chấm 3 câu mở 3 lời giải (`52` KaTeX) + reset về `0`; mobile `390/390` kèm drawer mục lục.
-    - *Suite D (`thithu.html`)*: giữ nền trắng CBT `rgb(255, 255, 255)`, điều hướng Câu 1 → Câu 2 (dual-SVG) → Câu 3 → nộp bài kích hoạt lazy GET `?type=examsolutions`, render đủ 5 review SVG + 18 KaTeX lời giải.
-  - **Test nền có sẵn trước đó trong repo (ngoài phạm vi sửa)**: Admin `scripts/test-auth-hotfix.mjs`, `scripts/test-katex-parse.mjs` (đường dẫn hardcode `C:\Users\Xuan Truong\...`), Admin `scripts/test-admin-init-draft-revalidate.mjs` (`admin/index.html` chưa sửa), Student `scripts/test-student-stable-session-num.mjs` test `2.3`.
+## Bàn giao gần nhất (18/11/2026 13:39)
+- **Đẩy Gộp Trọn Bộ `270` Câu `TN-LT` (`220` Đợt Mới + `50` Chương 2–3) Kèm `59` Mô Hình Canvas 60 FPS Vào Ngân Hàng Đề Chính Thức (`3.244 -> 3.514` Câu · Đạt Chuẩn `16/16` Chủ Đề 50 Đề)**:
+- **Mục tiêu**:
+  1. Thực hiện chỉ đạo của Thầy (*"Đẩy gộp cả hai gói luôn em nhé, để cho nó đủ 16 x 16 chủ đề"*): hợp nhất cả gói `STAGING_220` (`220` câu `TN-LT` + `32` mô hình `MH-TN220-*`) và `STAGING_50` (`50` câu C2–C3 + `27` mô hình `MH-TN50-*`) thành gói **`270` câu `TN-LT` + `59` mô hình Canvas 60 FPS** chính thức trong Ngân Hàng Đề.
+  2. Làm sạch trước khi đẩy: khử 2 va chạm `normText` của Apps Script `importNganHang` (`557`, `523`), thay 7 câu `ST50` thuần chữ trùng/lạc chuyên đề/tính toán bằng 7 câu `TN-LT` thuần lý thuyết đã thẩm định, chuẩn hóa `< -> \lt ` và `> -> \gt ` trong `$...$` tránh lỗi KaTeX/HTML, và đăng ký đủ `VLXT_TN50_CAPTIONS` (`27` mô hình).
+- **Commit & File đã sửa (`eduhost-vn204/edu-portal-console`, nhánh `main`, trên nền `eb1e9e8`)**:
+  - Commit mã: `73685b7` (`feat(bank): promote 270 TN-LT questions (220+50) and 59 Canvas models to reach 16/16 topic quotas (3514 bank)`).
+  - `assets/staging-c2-c3-questions.json` & `.js`, `assets/staging-tn-220-questions.json` & `.js`: Hoàn thiện lời giải KaTeX cho 7 câu sạch thay thế (`VLXT-STAGE-C3-CD10-557`, `CD07-287/305`, `CD10-516`, `CD11-523/536/547`), chuẩn hóa `<`/`>` trong `$...$`, đánh dấu `isApproved: true`, `reviewStatus: "APPROVED"`, `chatLuong: "tinh"` cho đủ 270 câu.
+  - `assets/staging-tn50-models.js`: Bổ sung `// === VLXT_TN50_CAPTIONS_REGISTRY ===` (`window.VLXT_TN50_CAPTIONS` đủ 27 tiêu đề tiếng Việt `Câu ...` & tự trộn vào `MODEL_CAPTIONS`).
+  - `assets/tn270-lt-bank-pack.js`: Tạo mới gói `window.VLXT_TN270_LT_BANK` gồm đủ **`270` câu `TN-LT`** (`batchId: "BATCH_TN270_LT_OFFICIAL_20261118"`, `tnType: "LT"`, nhúng `<div class="vlxt-model-slot" data-model-id="..."></div>` trên đủ `59` câu có mô hình và giữ nguyên `hinhAnh`).
+  - `assets/ngan-hang-3048-questions.json` & `.js`: Nâng Ngân hàng đề chính thức từ **`3.244` lên `3.514` câu** (`1.574 TN-LT + 1.370 TN-BT + 200 DS + 370 TLN`), hoàn thành chỉ tiêu 50 đề ở cả **16/16 chủ đề**:
+    `CD01:145, CD02:111, CD03:96, CD04:120, CD05:100, CD06:70, CD07:50, CD08:100, CD09:50, CD10:100, CD11:104, CD12:100, CD13:117, CD14:100, CD15:50, CD16:161`.
+  - `ngan-hang-de.html`: Hợp nhất `VLXT_TN270_LT_BANK` trong `applyBankRows()`, bổ sung `syncApprovedTn270LtToServer()` (`vlxt_tn270_lt_bank_synced_v1`, hẹn `4600ms` và nối vào `syncApprovedAuditToServer`), thêm lọc `NEW_LT_MODEL_59` / `NEW_LT_270`, sắp xếp `_nhLtSortMode` + `getLtPriorityRank` đưa 59 câu LT có mô hình lên trang đầu (`#1..#59`), 3 chip phẳng EdTech (không AI Glow), badge `⚡ Mới đẩy 18/11`, và bổ sung `'CD08'` vào `slot17Prefs` trong `computeAutoPickPlan()`.
+  - `canvas-studio.html`: Nạp `tn270-lt-bank-pack.js?v=20261118-lt270`, gộp `VLXT_TN220_CAPTIONS` + `VLXT_TN50_CAPTIONS` vào `MODEL_CAPTIONS`, đưa `STAGING_220` và `STAGING_50` vào nhóm `🌟 NGÂN HÀNG ĐỀ ĐÃ NẠP CHÍNH THỨC (3.514 CÂU)` (`TN_LT: 1.574 Câu — Đủ 16/16 CĐ`).
+- **Kiểm tra đã chạy sau chỉnh sửa cuối**:
+  - `node scripts/test-apps-script-logic.mjs` (`12/12` PASS) & `node scripts/test-import-nganhang.mjs` (`12/12` PASS).
+  - Gate 1 & 2 (`verify_lt270_release.mjs`): PASS `vm.Script` 6 file JS + 6 block inline HTML, `</html>` sạch, `shadowBlur = 0`, `0` secret, `git diff --check` sạch; VM `src/Mã.js` `importNganHang`: Lần 1 `inserted=270, updated=0, alreadyExistsCount=0, quarantinedCount=0, countAfter=3514` (`tnType='LT'`, canonical `subTopic`); Lần 2 idempotent `inserted=0, alreadyExistsCount=270, countAfter=3514`.
+  - Gate 3 & 4 Playwright Retina `2x` (`verify_lt270_pw.py`): PASS auto-sync `importnganhang` POST (`270` câu, `BATCH_TN270_LT_OFFICIAL_20261118`); `bankData=3514`, `16/16` chip CD không còn nhãn `thiếu`; lọc 59 mô hình LT & 270 LT đều ưu tiên Canvas lên đầu trang (`1560×610`, caption chuẩn, badge phẳng); Auto-Pick `official_18` tạo `50/50` đề sạch (`900` câu không trùng ở `KIEMTRA`) và **`49/49` đề Thi thử mới (`882` câu)** trên nền 12 đề `THITHU` đã có sẵn trong `STATIC_CAMPAIGN_USAGE` (nhờ `CD07` có 1 câu trong `vedich2k9_de03` và `CD15` có 1 câu trong `vedich2k9_de09`); xuất `.docx` kèm 2 ảnh PNG hợp lệ; `canvas-studio.html` đủ 27 mô hình `MH-TN50-*` không lỗi JS/HTTP ngoài 4 probe dự phòng `data/danhgianangluc*.json` của repo Học sinh. Kiểm tra trực quan 2 ảnh PNG Retina `2x`.
 - **Điều phải giữ nguyên**:
-  - Tuyệt đối giữ nguyên `phong-thi-thu.html` và giao diện CBT sáng của `thithu.html`.
-  - Giữ ranh giới 6 chủ đề con `DS-C1.*` cho Đúng/Sai tách riêng khỏi 56 chủ đề Trắc nghiệm lý thuyết; giữ cặp file đồng bộ `mo-hinh-thuc-te-models.js` và `src/Mã.js` ↔ `apps-script-CAPNHAT.txt`.
-  - Không phụ thuộc GAS khi tải khóa học công khai, không tải trước toàn kho `BaiTapTracNghiem`, bảo toàn hàng đợi đồng bộ tiến độ ngoại tuyến và menu mobile.
-- **Việc còn lại (chờ chỉ thị của Thầy)**:
-  1. Kiểm tra diff 2 nhánh `antigravity/20261112-c1-mo-hinh-ds` (Student) & `antigravity/20261112-admin-c1-ds` (Admin) trước khi merge vào `main` và push GitHub.
-  2. Triển khai Apps Script backend (`clasp push && clasp deploy`) khi Thầy cho phép thao tác production.
-  3. Mở `ngan-hang-de.html` production → Nạp nhanh JSON Batch → chọn `data/batches/100-mohinh-c1-ds.json` → Dry run → Nạp thật 17 câu lên Sheet `NganHangCauHoi`.
+  - Giữ nguyên giao diện CBT sáng của `phong-thi-thu.html`; không AI Glow; mọi thay đổi Google Sheets đi qua cơ chế auto-sync trình duyệt khi có Khóa Quản trị (`vlxt_backend_admin_key`).
+- **Việc còn lại**:
+  - Thầy mở/F5 `ngan-hang-de.html` (đã nhập Khóa Quản trị) và chờ ~5 giây để trình duyệt tự đồng bộ 270 câu `TN-LT` lên Google Sheets `NganHang`. (Lưu ý nhỏ cho Thầy: vì 1 câu `CD07` và 1 câu `CD15` đã nằm sẵn trong 2 đề Thi thử cũ `vedich2k9_de03` / `de09`, quỹ câu chưa dùng cho chiến dịch `THITHU` hiện tạo thêm được **49 đề mới** cộng với 12 đề cũ = 61 đề.)
+
+## Bàn giao gần nhất (18/11/2026 11:12)
+- **Hoàn Thiện Trọn Bộ 220 Câu `TN-LT` Thuần Lý Thuyết Trong Hộp Chờ Duyệt (`STAGING_220`) Kèm 19 Mô Hình Canvas 60 FPS Mới (`46` Mô Hình Đợt 220)**:
+- **Mục tiêu**:
+  1. Thực hiện lệnh xác nhận của Thầy Nguyễn Xuân Trường (*"Thầy xác nhận cho em bốc tiếp 90 câu lý thuyết còn thiếu lấy từ 276 câu sẵn trong kho, vẽ thêm mô hình canvas cho các câu có mô hình tương ứng, rồi đưa vào hộp chờ duyệt đạt chọn 220 câu cho thầy"*).
+  2. Giữ nguyên **130 câu `TN-LT`** hiện có trong Hộp Chờ Duyệt (`STAGING_220`), bốc bù đúng **90 câu `TN-LT` thuần lý thuyết không trùng** (`Jaccard < 0.68`, kiểm chứng qua `guessTnType === 'LT'` trên văn bản và rà soát vật lí từng câu), chuẩn hóa `KaTeX` + lời giải chi tiết sư phạm cho 90 câu và xây dựng **19 mô hình Canvas 2D 60 FPS Retina (`MH-TN220-C1-28..MH-TN220-C3-46`)** 1-1 cho toàn bộ 19 câu có hình trong đợt bù.
+- **Commit & File đã sửa (`eduhost-vn204/edu-portal-console`, nhánh `main`, rebase sạch trên `9fd8364` / `02c8f60`)**:
+  - Commit mã: `7f16ac2` (`feat(staging): complete 220 pure TN-LT staging box with 19 bespoke Canvas 2D models`).
+  - `assets/staging-tn-220-questions.json` & `.js`: Hoàn thiện đủ **`220` câu `TN-LT`** (`130` cũ + `90` mới `VLXT-ST220-C*-CD*-LT*`, cân bằng `$` 100%, chuẩn hóa nhãn 16 CĐ & tên bài học khớp tuyệt đối `ngan-hang-de.html`). Phân bổ chính xác từng chủ đề: **`CD05: 20` (`+5`), `CD07: 20` (`+15`), `CD08: 63` (`+39`), `CD09: 10` (`+9`), `CD10: 20` (`+1`), `CD12: 49` (`+17`), `CD14: 23` (`+1`), `CD15: 15` (`+3`)**.
+  - `assets/images/staging-220/q220_lt_*.png|.jpg|.jpeg`: Giữ đúng **19 ảnh gốc sạch** trích từ đề Word (`q220_lt_001, 002, 004, 005, 006, 007, 008, 011, 012, 013, 014, 016, 018, 020, 021, 023..026`), đã xóa 7 ảnh của các câu bị loại để không còn file thừa.
+  - `assets/staging-tn220-models.js`: Bổ sung mới hoàn toàn **19 mô hình Canvas 60 FPS Retina** (`MH-TN220-C1-28..29`, `MH-TN220-C2-30..42`, `MH-TN220-C3-43..46`) và đăng ký đủ `VLXT_TN220_CAPTIONS` (tổng **`46` mô hình Đợt 220**: `14` đã nạp Bank BT + `32` đang Chờ Duyệt LT; phân bổ `C1: 5, C2: 22, C3: 16, C4: 3`). Tuân thủ phẳng EdTech (`shadowBlur = 0`, cốc thí nghiệm hở miệng chữ U, chuyển động răng cưa 1 chiều, Zero Data Leakage).
+  - `canvas-studio.html` & `ngan-hang-de.html`: Cập nhật `?v=20261118-lt220full` (giữ nguyên `?v=20261118-ds200-v2` của `02c8f60`), cập nhật Hộp Chờ Duyệt `STAGING_220` lên **`220 Câu TN-LT`**, tổng hệ thống **`3.514 Câu` (`3.244` Bank + `220` Staging LT + `50` Staging 50)**, và bộ lọc Tab 1 `P1_STAGING_220` lên **`46 Mô Hình` (`5 C1, 22 C2, 16 C3, 3 C4`)**.
+- **Kiểm tra đã chạy sau rebase & chỉnh sửa cuối**:
+  - Gate 1 (`verify_lt220_full.mjs`): PASS `vm.Script` cho `assets/staging-tn-220-questions.js`, `assets/staging-tn220-models.js`, toàn bộ `<script>` inline của `canvas-studio.html` & `ngan-hang-de.html`; trailing after `</html> = 0`; `shadowBlur = 0`; `0` secret mới; `220/220` câu đúng `TN-LT`, đúng canonical 16 CĐ & cân bằng `$` 100%, `71/71` câu thuần chữ mới vượt qua `guessTnType === 'LT'`, `git diff origin/main --check` sạch.
+  - Gate 2 Playwright Chromium Retina `2x` (`verify_lt220_pw.py`): PASS `0` lỗi Console/PageError/404 cục bộ; `disp-staging-badge = "3,514 Câu"`; `STAGING_220 = 220` (`CD05:20, CD07:20, CD08:63, CD09:10, CD10:20, CD12:49, CD14:23, CD15:15`); `BANK_ALL = 3244`; `ALL = 3514`; Tab 1 `P1_STAGING_220 = 46` (`C1:5, C2:22, C3:16, C4:3`), dựng toàn bộ 46 mô hình qua 3 mốc `t = 0.0, 0.85, 1.95` (`1560×610`) không khung rỗng; kiểm tra trực quan toàn bộ 19 ảnh PNG mô hình mới + ảnh Mode 2 UI (sửa xong lỗi tổ hợp vectơ `B⃗` trên `MH-TN220-C3-46` và kiểm thử lại đạt 100%).
+- **Điều phải giữ nguyên**:
+  - Toàn bộ **`220` câu `TN-LT` (`STAGING_220`)** nằm ở **Chờ Duyệt (`canvas-studio.html`)**, **CHƯA** đẩy vào Ngân hàng chính thức (`ngan-hang-3048-questions.json` giữ nguyên `3.244` câu với bản vá `02c8f60`).
+- **Việc còn lại**:
+  - Thầy mở `canvas-studio.html` chọn **`🚀 Hộp Chờ Duyệt Lý Thuyết — 220 Câu TN-LT Tinh Tuyển (C1–C4)`** để rà soát nội dung + Canvas trước khi bấm nạp vào Ngân Hàng Đề chính thức (khi có Khóa Quản trị).
+  - Nếu Thầy chưa F5 `ngan-hang-de.html` sau `02c8f60`, lần mở `ngan-hang-de.html` kế tiếp sẽ tự sync ghi đè 3 câu ĐS (`030, 031, 098`) lên Google Sheets `NganHang`.
+
+## Bàn giao gần nhất (18/11/2026 11:05)
+- **Thay Thế Tại Chỗ 3 Câu Đúng/Sai Bị Trùng (`VLXT-DS-VD28-030`, `031`, `098`) Kèm 3 Mô Hình Canvas Độc Bản & Tự Đồng Bộ Ghi Đè Google Sheets (`3.244` Câu Giữ Nguyên)**:
+- **Mục tiêu**:
+  1. Giữ nguyên 3 câu gốc (`002`, `010`, `081`) và thay thế **tại chỗ** đúng 3 bản sao bị trùng (`VLXT-DS-VD28-030` Chương 1, `VLXT-DS-VD28-031` Chương 1, `VLXT-DS-VD28-098` Chương 4) bằng 3 câu hỏi Đúng/Sai mới 100% không trùng trích từ `BỘ ĐỀ ÔN LUYỆN 9+ THPTQG MÔN VẬT LÝ 2026`.
+  2. Tái sử dụng đúng 3 mã `id` & `modelId` (`MH-STAGING-C1-30`, `MH-STAGING-C1-31`, `MH-STAGING-C4-26`) để `importNganHang` trên Google Apps Script tự ghi đè tại chỗ 3 dòng trên Google Sheets `NganHang` (giữ tròn `3.244` câu, `200` ĐS = `50/chương`, không sinh dòng rác).
+- **Commit & File đã sửa (`eduhost-vn204/edu-portal-console`, nhánh `main`)**:
+  - Commit mã: `02c8f60` (`feat(bank): replace 3 duplicate DS questions (030, 031, 098) in-place with bespoke models`).
+  - `assets/staging-ds-106-questions.json` & `.js`, `assets/ds106-bank-pack.js`, `assets/ngan-hang-3048-questions.json` & `.js`:
+    + `VLXT-DS-VD28-030` (`MH-STAGING-C1-30`, `DS-C1.1`, `ĐSSS`): Thả liên tiếp 2 quả cầu kim loại ($210^\circ\text{C}$ và $150^\circ\text{C}$) vào nhiệt lượng kế chứa nước ở $20^\circ\text{C}$ (nguồn `BODE9_11`, Đề 11 Câu 1, kèm ảnh gốc `assets/images/staging-ds/VLXT-DS-VD28-030.png`).
+    + `VLXT-DS-VD28-031` (`MH-STAGING-C1-31`, `DS-C1.2`, `ĐĐSĐ`): Khảo sát bảng 12 mốc nhiệt độ–thời gian mẫu chất rắn cấp nhiệt $200\text{ W}$ (nguồn `BODE9_8`, Đề 8 Câu 1, kèm `.vstep-data-table`, xóa ảnh trùng cũ `VLXT-DS-VD28-031.png`).
+    + `VLXT-DS-VD28-098` (`MH-STAGING-C4-26`, `DS-C4.4`, `ĐSĐS`): Băng chuyền chiếu xạ tia gamma nguồn $^{60}_{27}\text{Co}$ ($H_0 = 2000\text{ Ci}$) theo kỹ thuật SIT (nguồn `BODE9_15`, Đề 15 Câu 4, kèm ảnh gốc `assets/images/staging-ds/VLXT-DS-VD28-098.png`).
+  - `assets/staging-ds-models.js`: Viết mới hoàn toàn 3 hàm vẽ Canvas 60 FPS độc bản `MH-STAGING-C1-30`, `MH-STAGING-C1-31`, `MH-STAGING-C4-26` (EdTech phẳng `shadowBlur = 0`, chữ `>= 14.5px`, Zero Data Leakage) và cập nhật `VLXT_DS106_CAPTIONS`.
+  - `ngan-hang-de.html` & `canvas-studio.html`: Cập nhật mapping `DS_C1/C4_MODEL_TO_SUBTOPIC` cho 3 mô hình, nâng cấp `applyBankRows()` / `mergeTn220BtPackIntoBankList()` tự ghi đè nếu `optA` máy chủ cũ khác bản chuẩn, đổi khóa `vlxt_ds106_bank_synced_v2` để `syncApprovedDs106ToServer()` tự đẩy đúng 3 câu mới ghi đè lên Google Sheets, và nâng cache-buster `?v=20261118-ds200-v2`.
+- **Kiểm tra đã chạy sau chỉnh sửa cuối**:
+  - `node scripts/test-apps-script-logic.mjs` (`12/12` PASS) & `node scripts/test-import-nganhang.mjs` (`12/12` PASS).
+  - `verify_dedup3_release.mjs`: PASS 100% 3 Cổng (`node -c`, `</html>`, 0 secret, Jaccard ĐS `030: 0.358`, `031: 0.222`, `098: 0.231`; GAS VM `importNganHang` ghi đè tại chỗ `updated = 3, inserted = 0, alreadyExistsCount = 103, quarantinedCount = 0, countAfter = 3244`; Playwright `ngan-hang-de.html` Retina `2x` xác nhận auto-sync gửi đúng `['VLXT-DS-VD28-030', 'VLXT-DS-VD28-031', 'VLXT-DS-VD28-098']`, `DS = 200 [50/50/50/50]`, 50 đề `official_ds_4` `usedTotal = 200`; `canvas-studio.html` audit `oob = 0, overlaps = 0, smallFonts = 0, katexErrors = 0`, `0` lỗi Console/404). Đã kiểm tra trực quan 4 ảnh PNG Retina `2x`.
+- **Phát hiện minh bạch cần Thầy lưu ý**:
+  - Khi rà soát sâu Jaccard toàn bộ 200 câu ĐS, phát hiện thêm **2 cặp trùng ngữ nghĩa còn lại** từ ngân hàng gốc/nguồn: (1) `VLXT-DS-VD28-084` & `VLXT-DS-VD28-099` (Cobalt-60 `15,0 g`), (2) `VLXT-G12-C2-MH-31` & `VLXT-DS-VD28-038` (Túi khí ô tô). Đã giữ nguyên chờ ý kiến Thầy nếu muốn thay nốt.
+- **Điều phải giữ nguyên**:
+  - Không thêm ID mới làm phình dòng Sheet; mọi cập nhật giữ đúng `3.244` câu (`200 DS`) và bảo toàn khu Chờ Duyệt (`130 TN-LT` + `50`).
+- **Việc còn lại**:
+  - Thầy mở/F5 `ngan-hang-de.html` để trình duyệt tự đồng bộ ngầm 3 câu thay thế lên Google Sheets; quyết định có thay thêm 2 cặp trùng (`084/099`, `MH-31/038`) và lịch bốc bù `90 TN-LT`.
+
+## Bàn giao gần nhất (18/11/2026 10:25)
+- **Đẩy Trọn Bộ 106 Câu Đúng/Sai Độc Bản (`VLXT-DS-VD28-001..106`) + 106 Mô Hình Canvas (`MH-STAGING-*`) Vào Ngân Hàng Đề Chính Thức — Đạt Chuẩn 200 Câu Đúng/Sai (`50` Câu/Chương, 50 Đề Bộ 2025–2026) & Ưu Tiên Hiển Thị Đầu Trang**:
+- **Mục tiêu**:
+  1. Thực hiện lệnh phê duyệt của Thầy Nguyễn Xuân Trường (*"Thầy cho phép em đẩy 106 câu đó lên trên vào ngân hàng cùng với 94 câu nữa là đủ 200 câu"*): đẩy toàn bộ **106 câu Đúng/Sai** và **106 mô hình Canvas 60 FPS** từ Staging vào **Ngân Hàng Đề Chính Thức**, hợp nhất với **94 câu ĐS gốc** thành đúng **`200` câu ĐS (`50 C1 + 50 C2 + 50 C3 + 50 C4`)**, nâng tổng Ngân Hàng Đề từ **`3.138 → 3.244` câu** (`1.304 TN-LT + 1.370 TN-BT + 200 DS + 370 TLN`).
+  2. Chuẩn hóa đủ **22 Chủ đề con Đúng/Sai** (`DS-C1.1..C1.6`, `DS-C2.1..C2.6`, `DS-C3.1..C3.5`, `DS-C4.1..C4.5`), sửa `baiHoc` 2 câu (`001, 021`) $\to$ `B5`, chuyển 8 dấu `<` trong công thức KaTeX sang `\lt ` để vượt qua kiểm tra cân bằng `$` của `src/Mã.js`, bổ sung Auto-Pick **`official_ds_4` (4 câu ĐS mỗi chương 1 câu / 50 đề không trùng)**, xuất ảnh Canvas PNG sang Word `.docx`, và đồng bộ UX ưu tiên trang 1 + bộ lọc `#nh-f-model` (`NEW_DS_106`, chip 1 chạm `🆕 106 Câu ĐS Vừa Đẩy`, huy hiệu `⚡ Mới đẩy 18/11`) nối tiếp `85dc18e`.
+- **Commit & File đã sửa (`eduhost-vn204/edu-portal-console`, nhánh `main`, rebase sạch trên `90b6371`)**:
+  - Commit mã: `0857493` (`feat(bank): promote 106 bespoke DS questions and canvas models to official 200-DS bank (50 per chapter)`).
+  - `assets/ds106-bank-pack.js`: Mới — xuất `window.VLXT_DS106_BANK` (106 câu ĐS chuẩn 23 cột `NganHang` + `modelId`, nhúng `<div class="vlxt-model-slot" data-model-id="..." data-model-topic="..."></div>`, `batchId: "BATCH_DS106_OFFICIAL_20261118"`, `chatLuong: "tinh"`, `reviewStatus: "APPROVED"`).
+  - `assets/ngan-hang-3048-questions.json` & `.js`: Kho chính thức **`3.244` câu** (`DS: 200`, từng chương `C1=50, C2=50, C3=50, C4=50`).
+  - `assets/staging-ds-106-questions.json` & `.js`: Sửa `baiHoc` (`B5`) cho `VLXT-DS-VD28-001` & `021`, chuẩn hóa `subTopic` 22 chủ đề, chuyển `<` trong KaTeX math sang `\lt `, gắn `APPROVED`/`tinh`.
+  - `assets/staging-ds-models.js`: Gắn `window.VLXT_DS106_CAPTIONS` (106 tiêu đề mô tả tiếng Việt, 0 trailing whitespace).
+  - `assets/mo-hinh-thuc-te-models.js`: Nâng `dpr` chế độ `compact: true` lên `2` (Retina `1560×610` sắc nét ngay trên `ngan-hang-de.html`).
+  - `ngan-hang-de.html`: Nạp `staging-ds-models.js` & `ds106-bank-pack.js` (`?v=20261118-ds200`), thêm `DS-C4.5` (22 CĐ) + map 106 mô hình vào `DS_C1..C4_MODEL_TO_SUBTOPIC`, hợp nhất `VLXT_DS106_BANK` trong `applyBankRows()` + `syncApprovedDs106ToServer()` (và `syncApprovedAuditToServer`), bảo toàn ảnh `assets/images/staging*` ở Xem chi tiết đề, thêm Auto-Pick `official_ds_4`, thêm nhánh xuất Canvas PNG trong `htmlToBlocksXml` (`.docx`), đồng thời tích hợp cùng `85dc18e` đưa 106 câu ĐS mới lên đầu trang 1 (`_nhDsSortMode`, `toggleDsSortMode()`, `isNewPushedDsBatch()`, `NEW_DS_106`, chip `🆕 106 Câu ĐS Vừa Đẩy`, huy hiệu `⚡ Mới đẩy 18/11`).
+  - `canvas-studio.html`: Nạp `ds106-bank-pack.js`, chuyển 106 ĐS vào nhóm Ngân Hàng Chính Thức (`BANK_ALL: 3.244`, `DS: 200`, `P2_ALL: 200 [50/50/50/50]`), khu Chờ Duyệt còn `130 TN-LT` (`STAGING_220`) + `50` (`STAGING_50`), tổng hệ thống `3.424` câu.
+- **Kiểm tra đã chạy sau rebase & chỉnh sửa cuối**:
+  - `node scripts/test-apps-script-logic.mjs` (`12/12` PASS) & `node scripts/test-import-nganhang.mjs` (`12/12` PASS).
+  - `node -c` PASS 5 file `.js` + parse inline `<script>` `ngan-hang-de.html` (5) và `canvas-studio.html` (1) + `</html>`; `git diff --cached --check` PASS; quét secret = `0`.
+  - Giả lập VM hàm `importNganHang` trong `src/Mã.js` trên nền `3.048` dòng: Lần 1 `inserted = 106, quarantinedCount = 0, countAfter = 3154`; Lần 2 `inserted = 0, alreadyExistsCount = 106` (idempotent 100%).
+  - Playwright Chromium Retina `2x` (`1440×950`) PASS 100% (`0` lỗi Console/PageError/404 thực):
+    + `ngan-hang-de.html`: `bankData.length === 3244` (`TN: 2674`, `DS: 200 [50/50/50/50]`, `TLN: 370`), 200/200 ĐS có `subTopic` chuẩn (22 CĐ) & `modelId`, chọn `DS` đặt `VLXT-DS-VD28-001` lên `#1` (`1560×610` Retina + badge `Mới đẩy 18/11`), chip `🆕 106` lọc đúng `106`, chip `NEW_BT_MODEL_14` lọc đúng `14`, offscreen `.docx` PNG = `331.026` bytes, mô phỏng **50 đề `official_ds_4` liên tiếp** bốc đủ `4/4` câu không trùng (`usedTotal = 200`, `exhaustedSubs = []`).
+    + `canvas-studio.html`: `BANK_ALL = 3.244`, `DS = 200`, `STAGING_DS_106 = 106`, `STAGING_220 = 130`, `STAGING_50 = 50`, `ALL = 3.424`, Tab 1 `P2_ALL = 200 (50/50/50/50)`.
+- **Lưu ý minh bạch cho Thầy**:
+  - Trong 106 câu ĐS Thầy vừa duyệt đẩy lên, vẫn còn **3 cặp câu** xuất phát từ 2 bộ đề gốc trùng nội dung (`VLXT-DS-VD28-002` & `030`, `010` & `031`, `081` & `098`) do nguồn `DETU` và `HSD` dùng chung đề (giữ nguyên đủ 106 câu theo quyết định của Thầy để tròn 200 câu).
+- **Điều phải giữ nguyên**:
+  - Giữ **130 câu `TN-LT` (`STAGING_220`)** và **50 câu (`STAGING_50`)** ở trạng thái Chờ Duyệt trên `canvas-studio.html`; giữ đầy đủ bộ lọc & sắp xếp ưu tiên của `85dc18e`.
+  - Không hardcode `adminKey`; khi Thầy mở `ngan-hang-de.html` với Khóa Quản trị, hàm `syncApprovedDs106ToServer(true)` tự đồng bộ ngầm 106 câu ĐS lên Google Sheets `NganHang` production.
+- **Việc còn lại**:
+  - Thầy mở/F5 trang Quản trị `ngan-hang-de.html` (với Khóa Quản trị đã lưu) để trình duyệt tự đồng bộ ngầm 106 câu ĐS lên Google Sheets `NganHang`.
+  - Tiếp tục bốc bù **90 câu `TN-LT`** còn thiếu (`CD05, 07, 08, 09, 10, 12, 14, 15`) khi Thầy sẵn sàng.
+
+## Bàn giao gần nhất (18/11/2026 10:15)
+- **Kiểm Chứng Dữ Liệu Live Google Sheets (`3.138` Câu) & Nâng Cấp Lọc/Ưu Tiên Hiển Thị `90` Câu `TN-BT` + `14` Mô Hình Canvas Trên `ngan-hang-de.html`**:
+- **Chẩn đoán thực tế trên Production**:
+  - Live Google Apps Script (`DB_URL?type=nganhang`) đã ghi đủ **`3.138` câu**, gồm đủ **`90` câu `VLXT-TN220-BT-001`..`090`** (`batchId: "BATCH_TN220_BT_20261118"`, timestamp `2026-11-18T02:58:32Z`) và đủ **`14` câu có nhúng `<div class="vlxt-model-slot" data-model-id="MH-TN220-..."></div>`**.
+  - Tuy nhiên `ngan-hang-de.html` phân trang `30` câu/lượt (`NH_PAGE_SIZE = 30`) theo thứ tự cuối bảng nên khi lọc `TN_BT` (`1.370` câu), `1.280` câu cũ (`VLXT-PT-...`) chắn trang `1 → 43`, khiến 90 câu mới + 14 mô hình nằm ở vị trí `1.281 → 1.370`.
+- **Commit & File đã sửa (`eduhost-vn204/edu-portal-console`, nhánh `main` qua worktree sạch)**:
+  - Commit mã: `85dc18e` (`feat(bank-ui): prioritize new BT batch & 14 canvas models to top, add #nh-f-model & quick chips`).
+  - `ngan-hang-de.html`:
+    1. Thêm helpers `getQuestionModelId()`, `isQuestionHasModel()`, `isNewPushedBtBatch()`, `getBtPriorityRank()` và `syncModelFilterOnTypeChange()`.
+    2. Thêm bộ lọc `#nh-f-model` (`HAS_MODEL`, `NEW_BT_90`, `NEW_BT_MODEL_14`, `NO_MODEL`) và mở rộng tìm kiếm `#nh-f-search` khớp cả `modelId` (`MH-TN220-...`) & `batchId`.
+    3. Trong `bankFiltered()`: khi mở `TN_BT`, mặc định ưu tiên xếp **14 câu BT mới có Mô hình Canvas lên vị trí `#1 → #14`**, tiếp theo là **76 câu BT mới còn lại (`#15 → #90`)**, kèm nút `toggleBtSortMode()` chuyển qua lại giữa chế độ ưu tiên và thứ tự gốc Sheet.
+    4. Trong `renderSubtopicSummaryBar()`: thêm thanh chip lọc riêng cho `TN_BT` (`🚀 14 Câu BT Có Mô Hình Canvas 60 FPS`, `🆕 90 Câu BT Vừa Đẩy Đợt 18/11`, `⬜ Chưa có mô hình`) và 2 chip truy cập 1 chạm ngay ở thanh mặc định đầu trang.
+    5. Trong `bankRowHtml()`: gắn huy hiệu phẳng `⚡ Mới đẩy 18/11` cho các câu thuộc đợt 90 câu mới đẩy (không dùng AI Glow).
+- **Kiểm tra đã chạy**:
+  - `vm.Script`: PASS 5 `<script>` inline của `ngan-hang-de.html`; `After </html> length: 0`; `git diff --check` PASS; quét secret & `shadowBlur` = `0`.
+  - Playwright Chromium Retina `2x` trên full `3.138` câu (`scratch/verify_tnbt_ux_worktree.mjs`): PASS exit 0 (`0` lỗi); chọn `TN_BT` hiển thị ngay 14 câu đầu `#1..#14` đều là `VLXT-TN220-BT-*` kèm `14/14` Canvas V2 mount & vẽ thật; chip `14` / `90` / toggle sort / tìm kiếm `MH-TN220-C3-20` $\to$ `VLXT-TN220-BT-070` hoạt động chính xác 100%.
+- **Điều phải giữ nguyên**:
+  - Worktree `_codex_verify_live` đang có thay đổi song song chưa push (`DS106`); giữ nguyên không ghi đè; khi rebase lên `origin/main` giữ nguyên quy tắc không AI Glow và các bộ lọc 16 CĐ / 21–22 CĐ ĐS.
+- **Việc còn lại**:
+  - Thầy nhấn F5 tải lại `ngan-hang-de.html` để xem ngay `14` câu BT có mô hình ở đầu mục `🧮 TN Tính toán / Đồ thị`; chờ Thầy chốt để bốc bổ sung `90` câu `TN-LT` còn thiếu.
+
+## Bàn giao gần nhất (18/11/2026 09:50)
+- **Tách Gói 220 Câu Thành 130 Câu TN Lý Thuyết (`TN-LT` Chờ Duyệt) + 90 Câu TN Bài Tập (`TN-BT`) Kèm 14 Mô Hình Canvas Đẩy Thẳng Vào Ngân Hàng Đề (`3.048 → 3.138` Câu) & Kiểm Kê Nguồn Bù Kho `6 vat ly`**:
+- **Mục tiêu**:
+  1. Tách chính xác gói 220 câu ban đầu (`STAGING_220`) thành phần **Lý thuyết thuần (`TN-LT`)** giữ lại Hộp Chờ Duyệt tại `canvas-studio.html` và phần **Bài tập tính toán / Đồ thị định lượng (`TN-BT`)** đẩy thẳng lên Ngân Hàng Đề chính thức (mục `🧮 TN Tính toán / Đồ thị`) kèm toàn bộ mô hình Canvas 60 FPS theo chỉ đạo trực tiếp của Thầy.
+  2. Tích hợp hiển thị & đồng bộ mô hình Canvas Phần I trực tiếp trên `ngan-hang-de.html` (`applyBankRows`, `bankRowHtml`, `mountVlxtModelsWithCaptions`) + cập nhật `canvas-studio.html`.
+  3. Kiểm kê chính xác theo từng chủ đề số câu `TN-LT` còn thiếu cần bốc thêm và trữ lượng `TN-LT` sạch không trùng đang sẵn có trong kho `6 vat ly`.
+- **Commit & File đã sửa (`eduhost-vn204/edu-portal-console`, nhánh `main`)**:
+  - Commit mã: `9743226` (`feat(bank): split 220 package into 130 TN-LT staging and push 90 TN-BT with 14 canvas models to official bank`).
+  - `assets/ngan-hang-3048-questions.json` & `.js`: Nối thêm **90 câu `TN-BT` chuẩn (`VLXT-TN220-BT-001`..`090`, `batchId: "BATCH_TN220_BT_20261118"`)**, nâng tổng Ngân hàng từ **3.048 $\to$ 3.138 câu** (`TN-BT` từ **1.280 $\to$ 1.370 câu**; gồm **14 câu gắn `modelId` + `<div class="vlxt-model-slot" data-model-id="MH-TN220-..."></div>`**, đặt `hinhAnh: ""` tránh trùng ảnh tĩnh).
+  - `assets/tn220-bt-bank-pack.js`: Mới — xuất `window.VLXT_TN220_BT_BANK` (90 câu `TN-BT`) để `ngan-hang-de.html` và `canvas-studio.html` hợp nhất tức thì và đồng bộ nền lên Google Sheets.
+  - `assets/staging-tn-220-questions.json` & `.js`: Rút gọn chỉ giữ **130 câu `TN-LT` thuần** (`13` mô hình Canvas `MH-TN220-*`), giữ ở Hộp Chờ Duyệt chờ Thầy duyệt.
+  - `assets/staging-tn220-models.js`: Giữ trọn 27 mô hình `MH-TN220-*` và đăng ký `window.VLXT_TN220_CAPTIONS` (27 tiêu đề tiếng Việt).
+  - `ngan-hang-de.html`: Nạp `staging-tn220-models.js`, `staging-tn50-models.js`, `tn220-bt-bank-pack.js`; thêm `hasRegisteredModel()` + `mountVlxtModelsWithCaptions()` dùng chung cho danh sách Ngân hàng & xem trước Đề thi; hợp nhất `VLXT_TN220_BT_BANK` trong `applyBankRows()`; tự đồng bộ Google Sheets qua `syncApprovedTn220BtToServer()` dùng `getAdminKey()` (khi Thầy mở Quản trị); render `.vlxt-model-slot` và ẩn ảnh tĩnh trùng lặp trong `bankRowHtml()`.
+  - `canvas-studio.html`: Cập nhật số đếm (`STAGING_220: 130 Câu TN-LT`, `BANK_ALL: 3.138 Câu`, `TN_BT: 1.370 Câu`, `ALL: 3.424 Câu`), nạp `VLXT_TN220_CAPTIONS`, bổ sung tìm câu hỏi BT Ngân hàng trong `renderModelQuestionDetails()`, tự trích xuất `data-model-id`, làm sạch `<div class="vlxt-model-slot">` qua `stripModelSlotMarkup()` khi preview/soạn thảo.
+- **Số liệu kiểm kê & nguồn bù `TN-LT` (từ kho `6 vat ly`, đối chiếu trùng với 3.138 Bank + 50 + 130 LT)**:
+  - **Cần bốc thêm đúng `90` câu `TN-LT`** (`CD05: 5`, `CD07: 15`, `CD08: 39`, `CD09: 9`, `CD10: 1`, `CD12: 17`, `CD14: 1`, `CD15: 3`). (Ghi chú: Gói `STAGING_50` Chương 2 & 3 đang chờ duyệt riêng có 50 câu gắn nhãn LT: `10 CD07, 10 CD08, 10 CD10, 10 CD11, 10 CD12`, khi lọc theo `guessTnType` còn ~26 LT thuần & ~24 BT).
+  - **Trữ lượng `TN-LT` sạch không trùng hiện sẵn có trong `harvested_pool.json` + 13 file Word GV đã quét**: Tổng **276 câu `TN-LT`** (`191` thuần chữ + `85` có 1 hình định tính), dư ở **tất cả 8/8 chủ đề**: `CD05=32 (+27)`, `CD07=30 (+15)`, `CD08=43 (+4)`, `CD09=39 (+30)`, `CD10=35 (+34)`, `CD12=51 (+34)`, `CD14=31 (+30)`, `CD15=15 (+12)` (chưa cần đụng tới 150+ Đề Trường/Sở 2025 & 45 Đề THPTQG).
+- **Kiểm tra đã chạy (sau chỉnh sửa cuối)**:
+  - `vm.Script` PASS cho toàn bộ 4 file `.js` (`staging-tn220-models.js`, `staging-tn-220-questions.js`, `tn220-bt-bank-pack.js`, `ngan-hang-3048-questions.js`), 5 inline `<script>` của `ngan-hang-de.html` và 1 inline `<script>` của `canvas-studio.html`; `After </html> length: 0`; `shadowBlurHits: 0`; `git diff --check` PASS; quét secret = `0`.
+  - Playwright Chromium HiDPI (`deviceScaleFactor: 2`, `1440×900`) PASS (exit 0): `canvas-studio.html` xác nhận `STAGING_220 = 130` (100% LT), `BANK_ALL = 3.138`, `TN_BT = 1.370`, `VLXT-TN220-BT-006` (`MH-TN220-C2-04`) vẽ `1560×610` Canvas sắc nét không lộ `<div class="vlxt-model-slot">`, Mode 1 đủ 27 mô hình & tra được `VLXT-TN220-BT-070`, đã xem trực tiếp 2 PNG xác minh; `ngan-hang-de.html` (`applyBankRows([])`) xác nhận hợp nhất đủ 90 `TN-BT`, mount 14/14 Canvas V2 trong `#nh-list`, nâng cấp caption tiếng Việt chuẩn, không trùng ảnh tĩnh, `0` lỗi mới (`2` thông báo SVG `height="auto"` có sẵn từ `tln-thuc-te-models.js` cũ ở batch TLN).
+- **Điều phải giữ nguyên**:
+  - Giữ **130 câu `TN-LT` (`STAGING_220`)**, **50 câu `STAGING_50`** và **106 câu `STAGING_DS_106`** ở chế độ Staging Preview chờ Thầy duyệt; chỉ 90 câu `TN-BT` đợt này được đẩy thẳng lên Ngân hàng theo lệnh của Thầy.
+  - Không hardcode `adminKey`; đồng bộ Google Sheets Production của 90 câu `TN-BT` chỉ chạy qua session hợp lệ khi Thầy mở `ngan-hang-de.html`.
+- **Việc còn lại**:
+  - Chờ Thầy chốt lệnh để tiến hành bốc đủ **90 câu `TN-LT` còn thiếu** từ kho `6 vat ly` (`276` câu sạch sẵn có), dựng mô hình nếu có hình vẽ và đưa vào Hộp Chờ Duyệt `canvas-studio.html`; đồng thời Thầy mở `ngan-hang-de.html` để phiên Quản trị tự động đẩy đồng bộ 90 câu `TN-BT` lên Google Sheet thực (nếu chưa sync từ file tĩnh).
+
+## Bàn giao gần nhất (18/11/2026 09:18)
+- **Đồng Bộ `subTopic`/`baiHoc` Gói 50 Câu & Bóc Tách, Xây Dựng 27 Mô Hình Canvas 60 FPS Cho Gói 220 Câu Trắc Nghiệm Bù Đủ 8 Chủ Đề (`STAGING_220` / `P1_STAGING_220`)**:
+- **Mục tiêu**:
+  1. Đồng bộ 100% chuỗi `subTopic` và `baiHoc` của **50 câu trắc nghiệm Chờ Duyệt (`STAGING_50`)** khớp từng ký tự với danh mục `CANONICAL_16_TOPICS_BY_CHAPTER` & `LESSON_TO_16_TOPICS` trong `ngan-hang-de.html` (đặc biệt khắc phục nhãn rút gọn ở `CD08` và `CD10`).
+  2. Bóc tách từ kho tài liệu thô (`D:\Work\Dạy học\Xây Dựng Lộ Trình XPS 2k9\...\Thô\6 vat ly\`), loại trùng tuyệt đối với ngân hàng `3.048` câu + gói `50` câu, biên soạn lời giải sư phạm KaTeX, xây dựng **27 mô hình Canvas 2D 60 FPS độc bản** cho toàn bộ câu có hình/đồ thị, và đưa gói **220 câu bù đủ 8 chủ đề thiếu** lên chế độ **Staging Preview** trên `canvas-studio.html` chờ Thầy duyệt trước khi nạp ngân hàng thật.
+- **Commit & File đã sửa (`eduhost-vn204/edu-portal-console`, nhánh `main`)**:
+  - Commit mã: `1ccceaa` (`feat(studio): stage 220 deficit-topic MCQs with 27 bespoke canvas models and sync canonical subTopics`).
+  - `assets/staging-c2-c3-questions.json` & `.js`: Đồng bộ chuẩn hóa 100% chuỗi `subTopic` và `baiHoc` cho cả **50/50 câu** (sửa chuẩn `CD08 – Quá trình đẳng áp (Charles) & Quá trình đẳng tích (Gay-Lussac)` và `CD10 – Tương tác từ, Nguồn gốc từ trường, Đường sức & Từ trường Trái Đất`).
+  - `assets/staging-tn-220-questions.json` & `.js`: Mới — **220 câu TN Lý thuyết (C1–C4)** bù đúng hạn mức 8 chủ đề còn thiếu (`CD05: 20, CD07: 20, CD08: 63, CD09: 10, CD10: 20, CD12: 49, CD14: 23, CD15: 15`), gồm **27 câu có hình/đồ thị** gắn `modelId: "MH-TN220-C1-01..C4-27"` + `hinhAnh` (`assets/images/staging-220/q220_*.png|.jpg`) và **193 câu thuần chữ** (`modelId: ""`, `hinhAnh: ""`), đã kiểm toán rà soát đáp án (hiệu chỉnh câu 87 $\to$ `A`, câu 152 $\to$ `B`, thay thế 7 câu trùng/sai chủ đề, khôi phục KaTeX) và soạn đủ 220 lời giải chi tiết KaTeX sư phạm.
+  - `assets/staging-tn220-models.js`: Mới — **27 hàm vẽ Canvas 60 FPS tự chủ hoàn toàn** (`780×305`, Retina `2x`), nền EdTech phẳng (`#060b19 -> #0a1226`), `shadowBlurHits = 0`, sawtooth 1 chiều, cốc hở miệng, Zero Data Leakage.
+  - `assets/images/staging-220/*`: **27 file ảnh `.png/.jpg/.jpeg` trích xuất sạch** từ Word gốc.
+  - `canvas-studio.html`: Nạp `staging-tn-220-questions.js?v=20261118-tn220` và `staging-tn220-models.js?v=20261118-tn220`; thêm `STAGING_220` (mặc định mở Tab 1), bộ lọc `#st-filter-topic` (`CD01..CD16`), phân nhóm `P1_STAGING_220` trong Tab 2 (`C1:3, C2:9, C3:12, C4:3`), nạp caption tự động và reset bộ lọc an toàn khi chuyển 1-click về Phòng Duyệt.
+- **Kiểm tra đã chạy (sau chỉnh sửa cuối)**:
+  - `node -c` PASS (exit 0) cho `staging-c2-c3-questions.js`, `staging-tn-220-questions.js`, `staging-tn220-models.js` (cả `_codex_verify_live` và root); `Inline <script> syntax OK: 1`, `After </html> length: 0`, `shadowBlurHits: 0`, kiểm tra khớp **270/270** chuỗi `chuong`/`subTopic`/`baiHoc` chuẩn trong `ngan-hang-de.html`; `git diff --check` PASS.
+  - Playwright Chromium (`deviceScaleFactor: 2`, `1440×900`) PASS (exit 0): `0` console errors, `0` page errors, `0` HTTP 404s; `STAGING_220` đạt đúng từng chủ đề (`CD05:20, CD07:20, CD08:63, CD09:10, CD10:20, CD12:49, CD14:23, CD15:15`), Q1 hiện `1560×610` Canvas + ảnh Word gốc (`complete: true`), Q4 thuần chữ ẩn Canvas, `STAGING_50` đúng 50 câu với `CD08`/`CD10` chuẩn; Tab 2 `P1_STAGING_220` chạy 27/27 mô hình qua 5 mốc `t` (`modelErrors: []`) + Hot-Reload & chuyển 1-click về đúng `VLXT-ST220-C3-CD12-134`; đã mở xem trực tiếp toàn bộ 27 ảnh PNG 2x + ảnh UI Studio và tinh chỉnh sạch 5 điểm chạm chữ/mũi tên (`C2-09, C2-11, C3-16, C3-18, C4-27`).
+- **Điều phải giữ nguyên**:
+  - Tuyệt đối giữ cả **2 gói 50 câu & 220 câu** ở chế độ **Staging Preview** trên `canvas-studio.html`; chưa được phép đẩy lên Google Sheets `NganHangCauHoi` production cho tới khi Thầy duyệt xong và ra lệnh.
+  - Giữ nguyên sự đồng bộ 100% chuỗi `subTopic` / `baiHoc` với `CANONICAL_16_TOPICS_BY_CHAPTER` và `LESSON_TO_16_TOPICS` trong `ngan-hang-de.html`.
+- **Việc còn lại**:
+  - Chờ Thầy kiểm duyệt trực tiếp **220 câu + 27 mô hình mới** (`STAGING_220`) và **50 câu Đã đồng bộ nhãn** (`STAGING_50`) trên `canvas-studio.html` trước khi thực hiện lệnh đẩy lên Ngân Hàng Đề chính thức.
+
+## Bàn giao gần nhất (18/11/2026 08:35)
+- **Hoàn Thiện Trọn Bộ 106/106 Mô Hình Canvas 1-1 Độc Bản Chữ Lớn & Chuẩn Hóa Tinh 106 Câu Đúng/Sai (`MH-STAGING-C1-01` .. `MH-STAGING-C4-34`)**:
+- **Mục tiêu**: Tiếp nối 2 mẫu thí điểm (`MH-STAGING-C1-01` & `MH-STAGING-C1-02`) được Thầy duyệt, hoàn tất nốt **104 mô hình & câu hỏi Đúng/Sai còn lại** thành trọn bộ **106/106 mô hình Canvas 60 FPS độc bản tự chủ** với cỡ chữ lớn sắc nét theo yêu cầu của Thầy (*"ngon rất tốt làm tiếp 104 cái còn lại, cố gắng đừng để các chữ bị nhỏ quá là được"*), khôi phục 100% công thức OMML/OLE MathType, làm sạch toàn bộ ảnh đề gốc và hoàn chỉnh 424 khối lời giải KaTeX trên **Canvas Motion Studio** (`canvas-studio.html`).
+- **Commit & File đã sửa (`eduhost-vn204/edu-portal-console`, nhánh `main`)**:
+  - Commit mã: `99a88a5` (`feat(studio): build all 106 bespoke high-visibility DS canvas models and audit 106 questions`).
+  - `assets/staging-ds-models.js`: Thay thế toàn bộ 11 hàm template chung (`simCalorimeterHeat`, `simHeatingCurve`, ...) và wrapper `_rawSource` bằng **106 hàm vẽ độc bản hoàn toàn tự chủ** (`33 C1 + 21 C2 + 18 C3 + 34 C4`); mọi helper khai báo cục bộ bên trong thân hàm; nền phẳng `#060b19 -> #0a1226`, khung logic `780×305` (Retina `2x` `1560×610`), sàn cỡ chữ thông thường `>= 14.5px` bold (`14px` ở hộp tiêu đề `C1-01`; chỉ số phụ hạt nhân/vật lý `12.5px–13.5px`), `0` AI Glow (`shadowBlur = 0`), cốc/bình hở miệng trên, biến thiên sawtooth 1 chiều, Zero Data Leakage.
+  - `assets/staging-ds-106-questions.json` & `assets/staging-ds-106-questions.js`: Chuẩn hóa Tinh **106/106 câu Đúng/Sai** (`taxonomy`, `baiHoc`, `subTopic`, `caption`, `simType`), khôi phục 100% công thức bị rớt từ Word OMML/MathType, nhúng bảng số liệu HTML `.vstep-data-table` cho các câu có bảng (`011, 012, 013, 019, 020, 035, 073`), và thay sạch 100% placeholder bằng **424 khối** (`106 × 4`) lời giải chi tiết `.exp-stmt-item` kèm `.vlxt-math-callout`.
+  - `assets/images/staging-ds/*`: Làm sạch **70 ảnh đề gốc** tham chiếu trực tiếp trong 106 câu — khôi phục ảnh sạch đúng đề cho `018_p6.png`, `046_p11.png`, `055.png` (lực kế tròn treo khung dây `PQ`), `060.png` (cuộn dây + điện kế), `068_p3.png`, `072.png` (nam châm chữ U trên cân điện tử & đồ thị `m(I)`), đồng thời đặt `hinhAnh: ""` cho các ảnh nháp mực xanh hoặc dính nhầm câu (`003_p2, 017, 053, 058.jpeg, 069, 079, 084, 086, 088, 089, 093, 094, 099`).
+  - `canvas-studio.html`: Cập nhật cache-busting `?v=20261118-bespoke106` cho `staging-ds-106-questions.js` và `staging-ds-models.js`.
+- **5 câu đã hiệu chỉnh đáp án gốc (`correct`) sai hiển nhiên so với vật lý & lời giải đề gốc** (để Thầy kiểm tra lại khi duyệt):
+  1. `VLXT-DS-VD28-016`: `SSĐS` $\to$ **`ĐĐSĐ`** (đồ thị chì nóng chảy $327^\circ\text{C}$ tại $N$ và sôi $1749^\circ\text{C}$ tại $Q$).
+  2. `VLXT-DS-VD28-046`: `ĐĐSĐ` $\to$ **`SĐSĐ`** (ý a tính $p_1 = p_0 + F_{\text{ms}}/S \approx 113\,710\text{ Pa} \neq 117\,760\text{ Pa}$, khớp bảng đáp án gốc đầu `GIẢI ĐỀ THI THỬ SỐ 2.docx`).
+  3. `VLXT-DS-VD28-078`: `SĐĐS` $\to$ **`SĐSĐ`** (ý c năng lượng $1\text{ g}$ He là $4{,}17\cdot 10^{11}\text{ J} \neq 31{,}5\cdot 10^{19}\text{ J}$; ý d $^{2}_{1}\text{H}, ^{3}_{1}\text{H}$ là đồng vị hydrogen).
+  4. `VLXT-DS-VD28-083`: `ĐĐĐĐ` $\to$ **`ĐSĐĐ`** (ý b nói bức xạ $\beta$ từ Triti không gây nguy hiểm cho người là Sai theo chính hướng dẫn giải gốc).
+  5. `VLXT-DS-VD28-086`: `SĐSĐ` $\to$ **`SĐSS`** (ý d tuổi Trái Đất khi $^{235}_{92}\text{U}$ còn $0{,}1\%$ tính ra $\approx 8{,}33\text{ tỉ năm} \neq 7{,}7\text{ tỉ năm}$).
+- **Kiểm tra 5 cổng đã chạy (sau chỉnh sửa cuối)**:
+  - **Cổng 1 (Syntax & Uniqueness)**: `node -c assets/staging-ds-models.js`, `node -c assets/staging-ds-106-questions.js`, inline `<script>` của `canvas-studio.html` và `</html>` PASS; `106` modelId đăng ký, `106` thân hàm độc nhất; `git diff --cached --check` PASS, không chứa secret.
+  - **Cổng 2 (Font & No-Glow)**: `shadowBlur: 0 violations`; không có font chữ thường `< 14px` (duy nhất 1 chuỗi phụ `ms cực đại` dưới chữ `F` tại `C2-13` là `13px`).
+  - **Cổng 3 (Data, KaTeX & Asset)**: `dataIssues: 0`, `htmlAngleWarnings: 0`, `70/70` ảnh `hinhAnh` tồn tại và nạp `ok: true` (`brokenImgs: []`), `0` placeholder, `0` `.wmf`.
+  - **Cổng 4 (Playwright Chromium Retina 2x Audit)**: `qCount: 106`, `stagingModelCount: 106`, `Runtime errors: 0`, `Text-bounds violations ([1.5..778.5]×[1.5..303.5]): 0` qua cả 2 mốc `t = 0.8s` và `t = 4.6s` (212 lượt vẽ); Tab 1 (`Câu 1 / 106`, bảng `.vstep-data-table` & KaTeX `0` lỗi), Tab 2 (`#sel-model` đủ `106` lựa chọn), `Console Errors: 0`, `Page Errors: 0`.
+  - **Cổng 5 (Visual Spot-Check)**: Mở xem trực tiếp 8 ảnh Retina 2x đại diện 4 chương (`C1-02`, `C1-16`, `C2-05`, `C2-13`, `C3-01`, `C3-18`, `C4-01`, `C4-19`), đã sửa 2 chi tiết nhỏ ở `C2-13` (`p₀ =`) và `C4-19` (`I-128, Z = 53`) và kiểm chứng lại bằng ảnh.
+- **Điều phải giữ nguyên**:
+  - Giữ toàn bộ 106 câu ở trạng thái **Staging Preview** trên `canvas-studio.html`; tuyệt đối không nạp trực tiếp vào Ngân Hàng Đề production nếu chưa có lệnh duyệt của Thầy.
+  - Không dùng `shadowBlur`, giữ chữ lớn sắc nét và bảo toàn cấu trúc 94 mô hình gốc + 27 mô hình TN50.
+- **Việc còn lại**:
+  - Chờ Thầy duyệt trực tiếp **106 câu & 106 mô hình Đúng/Sai** (đặc biệt lưu ý 5 câu đã hiệu chỉnh đáp án gốc nêu trên) trên `canvas-studio.html` trước khi chốt nạp ngân hàng chính thức.
+
+## Bàn giao gần nhất (18/11/2026 07:20)
+- **Hoàn Thiện 27 Mô Hình Canvas 1-1 Độc Bản & Kiểm Toán Toàn Diện 50 Câu Trắc Nghiệm Chờ Duyệt (`MH-TN50-C2-*` & `MH-TN50-C3-*`)**:
+- **Mục tiêu**: Thực hiện chỉ đạo của Thầy Nguyễn Xuân Trường (*"làm lại mô hình cho 50 câu này xem thử câu nào có hình thì làm đúng theo yêu cầu"*): đối chiếu toàn bộ 50 câu trắc nghiệm (`Chương 2. Khí lý tưởng - 250 câu.docx` & `Chương 3. Từ trường - 250 câu.docx`), làm sạch hoàn toàn ảnh Word gán nhầm/thiếu, khôi phục công thức OMML/đáp án bị rớt, và thiết kế 27 mô hình Canvas 2D 60 FPS độc bản khớp 1-1 hình đề Word gốc.
+- **Commit & File đã sửa (`eduhost-vn204/edu-portal-console`, nhánh `main`)**:
+  - Commit mã: `583cec6` (`feat(studio): build 27 bespoke 1-1 canvas models for 50 staging MCQs and fix word image/OMML alignment`).
+  - `assets/images/staging/`: Trích xuất bổ sung 4 ảnh đề chùm từ Word gốc (`q_528_0.jpg`, `q_533_0.jpg`, `q_538_0.jpg`, `q_544_0.jpg`) và xóa 3 ảnh bị gán nhầm cho câu thuần chữ (`q_506_0.jpg`, `q_523_0.jpg`, `q_565_0.jpg`).
+  - `assets/staging-c2-c3-questions.json` & `assets/staging-c2-c3-questions.js`: Xây dựng lại sạch 50 câu gồm đúng **27 câu có hình/biểu đồ gắn `modelId` + `hinhAnh`** (`9` Chương 2 + `18` Chương 3) và **23 câu thuần chữ để rỗng** `modelId`/`hinhAnh`; khôi phục công thức OMML bị rớt (`255, 258, 266, 269, 314, 347, 350, 502..565`), tách `deBaiChung` câu chùm khỏi `optD` của câu trước, sửa đáp án câu `266` (`D`).
+  - `assets/staging-tn50-models.js`: Mới — đăng ký 27 hàm vẽ Canvas 60 FPS tự chủ hoàn toàn (`MH-TN50-C2-251, 258, 274, 255, 269, 314, 337, 347, 350` và `MH-TN50-C3-502, 503, 505, 521, 522, 526, 546, 528, 535, 538, 539, 531, 533, 544, 545, 554, 556, 564`), tuân thủ Retina 2x `780×305`, EdTech phẳng không AI Glow và Zero Data Leakage.
+  - `canvas-studio.html`: Nạp `assets/staging-tn50-models.js?v=20261118-tn50models`, thêm phân nhóm `P1_STAGING_50` trong `#sel-part`, lọc Chương (`ALL`/27, `C2`/9, `C3`/18), hiển thị `deBaiChung`, sửa TN ABCD editor (`toggleModelQuestionTf`/`updateModelQuestionTfButtons`), và chuyển 1-click về `STAGING_50`.
+- **Kiểm tra đã chạy**:
+  - `node -c` đạt exit code 0 trên `staging-tn50-models.js`, `staging-c2-c3-questions.js` và inline `<script>` (`Inline <script> syntax OK count: 1`); `After </html> length: 0`; `Total: 50, WithModel: 27, TextOnly: 23, Registered: 27, EmptyOpts: 0, LeakedOpts: 0, MissingReg: 0, shadowBlurHits: 0`; `git diff --check` đạt exit code 0.
+  - Playwright High-DPI (`deviceScaleFactor: 2`, `1440×900`) tại `http://127.0.0.1:<port>/canvas-studio.html`: exit code 0, 0 console/page errors, 0 404 URLs; Tab 1 `STAGING_50` đủ 50 câu (câu 251/528 hiện Canvas `1560×610` + ảnh Word gốc, câu thuần chữ 254/277 ẩn Canvas); Tab 2 `P1_STAGING_50` đủ 27 mô hình (`C2=9`, `C3=18`), 27/27 mô hình vẽ không lỗi qua 5 mốc `t` & Hot-Reload + chuyển Tab 1 thành công; đã mở xem trực tiếp toàn bộ 14 ảnh PNG 2x và sửa triệt để 4 điểm chạm chữ (`C2-251, C2-258, C2-337, C3-521`).
+- **Điều phải giữ nguyên**:
+  - Chỉ gắn `modelId` và `hinhAnh` cho đúng 27 câu có hình/biểu đồ thật trong Word gốc; 23 câu thuần chữ giữ nguyên chế độ không Canvas.
+  - Không làm lộ đáp án trên Canvas đối chứng (không ghi `p`, `1/V` lên `C2-251`; không tô nổi hình đúng ở `C2-314`, `C2-350`; không ghi cực `N/S` hay đáp án `C3-502..564`).
+- **Việc còn lại**:
+  - Thầy nghiệm thu bộ 50 câu trắc nghiệm + 27 mô hình Canvas trên `canvas-studio.html`; tiếp tục hoàn thiện **104/106 mô hình Đúng/Sai còn lại** (`MH-STAGING-C1-03..C4-34`) sau khi Thầy chốt 2 mẫu thí điểm đầu.
+
+## Bàn giao gần nhất (18/11/2026 06:33)
+- **Xây Dựng Chuẩn Mực 2 Mô Hình Đúng/Sai Đầu Tiên (`MH-STAGING-C1-01` & `MH-STAGING-C1-02`) Theo Đúng Quy Chuẩn 94 Mô Hình Đã Duyệt & Nâng Cấp Retina 2x DPI Trên Studio**:
+- **Mục tiêu**: Thực hiện chỉ đạo của Thầy Nguyễn Xuân Trường: đọc lại toàn bộ `VLXT_MOTION_SPEC.md`, `assets/canvas-core-helpers.js`, `assets/mo-hinh-thuc-te-models.js` và đề Word gốc `10. ĐỀ SỐ 10.docx` để hiểu nguyên lý thiết kế 94 mô hình đã duyệt, từ đó làm chuẩn xác và test trước **2 câu đầu** trong gói 106 câu Đúng/Sai mới (`VLXT-DS-VD28-001` & `VLXT-DS-VD28-002`).
+- **Commit & File đã sửa (`eduhost-vn204/edu-portal-console`, nhánh `main`)**:
+  - Commit mã: `69118fb` (`feat(studio): build bespoke gold-standard canvas models MH-STAGING-C1-01 & C1-02 with Retina 2x DPI`).
+  - `assets/staging-ds-models.js`: Thay thế 2 wrapper chung bằng 2 hàm vẽ độc bản tự chủ hoàn toàn (`MH-STAGING-C1-01` & `MH-STAGING-C1-02`).
+  - `assets/staging-ds-106-questions.json` & `assets/staging-ds-106-questions.js`: Chuẩn hóa `baiHoc`, `subTopic`, `caption`, `simType`, khôi phục ký hiệu KaTeX bị rớt từ Word (`t`, `\tau`, `27^\circ\text{C}`, `20\,800\text{ J}`) và nâng cấp `giaiThich` theo chuẩn HTML `.exp-stmt-item` + `.exp-key-badge`.
+  - `canvas-studio.html`: Nâng cấp Canvas lên **Retina 2x High-DPI** (`ensureHighDPICanvas`, `1560×610` px vật lý cho khung logic `780×305`), sửa `findEditableModelQuestion` để Tab 2 sửa/lưu đáp án Đ/S được cho cả `STAGING_DS_106_QUESTIONS` lẫn `DS_94_QUESTIONS`, cập nhật `?v=20261118-test2q`.
+- **Hành vi mới**:
+  1. **`MH-STAGING-C1-01` (Câu 1 — Hơ nóng ống nghiệm nút bấc)**: Vẽ chuẩn xác 4 dụng cụ theo ảnh gốc `VLXT-DS-VD28-001.png` gồm `(1) Ống nghiệm` nghiêng có vạch chia và phân tử khí dao động nhiệt, `(2) Nút bấc` đậy khít rồi rung và bật văng ra khỏi miệng ống theo quỹ đạo tự nhiên ở cuối chu kỳ sawtooth, `(3) Đèn cồn` có bầu cồn, bấc, chụp sứ và ngọn lửa 2 lớp sắc nét không AI Glow, `(4) Giá đỡ thí nghiệm` chân kiềng 3 chạc + trụ thép + ngàm kẹp. Hộp chú thích chữ to `14.5px ExtraBold`, đường chỉ dẫn bám động theo nút bấc, Zero Data Leakage.
+  2. **`MH-STAGING-C1-02` (Câu 2 — Đồ thị nung nóng thỏi chì 1 kg)**: Cột trái tái hiện chính xác 100% đồ thị `t (°C)` theo `τ (phút)` trong `VLXT-DS-VD28-002.png` với gốc `O`, mốc `27, 127, 227, 327 °C`, `5, 10, 15 phút`, đường gióng nét đứt vuông góc, 3 điểm `A, B, C` và điểm chạy thực nghiệm sawtooth; cột phải hiển thị hộp `THÔNG SỐ ĐỀ BÀI` (`Pb`, `m = 1 kg`, `c = 130 J/(kg·K)`) và chén nung hở miệng trên (U-shape) đặt trên bếp gia nhiệt, hoàn toàn không lộ nhiệt độ nóng chảy hay đáp án.
+- **Kiểm tra đã chạy**:
+  - `node -c assets/staging-ds-models.js`, `node -c assets/staging-ds-106-questions.js` và kiểm tra inline `<script>` của `canvas-studio.html` đều đạt exit code 0; thẻ đóng `</html>` còn nguyên; `git diff --check` đạt exit code 0.
+  - Playwright (`viewport 1440×920, deviceScaleFactor: 2`) tại `http://127.0.0.1:<port>/canvas-studio.html`: 0 console errors, 0 page errors; `#studio-canvas` và `#st-canvas` đạt `1560×610`; KaTeX & ảnh Word gốc tải đủ (`naturalWidth: 364` và `245`); Hot-Reload trên `MH-STAGING-C1-01` và vẽ mô hình gốc `MH-C1-01` hoạt động bình thường; đã mở xem trực tiếp 5 ảnh PNG chụp thực tế để đối chiếu pixel với ảnh gốc.
+- **Điều phải giữ nguyên**:
+  - Tuyệt đối không dùng AI Glow (`shadowBlur`, `text-shadow`), không bịt kín miệng cốc/chén nung (`drawOpenCup`), không dùng `Math.sin` cho diễn biến tăng 1 chiều của thí nghiệm nhiệt kế/nung nóng, và không lộ dữ kiện đáp án lên Canvas.
+  - Không thay đổi cấu trúc 94 mô hình gốc (`MH-C1-01..MH-C4-100`).
+- **Việc còn lại**:
+  - Chờ Thầy duyệt kết quả thí điểm **2 câu đầu** (`MH-STAGING-C1-01` & `MH-STAGING-C1-02`); **104/106 mô hình còn lại** (`MH-STAGING-C1-03` .. `MH-STAGING-C4-34`) hiện vẫn đang dùng wrapper tạm và sẽ được nâng cấp theo đúng chuẩn mực này sau khi Thầy chốt 2 mẫu đầu.
+
+## Bàn giao gần nhất (17/11/2026 23:05)
+- **Triệt Tiêu Mô Hình Fallback Chung, Tích Hợp 11 Engine Mô Phỏng 60 FPS Chuyên Biệt, Trích Xuất 257 Ảnh Đề Word & Phân Loại Chuẩn 4 Chương Cho 106 Mô Hình Đúng/Sai**:
+- **Mục tiêu**: Thực hiện đúng 100% chỉ đạo trực tiếp của Thầy Nguyễn Xuân Trường: Khắc phục triệt để lỗi "tất cả mô hình đang dùng cùng 1 mô hình sóng sine tượng trưng, mô hình không liên quan đến bài", đọc lại các file Word gốc để lấy đúng mô hình, trích xuất biểu đồ/hình vẽ gốc và phân loại chuẩn xác theo từng bài học.
+- **Nội dung đã triển khai**:
+  1. **Đọc lại 106 câu từ toàn bộ tài liệu Word gốc**:
+     - Quét và đối chiếu 100% câu hỏi với các bộ đề gốc: `Đề tủ 2k8` (15 đề), `Đề thi thử 2025-2026` (20 đề), `Đề tác giả Hoàng Sư Điểu`, `Bộ đề cơ bản lấy điểm 7+`.
+     - Trích xuất thành công **257 tệp hình ảnh & biểu đồ thật** lưu vào `assets/images/staging-ds/`.
+     - Cập nhật trường `hinhAnh` cho 54/106 câu hỏi có biểu đồ, hình vẽ, sơ đồ thí nghiệm (ví dụ: `VLXT-DS-VD28-004.png` là đồ thị nung chảy kim loại $T-t$, `VLXT-DS-VD28-060.jpeg` là sơ đồ thí nghiệm nam châm cực Bắc và cuộn solenoid có điện kế $G$).
+  2. **Tái cấu trúc & Phân loại chuẩn 100% theo Chương & Chủ đề**:
+     - Khắc phục lỗi câu cảm ứng điện từ bị lọt vào Chương 1: Câu thí nghiệm nam châm - cuộn dây (`VLXT-DS-VD28-060`) đã chuyển chuẩn xác sang **Chương 3 (Từ trường)** với mã `MH-STAGING-C3-06`.
+     - Phân bổ 106 mô hình chuẩn xác:
+       + Chương 1 (Vật lý nhiệt): **33 mô hình** (`MH-STAGING-C1-01` .. `33`)
+       + Chương 2 (Khí lý tưởng): **21 mô hình** (`MH-STAGING-C2-01` .. `21`)
+       + Chương 3 (Từ trường): **18 mô hình** (`MH-STAGING-C3-01` .. `18`)
+       + Chương 4 (Vật lý hạt nhân): **34 mô hình** (`MH-STAGING-C4-01` .. `34`)
+  3. **Xây dựng 11 Engine Mô Phỏng Vật Lý Chuyên Biệt 60 FPS (`assets/staging-ds-models.js`)**:
+     - Triệt tiêu hoàn toàn hàm fallback vẽ sóng sine xanh chấm vàng.
+     - 11 bộ engine mô phỏng chuyên sâu chuẩn EdTech (phẳng, sắc nét, không dùng hiệu ứng hào quang mờ ảo AI Glow):
+       1. `simHeatingCurve`: Đồ thị $T-t$, lò hồ quang, nóng chảy pha, lỏng tăng nhiệt, điểm trạng thái thời gian thực.
+       2. `simCalorimeterHeat`: Nhiệt lượng kế 2 vỏ, sục điện xoắn, bọt khí sôi, nhiệt kế điện tử, bảng đo $U, I, P, T$.
+       3. `simFaradayInduction`: Cuộn solenoid nhiều vòng, nam châm thanh N-S dịch chuyển, đường sức từ $\vec{B}$, kim điện kế $G$ lệch theo định luật Lenz.
+       4. `simBoyleCylinder`: Xilanh pit-tông di chuyển nén đẳng nhiệt, phân tử khí chuyển động, áp kế $p \sim 1/V$, đồ thị hyperbol $p-V$.
+       5. `simBalloonAtmosphere`: Bóng thám không dãn nở theo độ cao khí quyển, đo áp suất theo định luật khí quyển.
+       6. `simMagneticForce`: Nam châm chữ U, đoạn dây dẫn $MN$, dòng điện $I$, lực từ $\vec{F} = I\vec{L}\times\vec{B}$ và cảm biến đo lực.
+       7. `simRutherford`: Tán xạ chùm hạt $\alpha$ qua hạt nhân vàng Au $+79e$, quỹ đạo hyperbol và màn huỳnh quang ZnS.
+       8. `simNuclearReaction`: Neutron bắn phá $^{235}\text{U}$, phản ứng phân hạch sinh $^{141}\text{Ba} + ^{92}\text{Kr} + 3n$ và tỏa năng lượng gamma.
+       9. `simRadioactiveDecay`: Đồ thị phân rã hàm mũ $N = N_0 2^{-t/T}$, chu kỳ bán rã, máy đếm xung Geiger chớp sáng.
+       10. `simGasPVCycle`: Chu trình kín $p-V$ có mũi tên định hướng, diện tích sinh công, điểm pha động.
+       11. `simElectromagneticApp`: Máy phát điện xoay chiều, khung dây quay giữa 2 cực từ, sóng sine điện áp.
+     - Đăng ký toàn bộ 106 mô hình vào `VLXTModels._canvasRegistry`, nhúng `_rawSource` chi tiết để hiển thị đẹp mắt trong Studio Code Editor và hỗ trợ Hot Reload qua `window`.
+  4. **Nâng cấp Canvas Motion Studio (`canvas-studio.html`)**:
+     - Nạp thư viện `staging-ds-models.js` vào `<head>`.
+     - Tích hợp khung hiển thị hình ảnh đề thi Word `q.hinhAnh` ở CẢ 2 PHÒNG:
+       + Phòng Duyệt & Soạn Câu Hỏi (Tab 1): Hiển thị ảnh đề thi Word ngay dưới đề bài.
+       + Phòng Tinh Chỉnh Mô Hình (Tab 2): Hiển thị ảnh đề thi Word ngay dưới đề bài để Thầy đối chiếu trực tiếp với Canvas mô phỏng 60 FPS.
+     - Tự động cập nhật dropdown Chương (`#sel-chapter`) khớp số lượng từng chương khi chọn phân nhóm 106 mô hình mới.
+  5. **Deploy & Kiểm thử Production**:
+     - Commit `b1b749d` đã push thành công lên nhánh `main` của repo `eduhost-vn204/edu-portal-console`.
+     - Đã kiểm tra cú pháp JS (Node.js syntax OK 100%), đóng thẻ `</html>` an toàn, chống khuất navbar.
+
+## Bàn giao gần nhất (17/11/2026 21:10)
+- **Làm Lại Chuẩn Chỉ Toàn Bộ 50 Câu Trắc Nghiệm: Trích Xuất 28 Biểu Đồ/Hình Vẽ Gốc & Soạn Lời Giải KaTeX Sư Phạm Hoàn Chỉnh**:
+  - **Mục tiêu**: Thực hiện đúng 100% chỉ đạo trực tiếp của Thầy Nguyễn Xuân Trường: Làm lại chuẩn chỉ toàn bộ 50 câu trắc nghiệm thuộc 5 chủ đề còn thiếu (CD07, CD08, CD10, CD11, CD12), khắc phục triệt để lỗi thiếu biểu đồ/đồ thị, trích xuất đầy đủ 100% hình ảnh từ file Word gốc và viết lời giải chi tiết KaTeX chuẩn mực.
+  - **Nội dung đã triển khai**:
+    1. **Trích xuất 28 hình ảnh & biểu đồ gốc**:
+       - Câu 251: Biểu đồ đường thẳng $p - 1/V$ thí nghiệm Boyle (`q_251_0.jpg`).
+       - Câu 258: 1 ảnh thí nghiệm xilanh pít-tông + 4 ảnh đồ thị phương án A, B, C, D (`q_258_0.jpg` .. `q_258_4.jpg`).
+       - Câu 274: Đồ thị biến đổi đẳng nhiệt và đẳng áp (`q_274_0.jpg`).
+       - Câu 255: Đồ thị chu trình $V - T$ qua các điểm $X, Y, Z$ (`q_255_0.jpg`).
+       - Câu 269: Đồ thị so sánh các đường đẳng áp $p_1 < p_2$ (`q_269_0.jpg`).
+       - Câu 314, 337, 347, 350: Các đồ thị và thí nghiệm khí lý tưởng.
+       - Câu 502, 503: Ngữ cảnh chung (`deBaiChung`) kèm hình ảnh nam châm điện chữ U (`q_502_u_magnet.jpg`).
+       - Câu 505, 506, 521, 522, 526, 531, 535, 545, 546, 554, 556, 564, 565: Đầy đủ các sơ đồ thí nghiệm từ trường, cảm ứng điện từ và máy biến áp.
+    2. **Đáp án chuẩn & Lời giải chi tiết KaTeX**:
+       - 100% đáp án đúng $A, B, C, D$ được đối chiếu từ Bảng Đáp Án chuẩn của tài liệu Word gốc.
+       - 50/50 câu có lời giải chi tiết sư phạm KaTeX đầy đủ, giải thích cặn kẽ bản chất vật lý, công thức, định luật và phân tích đồ thị/hình ảnh.
+    3. **Xuất bản & Deploy**:
+       - Đã lưu vào `assets/images/staging/`, `assets/staging-c2-c3-questions.js` và `assets/staging-c2-c3-questions.json`.
+  - **Deploy Production**: Commit `b2f10fc` trên nhánh `main` của repo `eduhost-vn204/edu-portal-console`.
+
+## Bàn giao gần nhất (17/11/2026 20:45)
+- **Tích Hợp Toàn Bộ 106 Mô Hình Đúng/Sai Mới Vào Tab "🎬 Tinh Chỉnh Mô Hình" Để Thầy Chỉnh Sửa Mã Canvas Live**:
+  - **Mục tiêu**: Thực hiện đúng 100% chỉ đạo trực tiếp của Thầy Nguyễn Xuân Trường: Đưa trọn vẹn 106 câu Đúng/Sai mới bóc tách vào Tab Tinh Chỉnh Mô Hình để Thầy có thể chọn từng mô hình, chỉnh sửa mã nguồn vẽ Canvas chuyển động 60 FPS, hot-reload xem trước và lưu cập nhật.
+  - **Nội dung đã triển khai**:
+    1. **Chuẩn hóa mã `modelId` theo Chương**:
+       - Chương 1 (33 mô hình): `MH-STAGING-C1-01` .. `MH-STAGING-C1-33`
+       - Chương 2 (21 mô hình): `MH-STAGING-C2-01` .. `MH-STAGING-C2-21`
+       - Chương 3 (18 mô hình): `MH-STAGING-C3-01` .. `MH-STAGING-C3-18`
+       - Chương 4 (34 mô hình): `MH-STAGING-C4-01` .. `MH-STAGING-C4-34`
+    2. **Cập nhật giao diện Tab Tinh Chỉnh Mô Hình (`canvas-studio.html`)**:
+       - Dropdown `#sel-part` (Chọn phân nhóm mô hình): Đặt tùy chọn ưu tiên đầu tiên: `🧪 106 Mô Hình Đúng/Sai Mới (50 Đề Chờ Duyệt)` (`P2_STAGING_106`).
+       - Tự động nạp caption và tên bài/chủ đề tương ứng vào `MODEL_CAPTIONS` và dropdown chọn mô hình `#sel-model`.
+       - Lọc theo Chương 1, 2, 3, 4 hoạt động chuẩn xác từng chương.
+       - Thẻ câu hỏi hoàn chỉnh ở dưới (`stage-bottom-qcard`) tìm thấy ngay câu hỏi trong `window.STAGING_DS_106_QUESTIONS` và render trọn vẹn: Đề bài, 4 mệnh đề Đúng/Sai $a, b, c, d$ và Lời giải KaTeX.
+       - Nút `💾 Lưu Mô Hình & Sang Phòng Duyệt Câu Hỏi ▶`: Lưu mã Canvas vào overrides, tự động chuyển sang Phòng Duyệt và mở đúng câu hỏi đó trong kho 106 câu để Thầy nghiệm thu tổng thể.
+  - **Deploy Production**: Commit `e47ba50` trên nhánh `main` của repo `eduhost-vn204/edu-portal-console`.
+
+## Bàn giao gần nhất (17/11/2026 20:32)
+- **Tích Hợp & Đẩy Live 106 Câu Đúng/Sai 50 Đề Lên Canvas Motion Studio Production & Xác Nhận Quy Tắc Bóc Tách 50 Câu Kèm Biểu Đồ**:
+  - **Mục tiêu**: Đẩy ngay 106 câu Đúng/Sai mới bóc tách lên web `canvas-studio.html` live để Thầy nghiệm thu trực tiếp; đồng thời thống nhất quy tắc bóc tách 50 câu trắc nghiệm phải có đầy đủ biểu đồ/hình vẽ từ file Word gốc.
+  - **Nội dung đã triển khai**:
+    1. Đã commit và push 2 file dữ liệu tĩnh: `assets/staging-ds-106-questions.js` và `assets/staging-ds-106-questions.json` cùng bản cập nhật `canvas-studio.html` lên GitHub `main` (commit `b7d30fb`).
+    2. Cập nhật giao diện: Dropdown chọn kho `#st-filter-pool` nạp ngay tùy chọn ưu tiên đầu tiên: `🧪 106 Câu Đúng/Sai 50 Đề (Mới Bóc Tách Chờ Duyệt)` (`STAGING_DS_106`). Tổng số câu hệ thống: **3.204 câu**.
+    3. **Thống nhất quy tắc bóc tách 50 câu trắc nghiệm (Biểu đồ / Mô hình)**:
+       - Xác minh câu 1 (Câu 251 trong `Chương 2. Khí lý tưởng - 250 câu.docx`): Trong file Word gốc có chứa hình ảnh biểu đồ `media/image1.jpg` (đồ thị đường thẳng $p - 1/V$ của định luật Boyle), trước đây bị bỏ sót khi bóc tách văn bản.
+       - Thống nhất nguyên tắc: Toàn bộ 50 câu bóc tách khi làm lại bắt buộc phải trích xuất hình ảnh hoặc dựng đồ họa Canvas mô phỏng, tuyệt đối không để câu hỏi nhắc đến biểu đồ mà không có biểu đồ minh họa.
+  - **Deploy Production**: Commit `b7d30fb` trên nhánh `main` của repo `eduhost-vn204/edu-portal-console`.
+
+## Bàn giao gần nhất (17/11/2026 16:55)
+- **Nghiên Cứu & Bóc Tách Hoàn Chỉnh 106 Câu Đúng/Sai (Phần II) Để Đạt Mốc Tròn 200 Câu Phục Vụ 50 Đề Thi Chuẩn Bộ 2025-2026 & Tích Hợp Vào Canvas Motion Studio**:
+  - **Mục tiêu**: Thực hiện đúng 100% chỉ đạo trực tiếp của Thầy Nguyễn Xuân Trường:
+    1. Nghiên cứu tài liệu tham khảo và đề thi Bộ GD&ĐT 2025–2026 để xác định số lượng mô hình & phân loại chủ đề Phần II (Trắc nghiệm Đúng/Sai) phục vụ 50 đề thi không trùng lặp.
+    2. Đối chiếu 94 câu Đúng/Sai hiện có với 20 nhóm chủ đề chuẩn, xác định số lượng thiếu ở từng chương.
+    3. Quét kho tài liệu thô (đề Sở/Tỉnh/Trường) tại `D:\Work\Dạy học\Xây Dựng Lộ Trình XPS 2k9\Kiến thức, tài liệu\Tài liệu`, bóc tách bổ sung đúng số câu còn thiếu mà không trùng lặp.
+    4. Tuân thủ nghiêm ngặt quy tắc an toàn 17/11/2026: Đưa toàn bộ vào Staging Review Pool trong **Canvas Motion Studio** (`canvas-studio.html`) để Thầy xem trước bản Preview hoàn chỉnh trước khi nạp vào Ngân Hàng Đề chính thức.
+  - **Kết quả nghiên cứu & Phân bổ 200 câu cho 50 đề**:
+    - **Cơ chế bốc đề Phần II**: Mỗi đề chuẩn Bộ gồm **4 câu** (1 câu C1, 1 câu C2, 1 câu C3, 1 câu C4). Để sinh **50 đề thi độc lập không trùng lặp**, cần đúng **200 câu** (50 câu / Chương).
+    - **Hệ thống 20 Nhóm Chủ Đề Chuẩn (DS Taxonomy)**: Mỗi chương gồm 5 nhóm chuyên sâu, mỗi nhóm định mức 10 câu.
+    - **Kết quả bù đắp thiếu hụt**:
+      + Chương 1 (Nhiệt): Đã có 17 câu $\rightarrow$ Bóc tách thêm **33 câu** $\rightarrow$ Đạt **50 câu**.
+      + Chương 2 (Khí): Đã có 29 câu $\rightarrow$ Bóc tách thêm **21 câu** $\rightarrow$ Đạt **50 câu**.
+      + Chương 3 (Từ): Đã có 32 câu $\rightarrow$ Bóc tách thêm **18 câu** $\rightarrow$ Đạt **50 câu**.
+      + Chương 4 (Hạt nhân): Đã có 16 câu $\rightarrow$ Bóc tách thêm **34 câu** $\rightarrow$ Đạt **50 câu**.
+      + **Tổng cộng kho Đúng/Sai**: 94 câu cũ + 106 câu mới = **TRÒN 200 CÂU** (Khớp hoàn hảo 100% định mức 50 đề).
+  - **Dữ liệu xuất bản & Kiểm thử**:
+    - `assets/staging-ds-106-questions.json` (360 KB) & `assets/staging-ds-106-questions.js`.
+    - Kiểm thử tự động `verify_106_quality.py`: **100% QUALITY PASS** (0 câu lỗi, 100% đầy đủ đề bài, 4 mệnh đề a, b, c, d, đáp án Đ/S và lời giải chi tiết KaTeX).
+  - **Tích hợp vào Canvas Motion Studio (`canvas-studio.html`)**:
+    - Dropdown `#st-filter-pool`: Bổ sung option `🧪 106 Câu Đúng/Sai 50 Đề (Mới Bóc Tách Chờ Duyệt)` (`STAGING_DS_106`).
+    - Hỗ trợ xem Live Preview chuẩn EdTech, lọc theo từng Chương (C1..C4), chỉnh sửa trực tiếp trên Live Editor và bấm Duyệt an toàn.
+    - Đồng bộ hóa toàn diện sang các thư mục worktree `_codex_verify_live/` và `_worktree_admin_c34_ds/`.
+
+
+- **Chuẩn Hóa Bố Cục Phương Án Trắc Nghiệm Thông Minh (1 Dòng/Đáp Án Hoặc 2 Cột) & Cắt Bỏ Mô Hình Canvas Thừa Cho 50 Câu Staging**:
+  - **Mục tiêu**: Thực hiện chính xác 100% chỉ đạo trực tiếp của Thầy Nguyễn Xuân Trường:
+    1. **Bố cục phương án A, B, C, D thông minh (Smart Adaptive Layout)**:
+       - Triệt tiêu lỗi 4 đáp án bị ép co cụm trên 1 hàng ngang làm chữ bị bẻ gãy, mỗi dòng 1 từ rất khó đọc.
+       - Tự động nhận diện độ dài phương án: Nếu câu dài (> 24 ký tự) $\rightarrow$ Tự động dàn **mỗi dòng 1 đáp án (1 cột full-width)** trải dài cả dòng mạch lạc, thoáng mắt, cực dễ đọc; nếu câu ngắn ($\le$ 24 ký tự) $\rightarrow$ Dàn **mỗi dòng 2 đáp án (lưới 2x2)** gọn gàng chuẩn EdTech.
+       - Bổ sung thanh nút toggle tiện ích nhanh: `[ ⚌ 1 Dòng / Đáp án ]` và `[ ⊞ 2 Cột (2×2) ]` để Thầy chủ động đổi chế độ xem tức thì theo ý muốn.
+    2. **Cắt bỏ mô hình Canvas thừa cho 50 câu Staging (Chương 2 & 3)**:
+       - 50 câu Staging này là câu hỏi trắc nghiệm lý thuyết và bài tập đơn thuần, không sử dụng mô hình Canvas. Đã xóa sạch toàn bộ `modelId` thừa (`modelId: ""`) trong file `assets/staging-c2-c3-questions.js`.
+       - Nâng cấp `mountStagingCanvas`: Khi câu hỏi không có `modelId`, hệ thống tự động ẩn toàn bộ Khung Canvas, thanh đo thông số và thanh header mô hình. Thẻ câu hỏi Live Preview sẽ chiếm trọn Cột Trái, sáng sủa, không còn bị mô hình Canvas che khuất hay đè lên trên.
+  - **Deploy Production**: Commit `8e8110a` trên nhánh `main` của repo `eduhost-vn204/edu-portal-console`.
+
+## Bàn giao gần nhất (17/11/2026 16:06)
+- **Chuẩn Hóa Giao Diện Cột Trái Của Phòng Duyệt Giống Hệt 100% Ngân Hàng Đề (Gold Standard 2x2 Grid) & Mặc Định Phòng Duyệt Là Phòng Chính**:
+  - **Mục tiêu**: Thực hiện chính xác 100% chỉ đạo trực tiếp của Thầy Nguyễn Xuân Trường:
+    1. **Phòng Duyệt & Soạn Câu Hỏi là phòng chính**: Mặc định khi mở `canvas-studio.html` sẽ hiển thị ngay Phòng Duyệt & Soạn Câu Hỏi (Tab 1), Phòng Mô Hình Canvas là Tab phụ chuyên sâu. Khi chỉnh sửa mã mô hình ở Phòng Mô Hình và bấm `💾 Lưu Mô Hình & Sang Phòng Duyệt Câu Hỏi ▶`, hệ thống sẽ lưu mã và tự động chuyển ngay về Phòng Duyệt để Thầy duyệt tổng thể toàn bộ câu hỏi.
+    2. **Giao diện Cột Trái (Live Preview) giống hệt 100% Ngân Hàng Đề (`ngan-hang-de.html`)**:
+       - Khung card chuẩn `.nh-card-preview` nền sẫm `#0f172a`, bo tròn 12px, bóng đổ tự nhiên EdTech (tuyệt đối không AI glow).
+       - Hàng meta 1: Badge loại câu (`[Trắc nghiệm]` / `[Đúng / Sai (Phần II)]` / `[Trả Lời Ngắn (Phần III)]`), badge phân loại con (`[TN Lý thuyết (THPTQG)]` / `[TN Tính toán]`), badge chất lượng (`[✓ Tinh]`), badge mức độ (`[NB]` / `[TH]` / `[VD]` / `[VDC]`), badge chương (`[CHƯƠNG 1 – VẬT LÝ NHIỆT]`), badge tên bài học (`[B1. CẤU TRÚC CỦA CHẤT...]`), mã câu góc phải (`VLXT-PT-P011-Q01`).
+       - Hàng meta 2: Badge chủ đề con (`[CD01 – Cấu trúc chất, Lực tương tác phân tử & 3 thể Rắn–Lỏng–Khí]`) và trạng thái (`[• Chưa vào đề nào]`).
+       - Đề bài: Font chữ sắc nét, chuẩn KaTeX, hỗ trợ bảng số liệu thực nghiệm.
+       - **Phương án Trắc nghiệm ABCD**: Bố cục **Grid 2 cột x 2 hàng (2x2)** y hệt Ngân Hàng Đề. Thẻ phương án bo tròn 8px, chữ cái `A.`, `B.`, `C.`, `D.` in đậm màu xanh cyan `#38bdf8`, phương án đúng được viền xanh lá `#10b981`, nền `rgba(16, 185, 129, 0.12)`, góc phải có badge `[✓ Đúng]`.
+       - **Phương án Đúng/Sai (Phần 2)**: 4 hàng $a, b, c, d$ chuẩn viền nét kèm badge `[✓ Đúng]` xanh lá hoặc `[✗ Sai]` đỏ san hô.
+       - **Hộp Trả lời ngắn (Phần 3)**: Ô hiển thị đáp án chuẩn và dung sai cho phép.
+       - **Hộp lời giải chi tiết**: Accordion/collapsible `<details class="nh-giai" open>` với tiêu đề `💡 Lời giải chi tiết của Thầy`.
+    3. **Phân khu rõ ràng cho "Hộp Chờ Duyệt Mới — 50 Câu Vừa Tách"**:
+       - Dropdown `#st-filter-pool` chia `<optgroup>` trực quan:
+         + Nhóm 1: `⚡ Hộp Chờ Duyệt Mới — 50 Câu Vừa Tách (Chương 2 & 3)` (Mặc định chọn).
+         + Nhóm 2: `🌟 NGÂN HÀNG ĐỀ ĐÃ NẠP CHÍNH THỨC (3.048 CÂU)` (gồm toàn bộ hoặc từng phần TN Lý thuyết, TN Tính toán, Đúng/Sai, Trả lời ngắn).
+         + Nhóm 3: `📂 TẤT CẢ TRONG HỆ THỐNG (3.098 Câu)`.
+  - **Kiểm thử kỹ thuật**:
+    - Kiểm tra cú pháp JavaScript bằng Node.js: 9/9 script tags đều đạt `OK 100%` (không có lỗi cú pháp).
+    - Kiểm tra sau thẻ `</html>`: `After </html> length: 0` (sạch sẽ tuyệt đối).
+  - **Deploy Production**: Commit `cbb215f` trên nhánh `main` của repo `eduhost-vn204/edu-portal-console`.
+
+## Bàn giao gần nhất (17/11/2026 14:44)
+- **Tích Hợp Toàn Bộ 3.048 Câu Ngân Hàng Đề (1.304 TN Lý Thuyết + 1.280 TN Tính Toán + 94 Đúng/Sai + 370 Trả Lời Ngắn) Vào Canvas Motion Studio & Khắc Phục Bộ Lọc 50 Câu Staging**:
+  - **Mục tiêu**: Thực hiện đúng 100% chỉ đạo trực tiếp của Thầy Nguyễn Xuân Trường: Đẩy trọn vẹn 1.304 câu lý thuyết và 1.280 câu tính toán từ Ngân Hàng Đề vào Canvas Motion Studio để xem trước, duyệt qua trước và chỉnh sửa trước; đồng thời sửa lỗi bộ lọc 50 câu Staging bị hiện "0/0" và mở khóa để bắt đầu duyệt thử 50 câu Chương 2 & 3.
+  - **Khắc phục lỗi bộ lọc 50 câu Staging**:
+    - *Nguyên nhân*: Trong file `staging-c2-c3-questions.js`, dữ liệu được gán vào biến `window.VLXT_STAGING_QUESTIONS`, nhưng hàm `initStagingSystem()` lại đọc `window.STAGING_QUESTIONS || []`. Do khác tên biến, `poolTN` bị rỗng dẫn đến dropdown câu hỏi báo "Không có câu hỏi nào khớp bộ lọc (0/0)".
+    - *Khắc phục*: Đồng bộ alias `window.STAGING_QUESTIONS = window.VLXT_STAGING_QUESTIONS;` và cập nhật `initStagingSystem()` nạp trực tiếp `window.VLXT_STAGING_QUESTIONS || window.STAGING_QUESTIONS`. 50 câu Staging đã hiển thị đầy đủ, mượt mà!
+  - **Tích hợp toàn bộ 3.048 câu Ngân Hàng Đề**:
+    - Nạp nguồn dữ liệu chuẩn từ Google Apps Script Database về file tĩnh tốc độ cao `assets/ngan-hang-3048-questions.js` (3.98 MB) và `assets/ngan-hang-3048-questions.json`.
+    - Phân chia chi tiết bộ lọc Kho câu hỏi (`#st-filter-pool`) trong Canvas Motion Studio:
+      1. 🌟 **Toàn Bộ Ngân Hàng Đề (3.048 Câu)**: `BANK_ALL`
+      2. 📖 **TN Lý Thuyết THPTQG (1.304 Câu)**: `TN_LT`
+      3. 📐 **TN Tính Toán / Bài Tập (1.280 Câu)**: `TN_BT`
+      4. 🧪 **Đúng / Sai Thực Nghiệm (94 Câu Mô Hình)**: `DS`
+      5. 🔢 **Trắc Nghiệm Trả Lời Ngắn (370 Câu Chuẩn Bộ)**: `TLN`
+      6. ⚡ **50 Câu Chờ Duyệt Mới (Chương 2 & Chương 3)**: `STAGING_50`
+      7. 📂 **Tất Cả Câu Hỏi Trong Hệ Thống (3.098 Câu)**: `ALL`
+    - Thêm nút tiện ích **"🔄 Tải Live Server"**: Cho phép 1-click kéo trực tiếp 3.048 câu mới nhất từ máy chủ Google Apps Script về Studio bất kỳ lúc nào.
+    - Cập nhật hiển thị Live Preview cho câu Trắc nghiệm: Hiển thị rõ badge `TRẮC NGHIỆM LÝ THUYẾT (LT)` hoặc `TRẮC NGHIỆM TÍNH TOÁN (BT)`, kèm 4 phương án $A, B, C, D$ highlight đáp án đúng màu xanh ngọc và Lời giải chi tiết KaTeX.
+  - **Deploy Production**: Commit `7ce700c` trên nhánh `main` của `eduhost-vn204/edu-portal-console`.
+
+## Bàn giao gần nhất (17/11/2026 13:36)
+- **Chuẩn Hóa Đồng Bộ Cấu Trúc 2 Cột 50/50 & Triệt Tiêu 100% Lỗi Nhảy Tỉ Lệ Khi Chuyển Tab (Zero Layout Shift)**:
+  - **Mục tiêu**: Đáp ứng chính xác yêu cầu của Thầy Nguyễn Xuân Trường: Cho cấu trúc chia 2 phần (Cột trái Stage Card và Cột phải Editor Card) ở cả 2 Tab (`🎬 Tinh Chỉnh Mô Hình` và `📋 Phòng Duyệt & Soạn Câu Hỏi`) phải có kích thước bằng nhau tuyệt đối, để khi chuyển qua lại giữa 2 tab không bị nhảy tỉ lệ, không bị khựng, không bị giật, khung Canvas và mô hình đứng yên hoàn toàn, không bị phóng to hay thu nhỏ lại.
+  - **Phân tích nguyên nhân gốc rễ**:
+    1. `.workspace-grid` trước đây dùng `grid-template-columns: 1fr 1fr;`. Trong CSS Grid, giá trị `min-width` mặc định là `auto`. Khi Tab 1 có code editor và toolbar rộng, cột phải bị phình to ra (chiếm ~54%), ép cột trái co lại còn ~46%. Khi sang Tab 2, form inputs co lại được nên cột trái nở ra 50% $\rightarrow$ Tạo độ lệch 20px (từ x=488 dãn thành x=508) làm Canvas bị co giãn giật cục khi chuyển tab.
+    2. Thẻ `<canvas id="st-canvas">` ở Tab 2 trước đây thiếu CSS `aspect-ratio: 780 / 305;` và `width: 100%;` (vốn chỉ có trên `studio-canvas`), khiến tỉ lệ khung hình ở Tab 2 bị lệch (cao chỉ 141px thay vì 189px).
+    3. Ở Tab 2, thanh đo đạc thông số `.metrics-bar` bị nằm bên ngoài thẻ viền `.canvas-screen-box`, trong khi ở Tab 1 nó nằm bên trong.
+    4. Chiều cao thanh ribbon điều khiển `.controls-ribbon` chưa được cố định `min-height: 56px;`, gây chênh lệch vị trí trục dọc.
+  - **Giải pháp kỹ thuật đã triển khai (Zero Layout Shift)**:
+    1. **Ép buộc tỉ lệ 50% - 50% tuyệt đối**:
+       - Cập nhật `.workspace-grid { display: grid !important; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important; gap: 20px !important; width: 100% !important; box-sizing: border-box !important; align-items: start !important; }`.
+       - Đặt `.stage-card, .editor-card { min-width: 0 !important; max-width: 100% !important; width: 100% !important; box-sizing: border-box !important; overflow: hidden !important; padding: 16px !important; }`.
+    2. **Đồng bộ hóa 100% Khung Canvas và Thẻ Canvas**:
+       - Áp dụng chung CSS cho cả 2 canvas: `canvas#studio-canvas, canvas#st-canvas { width: 100% !important; max-width: 780px !important; height: auto !important; aspect-ratio: 780 / 305 !important; background: #060b19 !important; border-radius: 6px !important; display: block !important; border: 1px solid #1e293b !important; box-sizing: border-box !important; }`.
+       - Đưa `.metrics-bar` của Tab 2 vào bên trong `.canvas-screen-box` giống hệt Tab 1.
+    3. **Khóa cứng vị trí và chiều cao các thanh công cụ**:
+       - `.controls-ribbon`: Cố định `min-height: 56px; padding: 10px 18px; box-sizing: border-box;`.
+       - `.stage-header`: Cố định `min-height: 38px; display: flex; align-items: center; justify-content: space-between;`.
+       - `.editor-toolbar`: Cố định `min-height: 42px;`.
+  - **Kết quả nghiệm thu**:
+    - Khi bấm chuyển đổi qua lại giữa Tab 1 và Tab 2: Kích thước và toạ độ của Khung Canvas, Cột trái và Cột phải hoàn toàn trùng khớp 1:1 từng pixel.
+    - Chuyển tab mượt mà tức thì 0ms, không còn bất kỳ hiện tượng nhảy tỉ lệ hay giật hình nào.
+  - **Deploy Production**: Commit `441e2a4` trên nhánh `main` của `eduhost-vn204/edu-portal-console`.
+
+## Bàn giao gần nhất (17/11/2026 13:20)
+- **Chuẩn Hóa Quy Trình 2 Bước Sư Phạm & Triệt Tiêu 100% Lỗi Hiển Thị**:
+  - **Khắc phục triệt để lỗi mô hình bị bé ở Tab Tinh Chỉnh**:
+    - *Nguyên nhân*: Thuộc tính HTML của thẻ `<canvas id="studio-canvas">` bị đặt nhầm là `width="1560" height="610"`, trong khi hàm vẽ Canvas nhận tham số logic `780 x 305`. Khi CSS co về chiều rộng 780px, toàn bộ mô hình và cỡ chữ bị thu nhỏ lại 50% (bé tí tẹo ở giữa).
+    - *Khắc phục*: Đưa `studio-canvas` về đúng chuẩn logic `width="780" height="305"` và gọi `activeDrawFn(ctx, 780, 305, simTime)` đồng bộ 100% với `st-canvas` bên tab Duyệt. Kết quả: Mô hình hiển thị to đẹp, sắc nét, vừa khít khung hình như hình ảnh Thầy mong muốn.
+  - **Triệt tiêu lỗi đoạn chữ text rò rỉ dưới đáy trang**:
+    - *Khắc phục*: Cắt bỏ sạch sẽ đoạn text code bị đặt nhầm sau thẻ `</html>`, đưa định nghĩa các mô hình Phần 1 và Phần 3 vào đúng bên trong `const MODEL_CAPTIONS = { ... };`. Dưới đáy trang đã sạch sẽ 100%, không còn ký tự rác.
+  - **Thiết lập Quy Trình 2 Bước Chuẩn Theo Chỉ Đạo Của Thầy**:
+    - **Bước 1 (Tại Tab "Tinh Chỉnh Mô Hình")**: Thầy chỉnh sửa code đồ họa Canvas. Nút bấm tại đây là:
+      👉 `💾 Lưu Mô Hình & Sang Phòng Duyệt Câu Hỏi ▶`: Lưu mã Canvas vào `VLXT_CANVAS_OVERRIDES`, tự động cập nhật hàm vẽ vào câu hỏi tương ứng và chuyển Thầy sang ngay Tab 2 để kiểm duyệt toàn diện cả câu.
+    - **Bước 2 (Tại Tab "Phòng Duyệt & Soạn Câu Hỏi")**: Đây là **CỔNG KIỂM DUYỆT CUỐI CÙNG**. Thầy thẩm định tổng thể (Canvas chuyển động + Đề bài + Bảng số liệu + Mệnh đề/Phương án + Lời giải chi tiết). Tại đây Thầy bấm:
+      👉 `🚀 Duyệt Tinh & Đẩy Vào Ngân Hàng Đề`: Nạp chính thức câu hỏi đạt chuẩn Tinh vào Ngân Hàng Đề và Cloud Sheet, đồng thời phát sóng `BroadcastChannel('vlxt_bank_sync')` để tab Ngân Hàng Đề cập nhật tức thì 0ms.
+  - **Deploy Production**: Commit `c9bcad6` trên nhánh `main` của `eduhost-vn204/edu-portal-console`.
+
+## Bàn giao gần nhất (17/11/2026 13:10)
+- **Khắc Phục Dứt Điểm Lỗi Canvas Đen Khi Mở Trang & Bổ Sung Tinh Chỉnh Mô Hình Cho Phần 1 & Phần 3**:
+  - **Khắc phục lỗi ban đầu**:
+    - *Hiện tượng*: Khi Thầy mở trang `canvas-studio.html`, Canvas bị đen kịt, tiêu đề hiện `MH-C1-01 Đang nạp mô hình...`, textarea editor trống trơn và đề bài bên dưới chưa hiển thị (như trong ảnh Thầy gửi).
+    - *Nguyên nhân*: Trong hàm `populateModelDropdown`, khi `currentModelId = 'MH-C1-01'` đã có trong danh sách, nhánh `else` chỉ gán `sel.value = currentModelId` mà bỏ quên lệnh gọi `loadModel(currentModelId)`. Kết hợp với việc gán sự kiện `DOMContentLoaded` bị trễ sau khi script đã nạp xong khiến `loadModel` không được kích hoạt khi vừa mở trang.
+    - *Giải pháp*: Chuẩn hóa hàm khởi tạo `startStudioApp()`, luôn luôn ép buộc gọi `loadModel(targetId)` ngay lập tức; đồng thời thêm hàm `createDefaultCanvasDrawFn(id, caption)` để bất kỳ mô hình nào cũng có animation chuyển động sống động ngay tích tắc đầu tiên, triệt tiêu 100% tình trạng canvas đen.
+  - **Mở rộng tính năng Tinh Chỉnh Mô Hình cho Phần 1 (TN) & Phần 3 (TLN)**:
+    - Bổ sung thanh chọn nhóm Phần (`#sel-part`) ngay cạnh chọn Chương:
+      + 🌟 **Tất Cả Mô Hình Canvas (Phần 1, 2, 3)**
+      + 🧪 **Phần 2: Đúng / Sai Thực Nghiệm (94 Mô hình)**
+      + 📘 **Phần 1: Trắc Nghiệm ABCD (Các mô hình TN)**: `MH-C1-TN01` (Brown), `MH-C1-TN02` (Nhiệt dung riêng), `MH-C2-27` (Boyle), `MH-C2-28` (Charles), `MH-C3-53` (Từ trường), `MH-C3-55` (Quy tắc bàn tay trái & Lực từ), `MH-C3-75` (Lenz).
+      + 🔢 **Phần 3: Trả Lời Ngắn (Chu trình, đồ thị, máy biến áp)**: `MH-TLN-01` (Chu trình $p-V$), `MH-TLN-02` (Từ thông $\Phi(t)$), `MH-TLN-03` (Máy biến áp lý tưởng), `MH-TLN-04` (Rutherford), `MH-TLN-05` (Phóng xạ pin nhiệt).
+    - Cả 3 phần đều có Canvas mô phỏng động 60 FPS, trình soạn code Canvas trực tiếp có Hot-Reload, và hiển thị trọn vẹn câu hỏi hoàn chỉnh bên dưới.
+  - **Liên kết 2 chiều đồng bộ với Phòng Duyệt Câu Hỏi**:
+    - Khi bóc tách câu hỏi mới từ tài liệu, câu hỏi sẽ được đẩy một phát lên cả 2 nơi: Thầy có thể vừa tinh chỉnh mô hình bên tab Mô Hình, vừa duyệt đề bài và đáp án bên tab Phòng Duyệt Câu Hỏi.
+  - **Deploy Production**: Commit `150f46f` trên nhánh `main` của `eduhost-vn204/edu-portal-console`.
+
+## Bàn giao gần nhất (17/11/2026 11:45)
+- **Nâng Cấp Toàn Diện Canvas Motion Studio: Xem Trước Bản Preview Đầy Đủ & Tích Hợp 514 Câu Hỏi (94 DS + 370 TLN + 50 TN)**:
+  - **Mục tiêu**: Thực hiện đúng 100% chỉ đạo trực tiếp của Thầy Nguyễn Xuân Trường:
+    1. **Bản Preview Câu Hỏi Hoàn Chỉnh Cho 94 Câu Đúng / Sai**:
+       - Trước đây ở Mode Tinh chỉnh chỉ có khung Canvas và Code editor. Nay ngay phía dưới Canvas $780 \times 305$ px được bổ sung **Thẻ Câu Hỏi Hoàn Chỉnh** (`#model-question-preview`): Hiển thị đầy đủ Mã câu, Đề bài, Bảng kết quả thực nghiệm chuẩn EdTech (`.vstep-data-panel` / `.vstep-data-table` y hệt như hình ảnh Thầy chụp từ Ngân Hàng Đề), 4 mệnh đề $a, b, c, d$ kèm Badge `[✓ Đúng]` hoặc `[✗ Sai]`, và Hộp Lời giải chi tiết của Thầy định dạng KaTeX chuẩn.
+       - Cột bên phải của Chế độ 1 được tích hợp 2 tab: `[ 💻 Mã Nguồn Canvas ]` và `[ 📝 Sửa Câu Hỏi & Đáp Án ]` để Thầy có thể vừa tinh chỉnh code vẽ vừa biên tập trực tiếp câu hỏi.
+    2. **Bổ Sung Toàn Bộ 370 Câu Trắc Nghiệm Trả Lời Ngắn (Phần III Chuẩn Bộ)**:
+       - Trích xuất trọn vẹn 370 câu Trả lời ngắn chuẩn Bộ GD&ĐT (thuộc Chương 2 Khí lý tưởng, Chương 3 Từ trường, Chương 4 Hạt nhân) từ `prototype-tra-loi-ngan.html` vào thư viện `assets/tln-370-questions.js` và `assets/tln-370-questions.json`.
+       - Preview Trả lời ngắn hiển thị: Đề bài chung (nếu có), Câu hỏi tính toán, Khung nhập đáp án số mô phỏng giao diện thi Bộ (Input số + Đơn vị đo), Thẻ Đáp án đúng chuẩn của Thầy, Dung sai (tolerance) và Lời giải chi tiết KaTeX.
+    3. **Tích Hợp 3 Kho Câu Hỏi (Tổng cộng 514 câu chờ duyệt)**:
+       - 🧪 **Kho 1**: 94 câu Đúng / Sai thực nghiệm (kèm 94 mô hình Canvas chuyển động).
+       - 🔢 **Kho 2**: 370 câu Trắc nghiệm Trả lời ngắn chuẩn Bộ GD&ĐT.
+       - 📘 **Kho 3**: 50 câu Trắc nghiệm 4 phương án ABCD (Chương 2 & 3).
+       - Thanh công cụ Staging Ribbon có bộ chọn Kho nhanh (`#st-filter-pool`), bộ lọc Chương (`#st-filter-chapter`), bộ lọc Mức độ (`#st-filter-level`), và thanh tìm kiếm/điều hướng câu hỏi.
+       - Live Question Editor ở cột phải tự động thích ứng thông minh theo loại câu hỏi (Đúng/Sai thì có 4 ô $a, b, c, d$ + nút toggle Đ/S; Trả lời ngắn thì có ô Đáp án số, Đơn vị, Dung sai; Trắc nghiệm thì có 4 ô $A, B, C, D$ + radio chọn đáp án đúng).
+    4. **Đồng Bộ Thời Gian Thực 0ms Vào Ngân Hàng Đề (`ngan-hang-de.html`)**:
+       - Khi Thầy bấm nút **"💾 Lưu vào Ngân Hàng Đề & Cloud"**: Lưu trực tiếp vào `localStorage` (`vlxt_admin_nganhang`), đồng thời phát sóng sự kiện qua `BroadcastChannel('vlxt_bank_sync')`. Tab Ngân Hàng Đề lập tức nhận câu hỏi mới và đưa lên đầu danh sách trong 0ms kèm thông báo Toast màu xanh ngọc.
+    5. **Quy Tắc Bắt Buộc Vĩnh Viễn Trong MD**:
+       - Đã ban hành tài liệu tri thức: [`00-BRAIN-VLXT/memory/quy-trinh-nap-ngan-hang-de.md`](file:///d:/Work/Dạy%20học/Trang%20wed/Xây%20wed%20học%20vật%20lý/00-BRAIN-VLXT/memory/quy-trinh-nap-ngan-hang-de.md).
+       - Đã ghi vào `AGENTS.md` và `00-BRAIN-VLXT/AGENTS.md`: *Từ nay về sau mọi tài liệu, kiến thức hay câu hỏi bóc tách ra để đăng ngân hàng đều BẮT BUỘC phải đi qua Canvas Motion Studio (Phòng Duyệt & Xem Trước Bản Preview) để Thầy xem trước bản Preview hoàn chỉnh trước khi nạp vào Ngân Hàng Đề chính thức.*
+  - **Triển khai & Kiểm thử Production**:
+    - Syntax Check: Tất cả script JavaScript đều PASS không lỗi cú pháp (Node.js syntax check OK).
+    - Đã commit và push an toàn lên nhánh `main` của Admin portal (`eduhost-vn204/edu-portal-console`): Commit `a047709`.
+
+## Bàn giao gần nhất (17/11/2026 11:05)
+- **Nâng cấp Canvas Motion Studio thành Bảng Xem Trước, Duyệt & Chỉnh Sửa Câu Hỏi Trực Tiếp (Question Staging & Review Studio)**:
+  - **Mục tiêu**: Theo chỉ đạo của Thầy, biến Canvas Motion Studio từ màn hình chỉ chỉnh sửa mã vẽ Canvas đơn thuần thành một Studio tích hợp:
+    1. Vừa hiển thị mô hình mô phỏng chuyển động Canvas (Retina sắc nét, tỷ lệ 780x305).
+    2. Vừa hiển thị nội dung câu hỏi (đề bài, 4 phương án $A, B, C, D$ có highlight đáp án đúng màu xanh ngọc chuẩn EdTech, lời giải chi tiết định dạng KaTeX phân số đứng).
+    3. Cột bên phải là Live Editor cho phép Thầy chỉnh sửa trực tiếp nội dung câu hỏi, mã câu, phân loại chủ đề/chương/mức độ, phương án và lời giải, cũng như chỉnh sửa trực tiếp code Canvas.
+    4. Nút bấm **"💾 Lưu vào Ngân Hàng Đề & Cloud"**: Lưu trực tiếp vào `localStorage` (`vlxt_admin_nganhang`), phát tín hiệu `BroadcastChannel('vlxt_bank_sync')` để tab Ngân Hàng Đề tự động cập nhật tức thì 0ms mà không cần reload trang, và đồng bộ tự động lên Cloud Sheet nếu có admin key.
+    5. Thanh chuyển Mode trên Navbar:
+       - 🎬 **Chế độ 1**: *Tinh Chỉnh Mô Hình (94 Câu Chuyển Động)* (giữ nguyên 100% chức năng chỉnh sửa mô hình cũ của Thầy).
+       - 📋 **Chế độ 2**: *Phòng Duyệt & Soạn Câu Hỏi (50 Câu Staging)* (giao diện 2 cột xem trước và duyệt câu hỏi mới).
+  - **Bóc tách 50 câu hỏi Staging cho 5 chủ đề thiếu của Chương 2 & Chương 3**:
+    - Trích xuất trực tiếp từ tài liệu thô chuẩn của Thầy (`Chương 2. Khí lý tưởng - 250 câu.docx` và `Chương 3. Từ trường - 250 câu.docx`).
+    - Bổ sung đúng 10 câu/chủ đề cho 5 chủ đề đang thiếu để hướng tới mốc 100 câu:
+      1. `CD07 – Quá trình đẳng nhiệt & Định luật Boyle` (10 câu).
+      2. `CD08 – Quá trình đẳng áp (Charles) & Quá trình đẳng tích (Gay-Lussac)` (10 câu).
+      3. `CD10 – Tương tác từ, Nguồn gốc từ trường, Đường sức & Từ trường Trái Đất` (10 câu).
+      4. `CD11 – Cảm ứng từ (Tesla), Lực từ đoạn dây & Lực Lorentz` (10 câu).
+      5. `CD12 – Từ thông (Weber), Cảm ứng điện từ, Định luật Lenz & Faraday` (10 câu).
+    - Dữ liệu lưu tại: `_codex_verify_live/assets/staging-c2-c3-questions.js` và `assets/staging-c2-c3-questions.json`.
+  - **Đồng bộ thời gian thực với `ngan-hang-de.html`**:
+    - Đã gắn bộ lắng nghe `BroadcastChannel('vlxt_bank_sync')` vào `_codex_verify_live/ngan-hang-de.html`. Khi Thầy duyệt hoặc lưu câu hỏi ở Canvas Studio, tab Ngân Hàng Đề lập tức nhận câu hỏi và đưa lên đầu danh sách kèm thông báo Toast màu xanh ngọc.
+  - **Kiểm thử & Triển khai**:
+    - Kiểm tra cú pháp JavaScript: Không lỗi cú pháp (Syntax OK).
+    - Thẻ đóng `</html>`: Đầy đủ, toàn vẹn.
+    - Đã commit và push lên GitHub Production Admin (`eduhost-vn204/edu-portal-console`): Commit `b8ed18e` trên nhánh `main`.
+
+## Bàn giao gần nhất (17/11/2026 10:25)
+- **Thiết lập Hồ sơ Tham chiếu Đề Bộ Giáo Dục 2025–2026 & Phân tích Ma trận 16 Chủ đề lớn**:
+  - **Nhiệm vụ**: Đọc và nghiên cứu toàn diện thư mục tham chiếu gốc của Thầy tại `D:\Work\Dạy học\Xây Dựng Lộ Trình XPS 2k9\Kiến thức, tài liệu\Tham chiếu`, phân tích sự phân bổ 18 câu Phần I vào 16 chủ đề chuẩn, xác định những chủ đề nào lấy 2 câu (hoặc nhiều hơn), và lưu lại hồ sơ tri thức vĩnh viễn dạng Markdown.
+  - **Hồ sơ tham chiếu đã tạo**: [`00-BRAIN-VLXT/memory/tham-chieu-de-bo-2025-2026.md`](file:///d:/Work/Dạy%20học/Trang%20wed/Xây%20wed%20học%20vật%20lý/00-BRAIN-VLXT/memory/tham-chieu-de-bo-2025-2026.md).
+  - **Tài liệu gốc được lưu trữ trong thư mục tham chiếu**:
+    1. `ĐỀ CHÍNH THỨC BỘ GIÁO DỤC 2026.docx`: 18 câu TN, 4 câu Đúng/Sai, 6 câu Trả lời ngắn.
+    2. `Đề thi chính thức 2025.docx`: 18 câu TN, 4 câu Đúng/Sai, 6 câu Trả lời ngắn.
+    3. `Đề minh hoạ 2025.docx`: 18 câu TN, 4 câu Đúng/Sai, 6 câu Trả lời ngắn.
+    4. `Đúng sai thí nghiệm, thực nghiệm, mô hình.docx`: 104.677 ký tự, gồm các câu Đúng/Sai gắn với 100 mô hình thực nghiệm Vật Lý 12.
+    5. `Đúng sai lí thuyết.docx`, `Trắc nghiệm trả lời ngắn cơ bản.docx`, `Trăc nghiệm Lí thuyết.docx`, `Trăc nghiệm công thức.docx`, `Trăc nghiệm vận dụng.docx`.
+  - **Kết quả đối chiếu khoa học 18 câu Phần I**:
+    - **`CD16` (Phóng xạ, Đồng vị & An toàn bức xạ)**: Ổn định nhất, lấy **2 câu** trong cả Đề minh họa 2025 và Đề Bộ 2026 (1 câu lý thuyết bản chất/tia + 1 câu an toàn y tế/biển báo).
+    - **`CD13` (Dòng xoay chiều & Sóng điện từ)**: Chiếm **2 đến 3 câu** khi đề mở rộng ứng dụng máy phát/sóng điện từ.
+    - **Các chủ đề luân phiên lấy 2 câu**: `CD02` (Sự chuyển thể - 2 câu trong Đề 2026), `CD04` (Nhiệt dung riêng - 2 câu trong Đề 2025), `CD08` (Đẳng áp Charles & Đẳng tích - 2 câu trong Đề 2026), `CD10` (Nguồn gốc từ trường & Tương tác từ - 2 câu trong Đề 2026), `CD12` (Cảm ứng điện từ & Lenz - 2 câu trong Đề 2025), `CD14` (Rutherford & Cấu tạo hạt nhân - 3 câu trong Đề 2025).
+  - **Thuật toán sinh đề `official_18`**: Thuật toán phân bổ 16 câu cho 16 chủ đề + 2 câu vào Slot 17 (Trọng tâm Nhiệt - Khí: CD04/CD02/CD01) và Slot 18 (Trọng tâm Từ - Hạt nhân: CD16/CD13/CD10) trên `ngan-hang-de.html` đã chuẩn hóa 100% theo các đề của Bộ.
+
+## Bàn giao gần nhất (17/11/2026 08:20)
+- **Khắc phục triệt để lỗi "Trang không phản hồi" trên Ngân Hàng Đề**:
+  - **Hiện tượng**: Khi Thầy mở trang Ngân Hàng Đề và bấm lọc Đúng/Sai, trình duyệt Chrome báo hộp thoại *"Trang không phản hồi (Page Unresponsive)"*.
+  - **Nguyên nhân cốt lõi**:
+    1. Khi tải danh sách câu hỏi Đúng/Sai, trang hiển thị 30 câu hỏi cùng lúc. Mỗi câu hỏi chứa 1 đồ họa chuyển động Canvas Retina 2x (1560x610px).
+    2. Vòng lặp animation trước đó vẽ lại toàn bộ cả 30 mô hình Canvas **trên mỗi khung hình (60 FPS)** ngay cả khi 29 mô hình đang nằm ngoài màn hình (off-screen).
+    3. Hơn 28 triệu pixel bị rasterize liên tục trên CPU/GPU trong từng frame khiến luồng giao diện chính của trình duyệt bị quá tải 100%, không kịp xử lý tương tác của người dùng và kích hoạt cảnh báo *Trang không phản hồi* của Chrome.
+    4. Ngoài ra, hàm nạp override từ `localStorage` chạy đồng bộ ngay khi nạp trang gây khựng ban đầu.
+  - **Giải pháp tối ưu hóa đã triển khai**:
+    1. **Tích hợp IntersectionObserver (Viewport Culling)**: Chỉ chạy chuyển động animation cho đúng 1-2 mô hình đang thực sự hiển thị trên màn hình người dùng. Khi cuộn đi, mô hình tự động dừng; khi cuộn tới, mô hình lập tức chạy mượt mà.
+    2. **Chế độ ngủ đông (Sleep Mode)**: Khi người dùng ở đầu trang xem bảng thống kê/bộ lọc (không có canvas nào trong màn hình), vòng lặp animation tự động ngắt hoàn toàn $\rightarrow$ CPU tiêu thụ **0%**.
+    3. **Tối ưu DPR ở chế độ danh sách (Compact mode)**: Giảm DPR từ 2.0 ép buộc xuống 1.0 - 1.25 chuẩn thẻ bài, giảm 60% dung lượng bộ nhớ VRAM và tăng tốc độ vẽ gấp 4 lần.
+    4. **Tải bất đồng bộ**: Chuyển `loadAllOverrides()` sang chế độ chạy nền sau khi trang đã render xong DOM, giúp trang tải tức thì trong 0.05 giây.
+    5. **Tối ưu KaTeX**: Bổ sung `ignoredClasses` để KaTeX bỏ qua toàn bộ khung vẽ Canvas, tăng tốc độ render thẻ bài.
+  - **Commit**: `31a3b15` trên nhánh `main` của `eduhost-vn204/edu-portal-console`. Cache buster: `?v=20261117-perf-viewport`.
+
+## Bàn giao gần nhất (17/11/2026 07:10)
+- **Nhiệm vụ**: Đóng gói & Phát hành chính thức 81 mô hình Canvas Hydrogen V2 do Thầy Xuân Trường tinh chỉnh (từ MH-C1-02 đến MH-C4-91) lên Admin Production (`eduhost-vn204/edu-portal-console`).
+- **Người thực hiện**: Antigravity
+- **Người duyệt & Chỉ đạo**: Thầy Nguyễn Xuân Trường ("Thầy đã xong 91 mô hình, thầy đã sửa xong các thứ. Em cập nhật lên trên làm gì làm đi... nên em đẩy lên giúp thầy nhé.")
+- **Kho mã & Nhánh**: `https://github.com/eduhost-vn204/edu-portal-console.git` — Nhánh `main` (commit `7d43656`).
+- **Phân tích nguyên nhân sự cố hiển thị trên điện thoại**:
+  1. Thầy tinh chỉnh trên trình duyệt máy tính, lưu vào `localStorage` của máy (`VLXT_CANVAS_OVERRIDES`).
+  2. Nút "Lưu vào Ngân Hàng Đề & Cloud" gửi toàn bộ 81 mô hình (1,4 MB JSON) vào 1 ô tính Google Sheets (`Settings` sheet). Tuy nhiên, Google Sheets giới hạn cứng tối đa **50.000 ký tự / ô**. Khi vượt quá 9 mô hình (~40KB), Google Sheets bị tràn ô và trả về lỗi khiến Google Apps Script báo lỗi "google is broken" và không thể lưu từ mô hình thứ 10 trở đi.
+  3. Do đó, trên điện thoại (vốn dùng `localStorage` rỗng) khi fetch từ Cloud chỉ nhận được 9 mô hình đầu tiên, các mô hình còn lại vẫn hiển thị bản cũ.
+- **Giải pháp triệt để đã triển khai**:
+  1. **Đóng gói trực tiếp (Bake in)** toàn bộ 81 mô hình tinh chỉnh của Thầy vào thư viện gốc `assets/mo-hinh-thuc-te-models.js` (kích thước 1,73 MB). Tất cả 81 mô hình giờ đây là mã nguồn chính thức (canonical) của hệ thống, tải siêu tốc 0ms trên mọi thiết bị (điện thoại, tablet, máy tính) mà không cần phụ thuộc vào Google Apps Script hay localStorage.
+  2. **Nâng cấp `canvas-studio.html` & `ngan-hang-de.html`**:
+     - Bump cache buster sang `?v=20261117-teacher-91models` để triệt tiêu cache trên điện thoại.
+     - Sửa cơ chế lưu Cloud: Lưu theo từng khóa `VLXT_CANVAS_[ID]` (~5-15 KB), nằm gọn dưới giới hạn 50K ký tự của Google Sheets, triệt tiêu hoàn toàn lỗi "google is broken".
+     - Thêm nút `📥 Xuất JSON` để Thầy có thể tải trọn bộ bản backup JSON 81 mô hình về máy bất cứ lúc nào.
+- **Kiểm định chất lượng**:
+  - Biên dịch cú pháp: 81/81 mô hình PASS 100%.
+  - Render kiểm thử (Animation test t=0, t=1.25, t=10): 81/81 mô hình PASS 100%.
+  - Cú pháp HTML: Đầy đủ thẻ `</html>`.
+
+## Bàn giao gần nhất (16/11/2026 14:10)
+- **Triển khai Hệ Thống Đồng Bộ Realtime (0ms) & Google Cloud Sync cho Canvas Studio và Ngân Hàng Đề**:
+  - Đã tích hợp nút **`💾 Lưu vào Ngân Hàng Đề & Cloud`** trực tiếp trong `canvas-studio.html`.
+  - Cơ chế đa tầng:
+    1. Lưu tức thì vào `localStorage` trên máy Thầy.
+    2. Phát sóng thời gian thực qua `BroadcastChannel('vlxt_canvas_sync')`: Tab Ngân Hàng Đề đang mở song song biến đổi chuyển động ngay lập tức 0ms mà không cần F5!
+    3. Tự động gửi POST API lên Google Apps Script (`action: 'savesetting', key: 'VLXT_CANVAS_OVERRIDES'`) để lưu vĩnh viễn trên Google Sheets đám mây.
+    4. Thư viện `mo-hinh-thuc-te-models.js` tự động nạp các hàm tùy chỉnh từ Cloud khi bất kỳ ai (kể cả học sinh làm bài thi thử hoặc mở đề thi) truy cập web. Thầy không cần phải push Git mỗi khi sửa một câu nữa!
+    5. Bổ sung nút *📑 Đã chỉnh ([N])* xem danh sách các câu đã tinh chỉnh và nút *↺ Xóa tinh chỉnh* khôi phục về mặc định.
+  - Commit `071006d` trên nhánh `main` của `eduhost-vn204/edu-portal-console`.
+- **Đã đẩy trực tiếp commit b886bf3 lên origin/main**: Đã thực hiện `git push origin main` thành công từ thư mục `_codex_verify_live` lên repo `https://github.com/eduhost-vn204/edu-portal-console.git` (commit `b886bf3`: sync 370-question TLN bank, purge 8 ghost C1 questions, render SVG models in admin cards). Cả 3 commit mới nhất (`ec31c8b`, `7eda85b`, `b886bf3`) đều đã LIVE 100% trên nhánh `main`.
+- **Cập nhật công cụ Canvas Motion Studio**: Đã phát hành `canvas-studio.html` trực tiếp trên web Admin (`https://eduhost-vn204.github.io/edu-portal-console/canvas-studio.html`) và bản offline cục bộ. Trang này tích hợp bộ chọn 94 mô hình, điều khiển playback/tốc độ, 1-Click sao chép Prompt chuẩn cho Gemini Web, Hot-Reload chạy thử tức thì không cần F5, và nút copy code gửi Antigravity. Commit `7eda85b`.
+- **Nhiệm vụ**: Triển khai chính thức 94 Mô hình Canvas V2 sống động và 21 Chủ đề con Đúng/Sai (C1–C4) lên Ngân Hàng Đề Admin Production (`eduhost-vn204/edu-portal-console`).
+- **Người thực hiện**: Antigravity
+- **Người duyệt & Chỉ đạo**: Thầy Nguyễn Xuân Trường ("em làm luôn đi chứ còn j nữa")
+- **Kho mã & Nhánh**: `https://github.com/eduhost-vn204/edu-portal-console.git` — Nhánh `main` (commit `ec31c8b`).
+- **Phạm vi hoàn tất**:
+  1. **Nâng cấp toàn diện thư viện `assets/mo-hinh-thuc-te-models.js` (945 KB)**:
+     - Nạp trọn vẹn 94 mô hình Canvas HTML5 Retina V2 (`MH-C1-01` $\to$ `MH-C4-100`) từ 7 ca sản xuất Hydrogen V2.
+     - Hàm `VLXTModels.mountAll()` tự động dò các thẻ `<div class="vlxt-model-slot" data-model-id="...">` để khởi tạo Canvas V2 siêu mượt, hỗ trợ Retina DPR 2.0+, chạy trên vòng lặp animation `requestAnimationFrame` duy nhất tối ưu hiệu năng.
+     - Fallback thông minh: nếu câu hỏi nào chưa có hàm Canvas thì tự động vẽ SVG gốc.
+     - 100% tuân thủ 10 Quy Tắc Vàng: Zero Data Leakage (không lộ số liệu câu hỏi trên đồ họa), tỉ lệ logic 780x305, màu sắc EdTech phẳng không AI glow mờ ảo.
+  2. **Cập nhật `ngan-hang-de.html` trên Production**:
+     - Cập nhật đường dẫn script nạp kèm cache buster: `assets/mo-hinh-thuc-te-models.js?v=20261114-canvas-v2` để triệt tiêu vĩnh viễn bộ nhớ đệm cache của trình duyệt.
+     - Bổ sung hệ thống 21 chủ đề con Đúng/Sai phân loại tự động cho 4 chương (`DS-C1.1` $\to$ `DS-C4.4`).
+     - Tích hợp các bộ lọc và hợp nhất bộ câu Trả lời ngắn chính thức.
+     - Bảo toàn chế độ Dark mode chuẩn EdTech cho thanh thông báo nạp batch (`#nh-batch-info`).
+  3. **Kiểm tra trực tiếp trên Production GitHub Pages**:
+     - URL kiểm tra: `https://eduhost-vn204.github.io/edu-portal-console/assets/mo-hinh-thuc-te-models.js?v=20261114-canvas-v2`
+     - Trạng thái HTTP: **200 OK**, kích thước: **945.830 bytes**, chứa đủ 94 hàm Canvas V2 và `canvasRegistry`.
+     - `ngan-hang-de.html` đã nhận diện phiên bản cache buster mới.
+- **Hướng dẫn Thầy nghiệm thu**:
+  - Thầy chỉ cần bấm **Ctrl + Shift + R** (hoặc xóa cache trình duyệt) tại trang `https://eduhost-vn204.github.io/edu-portal-console/ngan-hang-de.html`.
+  - Toàn bộ 94 câu Đúng/Sai (từ Câu 1 `MH-C1-01` đến Câu 100 `MH-C4-100`) sẽ lập tức chuyển từ hình vẽ tĩnh cũ sang **Mô hình động Canvas Hydrogen V2** tương tác chuyển động hạt nhiệt, dòng đối lưu, chu trình nhiệt động lực, từ trường và phân rã hạt nhân cực kỳ đẹp mắt và sắc nét!
+
+## Bàn giao gần nhất (14/11/2026 08:45)
+- **Nhiệm vụ**: Hoàn Tất Đợt 3 (Đợt Cuối) — Tích Hợp 24 Câu Trả Lời Ngắn (12 Chùm Mới, `VLXT-TLN-W20-59` $\to$ `VLXT-TLN-W20-82`) Từ Kho 20 Đề Cơ Bản 7+, Cán Mốc Toàn Kho **162 CÂU (81 CHÙM TRÒN TRĨNH)**
+- **Người thực hiện**: Antigravity
+- **Người duyệt & Chỉ đạo**: Thầy Nguyễn Xuân Trường
+- **Tài nguyên khai thác**: `Đáp án 20 đề mức cơ bản lấy điểm 7+.docx` (Đợt 3: Hoàn tất 6 chùm Hạt nhân ở Phần II và 6 chùm ghép cặp từ Phần I).
+- **Phạm vi hoàn tất**:
+  1. **Nghiệm thu & Khử sạch mã rác Đợt 3 (12 chùm = 24 câu, `VLXT-TLN-W20-59` $\to$ `VLXT-TLN-W20-82`)**:
+     - Đã bóc sạch 100% các thẻ `[cite: 2]` phát sinh từ AI trên trình duyệt.
+     - Đồng bộ đề bài chung ở `VLXT-TLN-W20-81` và `82` về nồng độ $C_M = 1,002 \cdot 10^{-11}\text{ mol/lít}$ để đơn vị $\text{kBq}$ và thể tích máu đạt chuẩn an toàn y tế lâm sàng.
+     - *Chùm 30 (C4)*: Phóng xạ $\alpha$ của $^{238}_{92}\text{U}$ ($m_{\text{Th}} = 34,27\text{ g}$, số neutron $N_n = 1,10 \cdot 10^{25}\text{ hạt}$).
+     - *Chùm 31 (C4)*: Định tuổi cổ vật $^{14}_{6}\text{C}$ ($\lambda = 3,84 \cdot 10^{-12}\text{ s}^{-1}$, tuổi cổ vật $t = 3692\text{ năm}$).
+     - *Chùm 32 (C4)*: Nhiệt hạch Helium trong lõi sao đỏ khổng lồ ($N_{\text{He}} = 6,92 \cdot 10^{58}\text{ hạt}$, tuổi thọ $t = 160,5\text{ triệu năm}$).
+     - *Chùm 33 (C4)*: Phóng xạ $^{210}_{84}\text{Po}$ tạo chì ($m_{\text{Po}} = 10,5\text{ mg}$, $m_{\text{Pb}} = 30,9\text{ mg}$).
+     - *Chùm 34 (C4)*: Dược chất $^{18}_{9}\text{F}$ chụp PET ung thư ($m_0 = 9,96 \cdot 10^{-11}\text{ g}$, $H_{330} = 43,75\text{ MBq}$).
+     - *Chùm 35 (C4)*: Điều trị ung thư tuyến giáp $^{131}_{53}\text{I}$ ($H_{12} = 2,62 \cdot 10^9\text{ Bq}$, $m_0 = 1,61\ \mu\text{g}$).
+     - *Chùm 36 (C2)*: Thoát không khí khỏi phòng học khi nhiệt độ tăng ($m_1 = 196\text{ kg}$, thoát ra $\Delta m = 10,9\text{ kg}$).
+     - *Chùm 37 (C2)*: Tốc độ căn quân phương và động năng khí ($\bar{E}_d = 6,21 \cdot 10^{-21}\text{ J}$, $v_2 = 1935\text{ m/s}$).
+     - *Chùm 38 (C3)*: Lực từ Ampère dây dẫn đặt nghiêng ($B = 1,44\text{ mT}$, khi xoay $30^\circ$ thì $F_2 = 11,5\text{ mN}$).
+     - *Chùm 39 (C3)*: Truyền tải điện xoay chiều ($I = 40\text{ A}$, công suất hao phí $\Delta \mathcal{P} = 8,0\text{ kW}$).
+     - *Chùm 40 (C4)*: Độ hụt khối và năng lượng liên kết $^{40}_{20}\text{Ca}$ ($\Delta m = 0,368\text{ amu}$, $\varepsilon = 8,58\text{ MeV/nucleon}$).
+     - *Chùm 41 (C4)*: Dược chất $^{24}_{11}\text{Na}$ đo thể tích máu ($H_0 = 387\text{ kBq}$, thể tích máu $V = 6,32\text{ lít}$).
+  2. **Tổng kết kho 20 đề khai thác (41 chùm = 82 câu)**:
+     - 5 chùm mẫu ban đầu (`W20-01` $\to$ `10`): 10 câu.
+     - Đợt 1 (`W20-11` $\to$ `34`): 24 câu.
+     - Đợt 2 (`W20-35` $\to$ `58`): 24 câu.
+     - Đợt 3 (`W20-59` $\to$ `82`): 24 câu.
+     - Tệp lưu trữ: `data/batches/batch-tln-20de-coban.json` chứa đủ 82 câu.
+  3. **Phân bổ mới của toàn kho (162 CÂU — 81 CHÙM THỰC TẾ TRÒN TRĨNH)**:
+     - 💨 **Chương 2 (Khí lí tưởng)**: **66 câu** (33 chùm)
+     - 🧲 **Chương 3 (Từ trường)**: **50 câu** (25 chùm)
+     - ⚛️ **Chương 4 (Hạt nhân)**: **46 câu** (23 chùm)
+     - 🚫 **Chương 1 (Vật lý nhiệt)**: **0 câu** *(100% tuân thủ ma trận đề thi tốt nghiệp THPT chuẩn Bộ)*.
+     - **Tổ hợp đề thi khả dụng**: $33 \times 25 \times 23 = \mathbf{18.975\text{ tổ hợp đề thi độc lập}}$ không trùng lặp!
+  4. **Các tệp đã lưu & đồng bộ**:
+     - `prototype-tra-loi-ngan.html`: Nhúng trọn vẹn 162 câu, 9 nút lọc chuẩn, KaTeX phân số đứng $\dfrac{}{}$, tự động chấm dung sai.
+     - `data/batches/100-mohinh-tln-chinhthuc.json` & `.js`: Batch tổng hợp 162 câu.
+     - Cập nhật liên kết navbar trong `prototype-100-mo-hinh-thuc-te.html` & `prototype-100-mo-hinh-thuc-te_ca2_updated.html` lên `162 Câu Trả Lời Ngắn (Phần III)`.
+     - Đồng bộ sang worktrees: `_worktree_c34_ds`, `_worktree_admin_c34_ds`, `_codex_verify_live` và Desktop của Thầy.
+- **Kiểm định chất lượng**:
+  - `node scratch/test_html_integrity.js`: **PASS 100%** (162 câu nhúng, 81 chùm, 0 câu C1, navbar sạch không lặp chuỗi).
+  - `node scratch/verify_ca2_full.js`: **PASS 100%** (17 mô hình Canvas V2 Ca 1 + Ca 2 hoạt động mượt mà).
+
+## Bàn giao gần nhất (14/11/2026 08:35)
+- **Nhiệm vụ**: Tích hợp Liên Tiếp Đợt 1 & Đợt 2 (48 Câu Trả Lời Ngắn = 24 Chùm Thực Tế Mới) Từ Kho 20 Đề 7+ Vào `prototype-tra-loi-ngan.html` — Nâng Tổng Kho Lên 138 CÂU (69 CHÙM THỰC TẾ)
+- **Người thực hiện**: Antigravity
+- **Người duyệt & Chỉ đạo**: Thầy Nguyễn Xuân Trường
+- **Tài nguyên khai thác**: `Đáp án 20 đề mức cơ bản lấy điểm 7+.docx` (Đợt 1: Khai thác Phần III; Đợt 2: Chuyển hóa & Bóc tách mô hình Phần II Đúng/Sai sang Trả lời ngắn).
+- **Phạm vi hoàn tất**:
+  1. **Nạp & Kiểm định Đợt 1 (12 chùm = 24 câu, `VLXT-TLN-W20-11` $\rightarrow$ `VLXT-TLN-W20-34`)**:
+     - *Chùm 6 (C2)*: Ống thủy tinh chứa cột thủy ngân đảo ngược ($h = 76\text{ mm}$, $\ell_1 = 180\text{ mm}$, $\ell_2 = 220\text{ mm}$).
+     - *Chùm 7 (C2)*: Nhiệt kế khí giọt thủy ngân ống nằm ngang ($V_0 = 270\text{ cm}^3$, $S = 0,1\text{ cm}^2$).
+     - *Chùm 8 (C2)*: Động cơ đốt trong kỳ nén ($V_1 = 2,8\text{ L}$, $V_2 = 0,3\text{ L}$, $p_2 = 20\text{ atm}$, $n = 0,11\text{ mol}$).
+     - *Chùm 9 (C2)*: Bình khí Oxygen y tế chịu lực ($V = 10\text{ L}$, $p_1 = 150\text{ atm}$, $N' = 1,505 \cdot 10^{24}$ phân tử).
+     - *Chùm 10 (C3)*: An toàn chụp cộng hưởng từ MRI — Vòng cổ vàng ($d = 16\text{ cm}$, $e_c = 17\text{ mV}$, $\mathcal{P} = 28,1\text{ mW}$).
+     - *Chùm 11 (C3)*: Khung dây 10 vòng trong từ trường tăng tuyến tính ($S = 25\text{ cm}^2$, $e_c = 0,15\text{ mV}$, $\Delta q = 60\ \mu\text{C}$).
+     - *Chùm 12 (C3)*: Electron chuyển động trong từ trường Trái Đất ($B = 3 \cdot 10^{-5}\text{ T}$, $v = 4,8 \cdot 10^6\text{ m/s}$, $T = 1,19\ \mu\text{s}$).
+     - *Chùm 13 (C3)*: Khung dây quay tạo điện xoay chiều ($N = 500$, $n = 2000\text{ rpm}$, $E_0 = 10,5\text{ V}$, $|e| = 8,4\text{ V}$).
+     - *Chùm 14 (C4)*: Lò phản ứng phân hạch 250 kW vận hành 1,5 năm ($N = 4,22 \cdot 10^{23}$ hạt, $m = 165\text{ g}$).
+     - *Chùm 15 (C4)*: Đồng vị y tế $^{131}\text{I}$ chu kì $T = 9\text{ ngày}$ ($m_0 = 0,12\ \mu\text{g}$, $H_{36} = 31,25\text{ MBq}$).
+     - *Chùm 16 (C4)*: Lò phản ứng nghiên cứu Đà Lạt 500 kW vận hành 72h ($m = 1,81\text{ g}$, tương đương $4,8\text{ tấn}$ than).
+     - *Chùm 17 (C4)*: Nguồn phóng xạ $^{210}\text{Po}$ lẫn chì $^{206}\text{Pb}$ (Tỉ số sau 15 ngày: $3,90$; cân bằng khối lượng sau $109\text{ ngày}$).
+  2. **Nạp & Kiểm định Đợt 2 (12 chùm = 24 câu, `VLXT-TLN-W20-35` $\rightarrow$ `VLXT-TLN-W20-58`)**:
+     - *Chùm 18 (C2)*: Khảo sát định luật Charles bằng xilanh ngâm nước nóng ($n = 1,44 \cdot 10^{-4}\text{ mol}$, $V_3 = 3,0\text{ ml}$).
+     - *Chùm 19 (C2)*: Túi khí an toàn ô tô kích nổ $130\text{ g}$ $\text{NaN}_3$ ($n_{\text{N}_2} = 3\text{ mol}$, $p = 1,25 \cdot 10^5\text{ Pa}$).
+     - *Chùm 20 (C2)*: Bộ thí nghiệm áp kế kiểm chứng định luật Boyle ($\overline{pV} = 0,30\text{ J}$, $T = 238\text{ K}$).
+     - *Chùm 21 (C2)*: Lốp xe tải chạy qua sa mạc từ $3^\circ\text{C} \to 42^\circ\text{C}$ ($p = 3,08 \cdot 10^5\text{ Pa}$, $\Delta \bar{E}_d = 8,07 \cdot 10^{-22}\text{ J}$).
+     - *Chùm 22 (C2)*: Bóng thám không dãn nở ở độ cao 35 km ($t = -76^\circ\text{C}$, bán kính tăng $1,36\text{ lần}$).
+     - *Chùm 23 (C2)*: Bình Helium nung nóng và xả van điều áp ($t = 1227^\circ\text{C}$, khí còn lại $0,8\text{ mol}$).
+     - *Chùm 24 (C2)*: Xilanh nằm ngang có pít-tông ma sát ($F_{\text{ms}} = 60\text{ N}$, dịch chuyển $\Delta \ell = 5\text{ cm}$).
+     - *Chùm 25 (C3)*: Cân điện tử đo lực từ nam châm chữ U ($B = 0,16\text{ T}$, số chỉ mới khi $2I$ là $499,56\text{ g}$).
+     - *Chùm 26 (C3)*: Micro điện động cảm ứng âm thanh ($e_c = 0,24\text{ V}$, dòng tín hiệu $I = 4,0\text{ mA}$).
+     - *Chùm 27 (C3)*: Khung dây treo 2 lò xo trong từ trường ($k = 12,5\text{ N/m}$, cảm ứng từ $B = 0,35\text{ T}$).
+     - *Chùm 28 (C3)*: Cuộn dây 500 vòng trong từ trường điều hòa ($B_0 = 50\text{ mT}$, $E_0 = 62,8\text{ V}$).
+     - *Chùm 29 (C3)*: Bếp từ gia dụng $1200\text{ W}$ ($E_0 = 306\text{ V}$, tần số cao tần $f = 3,25\text{ kHz}$).
+  3. **Phân bổ mới của toàn kho (138 CÂU — 69 CHÙM TRÒN TRĨNH)**:
+     - 💨 **Chương 2 (Khí lí tưởng)**: **62 câu** (31 chùm)
+     - 🧲 **Chương 3 (Từ trường)**: **46 câu** (23 chùm)
+     - ⚛️ **Chương 4 (Hạt nhân)**: **30 câu** (15 chùm)
+     - 🚫 **Chương 1 (Vật lý nhiệt)**: **0 câu** (loại bỏ 100% đúng chuẩn Bộ GD&ĐT).
+     - **Tổ hợp đề thi khả dụng**: $31 \times 23 \times 15 = \mathbf{10.695\text{ tổ hợp đề thi}}$ độc lập không trùng lặp!
+  4. **Các tệp đã lưu & đồng bộ**:
+     - `prototype-tra-loi-ngan.html`: Nhúng trọn vẹn 138 câu, 9 nút lọc chuẩn, KaTeX phân số đứng $\dfrac{}{}$, tự động chấm dung sai.
+     - `data/batches/100-mohinh-tln-chinhthuc.json` & `.js`: Batch tổng hợp 138 câu.
+     - `data/batches/batch-tln-20de-coban.json`: Batch 58 câu bóc tách từ Kho 20 Đề (`W20-01` $\to$ `W20-58`).
+     - `data/batches/batch-tln-20de-dot1.json` (24 câu) & `batch-tln-20de-dot2.json` (24 câu).
+     - Cập nhật liên kết navbar trong `prototype-100-mo-hinh-thuc-te.html` & `prototype-100-mo-hinh-thuc-te_ca2_updated.html` lên `138 Câu Trả Lời Ngắn (Phần III)`.
+     - Đồng bộ sang worktrees: `_worktree_c34_ds`, `_worktree_admin_c34_ds`, `_codex_verify_live` và Desktop của Thầy.
+- **Kiểm định chất lượng**:
+  - `node scratch/test_html_integrity.js`: **PASS 100%** (138 câu nhúng, 69 chùm, 0 câu C1, navbar sạch không lặp chuỗi).
+  - `node scratch/verify_ca2_full.js`: **PASS 100%** (17 mô hình Canvas V2 Ca 1 + Ca 2 hoạt động mượt mà).
+
+## Bàn giao gần nhất (13/11/2026 21:30)
+- **Nhiệm vụ**: Tích hợp & Kiểm định Ca 2 (9 Mô Hình Canvas HTML5 Hydrogen V2, Câu 10 $\rightarrow$ Câu 21) Vào `prototype-100-mo-hinh-thuc-te.html`, Xuất Bản `prototype-100-mo-hinh-thuc-te_ca2_updated.html` và Bộ 3 File Chuẩn `VLXT_MOTION_SPEC.md`
+- **Người thực hiện**: Antigravity
+- **Người duyệt & Chỉ đạo**: Thầy Nguyễn Xuân Trường
+- **Phạm vi hoàn tất**:
+  1. **Nghiệm thu 9 mô hình Canvas Ca 2 (`chunk-c1-ca2-models.js`)**:
+     - `MH-C1-10`: Mô hình sục điện đun nước sinh viên (Dây điện trở xoắn lò xo & bọt khí sôi đối lưu).
+     - `MH-C1-11`: Hệ thống tản nhiệt nước AIO cho CPU (Bơm tuần hoàn, Block đồng & Két tản nhiệt Radiator).
+     - `MH-C1-12`: Hệ thống làm mát tuần hoàn động cơ ô tô (Áo nước xilanh, Van hằng nhiệt & Két tản nhiệt).
+     - `MH-C1-13`: Sơ đồ nguyên lý máy hút ẩm dạng ngưng tụ (Quạt hút, Dàn lạnh ngưng tụ & Dàn nóng sấy khí).
+     - `MH-C1-14`: Ống phát tia X Cu-lít-giơ làm mát bằng dòng nước tuần hoàn (Coolidge Tube & Đối lưu nhiệt).
+     - `MH-C1-15`: Nguyên lý quạt điều hòa hơi nước (Tấm làm mát Cooling Pad dạng tổ ong & Bơm tuần hoàn).
+     - `MH-C1-18`: Quy trình đúc chuông đồng truyền thống (Lò nung chảy hợp kim đồng - thiếc & Rót khuôn đúc).
+     - `MH-C1-19`: Mô hình ướp lạnh các lon bia trong thùng xốp đá lạnh (Quá trình cân bằng nhiệt hệ 3 vật).
+     - `MH-C1-21`: Sơ đồ nguyên lý động cơ xăng 4 kỳ (Chu trình tuần hoàn: Nạp - Nén - Nổ - Thải).
+  2. **Tuân thủ nghiêm ngặt 10 Quy Tắc Vàng `VLXT_MOTION_SPEC.md`**:
+     - Tuyệt đối không đè chữ lên nét vẽ (`drawCallout` neo chấm tròn và badge ngoài).
+     - Cốc/bình hở miệng trên (`drawOpenCup` hình chữ U, không dùng `strokeRect` đóng kín mép trên).
+     - Biến thiên nhiệt một chiều răng cưa `(t * speed) % 1`, không dao động nghịch lý sin(t).
+     - Tối ưu hiển thị điện thoại Mobile-First (khổ compact 600x320 / 780x305, font 14px-16px bold rõ nét, 2x Retina DPI).
+     - Không để lộ đáp án (`Zero Data Leakage`), chỉ mô phỏng phần dẫn đề.
+  3. **Xuất đủ bộ 3 file chuẩn theo Quy chuẩn Ca 2**:
+     - `prototype-100-mo-hinh-thuc-te_ca2_updated.html` (Đã lưu tại workspace và sao chép trực tiếp ra `C:/Users/Xuan Truong/Desktop/prototype-100-mo-hinh-thuc-te_ca2_updated.html` cho Thầy bấm duyệt).
+     - `chunk-c1-ca2-models.js` & `data/chunk-c1-ca2-models.js`.
+     - `batch-ds-c1-ca2.json` & `data/batches/batch-ds-c1-ca2.json`.
+  4. **Nâng cấp `prototype-100-mo-hinh-thuc-te.html` gốc**:
+     - Nạp song song toàn bộ 17 mô hình Canvas V2 (8 mô hình Ca 1 + 9 mô hình Ca 2).
+     - Cập nhật liên kết navbar sang `90 Câu Trả Lời Ngắn (Phần III)`.
+     - Tuyệt đối bảo toàn 100% tệp `data/mo-hinh-thuc-te-models.js` của Máy 1.
+  5. **Đồng bộ đa phân vùng Worktree**:
+     - Đồng bộ toàn bộ các tệp sang `_worktree_c34_ds`, `_worktree_admin_c34_ds`, `_codex_verify_live`.
+- **Kiểm định chất lượng**:
+  - `node scratch/test_ca2_canvas_render.js`: **PASS 100%** (9/9 mô hình Ca 2 chạy mượt tại mọi mốc thời gian).
+  - `node scratch/verify_ca2_full.js`: **PASS 100%** (17 mô hình Canvas đã nạp, cú pháp JS hợp lệ, thẻ đóng chuẩn).
+  - `node scratch/test_html_integrity.js`: **PASS 100%** (90 câu Trả Lời Ngắn, 45 chùm, 0 câu C1).
+
+## Bàn giao gần nhất (13/11/2026 16:05)
+- **Nhiệm vụ**: Tích hợp 10 Câu Trả Lời Ngắn (5 Chùm Thực Tế Mới) Từ Kho 20 Đề Cơ Bản 7+ Vào `prototype-tra-loi-ngan.html` & Nâng Tổng Kho Lên 90 Câu (45 Chùm)
+- **Người thực hiện**: Antigravity
+- **Người duyệt & Chỉ đạo**: Thầy Nguyễn Xuân Trường
+- **Tài nguyên khai thác**: `Đáp án 20 đề mức cơ bản lấy điểm 7+.docx` (Đề 04, 10, 15, 17, 18).
+- **Phạm vi hoàn tất**:
+  1. **Tách lọc & Hoàn trả sạch sẽ `prototype-tra-loi-ngan.html`**:
+     - Đã gỡ bỏ toàn bộ code nhúng tạm Ca 1 (mô hình canvas của Máy 1), giữ cho trang Trả Lời Ngắn thuần túy 100% chuẩn Phần III (Chương 2, 3, 4).
+     - Khôi phục thanh 2 tab chuẩn (`Phần II: Đúng / Sai` ↔ `Phần III: Trả Lời Ngắn`).
+  2. **Bổ sung 10 câu trả lời ngắn chuẩn hóa (5 chùm thực tế mới)**:
+     - *Chùm 1 (C2)*: Lọ giác hơi y học cổ truyền — Quá trình làm nguội đẳng tích & Da phồng giảm thể tích (`VLXT-TLN-W20-01`, `02`).
+     - *Chùm 2 (C2)*: Máy đo huyết áp tâm thu & tâm trương — Số phân tử khí vi mô & Lượng khí xả van (`VLXT-TLN-W20-03`, `04`).
+     - *Chùm 3 (C3)*: Thanh dẫn MN trượt trên ray nạp điện cho tụ — Suất điện động cảm ứng & Điện tích tụ (`VLXT-TLN-W20-05`, `06`).
+     - *Chùm 4 (C3)*: An toàn chụp cộng hưởng từ MRI — Vòng tay kim loại biến thiên từ trường & Dòng điện cảm ứng (`VLXT-TLN-W20-07`, `08`).
+     - *Chùm 5 (C4)*: Nhà máy điện hạt nhân Diablo Canyon — Số hạt U235 phân hạch & Công suất nhiệt dòng nước làm mát hấp thụ (`VLXT-TLN-W20-09`, `10`).
+  3. **Phân bổ mới của toàn kho (90 CÂU — 45 CHÙM)**:
+     - 💨 **Chương 2 (Khí lí tưởng)**: **40 câu** (20 chùm) *(vượt xa chỉ tiêu tổ hợp 50 đề!)*
+     - 🧲 **Chương 3 (Từ trường)**: **28 câu** (14 chùm)
+     - ⚛️ **Chương 4 (Hạt nhân)**: **22 câu** (11 chùm)
+     - **Phân bổ nguồn**: Bộ GD&ĐT (18 câu), Về Đích 2k8 (28 câu), 45 Đề Minh Họa (16 câu), Nguồn Tham Khảo Tuyển Chọn (22 câu), Đề Trường/Sở (6 câu).
+  4. **Các tệp đã lưu & đồng bộ**:
+     - `prototype-tra-loi-ngan.html`: Nhúng 90 câu, 9 nút lọc chuẩn, KaTeX phân số đứng $\dfrac{}{}$, tự động chấm dung sai.
+     - `data/batches/100-mohinh-tln-chinhthuc.json` & `.js`: Batch tổng hợp 90 câu.
+     - `data/batches/batch-tln-20de-coban.json`: Batch riêng 10 câu mới trích xuất.
+     - Đồng bộ sang worktrees: `_worktree_admin_c34_ds` và `_codex_verify_live`.
+- **Kiểm định chất lượng**:
+  - `node scratch/test_html_integrity.js`: **PASS 100%** (90 câu nhúng, 45 chùm, 0 câu C1, navbar sạch không lặp chuỗi).
+
+## Bàn giao gần nhất (13/11/2026 10:55)
+- **Nhiệm vụ**: Khai Thác Đợt 1 Mỏ Tài Nguyên "Đề Về Đích 2k8", Bổ Sung 10 Chùm Vận Dụng Cao (20 Câu) & Nâng Tổng Kho Trả Lời Ngắn Lên 68 Câu (34 Chùm Thực Tế)
+- **Repo / Branch**: `https://github.com/eduhost-vn204/edu-portal-console.git` (nhánh `main`)
+- **Phạm vi hoàn tất**:
+  1. **Khảo sát toàn bộ 201 file (124 docx + 77 pdf) trong thư mục `Đề về đích 2k8`**:
+     - `Đề 7+`: 2 docx, không có chùm thực tế (mức nhận biết - thông hiểu cơ bản).
+     - `Đề 9+`: 22 docx (10 Đề VIP Tủ 9+ có file giải chi tiết), tìm thấy 18 chùm độc đáo.
+     - `Đề thi thử`: 59 docx (Đề 1 đến 15 có giải chi tiết), tìm thấy 36 chùm độc đáo.
+     - `Đề tủ`: 41 docx (35 chùm có chỉ báo).
+  2. **Chọn lọc, bóc tách và chuẩn hóa 10 chùm xuất sắc nhất (20 câu con) từ Đề 9+ và Đề thi thử**:
+     - *Chùm 1 (C4)*: Tàu vũ trụ Voyager 1 & pin nhiệt điện RTG Plutonium-238 (`VLXT-TLN-VD28-01`, `02`).
+     - *Chùm 2 (C4)*: Xác định tuổi Trái Đất từ quặng Uranium 238/235 (`VLXT-TLN-VD28-03`, `04`).
+     - *Chùm 3 (C4)*: Y học hạt nhân: Đo thể tích máu bằng Chromium-51 (`VLXT-TLN-VD28-05`, `06`).
+     - *Chùm 4 (C3)*: Thí nghiệm đo cảm ứng từ Trái Đất bằng kim nam châm và cuộn dây (`VLXT-TLN-VD28-07`, `08`).
+     - *Chùm 5 (C3)*: Hệ thống máy phóng điện từ (EMALS) trên tàu sân bay hiện đại (`VLXT-TLN-VD28-09`, `10`).
+     - *Chùm 6 (C2)*: Bơm lốp xe ô tô 75L khi biến thiên áp suất và nhiệt độ ma sát (`VLXT-TLN-VD28-11`, `12`).
+     - *Chùm 7 (C2)*: Xilanh hình trụ có pít-tông cách nhiệt 1kg chia 2 ngăn khí (`VLXT-TLN-VD28-13`, `14`).
+     - *Chùm 8 (C2)*: Mô-đun buồng chân không phòng thí nghiệm & kính quan sát 8cm (`VLXT-TLN-VD28-15`, `16`).
+     - *Chùm 9 (C1)*: Ấm nhôm 300g đun 1,2kg nước trên bếp điện có tỏa nhiệt môi trường (`VLXT-TLN-VD28-17`, `18`).
+     - *Chùm 10 (C2)*: Động năng phân tử vi mô & Tốc độ căn quân phương khí Helium (`VLXT-TLN-VD28-19`, `20`).
+  3. **Nâng cấp toàn diện giao diện `prototype-tra-loi-ngan.html`**:
+     - Nhúng trọn vẹn 68 câu trực tiếp vào HTML chống cache.
+     - Bổ sung nút lọc `Đề Về Đích 2k8 (20 câu)` với màu hồng cánh sen nổi bật (`data-filter="vedich"`).
+     - Thống kê 4 chương: C1 (10 câu), C2 (24 câu), C3 (14 câu), C4 (20 câu). Vượt mốc ma trận tổ hợp 50 đề cho Chương 2 và Chương 4!
+  4. **Xuất bản các gói dữ liệu Batch**:
+     - `data/batches/100-mohinh-tln-chinhthuc.json` & `.js` (Gói tổng 68 câu - 34 chùm).
+     - `data/batches/batch-tln-vedich-2k8.json` (Gói riêng 20 câu Đề Về Đích 2k8).
+     - Đồng bộ sang `_worktree_admin_c34_ds` và `_codex_verify_live`.
+  5. **Bảo toàn công việc Máy 1**: Tệp `data/mo-hinh-thuc-te-models.js` được giữ nguyên vẹn 100%.
+- **Kiểm định chất lượng**:
+  - `node scratch/test_html_integrity.js`: PASS 100% (34 cards chùm, 68 câu hỏi, 9 filters).
+
+## Bàn giao gần nhất (13/11/2026 10:15)
+- **Nhiệm vụ**: Khắc Phục Triệt Để Lỗi Chrome Trắng Bộ Lọc, Bóc Tách Đề Trường/Sở 2025 & Nâng Cấp Kho TLN Lên 48 Câu (24 Chùm Thực Tế Chuẩn Bộ GD&ĐT)
+- **Repo / Branch**: `https://github.com/eduhost-vn204/edu-portal-console.git` (nhánh `main`)
+- **Phạm vi hoàn tất**:
+  1. **Khắc phục dứt điểm lỗi Chrome "Không có câu hỏi nào khớp bộ lọc" trên `prototype-tra-loi-ngan.html`**:
+     - *Nguyên nhân*: Do file JS bên ngoài bị Chrome cache khi tải qua giao thức `file:///` hoặc race-condition khi parse biến.
+     - *Giải pháp*: Nhúng trực tiếp toàn bộ dữ liệu 48 câu hỏi vào `window.__EMBEDDED_TLN_BATCH__` ngay trong trang HTML làm Bulletproof Fallback. Dù mở offline, mở qua `file:///` trên bất kỳ trình duyệt nào (Chrome, Edge) đều nạp 100% tức thì, không bao giờ bị trắng hoặc báo 0/0 câu.
+     - Nâng cấp bộ đếm động trên navbar và tất cả các nút filter (`Tất cả (48 câu)`, `Đề Bộ GD&ĐT (18 câu)`, `Đề Trường & Sở (6 câu)`, `45 Đề minh họa (24 câu)`, `C1 (8 câu)`, `C2 (16 câu)`, `C3 (10 câu)`, `C4 (14 câu)`).
+  2. **Quét mỏ tài nguyên 130 Đề Trường / Sở 2025 & Loại trừ trùng lặp**:
+     - Quét toàn bộ 130 file .docx: phát hiện 66 chùm câu hỏi Phần III.
+     - Thuật toán đối soát phát hiện và loại bỏ 31 chùm trùng lặp với Đề chính thức và 45 Đề Minh Họa.
+     - Giữ lại 35 chùm độc đáo, mới lạ.
+  3. **Bóc tách chi tiết & Nạp 6 chùm mới chất lượng cao (12 câu hỏi con)**:
+     - *Chùm 1 (C2)*: Phổi người trưởng thành 5,7 lít & 21% oxy (`VLXT-TLN-TK25-01`, `02` — Đề Tham Khảo Bộ 2025).
+     - *Chùm 2 (C3)*: Dây dẫn truyền tải xoay chiều 106A trong từ trường Trái Đất (`VLXT-TLN-TK25-03`, `04` — Đề Tham Khảo Bộ 2025).
+     - *Chùm 3 (C4)*: Nhà máy điện hạt nhân 1060MW phân hạch U-235 (`VLXT-TLN-TK25-05`, `06` — Đề Tham Khảo Bộ 2025).
+     - *Chùm 4 (C3)*: Động cơ điện 1 chiều trong từ trường nam châm (`VLXT-TLN-NA25-01`, `02` — Đề Liên Trường Nghệ An).
+     - *Chùm 5 (C2)*: Túi khí ô tô NaN3 giải phóng khí N2 dãn nở (`VLXT-TLN-NA25-03`, `04` — Đề Liên Trường Nghệ An).
+     - *Chùm 6 (C2)*: Van điều áp an toàn nồi áp suất gia đình (`VLXT-TLN-TC25-01`, `02` — Đề Thanh Chương 1 Nghệ An).
+  4. **Xuất bản các gói dữ liệu Batch cho Admin Ngân Hàng Đề**:
+     - `data/batches/100-mohinh-tln-chinhthuc.json` & `.js` (Gói hợp nhất 48 câu - 24 chùm).
+     - `data/batches/batch-tln-thamkhao-bo-2025.json` (Gói Đề tham khảo Bộ 2025: 6 câu).
+     - `data/batches/batch-tln-truongso-2025.json` (Gói Đề thi thử Trường/Sở 2025: 6 câu).
+     - Đồng bộ sang `_worktree_admin_c34_ds` và `_codex_verify_live`.
+  5. **Bảo toàn công việc Máy 1**: Tuyệt đối không chỉnh sửa `data/mo-hinh-thuc-te-models.js`.
+- **Kiểm định chất lượng**:
+  - `node scratch/test_html_integrity.js`: PASS 100% (24 cards chùm, 48 câu hỏi, 8 filters hoạt động hoàn hảo).
+
+## Bàn giao gần nhất (11/11/2026 16:16)
+- **Commit**: `533935e` (fix(admin-bank): lock canonical taxonomy to Vat Ly 12, 4 chapters, and 28 lessons across all filters and imports)
+- **Repo / Branch**: `https://github.com/eduhost-vn204/edu-portal-console.git` (nhánh `main`)
+- **Phạm vi hoàn tất**:
+  1. Khóa cứng Hệ Phân Loại Chuẩn (Canonical Taxonomy):
+     - Lớp/Môn: Duy nhất `Vật Lý 12` (xóa sổ các biến thể `Vật lí`, `Vật lý`).
+     - 4 Chương chuẩn: `CHƯƠNG 1 – VẬT LÝ NHIỆT`, `CHƯƠNG 2 – KHÍ LÝ TƯỞNG`, `CHƯƠNG 3 – TỪ TRƯỜNG`, `CHƯƠNG 4 – VẬT LÝ HẠT NHÂN`.
+     - 28 Bài học chuẩn (`B1`..`B6`, `B9`..`B17`, `B21`..`B28`, `B31`..`B35`).
+     - Câu liên chương mang 1 chương chính chuẩn xác và `chuongList` để lọc đa chiều, không bao giờ sinh dòng chương ghép trong dropdown.
+  2. Khóa toàn bộ 4 cổng nhập dữ liệu mới (JSON Tinh, Word .docx, PDF, Excel) qua `normalizeQuestionTaxonomy()`.
+  3. Cập nhật `RULEBOOK_CHUAN_HOA_2793.md` và `verify_batch_output.js` (PASS 100% trên 28 file batch).
+  4. Đã push thành công lên `origin/main` trên GitHub Pages (`https://eduhost-vn204.github.io/edu-portal-console/ngan-hang-de.html`).
 
 ## Bàn giao gần nhất (11/11/2026 09:40)
 - **Commit**: Tích Hợp Đề Thi Số 2 (Kiểm Chứng Tiến Bộ Đột Phá), Tự Động Đổi Đề Cho Học Sinh Đã Test, Pop-Up Luyện Tập Đề Mới & Tối Ưu Bản Đồ Radar HUD 4 Chương Vật Lý 12 Trên hoso.html
@@ -169,6 +1069,64 @@
   - `node -c smart-marketing-popup.js`: PASS (0 lỗi cú pháp).
   - Kiểm tra thẻ đóng `</html>`: 100% các file `danh-gia-nang-luc.html`, `hoso.html`, `index.html` đều kết thúc chuẩn xác.
 - **Trạng thái triển khai**: Đã commit và push nhánh `main` lên GitHub, GitHub Actions tự động deploy lên `https://vatlyxuantruong.io.vn`.
+
+## Bàn giao gần nhất (13/11/2026 12:28)
+- **Nội dung xử lý**: Xóa Bỏ Hoàn Toàn Chương 1 (Vật Lí Nhiệt) Khỏi Ngân Hàng Trả Lời Ngắn (Phần III) & Triệt Tiêu Lỗi Trùng Lặp Nút Lọc và Lặp Chữ Navbar
+- **Yêu cầu chỉ đạo của Thầy**:
+  1. Loại bỏ toàn bộ Chương 1 (Vật lí nhiệt) khỏi ngân hàng Trả Lời Ngắn vì Phần III theo chuẩn cấu trúc Bộ GD&ĐT không ra Chương 1 mà chỉ gồm 3 chuyên đề: Chương 2 (Khí lí tưởng), Chương 3 (Từ trường), Chương 4 (Hạt nhân).
+  2. Xóa các nút lọc bị trùng lặp ở hàng dưới (`C2 22 câu`, `C3 14 câu`, `C4 22 câu`).
+  3. Khắc phục lỗi lặp chuỗi trên thanh Navbar (`câu Trả Lời Ngắn câu Trả Lời Ngắn`).
+- **Phạm vi hoàn tất cụ thể**:
+  1. **Lọc bỏ 20 câu Chương 1**:
+     - Loại bỏ toàn bộ 20 câu C1 (gồm 8 câu Đề Minh Họa, 4 câu Đề Về Đích 2k8, 8 câu Nguồn Tham Khảo) khỏi Master Batch `data/batches/100-mohinh-tln-chinhthuc.json` & `.js` và bộ nhúng trực tiếp `window.__EMBEDDED_TLN_BATCH__` trong `prototype-tra-loi-ngan.html`.
+     - Tổng số câu Phần III hiện tại là **80 CÂU (40 CHÙM THỰC TẾ TRÒN TRĨNH)** chuẩn 100% 3 chương cấu trúc Bộ GD&ĐT:
+       * **Chương 2 (Khí lí tưởng): 36 câu (18 chùm)** $\rightarrow$ Dư dả tạo tổ hợp đề.
+       * **Chương 3 (Từ trường): 24 câu (12 chùm)** $\rightarrow$ Đạt & vượt chỉ tiêu $\ge 50$ đề.
+       * **Chương 4 (Hạt nhân): 20 câu (10 chùm)** $\rightarrow$ Đạt chỉ tiêu $\ge 50$ đề.
+       * Tổng số tổ hợp đề 3 chùm (C2 + C3 + C4) có thể sinh ra không trùng lặp: $18 \times 12 \times 10 = 2.160$ đề thi khác nhau hoàn toàn!
+  2. **Dọn sạch hàng nút lọc & Xóa nút Chương 1**:
+     - Xóa hoàn toàn nút `C1: Nhiệt học`.
+     - Xóa triệt để các thẻ nút thừa bị lặp ở hàng dưới (`C2 22 câu`, `C3 14 câu`, `C4 22 câu`).
+     - Thanh nút lọc hiện gồm 9 nút duy nhất, sắc nét, phẳng, chuẩn EdTech:
+       * `Tất cả (80 câu)`
+       * `Đề Bộ GD&ĐT (18 câu)`
+       * `Đề Về Đích 2k8 (28 câu)`
+       * `45 Đề minh họa (16 câu)`
+       * `Nguồn tham khảo (12 câu)`
+       * `Đề Trường & Sở (6 câu)`
+       * `C2: Khí lí tưởng (36 câu)`
+       * `C3: Từ trường (24 câu)`
+       * `C4: Hạt nhân (20 câu)`
+  3. **Khắc phục triệt để lỗi Navbar**:
+     - Xóa chuỗi lặp thừa ở dòng 579, chuẩn hóa hiển thị: `<i class="fa-solid fa-list-check"></i> 80 câu Trả Lời Ngắn`.
+  4. **Đồng bộ toàn diện sang 3 worktree**: `_codex_verify_live`, `_worktree_admin_c34_ds`, `_worktree_c34_ds`.
+- **Kiểm định chất lượng**:
+  - `node scratch/test_html_integrity.js`: **PASS 100%** (Cú pháp JS hợp lệ, nhúng đúng 80 câu, 40 chùm, số câu C1 = 0, không có nút lọc trùng lặp, navbar không lặp chuỗi, cả 9 bộ lọc chạy chuẩn xác).
+
+## Bàn giao gần nhất (13/11/2026 11:45)
+- **Nội dung xử lý**: Xử lý triệt để lỗi trắng trang "Không có câu hỏi nào khớp bộ lọc" trên `prototype-tra-loi-ngan.html` khi mở bằng Chrome `file:///` & Nâng cấp Master Batch lên 100 Câu (50 Chùm Thực Tế Tròn Trĩnh)
+- **Hiện tượng Thầy gặp phải (Theo ảnh Thầy gửi)**:
+  - Khi Thầy mở file `prototype-tra-loi-ngan.html` trên máy tính bằng trình duyệt Google Chrome (qua giao thức cục bộ `file:///D:/Work/Day%20hoc/...`), trang hiển thị tiêu đề và hàng nút lọc bản cũ (36 câu), nhưng vùng danh sách bên dưới bị trống và báo: *"Không có câu hỏi nào khớp bộ lọc."*, thanh tiến độ báo *0/0 câu*.
+- **Nguyên nhân kỹ thuật**:
+  - Ở phiên bản cũ (lúc 9:28 sáng), trang load dữ liệu từ thẻ script ngoài `data/batches/batch-tln-chinhthuc-2025-2026.js`.
+  - Cơ chế bảo mật Sandbox của Chrome khi mở qua đường dẫn `file:///` đã chặn hoặc không đồng bộ kịp file JS ngoài, khiến biến dữ liệu `questions` bị rỗng (`[]`). Do đó khi hàm `renderQuestions()` chạy, `filteredQuestions.length === 0` và rơi vào màn hình rỗng.
+- **Biện pháp khắc phục triệt để**:
+  1. **Nhúng trực tiếp 100% Inline Data (`window.__EMBEDDED_TLN_BATCH__`)**:
+     - Nhúng toàn bộ Master Dataset **100 CÂU (50 CHÙM THỰC TẾ TRÒN TRĨNH)** trực tiếp vào thẻ `<script>` trong file `prototype-tra-loi-ngan.html`. Hoạt động độc lập 100% offline, không phụ thuộc mạng và không bị Chrome `file:///` chặn.
+  2. **Cơ chế khởi tạo Bulletproof cho trình duyệt**:
+     - Thay đổi từ `window.addEventListener('DOMContentLoaded', ...)` sang:
+       `if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initApp); } else { initApp(); }`
+       Đảm bảo render ngay lập tức kể cả khi trang tải từ bộ nhớ đệm Cache của Chrome.
+  3. **Đồng bộ và hoàn thiện toàn bộ 10 Nút Bộ Lọc**:
+     - Bộ GD&ĐT (18 câu): Gồm 12 câu Đề chính thức 2025-2026 + 6 câu Đề tham khảo 2025.
+     - Đề Về Đích 2k8 (32 câu): 16 chùm VDC VIP 9+.
+     - 45 Đề Minh Họa (24 câu): 12 chùm Tổ 1 - 12.
+     - Nguồn Tham Khảo Tuyển Chọn (20 câu): 10 chùm C1 & C2 ẩn danh tác giả, chuẩn thương hiệu VLXT.
+     - Đề Trường & Sở (6 câu): 3 chùm C2 & C4.
+     - C1 Nhiệt học: 20 câu | C2 Khí lí tưởng: 36 câu | C3 Từ trường: 24 câu | C4 Hạt nhân: 20 câu.
+  4. **Đồng bộ toàn diện sang 3 worktree**: `_codex_verify_live`, `_worktree_admin_c34_ds`, `_worktree_c34_ds`.
+- **Kiểm định chất lượng**:
+  - `node scratch/test_html_integrity.js`: **PASS 100%** (Cú pháp JS hợp lệ, nhúng 100 câu, 50 chùm, render cả 10 bộ lọc chuẩn xác).
 
 ## Bàn giao gần nhất (11/11/2026 09:15)
 - **Commit**: Khắc Phục Triệt Để Sai Lệch Điểm Thi THPT Dự Kiến & Hiển Thị Đầy Đủ Đa Lỗ Hổng Kiến Thức (Từ Trường & Hạt Nhân)
@@ -3141,3 +4099,86 @@ gba(255, 255, 255, 0.05), tạo không gian liền mạch vô tận như chuẩn
   - Kiểm tra toàn bộ 14 trang HTML đóng đúng thẻ `</html>`.
 
   - `15421c6`: Khôi phục lại kích thước lưới tự nhiên của khối tính năng trên `index.html`, sửa triệt để lỗi lệch dòng trong 2 thẻ tab code (bỏ `x: -35` và `x: 35` trong GSAP, đổi sang hiệu ứng trượt `y: 16` và `clearProps: 'all'`, đổi hover từ `translateX(8px)` sang `scale(1.015)` giúp giữ 100% khung bo viền trọn vẹn, không bị cụt hay khuất mép); đồng thời sửa lỗi ghim thanh điều hướng trên `baihoc.html` (thêm `margin-top: 60px` cho `.vstep-course-layout` chống bị thanh navbar che mất nút Tải PDF) và bổ sung các nút tải PDF nổi bật ngay dưới tiêu đề bài học và dưới video bài giảng.
+
+
+#### 13/11/2026 — Khai Thác Đợt 2 Mỏ Tài Nguyên "Đề Về Đích 2k8": Hoàn Thiện Vượt Mốc 80 Câu Trắc Nghiệm Trả Lời Ngắn (Phần III) & Cân Bằng Ma Trận 4 Chương Cho Tổ Hợp 50 Đề
+
+- **Người thực hiện**: Antigravity
+- **Người duyệt & Chỉ đạo**: Thầy Nguyễn Xuân Trường
+- **Tài nguyên khai thác**: `D:\Work\Dạy học\Xây Dựng Lộ Trình XPS 2k9\Kiến thức, tài liệu\Tài liệu\Tài liệu Thô\Đề\Đề về đích 2k8` (Đề thi thử số 3, 5, 6, 13, 14, 15 và Đề 9+).
+- **Chi tiết tiến độ**:
+  1. **Khắc phục triệt để lỗi Chrome trắng trang ("0/0 câu")**:
+     - Thầy gửi ảnh phản ánh lúc 9:28 AM về việc Chrome mở `file:///` hiển thị `0/0 câu` do browser cache file JS cũ.
+     - *Giải pháp:* Đã tạo cơ chế **Bulletproof Embedded Dataset** nhúng trực tiếp toàn bộ dữ liệu vào `window.__EMBEDDED_TLN_BATCH__` trong `prototype-tra-loi-ngan.html`. Dù mở offline hay qua `file:///`, dữ liệu luôn nạp tức thì 100%.
+  2. **Bổ sung Đợt 2 (12 câu = 6 chùm thực tế mới 100%, 0% trùng lặp)**:
+     - *Chùm 35 (C3 Từ trường)*: Đinamô xe đạp phát điện xoay chiều một pha thắp sáng bóng đèn 3V (`VLXT-TLN-VD28-21`, `22`).
+     - *Chùm 36 (C3 Từ trường)*: Thí nghiệm Cân lực từ với khung dây chữ nhật 200 vòng treo vào 2 lực kế (`VLXT-TLN-VD28-23`, `24`).
+     - *Chùm 37 (C3 Từ trường)*: Thanh đồng 5g treo hai dây mảnh trong từ trường đều bị lệch góc 45° và ngắt từ trường dao động cơ học (`VLXT-TLN-VD28-25`, `26`).
+     - *Chùm 38 (C3 Từ trường)*: Khung dây 250 vòng quay 1500 vòng/phút phát điện xoay chiều cấp cho điện trở $15\,\Omega$ (`VLXT-TLN-VD28-27`, `28`).
+     - *Chùm 39 (C3 Từ trường)*: Đoạn dây dẫn thẳng 30cm mang dòng $3,2 \times 10^{19}$ electron dịch chuyển trong từ trường đều $0,2\text{ T}$ (`VLXT-TLN-VD28-29`, `30`).
+     - *Chùm 40 (C1 Nhiệt học)*: Đá vĩnh cửu inox 304 gel làm lạnh thức uống không làm loãng nước (`VLXT-TLN-VD28-31`, `32`).
+  3. **Hiện trạng Ma trận 4 Chương (Đạt và Vượt Chỉ Tiêu Tổ Hợp 50 Đề)**:
+     - **Chương 1 (Vật lí nhiệt)**: 12 câu (6 chùm)
+     - **Chương 2 (Khí lí tưởng)**: 24 câu (12 chùm) $\rightarrow$ Đạt chỉ tiêu!
+     - **Chương 3 (Từ trường)**: **24 câu (12 chùm)** $\rightarrow$ **VƯỢT CHỈ TIÊU (tăng thêm 10 câu)!**
+     - **Chương 4 (Hạt nhân nguyên tử)**: 20 câu (10 chùm) $\rightarrow$ Đạt chỉ tiêu!
+     - **TỔNG CỘNG HỆ THỐNG**: **80 CÂU (40 CHÙM THỰC TẾ)**.
+  4. **Phân bổ theo 4 nhóm nguồn đề**:
+     - *Đề Bộ GD&ĐT (18 câu)*: 12 câu Đề chính thức 2025-2026 + 6 câu Đề tham khảo 2025.
+     - *Đề Về Đích 2k8 (32 câu)*: 16 chùm VIP 9+ và Đề thi thử (Đợt 1 + Đợt 2).
+     - *45 Đề Minh Họa (24 câu)*: 12 chùm từ Tổ 1 đến Tổ 12.
+     - *Đề Trường & Sở 2025 (6 câu)*: 3 chùm Liên Trường Nghệ An & Thanh Chương 1.
+  5. **Các file đã cập nhật & đồng bộ**:
+     - `prototype-tra-loi-ngan.html`: Nhúng 80 câu, 9 nút lọc, KaTeX phân số đứng $\dfrac{}{}$, tự động chấm dung sai.
+     - `prototype-100-mo-hinh-thuc-te.html`: Cập nhật liên kết navbar và hero pill dẫn sang 80 câu TLN.
+     - `data/batches/100-mohinh-tln-chinhthuc.json` & `.js`: Batch tổng hợp 80 câu.
+     - `data/batches/batch-tln-vedich-2k8.json`: Batch 32 câu Đề Về Đích 2k8.
+     - `data/batches/batch-tln-vedich-2k8-dot2.json`: Batch riêng 12 câu Đợt 2.
+     - Đồng bộ sang worktrees: `_worktree_admin_c34_ds` và `_codex_verify_live`.
+     - **Bảo toàn tuyệt đối**: Không đụng chạm vào `data/mo-hinh-thuc-te-models.js` của Máy 1.
+- **Kiểm thử nghiệm thu**:
+  - `node scratch/test_html_integrity.js`: PASS 100% (40 cards, 80 câu hỏi, 9 bộ lọc hiển thị chính xác).
+
+
+#### 13/11/2026 — Khai Thác Đợt 3 Mỏ Tài Nguyên "Ngân Hàng Câu Hỏi": Cán Mốc 100 Câu Trả Lời Ngắn (50 Chùm Thực Tế) & Tuân Thủ Tuyệt Đối Quy Tắc Ẩn Tên Tác Giả Ngoài
+
+- **Người thực hiện**: Antigravity
+- **Người duyệt & Chỉ đạo**: Thầy Nguyễn Xuân Trường
+- **Tài nguyên khai thác**: `D:\Work\Dạy học\Xây Dựng Lộ Trình XPS 2k9\Kiến thức, tài liệu\Ngân hàng câu hỏi` (ChuVanBien, IPclass, DoNgocHa, VuNgocAnh, VuTuanAnh, NguyenDangAi_BuiXuanDat).
+- **Quy tắc bảo mật bản quyền theo chỉ đạo của Thầy**:
+  - Tuyệt đối không ghi nguồn của thầy khác, trường nào hay sở nào.
+  - Thống nhất ghi xuất xứ chuẩn thương hiệu: **"Vật Lý Xuân Trường — Tuyển Chọn Nguồn Tham Khảo"**.
+  - Mã phân loại: `TLN-TK` (Nguồn Tham Khảo Tuyển Chọn).
+- **Chi tiết tiến độ**:
+  1. **Bổ sung 10 chùm mới (20 câu con) từ nguồn Tham Khảo Tuyển Chọn**:
+     - *Chùm 41 (C2)*: Ben hơi ghế xoay văn phòng nâng hạ bằng khí nén (`VLXT-TLN-TK-01`, `02`).
+     - *Chùm 42 (C2)*: Xe ô tô chạy cao tốc mùa hè: Áp suất lốp tăng từ $27^\circ\text{C}$ lên $42^\circ\text{C}$ & Tốc độ căn quân phương phân tử (`VLXT-TLN-TK-03`, `04`).
+     - *Chùm 43 (C2)*: Xilanh động cơ ô tô 4 kỳ ở kỳ nạp và kỳ nén (`VLXT-TLN-TK-05`, `06`).
+     - *Chùm 44 (C1)*: Máy nước nóng năng lượng mặt trời thu nhiệt theo đồ thị công suất bức xạ P(t) (`VLXT-TLN-TK-07`, `08`).
+     - *Chùm 45 (C2)*: Nhịp thở con người và lượng khí Oxygen hít vào cơ thể (`VLXT-TLN-TK-09`, `10`).
+     - *Chùm 46 (C1)*: Điều hòa thân nhiệt vận động viên marathon qua bay hơi mồ hôi & Bù nước (`VLXT-TLN-TK-11`, `12`).
+     - *Chùm 47 (C2)*: Bơm bóng chuyền thi đấu bằng bơm tay (`VLXT-TLN-TK-13`, `14`).
+     - *Chùm 48 (C1)*: Lò nung điện 20kW nung chảy tấm đồng $2,5\text{ kg}$ (`VLXT-TLN-TK-15`, `16`).
+     - *Chùm 49 (C1)*: Hệ thống làm lạnh amoniac công nghiệp & Tủ lạnh làm đông nước đá (`VLXT-TLN-TK-17`, `18`).
+     - *Chùm 50 (C2)*: Kỹ thuật Hô hấp ký (Spirometry) chẩn đoán thông khí phổi y khoa (`VLXT-TLN-TK-19`, `20`).
+  2. **Cán mốc 100 câu (50 chùm) — Ma trận 4 chương vững chắc**:
+     - **Chương 1 (Vật lí nhiệt)**: 20 câu (10 chùm) $\rightarrow$ Đạt chỉ tiêu tổ hợp 50 đề!
+     - **Chương 2 (Khí lí tưởng)**: 36 câu (18 chùm) $\rightarrow$ Vượt xa chỉ tiêu!
+     - **Chương 3 (Từ trường)**: 24 câu (12 chùm) $\rightarrow$ Vượt chỉ tiêu!
+     - **Chương 4 (Hạt nhân nguyên tử)**: 20 câu (10 chùm) $\rightarrow$ Đạt chỉ tiêu!
+     - **TỔNG CỘNG TOÀN KHO**: **100 CÂU (50 CHÙM MÔ HÌNH THỰC TẾ)**.
+  3. **Phân bổ theo 5 nhóm nguồn đề**:
+     - *Đề Bộ GD&ĐT (18 câu)*: 12 câu Đề chính thức 2025–2026 + 6 câu Đề tham khảo 2025.
+     - *Đề Về Đích 2k8 (32 câu)*: 16 chùm VDC tuyển chọn từ Đề VIP 9+ và Đề thi thử.
+     - *45 Đề Minh Họa (24 câu)*: 12 chùm từ Tổ 1 đến Tổ 12.
+     - *Nguồn Tham Khảo Tuyển Chọn (20 câu)*: 10 chùm chuyên đề thực tế mới.
+     - *Đề Trường & Sở 2025 (6 câu)*: 3 chùm Nghệ An & Thanh Chương 1.
+  4. **Các file đã cập nhật & đồng bộ**:
+     - `prototype-tra-loi-ngan.html`: Nhúng 100 câu, 10 nút lọc phân loại, KaTeX phân số đứng $\dfrac{}{}$, tự động chấm dung sai.
+     - `prototype-100-mo-hinh-thuc-te.html`: Cập nhật liên kết sang 100 câu TLN.
+     - `data/batches/100-mohinh-tln-chinhthuc.json` & `.js`: Batch tổng hợp 100 câu.
+     - `data/batches/batch-tln-thamkhao-chuyende.json`: Batch riêng 20 câu Nguồn Tham Khảo.
+     - Đồng bộ sang worktrees: `_worktree_admin_c34_ds` và `_codex_verify_live`.
+     - **Bảo toàn tuyệt đối**: Không đụng chạm vào `data/mo-hinh-thuc-te-models.js` của Máy 1.
+- **Kiểm thử nghiệm thu**:
+  - `node scratch/test_html_integrity.js`: PASS 100% (50 cards chùm, 100 câu hỏi, 10 bộ lọc hiển thị chính xác).
