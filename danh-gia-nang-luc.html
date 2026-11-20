@@ -219,7 +219,7 @@
             display: none;
             background: transparent; border: none;
             color: #cbd5e1; font-size: 20px; cursor: pointer;
-            padding: 6px;
+            padding: 2px 4px;
         }
         @media (max-width: 1024px) {
             .nav-menu-links { display: none; }
@@ -384,7 +384,7 @@
         ═══════════════════════════════════════════ */
         .vstep-course-layout {
             display: grid !important;
-            grid-template-columns: minmax(0, 1fr) 268px !important;
+            grid-template-columns: minmax(0, 1fr) 225px !important;
             min-height: 100vh !important;
             padding-top: 60px !important;
             width: 100% !important;
@@ -537,7 +537,7 @@
 
         /* ── CỘT 2: VÙNG GIỮA (Full-Width 1-Frame Học Thuật) ── */
         .vstep-main-stream {
-            padding: 18px 20px 24px !important;
+            padding: 18px 18px 6px !important;
             max-width: none !important;
             margin: 0 !important;
             width: 100% !important;
@@ -683,8 +683,8 @@
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
             border-radius: 14px;
-            padding: 16px 20px;
-            margin-bottom: 12px;
+            padding: 12px 18px;
+            margin-bottom: 8px;
             box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
             transition: all 0.2s ease;
         }
@@ -692,8 +692,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 9px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
             border-bottom: 1px solid var(--border-subtle);
         }
         .vstep-q-title {
@@ -722,12 +722,13 @@
             border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
-        .vstep-q-stem {
-            font-size: 15px;
-            font-weight: 500;
-            color: #f1f5f9;
+        .vstep-q-stem table { margin: 4px 0 !important; } .vstep-q-stem table th, .vstep-q-stem table td { padding: 3px 6px !important; } .vstep-q-stem {
+            font-size: 16.5px;
+            font-weight: 600;
+            color: #f8fafc;
             line-height: 1.55;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
         }
 
         .vstep-options-grid {
@@ -746,16 +747,16 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 11px 14px;
+            padding: 10px 14px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            font-size: 14px;
-            color: #e2e8f0;
+            font-size: 15px;
+            line-height: 1.45;
+            color: #f1f5f9;
             cursor: pointer;
             transition: background 0.15s, border-color 0.15s;
             user-select: none;
-            line-height: 1.45;
         }
         .vstep-option-card:hover {
             background: rgba(255, 255, 255, 0.07);
@@ -794,7 +795,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: 10px;
+            margin-top: 6px;
             gap: 12px;
         }
         .vstep-btn {
@@ -856,9 +857,11 @@
             position: sticky !important;
             top: 60px !important;
             overflow-y: auto !important;
-            padding: 14px 14px 24px !important;
+            padding: 10px 8px 20px !important;
             scrollbar-width: none !important;
             z-index: 10 !important;
+            width: 225px !important;
+            box-sizing: border-box !important;
         }
         .vstep-sidebar-right::-webkit-scrollbar { display: none !important; }
 
@@ -915,7 +918,7 @@
         .vstep-palette-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 5px;
+            gap: 4px;
         }
         .vstep-pal-btn {
             height: 30px;
@@ -1045,7 +1048,7 @@
             font-size: 20px;
             font-weight: 800;
             color: #fff;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
         .remedial-desc {
             font-size: 14px;
@@ -1313,8 +1316,8 @@
             background: #0f172a;
             border: 1px solid #1e293b;
             border-radius: 10px;
-            padding: 7px 12px;
-            margin-bottom: 8px;
+            padding: 5px 12px;
+            margin-bottom: 6px;
         }
         .wow-cmd-left {
             display: flex;
@@ -1496,15 +1499,45 @@
             flex-direction: column;
             gap: 14px;
         }
-        @media (min-width: 1120px) {
+        @media (min-width: 960px) {
             .wow-q-split {
                 display: grid;
-                grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+                grid-template-columns: minmax(0, 54%) minmax(0, 46%);
                 gap: 16px;
                 align-items: start;
             }
         }
-        .wow-split-left, .wow-split-right { min-width: 0; }
+        .wow-split-left { min-width: 0; }
+        .wow-split-right {
+            min-width: 0;
+            max-height: 385px;
+            overflow-y: auto;
+            padding-right: 4px;
+            scrollbar-width: thin;
+            scrollbar-color: #334155 transparent;
+        }
+        .wow-split-right::-webkit-scrollbar {
+            width: 5px;
+        }
+        .wow-split-right::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .wow-split-right::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        .wow-split-right::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* Chuẩn hóa KaTeX 1.05em & chống ngắt dòng công thức ngắn */
+        .katex {
+            font-size: 1.05em !important;
+            white-space: nowrap !important;
+        }
+        .katex-display, .katex-display .katex {
+            white-space: normal !important;
+        }
 
         /* Interactive 60 FPS Physics Stage */
         
@@ -1827,7 +1860,7 @@
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 6px;
-            padding: 7px 11px;
+            padding: 5px 10px;
             background: #0f172a;
             border-bottom: 1px solid #1e293b;
         }
@@ -1883,8 +1916,8 @@
         }
         #wow-main-canvas {
             width: 100%;
-            max-width: 780px;
-            max-height: 264px;
+            max-width: 100%;
+            max-height: 238px;
             height: auto;
             aspect-ratio: 780 / 305;
             object-fit: contain;
@@ -2001,9 +2034,9 @@
             .wow-tf-row { flex-direction: column; align-items: stretch; }
         }
         .wow-tf-stmt {
-            font-size: 13.5px;
-            color: #f1f5f9;
-            line-height: 1.48;
+            font-size: 15px;
+            color: #f8fafc;
+            line-height: 1.45;
             flex: 1;
         }
         .wow-tf-toggle {
@@ -3132,11 +3165,6 @@
                     <button type="button" class="vstep-btn secondary" id="btn-prev" onclick="prevQuestion()">
                         <i class="fa-solid fa-arrow-left"></i> Câu trước (←)
                     </button>
-                    <div class="vstep-nav-center-hint">
-                        <button type="button" class="btn-subtle-shortcut" onclick="toggleShortcutsPopover(event)">
-                            <i class="fa-solid fa-keyboard" style="color:#38bdf8"></i> Phím tắt (← → A B C D Space)
-                        </button>
-                    </div>
                     <button type="button" class="vstep-btn primary-next" id="btn-next" onclick="nextQuestion()">
                         Câu tiếp (→) <i class="fa-solid fa-arrow-right"></i>
                     </button>
