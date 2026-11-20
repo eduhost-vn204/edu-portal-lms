@@ -26,6 +26,26 @@
   - Giữ nguyên khoảng đệm Navbar (78px–92px Desktop, 70px–82px Mobile) và chuẩn EdTech quốc tế phẳng, sắc nét.
   - Bảo toàn 100% logic Zero-Friction, lưu `localStorage`, bộ 50 đề THPTQG 2026 và Dual Auth Gate khi nộp bài.
 
+## Bàn giao gần nhất (20/11/2026 14:23)
+- **Đồng Bộ Tiêu Đề Câu Cả 3 Phần (I, II, III) Thành 'Câu 1' Tinh Gọn & Triển Khai Production (`danh-gia-nang-luc.html`)**:
+- **Mục tiêu**:
+  - Thực thi chỉ đạo của Thầy: *"Phần 2 và phần 3 cũng giống như vậy, làm lại xong rồi đẩy lên cho thầy luôn."*
+  - Đồng bộ tiêu đề câu cho toàn bộ 28 câu trong cả 3 phần:
+    - Phần I: `Câu 1` đến `Câu 18`.
+    - Phần II: `Câu 1` đến `Câu 4` (bỏ `/ 4`, bỏ badge `Phần II · Đúng / Sai thực nghiệm`, bỏ `(Tổng 19/28)`).
+    - Phần III: `Câu 1` đến `Câu 6` (bỏ `/ 6`, bỏ badge `Phần III · Trả lời ngắn`, bỏ `(Tổng 23/28)`).
+  - Giữ lại 100% các badge phân loại bên phải (`Chủ đề`, `Mức độ`, `Đánh dấu (F)`).
+- **Commit**: `2762691` (trên nhánh `feature/compact-dgnl-ux`).
+- **File đã sửa**: `danh-gia-nang-luc.html`, `PROJECT_STATE.md`.
+- **Hành vi mới**:
+  - Toàn bộ các câu hỏi trong 3 phần đều hiển thị thanh thoát: **`Câu 1`**, **`Câu 2`**, v.v. theo số thứ tự của phần đó.
+  - Chuẩn One-Frame Zero-Scroll được củng cố vượt trội: chiều cao khung làm bài trên Laptop 1536×730 đạt `<= 613.8px <= 730px` ở tất cả 28 câu.
+- **Kiểm tra đã chạy**:
+  - Playwright E2E (`pw_verify_dgnl_part_numbering.py`): Checklist 1B (Phần I), 1C (Phần II) và Checklist 2 (Phần III) đều PASS 100% với tiêu đề sạch `Câu 1`.
+  - Student regression test suites: 8/8 CRO Funnel, Diagnostic Loop, Remedial, Wrong Bank PASS 100%.
+- **Trạng thái deploy**:
+  - Đã merge vào `main` và push lên cả `origin/main` (`vatly-xuantruong`) và `upstream/main` (`edu-portal-lms`).
+
 ## Bàn giao gần nhất (20/11/2026 12:20)
 - **Rút Gọn Tiêu Đề Câu Phần I Thành 'Câu 1' .. 'Câu 18' Tinh Gọn Chuẩn Đề Thi Thật (`danh-gia-nang-luc.html`)**:
 - **Mục tiêu**:
