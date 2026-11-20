@@ -500,7 +500,9 @@
         }
         .vstep-num-pill {
             flex-shrink: 0 !important;
-            width: 26px !important;
+            min-width: 28px !important;
+            width: auto !important;
+            padding: 0 4px !important;
             height: 22px !important;
             border-radius: 6px !important;
             background: rgba(255, 255, 255, 0.06) !important;
@@ -3146,12 +3148,12 @@
                         </button>
                         <button type="button" class="wow-part-tab" id="wow-part-tab-2" onclick="jumpToPart(2)">
                             <span class="wow-part-tag">PHẦN II</span>
-                            <span class="wow-part-name">Đúng/Sai (19–22)</span>
+                            <span class="wow-part-name">Đúng/Sai (1–4)</span>
                             <span class="wow-part-sub">· 4,0đ</span>
                         </button>
                         <button type="button" class="wow-part-tab" id="wow-part-tab-3" onclick="jumpToPart(3)">
                             <span class="wow-part-tag">PHẦN III</span>
-                            <span class="wow-part-name">Trả lời ngắn (23–28)</span>
+                            <span class="wow-part-name">Trả lời ngắn (1–6)</span>
                             <span class="wow-part-sub">· 1,5đ</span>
                         </button>
                     </div>
@@ -4156,6 +4158,88 @@
             return 3;
         }
 
+        
+        function getQuestionPartInfo(idx) {
+            if (!questions || !questions[idx]) {
+                return { part: 1, partRoman: 'I', partName: 'Trắc nghiệm', partQNum: idx + 1, totalInPart: 18, globalIdx: idx + 1, totalGlobal: (questions ? questions.length : 28) };
+            }
+            var q = questions[idx];
+            var part = Number(q.part || (idx < 18 ? 1 : (idx < 22 ? 2 : 3)));
+            
+            var partQNum = 1;
+            var totalInPart = 0;
+            for (var i = 0; i < questions.length; i++) {
+                var qi = questions[i];
+                var p = Number(qi.part || (i < 18 ? 1 : (i < 22 ? 2 : 3)));
+                if (p === part) {
+                    totalInPart++;
+                    if (i < idx) {
+                        partQNum++;
+                    }
+                }
+            }
+            
+            var partRoman = part === 1 ? 'I' : (part === 2 ? 'II' : 'III');
+            var partName = part === 1 ? 'Trắc nghiệm' : (part === 2 ? 'Đúng / Sai' : 'Trả lời ngắn');
+            
+            return {
+                part: part,
+                partRoman: partRoman,
+                partName: partName,
+                partQNum: partQNum,
+                totalInPart: totalInPart,
+                globalIdx: idx + 1,
+                totalGlobal: questions.length
+            };
+        }
+
+        function getClusterQuestionsInfo(idx) {
+            if (!questions || !questions[idx]) return null;
+            var q = questions[idx];
+            if (!q.deBaiChung || !String(q.deBaiChung).trim()) return null;
+            
+            var pInfo = getQuestionPartInfo(idx);
+            var targetText = String(q.deBaiChung).replace(/<[^>]*>?/g, '').replace(/\s+/g, ' ').trim();
+            var clusterPartQNums = [];
+            var clusterGlobalNums = [];
+            
+            for (var i = 0; i < questions.length; i++) {
+                var qi = questions[i];
+                if (!qi || !qi.deBaiChung) continue;
+                var qiText = String(qi.deBaiChung).replace(/<[^>]*>?/g, '').replace(/\s+/g, ' ').trim();
+                if (qiText === targetText || (targetText.length > 30 && qiText.indexOf(targetText.substring(0, 30)) !== -1)) {
+                    var qiInfo = getQuestionPartInfo(i);
+                    if (qiInfo.part === pInfo.part) {
+                        clusterPartQNums.push(qiInfo.partQNum);
+                        clusterGlobalNums.push(i + 1);
+                    }
+                }
+            }
+            
+            clusterPartQNums.sort(function(a, b) { return a - b; });
+            clusterGlobalNums.sort(function(a, b) { return a - b; });
+            
+            var label = '';
+            if (clusterPartQNums.length === 1) {
+                label = 'Dùng cho Câu ' + clusterPartQNums[0] + ' – Phần ' + pInfo.partRoman;
+            } else if (clusterPartQNums.length === 2) {
+                label = 'Dùng cho Câu ' + clusterPartQNums[0] + ' và Câu ' + clusterPartQNums[1] + ' – Phần ' + pInfo.partRoman;
+            } else if (clusterPartQNums.length > 2) {
+                label = 'Dùng cho Câu ' + clusterPartQNums[0] + ' đến Câu ' + clusterPartQNums[clusterPartQNums.length - 1] + ' – Phần ' + pInfo.partRoman;
+            } else {
+                label = 'Dùng cho cụm câu hỏi Phần ' + pInfo.partRoman;
+            }
+            
+            return {
+                part: pInfo.part,
+                partRoman: pInfo.partRoman,
+                partName: pInfo.partName,
+                partQNums: clusterPartQNums,
+                globalNums: clusterGlobalNums,
+                label: label
+            };
+        }
+
         function renderSidebarLessons() {
             var chapSlots = [
                 document.getElementById('sidebar-chap-1'),
@@ -4179,7 +4263,9 @@
                 var plainQ = String(q.question || '').replace(/<[^>]*>?/gm, ' ').replace(/\$[^$]*\$/g, '...').replace(/\s+/g, ' ').trim();
                 var shortTitle = plainQ.substring(0, 26);
                 var modelIcon = q.modelId ? ' 🎬' : '';
-                item.innerHTML = '<div class="vstep-num-pill">C' + (idx + 1) + '</div>' +
+                var pInfo = getQuestionPartInfo(idx);
+                var pillLabel = pInfo.partRoman + '.' + pInfo.partQNum;
+                item.innerHTML = '<div class="vstep-num-pill" title="Phần ' + pInfo.partRoman + ' · Câu ' + pInfo.partQNum + '">' + pillLabel + '</div>' +
                     '<div class="vstep-item-title">' + escHtml(shortTitle) + '...' + modelIcon + '</div>' +
                     '<div class="vstep-status-tag ' + (isAns ? 'done' : '') + '" id="side-tag-' + idx + '">' + (isAns ? '<i class="fa-solid fa-check"></i>' : '') + '</div>';
                 slot.appendChild(item);
@@ -4196,12 +4282,13 @@
             gridEl.innerHTML = '';
             var curPart = 0;
             questions.forEach(function(q, idx) {
-                var p = q.part || 1;
+                var pInfo = getQuestionPartInfo(idx);
+                var p = pInfo.part;
                 if (p !== curPart) {
                     curPart = p;
                     var sec = document.createElement('div');
                     sec.className = 'pal-sec-lbl';
-                    sec.textContent = p === 1 ? 'Phần I (Trắc nghiệm)' : (p === 2 ? 'Phần II (Đúng / Sai)' : 'Phần III (Trả lời ngắn)');
+                    sec.textContent = 'Phần ' + pInfo.partRoman + ' (' + pInfo.partName + ' · 1–' + pInfo.totalInPart + ')';
                     gridEl.appendChild(sec);
                 }
                 var isAns = isQuestionAnswered(q, idx);
@@ -4212,7 +4299,8 @@
                     (isAns ? ' answered' : '') +
                     (q.modelId ? ' has-model' : '') +
                     (flaggedQuestions[idx] ? ' flagged' : '');
-                btn.textContent = idx + 1;
+                btn.textContent = pInfo.partQNum;
+                btn.title = 'Phần ' + pInfo.partRoman + ' - Câu ' + pInfo.partQNum + ' (Đề câu ' + (idx + 1) + ')';
                 btn.onclick = function() {
                     goToQuestion(idx);
                     if (closeMobileOnPick) toggleMobilePaletteDrawer(false);
@@ -4311,13 +4399,17 @@
             var container = document.getElementById('question-card-container');
             if (!container) return;
 
-            var partNum = q.part || 1;
+            var pInfo = getQuestionPartInfo(idx);
+            var partNum = pInfo.part;
             updatePartTabsUI(partNum);
 
             var partTagLabel = partNum === 1 ? 'Phần I · Trắc nghiệm 4 lựa chọn' : (partNum === 2 ? 'Phần II · Đúng / Sai thực nghiệm' : 'Phần III · Trả lời ngắn');
             var stageHtml = buildWowStageHtml(q);
+            
+            var clusterInfo = getClusterQuestionsInfo(idx);
+            var clusterTagText = clusterInfo ? ('Đề bài chung (' + clusterInfo.label + ')') : ('Đề bài chung (Dùng cho cụm câu hỏi Phần ' + pInfo.partRoman + ')');
             var ctxHtml = q.deBaiChung
-                ? '<div class="wow-cluster-context"><div class="wow-cluster-tag"><i class="fa-solid fa-book-open"></i> Đề bài chung (Dùng cho cụm câu hỏi Phần III)</div><div>' + fixFormulaStrings(stripModelSlotTags(q.deBaiChung)) + '</div></div>'
+                ? '<div class="wow-cluster-context"><div class="wow-cluster-tag"><i class="fa-solid fa-book-open"></i> ' + escHtml(clusterTagText) + '</div><div>' + fixFormulaStrings(stripModelSlotTags(q.deBaiChung)) + '</div></div>'
                 : '';
             var qStemHtml = fixFormulaStrings(stripModelSlotTags(q.question || ''));
 
@@ -4387,8 +4479,9 @@
             container.innerHTML =
                 '<div class="vstep-q-header" style="flex-wrap:wrap;gap:8px">' +
                     '<div class="vstep-q-title">' +
-                        '<i class="fa-solid fa-file-pen" style="color:#38bdf8"></i> Câu ' + (idx + 1) + ' / ' + questions.length +
+                        '<i class="fa-solid fa-file-pen" style="color:#38bdf8"></i> Câu ' + pInfo.partQNum + ' / ' + pInfo.totalInPart +
                         '<span style="font-size:11.5px;font-weight:700;color:#94a3b8;background:rgba(255,255,255,0.06);padding:2px 8px;border-radius:6px">' + partTagLabel + '</span>' +
+                        '<span style="font-size:11px;font-weight:600;color:#64748b;margin-left:4px" title="Thứ tự câu trong toàn bộ đề thi">(Tổng ' + (idx + 1) + '/' + questions.length + ')</span>' +
                     '</div>' +
                     '<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">' +
                         '<span class="vstep-badge topic">' + escHtml(q.topic) + '</span>' +
@@ -5135,7 +5228,9 @@
             questions.forEach(function(q, idx) {
                 var isWrong = wrongIndices.indexOf(idx) !== -1;
                 var qStemClean = fixFormulaStrings(stripModelSlotTags(q.question || ''));
-                var qCtxClean = q.deBaiChung ? '<div class="wow-cluster-context" style="margin-bottom:10px">' + fixFormulaStrings(stripModelSlotTags(q.deBaiChung)) + '</div>' : '';
+                var rClusterInfo = getClusterQuestionsInfo(idx);
+                var rClusterTag = rClusterInfo ? ('Đề bài chung (' + rClusterInfo.label + ')') : 'Đề bài chung';
+                var qCtxClean = q.deBaiChung ? '<div class="wow-cluster-context" style="margin-bottom:10px"><div class="wow-cluster-tag"><i class="fa-solid fa-book-open"></i> ' + escHtml(rClusterTag) + '</div><div>' + fixFormulaStrings(stripModelSlotTags(q.deBaiChung)) + '</div></div>' : '';
                 var qExplainClean = fixFormulaStrings(q.explain || 'Xem lại kiến thức trọng tâm tương ứng trong bài giảng.');
 
                 var ansBlocks = '';
@@ -5182,7 +5277,7 @@
                 item.innerHTML =
                     '<div class="review-q-top" style="flex-wrap:wrap;gap:8px">' +
                         '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">' +
-                            '<span style="font-weight:800;color:#fff;">Câu ' + (idx + 1) + ':</span>' +
+                            '<span style="font-weight:800;color:#fff;">Phần ' + getQuestionPartInfo(idx).partRoman + ' · Câu ' + getQuestionPartInfo(idx).partQNum + ' <span style="font-size:11.5px;color:#94a3b8;font-weight:600">(Đề câu ' + (idx + 1) + '):</span></span>' +
                             '<span class="vstep-badge topic">' + escHtml(q.topic) + '</span>' +
                             replayBtn +
                         '</div>' +
