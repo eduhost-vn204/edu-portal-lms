@@ -26,6 +26,25 @@
   - Giữ nguyên khoảng đệm Navbar (78px–92px Desktop, 70px–82px Mobile) và chuẩn EdTech quốc tế phẳng, sắc nét.
   - Bảo toàn 100% logic Zero-Friction, lưu `localStorage`, bộ 50 đề THPTQG 2026 và Dual Auth Gate khi nộp bài.
 
+## Bàn giao gần nhất (20/11/2026 12:20)
+- **Rút Gọn Tiêu Đề Câu Phần I Thành 'Câu 1' .. 'Câu 18' Tinh Gọn Chuẩn Đề Thi Thật (`danh-gia-nang-luc.html`)**:
+- **Mục tiêu**:
+  - Thực thi chỉ đạo của Thầy: *"Sửa lại cho thầy ở chỗ câu 1-18 trong phần 1 trắc nghiệm. theo 1. Nhưng bỏ Phần I · Trắc nghiệm 4 lựa chọn"*.
+  - Rút gọn tiêu đề câu ở Phần I chỉ còn: `Câu 1`, `Câu 2`, ..., `Câu 18` (bỏ hậu tố `/ 18`, bỏ badge `Phần I · Trắc nghiệm 4 lựa chọn`, bỏ nhãn `(Tổng 1/28)`).
+  - Giữ lại đầy đủ các badge chủ đề (`VẬT LÍ NHIỆT`,...), độ khó (`TH`, `NB`,...) và nút `Đánh dấu (F)` bên phải.
+  - Phần II và Phần III vẫn hiển thị đầy đủ thông tin chuẩn hóa theo cấu trúc Bộ.
+- **Commit**: `37c2cd4` (trên nhánh `feature/compact-dgnl-ux`).
+- **File đã sửa**: `danh-gia-nang-luc.html`, `PROJECT_STATE.md`.
+- **Hành vi mới**:
+  - Khi học sinh làm bài ở Phần I: Tiêu đề câu cực kỳ thanh thoát và tinh gọn: **`Câu 1`** (hoặc `Câu 2` .. `Câu 18`), không còn các hậu tố và nhãn thừa gây rối mắt.
+  - Chiều cao khung làm bài tại Câu 1 rút xuống chỉ còn **`594.7px <= 730px`**, không gian thoáng đãng, tập trung tối đa vào câu hỏi và mô hình Canvas 60 FPS.
+- **Kiểm tra đã chạy**:
+  - Playwright E2E (`pw_verify_dgnl_part_numbering.py`): Checklist 1B PASS 100% (`Q1 Title: 'Câu 1'`).
+  - Playwright Typography (`pw_verify_dgnl_typography.py`): ALL 6 CHECKLIST TESTS PASSED 100%.
+  - Student regression test suites: 8/8 CRO Funnel, Diagnostic Loop, Remedial, Wrong Bank PASS 100%.
+- **Trạng thái deploy**:
+  - Sẵn sàng push lên `origin/main` (`vatly-xuantruong`) và `upstream/main` (`edu-portal-lms`).
+
 ## Bàn giao gần nhất (20/11/2026 09:55)
 - **Chuẩn Hóa Đánh Số Đề Thi Theo Từng Phần Chuẩn Bộ GD&ĐT (1–18, 1–4, 1–6) & Hiển Thị Đích Danh Cụm Câu Hỏi Ghép (`danh-gia-nang-luc.html`) (Cục Bộ / Local)**:
 - **Mục tiêu**:
