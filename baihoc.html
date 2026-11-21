@@ -2614,6 +2614,138 @@
         .vstep-quiz-wrap .vstep-data-table tbody tr:nth-child(even) { background: #131c31; }
         .vstep-quiz-wrap .vstep-data-table tbody tr:hover { background: #1e293b; }
 
+        /* Câu hỏi tương tác trong video (ngay dưới video trong .vstep-main-stream) — phẳng, sắc nét, không AI glow */
+        .vstep-main-stream .vq-panel {
+            margin: 18px 0 24px;
+            background: #0f172a;
+            border: 1.5px solid #0284c7;
+            border-radius: 14px;
+            color: #f1f5f9;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+            overflow: hidden;
+        }
+        .vstep-main-stream .vq-panel.vq-reminder {
+            border-color: #10b981;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+        }
+        .vstep-main-stream .vq-head {
+            background: #13203d;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px 18px;
+        }
+        .vstep-main-stream .vq-panel.vq-reminder .vq-head {
+            background: rgba(16, 185, 129, 0.12);
+        }
+        .vstep-main-stream .vq-badge {
+            background: #0284c7;
+            color: #ffffff;
+        }
+        .vstep-main-stream .vq-badge-done {
+            background: #10b981;
+            color: #022c22;
+        }
+        .vstep-main-stream .vq-time-tag {
+            color: #94a3b8;
+            font-size: 12.5px;
+        }
+        .vstep-main-stream .vq-body {
+            padding: 18px 20px;
+        }
+        .vstep-main-stream .vq-panel .pq-text,
+        .vstep-main-stream .vq-panel .pq-text p {
+            color: #f8fafc !important;
+            font-size: 15.5px !important;
+            line-height: 1.65 !important;
+        }
+        .vstep-main-stream .vq-panel .pq-opt {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 16px;
+        }
+        .vstep-main-stream .vq-panel .pq-opt:hover {
+            border-color: #38bdf8;
+            background: rgba(56, 189, 248, 0.08);
+            color: #ffffff;
+        }
+        .vstep-main-stream .vq-panel .pq-opt .pq-letter {
+            color: #38bdf8;
+            font-weight: 800;
+        }
+        .vstep-main-stream .vq-panel .pq-opt.vq-right,
+        .vstep-main-stream .vq-panel .pq-opt.result-correct {
+            border-color: #10b981 !important;
+            background: rgba(16, 185, 129, 0.16) !important;
+            color: #dcfce7 !important;
+        }
+        .vstep-main-stream .vq-panel .pq-opt.vq-right .pq-letter,
+        .vstep-main-stream .vq-panel .pq-opt.result-correct .pq-letter {
+            color: #34d399 !important;
+        }
+        .vstep-main-stream .vq-panel .pq-opt.vq-wrong,
+        .vstep-main-stream .vq-panel .pq-opt.result-wrong {
+            border-color: #ef4444 !important;
+            background: rgba(239, 68, 68, 0.16) !important;
+            color: #fee2e2 !important;
+        }
+        .vstep-main-stream .vq-panel .pq-opt.vq-wrong .pq-letter,
+        .vstep-main-stream .vq-panel .pq-opt.result-wrong .pq-letter {
+            color: #f87171 !important;
+        }
+        .vstep-main-stream .vq-panel .pq-tf-row {
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            background: rgba(255, 255, 255, 0.03) !important;
+            color: #cbd5e1 !important;
+            border-radius: 8px !important;
+            padding: 10px 14px !important;
+            margin-bottom: 8px;
+        }
+        .vstep-main-stream .vq-panel .pq-tf-stmt { color: #e2e8f0 !important; }
+        .vstep-main-stream .vq-panel .pq-tf-btn { color: #e2e8f0 !important; }
+        .vstep-main-stream .vq-panel .pq-tf-row .pq-letter { color: #94a3b8 !important; }
+        .vstep-main-stream .vq-panel .pq-tf-instruction { color: #94a3b8 !important; }
+        .vstep-main-stream .vq-panel .pq-tf-row.result-correct {
+            border-color: #10b981 !important;
+            background: rgba(16, 185, 129, 0.14) !important;
+        }
+        .vstep-main-stream .vq-panel .pq-tf-row.result-wrong {
+            border-color: #ef4444 !important;
+            background: rgba(239, 68, 68, 0.14) !important;
+        }
+        .vstep-main-stream .vq-panel .pq-tf-row.result-correct .pq-tf-stmt { color: #dcfce7 !important; }
+        .vstep-main-stream .vq-panel .pq-tf-row.result-wrong .pq-tf-stmt { color: #fee2e2 !important; }
+        .vstep-main-stream .vq-panel .pq-short-wrap { color: #e2e8f0; }
+        .vstep-main-stream .vq-panel .pq-short-input {
+            background: #0b1120;
+            border: 1.5px solid #334155;
+            color: #f8fafc;
+        }
+        .vstep-main-stream .vq-panel .pq-short-input:focus { border-color: #38bdf8; }
+        .vstep-main-stream .vq-panel .pq-short-input.result-correct {
+            border-color: #10b981 !important;
+            background: rgba(16, 185, 129, 0.14) !important;
+            color: #34d399 !important;
+        }
+        .vstep-main-stream .vq-panel .pq-short-input.result-wrong {
+            border-color: #ef4444 !important;
+            background: rgba(239, 68, 68, 0.14) !important;
+            color: #f87171 !important;
+        }
+        .vstep-main-stream .vq-panel .vstep-data-panel { background: #0b1120; border-color: #334155; color: #e2e8f0; }
+        .vstep-main-stream .vq-panel .vstep-data-title { color: #38bdf8; }
+        .vstep-main-stream .vq-panel .vstep-data-table { background: #0f172a; color: #e2e8f0; }
+        .vstep-main-stream .vq-panel .vstep-data-table th,
+        .vstep-main-stream .vq-panel .vstep-data-table td { border-color: #334155; }
+        .vstep-main-stream .vq-panel .vstep-data-table th { background: #1e293b; color: #cbd5e1; }
+        .vstep-main-stream .vq-panel .vstep-data-table tbody tr:nth-child(even) { background: #131c31; }
+        .vstep-main-stream .vq-foot {
+            background: #0b1120;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            color: #cbd5e1;
+            padding: 12px 18px;
+        }
+
         .vstep-quiz-wrap .pq-tf-row {
             border: 1px solid rgba(255, 255, 255, 0.1) !important;
             background: rgba(255, 255, 255, 0.03) !important;
@@ -5130,7 +5262,10 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
         <h2 id="sec-video"><span class="vstep-h2-badge">I</span> Video Bài Giảng Của Thầy</h2>
         <div class="vstep-video-wrap">
             ${videoTabsHtml || `<div class="video-box">${videoHtml}</div>`}
-        </div>`;
+        </div>
+        <div id="vq-holder-anchor"></div>
+        <div id="vq-holder">${opts.liveChatHtml || ''}</div>
+        ${opts.isLive ? '<div id="cungthay-holder"></div>' : ''}`;
 
         // Khối tải nhanh PDF tài liệu bài học (Lý thuyết / Bài tập / Luyện tập thêm)
         if(lesson.pdflt || lesson.pdf || lesson.pdfluyentap){
@@ -6118,10 +6253,10 @@ async function renderLiveLesson(){
 
     app().classList.add('wide-lesson');
     app().innerHTML = buildUnifiedVstepCourse(course, chapter, lesson, key, {
-        videoHtml,
+        videoHtml: liveVideoHtml,
         videoTabsHtml,
-        simCardHtml,
-        _hasSim,
+        simCardHtml: '',
+        _hasSim: false,
         flat,
         idx,
         prev,
@@ -6129,7 +6264,9 @@ async function renderLiveLesson(){
         done,
         _doneLabel,
         _hasQuiz,
-        _lessonSessionNum: _lsn_session
+        _lessonSessionNum: _lsn_session,
+        liveChatHtml,
+        isLive: true
     });
     // Mount trắc nghiệm vào đúng vị trí của dòng bài học nếu có quiz
     const quizMount = document.getElementById('vstep-quiz-mount');
@@ -6796,9 +6933,11 @@ function _vqPositionHolder(){
     const anchor = document.getElementById('vq-holder-anchor');
     const sideWrap = document.getElementById('side-list-wrap');
     if(!holder || !anchor) return;
-    if(window.innerWidth <= 900){
+    if(!sideWrap){
         if(holder.previousElementSibling !== anchor) anchor.insertAdjacentElement('afterend', holder);
-    } else if(sideWrap && holder.nextElementSibling !== sideWrap){
+    } else if(window.innerWidth <= 900){
+        if(holder.previousElementSibling !== anchor) anchor.insertAdjacentElement('afterend', holder);
+    } else if(holder.nextElementSibling !== sideWrap){
         sideWrap.insertAdjacentElement('beforebegin', holder);
     }
     _applySidebarTabDisplay();
@@ -7096,7 +7235,7 @@ function _vqShowReminder(i){
         </div>
     </div>`;
     renderMath(holder);
-    if(window.innerWidth <= 900) setTimeout(function(){ holder.scrollIntoView({behavior:'smooth', block:'center'}); }, 150);
+    setTimeout(function(){ try { holder.scrollIntoView({behavior:'smooth', block:'nearest'}); } catch(e){} }, 120);
     clearTimeout(_vqReminderTimer); _vqReminderTimer = null; // không còn timer tự-phát-tiếp: HS phải tự bấm hoặc tự play video
 }
 
@@ -7165,7 +7304,7 @@ function _vqShow(i){
         <div class="vq-foot" id="vq-foot"><i class="fa-solid fa-lock" style="color:var(--blue)"></i> Video tạm dừng — trả lời đúng để xem thầy chữa câu này nhé!</div>
     </div>`;
     renderMath(holder);
-    if(window.innerWidth <= 900) setTimeout(function(){ holder.scrollIntoView({behavior:'smooth', block:'center'}); }, 150);
+    setTimeout(function(){ try { holder.scrollIntoView({behavior:'smooth', block:'nearest'}); } catch(e){} }, 120);
 }
 
 /* Khoá + chuyển tiếp video khi trả lời đúng — dùng chung cho cả 3 loại câu (mc/tf/short) */
