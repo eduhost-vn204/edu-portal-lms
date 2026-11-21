@@ -1,3 +1,28 @@
+## Bàn giao gần nhất (21/11/2026 16:15)
+- **Rà Soát, Chuẩn Hóa Toàn Bộ 26 Bài Lý Thuyết Trọng Tâm (`data/theories_data.json`, `data/bundle_theories.js`, `baihoc.html`) (Nhánh Cục Bộ `codex/audit-theories-26-lessons`)**:
+- **Mục tiêu & Các lỗi đã khắc phục**:
+  1. Đối chiếu toàn bộ 26 file `Ban Lí thuyết.docx` với 24 bộ `teaching-decks` (`GD1_CH01..CH04`) và rà soát kiến thức vật lý từng bài:
+     - **Sửa lỗi phân cấp mục (Hierarchy) ở Bài 9 và toàn bộ 26 bài**: Tách đúng 3 bậc (`Heading 1` → `Heading 2` đánh số tuần tự → nội dung `Normal` / `orderedItems <ol>` / `bullets <ul>`), loại bỏ triệt để tình trạng ý con `1, 2, 3` bị đẩy ngang cấp với tiêu đề mục lớn (`[1, 2, 1, 2, 3, 3, 4]` ở Bài 9).
+     - **Khôi phục đầy đủ `Bảng Công Thức Cần Nhớ` cho cả 26 bài** (trước đây 24/26 bài bị rỗng và sai chính tả thành `Ii. Bảng Công Thức Cần Nhớ`), bổ sung Bảng so sánh 3 thể (Bài 1), Bảng công thức chuyển thể (Bài 2), và Công thức tổng quát hai thang đo nhiệt độ (Bài 3).
+     - **Chuẩn hóa KaTeX & Ký hiệu Vật lý**: Loại bỏ `0` biến có gạch dưới `_` đứng trần ngoài `$...$`, chuẩn hóa $\overline{v^2}$ ở Bài 15, $10^{23}\text{ mol}^{-1}$, phân số đứng `\frac{}{}`, chỉ số hạt nhân $^{A}_{Z}\text{X}$, phương trình phóng xạ $2^{-t/T}$.
+     - **Dọn rác nguồn Word**: Xóa ghi chú nội bộ `"Vẽ lại thể hiện cho đúng ý kiên thức đang mô tả hơn"` ở Bài 6 và đoạn dấu `.` thừa ở Bài 4.
+     - **Cập nhật hiển thị trên `baihoc.html`**: Thêm `ol.vstep-ol`, `.vstep-sec-subh2` (phẳng sắc nét, 0 AI Glow), helper `renderTheoryTable()`, bỏ tiền tố `II. ` trùng lặp trong mục con ở Mục lục bài học.
+- **Commit & File đã sửa**:
+  - **Worktree `publish_lesson_16_17` — Branch `codex/audit-theories-26-lessons` (CHƯA merge/push `main`)**:
+    - `data/theories_data.json`: Tái cấu trúc sạch toàn bộ 26 bài (`B1..B6, B9..B15, B21..B28, B31..B35`), giữ nguyên `B7, B8, B16, B17` (Tổng ôn dùng PDF Viewer).
+    - `data/bundle_theories.js`: Cập nhật bundle khớp `theories_data.json`.
+    - `baihoc.html`: Render `orderedItems`, `tables`, `.vstep-sec-subh2` và CSS `.vstep-ol`.
+    - `PROJECT_STATE.md`: Cập nhật bàn giao gần nhất.
+- **Kiểm tra đã chạy**:
+  - Structural & Hierarchy audit (`theories_data.json`): **26/26 bài PASS** (0 lỗi phân cấp, 0 lỗi `Ii.`, 0 biến `_` thô ngoài math mode, 0 ghi chú nội bộ).
+  - Node syntax & AST check: `node --check data/bundle_theories.js` PASS, `baihoc.html` (3 inline scripts, `</html>`) PASS, `git diff --check` 0 lỗi.
+  - Playwright Chromium + KaTeX 0.16.9: Kiểm tra B9, B1, B15 và quét toàn bộ 26 bài: **0 lỗi KaTeX**, 0 lỗi console JS.
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên B7, B8, B16, B17 không nằm trong `_THEORIES_DATA` để hiển thị trực tiếp PDF Viewer `PDFLyThuyet`.
+  - Giữ nguyên giao diện sáng chuẩn Bộ của `phong-thi-thu.html` và quy tắc 0 AI Glow.
+- **Việc còn lại**:
+  - Chờ Thầy xem và duyệt trên nhánh `codex/audit-theories-26-lessons` trước khi merge vào `main` và đẩy lên production.
+
 ## Bàn giao gần nhất (21/11/2026 15:11)
 - **Khôi Phục Tính Năng Câu Hỏi Tương Tác Trong Video Lý Thuyết Trên Giao Diện Mới (`baihoc.html` - Phương án 1)**:
 - **Mục tiêu**:

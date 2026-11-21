@@ -2098,6 +2098,31 @@
             line-height: 1.7 !important;
         }
         .vstep-main-stream ul li { margin-bottom: 8px !important; }
+        .vstep-main-stream ol.vstep-ol {
+            padding-left: 22px !important;
+            margin: 10px 0 18px !important;
+            color: #e2e8f0 !important;
+            font-size: 15px !important;
+            line-height: 1.72 !important;
+        }
+        .vstep-main-stream ol.vstep-ol li {
+            margin-bottom: 10px !important;
+            padding-left: 4px !important;
+        }
+        .vstep-main-stream ol.vstep-ol li::marker {
+            color: #38bdf8 !important;
+            font-weight: 700 !important;
+        }
+        .vstep-sec-subh2 {
+            color: #10b981 !important;
+            font-size: 17.5px !important;
+            font-weight: 800 !important;
+            margin-top: 28px !important;
+            margin-bottom: 12px !important;
+            padding-bottom: 8px !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+            scroll-margin-top: 80px !important;
+        }
 
         /* Callout mẹo & lưu ý */
         .edoc-callout {
@@ -5289,10 +5314,22 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
     tocItems.push({ id: 'sec-theory', title: `${secNumRoman}. Lý Thuyết Trọng Tâm` });
     stream += `<h2 id="sec-theory"><span class="vstep-h2-badge">${secNumRoman}</span> Lý Thuyết Trọng Tâm</h2>`;
 
+    const renderTheoryTable = (tbl) => {
+        if(!tbl || !tbl.rows || !tbl.rows.length) return '';
+        const thead = (tbl.headers && tbl.headers.length)
+            ? `<thead><tr>${tbl.headers.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead>`
+            : '';
+        const tbody = `<tbody>${tbl.rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>`;
+        return `<div class="edoc-table-wrap"><table class="edoc-table">${thead}${tbody}</table></div>`;
+    };
+
     if(thData && thData.sections && thData.sections.length){
         thData.sections.forEach((sec, si) => {
             if(sec.title && !sec.title.startsWith('I.')){
-                stream += `<h3 style="color:#38bdf8;margin-top:20px">${esc(sec.title)}</h3>`;
+                const secId = `sec-part-${si}`;
+                const cleanSecTitle = sec.title.replace(/^[IVX]+\.\s*/i, '').trim();
+                tocItems.push({ id: secId, title: cleanSecTitle, isSub: true });
+                stream += `<h3 id="${secId}" class="vstep-sec-subh2">${esc(cleanSecTitle)}</h3>`;
             }
             (sec.subsections || []).forEach((sub, subi) => {
                 const subId = `sec-sub-${si}-${subi}`;
@@ -5311,10 +5348,19 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
                         stream += `<p>${pText}</p>`;
                     }
                 });
+                if(sub.orderedItems && sub.orderedItems.length){
+                    stream += `<ol class="vstep-ol">${sub.orderedItems.map(item => `<li>${item}</li>`).join('')}</ol>`;
+                }
                 if(sub.bullets && sub.bullets.length){
                     stream += `<ul>${sub.bullets.map(b => `<li>${b}</li>`).join('')}</ul>`;
                 }
+                if(sub.tables && sub.tables.length){
+                    stream += sub.tables.map(renderTheoryTable).join('');
+                }
             });
+            if(sec.tables && sec.tables.length){
+                stream += sec.tables.map(renderTheoryTable).join('');
+            }
         });
     } else if(lesson.pdflt){
         const idLt = driveId(lesson.pdflt);
