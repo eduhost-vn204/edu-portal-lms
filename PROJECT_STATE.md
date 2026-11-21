@@ -1,3 +1,26 @@
+## Bàn giao gần nhất (21/11/2026 21:00)
+- **Sửa Triệt Để Lỗi Khóa "5 Ngày Lấy Gốc Vật Lí" Bị Nhận Nhầm Sang Bài Học GĐ1 (`baihoc.html`)**:
+- **Mục tiêu**:
+  1. Khắc phục triệt để nguyên nhân khiến toàn bộ khóa `5 NGÀY LẤY GỐC VẬT LÍ` hiển thị sai tiêu đề, tên bài ở Sidebar, dẫn nhập, mục tiêu và nội dung lý thuyết từ GĐ1 (ví dụ Ngày 1 `B04ff6fe289da` bị đổi thành Bài 4 Nhiệt dung riêng; Ngày 4 `B10d7ae6a0fb6` bị đổi thành B10; Ngày 5 `B9ed0f81f82f5` bị đổi thành B9):
+     - **Nguyên nhân gốc rễ**: Hàm `getLessonNumber(lesson)` dùng `(lesson.mabai || '').match(/B(\d+)/i)` nên cắt trúng tiền tố hex của mã hash `MaBai` (ví dụ `B04` từ `B04ff6fe289da`) và ánh xạ nhầm vào `VLXT_LESSON_TITLES` / `_THEORIES_DATA` của GĐ1; đồng thời `buildLessonDocReader` kiểm tra `lesson.thutubai === 1` khiến Ngày 1 Lấy Gốc bị nhận nhầm là Bài 1 GĐ1.
+     - **Khắc phục**:
+       - Thêm `isGd1TheoryCourse(course, lesson)` và giới hạn `getLessonNumber(lesson, course)` chỉ trích xuất số bài cho khóa Lý thuyết GĐ1 (tuyệt đối không khớp tiền tố hash hex `^B[0-9a-f]{12}$`).
+       - Thêm `formatSmartTitleCase()` và `getCourseSidebarHeading(course)`: hiển thị đúng tiêu đề lộ trình `📚 LỘ TRÌNH 5 NGÀY LẤY GỐC VẬT LÍ` (cũng như GĐ2/GĐ3/GĐ4), nhãn `Ngày 1 / 5`..`Ngày 5 / 5`, pill `N1`..`N5` và đúng tên từng bài của khóa Lấy Gốc.
+       - Chỉ hiển thị mục `Lý Thuyết Trọng Tâm` khi bài thực sự có `_THEORIES_DATA` của đúng khóa GĐ1 hoặc có `lesson.pdflt` (nhúng đúng PDF Lý thuyết của Ngày 1–3, ẩn mục lý thuyết rỗng ở Ngày 4–5 chưa có PDF).
+       - Sửa `buildLessonDocReader()` bỏ điều kiện `lesson.thutubai === 1` để Ngày 1 Lấy Gốc hiển thị đúng PDF Lý thuyết riêng thay vì bản e-doc Bài 1 GĐ1.
+- **Commit & File đã sửa**:
+  - **Student Repo (`main`)**: Đã commit và push lên `origin/main` & `upstream/main`.
+    - `baihoc.html`: Sửa `buildLessonDocReader`, `isGd1TheoryCourse`, `getLessonNumber`, `formatSmartTitleCase`, `getCourseSidebarHeading`, `formatLessonDisplayTitle`, `getLessonH1Title` và `buildUnifiedVstepCourse`.
+    - `PROJECT_STATE.md`: Cập nhật bàn giao.
+- **Kiểm tra đã chạy**:
+  - AST Script Validation: 3/3 khối `<script>` inline đạt 0 lỗi cú pháp, kết thúc hợp lệ `</html>`, `git diff --check` sạch.
+  - Playwright E2E (`verify_lay_goc_fix.py`): PASS 100% cả 5 ngày khóa Lấy Gốc (`B04ff6fe289da`, `Be6fa0d8a7c89`, `B0962bb0d9791`, `B10d7ae6a0fb6`, `B9ed0f81f82f5`) và kiểm chứng hồi quy GĐ1 Bài 1 & Bài 4.
+  - Student regression suites: `test-quiz-merge` (6/6), `test-quiz-publish` (12/12), `test_cro_funnel` (8/8), `test_diagnostic_mastery_loop`, `test_remedial_and_prediction`, `test_wrong_bank` (8/8), `test-trial-soft-unlock` (22/22) PASS 100%.
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên cấu trúc giao diện VSTEP 3 cột của GĐ1, logic câu hỏi video tuần tự `#vq-holder`, giao diện CBT sáng của `phong-thi-thu.html`, bảng công thức lý thuyết và `vstep-ol` từ bản `016d2f3`.
+- **Việc còn lại**:
+  - Chờ Thầy F5 trang `vatlyxuantruong.io.vn/baihoc.html` kiểm tra khóa `5 NGÀY LẤY GỐC VẬT LÍ`.
+
 ## Bàn giao gần nhất (21/11/2026 16:15)
 - **Rà Soát, Chuẩn Hóa Toàn Bộ 26 Bài Lý Thuyết Trọng Tâm (`data/theories_data.json`, `data/bundle_theories.js`, `baihoc.html`) (Nhánh Cục Bộ `codex/audit-theories-26-lessons`)**:
 - **Mục tiêu & Các lỗi đã khắc phục**:

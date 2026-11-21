@@ -4867,7 +4867,7 @@ window.switchDocMode = function(mode){
 };
 
 function buildLessonDocReader(lesson, idLt){
-    const isLesson1 = (lesson.mabai === 'B1036d251af19' || lesson.thutubai === 1 || lesson.thutubai === '1' || (lesson.name && lesson.name.includes('B1.')));
+    const isLesson1 = (lesson.mabai === 'B1036d251af19' || (lesson.name && /^\s*B(?:ài)?\s*1(?:\b|[.:\s-])/i.test(lesson.name)));
     
     // Nếu chưa có bản Web Doc chuyên biệt: fallback hiển thị iframe PDF như cũ
     if(!isLesson1){
@@ -5039,11 +5039,48 @@ function buildLessonDocReader(lesson, idLt){
 
 
 // ── TRÌNH DỰNG GIAO DIỆN KHÓA HỌC 3 CỘT ĐỒNG NHẤT CHUẨN VSTEP OWL ──
-function getLessonNumber(lesson){
-    if(lesson.thutubai && !isNaN(lesson.thutubai)) return parseInt(lesson.thutubai, 10);
-    const m = (lesson.name || '').match(/B(?:ài)?\s*(\d+)/i) || (lesson.mabai || '').match(/B(\d+)/i);
+function isGd1TheoryCourse(course, lesson){
+    const cname = (course && course.name ? course.name : '').toUpperCase();
+    const lname = (lesson && lesson.name ? lesson.name : '').trim();
+    if(/^\s*NGÀY\s+\d+/i.test(lname)) return false;
+    if(cname){
+        if(cname.includes('LẤY GỐC') || cname.includes('GĐ2') || cname.includes('GĐ3') || cname.includes('GĐ4')) return false;
+        if(cname.includes('GĐ1') || cname.includes('LÝ THUYẾT')) return true;
+    }
+    return /^\s*B(?:ài)?\s*\d{1,2}\s*[.:\-–]/i.test(lname);
+}
+
+function getLessonNumber(lesson, course){
+    if(!lesson || !isGd1TheoryCourse(course, lesson)) return null;
+    const m = (lesson.name || '').match(/^\s*B(?:ài)?\s*(\d{1,2})(?:\b|[.:\-–])/i);
     if(m) return parseInt(m[1], 10);
+    if(lesson.ttb !== undefined && lesson.ttb !== null && !isNaN(lesson.ttb)) return parseInt(lesson.ttb, 10);
+    if(lesson.thutubai && !isNaN(lesson.thutubai)) return parseInt(lesson.thutubai, 10);
+    const mbM = (lesson.mabai || '').match(/^B(\d{1,2})$/i);
+    if(mbM) return parseInt(mbM[1], 10);
     return null;
+}
+
+function formatSmartTitleCase(name){
+    if(!name) return '';
+    if(name !== name.toUpperCase() && !/^Ngày\s+\d+\s*:/i.test(name)) return name;
+    // Chuyển phần chữ in hoa thành Title Case dễ đọc, giữ nguyên chữ số La Mã / tên riêng thông dụng
+    const acronyms = new Set(['SI', 'II', 'III', 'IV', 'ĐHPT', 'NĐLH', 'THPT', 'QG', 'P1', 'P2']);
+    return name.split(/(\s+)/).map(tok => {
+        if(!tok || /^\s+$/.test(tok)) return tok;
+        const clean = tok.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '');
+        if(acronyms.has(clean.toUpperCase())) return tok.toUpperCase();
+        return tok.toLowerCase().replace(/^([^\p{L}\p{N}]*)(\p{L})/u, (_, pre, ch) => pre + ch.toUpperCase());
+    }).join('');
+}
+
+function getCourseSidebarHeading(course){
+    const cname = (course && course.name ? course.name : '').toUpperCase();
+    if(cname.includes('LẤY GỐC')) return '📚 LỘ TRÌNH 5 NGÀY LẤY GỐC VẬT LÍ';
+    if(cname.includes('GĐ2')) return '📚 LỘ TRÌNH VẬT LÝ 12 — GĐ2';
+    if(cname.includes('GĐ3')) return '📚 LỘ TRÌNH VẬT LÝ 12 — GĐ3';
+    if(cname.includes('GĐ4')) return '📚 LỘ TRÌNH VẬT LÝ 12 — GĐ4';
+    return '📚 LỘ TRÌNH VẬT LÝ 12 — GĐ1';
 }
 
 // Bản đồ Title Case chuẩn Docusaurus / Vstep Owl cho toàn bộ khóa học
@@ -5106,35 +5143,28 @@ function formatChapterTitle(name){
     return VLXT_CHAPTER_TITLES[name] || name;
 }
 
-function formatLessonDisplayTitle(lesson){
-    const lNum = getLessonNumber(lesson);
+function formatLessonDisplayTitle(lesson, course){
+    const lNum = getLessonNumber(lesson, course);
     if(lNum && VLXT_LESSON_TITLES[lNum]) {
         return VLXT_LESSON_TITLES[lNum].short;
     }
-    let name = lesson.name || '';
-    if(name === name.toUpperCase()){
-        name = name.toLowerCase().replace(/(^|[\s+&–-])\S/g, function(l){ return l.toUpperCase(); });
-    }
-    return name;
+    return formatSmartTitleCase(lesson.name || '');
 }
 
-function getLessonH1Title(lesson, thData){
-    const lNum = getLessonNumber(lesson);
+function getLessonH1Title(lesson, thData, course){
+    const lNum = getLessonNumber(lesson, course);
     if(lNum && VLXT_LESSON_TITLES[lNum]) {
         return VLXT_LESSON_TITLES[lNum].h1;
     }
     if(thData && thData.title) return thData.title;
-    let name = lesson.name || '';
-    if(name === name.toUpperCase()){
-        name = name.toLowerCase().replace(/(^|[\s+&–-])\S/g, function(l){ return l.toUpperCase(); });
-    }
-    return name;
+    return formatSmartTitleCase(lesson.name || '');
 }
 
 function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
     const { videoHtml, videoTabsHtml, simCardHtml, _hasSim, flat, idx, prev, next, done, _doneLabel, _hasQuiz, _lessonSessionNum } = opts;
-    const lNum = getLessonNumber(lesson);
-    const thData = (window._THEORIES_DATA || {})[lNum];
+    const lNum = getLessonNumber(lesson, course);
+    const thData = lNum ? (window._THEORIES_DATA || {})[lNum] : null;
+    const isLayGoc = !!(course && course.name && course.name.toUpperCase().includes('LẤY GỐC'));
 
     // Đảm bảo body ở chế độ VSTEP Unified (nền midnight navy #0c1222, tràn viền 100%)
     document.body.classList.add('vstep-page-mode');
@@ -5145,7 +5175,7 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
             <span style="font-size:13px;font-weight:800;color:#00f0ff">📚 LỘ TRÌNH BÀI HỌC</span>
             <button class="vstep-sidebar-close" onclick="toggleCourseOutline(false)" aria-label="Đóng lộ trình">✕</button>
         </div>
-        <div class="vstep-side-head">📚 LỘ TRÌNH VẬT LÝ 12 — GĐ1</div>`;
+        <div class="vstep-side-head">${esc(getCourseSidebarHeading(course))}</div>`;
     course.chapters.forEach((ch, ci) => {
         const chapTitle = formatChapterTitle(ch.name);
         leftNav += `<div class="vstep-chap-group">
@@ -5158,11 +5188,11 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
             const isAct = (l.key === key);
             const isD = WATCHED.has(l.key);
             const sNum = getLessonSessionNum(l, '');
-            let displayTitle = formatLessonDisplayTitle(l);
+            let displayTitle = formatLessonDisplayTitle(l, course);
 
-            // Bỏ tiền tố trùng lặp B1., B2., B1:, Bài 1. để tên bài gọn gàng thanh thoát như demo
+            // Bỏ tiền tố trùng lặp B1., B2., Bài 1., Ngày 1: để tên bài gọn gàng thanh thoát ở sidebar
             if(sNum) {
-                const rx = new RegExp('^B(ài)?\\s*' + sNum + '[.:\\s-]+', 'i');
+                const rx = new RegExp('^(?:B(?:ài)?|Ngày)\\s*' + sNum + '[.:\\s-]+', 'i');
                 displayTitle = displayTitle.replace(rx, '').trim();
             }
 
@@ -5178,8 +5208,9 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
                 statusBadge = '<span class="vstep-status-tag lock" title="Bài học bị khóa">🔒</span>';
             }
 
+            const pillPrefix = isLayGoc ? 'N' : 'B';
             leftNav += `<li class="vstep-lesson-item ${isAct ? 'active' : ''} ${isD ? 'done' : ''} ${isLocked ? 'is-locked' : ''}" onclick="${clickCall}">
-                <span class="vstep-num-pill">${sNum ? 'B' + sNum : '•'}</span>
+                <span class="vstep-num-pill">${sNum ? pillPrefix + sNum : '•'}</span>
                 <span class="vstep-item-title">${esc(displayTitle)}</span>
                 ${statusBadge}
             </li>`;
@@ -5191,7 +5222,7 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
     const tocItems = [];
 
     // Header & Meta
-    const h1Title = getLessonH1Title(lesson, thData);
+    const h1Title = getLessonH1Title(lesson, thData, course);
     const chapBread = formatChapterTitle(chapter.name);
 
     let stream = '';
@@ -5241,7 +5272,7 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
         </div>
         <h1 class="vstep-h1">${esc(h1Title)}</h1>
         <div class="vstep-meta">
-            <span class="vstep-meta-badge">Buổi ${_lessonSessionNum || 1} / ${course.total}</span>
+            <span class="vstep-meta-badge">${isLayGoc ? 'Ngày' : 'Buổi'} ${_lessonSessionNum || 1} / ${course.total}</span>
             <span>⏱ Thời lượng: ~25 phút học</span>
             <span style="color:#38bdf8;font-weight:700">👨‍🏫 Biên soạn: Thầy Nguyễn Xuân Trường</span>
             ${(lesson.pdflt || lesson.pdf) ? `
@@ -5309,10 +5340,11 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
         }
     }
 
-    // Mục II: Lý thuyết trọng tâm
+    // Mục II: Lý thuyết trọng tâm (chỉ hiển thị khi có nội dung lý thuyết web hoặc PDF lý thuyết)
+    const _hasTheoryWeb = !!(thData && thData.sections && thData.sections.length);
+    const _hasTheoryPdf = !!(lesson.pdflt && driveId(lesson.pdflt));
     let secNumRoman = lesson.video ? 'II' : 'I';
-    tocItems.push({ id: 'sec-theory', title: `${secNumRoman}. Lý Thuyết Trọng Tâm` });
-    stream += `<h2 id="sec-theory"><span class="vstep-h2-badge">${secNumRoman}</span> Lý Thuyết Trọng Tâm</h2>`;
+    const _hasTheorySection = _hasTheoryWeb || _hasTheoryPdf;
 
     const renderTheoryTable = (tbl) => {
         if(!tbl || !tbl.rows || !tbl.rows.length) return '';
@@ -5323,53 +5355,64 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
         return `<div class="edoc-table-wrap"><table class="edoc-table">${thead}${tbody}</table></div>`;
     };
 
-    if(thData && thData.sections && thData.sections.length){
-        thData.sections.forEach((sec, si) => {
-            if(sec.title && !sec.title.startsWith('I.')){
-                const secId = `sec-part-${si}`;
-                const cleanSecTitle = sec.title.replace(/^[IVX]+\.\s*/i, '').trim();
-                tocItems.push({ id: secId, title: cleanSecTitle, isSub: true });
-                stream += `<h3 id="${secId}" class="vstep-sec-subh2">${esc(cleanSecTitle)}</h3>`;
-            }
-            (sec.subsections || []).forEach((sub, subi) => {
-                const subId = `sec-sub-${si}-${subi}`;
-                if(sub.title){
-                    tocItems.push({ id: subId, title: sub.title, isSub: true });
-                    stream += `<h3 id="${subId}" style="color:#38bdf8;font-size:16.5px;margin-top:22px;scroll-margin-top:80px">${esc(sub.title)}</h3>`;
+    if(_hasTheorySection){
+        tocItems.push({ id: 'sec-theory', title: `${secNumRoman}. Lý Thuyết Trọng Tâm` });
+        stream += `<h2 id="sec-theory"><span class="vstep-h2-badge">${secNumRoman}</span> Lý Thuyết Trọng Tâm</h2>`;
+
+        if(_hasTheoryWeb){
+            thData.sections.forEach((sec, si) => {
+                if(sec.title && !sec.title.startsWith('I.')){
+                    const secId = `sec-part-${si}`;
+                    const cleanSecTitle = sec.title.replace(/^[IVX]+\.\s*/i, '').trim();
+                    tocItems.push({ id: secId, title: cleanSecTitle, isSub: true });
+                    stream += `<h3 id="${secId}" class="vstep-sec-subh2">${esc(cleanSecTitle)}</h3>`;
                 }
-                (sub.paragraphs || []).forEach(pText => {
-                    const isTip = pText.toLowerCase().includes('lưu ý') || pText.toLowerCase().includes('mẹo');
-                    const isTrap = pText.toLowerCase().includes('bẫy') || pText.toLowerCase().includes('sai lầm');
-                    if(isTip){
-                        stream += `<div class="edoc-callout tip"><div class="edoc-callout-header">💡 Lưu ý quan trọng</div><div>${pText}</div></div>`;
-                    } else if(isTrap){
-                        stream += `<div class="edoc-callout trap"><div class="edoc-callout-header">⚠️ Bẫy đề thi hay gặp</div><div>${pText}</div></div>`;
-                    } else {
-                        stream += `<p>${pText}</p>`;
+                (sec.subsections || []).forEach((sub, subi) => {
+                    const subId = `sec-sub-${si}-${subi}`;
+                    if(sub.title){
+                        tocItems.push({ id: subId, title: sub.title, isSub: true });
+                        stream += `<h3 id="${subId}" style="color:#38bdf8;font-size:16.5px;margin-top:22px;scroll-margin-top:80px">${esc(sub.title)}</h3>`;
+                    }
+                    (sub.paragraphs || []).forEach(pText => {
+                        const isTip = pText.toLowerCase().includes('lưu ý') || pText.toLowerCase().includes('mẹo');
+                        const isTrap = pText.toLowerCase().includes('bẫy') || pText.toLowerCase().includes('sai lầm');
+                        if(isTip){
+                            stream += `<div class="edoc-callout tip"><div class="edoc-callout-header">💡 Lưu ý quan trọng</div><div>${pText}</div></div>`;
+                        } else if(isTrap){
+                            stream += `<div class="edoc-callout trap"><div class="edoc-callout-header">⚠️ Bẫy đề thi hay gặp</div><div>${pText}</div></div>`;
+                        } else {
+                            stream += `<p>${pText}</p>`;
+                        }
+                    });
+                    if(sub.orderedItems && sub.orderedItems.length){
+                        stream += `<ol class="vstep-ol">${sub.orderedItems.map(item => `<li>${item}</li>`).join('')}</ol>`;
+                    }
+                    if(sub.bullets && sub.bullets.length){
+                        stream += `<ul>${sub.bullets.map(b => `<li>${b}</li>`).join('')}</ul>`;
+                    }
+                    if(sub.tables && sub.tables.length){
+                        stream += sub.tables.map(renderTheoryTable).join('');
                     }
                 });
-                if(sub.orderedItems && sub.orderedItems.length){
-                    stream += `<ol class="vstep-ol">${sub.orderedItems.map(item => `<li>${item}</li>`).join('')}</ol>`;
-                }
-                if(sub.bullets && sub.bullets.length){
-                    stream += `<ul>${sub.bullets.map(b => `<li>${b}</li>`).join('')}</ul>`;
-                }
-                if(sub.tables && sub.tables.length){
-                    stream += sub.tables.map(renderTheoryTable).join('');
+                if(sec.tables && sec.tables.length){
+                    stream += sec.tables.map(renderTheoryTable).join('');
                 }
             });
-            if(sec.tables && sec.tables.length){
-                stream += sec.tables.map(renderTheoryTable).join('');
-            }
-        });
-    } else if(lesson.pdflt){
-        const idLt = driveId(lesson.pdflt);
-        stream += `<div class="pdf-embed-box" style="margin:20px 0"><iframe src="https://drive.google.com/file/d/${idLt}/preview" allow="autoplay"></iframe></div>`;
+        } else if(_hasTheoryPdf){
+            const idLt = driveId(lesson.pdflt);
+            stream += `<div class="pdf-embed-box" style="margin:20px 0"><iframe src="https://drive.google.com/file/d/${idLt}/preview" allow="autoplay"></iframe></div>`;
+        }
     }
+
+    const _nextRoman = () => {
+        if(!_hasTheorySection && !lesson.video) return 'I';
+        if(!_hasTheorySection && lesson.video) return 'II';
+        return secNumRoman === 'II' ? 'III' : 'II';
+    };
 
     // Mục III: Mô phỏng 3D trực quan (nếu có)
     if(_hasSim){
-        secNumRoman = (secNumRoman === 'II' ? 'III' : 'II');
+        secNumRoman = _nextRoman();
         tocItems.push({ id: 'sec-sim3d', title: `${secNumRoman}. Mô Phỏng 3D Trực Quan` });
         stream += `
         <h2 id="sec-sim3d"><span class="vstep-h2-badge">${secNumRoman}</span> Mô Phỏng 3D Trực Quan: Cấu Trúc Hạt</h2>
@@ -5379,7 +5422,8 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
 
     // Mục IV: Luyện tập trắc nghiệm (nếu có)
     if(_hasQuiz){
-        secNumRoman = (secNumRoman === 'III' ? 'IV' : (secNumRoman === 'II' ? 'III' : 'II'));
+        const nextIdx = (lesson.video ? 1 : 0) + (_hasTheorySection ? 1 : 0) + (_hasSim ? 1 : 0);
+        secNumRoman = ['I', 'II', 'III', 'IV', 'V'][nextIdx] || 'IV';
         tocItems.push({ id: 'sec-quiz', title: `${secNumRoman}. Luyện Tập Trắc Nghiệm` });
         stream += `
         <h2 id="sec-quiz"><span class="vstep-h2-badge">${secNumRoman}</span> Luyện Tập Trắc Nghiệm Củng Cố</h2>
@@ -5393,7 +5437,8 @@ function buildUnifiedVstepCourse(course, chapter, lesson, key, opts){
         const _remCtx = getRemedialContext(lesson.key);
         if (_remCtx.active) {
             const _topName = _remCtx.topic || 'Khí lí tưởng';
-            secNumRoman = 'V';
+            const nextIdx = (lesson.video ? 1 : 0) + (_hasTheorySection ? 1 : 0) + (_hasSim ? 1 : 0) + (_hasQuiz ? 1 : 0);
+            secNumRoman = ['I', 'II', 'III', 'IV', 'V'][nextIdx] || 'V';
             tocItems.push({ id: 'sec-retest', title: `${secNumRoman}. Kiểm Chứng Đề B` });
             stream += `
                 <h2 id="sec-retest"><span class="vstep-h2-badge">${secNumRoman}</span> Kiểm Chứng Tiến Bộ: Đề B</h2>
