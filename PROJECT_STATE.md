@@ -9,8 +9,8 @@
        - Cập nhật `_vqShow()` và `_vqShowReminder()` cuộn mượt `holder.scrollIntoView({behavior:'smooth', block:'nearest'})` để khung câu hỏi luôn lọt vào tầm mắt trên cả máy tính và điện thoại.
        - Bổ sung CSS VSTEP Dark Mode cho `.vstep-main-stream .vq-panel` (phẳng, sắc nét, tương phản cao, 0 AI Glow, tương thích cả 3 dạng Trắc nghiệm 4 lựa chọn, Đúng/Sai, Trả lời ngắn và panel Nhắc lại câu đã học ngay cả khi `vlxt_theme = 'light'`).
 - **Commit & File đã sửa**:
-  - **Student Worktree (`feature/restore-video-quiz-vstep` trên nền `upstream/main` `566d5a2`)**:
-    - `baihoc.html`: Bổ sung `#vq-holder-anchor` & `#vq-holder` trong `buildUnifiedVstepCourse`, truyền `liveChatHtml`/`isLive` trong `renderLiveLesson`, cập nhật `_vqPositionHolder`, `_vqShow`, `_vqShowReminder` và CSS `.vstep-main-stream .vq-panel`.
+  - **Student Repo (`main`, merge từ `feature/restore-video-quiz-vstep`)**: Commit `0a3d643` + merge `main` trên nền `a16a088` (đã push `origin/main` & `upstream/main`, live tại `https://vatlyxuantruong.io.vn/baihoc.html`).
+    - `baihoc.html`: Bổ sung `#vq-holder-anchor` & `#vq-holder` trong `buildUnifiedVstepCourse`, truyền `liveChatHtml`/`isLive` trong `renderLiveLesson`, cập nhật `_vqPositionHolder`, `_vqShow`, `_vqShowReminder` và CSS `.vstep-main-stream .vq-panel`; giữ nguyên 100% logic tuần tự bắt buộc trả lời từ câu đầu tiên chưa hoàn thành (`_vqStartWatch`).
     - `PROJECT_STATE.md`: Cập nhật mục bàn giao mới nhất.
 - **Kiểm tra đã chạy**:
   - Node.js AST Script Validation: 3/3 khối `<script>` inline đạt 0 lỗi cú pháp (`AST OK`), kết thúc hợp lệ bằng `</html>`.
@@ -21,7 +21,7 @@
   - Giữ nguyên giao diện sáng chuẩn Bộ của `phong-thi-thu.html` và giao diện VSTEP 3 cột của `baihoc.html`.
   - Bảo toàn logic `hsTracNghiemVideo()`, `TrialManager` Fail-Closed và `FreemiumFlow` Đề B.
 - **Việc còn lại**:
-  - Chờ Thầy kiểm tra trực tiếp trên máy cục bộ và xác nhận trước khi merge/push lên `main` Production.
+  - Đã triển khai Production trên `vatlyxuantruong.io.vn/baihoc.html` theo chỉ đạo trực tiếp của Thầy; chờ Thầy F5 nghiệm thu trực tiếp trên trang web.
 
 ## Bàn giao gần nhất (20/11/2026 11:15)
 - **Hoàn Thiện Tinh Gọn 5 Điểm Tránh Rối Mắt & Triển Khai Chính Thức Lên Production (`danh-gia-nang-luc.html`)**:
