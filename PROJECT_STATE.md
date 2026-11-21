@@ -1,3 +1,28 @@
+## Bàn giao gần nhất (21/11/2026 15:11)
+- **Khôi Phục Tính Năng Câu Hỏi Tương Tác Trong Video Lý Thuyết Trên Giao Diện Mới (`baihoc.html` - Phương án 1)**:
+- **Mục tiêu**:
+  1. Khắc phục triệt để lỗi mất câu hỏi dừng video khi xem bài giảng lý thuyết ở giao diện VSTEP 3 cột mới (`buildUnifiedVstepCourse`):
+     - **Nguyên nhân**: Toàn bộ logic theo dõi mốc thời gian và hiển thị câu hỏi (`loadVideoQuiz`, `_vqStartWatch`, `_vqShow`, `_vqShowReminder`, `vqAnswer`, `vqSubmitTF`, `vqSubmitShort`) vẫn hoạt động bình thường nhưng khi chuyển sang `buildUnifiedVstepCourse`, khung DOM `<div id="vq-holder"></div>` bị thiếu nên `_vqStartWatch()` tự dừng và `_vqShow()` không có nơi gắn HTML.
+     - **Khôi phục theo Phương án 1 (Thầy đã chọn)**: Đặt `<div id="vq-holder-anchor"></div>` và `<div id="vq-holder"></div>` ngay bên dưới khung video `.vstep-video-wrap` trong cột chính `.vstep-main-stream` (đồng thời hỗ trợ `liveChatHtml` & `#cungthay-holder` cho chế độ `renderLiveLesson()`).
+     - **Tối ưu hiển thị & trải nghiệm**:
+       - Cập nhật `_vqPositionHolder()` giữ nguyên `#vq-holder` ngay dưới video trên mọi kích thước màn hình khi dùng giao diện 3 cột mới.
+       - Cập nhật `_vqShow()` và `_vqShowReminder()` cuộn mượt `holder.scrollIntoView({behavior:'smooth', block:'nearest'})` để khung câu hỏi luôn lọt vào tầm mắt trên cả máy tính và điện thoại.
+       - Bổ sung CSS VSTEP Dark Mode cho `.vstep-main-stream .vq-panel` (phẳng, sắc nét, tương phản cao, 0 AI Glow, tương thích cả 3 dạng Trắc nghiệm 4 lựa chọn, Đúng/Sai, Trả lời ngắn và panel Nhắc lại câu đã học ngay cả khi `vlxt_theme = 'light'`).
+- **Commit & File đã sửa**:
+  - **Student Worktree (`feature/restore-video-quiz-vstep` trên nền `upstream/main` `566d5a2`)**:
+    - `baihoc.html`: Bổ sung `#vq-holder-anchor` & `#vq-holder` trong `buildUnifiedVstepCourse`, truyền `liveChatHtml`/`isLive` trong `renderLiveLesson`, cập nhật `_vqPositionHolder`, `_vqShow`, `_vqShowReminder` và CSS `.vstep-main-stream .vq-panel`.
+    - `PROJECT_STATE.md`: Cập nhật mục bàn giao mới nhất.
+- **Kiểm tra đã chạy**:
+  - Node.js AST Script Validation: 3/3 khối `<script>` inline đạt 0 lỗi cú pháp (`AST OK`), kết thúc hợp lệ bằng `</html>`.
+  - `git diff --check`: 0 lỗi khoảng trắng thừa; audit AI glow: 0 vi phạm (`box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28)`).
+  - Student regression suites: `scripts/test-quiz-merge.mjs` (6/6 PASS), `scripts/test-quiz-publish.mjs` (12/12 PASS), `test_cro_funnel.mjs` (8/8 PASS), `test_diagnostic_mastery_loop.mjs` (PASS 100%), `test_remedial_and_prediction.mjs` (PASS 100%), `test_wrong_bank.mjs` (8/8 PASS), `scripts/test-trial-soft-unlock.mjs` (22/22 PASS).
+  - Playwright E2E (`verify_video_quiz_restore.py`) trên `baihoc.html#lesson/B04e20f0ec67d`: PASS 100% cả 3 dạng câu hỏi (Trắc nghiệm chọn sai/đúng & tự phát tiếp video, Đúng/Sai 4 ý, Trả lời ngắn trên Mobile 390×844) và panel `NHẮC LẠI CÂU ĐÃ HỌC` khi xem lại mốc đã làm, 0 Console/PageError.
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên giao diện sáng chuẩn Bộ của `phong-thi-thu.html` và giao diện VSTEP 3 cột của `baihoc.html`.
+  - Bảo toàn logic `hsTracNghiemVideo()`, `TrialManager` Fail-Closed và `FreemiumFlow` Đề B.
+- **Việc còn lại**:
+  - Chờ Thầy kiểm tra trực tiếp trên máy cục bộ và xác nhận trước khi merge/push lên `main` Production.
+
 ## Bàn giao gần nhất (20/11/2026 11:15)
 - **Hoàn Thiện Tinh Gọn 5 Điểm Tránh Rối Mắt & Triển Khai Chính Thức Lên Production (`danh-gia-nang-luc.html`)**:
 - **Mục tiêu**:
