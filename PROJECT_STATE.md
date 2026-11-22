@@ -1,5 +1,5 @@
-## Bàn giao gần nhất (22/11/2026 09:08)
-- **Sắp Xếp Lại Vị Trí & Nhãn Ngôi Sao Trên Bản Đồ Chòm Sao Bảo Bình 3D (`index.html`)**:
+## Bàn giao gần nhất (22/11/2026 09:16)
+- **Sắp Xếp Lại Vị Trí & Nhãn Ngôi Sao Trên Bản Đồ 3D (`index.html`) + Đồng Bộ Navbar `Hướng Dẫn Học` Toàn 16 File & Đẩy Production (`main`)**:
 - **Mục tiêu**:
   1. Cập nhật vị trí các chức năng trên bản đồ chòm sao 3D ở trang chủ `index.html` theo chỉ đạo trực tiếp của Thầy (trên nền `origin/main` commit `2130943`):
      - **Sadalmelik (`idx: 1`, trên-trái)**: `Gói Pro` → **`Phòng Thi Thử`** (`phong-thi-thu.html`)
@@ -9,17 +9,21 @@
      - **Pulsar (`lbl-neutron`, ngoài cùng bên phải)**: `Học Thử Miễn Phí` → **`Khóa Học`** (`baihoc.html`)
      - **Singularity (`lbl-blackhole`, ngoài cùng bên trái)**: giữ nguyên `Test Điểm Thi THPT` (`danh-gia-nang-luc.html`).
   2. Cập nhật đồng bộ nhãn `#lbl-*`, `title` vùng bấm `#hit-*`, mảng `aquariusTabStars`, `initCelestialInteractions()` và bảng ánh xạ deep-link `#hash` (`aliasMap`).
-- **Nhánh & File đã sửa**:
-  - **Student Repo (`antigravity/20261122-index-star-positions` trên worktree `C:\Users\Xuan Truong\.gemini\antigravity\worktrees\index_star_positions`, xuất phát từ `origin/main` `2130943` — CHƯA merge/push `main`)**:
-    - `index.html`: Cập nhật 6 cụm vị trí sao, nhãn, hitbox, mảng `aquariusTabStars`, `aliasMap` và Pulsar `Khóa Học`.
+  3. Theo lệnh Thầy (*"Coá em đổi luôn rồi đẩy lên wed luôn đi"*), đồng bộ đổi nhãn `Hướng Dẫn` → **`Hướng Dẫn Học`** trên thanh điều hướng (Navbar Desktop & Mobile Drawer) cho toàn bộ **16 file** có liên kết `huongdan.html` và triển khai chính thức lên `main` (`vatlyxuantruong.io.vn`).
+- **Commit & File đã sửa**:
+  - **Student Repo (`antigravity/20261122-index-star-positions` → merge fast-forward vào `main`)**:
+    - `index.html`: Cập nhật 6 cụm vị trí sao, nhãn, hitbox, mảng `aquariusTabStars`, `aliasMap`, Pulsar `Khóa Học`, cùng Navbar Desktop & Mobile Drawer `Hướng Dẫn Học`.
+    - `auth.js`: Đổi link drawer dùng chung `🧭 Hướng Dẫn` → `🧭 Hướng Dẫn Học`.
+    - 14 trang còn lại (`baihoc.html`, `danh-gia-nang-luc.html`, `danhsach-ly12.html`, `dau-thuong-hud.html`, `dau-thuong.html`, `dua-top.html`, `goi-hoc.html`, `hoso-hud.html`, `hoso.html`, `huongdan.html`, `lichlive.html`, `live-record.html`, `phong-thi-thu.html`, `solo.html`): Đồng bộ nhãn `Hướng Dẫn` → `Hướng Dẫn Học` trên Navbar Desktop & Mobile Drawer (giữ nguyên toàn bộ CSS/bố cục chuẩn từng trang, bao gồm giao diện sáng CBT của `phong-thi-thu.html`).
     - `PROJECT_STATE.md`: Cập nhật bàn giao gần nhất.
 - **Kiểm tra đã chạy**:
-  - Node.js `vm.Script` AST Validation: `3/3` khối `<script>` inline đạt 0 lỗi cú pháp (`AST OK`), kết thúc hợp lệ `</html>`, `git diff --check` sạch 0 lỗi.
-  - Playwright E2E (`verify_index_stars.py`) trên 2 kích thước Desktop `1440×900` và Mobile `390×844`: PASS 100% nhãn DOM, `title`, mảng runtime `aquariusTabStars`, vị trí tương đối bounding box, không tràn khung, `0` lỗi Console/PageError; đã kiểm tra trực quan 2 ảnh chụp `verify_index_stars_desktop.png` và `verify_index_stars_mobile.png`.
+  - `node --check auth.js` PASS; `git diff --check` sạch 0 lỗi; quét secret sạch 0 rò rỉ.
+  - Xác nhận đủ 15/15 file `.html` kết thúc hợp lệ bằng `</html>`; `vm.Script` AST PASS 100% các khối `<script>` inline của `index.html` (`3` blocks), `baihoc.html` (`3` blocks), `danh-gia-nang-luc.html` (`2` blocks), `phong-thi-thu.html` (`1` block).
+  - Playwright E2E (`verify_index_stars.py`) trên 2 kích thước Desktop `1440×900` và Mobile `390×844`: PASS 100% nhãn sao, `title`, mảng runtime `aquariusTabStars`, thứ tự tọa độ không chồng lấn/tràn khung, `navDesktop.text = "Hướng Dẫn Học"` (`height: 29px <= 42px`, `menuHeight: 30px <= 46px`, không rớt dòng), `navDrawer.text = "Hướng Dẫn Học"`, `0` lỗi Console/PageError; đã kiểm tra trực quan ảnh chụp.
 - **Điều phải giữ nguyên**:
-  - Giữ nguyên navbar Desktop & Mobile Drawer (không đổi chữ `Hướng Dẫn` trên navbar; chờ Thầy quyết định nếu muốn đổi thêm), giữ nguyên `starCode`, tọa độ 3D (`x, y, z`), `planetColor`, `atmoColor`, `baseScale`, CSS layout và cấu trúc các trang khác (`phong-thi-thu.html`, `baihoc.html`, `danh-gia-nang-luc.html`).
+  - Giữ nguyên `starCode`, tọa độ 3D (`x, y, z`), `planetColor`, `atmoColor`, `baseScale`, CSS layout của `index.html`; giữ nguyên giao diện sáng chuẩn Bộ GD&ĐT của `phong-thi-thu.html`; giữ nguyên logic các phân hệ khác.
 - **Việc còn lại**:
-  - Chờ Thầy duyệt nhánh `antigravity/20261122-index-star-positions` trước khi merge vào `main` và triển khai lên production (`vatlyxuantruong.io.vn`).
+  - Đã merge và đẩy lên production `main`; kiểm chứng trực tiếp trên `https://vatlyxuantruong.io.vn/index.html`.
 
 ## Bàn giao gần nhất (21/11/2026 21:00)
 - **Sửa Triệt Để Lỗi Khóa "5 Ngày Lấy Gốc Vật Lí" Bị Nhận Nhầm Sang Bài Học GĐ1 (`baihoc.html`)**:

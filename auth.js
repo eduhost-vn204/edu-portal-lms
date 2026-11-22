@@ -417,7 +417,7 @@ function vlxtEnsureGlobalDrawer() {
       '    <a href="danh-gia-nang-luc.html"' + (curPath === 'danh-gia-nang-luc.html' ? ' class="active"' : '') + ' style="color:#00f0ff;font-weight:700">🎯 Đánh Giá Năng Lực</a>',
       '    <a href="baihoc.html"' + (curPath === 'baihoc.html' ? ' class="active"' : '') + '>📚 Khóa Học</a>',
       '    <a href="phong-thi-thu.html"' + (curPath === 'phong-thi-thu.html' ? ' class="active"' : '') + '>📋 Phòng Thi Thử</a>',
-      '    <a href="huongdan.html"' + (curPath === 'huongdan.html' ? ' class="active"' : '') + '>🧭 Hướng Dẫn</a>',
+      '    <a href="huongdan.html"' + (curPath === 'huongdan.html' ? ' class="active"' : '') + '>🧭 Hướng Dẫn Học</a>',
       '    <a href="goi-hoc.html"' + (curPath === 'goi-hoc.html' ? ' class="active"' : '') + ' style="color:#fbbf24;font-weight:700">' + (isPaid ? '👑 Gói Pro Đang Bật' : '⭐ Gói Pro (50k/Tháng)') + '</a>',
       '    <a href="hoso.html"' + (curPath === 'hoso.html' ? ' class="active"' : '') + ' style="font-weight:700;color:#38bdf8">👤 Hồ Sơ Cá Nhân</a>',
       '  </div>',
