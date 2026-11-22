@@ -605,7 +605,7 @@ window._THEORIES_DATA = {
           {
             "title": "1. Chuyển động và tương tác của các phân tử khí",
             "paragraphs": [
-              "Các phân tử khí chuyển động hỗn loạn không ngừng theo mọi phương — chuyển động này gọi là chuyển động nhiệt. Nhiệt độ của khối khí càng cao thì tốc độ chuyển động trung bình của các phân tử càng lớn. Ở điều kiện tiêu chuẩn (0°C, 1 atm), tốc độ trung bình của phân tử khí vào khoảng 400 m/s. Bằng chứng trực tiếp cho chuyển động hỗn loạn này là chuyển động Brown — chuyển động hỗn loạn, không ngừng, theo quỹ đạo là những đường gấp khúc bất kì của các hạt nhẹ lơ lửng trong chất lỏng hoặc chất khí, gây ra bởi va chạm liên tục từ mọi phía của các phân tử môi trường xung quanh hạt."
+              "Các phân tử khí chuyển động hỗn loạn không ngừng theo mọi phương — chuyển động này gọi là chuyển động nhiệt. Nhiệt độ của khối khí càng cao thì tốc độ chuyển động trung bình của các phân tử càng lớn. Ở điều kiện thường (khoảng 0°C – 25°C), tốc độ trung bình của phân tử khí vào khoảng vài trăm m/s (cỡ 400–500 m/s). Bằng chứng trực tiếp cho chuyển động hỗn loạn này là chuyển động Brown — chuyển động hỗn loạn, không ngừng, theo quỹ đạo là những đường gấp khúc bất kì của các hạt nhẹ lơ lửng trong chất lỏng hoặc chất khí, gây ra bởi va chạm liên tục từ mọi phía của các phân tử môi trường xung quanh hạt."
             ],
             "orderedItems": [],
             "bullets": [],
@@ -634,7 +634,7 @@ window._THEORIES_DATA = {
           {
             "title": "4. Công thức tính lượng chất khí",
             "paragraphs": [
-              "Số mol của một lượng chất khí có khối lượng m (gam), khối lượng mol M (gam/mol): $n = \\frac{m}{M}$. Số phân tử (hoặc nguyên tử) chứa trong lượng chất đó: $N = n \\cdot N_A$, với $N_A$ = $6{,}02 \\times 10^{23}\\text{ mol⁻¹}$ là hằng số Avogadro — số phân tử có trong 1 mol chất. Ở điều kiện tiêu chuẩn (đktc: 0°C, áp suất 1 atm), thể tích của 1 mol khí bất kì đều bằng 22,4 lít."
+              "Số mol của một lượng chất khí có khối lượng m (gam), khối lượng mol M (gam/mol): $n = \\frac{m}{M}$. Số phân tử (hoặc nguyên tử) chứa trong lượng chất đó: $N = n \\cdot N_A$, với $N_A = 6{,}02 \\times 10^{23}\\text{ mol}^{-1}$ là hằng số Avogadro — số phân tử có trong 1 mol chất. Ở điều kiện chuẩn (25°C tức 298,15 K, áp suất 1 bar = $10^5\\text{ Pa}$), thể tích của 1 mol khí bất kì đều bằng 24,79 lít (còn theo quy ước điều kiện tiêu chuẩn cũ 0°C, 1 atm là 22,4 lít)."
             ],
             "orderedItems": [],
             "bullets": [],
@@ -670,7 +670,12 @@ window._THEORIES_DATA = {
                 "$\\text{mol}^{-1}$"
               ],
               [
-                "Thể tích khí ở đktc ($0^\\circ\\text{C}$, $1\\text{ atm}$)",
+                "Thể tích khí ở đkc ($25^\\circ\\text{C}$, $1\\text{ bar}$)",
+                "$V = 24{,}79 \\cdot n$",
+                "lít"
+              ],
+              [
+                "Thể tích khí ở đktc cũ ($0^\\circ\\text{C}$, $1\\text{ atm}$)",
                 "$V = 22{,}4 \\cdot n$",
                 "lít"
               ]
@@ -714,9 +719,9 @@ window._THEORIES_DATA = {
             "tables": []
           },
           {
-            "title": "3. Điều kiện tiêu chuẩn",
+            "title": "3. Điều kiện chuẩn và điều kiện tiêu chuẩn",
             "paragraphs": [
-              "Điều kiện tiêu chuẩn (đktc) ứng với áp suất p₀ = 1 atm = $1{,}013 \\times 10^{5}\\text{ Pa}$ và nhiệt độ T₀ = 273 K (0°C). Đây là mốc thường dùng để quy đổi thể tích khí giữa các trạng thái khác nhau trong bài toán."
+              "Điều kiện chuẩn (GDPT 2018): $p_0 = 1\\text{ bar} = 10^5\\text{ Pa}$, $T_0 = 298{,}15\\text{ K}$ ($25^\\circ\\text{C}$), $1\\text{ mol}$ khí chiếm thể tích $24{,}79\\text{ lít}$. Điều kiện tiêu chuẩn (đktc cũ, nếu đề bài nêu rõ): $p_0 = 1\\text{ atm} = 1{,}013 \\times 10^5\\text{ Pa}$, $T_0 = 273\\text{ K}$ ($0^\\circ\\text{C}$), $1\\text{ mol}$ khí chiếm thể tích $22{,}4\\text{ lít}$. Đây là các mốc chuẩn thường dùng để quy đổi thông số trạng thái khí trong bài toán."
             ],
             "orderedItems": [],
             "bullets": [],
@@ -2006,7 +2011,7 @@ window._THEORIES_DATA = {
           {
             "title": "2. Kí hiệu hạt nhân",
             "paragraphs": [
-              "Hạt nhân của nguyên tố X được kí hiệu là $^{A}_{Z}\\text{X}$, trong đó Z là số proton (bằng số thứ tự nguyên tử trong bảng tuần hoàn, còn gọi là số điện tích hạt nhân hay nguyên tử số), A là số khối (tổng số nucleon trong hạt nhân: A = Z + N), N là số neutron (N = A − Z)."
+              "Hạt nhân của nguyên tố X được kí hiệu là ${}^{A}_{Z}\\text{X}$, trong đó Z là số proton (bằng số thứ tự nguyên tử trong bảng tuần hoàn, còn gọi là số điện tích hạt nhân hay nguyên tử số), A là số khối (tổng số nucleon trong hạt nhân: A = Z + N), N là số neutron (N = A − Z)."
             ],
             "orderedItems": [],
             "bullets": [],
@@ -2015,7 +2020,7 @@ window._THEORIES_DATA = {
           {
             "title": "3. Đồng vị",
             "paragraphs": [
-              "Các hạt nhân đồng vị là những hạt nhân có cùng số proton Z (cùng thuộc một nguyên tố hoá học) nhưng khác số neutron N (do đó khác số khối A). Ví dụ: nguyên tố hydro có ba đồng vị là $^{1}\\text{H}$ (proti, không có neutron), $^{2}\\text{H}$ (đơteri, 1 neutron) và $^{3}\\text{H}$ (triti, 2 neutron)."
+              "Các hạt nhân đồng vị là những hạt nhân có cùng số proton Z (cùng thuộc một nguyên tố hoá học) nhưng khác số neutron N (do đó khác số khối A). Ví dụ: nguyên tố hydro có ba đồng vị là ${}^{1}_{1}\\text{H}$ (proti, không có neutron), ${}^{2}_{1}\\text{H}$ (đơteri, 1 neutron) và ${}^{3}_{1}\\text{H}$ (triti, 2 neutron)."
             ],
             "orderedItems": [],
             "bullets": [],
@@ -2067,7 +2072,7 @@ window._THEORIES_DATA = {
             "rows": [
               [
                 "Kí hiệu hạt nhân",
-                "$^{A}_{Z}\\text{X}$, với $N = A - Z$",
+                "${}^{A}_{Z}\\text{X}$, với $N = A - Z$",
                 "—"
               ],
               [

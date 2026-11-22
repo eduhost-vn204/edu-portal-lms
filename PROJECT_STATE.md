@@ -1,3 +1,26 @@
+## Bàn giao gần nhất (22/11/2026 09:25)
+- **Đồng Bộ Toàn Bộ 18 PDF Lý Thuyết GĐ0 & GĐ1 Lên Google Drive + Khắc Phục Link 404 Bài 1 & Bài 12 + Chuẩn Hóa GDPT 2018 / Office Math (`main`)**:
+- **Mục tiêu**:
+  1. Cập nhật **Bài 9 & Bài 10 (Chương 2)** sang mốc **Điều kiện chuẩn GDPT 2018 (`25°C, 1 bar -> 24,79 lít/mol`)**, ghi chú kèm mốc **đktc cũ (`0°C, 1 atm -> 22,4 lít/mol`)**, đồng thời đồng bộ cả file Word/PDF và bản đọc web (`data/theories_data.json`, `data/bundle_theories.js`).
+  2. Nâng cấp **Bài 28 & Bài 30 (Chương 4)** ký hiệu hạt nhân & phương trình phản ứng hạt nhân sang **Office Math `<m:oMath><m:sPre>`** trong `.docx`/`.pdf` và chuẩn hóa đồng nhất `${}^{A}_{Z}\text{X}$`, đồng vị Hydro trong `data/theories_data.json`.
+  3. Định dạng toàn bộ **5 file Lý thuyết GĐ0 (`5 ngày lấy gốc vật lý`: `Ngày 1`–`Ngày 5`)** theo chuẩn thiết kế **XPS** (`format_gd0_theory_xps.py`, tự tạo sao lưu `- Goc.docx`), bảo toàn nguyên vẹn công thức `<m:oMath>` (`8` công thức Ngày 3) và đồ thị `<w:drawing>` (`1` hình Ngày 5).
+  4. Xuất lại toàn bộ **18 PDF lý thuyết** (`5` bài GĐ0 `Ngày 1–5` + `13` bài GĐ1 `Bài 1–6`, `Bài 9–15`) qua Word COM, cập nhật/tải lên Google Drive công khai (`anyone/reader`), khắc phục triệt để **2 link 404 chết** của **Bài 1** (`18Kfqohl...` trong `baihoc.json` & fallback `baihoc.html`) và **Bài 12** (`1BP9grIO...`), đồng thời bổ sung PDF mới cho **Ngày 4** và **Ngày 5**.
+- **Commit & File đã sửa**:
+  - **Student Repo (`feat/sync-theory-pdfs-gd0-gd1` -> push thẳng `origin/main` & `upstream/main`)**:
+    - `data/baihoc.json`: Cập nhật `PDFLyThuyet` cho đủ **18 bài** (`Ngày 1–5`, `B1–B6`, `B9–B15`); giữ nguyên `B7/B8`, `B16/B17` Tổng ôn và các bài Ch3/Ch4 chưa công bố video.
+    - `baihoc.html`: Thay 2 vị trí mã Drive chết `18KfqohlCv9I3hOPVWg53dMY8R5IOdiyn` bằng ID mới của Bài 1 (`1w6nTkZMOWl-Q3zs-zfScFnDITk2U2JyD`).
+    - `data/theories_data.json` & `data/bundle_theories.js`: Cập nhật mục GDPT 2018 ở key `"9"`, `"10"` và ký hiệu hạt nhân/đồng vị `${}^{A}_{Z}\text{X}$` ở key `"31"`.
+    - `PROJECT_STATE.md`: Cập nhật bàn giao gần nhất.
+- **Kiểm tra đã chạy**:
+  - Kiểm tra ảnh PNG trực quan (`fitz`) cho `Bài 9`, `Bài 10`, `Bài 28`, `Bài 30` và toàn bộ 5 file GĐ0 (`Ngày 1–5`); kiểm chứng bảo toàn `oMath=8` (Ngày 3) và `drawing=1` (Ngày 5).
+  - Kiểm tra 18/18 URL Google Drive công khai trả về HTTP `200` (không còn 404 hay yêu cầu đăng nhập).
+  - Node AST + JSON check: `baihoc.json` (`42` dòng, đủ `18/18` URL mới hợp lệ, sạch `0` ID chết `18Kfqohl...`/`1BP9grIO...`), `theories_data.json` (`26` keys), `baihoc.html` (`3/3` `<script>` AST PASS, kết thúc `</html>`), `node --check data/bundle_theories.js` PASS, `git diff --check` sạch `0` lỗi.
+  - Hồi quy Student (`node scripts/test-quiz-merge.mjs` `6/6` PASS; `node scripts/test-quiz-publish.mjs` `12/12` PASS).
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên giao diện sáng chuẩn Bộ GD&ĐT của `phong-thi-thu.html`, menu mobile chuyên biệt, cấu trúc tĩnh `baihoc.json`, logic GĐ0/GĐ1 trên `baihoc.html`.
+- **Việc còn lại**:
+  - **Nhắc Thầy đồng bộ Sheet Quản Trị**: Vì OAuth hiện dùng phạm vi `drive.file` nên 14/18 PDF (`Ngày 1–5`, `B1–B6`, `B9`, `B10`, `B12`) tạo file Drive ID mới (riêng `B11`, `B13`, `B14`, `B15` giữ nguyên ID cũ qua `PATCH`). Thầy cần dán các URL `PDFLyThuyet` mới vào Google Sheet quản trị để `sync-public-data.mjs` ở các lần chạy sau không ghi đè ngược lại link cũ.
+
 ## Bàn giao gần nhất (22/11/2026 09:16)
 - **Sắp Xếp Lại Vị Trí & Nhãn Ngôi Sao Trên Bản Đồ 3D (`index.html`) + Đồng Bộ Navbar `Hướng Dẫn Học` Toàn 16 File & Đẩy Production (`main`)**:
 - **Mục tiêu**:
