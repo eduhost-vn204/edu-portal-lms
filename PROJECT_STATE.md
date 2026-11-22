@@ -1,3 +1,22 @@
+## Bàn giao gần nhất (23/11/2026 08:04)
+- **Bỏ Nét Kẻ Dọc Cyan Dưới Tên Ngôi Sao Bản Đồ 3D Trang Chủ & Đẩy Production (`index.html`, `main`)**:
+- **Mục tiêu**:
+  1. Xóa hoàn toàn vạch kẻ dọc cyan chỉ từ tên ngôi sao xuống ngôi sao trên bản đồ 3D trang chủ `index.html`:
+     - Xóa `.star-label::after`, `.star-label:hover::after`, `.star-label.reticle-active::after` ở CSS desktop và `.star-label::after` trong `@media` mobile.
+     - Bù khoảng cách dọc trong `updateLabels()` để nhãn không tụt sát/đè lên thiên thể: 4 ngôi sao Bảo Bình dùng `sy - 26` (Desktop) / `sy - 20` (Mobile, trước đây `sy - 16`); Hố Đen (`SINGULARITY`) & Sao Neutron (`PULSAR`) dùng `celOffsetY = 60` (Desktop) / `38` (Mobile, trước đây `46` / `30`), đồng thời khử khai báo trùng `isNarrowViewport`.
+  2. Đẩy chính thức lên `main` (`upstream/main` & `origin/main`) ngày `23/11/2026` theo chỉ đạo trực tiếp của Thầy (*"oke em đẩy lên wed đi"*).
+- **Commit & File đã sửa**:
+  - **Student Repo (`main`, rebase sạch từ `antigravity/20261122-remove-star-label-tick` trên nền `upstream/main` `77fc98a`)**:
+    - `index.html`: Xóa rule `.star-label::after` (Desktop + hover/reticle-active + Mobile) và cập nhật khoảng cách dọc nhãn trong `updateLabels()`.
+    - `PROJECT_STATE.md`: Cập nhật mục bàn giao.
+- **Kiểm tra đã chạy**:
+  - Kiểm tra tĩnh & AST sau rebase: `vm.Script` PASS `3/3` khối `<script>` inline của `index.html`, kết thúc hợp lệ bằng `</html>`, không còn `.star-label::after` hay `.reticle-active::after`, `git diff --check` sạch `0` lỗi, không chứa secret.
+  - Playwright E2E (`verify_no_star_tick.py`, chụp ảnh Retina 2x) trên Desktop `1440×900` (bình thường + hover/`reticle-active` `#lbl-1`) và Mobile `390×844`: PASS 100% cả 6 nhãn (`#lbl-1`, `#lbl-2`, `#lbl-4`, `#lbl-5`, `#lbl-blackhole`, `#lbl-neutron`) có `getComputedStyle(el, '::after').content === 'none'`, nằm gọn trong viewport và phía dưới navbar (`top >= 60px`), `0` `pageerror`, `0` lỗi console cục bộ; đã mở kiểm tra trực quan 3 ảnh PNG xác nhận sạch vạch chỉ và cân đối khoảng cách.
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên vòng ngắm tròn `.star-hitbox::before` khi hover ngôi sao, hiệu ứng hover `.star-code`/`.star-vn`, bố cục/tọa độ 3D của 6 ngôi sao Bảo Bình + Singularity + Pulsar, navbar toàn hệ thống và giao diện sáng CBT của `phong-thi-thu.html`.
+- **Việc còn lại**:
+  - Đã hoàn tất merge/push lên `main` (`https://vatlyxuantruong.io.vn/index.html`) và kiểm chứng trực tiếp trang live.
+
 ## Bàn giao gần nhất (22/11/2026 09:25)
 - **Đồng Bộ Toàn Bộ 18 PDF Lý Thuyết GĐ0 & GĐ1 Lên Google Drive + Khắc Phục Link 404 Bài 1 & Bài 12 + Chuẩn Hóa GDPT 2018 / Office Math (`main`)**:
 - **Mục tiêu**:

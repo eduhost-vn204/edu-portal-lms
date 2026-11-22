@@ -376,20 +376,6 @@
       padding: 6px 14px 8px;
       border-radius: 14px;
     }
-    .star-label::after {
-      content: '';
-      width: 1.5px;
-      height: 12px;
-      background: linear-gradient(180deg, rgba(0, 240, 255, 0.75), transparent);
-      margin-top: 3px;
-      transition: height 0.25s ease, background 0.25s ease;
-    }
-    .star-label:hover::after,
-    .star-label.reticle-active::after {
-      height: 16px;
-      background: linear-gradient(180deg, #ffffff, #00f0ff);
-      box-shadow: 0 0 10px #00f0ff;
-    }
 
     .star-code {
       font-family: 'Cormorant Garamond', 'Cinzel', serif;
@@ -773,10 +759,6 @@
       .star-label {
         padding: 2px 6px 4px;
         gap: 1px;
-      }
-      .star-label::after {
-        height: 7px;
-        margin-top: 2px;
       }
       .star-code {
         font-size: 10.5px !important;
@@ -4346,6 +4328,8 @@ function updateLabels() {
   if(interstellarWrap) interstellarWrap.style.opacity = starOpacity;
   if(hudTelemetry) hudTelemetry.style.opacity = starOpacity;
 
+  var isNarrowViewport = (window.innerWidth < 680);
+
   for(var i=0; i<tabMeshes.length; i++) {
     var tm = tabMeshes[i];
     var lbl = document.getElementById('lbl-' + tm.data.idx);
@@ -4373,11 +4357,11 @@ function updateLabels() {
 
     var sx = (v.x * 0.5 + 0.5) * window.innerWidth;
     var sy = (v.y * -0.5 + 0.5) * window.innerHeight;
-    var starPadX = (window.innerWidth < 680) ? 54 : 72;
+    var starPadX = isNarrowViewport ? 54 : 72;
     var lblSx = Math.max(starPadX, Math.min(window.innerWidth - starPadX, sx));
 
     if(lbl) {
-      lbl.style.transform = 'translate3d(' + lblSx + 'px, ' + (sy - 16) + 'px, 0) translate(-50%, -100%)';
+      lbl.style.transform = 'translate3d(' + lblSx + 'px, ' + (sy - (isNarrowViewport ? 20 : 26)) + 'px, 0) translate(-50%, -100%)';
     }
     if(hit) {
       hit.style.transform = 'translate3d(' + sx + 'px, ' + sy + 'px, 0) translate(-50%, -50%)';
@@ -4385,8 +4369,7 @@ function updateLabels() {
   }
 
     // Cập nhật vị trí nhãn và hitbox của Hố Đen & Sao Neutron (tự động giữ nhãn trong khung hình an toàn)
-    var isNarrowViewport = (window.innerWidth < 680);
-    var celOffsetY = isNarrowViewport ? 30 : 46;
+    var celOffsetY = isNarrowViewport ? 38 : 60;
     function updateCelestialLabel(objGroup, lblId, hitId) {
       var v = objGroup.position.clone().project(camera);
       var lbl = document.getElementById(lblId);
