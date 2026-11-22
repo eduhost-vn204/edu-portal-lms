@@ -1,3 +1,26 @@
+## Bàn giao gần nhất (22/11/2026 09:08)
+- **Sắp Xếp Lại Vị Trí & Nhãn Ngôi Sao Trên Bản Đồ Chòm Sao Bảo Bình 3D (`index.html`)**:
+- **Mục tiêu**:
+  1. Cập nhật vị trí các chức năng trên bản đồ chòm sao 3D ở trang chủ `index.html` theo chỉ đạo trực tiếp của Thầy (trên nền `origin/main` commit `2130943`):
+     - **Sadalmelik (`idx: 1`, trên-trái)**: `Gói Pro` → **`Phòng Thi Thử`** (`phong-thi-thu.html`)
+     - **Sadachbia (`idx: 2`, trên-phải — vị trí Phòng Thi Thử ban đầu)**: `Phòng Thi Thử` → **`Hồ Sơ Cá Nhân`** (`hoso.html`)
+     - **Shatabhisha (`idx: 4`, dưới-trái)**: `Hướng Dẫn` → **`Hướng Dẫn Học`** (`huongdan.html`)
+     - **Skat (`idx: 5`, dưới-phải — vị trí Hồ Sơ Cá Nhân ban đầu)**: `Hồ Sơ Cá Nhân` → **`Gói Pro`** (`goi-hoc.html`)
+     - **Pulsar (`lbl-neutron`, ngoài cùng bên phải)**: `Học Thử Miễn Phí` → **`Khóa Học`** (`baihoc.html`)
+     - **Singularity (`lbl-blackhole`, ngoài cùng bên trái)**: giữ nguyên `Test Điểm Thi THPT` (`danh-gia-nang-luc.html`).
+  2. Cập nhật đồng bộ nhãn `#lbl-*`, `title` vùng bấm `#hit-*`, mảng `aquariusTabStars`, `initCelestialInteractions()` và bảng ánh xạ deep-link `#hash` (`aliasMap`).
+- **Nhánh & File đã sửa**:
+  - **Student Repo (`antigravity/20261122-index-star-positions` trên worktree `C:\Users\Xuan Truong\.gemini\antigravity\worktrees\index_star_positions`, xuất phát từ `origin/main` `2130943` — CHƯA merge/push `main`)**:
+    - `index.html`: Cập nhật 6 cụm vị trí sao, nhãn, hitbox, mảng `aquariusTabStars`, `aliasMap` và Pulsar `Khóa Học`.
+    - `PROJECT_STATE.md`: Cập nhật bàn giao gần nhất.
+- **Kiểm tra đã chạy**:
+  - Node.js `vm.Script` AST Validation: `3/3` khối `<script>` inline đạt 0 lỗi cú pháp (`AST OK`), kết thúc hợp lệ `</html>`, `git diff --check` sạch 0 lỗi.
+  - Playwright E2E (`verify_index_stars.py`) trên 2 kích thước Desktop `1440×900` và Mobile `390×844`: PASS 100% nhãn DOM, `title`, mảng runtime `aquariusTabStars`, vị trí tương đối bounding box, không tràn khung, `0` lỗi Console/PageError; đã kiểm tra trực quan 2 ảnh chụp `verify_index_stars_desktop.png` và `verify_index_stars_mobile.png`.
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên navbar Desktop & Mobile Drawer (không đổi chữ `Hướng Dẫn` trên navbar; chờ Thầy quyết định nếu muốn đổi thêm), giữ nguyên `starCode`, tọa độ 3D (`x, y, z`), `planetColor`, `atmoColor`, `baseScale`, CSS layout và cấu trúc các trang khác (`phong-thi-thu.html`, `baihoc.html`, `danh-gia-nang-luc.html`).
+- **Việc còn lại**:
+  - Chờ Thầy duyệt nhánh `antigravity/20261122-index-star-positions` trước khi merge vào `main` và triển khai lên production (`vatlyxuantruong.io.vn`).
+
 ## Bàn giao gần nhất (21/11/2026 21:00)
 - **Sửa Triệt Để Lỗi Khóa "5 Ngày Lấy Gốc Vật Lí" Bị Nhận Nhầm Sang Bài Học GĐ1 (`baihoc.html`)**:
 - **Mục tiêu**:
