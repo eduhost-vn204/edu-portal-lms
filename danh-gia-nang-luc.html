@@ -2597,6 +2597,18 @@
             justify-content: space-between;
             align-items: center;
         }
+        .dgnl-lock-box {
+            background: rgba(245, 158, 11, 0.10);
+            border: 1px solid rgba(245, 158, 11, 0.36);
+            border-radius: 12px;
+            padding: 11px 13px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 12.5px;
+            color: #fde68a;
+            line-height: 1.5;
+        }
         .dgnl-mini-track {
             width: 100%;
             height: 6px;
@@ -2727,6 +2739,8 @@
         }
         .dgnl-mini-card.in-progress { border-left: 3px solid #38bdf8; }
         .dgnl-mini-card.done { border-left: 3px solid #10b981; }
+        .dgnl-mini-card.locked-other { opacity: 0.70; }
+        .dgnl-mini-card.locked-other:hover { opacity: 0.92; }
 
         .dgnl-mini-top {
             display: flex;
@@ -2767,6 +2781,7 @@
         .dgnl-badge-vip  { background: rgba(245, 158, 11, 0.12); color: #fbbf24; border-color: rgba(245, 158, 11, 0.30); }
         .dgnl-badge-prog { background: rgba(2, 132, 199, 0.22); color: #7dd3fc; border-color: rgba(56, 189, 248, 0.40); font-family: var(--font-mono); }
         .dgnl-badge-done { background: rgba(5, 150, 105, 0.18); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.36); font-family: var(--font-mono); }
+        .dgnl-badge-lock { background: rgba(245, 158, 11, 0.12); color: #fbbf24; border-color: rgba(245, 158, 11, 0.32); }
 
         /* Smart Recommendation Pop-up đồng bộ baihoc.html */
         .dgnl-smart-modal-card {
@@ -3566,7 +3581,7 @@
                     <span class="dgnl-rule-item"><i class="fa-regular fa-clock"></i> <strong>50 phút</strong> / đề (bấm Bắt đầu mới tính giờ)</span>
                     <span class="dgnl-rule-item"><i class="fa-solid fa-list-check"></i> <strong>28 câu</strong> (18 TN · 4 Đ/S · 6 TLN)</span>
                     <span class="dgnl-rule-item"><i class="fa-solid fa-chart-line"></i> Thang 10 chuẩn Bộ GD&amp;ĐT</span>
-                    <span class="dgnl-rule-item"><i class="fa-solid fa-floppy-disk"></i> Tự lưu câu &amp; giây riêng từng đề</span>
+                    <span class="dgnl-rule-item"><i class="fa-solid fa-floppy-disk"></i> Tự lưu từng giây · Làm xong đề mới mở đề khác</span>
                 </div>
                 <button type="button" class="dgnl-btn-pill sm suggest" id="btn-open-smart-suggest" onclick="openSmartRecommendationModal()">
                     <i class="fa-solid fa-wand-magic-sparkles"></i> Gợi ý cho em
@@ -4237,6 +4252,13 @@
             },
             set: function(examNum, sessObj) {
                 var all = this.readAll();
+                if (sessObj && sessObj.status === 'in_progress') {
+                    Object.keys(all).forEach(function(k) {
+                        if (Number(k) !== Number(examNum) && all[k] && all[k].status === 'in_progress') {
+                            delete all[k];
+                        }
+                    });
+                }
                 all[String(examNum)] = sessObj;
                 this.writeAll(all);
                 return sessObj;
@@ -4255,10 +4277,25 @@
             }
         };
 
+        function getActiveInProgressExam() {
+            migrateLegacySessionIfNeeded();
+            var list = DgnlSessionStore.getInProgressList();
+            return list.length > 0 ? list[0] : null;
+        }
+
         function migrateLegacySessionIfNeeded() {
             try {
                 var all = DgnlSessionStore.readAll();
-                if (Object.keys(all).length > 0) return;
+                if (Object.keys(all).length > 0) {
+                    var keys = Object.keys(all).filter(function(k) { return all[k] && all[k].status === 'in_progress'; });
+                    if (keys.length > 1) {
+                        keys.sort(function(a, b) { return Number(all[b].updatedAt || 0) - Number(all[a].updatedAt || 0); });
+                        var keepKey = keys[0];
+                        keys.slice(1).forEach(function(oldK) { delete all[oldK]; });
+                        DgnlSessionStore.writeAll(all);
+                    }
+                    return;
+                }
                 var raw = localStorage.getItem('vlxt_dgnl_guest_answers');
                 var oldTime = Number(localStorage.getItem('vlxt_dgnl_timer') || 0);
                 var oldTimeExam = Number(localStorage.getItem('vlxt_dgnl_timer_exam') || 0);
@@ -4396,7 +4433,16 @@
         try { isAutoStartBoot = urlParams.get('autostart') === '1'; } catch(e) {}
 
         migrateLegacySessionIfNeeded();
-        currentExamNumber = reqExam || 1;
+        var bootLockSess = getActiveInProgressExam();
+        var _bootLockRedirectedFrom = null;
+        if (bootLockSess && reqExam && Number(bootLockSess.examNumber) !== Number(reqExam)) {
+            _bootLockRedirectedFrom = reqExam;
+            currentExamNumber = Number(bootLockSess.examNumber);
+        } else if (bootLockSess) {
+            currentExamNumber = Number(bootLockSess.examNumber);
+        } else {
+            currentExamNumber = reqExam || 1;
+        }
         selectedLobbyExam = currentExamNumber;
 
         function applyLoadedExamPayload(payload, examNum) {
@@ -4644,16 +4690,21 @@
                 grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:32px;color:#94a3b8">Không tìm thấy đề phù hợp.</div>';
                 return;
             }
+            var activeLock = getActiveInProgressExam();
+            var lockNum = activeLock ? Number(activeLock.examNumber) : ((hasExamStarted && !isViewingReport) ? Number(currentExamNumber) : 0);
             grid.innerHTML = filtered.map(function(item) {
                 var isAct = Number(item.examNumber) === Number(currentExamNumber);
+                var isLocked = lockNum > 0 && Number(item.examNumber) !== lockNum;
                 var h = hist[item.examId] || hist['DE_' + item.examNumber];
-                var scorePill = h
-                    ? '<span style="font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px;background:rgba(16,185,129,0.16);color:#34d399">Đã làm: ' + h.score10 + 'đ</span>'
-                    : '<span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(56,189,248,0.12);color:#38bdf8">Chưa làm</span>';
+                var scorePill = isLocked
+                    ? '<span style="font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(245,158,11,0.14);color:#fbbf24"><i class="fa-solid fa-lock"></i> Hoàn thành Đề ' + pad2(lockNum) + ' trước</span>'
+                    : (h
+                        ? '<span style="font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px;background:rgba(16,185,129,0.16);color:#34d399">Đã làm: ' + h.score10 + 'đ</span>'
+                        : '<span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(56,189,248,0.12);color:#38bdf8">Chưa làm</span>');
                 var tierTag = item.accessTier === 'free'
                     ? '<span style="font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:5px;background:rgba(16,185,129,0.15);color:#34d399">FREE</span>'
                     : '<span style="font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:5px;background:rgba(245,158,11,0.16);color:#fbbf24">' + (item.accessTier === 'vip' ? 'VIP' : 'PRO') + '</span>';
-                return '<button type="button" class="drawer50-item ' + (isAct ? 'active' : '') + '" onclick="switchExam(' + item.examNumber + ')">' +
+                return '<button type="button" class="drawer50-item ' + (isAct ? 'active' : '') + '" style="' + (isLocked ? 'opacity:0.65;' : '') + '" onclick="switchExam(' + item.examNumber + ')">' +
                     '<div style="display:flex;align-items:center;justify-content:space-between;gap:6px">' +
                         '<span style="font-family:var(--font-mono);font-size:12px;font-weight:800;color:#38bdf8">ĐỀ ' + pad2(item.examNumber) + '</span>' +
                         '<div style="display:flex;gap:5px;align-items:center">' + tierTag + scorePill + '</div>' +
@@ -4821,9 +4872,17 @@
             opts = opts || {};
             var examNum = parseRequestedExam(examArg) || Number(examArg) || 1;
 
-            // Lưu phiên đề cũ trước khi chuyển sang đề mới
-            if (hasExamStarted && !isViewingReport && examNum !== currentExamNumber) {
-                saveCurrentExamSession(false);
+            // QUY TẮC KHÓA 1 ĐỀ: Phải làm xong & nộp đề đang làm dở mới được chuyển sang đề khác
+            var activeLock = getActiveInProgressExam();
+            var lockedNum = activeLock ? Number(activeLock.examNumber) : ((hasExamStarted && !isViewingReport) ? Number(currentExamNumber) : 0);
+            if (lockedNum > 0 && lockedNum !== Number(examNum)) {
+                closeCampaign50Drawer();
+                var examDd = document.getElementById('wow-exam-dropdown-panel');
+                if (examDd) examDd.classList.remove('open');
+                var examDdBtn = document.getElementById('btn-exam-dropdown-trigger');
+                if (examDdBtn) examDdBtn.classList.remove('active');
+                showExamAutoNoticeToast('Em đang làm dở Đề số ' + pad2(lockedNum) + '. Hãy hoàn thành & nộp bài trước khi chuyển sang đề khác!');
+                return false;
             }
 
             if (examNum === currentExamNumber && questions.length > 0 && _loadedExamsCache[examNum] && !opts.forceSync && !opts.reset) {
@@ -4877,8 +4936,10 @@
             var scrRep = document.getElementById('screen-report');
             if (scrQuiz) scrQuiz.style.display = 'block';
             if (scrRep) scrRep.style.display = 'none';
+            hasExamStarted = true;
             isViewingReport = false;
-            if (hasExamStarted) startTimer();
+            saveCurrentExamSession(true);
+            startTimer();
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return true;
         };
@@ -5090,6 +5151,8 @@
             var pausedCountEl = document.getElementById('lobby-stat-paused-count');
             var pausedChipsEl = document.getElementById('lobby-paused-chips');
 
+            var activeLock = getActiveInProgressExam();
+
             if (nameEl) nameEl.textContent = acc.name;
             if (subEl) subEl.textContent = acc.sub;
             if (badgeEl) {
@@ -5099,14 +5162,12 @@
             if (doneEl) doneEl.textContent = doneCount + ' / 50';
             if (avgEl) avgEl.textContent = doneCount > 0 ? formatScoreComma(avgScore) : '--';
             if (bestEl) bestEl.textContent = bestScore > 0 ? formatScoreComma(bestScore) : '--';
-            if (pausedCountEl) pausedCountEl.textContent = 'Đang làm dở (' + inProgList.length + ' đề)';
+            if (pausedCountEl) pausedCountEl.textContent = activeLock ? ('Đang làm dở (Đề ' + pad2(activeLock.examNumber) + ')') : 'Đang làm dở (0 đề)';
             if (pausedChipsEl) {
-                if (inProgList.length > 0) {
+                if (activeLock) {
                     pausedChipsEl.innerHTML = '<div class="dgnl-resume-chips">' +
-                        inProgList.slice(0, 2).map(function(s) {
-                            return '<button type="button" class="dgnl-resume-chip" onclick="enterExamFromLobby(' + s.examNumber + ', {reset:false})">▶ Đề ' + pad2(s.examNumber) + ' · ' + formatMMSS(s.remainingSeconds) + '</button>';
-                        }).join('') +
-                        (inProgList.length > 2 ? '<span style="font-size:11px;color:#7dd3fc;align-self:center;">+' + (inProgList.length - 2) + ' đề</span>' : '') +
+                        '<button type="button" class="dgnl-resume-chip" onclick="enterExamFromLobby(' + activeLock.examNumber + ', {reset:false})">▶ Tiếp tục Đề ' + pad2(activeLock.examNumber) + ' · ' + formatMMSS(activeLock.remainingSeconds) + '</button>' +
+                        '<span style="font-size:11px;color:#fbbf24;align-self:center;"><i class="fa-solid fa-lock"></i> Hoàn thành để mở đề khác</span>' +
                         '</div>';
                 } else {
                     pausedChipsEl.innerHTML = '<div class="dgnl-metric-value" style="font-size:14px;color:#94a3b8;font-family:inherit;font-weight:600;">Không có</div>';
@@ -5121,29 +5182,36 @@
             var meta = findExamManifest(selNum);
             var stage = STAGE_META_DGNL[meta.purpose] || STAGE_META_DGNL.ALL;
             var stats = PRECOMPUTED_50_STATS[String(selNum)] || { nb: 12, th: 6, vd: 10, c1: 7, c2: 7, c3: 7, c4: 7, total: 28 };
-            var sess = DgnlSessionStore.get(selNum);
+            var activeLock = getActiveInProgressExam();
+            var isLockedByOther = !!(activeLock && Number(activeLock.examNumber) !== selNum);
+            var isThisInProgress = !!(activeLock && Number(activeLock.examNumber) === selNum);
             var hist = getNormalizedHistoryMap()[selNum];
-            var inProg = sess && sess.status === 'in_progress';
 
             var modelParts = 'P1: ' + (meta.p1ModelCount || 0) + ' · P2: ' + (meta.p2ModelCount || 0) + ' · P3: ' + (meta.p3ModelCount || 0);
             var t = stats.total || 28;
             var nb = stats.nb || 0, th = stats.th || 0, vd = stats.vd || 0;
 
             var statusActionHtml = '';
-            if (inProg) {
-                var stopQ = Math.min(meta.soCau || 28, (sess.currentIndex || 0) + 1);
-                var pct = Math.min(100, Math.round(((sess.answeredCount || 0) / (meta.soCau || 28)) * 100));
+            if (isLockedByOther) {
+                statusActionHtml =
+                    '<div class="dgnl-lock-box" id="lobby-lock-notice-box">' +
+                        '<div style="font-weight:800;color:#fbbf24;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-lock"></i> Đang khóa — Cần hoàn thành Đề số ' + pad2(activeLock.examNumber) + '</div>' +
+                        '<div>Em đang làm dở <strong>Đề số ' + pad2(activeLock.examNumber) + '</strong> (' + (activeLock.answeredCount || 0) + '/28 câu · Còn <strong style="font-family:var(--font-mono)">' + formatMMSS(activeLock.remainingSeconds) + '</strong>). Phải nộp xong Đề ' + pad2(activeLock.examNumber) + ' mới được làm Đề ' + pad2(selNum) + '.</div>' +
+                    '</div>' +
+                    '<button type="button" class="dgnl-btn-pill primary" id="lobby-btn-goto-active-lock" style="width:100%;padding:12px;font-size:14px;" onclick="enterExamFromLobby(' + activeLock.examNumber + ', {reset:false})"><i class="fa-solid fa-play"></i> Quay lại hoàn thành Đề ' + pad2(activeLock.examNumber) + '</button>';
+            } else if (isThisInProgress) {
+                var stopQ = Math.min(meta.soCau || 28, (activeLock.currentIndex || 0) + 1);
+                var pct = Math.min(100, Math.round(((activeLock.answeredCount || 0) / (meta.soCau || 28)) * 100));
                 statusActionHtml =
                     '<div class="dgnl-resume-box">' +
                         '<div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:#7dd3fc;">' +
                             '<span><i class="fa-solid fa-clock-rotate-left"></i> Đang làm dở</span>' +
-                            '<span style="font-family:var(--font-mono);color:#fbbf24;">Còn ' + formatMMSS(sess.remainingSeconds) + '</span>' +
+                            '<span style="font-family:var(--font-mono);color:#fbbf24;">Còn ' + formatMMSS(activeLock.remainingSeconds) + '</span>' +
                         '</div>' +
-                        '<div style="font-size:12.5px;color:#e2e8f0;">Đã làm <strong>' + (sess.answeredCount || 0) + '/' + (meta.soCau || 28) + ' câu</strong> · Dừng tại <strong>Câu ' + stopQ + '</strong></div>' +
+                        '<div style="font-size:12.5px;color:#e2e8f0;">Đã làm <strong>' + (activeLock.answeredCount || 0) + '/' + (meta.soCau || 28) + ' câu</strong> · Dừng tại <strong>Câu ' + stopQ + '</strong></div>' +
                         '<div class="dgnl-mini-track"><div class="dgnl-mini-fill" style="width:' + pct + '%"></div></div>' +
                     '</div>' +
-                    '<button type="button" class="dgnl-btn-pill primary" id="lobby-btn-resume-selected" style="width:100%;padding:12px;font-size:14px;" onclick="enterExamFromLobby(' + selNum + ', {reset:false})"><i class="fa-solid fa-play"></i> Tiếp tục từ Câu ' + stopQ + '</button>' +
-                    '<button type="button" class="dgnl-btn-pill" id="lobby-btn-restart-selected" style="width:100%;" onclick="enterExamFromLobby(' + selNum + ', {reset:true})"><i class="fa-solid fa-rotate-left"></i> Làm lại từ đầu (50:00)</button>';
+                    '<button type="button" class="dgnl-btn-pill primary" id="lobby-btn-resume-selected" style="width:100%;padding:12px;font-size:14px;" onclick="enterExamFromLobby(' + selNum + ', {reset:false})"><i class="fa-solid fa-play"></i> Tiếp tục từ Câu ' + stopQ + '</button>';
             } else {
                 statusActionHtml =
                     (hist ? '<div class="dgnl-done-box"><span><i class="fa-solid fa-circle-check"></i> Đã thi (' + (hist.attempts || 1) + ' lượt)</span><strong>Cao nhất: ' + formatScoreComma(hist.bestScore) + 'đ</strong></div>' : '') +
@@ -5182,6 +5250,7 @@
             if (!grid) return;
             var list = getManifestList();
             var histMap = getNormalizedHistoryMap();
+            var activeLock = getActiveInProgressExam();
             var q = lobbySearchQuery.trim().toLowerCase();
 
             var filtered = list.filter(function(item) {
@@ -5207,6 +5276,7 @@
                 var h = histMap[num];
                 var isSel = Number(selectedLobbyExam) === Number(num);
                 var isFree = item.accessTier === 'free';
+                var isLockedOther = !!(activeLock && Number(activeLock.examNumber) !== Number(num));
 
                 var rightBadge = st === 'in_progress'
                     ? '<span class="dgnl-badge dgnl-badge-prog">' + formatMMSS(s.remainingSeconds) + '</span>'
@@ -5218,7 +5288,11 @@
                     ? '<span style="color:#38bdf8;font-weight:700;">' + (s.answeredCount || 0) + '/28 · Câu ' + ((s.currentIndex || 0) + 1) + '</span>'
                     : '<span>' + (item.modelCount || 0) + ' MH 60 FPS</span>';
 
-                return '<div class="dgnl-mini-card ' + (isSel ? 'selected ' : '') + (st === 'in_progress' ? 'in-progress' : (st === 'done' ? 'done' : '')) + '" data-lobby-exam="' + num + '" onclick="selectLobbyExam(' + num + ')">' +
+                var footRight = isLockedOther
+                    ? '<span style="color:#fbbf24;font-weight:700;"><i class="fa-solid fa-lock"></i> Đang khóa</span>'
+                    : '<span style="color:' + (isSel ? '#38bdf8' : '#94a3b8') + ';font-weight:700;">' + (st === 'done' ? 'Thi lại' : (st === 'in_progress' ? 'Tiếp tục' : 'Chọn')) + '</span>';
+
+                return '<div class="dgnl-mini-card ' + (isSel ? 'selected ' : '') + (isLockedOther ? 'locked-other ' : '') + (st === 'in_progress' ? 'in-progress' : (st === 'done' ? 'done' : '')) + '" data-lobby-exam="' + num + '" onclick="selectLobbyExam(' + num + ')">' +
                     '<div class="dgnl-mini-top">' +
                         '<span class="dgnl-badge dgnl-badge-num">ĐỀ ' + pad2(num) + '</span>' +
                         rightBadge +
@@ -5227,7 +5301,7 @@
                     (st === 'in_progress' ? '<div class="dgnl-mini-track"><div class="dgnl-mini-fill" style="width:' + Math.min(100, Math.round(((s.answeredCount || 0) / 28) * 100)) + '%"></div></div>' : '') +
                     '<div class="dgnl-mini-foot">' +
                         footLeft +
-                        '<span style="color:' + (isSel ? '#38bdf8' : '#94a3b8') + ';font-weight:700;">' + (st === 'done' ? 'Thi lại' : (st === 'in_progress' ? 'Tiếp tục' : 'Chọn')) + '</span>' +
+                        footRight +
                     '</div>' +
                 '</div>';
             }).join('');
@@ -5427,7 +5501,7 @@
                     badgeEl.innerHTML = '<i class="fa-solid fa-clock-rotate-left"></i> Đang có bài làm dở';
                 }
                 if (headingEl) headingEl.textContent = 'Tiếp tục làm Đề số ' + pad2(rec.examNumber) + ' · ' + getShortLobbySubtitle(meta);
-                if (descEl) descEl.innerHTML = 'Hệ thống đã lưu tự động câu đang làm và thời gian còn lại của em. Bấm tiếp tục để vào đúng <strong>Câu ' + rec.stopQ + '</strong> mà không bị mất tiến độ.';
+                if (descEl) descEl.innerHTML = 'Em đang làm dở <strong>Đề số ' + pad2(rec.examNumber) + '</strong> tại <strong>Câu ' + rec.stopQ + '</strong> (còn <strong>' + formatMMSS(s.remainingSeconds) + '</strong>). Theo quy tắc hoàn thành từng đề, em cần nộp xong <strong>Đề số ' + pad2(rec.examNumber) + '</strong> trước khi mở đề khác.';
                 if (bodyEl) {
                     bodyEl.innerHTML =
                         '<div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">' +
@@ -5530,6 +5604,16 @@
         window.enterExamFromLobby = async function(examNum, opts) {
             opts = opts || {};
             var targetNum = Number(examNum) || 1;
+
+            // QUY TẮC KHÓA 1 ĐỀ: Phải làm xong & nộp đề đang làm dở mới được mở đề khác
+            var activeLock = getActiveInProgressExam();
+            if (activeLock && Number(activeLock.examNumber) !== targetNum) {
+                showExamAutoNoticeToast('Em đang làm dở Đề số ' + pad2(activeLock.examNumber) + ' (' + (activeLock.answeredCount || 0) + '/28 câu · còn ' + formatMMSS(activeLock.remainingSeconds) + '). Hãy hoàn thành & nộp Đề ' + pad2(activeLock.examNumber) + ' trước khi chuyển sang đề khác!');
+                selectedLobbyExam = Number(activeLock.examNumber);
+                if (document.body.classList.contains('dgnl-lobby-active')) renderLobbyAll();
+                return;
+            }
+
             selectedLobbyExam = targetNum;
 
             // Kiểm tra trước việc tải đề > 2 trước khi ẩn Sảnh (tránh nhấp nháy nếu mở file:// cục bộ)
@@ -5551,17 +5635,19 @@
 
             closeSmartPopupToLobby();
             document.body.classList.remove('dgnl-lobby-active');
-            hasExamStarted = true;
+            hasExamStarted = false;
             isViewingReport = false;
 
-            var switched = await switchExam(targetNum, { reset: !!opts.reset, forceSync: true });
+            var switched = await switchExam(targetNum, { reset: (!!opts.reset && !activeLock), forceSync: true });
             if (!switched) {
                 hasExamStarted = false;
                 document.body.classList.add('dgnl-lobby-active');
                 renderLobbyAll();
                 return;
             }
-            saveCurrentExamSession(false);
+            hasExamStarted = true;
+            isViewingReport = false;
+            saveCurrentExamSession(true);
             startTimer();
         };
 
@@ -5632,6 +5718,7 @@
                 renderPalette();
                 renderQuestion(currentIndex);
                 closeSmartPopupToLobby();
+                saveCurrentExamSession(true);
                 startTimer();
             } else {
                 hasExamStarted = false;
@@ -5639,6 +5726,10 @@
                 document.body.classList.add('dgnl-lobby-active');
                 renderLobbyAll();
                 openSmartRecommendationModal();
+            }
+
+            if (_bootLockRedirectedFrom) {
+                showExamAutoNoticeToast('Hệ thống giữ em ở Đề số ' + pad2(currentExamNumber) + ' đang làm dở — cần hoàn thành & nộp bài trước khi mở Đề ' + pad2(_bootLockRedirectedFrom) + '!');
             }
         }
 
