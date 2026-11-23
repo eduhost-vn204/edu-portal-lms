@@ -2260,9 +2260,607 @@
             border-radius: 6px;
             overflow-x: auto;
         }
+
+        /* ═══════════════════════════════════════════
+           SẢNH / TRANG CHỦ ĐÁNH GIÁ NĂNG LỰC (ĐỒNG BỘ BAIHOC.HTML - 0 AI GLOW)
+        ═══════════════════════════════════════════ */
+        body.dgnl-lobby-active {
+            background:
+                radial-gradient(circle at 18% 12%, rgba(0, 240, 255, 0.08) 0%, transparent 42%),
+                radial-gradient(circle at 84% 22%, rgba(124, 58, 237, 0.10) 0%, transparent 46%),
+                radial-gradient(circle at 50% 88%, rgba(16, 185, 129, 0.06) 0%, transparent 50%),
+                #050a18 !important;
+            background-attachment: fixed !important;
+        }
+        body.dgnl-lobby-active .vstep-course-layout {
+            display: none !important;
+        }
+        body:not(.dgnl-lobby-active) #dgnl-lobby-screen {
+            display: none !important;
+        }
+
+        .dgnl-lobby-screen {
+            max-width: 1380px;
+            margin: 0 auto;
+            padding: 84px clamp(14px, 2.6vw, 32px) 44px;
+            width: 100%;
+        }
+
+        /* Header Tài khoản & Năng lực (đồng bộ .galaxy-sector-banner của baihoc.html) */
+        .dgnl-ability-card {
+            background: linear-gradient(135deg, rgba(12, 24, 52, 0.90) 0%, rgba(8, 15, 34, 0.95) 60%, rgba(22, 16, 50, 0.88) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.24);
+            border-radius: 18px;
+            margin-bottom: 18px;
+            overflow: hidden;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.38);
+        }
+        .dgnl-ability-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 18px 22px;
+        }
+        .dgnl-account-box {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 240px;
+        }
+        .dgnl-account-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.32);
+            color: #38bdf8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .dgnl-account-name-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .dgnl-account-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+        .dgnl-level-badge {
+            font-size: 11.5px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            white-space: nowrap;
+        }
+        .dgnl-level-badge.level-none { background: rgba(148, 163, 184, 0.12); color: #94a3b8; border-color: rgba(148, 163, 184, 0.24); }
+        .dgnl-level-badge.level-mid  { background: rgba(245, 158, 11, 0.14); color: #fbbf24; border-color: rgba(245, 158, 11, 0.32); }
+        .dgnl-level-badge.level-good { background: rgba(56, 189, 248, 0.14); color: #38bdf8; border-color: rgba(56, 189, 248, 0.32); }
+        .dgnl-level-badge.level-top  { background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.35); }
+        .dgnl-account-sub {
+            font-size: 12.5px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+        .dgnl-metrics-grid {
+            display: flex;
+            align-items: stretch;
+            gap: 10px;
+            flex-wrap: wrap;
+            flex: 1;
+            justify-content: flex-end;
+        }
+        .dgnl-metric-tile {
+            background: rgba(13, 22, 44, 0.85);
+            border: 1px solid rgba(56, 189, 248, 0.18);
+            border-radius: 12px;
+            padding: 10px 15px;
+            min-width: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .dgnl-metric-tile.wide-resume {
+            min-width: 230px;
+            max-width: 390px;
+        }
+        .dgnl-metric-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .dgnl-metric-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+            font-family: var(--font-mono);
+            margin-top: 2px;
+        }
+        .dgnl-resume-chips {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 5px;
+        }
+        .dgnl-resume-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(2, 132, 199, 0.18);
+            border: 1px solid rgba(56, 189, 248, 0.38);
+            color: #e0f2fe;
+            font-size: 11.5px;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            padding: 3px 9px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .dgnl-resume-chip:hover {
+            background: #0284c7;
+            color: #ffffff;
+        }
+
+        .dgnl-rules-strip {
+            background: rgba(6, 12, 26, 0.72);
+            border-top: 1px solid rgba(56, 189, 248, 0.18);
+            padding: 10px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 12.5px;
+            color: #cbd5e1;
+        }
+        .dgnl-rules-items {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .dgnl-rule-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        .dgnl-rule-item i {
+            color: #38bdf8;
+            font-size: 12px;
+        }
+
+        /* Nút pill chuẩn EdTech đồng bộ baihoc.html */
+        .dgnl-btn-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            border: 1px solid rgba(56, 189, 248, 0.34);
+            background: #13203d;
+            color: #e2e8f0;
+            transition: background 0.15s, border-color 0.15s, transform 0.12s;
+        }
+        .dgnl-btn-pill:hover {
+            background: #1b2c52;
+            border-color: #38bdf8;
+        }
+        .dgnl-btn-pill.sm {
+            padding: 5px 12px;
+            font-size: 12px;
+        }
+        .dgnl-btn-pill.primary {
+            background: linear-gradient(90deg, #0ea5e9, #0284c7);
+            border-color: rgba(56, 189, 248, 0.5);
+            color: #ffffff;
+        }
+        .dgnl-btn-pill.primary:hover {
+            background: linear-gradient(90deg, #38bdf8, #0369a1);
+        }
+        .dgnl-btn-pill.suggest {
+            background: rgba(56, 189, 248, 0.14);
+            border-color: rgba(56, 189, 248, 0.38);
+            color: #7dd3fc;
+        }
+        .dgnl-btn-pill.suggest:hover {
+            background: rgba(2, 132, 199, 0.32);
+            color: #ffffff;
+        }
+
+        /* Split 2 cột */
+        .dgnl-lobby-grid {
+            display: grid;
+            grid-template-columns: 350px minmax(0, 1fr);
+            gap: 18px;
+            align-items: start;
+        }
+        .dgnl-left-panel {
+            position: sticky;
+            top: 76px;
+            background: linear-gradient(180deg, rgba(15, 26, 52, 0.88) 0%, rgba(10, 18, 38, 0.94) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.24);
+            border-radius: 18px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.36);
+        }
+        .dgnl-panel-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .dgnl-exam-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.38;
+        }
+        .dgnl-char-box {
+            background: rgba(6, 12, 26, 0.72);
+            border: 1px solid rgba(56, 189, 248, 0.18);
+            border-radius: 14px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .dgnl-char-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            font-size: 12.5px;
+        }
+        .dgnl-char-k { color: #94a3b8; font-weight: 600; }
+        .dgnl-char-v { color: #f8fafc; font-weight: 700; text-align: right; }
+
+        .dgnl-diff-bar {
+            width: 100%;
+            height: 7px;
+            border-radius: 999px;
+            overflow: hidden;
+            background: #1e293b;
+            display: flex;
+            margin-top: 6px;
+        }
+        .dgnl-diff-nb { background: #10b981; height: 100%; }
+        .dgnl-diff-th { background: #38bdf8; height: 100%; }
+        .dgnl-diff-vd { background: #f59e0b; height: 100%; }
+        .dgnl-diff-legend {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 5px;
+            font-family: var(--font-mono);
+        }
+        .dgnl-chapter-chips {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-top: 6px;
+        }
+        .dgnl-ch-chip {
+            background: #0d162c;
+            border: 1px solid rgba(56, 189, 248, 0.18);
+            border-radius: 10px;
+            padding: 6px 4px;
+            text-align: center;
+            font-size: 11px;
+            color: #cbd5e1;
+            font-weight: 600;
+        }
+        .dgnl-ch-chip strong {
+            display: block;
+            color: #38bdf8;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 800;
+        }
+        .dgnl-resume-box {
+            background: rgba(2, 132, 199, 0.14);
+            border: 1px solid rgba(56, 189, 248, 0.36);
+            border-radius: 12px;
+            padding: 11px 13px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+        .dgnl-done-box {
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.32);
+            border-radius: 12px;
+            padding: 10px 13px;
+            font-size: 12.5px;
+            color: #6ee7b7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .dgnl-mini-track {
+            width: 100%;
+            height: 6px;
+            background: rgba(148, 163, 184, 0.18);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .dgnl-mini-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #38bdf8);
+            border-radius: 999px;
+        }
+
+        /* Cột phải: Bộ lọc Pill & Lưới 50 đề */
+        .dgnl-catalog-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            min-width: 0;
+        }
+        .dgnl-filter-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .dgnl-stage-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .dgnl-stage-tab {
+            background: #0d162c;
+            color: #94a3b8;
+            border: 1.5px solid rgba(56, 189, 248, 0.18);
+            padding: 7px 14px;
+            border-radius: 999px;
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+        .dgnl-stage-tab:hover {
+            color: #ffffff;
+            border-color: rgba(56, 189, 248, 0.42);
+        }
+        .dgnl-stage-tab.active {
+            background: linear-gradient(90deg, #0ea5e9, #0284c7);
+            color: #ffffff;
+            border-color: transparent;
+        }
+        .dgnl-filter-subrow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .dgnl-status-pills {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+        .dgnl-status-pill {
+            background: #0d162c;
+            color: #94a3b8;
+            border: 1px solid rgba(56, 189, 248, 0.18);
+            padding: 6px 13px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .dgnl-status-pill.active {
+            background: #e6edf3;
+            color: #0d1117;
+            border-color: #e6edf3;
+        }
+        .dgnl-search-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #0d162c;
+            border: 1.5px solid rgba(56, 189, 248, 0.18);
+            border-radius: 999px;
+            padding: 6px 14px;
+            min-width: 230px;
+        }
+        .dgnl-search-box:focus-within { border-color: #38bdf8; }
+        .dgnl-search-box i { color: #94a3b8; font-size: 12.5px; }
+        .dgnl-search-input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #f1f5f9;
+            font-family: inherit;
+            font-size: 13px;
+            width: 100%;
+        }
+
+        .dgnl-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+            gap: 12px;
+        }
+        .dgnl-mini-card {
+            background: linear-gradient(180deg, rgba(15, 26, 52, 0.85) 0%, rgba(10, 18, 38, 0.92) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.18);
+            border-radius: 14px;
+            padding: 13px 14px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: transform 0.16s, border-color 0.16s, background 0.16s;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+        }
+        .dgnl-mini-card:hover {
+            transform: translateY(-2px);
+            border-color: #38bdf8;
+            background: linear-gradient(180deg, rgba(20, 34, 68, 0.92) 0%, rgba(13, 24, 50, 0.96) 100%);
+        }
+        .dgnl-mini-card.selected {
+            border-color: #38bdf8;
+            background: linear-gradient(180deg, rgba(20, 40, 82, 0.95) 0%, rgba(12, 26, 56, 0.98) 100%);
+            box-shadow: 0 6px 18px rgba(2, 6, 23, 0.45);
+        }
+        .dgnl-mini-card.in-progress { border-left: 3px solid #38bdf8; }
+        .dgnl-mini-card.done { border-left: 3px solid #10b981; }
+
+        .dgnl-mini-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+        }
+        .dgnl-mini-sub {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #f1f5f9;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .dgnl-mini-foot {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11.5px;
+            color: #94a3b8;
+        }
+
+        .dgnl-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            white-space: nowrap;
+        }
+        .dgnl-badge-num  { background: rgba(11, 132, 243, 0.12); color: #7dd3fc; border-color: rgba(56, 189, 248, 0.26); font-family: var(--font-mono); border-radius: 8px; }
+        .dgnl-badge-free { background: rgba(16, 185, 129, 0.12); color: #34d399; border-color: rgba(16, 185, 129, 0.30); }
+        .dgnl-badge-std  { background: rgba(56, 189, 248, 0.12); color: #38bdf8; border-color: rgba(56, 189, 248, 0.30); }
+        .dgnl-badge-vip  { background: rgba(245, 158, 11, 0.12); color: #fbbf24; border-color: rgba(245, 158, 11, 0.30); }
+        .dgnl-badge-prog { background: rgba(2, 132, 199, 0.22); color: #7dd3fc; border-color: rgba(56, 189, 248, 0.40); font-family: var(--font-mono); }
+        .dgnl-badge-done { background: rgba(5, 150, 105, 0.18); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.36); font-family: var(--font-mono); }
+
+        /* Smart Recommendation Pop-up đồng bộ baihoc.html */
+        .dgnl-smart-modal-card {
+            max-width: 520px;
+            width: 100%;
+            background: #0c162c;
+            border: 1px solid rgba(56, 189, 248, 0.28);
+            border-radius: 18px;
+            padding: 24px 24px 22px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+            text-align: left;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .dgnl-smart-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .dgnl-smart-close {
+            width: 30px;
+            height: 30px;
+            border-radius: 999px;
+            background: rgba(148, 163, 184, 0.12);
+            border: 1px solid rgba(148, 163, 184, 0.24);
+            color: #cbd5e1;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+        .dgnl-smart-close:hover {
+            background: rgba(239, 68, 68, 0.18);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #ffffff;
+        }
+        .dgnl-smart-panel {
+            background: rgba(6, 12, 26, 0.72);
+            border: 1px solid rgba(56, 189, 248, 0.20);
+            border-radius: 14px;
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .dgnl-smart-weak-row {
+            display: grid;
+            grid-template-columns: 94px 1fr 48px;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+        }
+        .dgnl-smart-weak-bar {
+            height: 7px;
+            border-radius: 999px;
+            background: rgba(148, 163, 184, 0.18);
+            overflow: hidden;
+        }
+        .dgnl-smart-weak-fill {
+            height: 100%;
+            border-radius: 999px;
+        }
+
+        @media (max-width: 960px) {
+            .dgnl-lobby-grid { grid-template-columns: 1fr; }
+            .dgnl-left-panel { position: static; }
+            .dgnl-metrics-grid { justify-content: flex-start; }
+        }
+        @media (max-width: 768px) {
+            .dgnl-lobby-screen { padding: 74px 12px 30px; }
+            .dgnl-ability-top { padding: 15px 16px; }
+            .dgnl-rules-strip { padding: 10px 16px; }
+            .dgnl-rule-item { white-space: normal; }
+        }
+        @media (max-width: 560px) {
+            .dgnl-metric-tile { flex: 1 1 44%; min-width: 0; }
+            .dgnl-metric-tile.wide-resume { flex: 1 1 100%; min-width: 0; max-width: none; }
+            .dgnl-search-box { min-width: 0; width: 100%; }
+            .dgnl-cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+        }
     </style>
 </head>
-<body>
+<body class="dgnl-lobby-active">
+    <script>
+        try {
+            if ((new URLSearchParams(window.location.search)).get('autostart') === '1') {
+                document.body.classList.remove('dgnl-lobby-active');
+            }
+        } catch(e) {}
+    </script>
 
     <!-- TOP-BAR CHUẨN 100% ĐỒNG BỘ CÙNG BAIHOC.HTML & INDEX.HTML -->
     <header class="top-bar" id="main-top-bar">
@@ -2927,8 +3525,90 @@
 ]
     </script>
 
-    <!-- LAYOUT VSTEP OWL 3 CỘT -->
-    <div class="vstep-course-layout">
+    <!-- SẢNH / TRANG CHỦ ĐÁNH GIÁ NĂNG LỰC (MẶC ĐỊNH KHI VÀO TRANG) -->
+    <section id="dgnl-lobby-screen" class="dgnl-lobby-screen" aria-label="Sảnh Đánh Giá Năng Lực 50 Đề">
+        <!-- HỒ SƠ NĂNG LỰC TÀI KHOẢN + THÔNG TIN CHUNG 50 PHÚT -->
+        <section class="dgnl-ability-card" id="lobby-ability-dashboard">
+            <div class="dgnl-ability-top">
+                <div class="dgnl-account-box">
+                    <div class="dgnl-account-avatar"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <div>
+                        <div class="dgnl-account-name-row">
+                            <span class="dgnl-account-name" id="lobby-user-name">Khách trải nghiệm</span>
+                            <span class="dgnl-level-badge level-none" id="lobby-ability-badge">Chưa xếp loại · Cần khảo sát</span>
+                        </div>
+                        <div class="dgnl-account-sub" id="lobby-user-sub">Luyện Test Điểm Thi THPTQG 2026 · Tự động lưu theo từng đề</div>
+                    </div>
+                </div>
+                <div class="dgnl-metrics-grid">
+                    <div class="dgnl-metric-tile">
+                        <span class="dgnl-metric-label">Đề đã làm</span>
+                        <span class="dgnl-metric-value" id="lobby-stat-done" style="color:#34d399;">0 / 50</span>
+                    </div>
+                    <div class="dgnl-metric-tile">
+                        <span class="dgnl-metric-label">Điểm trung bình</span>
+                        <span class="dgnl-metric-value" id="lobby-stat-avg" style="color:#38bdf8;">--</span>
+                    </div>
+                    <div class="dgnl-metric-tile">
+                        <span class="dgnl-metric-label">Điểm cao nhất</span>
+                        <span class="dgnl-metric-value" id="lobby-stat-best" style="color:#fbbf24;">--</span>
+                    </div>
+                    <div class="dgnl-metric-tile wide-resume">
+                        <span class="dgnl-metric-label" id="lobby-stat-paused-count">Đang làm dở (0 đề)</span>
+                        <div id="lobby-paused-chips">
+                            <div class="dgnl-metric-value" style="font-size:14px;color:#94a3b8;font-family:inherit;font-weight:600;">Không có</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dgnl-rules-strip">
+                <div class="dgnl-rules-items">
+                    <span class="dgnl-rule-item"><i class="fa-regular fa-clock"></i> <strong>50 phút</strong> / đề (bấm Bắt đầu mới tính giờ)</span>
+                    <span class="dgnl-rule-item"><i class="fa-solid fa-list-check"></i> <strong>28 câu</strong> (18 TN · 4 Đ/S · 6 TLN)</span>
+                    <span class="dgnl-rule-item"><i class="fa-solid fa-chart-line"></i> Thang 10 chuẩn Bộ GD&amp;ĐT</span>
+                    <span class="dgnl-rule-item"><i class="fa-solid fa-floppy-disk"></i> Tự lưu câu &amp; giây riêng từng đề</span>
+                </div>
+                <button type="button" class="dgnl-btn-pill sm suggest" id="btn-open-smart-suggest" onclick="openSmartRecommendationModal()">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Gợi ý cho em
+                </button>
+            </div>
+        </section>
+
+        <!-- BỐ CỤC 2 CỘT MẪU B -->
+        <div class="dgnl-lobby-grid">
+            <aside class="dgnl-left-panel" id="lobby-preview-panel">
+                <!-- Đặc trưng đề đang chọn sẽ render bởi JS -->
+            </aside>
+
+            <div class="dgnl-catalog-panel">
+                <div class="dgnl-filter-bar">
+                    <div class="dgnl-stage-tabs" id="lobby-stage-tabs">
+                        <button type="button" class="dgnl-stage-tab active" data-stage="ALL" onclick="setLobbyStageFilter('ALL')">Tất cả (50)</button>
+                        <button type="button" class="dgnl-stage-tab" data-stage="KHAO_SAT_FREE" onclick="setLobbyStageFilter('KHAO_SAT_FREE')">Khảo sát Free (1–5)</button>
+                        <button type="button" class="dgnl-stage-tab" data-stage="THUC_CHIEN_8PLUS" onclick="setLobbyStageFilter('THUC_CHIEN_8PLUS')">Thực chiến 8+ (6–20)</button>
+                        <button type="button" class="dgnl-stage-tab" data-stage="VE_DICH_9PLUS" onclick="setLobbyStageFilter('VE_DICH_9PLUS')">Về đích 9+ (21–40)</button>
+                        <button type="button" class="dgnl-stage-tab" data-stage="TONG_DUYET_2026" onclick="setLobbyStageFilter('TONG_DUYET_2026')">Tổng duyệt (41–50)</button>
+                    </div>
+                    <div class="dgnl-filter-subrow">
+                        <div class="dgnl-status-pills" id="lobby-status-pills">
+                            <button type="button" class="dgnl-status-pill active" data-status="ALL" onclick="setLobbyStatusFilter('ALL')">Tất cả</button>
+                            <button type="button" class="dgnl-status-pill" data-status="in_progress" onclick="setLobbyStatusFilter('in_progress')">Làm dở</button>
+                            <button type="button" class="dgnl-status-pill" data-status="new" onclick="setLobbyStatusFilter('new')">Chưa làm</button>
+                            <button type="button" class="dgnl-status-pill" data-status="done" onclick="setLobbyStatusFilter('done')">Đã thi</button>
+                        </div>
+                        <div class="dgnl-search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" class="dgnl-search-input" id="lobby-search-input" placeholder="Tìm nhanh đề (VD: 01, 21, khảo sát...)" oninput="setLobbySearchQuery(this.value)">
+                        </div>
+                    </div>
+                </div>
+                <div class="dgnl-cards-grid" id="lobby-exam-grid"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LAYOUT VSTEP OWL 3 CỘT (PHÒNG LÀM BÀI THI THẬT - GIỮ NGUYÊN 100%) -->
+    <div class="vstep-course-layout" id="vstep-course-layout">
 
         <!-- LỚP PHỦ OVERLAY KHI MỞ DRAWER CẤU TRÚC ĐỀ -->
         <div class="struct-drawer-overlay" id="struct-drawer-overlay" onclick="toggleStructDrawer(false)"></div>
@@ -2989,15 +3669,20 @@
             <div class="wow-mobile-hud" id="wow-mobile-hud">
                 <div class="wow-mhud-timer"><i class="fa-regular fa-clock"></i> <span id="timer-display-mobile">50:00</span></div>
                 <div class="wow-mhud-actions">
-                    <button type="button" class="wow-mhud-btn" onclick="openCampaign50Drawer()"><i class="fa-solid fa-layer-group"></i> Kho 50 Đề</button>
+                    <button type="button" class="wow-mhud-btn" id="btn-back-to-lobby-mobile" onclick="pauseAndReturnToLobby()"><i class="fa-solid fa-arrow-left"></i> Sảnh</button>
+                    <button type="button" class="wow-mhud-btn" onclick="openCampaign50Drawer()"><i class="fa-solid fa-layer-group"></i> 50 Đề</button>
                     <button type="button" class="wow-mhud-btn" onclick="toggleMobilePaletteDrawer(true)"><i class="fa-solid fa-table-cells"></i> <span id="pal-mobile-count">0/28</span></button>
-                    <button type="button" class="wow-mhud-btn" style="background:#059669;border-color:#10b981;color:#fff" onclick="confirmSubmit()">Nộp bài</button>
+                    <button type="button" class="wow-mhud-btn" style="background:#059669;border-color:#10b981;color:#fff" onclick="confirmSubmit()">Nộp</button>
                 </div>
             </div>
 
             <!-- THANH TIÊU ĐỀ & CHỌN ĐỀ 1 DÒNG SIÊU GỌN -->
             <div class="wow-top-command-bar" id="wow-top-command-bar">
                 <div class="wow-cmd-left">
+                    <button type="button" class="btn-struct-drawer-toggle" id="btn-back-to-lobby" onclick="pauseAndReturnToLobby()" title="Tạm dừng, lưu tiến độ &amp; về Sảnh 50 Đề">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Sảnh đề</span>
+                    </button>
                     <button type="button" class="btn-struct-drawer-toggle" id="btn-toggle-struct-drawer" onclick="toggleStructDrawer()" title="Xem cấu trúc 28 câu của đề">
                         <i class="fa-solid fa-bars-staggered"></i>
                         <span>Cấu trúc đề</span>
@@ -3194,6 +3879,9 @@
                                 <button type="button" class="btn-open-50-drawer" style="padding:5px 12px;font-size:12.5px" onclick="openCampaign50Drawer()">
                                     <i class="fa-solid fa-layer-group"></i> Làm Đề Khác (Kho 50 Đề)
                                 </button>
+                                <button type="button" class="btn-open-50-drawer" style="padding:5px 12px;font-size:12.5px;background:#13203d;border-color:rgba(56,189,248,0.4);color:#7dd3fc" onclick="returnToLobbyFromReport()">
+                                    <i class="fa-solid fa-house"></i> Về Sảnh ĐGNL
+                                </button>
                                 <a href="hoso.html?tab=causai" class="btn-open-50-drawer" style="padding:5px 12px;font-size:12.5px;text-decoration:none;border-color:rgba(248,113,113,0.4);color:#fca5a5;background:rgba(239,68,68,0.12)">
                                     <i class="fa-solid fa-bookmark"></i> Sổ Tay Câu Sai Trong Hồ Sơ
                                 </a>
@@ -3311,44 +3999,41 @@
         </div>
     </div>
 
-    <!-- MODAL KHỞI ĐỘNG XÁC NHẬN BẮT ĐẦU LÀM BÀI 28 CÂU -->
-    <div class="modal-overlay" id="start-exam-modal" style="display:flex;">
-        <div class="modal-card" style="max-width:560px;border-color:#1e3a5f;box-shadow:0 20px 56px rgba(0, 0, 0, 0.78);text-align:center;padding:34px 30px;">
-            <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;font-size:12px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:14px;">
-                <i class="fa-solid fa-bolt"></i> CHIẾN DỊCH 50 ĐỀ CHUẨN BỘ GD&amp;ĐT 2026
+    <!-- MODAL ĐỀ XUẤT THÔNG MINH KHI VÀO SẢNH ĐÁNH GIÁ NĂNG LỰC -->
+    <div class="modal-overlay" id="start-exam-modal" style="display:none;" onclick="if(event.target===this) closeSmartPopupToLobby()">
+        <div class="modal-card dgnl-smart-modal-card">
+            <div class="dgnl-smart-top">
+                <span class="dgnl-badge dgnl-badge-std" id="start-modal-badge">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Đề xuất luyện tập hôm nay
+                </span>
+                <button type="button" class="dgnl-smart-close" onclick="closeSmartPopupToLobby()" title="Đóng để xem Sảnh 50 Đề">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
-            <h3 id="start-modal-heading" style="font-size:21px;font-weight:900;color:#fff;margin-bottom:10px;line-height:1.35;">
-                🎯 ĐỀ THI THỬ THPTQG 2026 — MÔ PHỎNG VẬT LÝ 60 FPS
+            <h3 id="start-modal-heading" style="font-size:20px;font-weight:800;color:#fff;margin-bottom:8px;line-height:1.35;">
+                Đề số 01 · Khảo sát năng lực chuẩn Bộ GD&amp;ĐT
             </h3>
-            <p id="start-modal-desc" style="font-size:14px;color:#cbd5e1;line-height:1.65;margin-bottom:20px;">
-                Bài thi chuẩn cấu trúc Bộ GD&amp;ĐT gồm <strong>28 câu (3 Phần: Trắc nghiệm · Đúng/Sai · Trả lời ngắn)</strong> tích hợp <strong>Mô phỏng Thí nghiệm Vật Lý 60 FPS tương tác trực tiếp</strong>. Hệ thống chấm điểm tự động thang 10 và định vị lỗ hổng tức thì!
+            <p id="start-modal-desc" style="font-size:13.5px;color:#cbd5e1;line-height:1.6;margin-bottom:14px;">
+                Bài thi chuẩn cấu trúc Bộ GD&amp;ĐT gồm <strong>28 câu</strong> (18 TN · 4 Đ/S · 6 TLN) trong <strong>50 phút</strong>, tích hợp mô phỏng Vật Lý 60 FPS tương tác trực tiếp.
             </p>
 
-            <div style="background:#0b1329;border:1px solid #1e3a5f;border-radius:12px;padding:14px 18px;text-align:left;margin-bottom:22px;display:flex;flex-direction:column;gap:9px;font-size:13.5px;color:#e2e8f0;">
-                <div style="display:flex;align-items:center;gap:10px;">
-                    <i class="fa-solid fa-clock" style="color:#38bdf8;width:18px;"></i>
-                    <span>Thời gian làm bài: <strong id="start-modal-time">50 phút</strong> (Đồng hồ chỉ bắt đầu đếm khi em bấm Bắt Đầu).</span>
+            <div class="dgnl-smart-panel" id="start-modal-smart-body">
+                <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">
+                    <span style="color:#94a3b8;font-weight:600;">Thời gian làm bài:</span>
+                    <strong id="start-modal-time" style="color:#ffffff;font-family:var(--font-mono);">50 phút</strong>
                 </div>
-                <div style="display:flex;align-items:center;gap:10px;">
-                    <i class="fa-solid fa-cubes" style="color:#10b981;width:18px;"></i>
-                    <span>Trải nghiệm <strong id="start-modal-models">8 mô hình Vật Lý 60 FPS</strong>: Tạm dừng, Xem ảnh thực tế, Phóng to toàn màn hình.</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:10px;">
-                    <i class="fa-solid fa-graduation-cap" style="color:#fbbf24;width:18px;"></i>
-                    <span>Cấu trúc 3 Phần chuẩn Bộ: P1 (18 câu · 4,5đ), P2 Đúng/Sai (4 câu · 4,0đ), P3 TLN (6 câu · 1,5đ).</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:10px;padding-top:6px;border-top:1px solid #1e293b;">
-                    <i class="fa-solid fa-keyboard" style="color:#a78bfa;width:18px;"></i>
-                    <span>Phím tắt thông minh: <strong>← / →</strong> chuyển câu, <strong>A–D / 1–4</strong> chọn đáp án, <strong>Space</strong> tạm dừng mô phỏng, <strong>F</strong> đánh dấu.</span>
+                <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">
+                    <span style="color:#94a3b8;font-weight:600;">Mô hình 60 FPS:</span>
+                    <strong id="start-modal-models" style="color:#38bdf8;">8 mô hình Vật Lý 60 FPS</strong>
                 </div>
             </div>
 
-            <div style="display:flex;gap:10px;flex-wrap:wrap">
-                <button type="button" class="vstep-btn secondary" onclick="openCampaign50Drawer()" style="flex:1;padding:13px 14px;border-radius:10px;font-size:13.5px;font-weight:700;">
-                    <i class="fa-solid fa-layer-group"></i> Chọn trong 50 Đề
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button type="button" class="dgnl-btn-pill" id="start-modal-secondary-btn" onclick="closeSmartPopupToLobby()" style="flex:1;padding:11px 14px;">
+                    <i class="fa-solid fa-layer-group"></i> Xem Sảnh 50 Đề
                 </button>
-                <button type="button" class="vstep-btn submit" onclick="startExamNow()" style="flex:1.6;padding:13px 20px;border-radius:10px;font-size:15px;font-weight:800;background:#0284c7;color:#ffffff;box-shadow:0 4px 14px rgba(0, 0, 0, 0.35);border:1px solid #38bdf8;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
-                    <i class="fa-solid fa-play"></i> BẮT ĐẦU LÀM BÀI →
+                <button type="button" class="dgnl-btn-pill primary" id="start-modal-primary-btn" onclick="startRecommendedExam()" style="flex:1.45;padding:11px 18px;font-size:14px;">
+                    <i class="fa-solid fa-play"></i> Bắt đầu ngay →
                 </button>
             </div>
         </div>
@@ -3452,16 +4137,75 @@
         var _loadedExamsCache = {};
         var _drawer50Filter = 'ALL';
         var HISTORY_50_KEY = 'vlxt_thptqg50_history_v1';
+        var DGNL_SESSIONS_KEY = 'vlxt_dgnl_sessions_v2';
+        var isViewingReport = false;
+        var hasExamStarted = false;
+        var selectedLobbyExam = 1;
+        var lobbyStageFilter = 'ALL';
+        var lobbyStatusFilter = 'ALL';
+        var lobbySearchQuery = '';
+        var _recommendedExamNum = 1;
+        var _recommendedMode = 'fresh';
+
+        var STAGE_META_DGNL = {
+            ALL: { tab: 'Tất cả (50)', badge: 'Đề chuẩn 50 câu', badgeClass: 'dgnl-badge-std' },
+            KHAO_SAT_FREE: { tab: 'Khảo sát Free (1–5)', badge: 'Khảo sát Free', badgeClass: 'dgnl-badge-free' },
+            THUC_CHIEN_8PLUS: { tab: 'Thực chiến 8+ (6–20)', badge: 'Thực chiến 8+', badgeClass: 'dgnl-badge-std' },
+            VE_DICH_9PLUS: { tab: 'Về đích 9+ (21–40)', badge: 'Về đích 9+', badgeClass: 'dgnl-badge-vip' },
+            TONG_DUYET_2026: { tab: 'Tổng duyệt (41–50)', badge: 'Tổng duyệt', badgeClass: 'dgnl-badge-vip' }
+        };
+
+        var CHAPTER_INFO_DGNL = [
+            { code: 'C1', short: 'Vật lí nhiệt', name: 'Chương 1: Vật lí nhiệt', keyStat: 'c1' },
+            { code: 'C2', short: 'Khí lí tưởng', name: 'Chương 2: Khí lí tưởng', keyStat: 'c2' },
+            { code: 'C3', short: 'Từ trường', name: 'Chương 3: Từ trường', keyStat: 'c3' },
+            { code: 'C4', short: 'Vật lí hạt nhân', name: 'Chương 4: Vật lí hạt nhân', keyStat: 'c4' }
+        ];
+
+        // Thống kê bóc tách sẵn cho cả 50 đề (hỗ trợ 0ms ngay cả khi mở file:// cục bộ)
+        var PRECOMPUTED_50_STATS = {"1":{"nb":11,"th":5,"vd":12,"c1":7,"c2":7,"c3":7,"c4":7,"total":28},"2":{"nb":14,"th":5,"vd":9,"c1":6,"c2":7,"c3":7,"c4":8,"total":28},"3":{"nb":14,"th":4,"vd":10,"c1":8,"c2":6,"c3":7,"c4":7,"total":28},"4":{"nb":11,"th":7,"vd":10,"c1":6,"c2":7,"c3":7,"c4":8,"total":28},"5":{"nb":7,"th":11,"vd":10,"c1":6,"c2":7,"c3":7,"c4":8,"total":28},"6":{"nb":12,"th":6,"vd":10,"c1":5,"c2":8,"c3":7,"c4":8,"total":28},"7":{"nb":11,"th":5,"vd":12,"c1":7,"c2":7,"c3":7,"c4":7,"total":28},"8":{"nb":10,"th":9,"vd":9,"c1":7,"c2":7,"c3":7,"c4":7,"total":28},"9":{"nb":13,"th":6,"vd":9,"c1":6,"c2":8,"c3":7,"c4":7,"total":28},"10":{"nb":14,"th":4,"vd":10,"c1":5,"c2":8,"c3":7,"c4":8,"total":28},"11":{"nb":15,"th":4,"vd":9,"c1":5,"c2":8,"c3":8,"c4":7,"total":28},"12":{"nb":11,"th":7,"vd":10,"c1":7,"c2":7,"c3":7,"c4":7,"total":28},"13":{"nb":16,"th":1,"vd":11,"c1":6,"c2":7,"c3":7,"c4":8,"total":28},"14":{"nb":11,"th":6,"vd":11,"c1":5,"c2":8,"c3":7,"c4":8,"total":28},"15":{"nb":10,"th":9,"vd":9,"c1":7,"c2":7,"c3":7,"c4":7,"total":28},"16":{"nb":15,"th":4,"vd":9,"c1":8,"c2":6,"c3":7,"c4":7,"total":28},"17":{"nb":10,"th":8,"vd":10,"c1":7,"c2":7,"c3":7,"c4":7,"total":28},"18":{"nb":10,"th":8,"vd":10,"c1":8,"c2":6,"c3":7,"c4":7,"total":28},"19":{"nb":14,"th":4,"vd":10,"c1":7,"c2":7,"c3":7,"c4":7,"total":28},"20":{"nb":15,"th":3,"vd":10,"c1":6,"c2":8,"c3":7,"c4":7,"total":28},"21":{"nb":13,"th":5,"vd":10,"c1":6,"c2":7,"c3":8,"c4":7,"total":28},"22":{"nb":15,"th":2,"vd":11,"c1":7,"c2":6,"c3":6,"c4":9,"total":28},"23":{"nb":14,"th":4,"vd":10,"c1":6,"c2":7,"c3":7,"c4":8,"total":28},"24":{"nb":14,"th":5,"vd":9,"c1":5,"c2":8,"c3":7,"c4":8,"total":28},"25":{"nb":15,"th":4,"vd":9,"c1":7,"c2":7,"c3":7,"c4":7,"total":28},"26":{"nb":9,"th":9,"vd":10,"c1":8,"c2":6,"c3":7,"c4":7,"total":28},"27":{"nb":10,"th":8,"vd":10,"c1":7,"c2":7,"c3":7,"c4":7,"total":28},"28":{"nb":12,"th":7,"vd":9,"c1":6,"c2":6,"c3":7,"c4":9,"total":28},"29":{"nb":13,"th":5,"vd":10,"c1":7,"c2":7,"c3":7,"c4":7,"total":28},"30":{"nb":11,"th":9,"vd":8,"c1":8,"c2":6,"c3":7,"c4":7,"total":28},"31":{"nb":15,"th":4,"vd":9,"c1":8,"c2":5,"c3":7,"c4":8,"total":28},"32":{"nb":12,"th":6,"vd":10,"c1":7,"c2":6,"c3":6,"c4":9,"total":28},"33":{"nb":11,"th":8,"vd":9,"c1":6,"c2":7,"c3":7,"c4":8,"total":28},"34":{"nb":13,"th":4,"vd":11,"c1":9,"c2":6,"c3":6,"c4":7,"total":28},"35":{"nb":11,"th":8,"vd":9,"c1":7,"c2":7,"c3":6,"c4":8,"total":28},"36":{"nb":15,"th":4,"vd":9,"c1":7,"c2":7,"c3":6,"c4":8,"total":28},"37":{"nb":10,"th":8,"vd":10,"c1":7,"c2":7,"c3":7,"c4":7,"total":28},"38":{"nb":16,"th":2,"vd":10,"c1":7,"c2":7,"c3":7,"c4":7,"total":28},"39":{"nb":15,"th":4,"vd":9,"c1":7,"c2":7,"c3":7,"c4":7,"total":28},"40":{"nb":12,"th":7,"vd":9,"c1":8,"c2":6,"c3":7,"c4":7,"total":28},"41":{"nb":13,"th":5,"vd":10,"c1":7,"c2":7,"c3":7,"c4":7,"total":28},"42":{"nb":13,"th":4,"vd":11,"c1":6,"c2":7,"c3":7,"c4":8,"total":28},"43":{"nb":16,"th":2,"vd":10,"c1":6,"c2":8,"c3":7,"c4":7,"total":28},"44":{"nb":14,"th":3,"vd":11,"c1":7,"c2":7,"c3":7,"c4":7,"total":28},"45":{"nb":12,"th":4,"vd":12,"c1":7,"c2":7,"c3":8,"c4":6,"total":28},"46":{"nb":13,"th":6,"vd":9,"c1":8,"c2":6,"c3":7,"c4":7,"total":28},"47":{"nb":15,"th":3,"vd":10,"c1":7,"c2":7,"c3":8,"c4":6,"total":28},"48":{"nb":14,"th":3,"vd":11,"c1":8,"c2":6,"c3":7,"c4":7,"total":28},"49":{"nb":13,"th":6,"vd":9,"c1":6,"c2":7,"c3":8,"c4":7,"total":28},"50":{"nb":15,"th":3,"vd":10,"c1":6,"c2":7,"c3":7,"c4":8,"total":28}};
 
         function pad2(n) { return String(n).padStart(2, '0'); }
+        function formatMMSS(sec) {
+            var s = Math.max(0, Math.floor(Number(sec) || 0));
+            return pad2(Math.floor(s / 60)) + ':' + pad2(s % 60);
+        }
+        function formatScoreComma(val) {
+            var n = Number(val || 0);
+            if (!Number.isFinite(n)) return '--';
+            return n.toFixed(2).replace('.', ',');
+        }
         function getManifestList() {
             return Array.isArray(window.VLXT_THPTQG_50_MANIFEST) ? window.VLXT_THPTQG_50_MANIFEST : [];
         }
         function findExamManifest(num) {
-            return getManifestList().find(function(x) { return Number(x.examNumber) === Number(num); }) || null;
+            return getManifestList().find(function(x) { return Number(x.examNumber) === Number(num); }) || {
+                examNumber: Number(num),
+                examId: 'THPTQG-2026-DE' + pad2(num),
+                tenDe: 'Đề Thi Thử THPTQG 2026 – Đề số ' + pad2(num),
+                purpose: Number(num) <= 5 ? 'KHAO_SAT_FREE' : (Number(num) <= 20 ? 'THUC_CHIEN_8PLUS' : (Number(num) <= 40 ? 'VE_DICH_9PLUS' : 'TONG_DUYET_2026')),
+                accessTier: Number(num) <= 5 ? 'free' : 'vip',
+                thoiGian: 50,
+                soCau: 28,
+                modelCount: 3,
+                p1ModelCount: 1,
+                p2ModelCount: 2,
+                p3ModelCount: 0
+            };
         }
         function escHtml(s) {
             return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+        function countAnsweredInMap(ansMap) {
+            if (!ansMap || typeof ansMap !== 'object') return 0;
+            var cnt = 0;
+            Object.keys(ansMap).forEach(function(k) {
+                var v = ansMap[k];
+                if (typeof v === 'number' && !isNaN(v)) cnt++;
+                else if (Array.isArray(v) && v.some(function(b) { return b === true || b === false; })) cnt++;
+                else if (typeof v === 'string' && v.trim() !== '') cnt++;
+            });
+            return cnt;
         }
         function normalizeLoadedQuestions(list) {
             if (!Array.isArray(list)) return [];
@@ -3476,6 +4220,131 @@
                     level: q.level || 'TH'
                 });
             });
+        }
+
+        /* ═══════════════════════════════════════════
+           HỆ THỐNG LƯU TIẾN ĐỘ & THỜI GIAN ĐA ĐỀ (DgnlSessionStore)
+        ═══════════════════════════════════════════ */
+        var DgnlSessionStore = {
+            readAll: function() {
+                try { return JSON.parse(localStorage.getItem(DGNL_SESSIONS_KEY) || '{}') || {}; } catch(e) { return {}; }
+            },
+            writeAll: function(map) {
+                try { localStorage.setItem(DGNL_SESSIONS_KEY, JSON.stringify(map || {})); } catch(e) {}
+            },
+            get: function(examNum) {
+                return this.readAll()[String(examNum)] || null;
+            },
+            set: function(examNum, sessObj) {
+                var all = this.readAll();
+                all[String(examNum)] = sessObj;
+                this.writeAll(all);
+                return sessObj;
+            },
+            clear: function(examNum) {
+                var all = this.readAll();
+                delete all[String(examNum)];
+                this.writeAll(all);
+                try { localStorage.removeItem('vlxt_dgnl_guest_answers_de' + examNum); } catch(e) {}
+            },
+            getInProgressList: function() {
+                var all = this.readAll();
+                return Object.keys(all).map(function(k) { return all[k]; })
+                    .filter(function(s) { return s && s.status === 'in_progress' && Number(s.examNumber) >= 1 && Number(s.examNumber) <= 50; })
+                    .sort(function(a, b) { return Number(b.updatedAt || 0) - Number(a.updatedAt || 0); });
+            }
+        };
+
+        function migrateLegacySessionIfNeeded() {
+            try {
+                var all = DgnlSessionStore.readAll();
+                if (Object.keys(all).length > 0) return;
+                var raw = localStorage.getItem('vlxt_dgnl_guest_answers');
+                var oldTime = Number(localStorage.getItem('vlxt_dgnl_timer') || 0);
+                var oldTimeExam = Number(localStorage.getItem('vlxt_dgnl_timer_exam') || 0);
+                if (!raw) return;
+                var parsed = JSON.parse(raw);
+                var exNum = Number(parsed && parsed.examNumber || oldTimeExam || 1);
+                var ansCount = countAnsweredInMap(parsed && parsed.answers);
+                var hasTimeUsed = (oldTimeExam === exNum && oldTime > 0 && oldTime < 3000);
+                if (exNum >= 1 && exNum <= 50 && (ansCount > 0 || hasTimeUsed)) {
+                    DgnlSessionStore.set(exNum, {
+                        examNumber: exNum,
+                        status: 'in_progress',
+                        answers: parsed.answers || {},
+                        flags: parsed.flags || {},
+                        currentIndex: Number(parsed.currentIndex || 0),
+                        remainingSeconds: hasTimeUsed ? oldTime : 3000,
+                        totalSeconds: 3000,
+                        answeredCount: ansCount,
+                        startedAt: Date.now(),
+                        updatedAt: Date.now()
+                    });
+                }
+            } catch(e) {}
+        }
+
+        function hasProgressToSave() {
+            if (countAnsweredInMap(userAnswers) > 0) return true;
+            if (currentIndex > 0) return true;
+            if (timerSeconds > 0 && timerSeconds < currentExamDurationSec) return true;
+            return Object.keys(flaggedQuestions || {}).some(function(k) { return !!flaggedQuestions[k]; });
+        }
+
+        function saveCurrentExamSession(forceSave) {
+            if (!forceSave && (!hasExamStarted || isViewingReport)) return null;
+            if (!forceSave && !hasProgressToSave()) return null;
+            var ansCount = countAnsweredInMap(userAnswers);
+            var existing = DgnlSessionStore.get(currentExamNumber);
+            var payload = {
+                examNumber: Number(currentExamNumber),
+                status: 'in_progress',
+                answers: Object.assign({}, userAnswers || {}),
+                flags: Object.assign({}, flaggedQuestions || {}),
+                currentIndex: Math.max(0, Number(currentIndex || 0)),
+                remainingSeconds: Math.max(1, Number(timerSeconds || currentExamDurationSec)),
+                totalSeconds: Number(currentExamDurationSec || 3000),
+                answeredCount: ansCount,
+                startedAt: (existing && existing.startedAt) ? existing.startedAt : Date.now(),
+                updatedAt: Date.now()
+            };
+            DgnlSessionStore.set(currentExamNumber, payload);
+            try {
+                var legacyPayload = {
+                    examNumber: currentExamNumber,
+                    answers: userAnswers,
+                    flags: flaggedQuestions,
+                    currentIndex: currentIndex
+                };
+                localStorage.setItem('vlxt_dgnl_guest_answers', JSON.stringify(legacyPayload));
+                localStorage.setItem('vlxt_dgnl_guest_answers_de' + currentExamNumber, JSON.stringify(legacyPayload));
+                localStorage.setItem('vlxt_dgnl_timer', String(timerSeconds));
+                localStorage.setItem('vlxt_dgnl_timer_exam', String(currentExamNumber));
+            } catch(e) {}
+            return payload;
+        }
+
+        function restoreExamSession(examNum) {
+            migrateLegacySessionIfNeeded();
+            var sess = DgnlSessionStore.get(examNum);
+            if (sess && sess.status === 'in_progress') {
+                userAnswers = Object.assign({}, sess.answers || {});
+                flaggedQuestions = Object.assign({}, sess.flags || {});
+                var maxIdx = Math.max(0, (questions ? questions.length : 28) - 1);
+                currentIndex = Math.min(maxIdx, Math.max(0, Number(sess.currentIndex || 0)));
+                var savedSec = Number(sess.remainingSeconds);
+                if (Number.isFinite(savedSec) && savedSec > 0 && savedSec <= currentExamDurationSec) {
+                    timerSeconds = savedSec;
+                } else {
+                    timerSeconds = currentExamDurationSec;
+                }
+                return true;
+            }
+            userAnswers = {};
+            flaggedQuestions = {};
+            currentIndex = 0;
+            timerSeconds = currentExamDurationSec;
+            return false;
         }
 
         // Fallback raw JSON (bảo đảm không bao giờ trống khi offline)
@@ -3523,14 +4392,12 @@
         var urlParams = new URLSearchParams(window.location.search);
         var reqExamRaw = urlParams.get('exam');
         var reqExam = parseRequestedExam(reqExamRaw);
-        var hasDonePrevious = false;
-        try {
-            hasDonePrevious = !!(localStorage.getItem('vlxt_dgnl_latest_result') || localStorage.getItem('vlxt_zero_friction_state'));
-        } catch(e) {}
+        var isAutoStartBoot = false;
+        try { isAutoStartBoot = urlParams.get('autostart') === '1'; } catch(e) {}
 
-        if (reqExam) currentExamNumber = reqExam;
-        else if (hasDonePrevious && _loadedExamsCache[2]) currentExamNumber = 2;
-        else currentExamNumber = 1;
+        migrateLegacySessionIfNeeded();
+        currentExamNumber = reqExam || 1;
+        selectedLobbyExam = currentExamNumber;
 
         function applyLoadedExamPayload(payload, examNum) {
             var meta = findExamManifest(examNum);
@@ -3548,12 +4415,16 @@
             timerSeconds = currentExamDurationSec;
         }
 
-        // Nạp đề đồng bộ ngay lúc boot nếu có trong cache (Đề 01/02 = 0ms)
+        // Nạp đề đồng bộ ngay lúc boot nếu có trong cache (Đề 01/02 = 0ms) & khôi phục session nếu có
         if (_loadedExamsCache[currentExamNumber]) {
             applyLoadedExamPayload(_loadedExamsCache[currentExamNumber], currentExamNumber);
+            restoreExamSession(currentExamNumber);
         } else {
             applyLoadedExamPayload(null, currentExamNumber === 2 ? 2 : 1);
-            if (currentExamNumber > 2) {
+            if (currentExamNumber === 1 || currentExamNumber === 2) {
+                restoreExamSession(currentExamNumber);
+            }
+            if (currentExamNumber > 2 && isAutoStartBoot) {
                 var bootNum = currentExamNumber;
                 fetch('data/thptqg-exams/de-' + pad2(bootNum) + '.json')
                     .then(function(r) { return r.ok ? r.json() : null; })
@@ -3562,10 +4433,11 @@
                             _loadedExamsCache[bootNum] = data;
                             if (currentExamNumber === bootNum) {
                                 applyLoadedExamPayload(data, bootNum);
+                                restoreExamSession(bootNum);
                                 updateExamChromeUI();
                                 renderSidebarLessons();
                                 renderPalette();
-                                renderQuestion(0);
+                                renderQuestion(currentIndex);
                             }
                         }
                     }).catch(function() {});
@@ -3945,77 +4817,74 @@
             }, 350);
         };
 
-        window.switchExam = async function(examArg) {
+        window.switchExam = async function(examArg, opts) {
+            opts = opts || {};
             var examNum = parseRequestedExam(examArg) || Number(examArg) || 1;
-            if (examNum === currentExamNumber && questions.length > 0 && _loadedExamsCache[examNum]) {
-                closeCampaign50Drawer();
-                return;
+
+            // Lưu phiên đề cũ trước khi chuyển sang đề mới
+            if (hasExamStarted && !isViewingReport && examNum !== currentExamNumber) {
+                saveCurrentExamSession(false);
             }
+
+            if (examNum === currentExamNumber && questions.length > 0 && _loadedExamsCache[examNum] && !opts.forceSync && !opts.reset) {
+                closeCampaign50Drawer();
+                return true;
+            }
+
             var data = _loadedExamsCache[examNum] || null;
             if (!data && examNum >= 1 && examNum <= 50) {
                 try {
                     var res = await fetch('data/thptqg-exams/de-' + pad2(examNum) + '.json');
                     if (res.ok) {
-                        data = await res.json();
-                        _loadedExamsCache[examNum] = data;
+                        var parsed = await res.json();
+                        if (parsed && Array.isArray(parsed.questions) && parsed.questions.length) {
+                            data = parsed;
+                            _loadedExamsCache[examNum] = data;
+                        }
                     }
                 } catch(e) {}
             }
+
+            if (!data && examNum > 2) {
+                showExamAutoNoticeToast('Đề 01 & Đề 02 mở được trực tiếp offline; Đề 03–50 cần chạy qua máy chủ web cục bộ hoặc website chính thức!');
+                return false;
+            }
+
             stopWowCanvasLoop();
             applyLoadedExamPayload(data, examNum);
-            currentIndex = 0;
-            userAnswers = {};
-            flaggedQuestions = {};
-            try {
-                localStorage.removeItem('vlxt_dgnl_guest_answers_de' + examNum);
-                localStorage.setItem('vlxt_dgnl_guest_answers', JSON.stringify({ examNumber: examNum, answers: {}, flags: {} }));
-            } catch(e) {}
+
+            if (opts.reset) {
+                DgnlSessionStore.clear(examNum);
+                userAnswers = {};
+                flaggedQuestions = {};
+                currentIndex = 0;
+                timerSeconds = currentExamDurationSec;
+                try {
+                    localStorage.removeItem('vlxt_dgnl_guest_answers_de' + examNum);
+                    localStorage.setItem('vlxt_dgnl_guest_answers', JSON.stringify({ examNumber: examNum, answers: {}, flags: {}, currentIndex: 0 }));
+                } catch(e) {}
+            } else {
+                restoreExamSession(examNum);
+            }
 
             closeCampaign50Drawer();
             updateExamChromeUI();
             renderSidebarLessons();
             renderPalette();
-            renderQuestion(0);
+            renderQuestion(currentIndex);
 
             var scrQuiz = document.getElementById('screen-quiz');
             var scrRep = document.getElementById('screen-report');
             if (scrQuiz) scrQuiz.style.display = 'block';
             if (scrRep) scrRep.style.display = 'none';
+            isViewingReport = false;
             if (hasExamStarted) startTimer();
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            return true;
         };
 
-        // Notice ban đầu nếu tự chuyển sang Đề 2: Hiện Toast tự ẩn sau 4s
-        setTimeout(function() {
-            if (currentExamNumber === 2 && !reqExam) {
-                showExamAutoNoticeToast();
-            }
-            updateExamChromeUI();
-        }, 50);
-
-        // Khôi phục tiến độ tạm (chỉ khi khớp đúng số đề hiện tại)
-        try {
-            var savedRaw = localStorage.getItem('vlxt_dgnl_guest_answers');
-            if (savedRaw) {
-                var parsedSaved = JSON.parse(savedRaw);
-                if (parsedSaved && parsedSaved.examNumber && Number(parsedSaved.examNumber) === Number(currentExamNumber)) {
-                    userAnswers = parsedSaved.answers || {};
-                    flaggedQuestions = parsedSaved.flags || {};
-                }
-            }
-            var savedTime = localStorage.getItem('vlxt_dgnl_timer');
-            var savedTimeExam = localStorage.getItem('vlxt_dgnl_timer_exam');
-            if (savedTime && Number(savedTime) > 0 && Number(savedTimeExam) === Number(currentExamNumber)) {
-                timerSeconds = Number(savedTime);
-            }
-        } catch(e) {}
-
         function persistGuestAnswers() {
-            try {
-                var payload = { examNumber: currentExamNumber, answers: userAnswers, flags: flaggedQuestions };
-                localStorage.setItem('vlxt_dgnl_guest_answers', JSON.stringify(payload));
-                localStorage.setItem('vlxt_dgnl_guest_answers_de' + currentExamNumber, JSON.stringify(payload));
-            } catch(e) {}
+            saveCurrentExamSession(true);
         }
 
         async function loadLessons() {
@@ -4087,6 +4956,7 @@
             var menu = document.getElementById('navUserDropdownMenu');
             if (menu) menu.classList.remove('open');
             syncNavUserChip();
+            if (document.body.classList.contains('dgnl-lobby-active')) renderLobbyAll();
             alert('Đã đăng xuất tài khoản!');
         }
 
@@ -4097,12 +4967,653 @@
         }
 
         /* ═══════════════════════════════════════════
+           SẢNH ĐÁNH GIÁ NĂNG LỰC (INDEX 50 ĐỀ) & SMART RECOMMENDATION POP-UP
+        ═══════════════════════════════════════════ */
+        function extractExamNumFromHistoryKey(key, obj) {
+            if (obj && Number.isFinite(Number(obj.examNumber)) && Number(obj.examNumber) >= 1 && Number(obj.examNumber) <= 50) {
+                return Number(obj.examNumber);
+            }
+            var m = String(key || '').match(/DE[_-]?0*(\d{1,2})$/i);
+            if (m) return Number(m[1]);
+            var n = parseInt(String(key || ''), 10);
+            if (Number.isFinite(n) && n >= 1 && n <= 50) return n;
+            return null;
+        }
+
+        function getNormalizedHistoryMap() {
+            var raw = read50History();
+            var byExam = {};
+            Object.keys(raw).forEach(function(k) {
+                var item = raw[k];
+                if (!item || typeof item !== 'object') return;
+                var num = extractExamNumFromHistoryKey(k, item);
+                if (!num) return;
+                var prev = byExam[num];
+                var scoreVal = parseFloat(String(item.lastScore != null ? item.lastScore : (item.score10 || 0)).replace(',', '.')) || 0;
+                var bestVal = Math.max(parseFloat(String(item.bestScore != null ? item.bestScore : scoreVal).replace(',', '.')) || 0, scoreVal);
+                if (!prev || Number(item.ts || 0) >= Number(prev.ts || 0)) {
+                    byExam[num] = {
+                        examNumber: num,
+                        score: scoreVal,
+                        bestScore: prev ? Math.max(prev.bestScore, bestVal) : bestVal,
+                        attempts: Number(item.attempts || 1),
+                        ts: Number(item.ts || 0),
+                        chapterStats: Array.isArray(item.chapterStats) ? item.chapterStats : (prev ? prev.chapterStats : null),
+                        topicStats: item.topicStats || (prev ? prev.topicStats : null)
+                    };
+                }
+            });
+            // Fallback đọc từ kết quả mới nhất nếu vlxt_thptqg50_history_v1 chưa có bản ghi
+            if (Object.keys(byExam).length === 0) {
+                try {
+                    var latest = JSON.parse(localStorage.getItem('vlxt_dgnl_latest_result') || 'null');
+                    if (latest && latest.examNumber) {
+                        var ln = Number(latest.examNumber);
+                        var ls = parseFloat(String(latest.score10 || latest.predictedScore || 0).replace(',', '.')) || 0;
+                        byExam[ln] = {
+                            examNumber: ln,
+                            score: ls,
+                            bestScore: ls,
+                            attempts: 1,
+                            ts: Number(latest.timestamp || 0),
+                            chapterStats: Array.isArray(latest.chapterStats) ? latest.chapterStats : null,
+                            topicStats: latest.topicStats || null
+                        };
+                    }
+                } catch(e) {}
+            }
+            return byExam;
+        }
+
+        function getShortLobbySubtitle(item) {
+            var raw = String(item.tenDe || '');
+            var m = raw.match(/\(([^)]+)\)/);
+            if (m && m[1]) {
+                var inside = m[1].trim();
+                if (inside === 'Bứt phá 8+') return 'Thực chiến bứt phá 8+';
+                return inside;
+            }
+            if (item.purpose === 'VE_DICH_9PLUS') return 'Về đích 9+ chuyên sâu';
+            if (item.purpose === 'TONG_DUYET_2026') return 'Tổng duyệt sát kỳ thi 2026';
+            if (item.purpose === 'THUC_CHIEN_8PLUS') return 'Thực chiến bứt phá 8+';
+            return 'Khảo sát năng lực chuẩn Bộ';
+        }
+
+        function getLobbyAccountSummary() {
+            var user = null;
+            try { user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null'); } catch(e) {}
+            var isLogged = user && user.sdt && user.sdt !== 'FREE';
+            return {
+                name: isLogged ? (user.hoten || user.name || user.sdt || 'Học sinh') : 'Khách trải nghiệm',
+                sub: isLogged ? ('Lớp ' + (user.lop || '12') + ' · Đã đồng bộ tài khoản') : 'Luyện Test Điểm Thi THPTQG 2026 · Tự động lưu theo từng đề',
+                isPaid: !!(isLogged && (user.loaiTK === 'pro' || user.loaiTK === 'vip' || user.isPaid))
+            };
+        }
+
+        function getLobbyAbilityLevel(doneCount, avgScore) {
+            if (!doneCount) return { text: 'Chưa xếp loại · Cần khảo sát', cls: 'level-none' };
+            if (avgScore >= 9.0) return { text: 'Mức 9+ · Xuất sắc', cls: 'level-top' };
+            if (avgScore >= 8.0) return { text: 'Mức 8+ · Khá giỏi', cls: 'level-good' };
+            if (avgScore >= 6.5) return { text: 'Mức 7+ · Đang bứt phá', cls: 'level-good' };
+            return { text: 'Mức < 6,5 · Cần củng cố', cls: 'level-mid' };
+        }
+
+        function getLobbyExamStatus(examNum, histMap) {
+            var sess = DgnlSessionStore.get(examNum);
+            if (sess && sess.status === 'in_progress') return 'in_progress';
+            if (histMap && histMap[examNum]) return 'done';
+            return 'new';
+        }
+
+        function renderLobbyAbilityHeader() {
+            var acc = getLobbyAccountSummary();
+            var histMap = getNormalizedHistoryMap();
+            var nums = Object.keys(histMap);
+            var doneCount = nums.length;
+            var sumScore = 0, bestScore = 0;
+            nums.forEach(function(k) {
+                var s = Number(histMap[k].score || 0);
+                var b = Number(histMap[k].bestScore || 0);
+                sumScore += s;
+                if (b > bestScore) bestScore = b;
+            });
+            var avgScore = doneCount > 0 ? (sumScore / doneCount) : 0;
+            var lvl = getLobbyAbilityLevel(doneCount, avgScore);
+            var inProgList = DgnlSessionStore.getInProgressList();
+
+            var nameEl = document.getElementById('lobby-user-name');
+            var subEl = document.getElementById('lobby-user-sub');
+            var badgeEl = document.getElementById('lobby-ability-badge');
+            var doneEl = document.getElementById('lobby-stat-done');
+            var avgEl = document.getElementById('lobby-stat-avg');
+            var bestEl = document.getElementById('lobby-stat-best');
+            var pausedCountEl = document.getElementById('lobby-stat-paused-count');
+            var pausedChipsEl = document.getElementById('lobby-paused-chips');
+
+            if (nameEl) nameEl.textContent = acc.name;
+            if (subEl) subEl.textContent = acc.sub;
+            if (badgeEl) {
+                badgeEl.className = 'dgnl-level-badge ' + lvl.cls;
+                badgeEl.textContent = lvl.text;
+            }
+            if (doneEl) doneEl.textContent = doneCount + ' / 50';
+            if (avgEl) avgEl.textContent = doneCount > 0 ? formatScoreComma(avgScore) : '--';
+            if (bestEl) bestEl.textContent = bestScore > 0 ? formatScoreComma(bestScore) : '--';
+            if (pausedCountEl) pausedCountEl.textContent = 'Đang làm dở (' + inProgList.length + ' đề)';
+            if (pausedChipsEl) {
+                if (inProgList.length > 0) {
+                    pausedChipsEl.innerHTML = '<div class="dgnl-resume-chips">' +
+                        inProgList.slice(0, 2).map(function(s) {
+                            return '<button type="button" class="dgnl-resume-chip" onclick="enterExamFromLobby(' + s.examNumber + ', {reset:false})">▶ Đề ' + pad2(s.examNumber) + ' · ' + formatMMSS(s.remainingSeconds) + '</button>';
+                        }).join('') +
+                        (inProgList.length > 2 ? '<span style="font-size:11px;color:#7dd3fc;align-self:center;">+' + (inProgList.length - 2) + ' đề</span>' : '') +
+                        '</div>';
+                } else {
+                    pausedChipsEl.innerHTML = '<div class="dgnl-metric-value" style="font-size:14px;color:#94a3b8;font-family:inherit;font-weight:600;">Không có</div>';
+                }
+            }
+        }
+
+        function renderLobbyPreviewPanel() {
+            var panel = document.getElementById('lobby-preview-panel');
+            if (!panel) return;
+            var selNum = Number(selectedLobbyExam || 1);
+            var meta = findExamManifest(selNum);
+            var stage = STAGE_META_DGNL[meta.purpose] || STAGE_META_DGNL.ALL;
+            var stats = PRECOMPUTED_50_STATS[String(selNum)] || { nb: 12, th: 6, vd: 10, c1: 7, c2: 7, c3: 7, c4: 7, total: 28 };
+            var sess = DgnlSessionStore.get(selNum);
+            var hist = getNormalizedHistoryMap()[selNum];
+            var inProg = sess && sess.status === 'in_progress';
+
+            var modelParts = 'P1: ' + (meta.p1ModelCount || 0) + ' · P2: ' + (meta.p2ModelCount || 0) + ' · P3: ' + (meta.p3ModelCount || 0);
+            var t = stats.total || 28;
+            var nb = stats.nb || 0, th = stats.th || 0, vd = stats.vd || 0;
+
+            var statusActionHtml = '';
+            if (inProg) {
+                var stopQ = Math.min(meta.soCau || 28, (sess.currentIndex || 0) + 1);
+                var pct = Math.min(100, Math.round(((sess.answeredCount || 0) / (meta.soCau || 28)) * 100));
+                statusActionHtml =
+                    '<div class="dgnl-resume-box">' +
+                        '<div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:#7dd3fc;">' +
+                            '<span><i class="fa-solid fa-clock-rotate-left"></i> Đang làm dở</span>' +
+                            '<span style="font-family:var(--font-mono);color:#fbbf24;">Còn ' + formatMMSS(sess.remainingSeconds) + '</span>' +
+                        '</div>' +
+                        '<div style="font-size:12.5px;color:#e2e8f0;">Đã làm <strong>' + (sess.answeredCount || 0) + '/' + (meta.soCau || 28) + ' câu</strong> · Dừng tại <strong>Câu ' + stopQ + '</strong></div>' +
+                        '<div class="dgnl-mini-track"><div class="dgnl-mini-fill" style="width:' + pct + '%"></div></div>' +
+                    '</div>' +
+                    '<button type="button" class="dgnl-btn-pill primary" id="lobby-btn-resume-selected" style="width:100%;padding:12px;font-size:14px;" onclick="enterExamFromLobby(' + selNum + ', {reset:false})"><i class="fa-solid fa-play"></i> Tiếp tục từ Câu ' + stopQ + '</button>' +
+                    '<button type="button" class="dgnl-btn-pill" id="lobby-btn-restart-selected" style="width:100%;" onclick="enterExamFromLobby(' + selNum + ', {reset:true})"><i class="fa-solid fa-rotate-left"></i> Làm lại từ đầu (50:00)</button>';
+            } else {
+                statusActionHtml =
+                    (hist ? '<div class="dgnl-done-box"><span><i class="fa-solid fa-circle-check"></i> Đã thi (' + (hist.attempts || 1) + ' lượt)</span><strong>Cao nhất: ' + formatScoreComma(hist.bestScore) + 'đ</strong></div>' : '') +
+                    '<button type="button" class="dgnl-btn-pill primary" id="lobby-btn-start-selected" style="width:100%;padding:12px;font-size:14px;" onclick="enterExamFromLobby(' + selNum + ', {reset:true})"><i class="fa-solid fa-play"></i> ' + (hist ? ('Thi lại Đề ' + pad2(selNum)) : ('Bắt đầu làm Đề ' + pad2(selNum))) + '</button>';
+            }
+
+            panel.innerHTML =
+                '<div class="dgnl-panel-head">' +
+                    '<span class="dgnl-badge dgnl-badge-num">ĐỀ ' + pad2(selNum) + ' / 50</span>' +
+                    '<span class="dgnl-badge ' + stage.badgeClass + '">' + stage.badge + '</span>' +
+                '</div>' +
+                '<h2 class="dgnl-exam-title" id="lobby-selected-title">Đề số ' + pad2(selNum) + ' · ' + escHtml(getShortLobbySubtitle(meta)) + '</h2>' +
+                '<div class="dgnl-char-box">' +
+                    '<div class="dgnl-char-row"><span class="dgnl-char-k">Mục tiêu</span><span class="dgnl-char-v">' + stage.badge + '</span></div>' +
+                    '<div class="dgnl-char-row"><span class="dgnl-char-k">Mô hình 60 FPS</span><span class="dgnl-char-v" style="color:#38bdf8;">' + (meta.modelCount || 0) + ' mô hình (' + modelParts + ')</span></div>' +
+                    '<div>' +
+                        '<div class="dgnl-char-row"><span class="dgnl-char-k">Phân bổ mức độ</span><span class="dgnl-char-v" style="font-family:var(--font-mono);font-size:12px;">NB ' + nb + ' · TH ' + th + ' · VD ' + vd + '</span></div>' +
+                        '<div class="dgnl-diff-bar"><div class="dgnl-diff-nb" style="width:' + Math.round((nb / t) * 100) + '%"></div><div class="dgnl-diff-th" style="width:' + Math.round((th / t) * 100) + '%"></div><div class="dgnl-diff-vd" style="width:' + Math.round((vd / t) * 100) + '%"></div></div>' +
+                        '<div class="dgnl-diff-legend"><span>● Nhận biết</span><span>● Thông hiểu</span><span>● Vận dụng</span></div>' +
+                    '</div>' +
+                    '<div>' +
+                        '<div class="dgnl-char-k" style="font-size:12px;">Phân bổ 4 Chương Vật Lý 12</div>' +
+                        '<div class="dgnl-chapter-chips">' +
+                            '<div class="dgnl-ch-chip"><strong>' + stats.c1 + '</strong>Nhiệt</div>' +
+                            '<div class="dgnl-ch-chip"><strong>' + stats.c2 + '</strong>Khí</div>' +
+                            '<div class="dgnl-ch-chip"><strong>' + stats.c3 + '</strong>Từ</div>' +
+                            '<div class="dgnl-ch-chip"><strong>' + stats.c4 + '</strong>Hạt nhân</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+                statusActionHtml;
+        }
+
+        function renderLobbyCatalogGrid() {
+            var grid = document.getElementById('lobby-exam-grid');
+            if (!grid) return;
+            var list = getManifestList();
+            var histMap = getNormalizedHistoryMap();
+            var q = lobbySearchQuery.trim().toLowerCase();
+
+            var filtered = list.filter(function(item) {
+                if (lobbyStageFilter !== 'ALL' && item.purpose !== lobbyStageFilter) return false;
+                var st = getLobbyExamStatus(item.examNumber, histMap);
+                if (lobbyStatusFilter !== 'ALL' && st !== lobbyStatusFilter) return false;
+                if (q) {
+                    var hay = (item.tenDe + ' ' + getShortLobbySubtitle(item) + ' de ' + item.examNumber + ' ' + pad2(item.examNumber)).toLowerCase();
+                    if (hay.indexOf(q) === -1) return false;
+                }
+                return true;
+            });
+
+            if (!filtered.length) {
+                grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:34px;color:#94a3b8;background:#0d162c;border:1px solid rgba(56,189,248,0.18);border-radius:16px;">Không có đề phù hợp bộ lọc.</div>';
+                return;
+            }
+
+            grid.innerHTML = filtered.map(function(item) {
+                var num = item.examNumber;
+                var st = getLobbyExamStatus(num, histMap);
+                var s = DgnlSessionStore.get(num);
+                var h = histMap[num];
+                var isSel = Number(selectedLobbyExam) === Number(num);
+                var isFree = item.accessTier === 'free';
+
+                var rightBadge = st === 'in_progress'
+                    ? '<span class="dgnl-badge dgnl-badge-prog">' + formatMMSS(s.remainingSeconds) + '</span>'
+                    : (st === 'done'
+                        ? '<span class="dgnl-badge dgnl-badge-done">' + formatScoreComma(h.bestScore) + 'đ</span>'
+                        : '<span class="dgnl-badge ' + (isFree ? 'dgnl-badge-free' : 'dgnl-badge-vip') + '">' + (isFree ? 'Free' : 'Đề chuẩn') + '</span>');
+
+                var footLeft = st === 'in_progress'
+                    ? '<span style="color:#38bdf8;font-weight:700;">' + (s.answeredCount || 0) + '/28 · Câu ' + ((s.currentIndex || 0) + 1) + '</span>'
+                    : '<span>' + (item.modelCount || 0) + ' MH 60 FPS</span>';
+
+                return '<div class="dgnl-mini-card ' + (isSel ? 'selected ' : '') + (st === 'in_progress' ? 'in-progress' : (st === 'done' ? 'done' : '')) + '" data-lobby-exam="' + num + '" onclick="selectLobbyExam(' + num + ')">' +
+                    '<div class="dgnl-mini-top">' +
+                        '<span class="dgnl-badge dgnl-badge-num">ĐỀ ' + pad2(num) + '</span>' +
+                        rightBadge +
+                    '</div>' +
+                    '<div class="dgnl-mini-sub">' + escHtml(getShortLobbySubtitle(item)) + '</div>' +
+                    (st === 'in_progress' ? '<div class="dgnl-mini-track"><div class="dgnl-mini-fill" style="width:' + Math.min(100, Math.round(((s.answeredCount || 0) / 28) * 100)) + '%"></div></div>' : '') +
+                    '<div class="dgnl-mini-foot">' +
+                        footLeft +
+                        '<span style="color:' + (isSel ? '#38bdf8' : '#94a3b8') + ';font-weight:700;">' + (st === 'done' ? 'Thi lại' : (st === 'in_progress' ? 'Tiếp tục' : 'Chọn')) + '</span>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        function renderLobbyAll() {
+            migrateLegacySessionIfNeeded();
+            renderLobbyAbilityHeader();
+            renderLobbyPreviewPanel();
+            renderLobbyCatalogGrid();
+        }
+
+        window.selectLobbyExam = function(examNum) {
+            selectedLobbyExam = Number(examNum) || 1;
+            renderLobbyPreviewPanel();
+            renderLobbyCatalogGrid();
+        };
+
+        window.setLobbyStageFilter = function(stage) {
+            lobbyStageFilter = stage || 'ALL';
+            document.querySelectorAll('#lobby-stage-tabs .dgnl-stage-tab').forEach(function(btn) {
+                btn.classList.toggle('active', btn.getAttribute('data-stage') === lobbyStageFilter);
+            });
+            renderLobbyCatalogGrid();
+        };
+
+        window.setLobbyStatusFilter = function(st) {
+            lobbyStatusFilter = st || 'ALL';
+            document.querySelectorAll('#lobby-status-pills .dgnl-status-pill').forEach(function(btn) {
+                btn.classList.toggle('active', btn.getAttribute('data-status') === lobbyStatusFilter);
+            });
+            renderLobbyCatalogGrid();
+        };
+
+        window.setLobbySearchQuery = function(val) {
+            lobbySearchQuery = String(val || '');
+            renderLobbyCatalogGrid();
+        };
+
+        /* ── THUẬT TOÁN ĐỀ XUẤT THÔNG MINH (RESUME -> ĐIỂM YẾU -> KHẢO SÁT MỚI) ── */
+        function computeChapterWeaknessData(histMap) {
+            var totals = [0, 0, 0, 0];
+            var corrects = [0, 0, 0, 0];
+            var wrongBankCounts = [0, 0, 0, 0];
+
+            Object.keys(histMap).forEach(function(numKey) {
+                var h = histMap[numKey];
+                if (Array.isArray(h.chapterStats) && h.chapterStats.length === 4) {
+                    for (var i = 0; i < 4; i++) {
+                        totals[i] += Number(h.chapterStats[i].total || 0);
+                        corrects[i] += Number(h.chapterStats[i].correct || 0);
+                    }
+                } else if (h.topicStats && typeof h.topicStats === 'object') {
+                    Object.keys(h.topicStats).forEach(function(tName) {
+                        var bIdx = getTopicBucketIdx(tName);
+                        totals[bIdx] += Number(h.topicStats[tName].total || 0);
+                        corrects[bIdx] += Number(h.topicStats[tName].correct || 0);
+                    });
+                }
+            });
+
+            if (typeof VlxtWrongBank !== 'undefined' && typeof VlxtWrongBank.getAll === 'function') {
+                try {
+                    var wbList = VlxtWrongBank.getAll();
+                    wbList.forEach(function(item) {
+                        if (item && item.status !== 'mastered') {
+                            var chCode = (item.chapterCode || '').toUpperCase();
+                            var cIdx = chCode === 'C1' ? 0 : (chCode === 'C2' ? 1 : (chCode === 'C3' ? 2 : (chCode === 'C4' ? 3 : -1)));
+                            if (cIdx >= 0) wrongBankCounts[cIdx]++;
+                        }
+                    });
+                } catch(e) {}
+            }
+
+            var hasExamChapters = totals.some(function(v) { return v > 0; });
+            var hasWrongBank = wrongBankCounts.some(function(v) { return v > 0; });
+            var rows = CHAPTER_INFO_DGNL.map(function(ch, idx) {
+                var tot = totals[idx];
+                var cor = corrects[idx];
+                var wr = Math.max(0, tot - cor);
+                var wb = wrongBankCounts[idx];
+                var pct = tot > 0 ? Math.round((cor / tot) * 100) : null;
+                return {
+                    idx: idx, code: ch.code, short: ch.short, name: ch.name, keyStat: ch.keyStat,
+                    total: tot, correct: cor, wrong: wr, wrongBank: wb, pct: pct
+                };
+            });
+
+            var weakest = null;
+            if (hasExamChapters) {
+                var imperfect = rows.filter(function(r) { return r.total > 0 && r.wrong > 0; });
+                if (imperfect.length > 0) {
+                    imperfect.sort(function(a, b) {
+                        if (a.pct !== b.pct) return a.pct - b.pct;
+                        if (b.wrong !== a.wrong) return b.wrong - a.wrong;
+                        return a.idx - b.idx;
+                    });
+                    weakest = imperfect[0];
+                }
+            } else if (hasWrongBank) {
+                var withWb = rows.filter(function(r) { return r.wrongBank > 0; });
+                withWb.sort(function(a, b) { return b.wrongBank - a.wrongBank; });
+                weakest = withWb[0] || null;
+            }
+
+            return { rows: rows, weakest: weakest, hasExamChapters: hasExamChapters, hasWrongBank: hasWrongBank };
+        }
+
+        function computeSmartRecommendation() {
+            migrateLegacySessionIfNeeded();
+            var inProgList = DgnlSessionStore.getInProgressList();
+            var histMap = getNormalizedHistoryMap();
+            var acc = getLobbyAccountSummary();
+
+            // ƯU TIÊN 1: ĐỀ ĐANG LÀM DỞ
+            if (inProgList.length > 0) {
+                var chosenSess = null;
+                if (reqExam) {
+                    chosenSess = inProgList.find(function(s) { return Number(s.examNumber) === Number(reqExam); }) || null;
+                }
+                if (!chosenSess) chosenSess = inProgList[0];
+                return {
+                    mode: 'resume',
+                    examNumber: Number(chosenSess.examNumber),
+                    meta: findExamManifest(chosenSess.examNumber),
+                    session: chosenSess,
+                    stopQ: Math.min(28, Number(chosenSess.currentIndex || 0) + 1)
+                };
+            }
+
+            // ƯU TIÊN 2: ĐỀ XUẤT THEO ĐIỂM YẾU (KHI ĐÃ CÓ KẾT QUẢ / WRONG BANK)
+            var doneNums = Object.keys(histMap).map(Number);
+            var weakData = computeChapterWeaknessData(histMap);
+            if (doneNums.length > 0 || weakData.hasWrongBank) {
+                var list = getManifestList();
+                var uncompleted = list.filter(function(item) { return !histMap[item.examNumber]; });
+                var pool = uncompleted.length > 0 ? uncompleted : list;
+
+                if (weakData.weakest) {
+                    var statKey = weakData.weakest.keyStat;
+                    var sortedPool = pool.slice().sort(function(a, b) {
+                        var sa = (PRECOMPUTED_50_STATS[String(a.examNumber)] || {})[statKey] || 0;
+                        var sb = (PRECOMPUTED_50_STATS[String(b.examNumber)] || {})[statKey] || 0;
+                        if (sb !== sa) return sb - sa;
+                        var freeA = a.accessTier === 'free' ? 1 : 0;
+                        var freeB = b.accessTier === 'free' ? 1 : 0;
+                        if (!acc.isPaid && freeB !== freeA) return freeB - freeA;
+                        if ((b.modelCount || 0) !== (a.modelCount || 0)) return (b.modelCount || 0) - (a.modelCount || 0);
+                        return a.examNumber - b.examNumber;
+                    });
+                    var pickWeak = sortedPool[0] || findExamManifest(2);
+                    return {
+                        mode: 'weakness',
+                        examNumber: Number(pickWeak.examNumber),
+                        meta: pickWeak,
+                        weakData: weakData,
+                        weakChapterCount: ((PRECOMPUTED_50_STATS[String(pickWeak.examNumber)] || {})[statKey] || 7)
+                    };
+                }
+
+                // Làm đúng 100% các câu đã thi -> gợi ý chinh phục đề tiếp theo chưa làm
+                var nextAdv = pool[0] || findExamManifest(2);
+                return {
+                    mode: 'advance',
+                    examNumber: Number(nextAdv.examNumber),
+                    meta: nextAdv,
+                    weakData: weakData
+                };
+            }
+
+            // ƯU TIÊN 3: HỌC SINH MỚI (CHƯA LÀM ĐỀ NÀO)
+            var firstExam = reqExam || 1;
+            return {
+                mode: 'fresh',
+                examNumber: firstExam,
+                meta: findExamManifest(firstExam)
+            };
+        }
+
+        function renderSmartRecommendationModal() {
+            var rec = computeSmartRecommendation();
+            _recommendedExamNum = rec.examNumber;
+            _recommendedMode = rec.mode;
+
+            var badgeEl = document.getElementById('start-modal-badge');
+            var headingEl = document.getElementById('start-modal-heading');
+            var descEl = document.getElementById('start-modal-desc');
+            var bodyEl = document.getElementById('start-modal-smart-body');
+            var primaryBtn = document.getElementById('start-modal-primary-btn');
+            var meta = rec.meta;
+
+            if (rec.mode === 'resume') {
+                var s = rec.session;
+                var pct = Math.min(100, Math.round(((s.answeredCount || 0) / (meta.soCau || 28)) * 100));
+                if (badgeEl) {
+                    badgeEl.className = 'dgnl-badge dgnl-badge-prog';
+                    badgeEl.innerHTML = '<i class="fa-solid fa-clock-rotate-left"></i> Đang có bài làm dở';
+                }
+                if (headingEl) headingEl.textContent = 'Tiếp tục làm Đề số ' + pad2(rec.examNumber) + ' · ' + getShortLobbySubtitle(meta);
+                if (descEl) descEl.innerHTML = 'Hệ thống đã lưu tự động câu đang làm và thời gian còn lại của em. Bấm tiếp tục để vào đúng <strong>Câu ' + rec.stopQ + '</strong> mà không bị mất tiến độ.';
+                if (bodyEl) {
+                    bodyEl.innerHTML =
+                        '<div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">' +
+                            '<span style="color:#94a3b8;font-weight:600;">Tiến độ đã làm:</span>' +
+                            '<strong style="color:#ffffff;font-family:var(--font-mono);">' + (s.answeredCount || 0) + '/28 câu (' + pct + '%)</strong>' +
+                        '</div>' +
+                        '<div class="dgnl-mini-track"><div class="dgnl-mini-fill" style="width:' + pct + '%"></div></div>' +
+                        '<div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">' +
+                            '<span style="color:#94a3b8;font-weight:600;">Vị trí đang dừng:</span>' +
+                            '<strong style="color:#38bdf8;">Câu ' + rec.stopQ + '</strong>' +
+                        '</div>' +
+                        '<div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">' +
+                            '<span style="color:#94a3b8;font-weight:600;">Thời gian còn lại:</span>' +
+                            '<strong id="start-modal-time" style="color:#fbbf24;font-family:var(--font-mono);">' + formatMMSS(s.remainingSeconds) + '</strong>' +
+                        '</div>' +
+                        '<span id="start-modal-models" style="display:none;">' + (meta.modelCount || 0) + ' mô hình Vật Lý 60 FPS</span>';
+                }
+                if (primaryBtn) primaryBtn.innerHTML = '<i class="fa-solid fa-play"></i> Tiếp tục làm Đề ' + pad2(rec.examNumber) + ' →';
+            } else if (rec.mode === 'weakness') {
+                var w = rec.weakData.weakest;
+                var wSummary = w.total > 0
+                    ? ('đúng <strong>' + w.correct + '/' + w.total + ' câu (' + w.pct + '%)</strong>')
+                    : ('còn <strong>' + w.wrongBank + ' câu sai</strong> chưa khắc phục');
+                var barsHtml = rec.weakData.rows.filter(function(r) { return r.total > 0 || r.wrongBank > 0; }).map(function(r) {
+                    var barPct = r.total > 0 ? r.pct : 0;
+                    var fillCol = barPct < 55 ? '#ef4444' : (barPct < 80 ? '#f59e0b' : '#10b981');
+                    var rightLbl = r.total > 0 ? (barPct + '%') : (r.wrongBank + ' sai');
+                    return '<div class="dgnl-smart-weak-row">' +
+                        '<span style="color:' + (r.idx === w.idx ? '#fca5a5' : '#cbd5e1') + ';font-weight:' + (r.idx === w.idx ? '700' : '600') + ';">' + r.short + '</span>' +
+                        '<div class="dgnl-smart-weak-bar"><div class="dgnl-smart-weak-fill" style="width:' + Math.max(8, barPct) + '%;background:' + fillCol + ';"></div></div>' +
+                        '<span style="text-align:right;font-family:var(--font-mono);color:' + (r.idx === w.idx ? '#fca5a5' : '#94a3b8') + ';font-weight:700;">' + rightLbl + '</span>' +
+                    '</div>';
+                }).join('');
+
+                if (badgeEl) {
+                    badgeEl.className = 'dgnl-badge dgnl-badge-vip';
+                    badgeEl.innerHTML = '<i class="fa-solid fa-bullseye"></i> Đề xuất cải thiện điểm yếu';
+                }
+                if (headingEl) headingEl.textContent = 'Nên luyện Đề số ' + pad2(rec.examNumber) + ' · Trọng tâm ' + w.short;
+                if (descEl) descEl.innerHTML = 'Dữ liệu luyện tập cho thấy em đang yếu nhất phần <strong>' + escHtml(w.name) + '</strong> (' + wSummary + '). Đề số <strong>' + pad2(rec.examNumber) + '</strong> có tới <strong>' + rec.weakChapterCount + ' câu</strong> thuộc chương này để em khắc phục ngay.';
+                if (bodyEl) {
+                    bodyEl.innerHTML =
+                        '<div style="font-size:11.5px;font-weight:700;color:#94a3b8;text-transform:uppercase;">Thống kê năng lực 4 chương của em</div>' +
+                        barsHtml +
+                        '<div style="display:flex;justify-content:space-between;align-items:center;font-size:12.5px;padding-top:8px;border-top:1px solid rgba(148,163,184,0.16);">' +
+                            '<span style="color:#94a3b8;">Đề xuất: <strong style="color:#ffffff;">Đề ' + pad2(rec.examNumber) + '</strong> · <span id="start-modal-time">50 phút</span></span>' +
+                            '<strong id="start-modal-models" style="color:#38bdf8;">' + (meta.modelCount || 0) + ' mô hình 60 FPS</strong>' +
+                        '</div>';
+                }
+                if (primaryBtn) primaryBtn.innerHTML = '<i class="fa-solid fa-play"></i> Luyện ngay Đề ' + pad2(rec.examNumber) + ' →';
+            } else {
+                var isAdv = rec.mode === 'advance';
+                if (badgeEl) {
+                    badgeEl.className = 'dgnl-badge ' + (isAdv ? 'dgnl-badge-done' : 'dgnl-badge-free');
+                    badgeEl.innerHTML = isAdv
+                        ? '<i class="fa-solid fa-trophy"></i> Giữ vững phong độ 9+'
+                        : '<i class="fa-solid fa-compass"></i> Đề xuất cho người mới';
+                }
+                if (headingEl) headingEl.textContent = isAdv
+                    ? ('Thử sức Đề số ' + pad2(rec.examNumber) + ' · ' + getShortLobbySubtitle(meta))
+                    : ('Đề số ' + pad2(rec.examNumber) + ' · Khảo sát năng lực chuẩn Bộ GD&ĐT');
+                if (descEl) descEl.innerHTML = isAdv
+                    ? ('Em đang làm rất tốt các chương đã thi! Hệ thống đề xuất em chinh phục tiếp <strong>Đề số ' + pad2(rec.examNumber) + '</strong> để mở rộng điểm chuẩn.')
+                    : 'Bắt đầu với bài khảo sát chuẩn Bộ <strong>28 câu · 50 phút</strong> để hệ thống đo chính xác mức điểm hiện tại và phát hiện chương em cần ôn lại.';
+                if (bodyEl) {
+                    bodyEl.innerHTML =
+                        '<div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">' +
+                            '<span style="color:#94a3b8;font-weight:600;">Thời gian làm bài:</span>' +
+                            '<strong id="start-modal-time" style="color:#ffffff;font-family:var(--font-mono);">50 phút</strong>' +
+                        '</div>' +
+                        '<div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">' +
+                            '<span style="color:#94a3b8;font-weight:600;">Mô hình trực quan:</span>' +
+                            '<strong id="start-modal-models" style="color:#38bdf8;">' + (meta.modelCount || 0) + ' mô hình Vật Lý 60 FPS</strong>' +
+                        '</div>' +
+                        '<div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;">' +
+                            '<span style="color:#94a3b8;font-weight:600;">Tự động lưu:</span>' +
+                            '<strong style="color:#34d399;">Từng câu &amp; từng giây riêng mỗi đề</strong>' +
+                        '</div>';
+                }
+                if (primaryBtn) primaryBtn.innerHTML = '<i class="fa-solid fa-play"></i> ' + (isAdv ? ('Bắt đầu Đề ' + pad2(rec.examNumber) + ' →') : ('Bắt đầu khảo sát Đề ' + pad2(rec.examNumber) + ' →'));
+            }
+        }
+
+        window.openSmartRecommendationModal = function() {
+            renderSmartRecommendationModal();
+            var m = document.getElementById('start-exam-modal');
+            if (m) m.style.display = 'flex';
+        };
+
+        window.closeSmartPopupToLobby = function() {
+            var m = document.getElementById('start-exam-modal');
+            if (m) m.style.display = 'none';
+        };
+
+        window.startRecommendedExam = function() {
+            var isReset = (_recommendedMode !== 'resume');
+            enterExamFromLobby(_recommendedExamNum || selectedLobbyExam || 1, { reset: isReset });
+        };
+
+        window.enterExamFromLobby = async function(examNum, opts) {
+            opts = opts || {};
+            var targetNum = Number(examNum) || 1;
+            selectedLobbyExam = targetNum;
+
+            // Kiểm tra trước việc tải đề > 2 trước khi ẩn Sảnh (tránh nhấp nháy nếu mở file:// cục bộ)
+            if (!_loadedExamsCache[targetNum] && targetNum > 2) {
+                try {
+                    var preRes = await fetch('data/thptqg-exams/de-' + pad2(targetNum) + '.json');
+                    if (preRes.ok) {
+                        var preJson = await preRes.json();
+                        if (preJson && Array.isArray(preJson.questions) && preJson.questions.length) {
+                            _loadedExamsCache[targetNum] = preJson;
+                        }
+                    }
+                } catch(e) {}
+                if (!_loadedExamsCache[targetNum]) {
+                    showExamAutoNoticeToast('Đề 01 & Đề 02 chạy trực tiếp offline; Đề 03–50 cần mở qua máy chủ web cục bộ hoặc website chính thức!');
+                    return;
+                }
+            }
+
+            closeSmartPopupToLobby();
+            document.body.classList.remove('dgnl-lobby-active');
+            hasExamStarted = true;
+            isViewingReport = false;
+
+            var switched = await switchExam(targetNum, { reset: !!opts.reset, forceSync: true });
+            if (!switched) {
+                hasExamStarted = false;
+                document.body.classList.add('dgnl-lobby-active');
+                renderLobbyAll();
+                return;
+            }
+            saveCurrentExamSession(false);
+            startTimer();
+        };
+
+        window.pauseAndReturnToLobby = function() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            stopWowCanvasLoop();
+            if (!isViewingReport) {
+                saveCurrentExamSession(false);
+            }
+            hasExamStarted = false;
+            isViewingReport = false;
+            selectedLobbyExam = currentExamNumber;
+            document.body.classList.add('dgnl-lobby-active');
+            renderLobbyAll();
+            window.scrollTo({ top: 0, behavior: 'auto' });
+        };
+
+        window.returnToLobbyFromReport = function() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            stopWowCanvasLoop();
+            hasExamStarted = false;
+            isViewingReport = false;
+            selectedLobbyExam = currentExamNumber;
+            document.body.classList.add('dgnl-lobby-active');
+            renderLobbyAll();
+            window.scrollTo({ top: 0, behavior: 'auto' });
+        };
+
+        window.addEventListener('pagehide', function() { if (hasExamStarted && !isViewingReport) saveCurrentExamSession(false); });
+        window.addEventListener('beforeunload', function() { if (hasExamStarted && !isViewingReport) saveCurrentExamSession(false); });
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'hidden' && hasExamStarted && !isViewingReport) {
+                saveCurrentExamSession(false);
+            }
+        });
+
+        /* ═══════════════════════════════════════════
            KHỞI ĐỘNG & RENDER 28 CÂU HỎI 3 PHẦN
         ═══════════════════════════════════════════ */
-        var hasExamStarted = false;
-
         function startExamNow() {
+            if (document.body.classList.contains('dgnl-lobby-active')) {
+                window.startRecommendedExam();
+                return;
+            }
             hasExamStarted = true;
+            isViewingReport = false;
             var startModal = document.getElementById('start-exam-modal');
             if (startModal) startModal.style.display = 'none';
             startTimer();
@@ -4111,21 +5622,23 @@
         function initApp() {
             loadLessons();
             syncNavUserChip();
-            var isAutoStart = false;
-            try { isAutoStart = (new URLSearchParams(window.location.search)).get('autostart') === '1'; } catch(e) {}
 
-            updateExamChromeUI();
-            renderSidebarLessons();
-            renderPalette();
-            renderQuestion(currentIndex);
-
-            if (isAutoStart) {
-                var startModal = document.getElementById('start-exam-modal');
-                if (startModal) startModal.style.display = 'none';
-                startExamNow();
+            if (isAutoStartBoot) {
+                document.body.classList.remove('dgnl-lobby-active');
+                hasExamStarted = true;
+                isViewingReport = false;
+                updateExamChromeUI();
+                renderSidebarLessons();
+                renderPalette();
+                renderQuestion(currentIndex);
+                closeSmartPopupToLobby();
+                startTimer();
             } else {
-                var startModal = document.getElementById('start-exam-modal');
-                if (startModal) startModal.style.display = 'flex';
+                hasExamStarted = false;
+                isViewingReport = false;
+                document.body.classList.add('dgnl-lobby-active');
+                renderLobbyAll();
+                openSmartRecommendationModal();
             }
         }
 
@@ -4395,6 +5908,7 @@
         function renderQuestion(idx) {
             if (!questions || questions.length === 0) return;
             currentIndex = idx;
+            if (hasExamStarted && !isViewingReport) saveCurrentExamSession(false);
             var q = questions[idx];
             var container = document.getElementById('question-card-container');
             if (!container) return;
@@ -4606,6 +6120,11 @@
                 var examDdBtn = document.getElementById('btn-exam-dropdown-trigger');
                 if (examDdBtn) examDdBtn.classList.remove('active');
                 if (window.toggleShortcutsPopover) toggleShortcutsPopover(false);
+                var startModalEsc = document.getElementById('start-exam-modal');
+                if (startModalEsc && startModalEsc.style.display === 'flex') {
+                    closeSmartPopupToLobby();
+                    return;
+                }
                 var fsModal = document.getElementById('wow-fullscreen-modal');
                 if (fsModal && fsModal.style.display === 'flex') {
                     closeWowFullscreen();
@@ -4625,6 +6144,16 @@
                 if (confirmModal && confirmModal.style.display === 'flex') {
                     closeSubmitConfirmModal();
                     return;
+                }
+                return;
+            }
+
+            // Chặn toàn bộ phím tắt phòng thi khi học sinh đang ở Sảnh 50 Đề
+            if (document.body.classList.contains('dgnl-lobby-active')) {
+                var startModalLobby = document.getElementById('start-exam-modal');
+                if (!isInput && startModalLobby && startModalLobby.style.display === 'flex' && e.key === 'Enter') {
+                    e.preventDefault();
+                    if (typeof startRecommendedExam === 'function') startRecommendedExam();
                 }
                 return;
             }
@@ -4661,9 +6190,9 @@
                 return;
             }
 
-            // Nếu đang ở màn hình báo cáo kết quả (report-view visible) -> không điều hướng câu nữa
-            var reportView = document.getElementById('report-view');
-            if (reportView && reportView.style.display !== 'none') return;
+            // Nếu đang ở màn hình báo cáo kết quả (screen-report visible) -> không điều hướng câu nữa
+            var reportView = document.getElementById('screen-report');
+            if (reportView && reportView.style.display !== 'none' && getComputedStyle(reportView).display !== 'none') return;
 
             // 1. Chuyển câu bằng phím mũi tên Trái / Phải hoặc PageUp / PageDown
             if (e.key === 'ArrowRight' || e.key === 'PageDown') {
@@ -4751,28 +6280,33 @@
         /* ═══════════════════════════════════════════
            ĐỒNG HỒ ĐẾM NGƯỢC
         ═══════════════════════════════════════════ */
+        function syncTimerDomText() {
+            var sec = Math.max(0, Number(timerSeconds || 0));
+            var m = Math.floor(sec / 60);
+            var s = sec % 60;
+            var txt = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+            var el = document.getElementById('timer-display');
+            var elM = document.getElementById('timer-display-mobile');
+            if (el) el.textContent = txt;
+            if (elM) elM.textContent = txt;
+        }
+
         function startTimer() {
             if (timerInterval) clearInterval(timerInterval);
+            syncTimerDomText();
             timerInterval = setInterval(function() {
+                if (!hasExamStarted || isViewingReport) return;
                 timerSeconds--;
-                if (timerSeconds % 5 === 0) {
-                    try {
-                        localStorage.setItem('vlxt_dgnl_timer', timerSeconds);
-                        localStorage.setItem('vlxt_dgnl_timer_exam', currentExamNumber);
-                    } catch(e) {}
-                }
                 if (timerSeconds <= 0) {
                     clearInterval(timerInterval);
+                    timerInterval = null;
                     timerSeconds = 0;
+                    syncTimerDomText();
                     executeFinalSubmit();
+                    return;
                 }
-                var m = Math.floor(timerSeconds / 60);
-                var s = timerSeconds % 60;
-                var txt = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
-                var el = document.getElementById('timer-display');
-                var elM = document.getElementById('timer-display-mobile');
-                if (el) el.textContent = txt;
-                if (elM) elM.textContent = txt;
+                syncTimerDomText();
+                saveCurrentExamSession(false);
             }, 1000);
         }
 
@@ -4989,13 +6523,21 @@
 
         function processAndShowReport(user) {
             stopWowCanvasLoop();
+            hasExamStarted = false;
+            isViewingReport = true;
             document.getElementById('screen-quiz').style.display = 'none';
             document.getElementById('screen-report').style.display = 'block';
 
+            DgnlSessionStore.clear(currentExamNumber);
             try {
-                localStorage.removeItem('vlxt_dgnl_guest_answers');
-                localStorage.removeItem('vlxt_dgnl_timer');
-                localStorage.removeItem('vlxt_dgnl_timer_exam');
+                var legacyG = JSON.parse(localStorage.getItem('vlxt_dgnl_guest_answers') || 'null');
+                if (legacyG && Number(legacyG.examNumber) === Number(currentExamNumber)) {
+                    localStorage.removeItem('vlxt_dgnl_guest_answers');
+                }
+                if (Number(localStorage.getItem('vlxt_dgnl_timer_exam')) === Number(currentExamNumber)) {
+                    localStorage.removeItem('vlxt_dgnl_timer');
+                    localStorage.removeItem('vlxt_dgnl_timer_exam');
+                }
             } catch(e) {}
 
             var spentSeconds = Math.max(0, currentExamDurationSec - timerSeconds);
@@ -5004,6 +6546,17 @@
             var timeFormatted = spentM + ' phút ' + spentS + ' giây';
 
             var g = gradeCurrentExam();
+            var chapterStats = [
+                { total: 0, correct: 0 },
+                { total: 0, correct: 0 },
+                { total: 0, correct: 0 },
+                { total: 0, correct: 0 }
+            ];
+            Object.keys(g.topicStats || {}).forEach(function(tp) {
+                var bIdx = getTopicBucketIdx(tp);
+                chapterStats[bIdx].total += Number(g.topicStats[tp].total || 0);
+                chapterStats[bIdx].correct += Number(g.topicStats[tp].correct || 0);
+            });
 
             document.getElementById('rep-score-num').textContent = g.finalScore;
             document.getElementById('rep-correct-num').textContent = 'Đúng trọn vẹn ' + g.exactCorrectCount + '/' + questions.length + ' câu';
@@ -5034,11 +6587,27 @@
                     predictedScore: g.predScore,
                     timeSpent: timeFormatted,
                     tagStats: g.tagStats,
+                    topicStats: g.topicStats,
+                    chapterStats: chapterStats,
                     timestamp: Date.now()
                 }));
                 var hist = read50History();
                 var eid = currentExamMeta ? currentExamMeta.examId : ('DE_' + currentExamNumber);
-                hist[eid] = { score10: g.finalScore, exact: g.exactCorrectCount, total: questions.length, ts: Date.now() };
+                var prevH = hist[eid] || {};
+                var prevBest = parseFloat(String(prevH.bestScore || prevH.score10 || 0).replace(',', '.')) || 0;
+                var curScoreNum = Number(g.rawScore || 0);
+                hist[eid] = {
+                    examNumber: Number(currentExamNumber),
+                    score10: g.finalScore,
+                    bestScore: Math.max(prevBest, curScoreNum).toFixed(2),
+                    attempts: Number(prevH.attempts || 0) + 1,
+                    exact: g.exactCorrectCount,
+                    total: questions.length,
+                    timeSpentSec: spentSeconds,
+                    chapterStats: chapterStats,
+                    topicStats: g.topicStats,
+                    ts: Date.now()
+                };
                 localStorage.setItem(HISTORY_50_KEY, JSON.stringify(hist));
             } catch(e) {}
 
