@@ -2300,43 +2300,43 @@
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 16px;
-            padding: 18px 22px;
+            gap: 18px;
+            padding: 24px 26px;
         }
         .dgnl-account-box {
             display: flex;
             align-items: center;
-            gap: 14px;
-            min-width: 240px;
+            gap: 16px;
+            min-width: 245px;
         }
         .dgnl-account-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: rgba(56, 189, 248, 0.12);
-            border: 1px solid rgba(56, 189, 248, 0.32);
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            background: rgba(56, 189, 248, 0.14);
+            border: 1px solid rgba(56, 189, 248, 0.36);
             color: #38bdf8;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 22px;
             flex-shrink: 0;
         }
         .dgnl-account-name-row {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
         }
         .dgnl-account-name {
-            font-size: 16px;
+            font-size: 19px;
             font-weight: 800;
             color: #ffffff;
         }
         .dgnl-level-badge {
-            font-size: 11.5px;
+            font-size: 12px;
             font-weight: 700;
-            padding: 3px 10px;
+            padding: 4px 12px;
             border-radius: 999px;
             border: 1px solid transparent;
             white-space: nowrap;
@@ -2346,63 +2346,69 @@
         .dgnl-level-badge.level-good { background: rgba(56, 189, 248, 0.14); color: #38bdf8; border-color: rgba(56, 189, 248, 0.32); }
         .dgnl-level-badge.level-top  { background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.35); }
         .dgnl-account-sub {
-            font-size: 12.5px;
+            font-size: 13px;
             color: #94a3b8;
-            margin-top: 2px;
+            margin-top: 4px;
         }
         .dgnl-metrics-grid {
             display: flex;
             align-items: stretch;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
             flex: 1;
             justify-content: flex-end;
         }
         .dgnl-metric-tile {
-            background: rgba(13, 22, 44, 0.85);
-            border: 1px solid rgba(56, 189, 248, 0.18);
-            border-radius: 12px;
-            padding: 10px 15px;
-            min-width: 120px;
+            background: rgba(13, 22, 44, 0.88);
+            border: 1px solid rgba(56, 189, 248, 0.20);
+            border-radius: 14px;
+            padding: 15px 20px;
+            min-width: 142px;
+            min-height: 86px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
+        .dgnl-metric-tile.metric-done   { border-top: 2px solid #10b981; }
+        .dgnl-metric-tile.metric-avg    { border-top: 2px solid #38bdf8; }
+        .dgnl-metric-tile.metric-best   { border-top: 2px solid #f59e0b; }
+        .dgnl-metric-tile.metric-paused { border-top: 2px solid #a855f7; }
         .dgnl-metric-tile.wide-resume {
-            min-width: 230px;
-            max-width: 390px;
+            min-width: 245px;
+            max-width: 400px;
         }
         .dgnl-metric-label {
-            font-size: 11px;
+            font-size: 11.5px;
             font-weight: 700;
             color: #94a3b8;
             text-transform: uppercase;
-            letter-spacing: 0.03em;
+            letter-spacing: 0.04em;
         }
         .dgnl-metric-value {
-            font-size: 18px;
+            font-size: 24px;
             font-weight: 800;
             color: #ffffff;
             font-family: var(--font-mono);
-            margin-top: 2px;
+            margin-top: 4px;
+            line-height: 1.15;
         }
         .dgnl-resume-chips {
             display: flex;
             gap: 6px;
             flex-wrap: wrap;
-            margin-top: 5px;
+            margin-top: 7px;
         }
         .dgnl-resume-chip {
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            background: rgba(2, 132, 199, 0.18);
-            border: 1px solid rgba(56, 189, 248, 0.38);
+            background: rgba(2, 132, 199, 0.22);
+            border: 1px solid rgba(56, 189, 248, 0.44);
             color: #e0f2fe;
-            font-size: 11.5px;
+            font-size: 12px;
             font-weight: 700;
             font-family: var(--font-mono);
-            padding: 3px 9px;
+            padding: 5px 12px;
             border-radius: 999px;
             cursor: pointer;
             transition: background 0.15s;
@@ -2413,32 +2419,62 @@
         }
 
         .dgnl-rules-strip {
-            background: rgba(6, 12, 26, 0.72);
-            border-top: 1px solid rgba(56, 189, 248, 0.18);
-            padding: 10px 22px;
+            background: rgba(6, 12, 26, 0.78);
+            border-top: 1px solid rgba(56, 189, 248, 0.20);
+            padding: 14px 26px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 10px;
-            font-size: 12.5px;
-            color: #cbd5e1;
+            gap: 12px;
+            font-size: 13.5px;
+            color: #e2e8f0;
         }
         .dgnl-rules-items {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 18px;
             flex-wrap: wrap;
         }
         .dgnl-rule-item {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 7px;
             white-space: nowrap;
         }
         .dgnl-rule-item i {
             color: #38bdf8;
-            font-size: 12px;
+            font-size: 13px;
+        }
+
+        /* Hiệu ứng lướt sáng thu hút hành động (Shimmer Sheen · 0 AI Glow) */
+        @keyframes dgnlSheenSweep {
+            0%   { transform: translateX(-140%) skewX(-18deg); }
+            35%  { transform: translateX(180%) skewX(-18deg); }
+            100% { transform: translateX(180%) skewX(-18deg); }
+        }
+        @keyframes dgnlIconPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50%      { transform: scale(1.14) rotate(-8deg); }
+        }
+        .dgnl-btn-sheen {
+            position: relative;
+            overflow: hidden;
+        }
+        .dgnl-btn-sheen::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 46%;
+            background: linear-gradient(105deg, transparent 15%, rgba(255, 255, 255, 0.30) 50%, transparent 85%);
+            pointer-events: none;
+            animation: dgnlSheenSweep 3.2s ease-in-out infinite;
+        }
+        .dgnl-spark-icon {
+            display: inline-block;
+            animation: dgnlIconPulse 2.4s ease-in-out infinite;
         }
 
         /* Nút pill chuẩn EdTech đồng bộ baihoc.html */
@@ -2446,10 +2482,10 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 7px;
-            padding: 8px 16px;
+            gap: 8px;
+            padding: 9px 18px;
             border-radius: 999px;
-            font-size: 13px;
+            font-size: 13.5px;
             font-weight: 700;
             cursor: pointer;
             font-family: inherit;
@@ -2461,34 +2497,41 @@
         .dgnl-btn-pill:hover {
             background: #1b2c52;
             border-color: #38bdf8;
+            transform: translateY(-1px);
         }
         .dgnl-btn-pill.sm {
-            padding: 5px 12px;
-            font-size: 12px;
+            padding: 6px 14px;
+            font-size: 12.5px;
         }
         .dgnl-btn-pill.primary {
             background: linear-gradient(90deg, #0ea5e9, #0284c7);
-            border-color: rgba(56, 189, 248, 0.5);
+            border-color: rgba(125, 211, 252, 0.62);
             color: #ffffff;
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(2, 6, 23, 0.38);
         }
         .dgnl-btn-pill.primary:hover {
             background: linear-gradient(90deg, #38bdf8, #0369a1);
         }
         .dgnl-btn-pill.suggest {
-            background: rgba(56, 189, 248, 0.14);
-            border-color: rgba(56, 189, 248, 0.38);
-            color: #7dd3fc;
+            padding: 10px 22px;
+            font-size: 14px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #0ea5e9, #2563eb);
+            border-color: rgba(125, 211, 252, 0.72);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(2, 6, 23, 0.42);
         }
         .dgnl-btn-pill.suggest:hover {
-            background: rgba(2, 132, 199, 0.32);
+            background: linear-gradient(90deg, #38bdf8, #1d4ed8);
             color: #ffffff;
         }
 
-        /* Split 2 cột */
+        /* Split 2 cột thoáng */
         .dgnl-lobby-grid {
             display: grid;
-            grid-template-columns: 350px minmax(0, 1fr);
-            gap: 18px;
+            grid-template-columns: 365px minmax(0, 1fr);
+            gap: 22px;
             align-items: start;
         }
         .dgnl-left-panel {
@@ -2712,56 +2755,99 @@
 
         .dgnl-cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
         }
         .dgnl-mini-card {
-            background: linear-gradient(180deg, rgba(15, 26, 52, 0.85) 0%, rgba(10, 18, 38, 0.92) 100%);
-            border: 1px solid rgba(56, 189, 248, 0.18);
-            border-radius: 14px;
-            padding: 13px 14px;
+            background: linear-gradient(180deg, rgba(15, 26, 52, 0.88) 0%, rgba(10, 18, 38, 0.94) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.20);
+            border-radius: 16px;
+            padding: 18px 20px;
+            min-height: 118px;
             cursor: pointer;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            justify-content: space-between;
+            gap: 11px;
             transition: transform 0.16s, border-color 0.16s, background 0.16s;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.26);
         }
         .dgnl-mini-card:hover {
             transform: translateY(-2px);
             border-color: #38bdf8;
-            background: linear-gradient(180deg, rgba(20, 34, 68, 0.92) 0%, rgba(13, 24, 50, 0.96) 100%);
+            background: linear-gradient(180deg, rgba(20, 34, 68, 0.94) 0%, rgba(13, 24, 50, 0.98) 100%);
         }
         .dgnl-mini-card.selected {
             border-color: #38bdf8;
-            background: linear-gradient(180deg, rgba(20, 40, 82, 0.95) 0%, rgba(12, 26, 56, 0.98) 100%);
-            box-shadow: 0 6px 18px rgba(2, 6, 23, 0.45);
+            background: linear-gradient(180deg, rgba(20, 40, 82, 0.96) 0%, rgba(12, 26, 56, 0.99) 100%);
+            box-shadow: 0 8px 22px rgba(2, 6, 23, 0.45);
         }
         .dgnl-mini-card.in-progress { border-left: 3px solid #38bdf8; }
         .dgnl-mini-card.done { border-left: 3px solid #10b981; }
-        .dgnl-mini-card.locked-other { opacity: 0.70; }
-        .dgnl-mini-card.locked-other:hover { opacity: 0.92; }
+        .dgnl-mini-card.locked-other { opacity: 0.72; }
+        .dgnl-mini-card.locked-other:hover { opacity: 0.94; }
 
         .dgnl-mini-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 6px;
+            gap: 8px;
         }
         .dgnl-mini-sub {
-            font-size: 12.5px;
-            font-weight: 700;
-            color: #f1f5f9;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 15px;
+            font-weight: 800;
+            color: #f8fafc;
+            line-height: 1.4;
         }
         .dgnl-mini-foot {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 11.5px;
+            font-size: 12.5px;
             color: #94a3b8;
+        }
+        .dgnl-more-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 12px 18px;
+            border-radius: 14px;
+            background: rgba(13, 22, 44, 0.76);
+            border: 1px solid rgba(56, 189, 248, 0.18);
+            margin-top: 2px;
+        }
+        .dgnl-more-meta {
+            font-size: 13px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+        .dgnl-report-bottom-cta {
+            margin-top: 26px;
+            background: linear-gradient(135deg, rgba(13, 24, 52, 0.92), rgba(10, 18, 38, 0.96));
+            border: 1px solid rgba(56, 189, 248, 0.28);
+            border-radius: 18px;
+            padding: 22px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.36);
+        }
+        .vstep-btn.next-exam {
+            background: linear-gradient(90deg, #0ea5e9, #0284c7);
+            border: 1px solid #38bdf8;
+            color: #ffffff;
+            padding: 12px 18px;
+            font-size: 14px;
+            font-weight: 800;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+        }
+        .vstep-btn.next-exam:hover {
+            background: linear-gradient(90deg, #38bdf8, #0369a1);
+            transform: translateY(-1px);
         }
 
         .dgnl-badge {
@@ -2860,11 +2946,13 @@
             .dgnl-rules-strip { padding: 10px 16px; }
             .dgnl-rule-item { white-space: normal; }
         }
-        @media (max-width: 560px) {
-            .dgnl-metric-tile { flex: 1 1 44%; min-width: 0; }
+        @media (max-width: 640px) {
+            .dgnl-metric-tile { flex: 1 1 44%; min-width: 0; min-height: 74px; padding: 12px 14px; }
             .dgnl-metric-tile.wide-resume { flex: 1 1 100%; min-width: 0; max-width: none; }
+            .dgnl-metric-value { font-size: 20px; }
             .dgnl-search-box { min-width: 0; width: 100%; }
-            .dgnl-cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+            .dgnl-cards-grid { grid-template-columns: 1fr; gap: 12px; }
+            .dgnl-btn-pill.suggest { width: 100%; }
         }
     </style>
 </head>
@@ -3556,22 +3644,22 @@
                     </div>
                 </div>
                 <div class="dgnl-metrics-grid">
-                    <div class="dgnl-metric-tile">
+                    <div class="dgnl-metric-tile metric-done">
                         <span class="dgnl-metric-label">Đề đã làm</span>
                         <span class="dgnl-metric-value" id="lobby-stat-done" style="color:#34d399;">0 / 50</span>
                     </div>
-                    <div class="dgnl-metric-tile">
+                    <div class="dgnl-metric-tile metric-avg">
                         <span class="dgnl-metric-label">Điểm trung bình</span>
                         <span class="dgnl-metric-value" id="lobby-stat-avg" style="color:#38bdf8;">--</span>
                     </div>
-                    <div class="dgnl-metric-tile">
+                    <div class="dgnl-metric-tile metric-best">
                         <span class="dgnl-metric-label">Điểm cao nhất</span>
                         <span class="dgnl-metric-value" id="lobby-stat-best" style="color:#fbbf24;">--</span>
                     </div>
-                    <div class="dgnl-metric-tile wide-resume">
+                    <div class="dgnl-metric-tile metric-paused wide-resume">
                         <span class="dgnl-metric-label" id="lobby-stat-paused-count">Đang làm dở (0 đề)</span>
                         <div id="lobby-paused-chips">
-                            <div class="dgnl-metric-value" style="font-size:14px;color:#94a3b8;font-family:inherit;font-weight:600;">Không có</div>
+                            <div class="dgnl-metric-value" style="font-size:15px;color:#94a3b8;font-family:inherit;font-weight:600;">Không có</div>
                         </div>
                     </div>
                 </div>
@@ -3583,8 +3671,8 @@
                     <span class="dgnl-rule-item"><i class="fa-solid fa-chart-line"></i> Thang 10 chuẩn Bộ GD&amp;ĐT</span>
                     <span class="dgnl-rule-item"><i class="fa-solid fa-floppy-disk"></i> Tự lưu từng giây · Làm xong đề mới mở đề khác</span>
                 </div>
-                <button type="button" class="dgnl-btn-pill sm suggest" id="btn-open-smart-suggest" onclick="openSmartRecommendationModal()">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> Gợi ý cho em
+                <button type="button" class="dgnl-btn-pill suggest dgnl-btn-sheen" id="btn-open-smart-suggest" onclick="openSmartRecommendationModal()">
+                    <i class="fa-solid fa-wand-magic-sparkles dgnl-spark-icon"></i> Gợi ý đề cho em →
                 </button>
             </div>
         </section>
@@ -3618,6 +3706,7 @@
                     </div>
                 </div>
                 <div class="dgnl-cards-grid" id="lobby-exam-grid"></div>
+                <div class="dgnl-more-bar" id="lobby-grid-more-bar" style="display:none;"></div>
             </div>
         </div>
     </section>
@@ -3687,7 +3776,7 @@
                     <button type="button" class="wow-mhud-btn" id="btn-back-to-lobby-mobile" onclick="pauseAndReturnToLobby()"><i class="fa-solid fa-arrow-left"></i> Sảnh</button>
                     <button type="button" class="wow-mhud-btn" onclick="openCampaign50Drawer()"><i class="fa-solid fa-layer-group"></i> 50 Đề</button>
                     <button type="button" class="wow-mhud-btn" onclick="toggleMobilePaletteDrawer(true)"><i class="fa-solid fa-table-cells"></i> <span id="pal-mobile-count">0/28</span></button>
-                    <button type="button" class="wow-mhud-btn" style="background:#059669;border-color:#10b981;color:#fff" onclick="confirmSubmit()">Nộp</button>
+                    <button type="button" class="wow-mhud-btn" id="btn-mobile-main-action" style="background:#059669;border-color:#10b981;color:#fff" onclick="handleSidebarMainAction()">Nộp</button>
                 </div>
             </div>
 
@@ -3894,6 +3983,9 @@
                                 <button type="button" class="btn-open-50-drawer" style="padding:5px 12px;font-size:12.5px" onclick="openCampaign50Drawer()">
                                     <i class="fa-solid fa-layer-group"></i> Làm Đề Khác (Kho 50 Đề)
                                 </button>
+                                <button type="button" class="btn-open-50-drawer" id="btn-report-top-retake" style="padding:5px 12px;font-size:12.5px;background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.42);color:#fbbf24" onclick="retakeCurrentExam()">
+                                    <i class="fa-solid fa-rotate-left"></i> Làm lại đề này
+                                </button>
                                 <button type="button" class="btn-open-50-drawer" style="padding:5px 12px;font-size:12.5px;background:#13203d;border-color:rgba(56,189,248,0.4);color:#7dd3fc" onclick="returnToLobbyFromReport()">
                                     <i class="fa-solid fa-house"></i> Về Sảnh ĐGNL
                                 </button>
@@ -3918,6 +4010,26 @@
 
                 <!-- HỘP LỘ TRÌNH KHẮC PHỤC CẤP TỐC TỪ THẦY (DƯỚI CÙNG) -->
                 <div id="remedial-bottom-spotlight-slot" style="margin-top:24px;"></div>
+
+                <!-- KHỐI HÀNH ĐỘNG SAU KHI NỘP BÀI (DƯỚI CÙNG BÁO CÁO) -->
+                <div class="dgnl-report-bottom-cta" id="report-bottom-actions">
+                    <div>
+                        <div style="font-size:12px;font-weight:800;color:#38bdf8;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px;">Bước tiếp theo sau khi xem lời giải</div>
+                        <h4 id="report-bottom-cta-title" style="font-size:18px;font-weight:800;color:#ffffff;margin-bottom:3px;">Hoàn thành chữa bài Đề số 01</h4>
+                        <p style="font-size:13px;color:#94a3b8;">Em có thể làm lại đề này để kiểm chứng kiến thức vừa ôn hoặc chuyển sang đề tiếp theo.</p>
+                    </div>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+                        <button type="button" class="dgnl-btn-pill" id="btn-report-bottom-retake" onclick="retakeCurrentExam()">
+                            <i class="fa-solid fa-rotate-left"></i> Làm lại đề này
+                        </button>
+                        <button type="button" class="dgnl-btn-pill" id="btn-report-bottom-lobby" onclick="returnToLobbyFromReport()">
+                            <i class="fa-solid fa-layer-group"></i> Về Sảnh 50 Đề
+                        </button>
+                        <button type="button" class="dgnl-btn-pill primary dgnl-btn-sheen" id="btn-report-bottom-next" onclick="startNextExamFromReport()">
+                            <i class="fa-solid fa-arrow-right"></i> <span id="report-bottom-next-label">Làm đề tiếp theo</span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
         </main>
@@ -3954,8 +4066,11 @@
                 <div class="vstep-progress-fill" id="progress-fill"></div>
             </div>
 
-            <button class="vstep-btn submit" style="width:100%;margin-top:10px;" onclick="confirmSubmit()">
+            <button class="vstep-btn submit" id="btn-sidebar-main-action" style="width:100%;margin-top:10px;" onclick="handleSidebarMainAction()">
                 <i class="fa-solid fa-check-circle"></i> Nộp Bài &amp; Chấm Điểm
+            </button>
+            <button type="button" class="vstep-btn secondary" id="btn-sidebar-retake-action" style="width:100%;margin-top:8px;display:none;" onclick="retakeCurrentExam()">
+                <i class="fa-solid fa-rotate-left"></i> Làm Lại Đề Này
             </button>
         </aside>
 
@@ -4047,7 +4162,7 @@
                 <button type="button" class="dgnl-btn-pill" id="start-modal-secondary-btn" onclick="closeSmartPopupToLobby()" style="flex:1;padding:11px 14px;">
                     <i class="fa-solid fa-layer-group"></i> Xem Sảnh 50 Đề
                 </button>
-                <button type="button" class="dgnl-btn-pill primary" id="start-modal-primary-btn" onclick="startRecommendedExam()" style="flex:1.45;padding:11px 18px;font-size:14px;">
+                <button type="button" class="dgnl-btn-pill primary dgnl-btn-sheen" id="start-modal-primary-btn" onclick="startRecommendedExam()" style="flex:1.45;padding:12px 20px;font-size:14.5px;">
                     <i class="fa-solid fa-play"></i> Bắt đầu ngay →
                 </button>
             </div>
@@ -4159,6 +4274,7 @@
         var lobbyStageFilter = 'ALL';
         var lobbyStatusFilter = 'ALL';
         var lobbySearchQuery = '';
+        var lobbyVisibleLimit = 8;
         var _recommendedExamNum = 1;
         var _recommendedMode = 'fresh';
 
@@ -4938,6 +5054,7 @@
             if (scrRep) scrRep.style.display = 'none';
             hasExamStarted = true;
             isViewingReport = false;
+            syncExamActionButtonsMode(false);
             saveCurrentExamSession(true);
             startTimer();
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -5133,9 +5250,8 @@
             var doneCount = nums.length;
             var sumScore = 0, bestScore = 0;
             nums.forEach(function(k) {
-                var s = Number(histMap[k].score || 0);
-                var b = Number(histMap[k].bestScore || 0);
-                sumScore += s;
+                var b = Number(histMap[k].bestScore || histMap[k].score || 0);
+                sumScore += b;
                 if (b > bestScore) bestScore = b;
             });
             var avgScore = doneCount > 0 ? (sumScore / doneCount) : 0;
@@ -5198,7 +5314,7 @@
                         '<div style="font-weight:800;color:#fbbf24;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-lock"></i> Đang khóa — Cần hoàn thành Đề số ' + pad2(activeLock.examNumber) + '</div>' +
                         '<div>Em đang làm dở <strong>Đề số ' + pad2(activeLock.examNumber) + '</strong> (' + (activeLock.answeredCount || 0) + '/28 câu · Còn <strong style="font-family:var(--font-mono)">' + formatMMSS(activeLock.remainingSeconds) + '</strong>). Phải nộp xong Đề ' + pad2(activeLock.examNumber) + ' mới được làm Đề ' + pad2(selNum) + '.</div>' +
                     '</div>' +
-                    '<button type="button" class="dgnl-btn-pill primary" id="lobby-btn-goto-active-lock" style="width:100%;padding:12px;font-size:14px;" onclick="enterExamFromLobby(' + activeLock.examNumber + ', {reset:false})"><i class="fa-solid fa-play"></i> Quay lại hoàn thành Đề ' + pad2(activeLock.examNumber) + '</button>';
+                    '<button type="button" class="dgnl-btn-pill primary dgnl-btn-sheen" id="lobby-btn-goto-active-lock" style="width:100%;padding:13px 16px;font-size:15px;" onclick="enterExamFromLobby(' + activeLock.examNumber + ', {reset:false})"><i class="fa-solid fa-play"></i> Quay lại hoàn thành Đề ' + pad2(activeLock.examNumber) + '</button>';
             } else if (isThisInProgress) {
                 var stopQ = Math.min(meta.soCau || 28, (activeLock.currentIndex || 0) + 1);
                 var pct = Math.min(100, Math.round(((activeLock.answeredCount || 0) / (meta.soCau || 28)) * 100));
@@ -5211,11 +5327,11 @@
                         '<div style="font-size:12.5px;color:#e2e8f0;">Đã làm <strong>' + (activeLock.answeredCount || 0) + '/' + (meta.soCau || 28) + ' câu</strong> · Dừng tại <strong>Câu ' + stopQ + '</strong></div>' +
                         '<div class="dgnl-mini-track"><div class="dgnl-mini-fill" style="width:' + pct + '%"></div></div>' +
                     '</div>' +
-                    '<button type="button" class="dgnl-btn-pill primary" id="lobby-btn-resume-selected" style="width:100%;padding:12px;font-size:14px;" onclick="enterExamFromLobby(' + selNum + ', {reset:false})"><i class="fa-solid fa-play"></i> Tiếp tục từ Câu ' + stopQ + '</button>';
+                    '<button type="button" class="dgnl-btn-pill primary dgnl-btn-sheen" id="lobby-btn-resume-selected" style="width:100%;padding:13px 16px;font-size:15px;" onclick="enterExamFromLobby(' + selNum + ', {reset:false})"><i class="fa-solid fa-play"></i> Tiếp tục từ Câu ' + stopQ + '</button>';
             } else {
                 statusActionHtml =
                     (hist ? '<div class="dgnl-done-box"><span><i class="fa-solid fa-circle-check"></i> Đã thi (' + (hist.attempts || 1) + ' lượt)</span><strong>Cao nhất: ' + formatScoreComma(hist.bestScore) + 'đ</strong></div>' : '') +
-                    '<button type="button" class="dgnl-btn-pill primary" id="lobby-btn-start-selected" style="width:100%;padding:12px;font-size:14px;" onclick="enterExamFromLobby(' + selNum + ', {reset:true})"><i class="fa-solid fa-play"></i> ' + (hist ? ('Thi lại Đề ' + pad2(selNum)) : ('Bắt đầu làm Đề ' + pad2(selNum))) + '</button>';
+                    '<button type="button" class="dgnl-btn-pill primary dgnl-btn-sheen" id="lobby-btn-start-selected" style="width:100%;padding:13px 16px;font-size:15px;" onclick="enterExamFromLobby(' + selNum + ', {reset:true})"><i class="fa-solid fa-play"></i> ' + (hist ? ('Thi lại Đề ' + pad2(selNum)) : ('Bắt đầu làm Đề ' + pad2(selNum))) + '</button>';
             }
 
             panel.innerHTML =
@@ -5264,12 +5380,18 @@
                 return true;
             });
 
+            var moreBar = document.getElementById('lobby-grid-more-bar');
             if (!filtered.length) {
                 grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:34px;color:#94a3b8;background:#0d162c;border:1px solid rgba(56,189,248,0.18);border-radius:16px;">Không có đề phù hợp bộ lọc.</div>';
+                if (moreBar) moreBar.style.display = 'none';
                 return;
             }
 
-            grid.innerHTML = filtered.map(function(item) {
+            var isSearching = q.length > 0;
+            var visibleCount = isSearching ? filtered.length : Math.min(filtered.length, Math.max(8, Number(lobbyVisibleLimit || 8)));
+            var displayList = filtered.slice(0, visibleCount);
+
+            grid.innerHTML = displayList.map(function(item) {
                 var num = item.examNumber;
                 var st = getLobbyExamStatus(num, histMap);
                 var s = DgnlSessionStore.get(num);
@@ -5305,7 +5427,49 @@
                     '</div>' +
                 '</div>';
             }).join('');
+
+            if (moreBar) {
+                if (!isSearching && filtered.length > 8) {
+                    moreBar.style.display = 'flex';
+                    var remaining = filtered.length - visibleCount;
+                    if (remaining > 0) {
+                        var nextStep = Math.min(12, remaining);
+                        moreBar.innerHTML =
+                            '<div class="dgnl-more-info">Đang hiển thị <strong>' + visibleCount + ' / ' + filtered.length + ' đề</strong> để giữ màn hình thoáng, dễ chọn.</div>' +
+                            '<div class="dgnl-more-actions">' +
+                                '<button type="button" class="dgnl-btn-pill" id="btn-lobby-show-more" onclick="showMoreLobbyExams(12)"><i class="fa-solid fa-angles-down"></i> Xem thêm ' + nextStep + ' đề nữa</button>' +
+                                '<button type="button" class="dgnl-btn-pill primary" id="btn-lobby-show-all" onclick="showAllLobbyExams()"><i class="fa-solid fa-layer-group"></i> Hiện tất cả ' + filtered.length + ' đề</button>' +
+                            '</div>';
+                    } else {
+                        moreBar.innerHTML =
+                            '<div class="dgnl-more-info">Đang hiển thị đầy đủ <strong>' + filtered.length + ' / ' + filtered.length + ' đề</strong> phù hợp.</div>' +
+                            '<div class="dgnl-more-actions">' +
+                                '<button type="button" class="dgnl-btn-pill" id="btn-lobby-collapse" onclick="collapseLobbyExams()"><i class="fa-solid fa-angles-up"></i> Thu gọn về 8 đề đầu</button>' +
+                            '</div>';
+                    }
+                } else {
+                    moreBar.style.display = 'none';
+                    moreBar.innerHTML = '';
+                }
+            }
         }
+
+        window.showMoreLobbyExams = function(step) {
+            lobbyVisibleLimit = (Number(lobbyVisibleLimit) || 8) + (Number(step) || 12);
+            renderLobbyCatalogGrid();
+        };
+
+        window.showAllLobbyExams = function() {
+            lobbyVisibleLimit = 100;
+            renderLobbyCatalogGrid();
+        };
+
+        window.collapseLobbyExams = function() {
+            lobbyVisibleLimit = 8;
+            renderLobbyCatalogGrid();
+            var gridEl = document.getElementById('lobby-exam-grid');
+            if (gridEl) gridEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
 
         function renderLobbyAll() {
             migrateLegacySessionIfNeeded();
@@ -5322,6 +5486,7 @@
 
         window.setLobbyStageFilter = function(stage) {
             lobbyStageFilter = stage || 'ALL';
+            lobbyVisibleLimit = 8;
             document.querySelectorAll('#lobby-stage-tabs .dgnl-stage-tab').forEach(function(btn) {
                 btn.classList.toggle('active', btn.getAttribute('data-stage') === lobbyStageFilter);
             });
@@ -5330,6 +5495,7 @@
 
         window.setLobbyStatusFilter = function(st) {
             lobbyStatusFilter = st || 'ALL';
+            lobbyVisibleLimit = 8;
             document.querySelectorAll('#lobby-status-pills .dgnl-status-pill').forEach(function(btn) {
                 btn.classList.toggle('active', btn.getAttribute('data-status') === lobbyStatusFilter);
             });
@@ -5682,6 +5848,101 @@
             window.scrollTo({ top: 0, behavior: 'auto' });
         };
 
+        function getNextRecommendedExamNumber() {
+            var cur = Number(currentExamNumber) || 1;
+            try {
+                if (typeof computeSmartRecommendation === 'function') {
+                    var rec = computeSmartRecommendation();
+                    if (rec && Number(rec.examNumber) > 0 && Number(rec.examNumber) !== cur) {
+                        return Number(rec.examNumber);
+                    }
+                }
+            } catch(e) {}
+            return (cur >= 50) ? 1 : (cur + 1);
+        }
+
+        function syncExamActionButtonsMode(isReportMode) {
+            var sideMain = document.getElementById('btn-sidebar-main-action');
+            var sideRetake = document.getElementById('btn-sidebar-retake-action');
+            var mobMain = document.getElementById('btn-mobile-main-action');
+            var nextNum = getNextRecommendedExamNumber();
+
+            if (isReportMode) {
+                if (sideMain) {
+                    sideMain.className = 'vstep-btn next-exam dgnl-btn-sheen';
+                    sideMain.innerHTML = '<i class="fa-solid fa-arrow-right"></i> Làm Đề Tiếp (Đề ' + pad2(nextNum) + ')';
+                }
+                if (sideRetake) {
+                    sideRetake.style.display = 'inline-flex';
+                    sideRetake.innerHTML = '<i class="fa-solid fa-rotate-left"></i> Làm Lại Đề Này';
+                }
+                if (mobMain) {
+                    mobMain.style.background = '#0284c7';
+                    mobMain.style.borderColor = '#38bdf8';
+                    mobMain.textContent = 'Đề tiếp (' + pad2(nextNum) + ')';
+                }
+                var bTitle = document.getElementById('report-bottom-cta-title');
+                if (bTitle) bTitle.textContent = 'Đã hoàn thành & lưu điểm Đề số ' + pad2(currentExamNumber);
+                var bNextLbl = document.getElementById('report-bottom-next-label');
+                if (bNextLbl) bNextLbl.textContent = 'Làm Đề tiếp theo (Đề ' + pad2(nextNum) + ')';
+            } else {
+                if (sideMain) {
+                    sideMain.className = 'vstep-btn submit';
+                    sideMain.innerHTML = '<i class="fa-solid fa-check-circle"></i> Nộp Bài &amp; Chấm Điểm';
+                }
+                if (sideRetake) {
+                    sideRetake.style.display = 'none';
+                }
+                if (mobMain) {
+                    mobMain.style.background = '#059669';
+                    mobMain.style.borderColor = '#10b981';
+                    mobMain.textContent = 'Nộp';
+                }
+            }
+        }
+
+        window.handleSidebarMainAction = function() {
+            if (isViewingReport) {
+                startNextExamFromReport();
+            } else {
+                confirmSubmit();
+            }
+        };
+
+        window.retakeCurrentExam = async function() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            stopWowCanvasLoop();
+            hasExamStarted = false;
+            isViewingReport = false;
+            var ok = await switchExam(currentExamNumber, { reset: true, forceSync: true });
+            if (!ok) {
+                returnToLobbyFromReport();
+                return;
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        window.startNextExamFromReport = async function() {
+            var nextNum = getNextRecommendedExamNumber();
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            stopWowCanvasLoop();
+            hasExamStarted = false;
+            isViewingReport = false;
+            var ok = await switchExam(nextNum, { reset: true, forceSync: true });
+            if (!ok) {
+                selectedLobbyExam = nextNum;
+                returnToLobbyFromReport();
+                return;
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
         window.addEventListener('pagehide', function() { if (hasExamStarted && !isViewingReport) saveCurrentExamSession(false); });
         window.addEventListener('beforeunload', function() { if (hasExamStarted && !isViewingReport) saveCurrentExamSession(false); });
         document.addEventListener('visibilitychange', function() {
@@ -5717,6 +5978,7 @@
                 renderSidebarLessons();
                 renderPalette();
                 renderQuestion(currentIndex);
+                syncExamActionButtonsMode(false);
                 closeSmartPopupToLobby();
                 saveCurrentExamSession(true);
                 startTimer();
@@ -6184,7 +6446,16 @@
 
         function prevQuestion() { if (currentIndex > 0) renderQuestion(currentIndex - 1); }
         function nextQuestion() { if (currentIndex < questions.length - 1) renderQuestion(currentIndex + 1); }
-        function goToQuestion(idx) { renderQuestion(idx); }
+        function goToQuestion(idx) {
+            if (isViewingReport) {
+                var targetCard = document.getElementById('review-q-' + idx);
+                if (targetCard) {
+                    targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return;
+                }
+            }
+            renderQuestion(idx);
+        }
 
         /* ═══════════════════════════════════════════
            PHÍM TẮT THÔNG MINH (SMART KEYBOARD SHORTCUTS)
@@ -6739,8 +7010,20 @@
                 } catch(e) {}
             }
 
+            renderPalette();
+            var desktopPalBtns = document.querySelectorAll('#palette-grid .vstep-pal-btn');
+            var mobilePalBtns = document.querySelectorAll('#mobile-palette-grid .vstep-pal-btn');
             questions.forEach(function(q, idx) {
                 var isWrong = g.wrongIndices.indexOf(idx) !== -1;
+                var clsResult = isWrong ? 'wrong' : 'correct';
+                if (desktopPalBtns[idx]) {
+                    desktopPalBtns[idx].classList.remove('current', 'answered', 'correct', 'wrong');
+                    desktopPalBtns[idx].classList.add(clsResult);
+                }
+                if (mobilePalBtns[idx]) {
+                    mobilePalBtns[idx].classList.remove('current', 'answered', 'correct', 'wrong');
+                    mobilePalBtns[idx].classList.add(clsResult);
+                }
                 var sideTag = document.getElementById('side-tag-' + idx);
                 if (sideTag) {
                     sideTag.className = 'vstep-status-tag ' + (isWrong ? 'wrong' : 'done');
@@ -6764,6 +7047,7 @@
 
             renderRemedialSpotlight(g.topicStats, g.rawScore);
             renderReviewQuestions(g.wrongIndices);
+            syncExamActionButtonsMode(true);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
