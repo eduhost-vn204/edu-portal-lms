@@ -1,3 +1,24 @@
+## Bàn giao gần nhất (23/11/2026 12:38)
+- **Triển Khai Sảnh Đánh Giá Năng Lực 50 Đề, Pop-up Đề Xuất 3 Tầng, Khóa 1 Đề Đang Làm Dở & Tối Ưu UI/UX Vòng 2 (`danh-gia-nang-luc.html`, `main`)**:
+- **Mục tiêu & Hành vi mới**:
+  1. Tích hợp **Sảnh Đánh Giá Năng Lực 50 Đề (`#dgnl-lobby-screen`)** đồng bộ giao diện `baihoc.html` (hiển thị mặc định khi truy cập, trừ `?autostart=1`), gồm khối Hồ sơ năng lực + KPI phóng lớn (`ĐỀ ĐÃ LÀM`, `ĐIỂM TRUNG BÌNH` tính chuẩn theo `bestScore`, `ĐIỂM CAO NHẤT`, `ĐANG LÀM DỞ`), nút **`✨ Gợi ý đề cho em →`** và hiệu ứng vệt sáng quét chéo sạch sẽ `.dgnl-btn-sheen` (tuyệt đối **0 AI Glow**).
+  2. Bố cục lưới đề 2 cột thoáng đãng trên Desktop (`~456px`/thẻ, 1 cột trên Mobile), hiển thị mặc định **8 đề đầu** kèm thanh phân trang `#lobby-grid-more-bar` (`Xem thêm 12 đề nữa`, `Hiện tất cả 50 đề`, `Thu gọn về 8 đề đầu`) và ô tìm kiếm lọc tức thì toàn bộ 50 đề.
+  3. **Pop-up Đề Xuất Thông Minh (`#start-exam-modal`) 3 tầng**: (1) Tiếp tục đề đang làm dở (`Câu Y · MM:SS`), (2) Đề xuất đề chưa làm theo chương yếu nhất qua 4 Chương Vật Lý 12 (`PRECOMPUTED_50_STATS` + `VlxtWrongBank`), (3) Đề khảo sát đầu vào `Đề 01`.
+  4. **Lưu tiến độ đa đề `vlxt_dgnl_sessions_v2` (`DgnlSessionStore`) & Quy tắc Khóa 1 đề đang làm dở**: Tự lưu đáp án/cờ/vị trí/từng giây và chặn đổi đề qua 5 cổng (`getActiveInProgressExam()`, `.dgnl-lock-box`, thẻ lưới, Dropdown/Drawer, URL `?exam=N`) cho tới khi bấm Nộp Bài.
+  5. **Trải nghiệm sau khi nộp bài (`#screen-report`)**: Giữ nguyên 100% phòng thi 60 FPS (`#vstep-course-layout`) và báo cáo chẩn đoán bên trong; chuyển nút Sidebar phải (`#btn-sidebar-main-action`) & Mobile HUD (`#btn-mobile-main-action`) sang **`→ Làm Đề Tiếp (Đề XX)`** kèm nút phụ **`↻ Làm Lại Đề Này`** (`#btn-sidebar-retake-action`), đồng bộ bảng câu hỏi `28/28` tô Đúng/Sai cuộn mượt tới `#review-q-{idx}`, và bổ sung nút làm lại ở đầu/cuối báo cáo (`#btn-report-top-retake`, `#report-bottom-actions` đặt dưới `#remedial-bottom-spotlight-slot`).
+- **Commit & File đã sửa**:
+  - **Student Repo (`antigravity/20261123-dgnl-lobby-resume` → đẩy fast-forward vào `origin/main` & `upstream/main`)**:
+    - `danh-gia-nang-luc.html`: `715adfa`, `9f2a562`, `fe7682e`.
+    - `PROJECT_STATE.md`: Cập nhật bàn giao triển khai production.
+- **Kiểm tra đã chạy**:
+  - `git diff --check` sạch `0` lỗi; `vm.Script` PASS `20/20` khối `<script>` inline, kết thúc hợp lệ `</html>`, `ADDED_AI_GLOW_MATCHES = 0`.
+  - 4 bộ test Node Student: `test_cro_funnel.mjs` (`8/8`), `test_diagnostic_mastery_loop.mjs` (`100%`), `test_remedial_and_prediction.mjs` (pass), `test_wrong_bank.mjs` (`8/8`).
+  - Playwright E2E (`verify_dgnl_v6.py`): PASS `6/6` kịch bản trên Desktop (`1440×900`, `1536×730` One-Frame) và Mobile (`390×844`), `0` `console.error` / `pageerror`; đã kiểm tra trực quan ảnh Retina 2x.
+- **Điều phải giữ nguyên**:
+  - Toàn bộ phòng thi 60 FPS (`#vstep-course-layout`), One-Frame Zero-Scroll (`1536×730`), `renderRemedialSpotlight()`, giao diện sáng CBT chuẩn Bộ của `phong-thi-thu.html`, menu điện thoại chuyên biệt của `index.html`/`hoso.html`/`danhsach-ly12.html`.
+- **Việc còn lại**:
+  - Đã hoàn tất đẩy `origin/main` & `upstream/main` và kiểm tra trang live `https://vatlyxuantruong.io.vn/danh-gia-nang-luc.html`.
+
 ## Bàn giao gần nhất (23/11/2026 08:04)
 - **Bỏ Nét Kẻ Dọc Cyan Dưới Tên Ngôi Sao Bản Đồ 3D Trang Chủ & Đẩy Production (`index.html`, `main`)**:
 - **Mục tiêu**:
