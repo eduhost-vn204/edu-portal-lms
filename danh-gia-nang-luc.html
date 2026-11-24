@@ -2482,6 +2482,10 @@
             display: inline-block;
             animation: dgnlIconPulse 2.4s ease-in-out infinite;
         }
+        /* Khóa bảo vệ Sảnh 50 Đề: tuyệt đối không cho popup tự bật che Sảnh trong 10s đầu trừ khi bấm thủ công */
+        body.dgnl-lobby-active.dgnl-boot-grace #start-exam-modal:not(.manual-open) {
+            display: none !important;
+        }
 
         /* Nút pill chuẩn EdTech đồng bộ baihoc.html */
         .dgnl-btn-pill {
@@ -3157,11 +3161,19 @@
         }
     </style>
 </head>
-<body class="dgnl-lobby-active">
+<body class="dgnl-lobby-active dgnl-boot-grace">
     <script>
         try {
-            if ((new URLSearchParams(window.location.search)).get('autostart') === '1') {
+            var _bootSp = new URLSearchParams(window.location.search);
+            if (_bootSp.get('autostart') === '1') {
                 document.body.classList.remove('dgnl-lobby-active');
+                document.body.classList.remove('dgnl-boot-grace');
+            }
+            if (_bootSp.has('v') && window.history && typeof window.history.replaceState === 'function') {
+                _bootSp.delete('v');
+                var _cleanQs = _bootSp.toString();
+                var _cleanUrl = window.location.pathname + (_cleanQs ? ('?' + _cleanQs) : '') + (window.location.hash || '');
+                window.history.replaceState(null, '', _cleanUrl);
             }
         } catch(e) {}
     </script>
@@ -3872,7 +3884,7 @@
                     <span class="dgnl-rule-item"><i class="fa-solid fa-chart-line"></i> Thang 10 chuẩn Bộ GD&amp;ĐT</span>
                     <span class="dgnl-rule-item"><i class="fa-solid fa-floppy-disk"></i> Tự lưu từng giây · Làm xong đề mới mở đề khác</span>
                 </div>
-                <button type="button" class="dgnl-btn-pill suggest dgnl-btn-sheen" id="btn-open-smart-suggest" onclick="openSmartRecommendationModal()">
+                <button type="button" class="dgnl-btn-pill suggest dgnl-btn-sheen" id="btn-open-smart-suggest" onclick="openSmartRecommendationModal(true)">
                     <i class="fa-solid fa-wand-magic-sparkles dgnl-spark-icon"></i> Gợi ý đề cho em →
                 </button>
             </div>
@@ -6071,18 +6083,47 @@
             }
         }
 
+        var _dgnlBootTs = Date.now();
         var _dgnlSmartModalBootTimer = null;
+        var _dgnlSmartModalGraceTimer = null;
         var _dgnlSmartModalUserHandled = false;
 
-        window.openSmartRecommendationModal = function() {
+        if (_dgnlSmartModalGraceTimer) clearTimeout(_dgnlSmartModalGraceTimer);
+        _dgnlSmartModalGraceTimer = setTimeout(function() {
+            if (document.body) document.body.classList.remove('dgnl-boot-grace');
+            _dgnlSmartModalGraceTimer = null;
+        }, 10000);
+
+        window.openSmartRecommendationModal = function(isManual) {
+            var manual = (isManual === true);
+            if (!manual) {
+                if (_dgnlSmartModalUserHandled) return;
+                if (!document.body || !document.body.classList.contains('dgnl-lobby-active')) return;
+                var elapsed = Date.now() - _dgnlBootTs;
+                if (elapsed < 9850) {
+                    if (_dgnlSmartModalBootTimer) clearTimeout(_dgnlSmartModalBootTimer);
+                    _dgnlSmartModalBootTimer = setTimeout(function() {
+                        _dgnlSmartModalBootTimer = null;
+                        openSmartRecommendationModal(false);
+                    }, Math.max(200, 10000 - elapsed));
+                    return;
+                }
+                var cmdBd = document.getElementById('dgnl-cmd-backdrop');
+                if (cmdBd && cmdBd.classList.contains('is-open')) return;
+            }
             _dgnlSmartModalUserHandled = true;
             if (_dgnlSmartModalBootTimer) {
                 clearTimeout(_dgnlSmartModalBootTimer);
                 _dgnlSmartModalBootTimer = null;
             }
+            if (document.body) document.body.classList.remove('dgnl-boot-grace');
             renderSmartRecommendationModal();
             var m = document.getElementById('start-exam-modal');
-            if (m) m.style.display = 'flex';
+            if (m) {
+                if (manual) m.classList.add('manual-open');
+                else m.classList.remove('manual-open');
+                m.style.display = 'flex';
+            }
         };
 
         window.closeSmartPopupToLobby = function() {
@@ -6092,7 +6133,10 @@
                 _dgnlSmartModalBootTimer = null;
             }
             var m = document.getElementById('start-exam-modal');
-            if (m) m.style.display = 'none';
+            if (m) {
+                m.classList.remove('manual-open');
+                m.style.display = 'none';
+            }
         };
 
         window.startRecommendedExam = function() {
@@ -6327,14 +6371,15 @@
                 document.body.classList.add('dgnl-lobby-active');
                 renderLobbyAll();
                 if (_dgnlSmartModalBootTimer) clearTimeout(_dgnlSmartModalBootTimer);
+                var _bootWaitMs = Math.max(200, 10000 - (Date.now() - _dgnlBootTs));
                 _dgnlSmartModalBootTimer = setTimeout(function() {
                     _dgnlSmartModalBootTimer = null;
                     if (_dgnlSmartModalUserHandled) return;
                     if (!document.body.classList.contains('dgnl-lobby-active')) return;
                     var cmdBd = document.getElementById('dgnl-cmd-backdrop');
                     if (cmdBd && cmdBd.classList.contains('is-open')) return;
-                    openSmartRecommendationModal();
-                }, 10000);
+                    openSmartRecommendationModal(false);
+                }, _bootWaitMs);
             }
 
             if (_bootLockRedirectedFrom) {

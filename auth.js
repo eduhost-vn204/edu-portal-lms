@@ -691,7 +691,7 @@ function vlxtEnsureGlobalDrawer() {
       '  </div>',
       '  <div class="nav-drawer-links" id="vlxt-drawer-links">',
       '    <a href="index.html"' + (curPath === 'index.html' ? ' class="active"' : '') + '>🏠 Trang Chủ</a>',
-      '    <a href="danh-gia-nang-luc.html"' + (curPath === 'danh-gia-nang-luc.html' ? ' class="active"' : '') + ' style="color:#00f0ff;font-weight:700">🎯 Đánh Giá Năng Lực</a>',
+      '    <a href="danh-gia-nang-luc.html?v=20261124c"' + (curPath === 'danh-gia-nang-luc.html' ? ' class="active"' : '') + ' style="color:#00f0ff;font-weight:700">🎯 Đánh Giá Năng Lực</a>',
       '    <a href="baihoc.html"' + (curPath === 'baihoc.html' ? ' class="active"' : '') + '>📚 Khóa Học</a>',
       '    <a href="phong-thi-thu.html"' + (curPath === 'phong-thi-thu.html' ? ' class="active"' : '') + '>📋 Phòng Thi Thử</a>',
       '    <a href="huongdan.html"' + (curPath === 'huongdan.html' ? ' class="active"' : '') + '>🧭 Hướng Dẫn Học</a>',
