@@ -11,6 +11,8 @@
 (function () {
   'use strict';
 
+  var POPUP_INITIAL_DELAY_MS = 15000;
+
   // Lấy thông tin user hiện tại
   function getCurrentUser() {
     try {
@@ -97,14 +99,16 @@
         pointer-events: none !important;
       }
 
-      /* Ẩn con trỏ chuột mặc định của hệ điều hành trên toàn bộ popup để hiện tàu vũ trụ */
-      .vlxt-smart-overlay,
-      .vlxt-smart-overlay *,
-      .vlxt-smart-card,
-      .vlxt-smart-card *,
-      .vlxt-smart-close,
-      .vlxt-smart-btn-action {
-        cursor: none !important;
+      /* Ẩn con trỏ chuột mặc định trên desktop để hiện tàu vũ trụ */
+      @media (hover: hover) and (pointer: fine) {
+        .vlxt-smart-overlay,
+        .vlxt-smart-overlay *,
+        .vlxt-smart-card,
+        .vlxt-smart-card *,
+        .vlxt-smart-close,
+        .vlxt-smart-btn-action {
+          cursor: none !important;
+        }
       }
 
       /* Lớp nền mờ trong suốt (nhìn xuyên qua vũ trụ 3D Three.js phía sau) */
@@ -115,173 +119,187 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(3, 8, 22, 0.58);
+        background: rgba(3, 8, 22, 0.56);
         backdrop-filter: blur(6px);
         -webkit-backdrop-filter: blur(6px);
-        padding: 24px 20px;
+        padding: 20px 16px;
         opacity: 0;
         pointer-events: none;
-        transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       }
       .vlxt-smart-overlay.is-active {
         opacity: 1;
         pointer-events: auto;
       }
 
-      /* Thẻ Card Kính Trong Suốt (Deep Space Glassmorphism) - Kích thước rộng rãi 680px - Phẳng, Sắc nét, Chuẩn EdTech */
+      /* Thẻ Card Gọn Đẹp Sắc Nét (460px) - Ít chữ, điểm nhấn trực quan, Zero AI Glow */
       .vlxt-smart-card {
         position: relative;
         width: 100%;
-        max-width: 680px;
-        background: rgba(8, 22, 50, 0.65);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(56, 189, 248, 0.35);
-        border-radius: 24px;
-        padding: 38px 36px 32px;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+        max-width: 460px;
+        background: linear-gradient(180deg, rgba(12, 26, 56, 0.90) 0%, rgba(7, 17, 38, 0.94) 100%);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(56, 189, 248, 0.38);
+        border-radius: 22px;
+        padding: 26px 24px 22px;
+        box-shadow: 0 20px 48px rgba(0, 0, 0, 0.72);
         color: #f1f5f9;
         text-align: center;
-        transform: scale(0.94) translateY(14px);
-        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: scale(0.95) translateY(12px);
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      }
+      .vlxt-smart-card.is-gold {
+        border-color: rgba(251, 191, 36, 0.42);
       }
       .vlxt-smart-overlay.is-active .vlxt-smart-card {
         transform: scale(1) translateY(0);
       }
 
-      /* Nút đóng tròn kính trong suốt sắc nét */
       .vlxt-smart-close {
         position: absolute;
-        top: 20px;
-        right: 20px;
-        width: 38px;
-        height: 38px;
+        top: 14px;
+        right: 14px;
+        width: 34px;
+        height: 34px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(56, 189, 248, 0.35);
+        background: rgba(15, 23, 42, 0.72);
+        border: 1px solid rgba(148, 163, 184, 0.32);
         color: #cbd5e1;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 22px;
+        font-size: 20px;
         line-height: 1;
-        transition: all 0.2s ease;
+        transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
         z-index: 10;
-        backdrop-filter: blur(6px);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
       }
       .vlxt-smart-close:hover {
-        background: rgba(239, 68, 68, 0.85);
+        background: #ef4444;
         border-color: #ef4444;
         color: #ffffff;
-        transform: rotate(90deg) scale(1.06);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        transform: rotate(90deg);
       }
 
-      /* Badge sắc nét, phẳng, không AI glow */
       .vlxt-smart-badge {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 6px 16px;
-        border-radius: 100px;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.05em;
+        gap: 6px;
+        padding: 5px 12px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
-        margin-bottom: 16px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        margin-bottom: 12px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
       }
       .vlxt-smart-badge.cyan {
-        background: rgba(14, 116, 144, 0.25);
-        border: 1px solid rgba(56, 189, 248, 0.4);
-        color: #38bdf8;
+        background: rgba(14, 116, 144, 0.28);
+        border: 1px solid rgba(56, 189, 248, 0.42);
+        color: #7dd3fc;
       }
       .vlxt-smart-badge.gold {
-        background: rgba(180, 83, 9, 0.25);
-        border: 1px solid rgba(251, 191, 36, 0.4);
-        color: #fbbf24;
+        background: rgba(180, 83, 9, 0.28);
+        border: 1px solid rgba(251, 191, 36, 0.45);
+        color: #fde68a;
       }
 
       .vlxt-smart-title {
-        font-size: clamp(20px, 3.8vw, 25px);
+        font-size: clamp(19px, 3.6vw, 23px);
         font-weight: 800;
-        line-height: 1.35;
-        margin-bottom: 12px;
+        line-height: 1.28;
+        margin-bottom: 8px;
         color: #ffffff;
-        letter-spacing: -0.01em;
+        letter-spacing: -0.015em;
         text-shadow: none !important;
       }
       .vlxt-smart-desc {
-        font-size: 14.5px;
+        font-size: 13.5px;
         color: #cbd5e1;
-        line-height: 1.6;
-        margin-bottom: 22px;
-        max-width: 580px;
-        margin-left: auto;
-        margin-right: auto;
+        line-height: 1.5;
+        margin: 0 auto 16px;
+        max-width: 390px;
       }
 
-      /* Hộp tính năng trong suốt, phẳng */
-      .vlxt-smart-features {
-        background: rgba(15, 23, 42, 0.5);
+      /* 3 Ô điểm nhấn ngắn gọn trực quan thay cho danh sách dài dòng */
+      .vlxt-smart-metrics {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-bottom: 18px;
+      }
+      .vlxt-smart-metric {
+        background: rgba(15, 23, 42, 0.62);
         border: 1px solid rgba(56, 189, 248, 0.2);
-        border-radius: 16px;
-        padding: 16px 20px;
-        text-align: left;
-        margin-bottom: 24px;
+        border-radius: 14px;
+        padding: 11px 6px;
         display: flex;
         flex-direction: column;
-        gap: 12px;
-        backdrop-filter: blur(8px);
-      }
-      .vlxt-smart-feat-item {
-        display: flex;
         align-items: center;
-        gap: 12px;
-        font-size: 14px;
-        color: #f1f5f9;
-        line-height: 1.5;
+        gap: 3px;
       }
-      .vlxt-smart-feat-item i {
+      .vlxt-smart-card.is-gold .vlxt-smart-metric {
+        border-color: rgba(251, 191, 36, 0.22);
+      }
+      .vlxt-smart-metric strong {
+        font-size: 14px;
+        font-weight: 800;
         color: #38bdf8;
-        font-size: 15px;
-        flex-shrink: 0;
+        line-height: 1.2;
+      }
+      .vlxt-smart-card.is-gold .vlxt-smart-metric strong {
+        color: #fbbf24;
+      }
+      .vlxt-smart-metric span {
+        font-size: 11.5px;
+        font-weight: 600;
+        color: #cbd5e1;
+        line-height: 1.25;
       }
 
-      /* Nút CTA phẳng sắc nét, bóng đổ vật lý tự nhiên */
       .vlxt-smart-btn-action {
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 10px;
-        padding: 15px 28px;
-        border-radius: 100px;
-        font-size: 15.5px;
+        gap: 8px;
+        padding: 13px 20px;
+        border-radius: 14px;
+        font-size: 14.5px;
         font-weight: 800;
-        border: 1px solid rgba(56, 189, 248, 0.35);
+        border: 1px solid rgba(56, 189, 248, 0.4);
         text-decoration: none;
-        transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+        transition: transform 0.18s ease, filter 0.18s ease, box-shadow 0.18s ease;
         font-family: inherit;
-        letter-spacing: 0.01em;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
       }
       .vlxt-smart-btn-action.cyan {
-        background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+        background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
         color: #ffffff;
       }
-      .vlxt-smart-btn-action.cyan:hover {
-        filter: brightness(1.1);
+      .vlxt-smart-btn-action.gold {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        border-color: rgba(253, 224, 71, 0.45);
+        color: #0b1120;
+      }
+      .vlxt-smart-btn-action:hover {
+        filter: brightness(1.08);
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
       }
 
       .vlxt-smart-footer-note {
-        font-size: 13px;
+        font-size: 12px;
         color: #94a3b8;
-        margin-top: 16px;
+        margin-top: 12px;
+      }
+      @media (max-width: 480px) {
+        .vlxt-smart-card { padding: 22px 16px 18px; border-radius: 18px; }
+        .vlxt-smart-metric { padding: 9px 4px; border-radius: 11px; }
+        .vlxt-smart-metric strong { font-size: 13px; }
+        .vlxt-smart-metric span { font-size: 10.5px; }
       }
     `;
     document.head.appendChild(style);
@@ -301,33 +319,33 @@
     overlay.innerHTML = `
       <div class="vlxt-smart-card">
         <button type="button" class="vlxt-smart-close" id="vlxt-btn-close-p1" title="Đóng">&times;</button>
-        <div class="vlxt-smart-badge cyan"><i class="fa-solid fa-bolt"></i> CHUẨN MA TRẬN BỘ GD&amp;ĐT 2026</div>
-        <h2 class="vlxt-smart-title">🎯 TEST ĐIỂM THI THPT &amp; QUÉT LỖ HỔNG VẬT LÝ 12</h2>
+        <div class="vlxt-smart-badge cyan"><i class="fa-solid fa-bullseye"></i> KHẢO SÁT NĂNG LỰC · MIỄN PHÍ</div>
+        <h2 class="vlxt-smart-title">Đo Điểm Thi THPT Vật Lý 12</h2>
         <p class="vlxt-smart-desc">
-          Làm bài test chẩn đoán 20 câu để hệ thống đo lường chính xác mức điểm hiện tại và định vị các lỗ hổng kiến thức tiềm ẩn của em.
+          Làm nhanh đề chuẩn Bộ 2026 để biết mức điểm hiện tại và chuyên đề cần bù.
         </p>
 
-        <div class="vlxt-smart-features">
-          <div class="vlxt-smart-feat-item">
-            <i class="fa-solid fa-circle-check"></i>
-            <span>Dự đoán điểm thi THPT chính xác theo ma trận chuẩn Bộ GD&amp;ĐT 2026.</span>
+        <div class="vlxt-smart-metrics">
+          <div class="vlxt-smart-metric">
+            <strong>28 Câu</strong>
+            <span>Chuẩn Bộ 2026</span>
           </div>
-          <div class="vlxt-smart-feat-item">
-            <i class="fa-solid fa-circle-check"></i>
-            <span>Quét toàn diện 4 chuyên đề: Nhiệt, Khí, Từ trường, Hạt nhân.</span>
+          <div class="vlxt-smart-metric">
+            <strong>60 FPS</strong>
+            <span>Thí nghiệm 3D</span>
           </div>
-          <div class="vlxt-smart-feat-item">
-            <i class="fa-solid fa-circle-check"></i>
-            <span>Tự động cấp quyền vào học bài khắc phục cấp tốc từ Thầy.</span>
+          <div class="vlxt-smart-metric">
+            <strong>Báo cáo</strong>
+            <span>Quét 4 chương</span>
           </div>
         </div>
 
         <a href="danh-gia-nang-luc.html?autostart=1" class="vlxt-smart-btn-action cyan" id="vlxt-btn-go-test">
-          <i class="fa-solid fa-play"></i> BẮT ĐẦU TEST 20 CÂU NGAY (MIỄN PHÍ) →
+          <i class="fa-solid fa-play"></i> Bắt đầu khảo sát ngay →
         </a>
 
         <div class="vlxt-smart-footer-note">
-          Thời gian làm bài: 30 phút · Chấm điểm &amp; đối soát chi tiết ngay lập tức
+          Miễn phí 100% · Chấm điểm &amp; giải chi tiết tức thì
         </div>
       </div>
     `;
@@ -370,6 +388,9 @@
           }, 300);
         }, 300);
       });
+      overlay.addEventListener('click', function (e) {
+        if (e && e.target === overlay) btnClose.click();
+      });
     }
   }
 
@@ -387,33 +408,33 @@
     overlay.innerHTML = `
       <div class="vlxt-smart-card">
         <button type="button" class="vlxt-smart-close" id="vlxt-btn-close-pretest" title="Đóng">&times;</button>
-        <div class="vlxt-smart-badge cyan"><i class="fa-solid fa-arrows-rotate"></i> ĐỀ THI MỚI CHUẨN MA TRẬN 2026</div>
-        <h2 class="vlxt-smart-title">🚀 LUYỆN TẬP ĐỀ SỐ 2: KIỂM CHỨNG TIẾN BỘ ĐỘT PHÁ</h2>
+        <div class="vlxt-smart-badge cyan"><i class="fa-solid fa-rocket"></i> ĐÃ MỞ KHÓA ĐỀ SỐ 02</div>
+        <h2 class="vlxt-smart-title">Kiểm Chứng Tiến Bộ Với Đề Số 02</h2>
         <p class="vlxt-smart-desc">
-          Em đã hoàn thành bài test khảo sát đầu vào! Thầy đã mở khóa riêng <strong>Bộ Đề Kiểm Chứng Số 2 (20 câu mới toanh)</strong> để em kiểm tra lại kiến thức và chứng thực sự tiến bộ sau khi vá lỗ hổng.
+          Bộ đề mới 100% giúp em đo lại mức điểm sau khi ôn vá lỗ hổng.
         </p>
 
-        <div class="vlxt-smart-features">
-          <div class="vlxt-smart-feat-item">
-            <i class="fa-solid fa-circle-check"></i>
-            <span>Bộ 20 câu hỏi mới 100% không trùng lặp đề khảo sát đầu vào.</span>
+        <div class="vlxt-smart-metrics">
+          <div class="vlxt-smart-metric">
+            <strong>Đề số 02</strong>
+            <span>Câu hỏi mới</span>
           </div>
-          <div class="vlxt-smart-feat-item">
-            <i class="fa-solid fa-circle-check"></i>
-            <span>Quét sâu 4 chuyên đề: Nhiệt, Khí, Từ trường, Hạt nhân chuẩn Bộ GD&amp;ĐT.</span>
+          <div class="vlxt-smart-metric">
+            <strong>4 Chương</strong>
+            <span>Quét toàn diện</span>
           </div>
-          <div class="vlxt-smart-feat-item">
-            <i class="fa-solid fa-circle-check"></i>
-            <span>Tự động cập nhật trực tiếp vào Bản Đồ Đo Lường Năng Lực (Radar HUD).</span>
+          <div class="vlxt-smart-metric">
+            <strong>Radar HUD</strong>
+            <span>Cập nhật điểm</span>
           </div>
         </div>
 
         <a href="danh-gia-nang-luc.html?exam=2&autostart=1" class="vlxt-smart-btn-action cyan" id="vlxt-btn-go-retest">
-          <i class="fa-solid fa-play"></i> BẮT ĐẦU LÀM ĐỀ SỐ 2 NGAY (MIỄN PHÍ) →
+          <i class="fa-solid fa-play"></i> Vào làm Đề số 02 ngay →
         </a>
 
         <div class="vlxt-smart-footer-note">
-          Thời gian làm bài: 30 phút · Chấm điểm &amp; đối soát chi tiết ngay lập tức
+          Miễn phí · Lưu kết quả tự động vào hồ sơ
         </div>
       </div>
     `;
@@ -454,6 +475,9 @@
           }, 300);
         }, 300);
       });
+      overlay.addEventListener('click', function (e) {
+        if (e && e.target === overlay) btnClose.click();
+      });
     }
   }
 
@@ -466,39 +490,39 @@
 
     var u = getCurrentUser();
     var noteHtml = (u && (u.username || u.sdt || u.hoten))
-      ? '<i class="fa-solid fa-circle-check" style="color:#38bdf8"></i> Đã đăng nhập tài khoản <strong>' + (u.hoten || u.username || u.sdt || 'Học viên') + '</strong> · Tiến độ học tập được lưu tự động'
-      : 'Không cần thẻ ngân hàng · Đăng nhập trong 3 giây để lưu tiến độ';
+      ? 'Tài khoản <strong>' + (u.hoten || u.username || u.sdt || 'Học viên') + '</strong> · Tự động lưu tiến độ'
+      : 'Không cần thẻ · Lưu tiến độ tự động';
 
     var overlay = document.createElement('div');
     overlay.className = 'vlxt-smart-overlay';
     overlay.id = 'vlxt-smart-popup-overlay-trial';
 
     overlay.innerHTML = `
-      <div class="vlxt-smart-card">
+      <div class="vlxt-smart-card is-gold">
         <button type="button" class="vlxt-smart-close" id="vlxt-btn-close-p2" title="Đóng">&times;</button>
-        <div class="vlxt-smart-badge cyan"><i class="fa-solid fa-gift"></i> HỌC BẢN CHẤT CÙNG THẦY XUÂN TRƯỜNG</div>
-        <h2 class="vlxt-smart-title">🚀 VÀO HỌC THỬ MIỄN PHÍ KHÓA VẬT LÝ 12</h2>
+        <div class="vlxt-smart-badge gold"><i class="fa-solid fa-gift"></i> HỌC THỬ 0Đ · MỞ SẴN</div>
+        <h2 class="vlxt-smart-title">Học Thử Miễn Phí Chương 1 &amp; 2</h2>
         <p class="vlxt-smart-desc">
-          Mở khóa miễn phí toàn bộ <strong>Chương 1 (Vật Lí Nhiệt)</strong> &amp; <strong>Chương 2 (Khí Lí Tưởng)</strong>. Trải nghiệm phương pháp học bản chất cùng Thầy!
+          Trải nghiệm bài giảng bản chất và thí nghiệm tương tác cùng Thầy Xuân Trường.
         </p>
 
-        <div class="vlxt-smart-features">
-          <div class="vlxt-smart-feat-item">
-            <i class="fa-solid fa-circle-play"></i>
-            <span>Video bài giảng thực chiến, giải thích bản chất không học vẹt.</span>
+        <div class="vlxt-smart-metrics">
+          <div class="vlxt-smart-metric">
+            <strong>2 Chương</strong>
+            <span>Nhiệt &amp; Khí</span>
           </div>
-          <div class="vlxt-smart-feat-item">
-            <i class="fa-solid fa-cube"></i>
-            <span>Mô phỏng 3D WebGL tương tác trực tiếp thí nghiệm nhiệt &amp; khí.</span>
+          <div class="vlxt-smart-metric">
+            <strong>Video HD</strong>
+            <span>Hiểu bản chất</span>
           </div>
-          <div class="vlxt-smart-feat-item">
-            <i class="fa-solid fa-check-double"></i>
-            <span>Luyện tập trắc nghiệm củng cố và câu hỏi dừng video tương tác.</span>
+          <div class="vlxt-smart-metric">
+            <strong>Quiz dừng</strong>
+            <span>Tương tác ngay</span>
           </div>
         </div>
 
-        <a href="baihoc.html" class="vlxt-smart-btn-action cyan" id="vlxt-btn-go-trial">
-          <i class="fa-solid fa-graduation-cap"></i> VÀO HỌC THỬ MIỄN PHÍ NGAY →
+        <a href="baihoc.html" class="vlxt-smart-btn-action gold" id="vlxt-btn-go-trial">
+          <i class="fa-solid fa-graduation-cap"></i> Vào học thử miễn phí →
         </a>
 
         <div class="vlxt-smart-footer-note">
@@ -539,16 +563,19 @@
           overlay.remove();
         }, 300);
       });
+      overlay.addEventListener('click', function (e) {
+        if (e && e.target === overlay) btnClose.click();
+      });
     }
   }
 
-  // Hàm chờ Preloader (#vlxt-preloader) kết thúc rồi đếm 3000ms
+  // Hàm chờ Preloader (#vlxt-preloader) kết thúc rồi đếm 15000ms (15 giây)
   function waitForPreloaderThen(callback) {
     var preloader = document.getElementById('vlxt-preloader');
 
-    // Nếu không có preloader trên trang -> Đợi đúng 3000ms từ lúc load
+    // Nếu không có preloader trên trang -> Đợi đúng 15000ms từ lúc load
     if (!preloader) {
-      setTimeout(callback, 3000);
+      setTimeout(callback, POPUP_INITIAL_DELAY_MS);
       return;
     }
 
@@ -565,7 +592,7 @@
     }
 
     if (isPreloaderDone()) {
-      setTimeout(callback, 3000);
+      setTimeout(callback, POPUP_INITIAL_DELAY_MS);
       return;
     }
 
@@ -577,8 +604,8 @@
         try { observer.disconnect(); } catch (e) {}
       }
       if (pollTimer) clearInterval(pollTimer);
-      // Đợi đúng 3000ms sau khi preloader tắt để học sinh chiêm ngưỡng giao diện
-      setTimeout(callback, 3000);
+      // Đợi đúng 15000ms (15s) sau khi preloader tắt để học sinh khám phá Hố Đen & Sao Neutron
+      setTimeout(callback, POPUP_INITIAL_DELAY_MS);
     }
 
     // Lắng nghe qua MutationObserver khi preloader đổi class sang fade-out hoặc display:none
@@ -601,10 +628,10 @@
       }
     }, 100);
 
-    // Timeout an toàn phòng hờ nếu preloader bị treo quá 4.5s
+    // Timeout an toàn phòng hờ nếu preloader bị treo quá 1.5s
     setTimeout(function () {
       onPreloaderFinished();
-    }, 4500);
+    }, 1500);
   }
 
   // Khởi động hệ thống Smart Marketing Pop-up

@@ -11,10 +11,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vật Lý Xuân Trường — Đa Vũ Trụ Học Vật Lý Trực Tuyến</title>
   <link rel="stylesheet" href="assets/lucian-uxui.css?v=20261124">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="vendor/three.min.js" as="script">
+  <link rel="preload" href="vendor/gsap.min.js" as="script">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css?v=20261107">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Playfair+Display:wght@700;800&family=Cinzel:wght@600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800;900&display=swap&v=20261107" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Playfair+Display:wght@700;800&family=Cinzel:wght@600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800;900&display=swap&v=20261107" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Playfair+Display:wght@700;800&family=Cinzel:wght@600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800;900&display=swap&v=20261107" rel="stylesheet"></noscript>
   <style>
     :root {
       --bg-deep: #010308;
@@ -778,6 +782,47 @@
         width: 50px;
         height: 50px;
       }
+      .celestial-label {
+        padding: 6px 9px 7px !important;
+        max-width: 164px !important;
+        border-radius: 12px !important;
+        gap: 3px !important;
+      }
+      .celestial-label .star-code {
+        font-size: 8.8px !important;
+        letter-spacing: 0.08em !important;
+        margin-right: -0.08em !important;
+      }
+      .celestial-label .star-vn {
+        font-size: 11.5px !important;
+        letter-spacing: 0.01em !important;
+      }
+      .celestial-label .cel-cta {
+        font-size: 10px !important;
+        padding: 3px 8px !important;
+        margin-top: 2px !important;
+      }
+      .celestial-hitbox {
+        width: 96px !important;
+        height: 96px !important;
+      }
+      .celestial-hitbox::before {
+        width: 72px !important;
+        height: 72px !important;
+      }
+      .galaxy-domain-emblem {
+        bottom: 72px !important;
+        width: 96vw !important;
+      }
+      .gde-tag {
+        font-size: 9px !important;
+        letter-spacing: 0.14em !important;
+      }
+      .gde-domain {
+        font-size: clamp(14.5px, 4.3vw, 22px) !important;
+        letter-spacing: 0.06em !important;
+        margin-right: -0.06em !important;
+      }
       #arrived-layer {
         top: 54px;
         height: calc(100% - 54px);
@@ -1361,7 +1406,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.55s;
+      transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.22s;
     }
     .vlxt-preloader.fade-out {
       opacity: 0 !important;
@@ -1475,11 +1520,11 @@
     }
     .preloader-progress-bar {
       height: 100% !important;
-      width: 0% !important;
+      width: 0%;
       background: linear-gradient(90deg, #10b981, #06b6d4) !important;
       border-radius: 9999px !important;
       box-shadow: none !important;
-      transition: width 0.15s ease-out !important;
+      transition: width 0.12s ease-out !important;
     }
     .preloader-percent {
       font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
@@ -1493,7 +1538,8 @@
     /* ─── KHẮC PHỤC TRIỆT ĐỂ: KHÔNG CHO NHÃN CHỮ HIỆN Ở GÓC TRÁI KHI VỪA VÀO TRANG ─── */
     #ui-layer:not(.labels-ready) .star-label,
     #ui-layer:not(.labels-ready) .celestial-label,
-    #ui-layer:not(.labels-ready) .star-hitbox {
+    #ui-layer:not(.labels-ready) .star-hitbox,
+    #ui-layer:not(.labels-ready) .galaxy-domain-emblem {
       opacity: 0 !important;
       visibility: hidden !important;
       pointer-events: none !important;
@@ -1644,7 +1690,6 @@
   .nav-hamburger { display: inline-flex !important; }
 }
 </style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>/* ROBUST_BRAND_CSS */
 
 .brand-glow-text {
@@ -1865,9 +1910,190 @@ svg.logo-atom-icon,
   .u002-mag, .u002-fill, .u002-txt, .u002-orb, .u002-btn.is-go .u002-orb svg,
   .num-big .u426-col > span, .score-number .u426-col > span,
   #idx-cmd-backdrop .u046-pal, #idx-cmd-backdrop .u046-hl,
-  .u450-top, .u450-top .rg .pr, .u450-top.is-fly svg.ar {
+  .u450-top, .u450-top .rg .pr, .u450-top.is-fly svg.ar,
+  .celestial-label, .celestial-label .cel-cta, .celestial-hitbox::before {
     transition: none !important; animation: none !important; transition-delay: 0s !important; animation-delay: 0s !important;
   }
+}
+
+/* ─── CỔNG THIÊN THỂ NỔI BẬT: HỐ ĐEN (SINGULARITY) & SAO NEUTRON (PULSAR) · ZERO AI GLOW ─── */
+.celestial-label {
+  padding: 9px 14px 10px;
+  border-radius: 14px;
+  gap: 4px;
+  text-shadow: none !important;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.65);
+  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.22s ease, opacity 0.25s ease;
+}
+.celestial-label.celestial-bh {
+  background: linear-gradient(180deg, rgba(30, 14, 6, 0.88) 0%, rgba(12, 8, 6, 0.92) 100%);
+  border: 1px solid rgba(251, 146, 60, 0.62);
+}
+.celestial-label.celestial-ns {
+  background: linear-gradient(180deg, rgba(6, 22, 44, 0.88) 0%, rgba(4, 12, 26, 0.92) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.62);
+}
+.celestial-label .star-code {
+  font-family: 'Space Mono', monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  margin-right: -0.14em;
+  text-shadow: none !important;
+}
+.celestial-label.celestial-bh .star-code { color: #fdba74; }
+.celestial-label.celestial-ns .star-code { color: #7dd3fc; }
+.celestial-label .star-vn {
+  font-size: 14.5px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  text-shadow: none !important;
+}
+.cel-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 2px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.cel-cta-bh {
+  background: rgba(234, 88, 12, 0.24);
+  border: 1px solid rgba(251, 146, 60, 0.55);
+  color: #fed7aa;
+}
+.cel-cta-ns {
+  background: rgba(2, 132, 199, 0.26);
+  border: 1px solid rgba(56, 189, 248, 0.55);
+  color: #bae6fd;
+}
+.celestial-label.celestial-bh:hover,
+.celestial-label.celestial-bh.reticle-active {
+  border-color: #fb923c;
+  background: linear-gradient(180deg, rgba(46, 20, 7, 0.96) 0%, rgba(18, 10, 6, 0.96) 100%);
+}
+.celestial-label.celestial-bh:hover .cel-cta-bh,
+.celestial-label.celestial-bh.reticle-active .cel-cta-bh {
+  background: #ea580c;
+  border-color: #fb923c;
+  color: #ffffff;
+  transform: translateX(1px);
+}
+.celestial-label.celestial-ns:hover,
+.celestial-label.celestial-ns.reticle-active {
+  border-color: #38bdf8;
+  background: linear-gradient(180deg, rgba(8, 34, 66, 0.96) 0%, rgba(6, 18, 38, 0.96) 100%);
+}
+.celestial-label.celestial-ns:hover .cel-cta-ns,
+.celestial-label.celestial-ns.reticle-active .cel-cta-ns {
+  background: #0284c7;
+  border-color: #38bdf8;
+  color: #ffffff;
+  transform: translateX(1px);
+}
+.celestial-label:hover .star-code,
+.celestial-label.reticle-active .star-code,
+.celestial-label:hover .star-vn,
+.celestial-label.reticle-active .star-vn {
+  text-shadow: none !important;
+  color: #ffffff !important;
+  transform: none !important;
+}
+
+.celestial-hitbox {
+  width: 132px;
+  height: 132px;
+}
+.celestial-hitbox::before {
+  width: 96px;
+  height: 96px;
+  border-width: 1.5px;
+  border-style: dashed;
+  transform: scale(1) rotate(0deg);
+  box-shadow: none !important;
+  animation: celRingSpin 22s linear infinite;
+}
+#hit-blackhole::before { border-color: rgba(251, 146, 60, 0.48); }
+#hit-neutron::before { border-color: rgba(56, 189, 248, 0.48); }
+#hit-blackhole.is-cel-hover::before,
+#hit-blackhole:hover::before {
+  width: 112px;
+  height: 112px;
+  border-style: solid;
+  border-color: #fb923c;
+  box-shadow: none !important;
+}
+#hit-neutron.is-cel-hover::before,
+#hit-neutron:hover::before {
+  width: 112px;
+  height: 112px;
+  border-style: solid;
+  border-color: #38bdf8;
+  box-shadow: none !important;
+}
+@keyframes celRingSpin {
+  to { transform: scale(1) rotate(360deg); }
+}
+
+/* ─── BIỂU TRƯNG TÊN MIỀN VATLYXUANTRUONG.IO.VN ĐỒNG BỘ CHÒM SAO ─── */
+.galaxy-domain-emblem {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: clamp(78px, 11vh, 118px);
+  z-index: 8;
+  pointer-events: none;
+  user-select: none;
+  width: min(94vw, 720px);
+  text-align: center;
+  transition: opacity 0.3s ease;
+}
+.gde-rail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.gde-line {
+  flex: 1;
+  max-width: 110px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.55));
+}
+.gde-line-r {
+  background: linear-gradient(270deg, transparent, rgba(56, 189, 248, 0.55));
+}
+.gde-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: #7dd3fc;
+  white-space: nowrap;
+}
+.gde-domain {
+  display: inline-block;
+  font-family: 'Orbitron', 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(22px, 2.7vw, 35px);
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  margin-right: -0.14em;
+  white-space: nowrap;
+  background: linear-gradient(180deg, #ffffff 22%, #e0f2fe 68%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none !important;
+  filter: none !important;
+}
+.gde-domain .gde-dot {
+  -webkit-text-fill-color: #38bdf8;
 }
 </style>
 </head>
@@ -1889,6 +2115,23 @@ svg.logo-atom-icon,
     <div class="preloader-percent" id="preloader-percent">0%</div>
   </div>
 </div>
+<script>
+(function(){
+  var b = document.getElementById('preloader-bar'), p = document.getElementById('preloader-percent');
+  window.__vlxtPreloadProg = 14;
+  var t0 = Date.now(), rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function tick(){
+    if (window.__vlxtPreloadDone) return;
+    var el = Math.min(1, (Date.now() - t0) / (rm ? 40 : 280));
+    var v = Math.round(14 + 74 * (1 - Math.pow(1 - el, 2)));
+    window.__vlxtPreloadProg = v;
+    if (b) b.style.width = v + '%';
+    if (p) p.textContent = v + '%';
+    if (el < 1 && !window.__vlxtPreloadDone) requestAnimationFrame(tick);
+  }
+  tick();
+})();
+</script>
 
 
 <div id="canvas-container"></div>
@@ -2041,18 +2284,29 @@ svg.logo-atom-icon,
     <div class="star-hitbox" id="hit-5" data-idx="5" title="Gói Pro (Skat)"></div>
 
     <!-- HỐ ĐEN GARGANTUA (BÊN TRÁI): TEST ĐIỂM THI THPT -->
-    <div class="star-label celestial-label" id="lbl-blackhole">
-      <span class="star-code" style="color:#fed7aa; text-shadow: 0 0 16px rgba(251, 146, 60, 0.95), 0 2px 10px rgba(0,0,0,1);">SINGULARITY</span>
-      <span class="star-vn" style="color:#fb923c; text-shadow: 0 0 16px rgba(234, 88, 12, 0.85), 0 2px 8px rgba(0,0,0,1);">Test Điểm Thi THPT</span>
+    <div class="star-label celestial-label celestial-bh" id="lbl-blackhole">
+      <span class="star-code">SINGULARITY · HỐ ĐEN</span>
+      <span class="star-vn">Test Điểm Thi THPT</span>
+      <span class="cel-cta cel-cta-bh">Nhấp thi ngay <i class="fa-solid fa-arrow-right"></i></span>
     </div>
-    <div class="star-hitbox" id="hit-blackhole" title="Test Điểm Thi THPT (Singularity)"></div>
+    <div class="star-hitbox celestial-hitbox" id="hit-blackhole" title="Test Điểm Thi THPT (Singularity)"></div>
 
     <!-- SAO NEUTRON PULSAR (BÊN PHẢI): KHÓA HỌC -->
-    <div class="star-label celestial-label" id="lbl-neutron">
-      <span class="star-code" style="color:#e0f2fe; text-shadow: 0 0 16px rgba(56, 189, 248, 1), 0 2px 10px rgba(0,0,0,1);">PULSAR</span>
-      <span class="star-vn" style="color:#38bdf8; text-shadow: 0 0 16px rgba(0, 240, 255, 0.9), 0 2px 8px rgba(0,0,0,1);">Khóa Học</span>
+    <div class="star-label celestial-label celestial-ns" id="lbl-neutron">
+      <span class="star-code">PULSAR · SAO NEUTRON</span>
+      <span class="star-vn">Khóa Học Vật Lý 12</span>
+      <span class="cel-cta cel-cta-ns">Nhấp học ngay <i class="fa-solid fa-arrow-right"></i></span>
     </div>
-    <div class="star-hitbox" id="hit-neutron" title="Khóa Học (Pulsar)"></div>
+    <div class="star-hitbox celestial-hitbox" id="hit-neutron" title="Khóa Học (Pulsar)"></div>
+
+    <div class="galaxy-domain-emblem" id="vlxt-galaxy-domain" aria-label="vatlyxuantruong.io.vn">
+      <div class="gde-rail">
+        <span class="gde-line gde-line-l" aria-hidden="true"></span>
+        <span class="gde-tag">ĐA VŨ TRỤ VẬT LÝ XUÂN TRƯỜNG</span>
+        <span class="gde-line gde-line-r" aria-hidden="true"></span>
+      </div>
+      <div class="gde-domain">VATLYXUANTRUONG<span class="gde-dot">.IO.VN</span></div>
+    </div>
 
     <div class="galaxy-scroll-indicator" id="galaxy-scroll-indicator" onclick="scrollToGalaxyContent()">
       <span class="scroll-text">Cuộn xuống khám phá hệ thống</span>
@@ -2409,7 +2663,7 @@ var AudioEngine = (function() {
   if (bgm) {
     bgm.loop = true;
     bgm.volume = 0;
-    bgm.preload = 'auto';
+    bgm.preload = 'none';
   }
 
   var sfxBuffers = {};
@@ -2424,10 +2678,18 @@ var AudioEngine = (function() {
   if (typeof Audio !== 'undefined') {
     Object.keys(sfxAudios).forEach(function(k) {
       try {
-        sfxAudios[k].preload = 'auto';
+        sfxAudios[k].preload = 'none';
         sfxAudios[k].volume = sfxVolume;
       } catch(e) {}
     });
+    if (typeof setTimeout === 'function') {
+      setTimeout(function() {
+        try {
+          if (bgm) bgm.preload = 'metadata';
+          Object.keys(sfxAudios).forEach(function(k) { sfxAudios[k].preload = 'metadata'; });
+        } catch(e) {}
+      }, 1800);
+    }
   }
 
   var ctx = null;
@@ -2993,6 +3255,7 @@ function createDeepGalaxyTitle() {
   return plane;
 }
 var deepGalaxyTitleMesh = createDeepGalaxyTitle();
+deepGalaxyTitleMesh.visible = false;
 scene.add(deepGalaxyTitleMesh);
 
 /* ─────────────────────────────────────────────────────────────
@@ -4503,8 +4766,10 @@ function updateLabels() {
   var starOpacity = Math.max(0, 1 - scrollY / 240);
   var interstellarWrap = document.getElementById('interstellar-wrap');
   var hudTelemetry = document.getElementById('hud-telemetry-layer');
+  var domainEmblem = document.getElementById('vlxt-galaxy-domain');
   if(interstellarWrap) interstellarWrap.style.opacity = starOpacity;
   if(hudTelemetry) hudTelemetry.style.opacity = starOpacity;
+  if(domainEmblem) domainEmblem.style.opacity = starOpacity;
 
   var isNarrowViewport = (window.innerWidth < 680);
 
@@ -4547,7 +4812,7 @@ function updateLabels() {
   }
 
     // Cập nhật vị trí nhãn và hitbox của Hố Đen & Sao Neutron (tự động giữ nhãn trong khung hình an toàn)
-    var celOffsetY = isNarrowViewport ? 38 : 60;
+    var celOffsetY = isNarrowViewport ? 34 : 58;
     function updateCelestialLabel(objGroup, lblId, hitId) {
       var v = objGroup.position.clone().project(camera);
       var lbl = document.getElementById(lblId);
@@ -4561,9 +4826,9 @@ function updateLabels() {
       if(hit) { hit.style.display = 'flex'; hit.style.pointerEvents = 'auto'; }
       var sx = (v.x * 0.5 + 0.5) * window.innerWidth;
       var sy = (v.y * -0.5 + 0.5) * window.innerHeight;
-      var padX = isNarrowViewport ? 56 : 78;
+      var padX = isNarrowViewport ? 90 : 120;
       var clampedSx = Math.max(padX, Math.min(window.innerWidth - padX, sx));
-      var clampedSy = Math.max(78, Math.min(window.innerHeight - 36, sy));
+      var clampedSy = Math.max(isNarrowViewport ? 168 : 138, Math.min(window.innerHeight - 36, sy));
       if(lbl) {
         lbl.style.transform = 'translate3d(' + clampedSx + 'px, ' + (clampedSy - celOffsetY) + 'px, 0) translate(-50%, -100%)';
       }
@@ -4634,8 +4899,8 @@ function applyResponsiveGalaxyLayout() {
       var sc = mobileSecCoords[sIdx];
       ss.x = sc.x; ss.y = sc.y; ss.z = sc.z; ss.baseScale = sc.scale;
     });
-    responsiveCelestialLayout.bhX = -82; responsiveCelestialLayout.bhY = 196; responsiveCelestialLayout.bhZ = -570; responsiveCelestialLayout.bhScale = 0.56;
-    responsiveCelestialLayout.nsX =  82; responsiveCelestialLayout.nsY = 196; responsiveCelestialLayout.nsZ = -570; responsiveCelestialLayout.nsScale = 0.56;
+    responsiveCelestialLayout.bhX = -88; responsiveCelestialLayout.bhY = 178; responsiveCelestialLayout.bhZ = -570; responsiveCelestialLayout.bhScale = 0.62;
+    responsiveCelestialLayout.nsX =  88; responsiveCelestialLayout.nsY = 178; responsiveCelestialLayout.nsZ = -570; responsiveCelestialLayout.nsScale = 0.62;
     if (typeof deepGalaxyTitleMesh !== 'undefined' && deepGalaxyTitleMesh) {
       var mScale = Math.max(0.38, Math.min(0.54, aspect * 1.02));
       deepGalaxyTitleMesh.position.set(0, -315, -1050);
@@ -4685,7 +4950,7 @@ function applyResponsiveGalaxyLayout() {
       ss.z = ss.baseZ;
       ss.baseScale = ss.desktopScale;
     });
-    var celScale = Math.min(1.0, 0.80 + 0.20 * hFit);
+    var celScale = Math.min(1.08, 0.86 + 0.22 * hFit);
     responsiveCelestialLayout.bhX = -455 * hFit; responsiveCelestialLayout.bhY = -6; responsiveCelestialLayout.bhZ = -570; responsiveCelestialLayout.bhScale = celScale;
     responsiveCelestialLayout.nsX =  455 * hFit; responsiveCelestialLayout.nsY = -6; responsiveCelestialLayout.nsZ = -570; responsiveCelestialLayout.nsScale = celScale;
     if (typeof deepGalaxyTitleMesh !== 'undefined' && deepGalaxyTitleMesh) {
@@ -5301,9 +5566,8 @@ function resetToGalaxyHub() {
   if (uiLayer) uiLayer.style.opacity = '1';
   var interstellarWrap = document.getElementById('interstellar-wrap');
   if (interstellarWrap) interstellarWrap.style.opacity = '1';
-  if (typeof deepGalaxyTitleMesh !== 'undefined' && deepGalaxyTitleMesh && deepGalaxyTitleMesh.material) {
-    gsap.to(deepGalaxyTitleMesh.material, { opacity: 0.45, duration: 0.8 });
-  }
+  var domainEmblemReset = document.getElementById('vlxt-galaxy-domain');
+  if (domainEmblemReset) domainEmblemReset.style.opacity = '1';
   var hudTelemetry = document.getElementById('hud-telemetry-layer');
   if (hudTelemetry) hudTelemetry.style.opacity = '1';
   activeTarget = null;
@@ -5738,13 +6002,23 @@ function initCelestialInteractions() {
 
   function onEnterBH() {
     if(lblBH) lblBH.classList.add('reticle-active');
+    if(hitBH) hitBH.classList.add('is-cel-hover');
     if(cursorRing) cursorRing.classList.add('cursor-hover');
+    if(typeof gsap !== 'undefined' && typeof blackHoleGroup !== 'undefined' && blackHoleGroup && currentState === 'IDLE') {
+      var s = responsiveCelestialLayout.bhScale * 1.1;
+      gsap.to(blackHoleGroup.scale, { x: s, y: s, z: s, duration: 0.25, ease: 'power2.out' });
+    }
     AudioEngine.hover();
     prefetchDestination('danh-gia-nang-luc.html');
   }
   function onLeaveBH() {
     if(lblBH) lblBH.classList.remove('reticle-active');
+    if(hitBH) hitBH.classList.remove('is-cel-hover');
     if(cursorRing) cursorRing.classList.remove('cursor-hover');
+    if(typeof gsap !== 'undefined' && typeof blackHoleGroup !== 'undefined' && blackHoleGroup && currentState === 'IDLE') {
+      var s = responsiveCelestialLayout.bhScale;
+      gsap.to(blackHoleGroup.scale, { x: s, y: s, z: s, duration: 0.25, ease: 'power2.out' });
+    }
   }
   function onClickBH() {
     AudioEngine.click();
@@ -5776,13 +6050,23 @@ function initCelestialInteractions() {
 
   function onEnterNS() {
     if(lblNS) lblNS.classList.add('reticle-active');
+    if(hitNS) hitNS.classList.add('is-cel-hover');
     if(cursorRing) cursorRing.classList.add('cursor-hover');
+    if(typeof gsap !== 'undefined' && typeof neutronGroup !== 'undefined' && neutronGroup && currentState === 'IDLE') {
+      var s = responsiveCelestialLayout.nsScale * 1.1;
+      gsap.to(neutronGroup.scale, { x: s, y: s, z: s, duration: 0.25, ease: 'power2.out' });
+    }
     AudioEngine.hover();
     prefetchDestination('baihoc.html');
   }
   function onLeaveNS() {
     if(lblNS) lblNS.classList.remove('reticle-active');
+    if(hitNS) hitNS.classList.remove('is-cel-hover');
     if(cursorRing) cursorRing.classList.remove('cursor-hover');
+    if(typeof gsap !== 'undefined' && typeof neutronGroup !== 'undefined' && neutronGroup && currentState === 'IDLE') {
+      var s = responsiveCelestialLayout.nsScale;
+      gsap.to(neutronGroup.scale, { x: s, y: s, z: s, duration: 0.25, ease: 'power2.out' });
+    }
   }
   function onClickNS() {
     AudioEngine.click();
@@ -5860,22 +6144,22 @@ initCelestialInteractions();
       <div class="dgnl-bootup-badge">
         <i class="fa-solid fa-bullseye"></i> CHIẾN DỊCH 50 ĐỀ CHUẨN BỘ GD&amp;ĐT · MIỄN PHÍ
       </div>
-      <div class="dgnl-bootup-title">TEST ĐIỂM THI THPT QUỐC GIA 2026</div>
+      <div class="dgnl-bootup-title">Đo Điểm Thi THPT Vật Lý 2026</div>
       <div class="dgnl-bootup-desc">
-        Kho 50 đề thi 28 câu chuẩn Bộ GD&amp;ĐT (3 Phần: Trắc nghiệm · Đúng/Sai · Trả lời ngắn) tích hợp <strong>mô phỏng thí nghiệm Vật Lý 60 FPS trực quan</strong>. Giúp em đo chính xác điểm thi THPT, định vị lỗ hổng từng chuyên đề và bứt phá điểm 9+!
+        50 đề chuẩn Bộ GD&amp;ĐT kèm mô phỏng 60 FPS giúp em định vị nhanh lỗ hổng từng chuyên đề.
       </div>
       <div class="dgnl-bootup-features">
         <div class="dgnl-bootup-feat-item">
           <i class="fa-solid fa-bolt" style="color:#38bdf8;width:18px"></i>
-          <span>50 Đề · 28 Câu (3 Phần) format mới nhất Bộ GD&amp;ĐT 2026</span>
+          <span>50 Đề · 28 Câu chuẩn Bộ GD&amp;ĐT</span>
         </div>
         <div class="dgnl-bootup-feat-item">
           <i class="fa-solid fa-cubes" style="color:#34d399;width:18px"></i>
-          <span>Mô phỏng thí nghiệm &amp; đồ thị Vật Lý 60 FPS tương tác trực tiếp</span>
+          <span>Mô phỏng thí nghiệm 60 FPS trực quan</span>
         </div>
         <div class="dgnl-bootup-feat-item">
           <i class="fa-solid fa-graduation-cap" style="color:#fbbf24;width:18px"></i>
-          <span>Báo cáo lỗ hổng chuyên sâu &amp; gợi ý bài giảng video trên web</span>
+          <span>Báo cáo lỗ hổng &amp; gợi ý bài vá nhanh</span>
         </div>
       </div>
       <div class="dgnl-bootup-actions">
@@ -5918,74 +6202,48 @@ initCelestialInteractions();
 })();
 </script>
 <script>
-/* ─── ĐIỀU KHIỂN PRELOADER TIẾN TRÌNH 0% -> 100% & HIỆN NHÃN MƯỢT MÀ ─── */
+/* ─── ĐIỀU KHIỂN PRELOADER NHANH GỌN (< 0.4S) & HIỆN NHÃN NGAY KHI SẴN SÀNG ─── */
 (function runPreloaderAnimation() {
   var bar = document.getElementById('preloader-bar');
   var percentText = document.getElementById('preloader-percent');
-  var formulaText = document.getElementById('preloader-formula');
   var preloader = document.getElementById('vlxt-preloader');
-  var formulas = ['ΔU = A + Q', 'T = 2π√(l/g)', 'λ = h/p', 'E = mc²', 'v = λ·f'];
-  var currentProg = 0;
-  var formulaIdx = 0;
+  var uiLayer = document.getElementById('ui-layer');
+  var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.__vlxtPreloadDone = true;
 
-  var formulaInterval = setInterval(function() {
-    formulaIdx = (formulaIdx + 1) % formulas.length;
-    if (formulaText) {
-      formulaText.style.opacity = '0';
-      setTimeout(function() {
-        if (formulaText) {
-          formulaText.innerText = formulas[formulaIdx];
-          formulaText.style.opacity = '1';
-        }
-      }, 150);
-    }
-  }, 400);
+  try {
+    if (typeof updateLabels === 'function') updateLabels();
+  } catch(e) {}
+  if (uiLayer) uiLayer.classList.add('labels-ready');
 
-  function updateProg(target, duration, callback) {
-    var startVal = currentProg;
-    var startTime = performance.now();
-    function tick(now) {
-      var p = Math.min((now - startTime) / duration, 1.0);
-      var val = Math.round(startVal + (target - startVal) * p);
-      currentProg = val;
-      if (bar) bar.style.width = val + '%';
-      if (percentText) percentText.innerText = val + '%';
-      if (p < 1.0) {
-        requestAnimationFrame(tick);
-      } else if (callback) {
-        callback();
-      }
+  var startVal = Math.max(84, Number(window.__vlxtPreloadProg) || 84);
+  if (rm) {
+    if (bar) bar.style.width = '100%';
+    if (percentText) percentText.innerText = '100%';
+    if (preloader) {
+      preloader.classList.add('fade-out');
+      preloader.style.display = 'none';
     }
-    requestAnimationFrame(tick);
+    return;
   }
 
-  // Tăng tốc mượt mà: 0% -> 42% -> 78% -> 100% trong khoảng 1.25s
-  updateProg(42, 380, function() {
-    updateProg(78, 420, function() {
-      updateProg(100, 360, function() {
-        clearInterval(formulaInterval);
-        
-        // Cập nhật vị trí nhãn sao Three.js trước khi mở màn hình
-        try {
-          if (typeof updateLabels === 'function') updateLabels();
-        } catch(e) {}
-
-        // Kích hoạt nhãn sao vào vị trí chuẩn
-        var uiLayer = document.getElementById('ui-layer');
-        if (uiLayer) uiLayer.classList.add('labels-ready');
-
-        // Mờ dần và đóng Preloader
-        setTimeout(function() {
-          if (preloader) {
-            preloader.classList.add('fade-out');
-            setTimeout(function() {
-              preloader.style.display = 'none';
-            }, 600);
-          }
-        }, 120);
-      });
-    });
-  });
+  var t0 = performance.now();
+  var dur = 110;
+  function finishTick(now) {
+    var p = Math.min((now - t0) / dur, 1.0);
+    var val = Math.round(startVal + (100 - startVal) * p);
+    if (bar) bar.style.width = val + '%';
+    if (percentText) percentText.innerText = val + '%';
+    if (p < 1.0) {
+      requestAnimationFrame(finishTick);
+    } else if (preloader) {
+      preloader.classList.add('fade-out');
+      setTimeout(function() {
+        preloader.style.display = 'none';
+      }, 240);
+    }
+  }
+  requestAnimationFrame(finishTick);
 })();
 </script>
 <script>
@@ -6242,7 +6500,7 @@ initCelestialInteractions();
   else _bootIdxLucian();
 })();
 </script>
-<!-- HỆ THỐNG SMART MARKETING POPUP (HIỆN SAU 3 GIÂY ĐỂ HỌC SINH NGẮM GIAO DIỆN) -->
-<script src="smart-marketing-popup.js?v=20261111a"></script>
+<!-- HỆ THỐNG SMART MARKETING POPUP (HIỆN SAU 15 GIÂY ĐỂ HỌC SINH KHÁM PHÁ VŨ TRỤ) -->
+<script src="smart-marketing-popup.js?v=20261124a"></script>
 </body>
 </html>

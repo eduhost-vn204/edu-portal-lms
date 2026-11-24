@@ -20,10 +20,10 @@ console.log('   ✓ Cú pháp hợp lệ 100% (node -c PASS)\n');
 console.log('2. Kiểm tra cấu trúc index.html:');
 const indexHtml = fs.readFileSync('index.html', 'utf8');
 assert.ok(
-  indexHtml.includes('<script src="smart-marketing-popup.js?v=20261111a"></script>'),
-  'index.html phải nhúng thẻ <script src="smart-marketing-popup.js?v=20261111a"></script>'
+  indexHtml.includes('<script src="smart-marketing-popup.js?v=20261124a"></script>'),
+  'index.html phải nhúng thẻ <script src="smart-marketing-popup.js?v=20261124a"></script>'
 );
-console.log('   ✓ Đã nhúng thẻ script smart-marketing-popup.js?v=20261111a trước </body>');
+console.log('   ✓ Đã nhúng thẻ script smart-marketing-popup.js?v=20261124a trước </body>');
 
 assert.ok(indexHtml.trim().endsWith('</html>'), 'index.html phải có thẻ đóng </html>');
 console.log('   ✓ index.html kết thúc chuẩn xác bằng </html>\n');
@@ -175,11 +175,13 @@ function createMockEnvironment(initialLocalStorage = {}, initialSessionStorage =
   };
 
   fn(winMock, env.doc, env.storage, env.session, env.fakeSetTimeout, () => {}, winMock.location);
+  assert.ok(env.timers.some(t => t.delay === 15000), 'Pop-up ban đầu phải hẹn giờ đúng 15000ms (15s)');
   env.runTimers();
 
   const p1 = env.doc.getElementById('vlxt-smart-popup-overlay');
   assert.ok(p1, 'Pop-up 1 phải xuất hiện cho khách mới');
-  console.log('   ✓ Case 4.1 PASS: Khách mới -> Hiện Pop-up 1 (Chẩn đoán Đề 1)');
+  assert.ok(p1.innerHTML.includes('vlxt-smart-metrics'), 'Pop-up 1 phải dùng bố cục 3 ô điểm nhấn gọn đẹp');
+  console.log('   ✓ Case 4.1 PASS: Khách mới -> Hẹn giờ 15s & hiện Pop-up 1 gọn đẹp');
 
   const closeP1 = env.doc.getElementById('vlxt-btn-close-p1');
   assert.ok(closeP1, 'Nút đóng Pop-up 1 phải tồn tại');
