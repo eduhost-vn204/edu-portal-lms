@@ -36,11 +36,11 @@
     return false;
   }
 
-  // Key sessionStorage quản lý phiên
+  // Key sessionStorage quản lý phiên (đổi sang v3 để tránh kẹt cờ phiên cũ)
   function getSessionKey() {
     var u = getCurrentUser();
     var uid = (u && (u.username || u.sdt || u.id)) ? (u.username || u.sdt || u.id) : 'guest';
-    return (uid === 'guest') ? 'vlxt_popup_session_guest' : ('vlxt_popup_session_' + uid);
+    return (uid === 'guest') ? 'vlxt_popup_v3_guest' : ('vlxt_popup_v3_' + uid);
   }
 
   function getSessionState() {
@@ -638,17 +638,26 @@
   function initSmartMarketingPopup() {
     var urlParams = new URLSearchParams(window.location.search);
     var isReset = urlParams.get('reset_popup') === '1' || urlParams.get('welcome') === '1';
+    var isPageReload = false;
+    try {
+      if (window.performance && typeof window.performance.getEntriesByType === 'function') {
+        var navs = window.performance.getEntriesByType('navigation');
+        if (navs && navs[0] && navs[0].type === 'reload') isPageReload = true;
+      } else if (window.performance && window.performance.navigation && window.performance.navigation.type === 1) {
+        isPageReload = true;
+      }
+    } catch (e) {}
 
-    if (isReset) {
+    if (isReset || isPageReload) {
       try {
         sessionStorage.removeItem(getSessionKey());
-        sessionStorage.removeItem('vlxt_popup_session_guest');
+        sessionStorage.removeItem('vlxt_popup_v3_guest');
       } catch (e) {}
     }
 
     var session = getSessionState();
 
-    // Nếu trong phiên này học sinh đã đóng Pop-up 2 hoặc đã bấm vào học thử / bấm làm test -> không tự hiện lại
+    // Nếu trong phiên này (khi điều hướng nội bộ) học sinh đã đóng Pop-up 2 hoặc đã bấm học/test -> không tự hiện lại
     if (session.p2Dismissed || session.clickedGoTrial || session.clickedGoTest) {
       return;
     }
@@ -656,7 +665,7 @@
     // Đảm bảo con trỏ tàu vũ trụ luôn nằm trên cùng
     liftRocketCursorToTop();
 
-    // Đợi Preloader kết thúc rồi đợi đúng 3 giây (3000ms)
+    // Đợi Preloader kết thúc rồi đợi đúng 15 giây (15000ms)
     waitForPreloaderThen(function () {
       // Đọc lại session state đề phòng thay đổi trong lúc chờ
       var currentSession = getSessionState();

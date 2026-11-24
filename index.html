@@ -782,33 +782,18 @@
         width: 50px;
         height: 50px;
       }
-      .celestial-label {
-        padding: 6px 9px 7px !important;
-        max-width: 164px !important;
-        border-radius: 12px !important;
-        gap: 3px !important;
-      }
       .celestial-label .star-code {
-        font-size: 8.8px !important;
-        letter-spacing: 0.08em !important;
-        margin-right: -0.08em !important;
+        font-size: 11px !important;
+        letter-spacing: 0.13em !important;
+        margin-right: -0.13em !important;
       }
       .celestial-label .star-vn {
         font-size: 11.5px !important;
-        letter-spacing: 0.01em !important;
-      }
-      .celestial-label .cel-cta {
-        font-size: 10px !important;
-        padding: 3px 8px !important;
-        margin-top: 2px !important;
+        letter-spacing: 0.03em !important;
       }
       .celestial-hitbox {
-        width: 96px !important;
-        height: 96px !important;
-      }
-      .celestial-hitbox::before {
-        width: 72px !important;
-        height: 72px !important;
+        width: 112px !important;
+        height: 112px !important;
       }
       .galaxy-domain-emblem {
         bottom: 72px !important;
@@ -1397,16 +1382,17 @@
     }
 
   
-    /* ─── PRELOADER KHỞI ĐỘNG VŨ TRỤ (CHUẨN ATOM SPINNER ĐỒNG BỘ) ─── */
+    /* ─── PRELOADER ĐA VŨ TRỤ ĐỒNG BỘ CHỦ ĐỀ INTERSTELLAR (#010308) · GPU 60 FPS ─── */
     .vlxt-preloader {
       position: fixed;
       inset: 0;
       z-index: 999999 !important;
-      background: radial-gradient(circle at center, #0c1836 0%, #050b1a 60%, #020617 100%);
+      background: radial-gradient(ellipse at 50% 44%, #08152b 0%, #030816 48%, #010308 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.22s;
+      transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.28s;
+      will-change: opacity;
     }
     .vlxt-preloader.fade-out {
       opacity: 0 !important;
@@ -1421,71 +1407,78 @@
       text-align: center;
       user-select: none;
     }
-    .atom-spinner {
+    .cosmic-loader {
       position: relative;
-      width: 76px;
-      height: 76px;
-      margin-bottom: 22px;
+      width: 92px;
+      height: 92px;
+      margin-bottom: 20px;
+      display: grid;
+      place-items: center;
     }
-    .atom-nucleus {
+    .cosmic-ring {
       position: absolute;
-      top: 50%; left: 50%;
-      width: 14px; height: 14px;
-      margin-left: -7px; margin-top: -7px;
+      inset: 4px;
       border-radius: 50%;
-      background: #38bdf8;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-      animation: nucleusPulse 1.8s infinite ease-in-out;
+      border: 1.5px solid transparent;
+      border-top-color: #38bdf8;
+      border-right-color: rgba(56, 189, 248, 0.32);
+      will-change: transform;
+      animation: cosmicSpinCW 1.4s linear infinite;
     }
-    @keyframes nucleusPulse {
-      0%, 100% { transform: scale(1); opacity: 0.95; }
-      50% { transform: scale(1.15); opacity: 1; }
-    }
-    .atom-orbit {
+    .cosmic-ring-amber {
       position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      inset: 14px;
       border-radius: 50%;
-      border: 1.5px solid rgba(56, 189, 248, 0.4);
+      border: 1.5px solid transparent;
+      border-bottom-color: #fb923c;
+      border-left-color: rgba(251, 146, 60, 0.35);
+      will-change: transform;
+      animation: cosmicSpinCCW 1.8s linear infinite;
     }
-    .atom-orbit.orbit-1 {
-      transform: rotate(0deg) rotateX(68deg);
-      animation: orbitSpin1 2.2s linear infinite;
+    .cosmic-star {
+      position: relative;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffffff 10%, #7dd3fc 58%, #0284c7 100%);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+      will-change: transform, opacity;
+      animation: cosmicCorePulse 1.5s ease-in-out infinite;
     }
-    .atom-orbit.orbit-2 {
-      transform: rotate(60deg) rotateX(68deg);
-      animation: orbitSpin2 2.2s linear infinite;
-    }
-    .atom-orbit.orbit-3 {
-      transform: rotate(-60deg) rotateX(68deg);
-      animation: orbitSpin3 2.2s linear infinite;
-    }
-    .atom-electron {
+    .cosmic-star::before,
+    .cosmic-star::after {
+      content: "";
       position: absolute;
-      top: -4px; left: 50%;
-      margin-left: -4px;
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: #38bdf8;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, rgba(224, 242, 254, 0.92), transparent);
     }
-    @keyframes orbitSpin1 {
-      0% { transform: rotate(0deg) rotateX(68deg) rotateZ(0deg); }
-      100% { transform: rotate(0deg) rotateX(68deg) rotateZ(360deg); }
+    .cosmic-star::before { width: 34px; height: 1.5px; }
+    .cosmic-star::after {
+      width: 1.5px; height: 34px;
+      background: linear-gradient(180deg, transparent, rgba(224, 242, 254, 0.92), transparent);
     }
-    @keyframes orbitSpin2 {
-      0% { transform: rotate(60deg) rotateX(68deg) rotateZ(0deg); }
-      100% { transform: rotate(60deg) rotateX(68deg) rotateZ(360deg); }
+    @keyframes cosmicSpinCW {
+      to { transform: rotate(360deg); }
     }
-    @keyframes orbitSpin3 {
-      0% { transform: rotate(-60deg) rotateX(68deg) rotateZ(0deg); }
-      100% { transform: rotate(-60deg) rotateX(68deg) rotateZ(360deg); }
+    @keyframes cosmicSpinCCW {
+      to { transform: rotate(-360deg); }
+    }
+    @keyframes cosmicCorePulse {
+      0%, 100% { transform: scale(0.92); opacity: 0.88; }
+      50% { transform: scale(1.12); opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .cosmic-ring, .cosmic-ring-amber, .cosmic-star { animation: none !important; }
     }
     .preloader-brand {
-      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
-      font-size: 18.5px !important;
-      font-weight: 800 !important;
-      letter-spacing: 0.08em !important;
+      font-family: 'Orbitron', 'Plus Jakarta Sans', system-ui, sans-serif !important;
+      font-size: clamp(16px, 2.2vw, 20px) !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.16em !important;
+      margin-right: -0.16em !important;
       text-transform: uppercase !important;
       margin-bottom: 8px !important;
     }
@@ -1498,40 +1491,42 @@
       text-shadow: none !important;
     }
     .preloader-formula {
-      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
-      font-size: 14px !important;
-      font-weight: 600 !important;
-      color: #94a3b8 !important;
-      letter-spacing: 0.02em !important;
-      margin-bottom: 20px !important;
-      height: 20px !important;
+      font-family: 'Space Mono', monospace !important;
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      color: #7dd3fc !important;
+      letter-spacing: 0.2em !important;
+      margin-bottom: 18px !important;
+      height: 18px !important;
       text-shadow: none !important;
-      transition: opacity 0.3s ease !important;
     }
     .preloader-progress-wrap {
-      width: 260px !important;
-      height: 6px !important;
-      background: rgba(255, 255, 255, 0.08) !important;
-      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      width: min(260px, 76vw) !important;
+      height: 3px !important;
+      background: rgba(148, 163, 184, 0.18) !important;
       border-radius: 9999px !important;
       overflow: hidden !important;
-      margin-bottom: 12px !important;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
+      margin-bottom: 10px !important;
+      box-shadow: none !important;
     }
     .preloader-progress-bar {
       height: 100% !important;
-      width: 0%;
-      background: linear-gradient(90deg, #10b981, #06b6d4) !important;
+      width: 100% !important;
+      background: linear-gradient(90deg, #fb923c 0%, #38bdf8 55%, #ffffff 100%) !important;
       border-radius: 9999px !important;
+      transform: scaleX(0);
+      transform-origin: left center;
+      will-change: transform;
+      transition: none !important;
       box-shadow: none !important;
-      transition: width 0.12s ease-out !important;
     }
     .preloader-percent {
-      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
-      font-size: 13px !important;
+      font-family: 'Space Mono', monospace !important;
+      font-size: 12px !important;
       font-weight: 700 !important;
-      color: #38bdf8 !important;
-      letter-spacing: 0.02em !important;
+      font-variant-numeric: tabular-nums !important;
+      color: #bae6fd !important;
+      letter-spacing: 0.08em !important;
       text-shadow: none !important;
     }
 
@@ -1910,134 +1905,45 @@ svg.logo-atom-icon,
   .u002-mag, .u002-fill, .u002-txt, .u002-orb, .u002-btn.is-go .u002-orb svg,
   .num-big .u426-col > span, .score-number .u426-col > span,
   #idx-cmd-backdrop .u046-pal, #idx-cmd-backdrop .u046-hl,
-  .u450-top, .u450-top .rg .pr, .u450-top.is-fly svg.ar,
-  .celestial-label, .celestial-label .cel-cta, .celestial-hitbox::before {
+  .u450-top, .u450-top .rg .pr, .u450-top.is-fly svg.ar {
     transition: none !important; animation: none !important; transition-delay: 0s !important; animation-delay: 0s !important;
   }
 }
 
-/* ─── CỔNG THIÊN THỂ NỔI BẬT: HỐ ĐEN (SINGULARITY) & SAO NEUTRON (PULSAR) · ZERO AI GLOW ─── */
+/* ─── NHÃN THIÊN THỂ GỌN SẠCH NGUYÊN BẢN (KHÔNG KHUNG VIỀN, KHÔNG VÒNG NÉT ĐỨT) ─── */
 .celestial-label {
-  padding: 9px 14px 10px;
-  border-radius: 14px;
-  gap: 4px;
-  text-shadow: none !important;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.65);
-  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.22s ease, opacity 0.25s ease;
-}
-.celestial-label.celestial-bh {
-  background: linear-gradient(180deg, rgba(30, 14, 6, 0.88) 0%, rgba(12, 8, 6, 0.92) 100%);
-  border: 1px solid rgba(251, 146, 60, 0.62);
-}
-.celestial-label.celestial-ns {
-  background: linear-gradient(180deg, rgba(6, 22, 44, 0.88) 0%, rgba(4, 12, 26, 0.92) 100%);
-  border: 1px solid rgba(56, 189, 248, 0.62);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 6px 14px 8px;
+  gap: 3px;
 }
 .celestial-label .star-code {
-  font-family: 'Space Mono', monospace;
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  margin-right: -0.14em;
-  text-shadow: none !important;
+  font-size: 17px;
+  letter-spacing: 0.22em;
+  margin-right: -0.22em;
 }
-.celestial-label.celestial-bh .star-code { color: #fdba74; }
-.celestial-label.celestial-ns .star-code { color: #7dd3fc; }
 .celestial-label .star-vn {
   font-size: 14.5px;
   font-weight: 800;
-  letter-spacing: 0.02em;
-  color: #ffffff;
-  text-shadow: none !important;
-}
-.cel-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 2px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-.cel-cta-bh {
-  background: rgba(234, 88, 12, 0.24);
-  border: 1px solid rgba(251, 146, 60, 0.55);
-  color: #fed7aa;
-}
-.cel-cta-ns {
-  background: rgba(2, 132, 199, 0.26);
-  border: 1px solid rgba(56, 189, 248, 0.55);
-  color: #bae6fd;
-}
-.celestial-label.celestial-bh:hover,
-.celestial-label.celestial-bh.reticle-active {
-  border-color: #fb923c;
-  background: linear-gradient(180deg, rgba(46, 20, 7, 0.96) 0%, rgba(18, 10, 6, 0.96) 100%);
-}
-.celestial-label.celestial-bh:hover .cel-cta-bh,
-.celestial-label.celestial-bh.reticle-active .cel-cta-bh {
-  background: #ea580c;
-  border-color: #fb923c;
-  color: #ffffff;
-  transform: translateX(1px);
-}
-.celestial-label.celestial-ns:hover,
-.celestial-label.celestial-ns.reticle-active {
-  border-color: #38bdf8;
-  background: linear-gradient(180deg, rgba(8, 34, 66, 0.96) 0%, rgba(6, 18, 38, 0.96) 100%);
-}
-.celestial-label.celestial-ns:hover .cel-cta-ns,
-.celestial-label.celestial-ns.reticle-active .cel-cta-ns {
-  background: #0284c7;
-  border-color: #38bdf8;
-  color: #ffffff;
-  transform: translateX(1px);
+  letter-spacing: 0.09em;
 }
 .celestial-label:hover .star-code,
-.celestial-label.reticle-active .star-code,
+.celestial-label.reticle-active .star-code {
+  color: #ffffff !important;
+  transform: translateY(-2px) scale(1.07);
+}
 .celestial-label:hover .star-vn,
 .celestial-label.reticle-active .star-vn {
-  text-shadow: none !important;
-  color: #ffffff !important;
-  transform: none !important;
+  transform: scale(1.07);
 }
-
 .celestial-hitbox {
-  width: 132px;
-  height: 132px;
+  width: 168px;
+  height: 168px;
 }
 .celestial-hitbox::before {
-  width: 96px;
-  height: 96px;
-  border-width: 1.5px;
-  border-style: dashed;
-  transform: scale(1) rotate(0deg);
-  box-shadow: none !important;
-  animation: celRingSpin 22s linear infinite;
-}
-#hit-blackhole::before { border-color: rgba(251, 146, 60, 0.48); }
-#hit-neutron::before { border-color: rgba(56, 189, 248, 0.48); }
-#hit-blackhole.is-cel-hover::before,
-#hit-blackhole:hover::before {
-  width: 112px;
-  height: 112px;
-  border-style: solid;
-  border-color: #fb923c;
-  box-shadow: none !important;
-}
-#hit-neutron.is-cel-hover::before,
-#hit-neutron:hover::before {
-  width: 112px;
-  height: 112px;
-  border-style: solid;
-  border-color: #38bdf8;
-  box-shadow: none !important;
-}
-@keyframes celRingSpin {
-  to { transform: scale(1) rotate(360deg); }
+  display: none !important;
+  content: none !important;
 }
 
 /* ─── BIỂU TRƯNG TÊN MIỀN VATLYXUANTRUONG.IO.VN ĐỒNG BỘ CHÒM SAO ─── */
@@ -2098,40 +2004,22 @@ svg.logo-atom-icon,
 </style>
 </head>
 <body>
-<!-- ─── PRELOADER KHỞI ĐỘNG ĐA VŨ TRỤ (ATOM SPINNER) ─── -->
+<!-- ─── PRELOADER ĐA VŨ TRỤ ĐỒNG BỘ CHỦ ĐỀ INTERSTELLAR ─── -->
 <div id="vlxt-preloader" class="vlxt-preloader">
   <div class="preloader-content">
-    <div class="atom-spinner">
-      <div class="atom-nucleus"></div>
-      <div class="atom-orbit orbit-1"><div class="atom-electron"></div></div>
-      <div class="atom-orbit orbit-2"><div class="atom-electron"></div></div>
-      <div class="atom-orbit orbit-3"><div class="atom-electron"></div></div>
+    <div class="cosmic-loader" aria-hidden="true">
+      <div class="cosmic-ring"></div>
+      <div class="cosmic-ring-amber"></div>
+      <div class="cosmic-star"></div>
     </div>
     <div class="preloader-brand"><span class="brand-white">VẬT LÝ</span> <span class="brand-cyan">XUÂN TRƯỜNG</span></div>
-    <div class="preloader-formula" id="preloader-formula">ΔU = A + Q</div>
+    <div class="preloader-formula" id="preloader-formula">KHỞI TẠO ĐA VŨ TRỤ VẬT LÝ 3D</div>
     <div class="preloader-progress-wrap">
       <div class="preloader-progress-bar" id="preloader-bar"></div>
     </div>
     <div class="preloader-percent" id="preloader-percent">0%</div>
   </div>
 </div>
-<script>
-(function(){
-  var b = document.getElementById('preloader-bar'), p = document.getElementById('preloader-percent');
-  window.__vlxtPreloadProg = 14;
-  var t0 = Date.now(), rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function tick(){
-    if (window.__vlxtPreloadDone) return;
-    var el = Math.min(1, (Date.now() - t0) / (rm ? 40 : 280));
-    var v = Math.round(14 + 74 * (1 - Math.pow(1 - el, 2)));
-    window.__vlxtPreloadProg = v;
-    if (b) b.style.width = v + '%';
-    if (p) p.textContent = v + '%';
-    if (el < 1 && !window.__vlxtPreloadDone) requestAnimationFrame(tick);
-  }
-  tick();
-})();
-</script>
 
 
 <div id="canvas-container"></div>
@@ -2284,18 +2172,16 @@ svg.logo-atom-icon,
     <div class="star-hitbox" id="hit-5" data-idx="5" title="Gói Pro (Skat)"></div>
 
     <!-- HỐ ĐEN GARGANTUA (BÊN TRÁI): TEST ĐIỂM THI THPT -->
-    <div class="star-label celestial-label celestial-bh" id="lbl-blackhole">
-      <span class="star-code">SINGULARITY · HỐ ĐEN</span>
-      <span class="star-vn">Test Điểm Thi THPT</span>
-      <span class="cel-cta cel-cta-bh">Nhấp thi ngay <i class="fa-solid fa-arrow-right"></i></span>
+    <div class="star-label celestial-label" id="lbl-blackhole">
+      <span class="star-code" style="color:#fed7aa; text-shadow: 0 2px 10px rgba(0,0,0,1);">SINGULARITY</span>
+      <span class="star-vn" style="color:#fb923c; text-shadow: 0 2px 8px rgba(0,0,0,1);">Test Điểm Thi THPT</span>
     </div>
     <div class="star-hitbox celestial-hitbox" id="hit-blackhole" title="Test Điểm Thi THPT (Singularity)"></div>
 
     <!-- SAO NEUTRON PULSAR (BÊN PHẢI): KHÓA HỌC -->
-    <div class="star-label celestial-label celestial-ns" id="lbl-neutron">
-      <span class="star-code">PULSAR · SAO NEUTRON</span>
-      <span class="star-vn">Khóa Học Vật Lý 12</span>
-      <span class="cel-cta cel-cta-ns">Nhấp học ngay <i class="fa-solid fa-arrow-right"></i></span>
+    <div class="star-label celestial-label" id="lbl-neutron">
+      <span class="star-code" style="color:#e0f2fe; text-shadow: 0 2px 10px rgba(0,0,0,1);">PULSAR</span>
+      <span class="star-vn" style="color:#38bdf8; text-shadow: 0 2px 8px rgba(0,0,0,1);">Khóa Học</span>
     </div>
     <div class="star-hitbox celestial-hitbox" id="hit-neutron" title="Khóa Học (Pulsar)"></div>
 
@@ -3503,13 +3389,13 @@ var accretionDiskMesh = new THREE.Mesh(accretionDiskGeo, accretionDiskMat);
 bhDiskTiltGroup.add(accretionDiskMesh);
 
 // Lớp bụi tàn lửa cam vàng bay đồng phẳng với đĩa bồi tụ
-var bhEmberCount = 160;
+var bhEmberCount = 260;
 var bhEmberGeo = new THREE.BufferGeometry();
 var bhEmberPos = new Float32Array(bhEmberCount * 3);
 for (var bhe = 0; bhe < bhEmberCount; bhe++) {
-  var rad = 15.0 + Math.pow(Math.random(), 1.5) * 56.0;
+  var rad = 15.0 + Math.pow(Math.random(), 1.5) * 60.0;
   var ang = Math.random() * Math.PI * 2;
-  var zSpread = (Math.random() - 0.5) * 1.6 * (rad / 45.0);
+  var zSpread = (Math.random() - 0.5) * 2.0 * (rad / 45.0);
   bhEmberPos[bhe * 3]     = Math.cos(ang) * rad;
   bhEmberPos[bhe * 3 + 1] = Math.sin(ang) * rad;
   bhEmberPos[bhe * 3 + 2] = zSpread;
@@ -3517,15 +3403,51 @@ for (var bhe = 0; bhe < bhEmberCount; bhe++) {
 bhEmberGeo.setAttribute('position', new THREE.BufferAttribute(bhEmberPos, 3));
 var bhEmberMat = new THREE.PointsMaterial({
   color: 0xfdba74,
-  size: 1.9,
+  size: 2.3,
   map: glowTex,
   transparent: true,
-  opacity: 0.65,
+  opacity: 0.78,
   blending: THREE.AdditiveBlending,
   depthWrite: false
 });
 var bhEmberPoints = new THREE.Points(bhEmberGeo, bhEmberMat);
 bhDiskTiltGroup.add(bhEmberPoints);
+
+// Các điểm lấp lánh 4 cánh quanh Hố đen thu hút ánh nhìn (tự nhiên theo đĩa bồi tụ & vòm thấu kính)
+var bhSparkles = [];
+var bhHoverBoost = 0;
+for (var bsp = 0; bsp < 14; bsp++) {
+  var spMat = new THREE.SpriteMaterial({
+    map: spikeTex,
+    color: (bsp % 2 === 0) ? 0xfff7ed : 0xfdba74,
+    transparent: true,
+    opacity: 0.0,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+  });
+  var spSprite = new THREE.Sprite(spMat);
+  var sAng = (bsp / 14) * Math.PI * 2 + (bsp % 3) * 0.25;
+  var sRad = 22 + (bsp % 5) * 9.5;
+  var baseS = 6.5 + (bsp % 4) * 2.2;
+  spSprite.position.set(Math.cos(sAng) * sRad, Math.sin(sAng) * sRad * 0.42 + (bsp % 3 - 1) * 10, (bsp % 2 === 0 ? 12 : -8));
+  spSprite.scale.set(baseS, baseS, 1);
+  blackHoleGroup.add(spSprite);
+  bhSparkles.push({ sprite: spSprite, mat: spMat, baseScale: baseS, freq: 1.9 + (bsp % 5) * 0.55, phase: bsp * 1.15 });
+}
+var bhBeaconMat = new THREE.SpriteMaterial({
+  map: spikeTex, color: 0xfffbeb, transparent: true, opacity: 0.75, blending: THREE.AdditiveBlending, depthWrite: false
+});
+var bhBeaconGlint = new THREE.Sprite(bhBeaconMat);
+bhBeaconGlint.position.set(-22, -3, 14);
+bhBeaconGlint.scale.set(17, 17, 1);
+blackHoleGroup.add(bhBeaconGlint);
+
+var bhPulseMat = new THREE.SpriteMaterial({
+  map: glowTex, color: 0xfb923c, transparent: true, opacity: 0.22, blending: THREE.AdditiveBlending, depthWrite: false
+});
+var bhPulseRipple = new THREE.Sprite(bhPulseMat);
+bhPulseRipple.scale.set(130, 130, 1);
+blackHoleGroup.add(bhPulseRipple);
 
 scene.add(blackHoleGroup);
 
@@ -3749,6 +3671,36 @@ function createJetBundle(dirSign) {
 }
 pulsarMagneticTiltGroup.add(createJetBundle(1));
 pulsarMagneticTiltGroup.add(createJetBundle(-1));
+
+// Các tia sao lấp lánh 4 cánh dọc chùm tia Pulsar & quầng plasma thu hút bấm vào
+var nsSparkles = [];
+var nsHoverBoost = 0;
+for (var nsp = 0; nsp < 14; nsp++) {
+  var nspMat = new THREE.SpriteMaterial({
+    map: spikeTex,
+    color: (nsp % 2 === 0) ? 0xffffff : 0x7dd3fc,
+    transparent: true,
+    opacity: 0.0,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+  });
+  var nspSprite = new THREE.Sprite(nspMat);
+  var alongJet = ((nsp % 7) - 3) * 16;
+  var sideOffset = Math.sin(nsp * 1.9) * (nsp < 6 ? 18 : 8);
+  var zOffset = Math.cos(nsp * 1.4) * 12;
+  var nBaseS = 6.2 + (nsp % 4) * 2.1;
+  nspSprite.position.set(sideOffset, alongJet, zOffset);
+  nspSprite.scale.set(nBaseS, nBaseS, 1);
+  pulsarMagneticTiltGroup.add(nspSprite);
+  nsSparkles.push({ sprite: nspSprite, mat: nspMat, baseScale: nBaseS, freq: 2.1 + (nsp % 5) * 0.6, phase: nsp * 1.37 });
+}
+var nsBeaconMat = new THREE.SpriteMaterial({
+  map: spikeTex, color: 0xe0f2fe, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false
+});
+var nsBeaconGlint = new THREE.Sprite(nsBeaconMat);
+nsBeaconGlint.position.set(0, 0, 12);
+nsBeaconGlint.scale.set(22, 22, 1);
+pulsarMagneticTiltGroup.add(nsBeaconGlint);
 
 scene.add(neutronGroup);
 
@@ -4543,9 +4495,11 @@ document.addEventListener('mousemove', function(e) {
 });
 
 var clock = new THREE.Clock();
+window.__vlxtPauseRenderForPreloader = true;
 
 function animate() {
   requestAnimationFrame(animate);
+  if (window.__vlxtPauseRenderForPreloader) return;
   var t = clock.getElapsedTime();
 
   nebulaUniforms.uTime.value = t;
@@ -4615,16 +4569,52 @@ function animate() {
     camera.rotation.z += cameraRoll;
   }
 
-  // Cập nhật chuyển động Hố Đen Gargantua & Sao Neutron Pulsar tốc độ cao, cân tâm
+  // Cập nhật chuyển động Hố Đen Gargantua & Sao Neutron Pulsar tốc độ cao + hiệu ứng lấp lánh gợi bấm
   if (typeof bhLensingUniforms !== 'undefined') bhLensingUniforms.uTime.value = t;
   if (typeof bhDiskUniforms !== 'undefined') bhDiskUniforms.uTime.value = t;
   if (accretionDiskMesh) accretionDiskMesh.rotation.z += 0.008;
   if (typeof bhEmberPoints !== 'undefined') bhEmberPoints.rotation.z += 0.006;
+  if (typeof bhSparkles !== 'undefined') {
+    for (var bsi = 0; bsi < bhSparkles.length; bsi++) {
+      var bsp = bhSparkles[bsi];
+      var twB = Math.pow(0.5 + 0.5 * Math.sin(t * bsp.freq + bsp.phase), 2.6);
+      var bBoost = 1.0 + bhHoverBoost * 0.45;
+      bsp.mat.opacity = (0.14 + 0.86 * twB) * (bhHoverBoost ? 1.0 : 0.88);
+      var bS = bsp.baseScale * (0.72 + 0.65 * twB) * bBoost;
+      bsp.sprite.scale.set(bS, bS, 1);
+    }
+  }
+  if (typeof bhBeaconGlint !== 'undefined') {
+    var gB = 1.0 + 0.28 * Math.sin(t * 2.8) + bhHoverBoost * 0.35;
+    bhBeaconGlint.scale.set(17 * gB, 17 * gB, 1);
+    bhBeaconMat.opacity = 0.52 + 0.38 * (0.5 + 0.5 * Math.cos(t * 3.1)) + bhHoverBoost * 0.1;
+  }
+  if (typeof bhPulseRipple !== 'undefined') {
+    var rp = (t * 0.42) % 1.0;
+    var rS = 112 + rp * 58;
+    bhPulseRipple.scale.set(rS, rS, 1);
+    bhPulseMat.opacity = (1.0 - rp) * (0.20 + bhHoverBoost * 0.18);
+  }
 
   if (typeof neutronCoreUniforms !== 'undefined') neutronCoreUniforms.uTime.value = t;
   if (typeof pulsarJetUniforms !== 'undefined') pulsarJetUniforms.uTime.value = t;
   if (typeof neutronSpinGroup !== 'undefined') {
     neutronSpinGroup.rotation.y += 0.24;
+  }
+  if (typeof nsSparkles !== 'undefined') {
+    for (var nsi = 0; nsi < nsSparkles.length; nsi++) {
+      var nsp = nsSparkles[nsi];
+      var twN = Math.pow(0.5 + 0.5 * Math.sin(t * nsp.freq + nsp.phase), 2.6);
+      var nBoost = 1.0 + nsHoverBoost * 0.45;
+      nsp.mat.opacity = (0.16 + 0.84 * twN) * (nsHoverBoost ? 1.0 : 0.90);
+      var nS = nsp.baseScale * (0.72 + 0.65 * twN) * nBoost;
+      nsp.sprite.scale.set(nS, nS, 1);
+    }
+  }
+  if (typeof nsBeaconGlint !== 'undefined') {
+    var gN = 1.0 + 0.3 * Math.cos(t * 3.2) + nsHoverBoost * 0.35;
+    nsBeaconGlint.scale.set(22 * gN, 22 * gN, 1);
+    nsBeaconMat.opacity = 0.58 + 0.40 * (0.5 + 0.5 * Math.sin(t * 3.6));
   }
 
   if (typeof wormholeUniforms !== 'undefined') {
@@ -4812,7 +4802,7 @@ function updateLabels() {
   }
 
     // Cập nhật vị trí nhãn và hitbox của Hố Đen & Sao Neutron (tự động giữ nhãn trong khung hình an toàn)
-    var celOffsetY = isNarrowViewport ? 34 : 58;
+    var celOffsetY = isNarrowViewport ? 46 : 82;
     function updateCelestialLabel(objGroup, lblId, hitId) {
       var v = objGroup.position.clone().project(camera);
       var lbl = document.getElementById(lblId);
@@ -4826,9 +4816,9 @@ function updateLabels() {
       if(hit) { hit.style.display = 'flex'; hit.style.pointerEvents = 'auto'; }
       var sx = (v.x * 0.5 + 0.5) * window.innerWidth;
       var sy = (v.y * -0.5 + 0.5) * window.innerHeight;
-      var padX = isNarrowViewport ? 90 : 120;
+      var padX = isNarrowViewport ? 72 : 96;
       var clampedSx = Math.max(padX, Math.min(window.innerWidth - padX, sx));
-      var clampedSy = Math.max(isNarrowViewport ? 168 : 138, Math.min(window.innerHeight - 36, sy));
+      var clampedSy = Math.max(isNarrowViewport ? 124 : 118, Math.min(window.innerHeight - 36, sy));
       if(lbl) {
         lbl.style.transform = 'translate3d(' + clampedSx + 'px, ' + (clampedSy - celOffsetY) + 'px, 0) translate(-50%, -100%)';
       }
@@ -4899,8 +4889,8 @@ function applyResponsiveGalaxyLayout() {
       var sc = mobileSecCoords[sIdx];
       ss.x = sc.x; ss.y = sc.y; ss.z = sc.z; ss.baseScale = sc.scale;
     });
-    responsiveCelestialLayout.bhX = -88; responsiveCelestialLayout.bhY = 178; responsiveCelestialLayout.bhZ = -570; responsiveCelestialLayout.bhScale = 0.62;
-    responsiveCelestialLayout.nsX =  88; responsiveCelestialLayout.nsY = 178; responsiveCelestialLayout.nsZ = -570; responsiveCelestialLayout.nsScale = 0.62;
+    responsiveCelestialLayout.bhX = -86; responsiveCelestialLayout.bhY = 184; responsiveCelestialLayout.bhZ = -570; responsiveCelestialLayout.bhScale = 0.78;
+    responsiveCelestialLayout.nsX =  86; responsiveCelestialLayout.nsY = 184; responsiveCelestialLayout.nsZ = -570; responsiveCelestialLayout.nsScale = 0.78;
     if (typeof deepGalaxyTitleMesh !== 'undefined' && deepGalaxyTitleMesh) {
       var mScale = Math.max(0.38, Math.min(0.54, aspect * 1.02));
       deepGalaxyTitleMesh.position.set(0, -315, -1050);
@@ -4927,8 +4917,8 @@ function applyResponsiveGalaxyLayout() {
       ss.z = ss.baseZ;
       ss.baseScale = ss.desktopScale * 0.88;
     });
-    responsiveCelestialLayout.bhX = -165; responsiveCelestialLayout.bhY = 188; responsiveCelestialLayout.bhZ = -570; responsiveCelestialLayout.bhScale = 0.76;
-    responsiveCelestialLayout.nsX =  165; responsiveCelestialLayout.nsY = 188; responsiveCelestialLayout.nsZ = -570; responsiveCelestialLayout.nsScale = 0.76;
+    responsiveCelestialLayout.bhX = -165; responsiveCelestialLayout.bhY = 188; responsiveCelestialLayout.bhZ = -570; responsiveCelestialLayout.bhScale = 0.98;
+    responsiveCelestialLayout.nsX =  165; responsiveCelestialLayout.nsY = 188; responsiveCelestialLayout.nsZ = -570; responsiveCelestialLayout.nsScale = 0.98;
     if (typeof deepGalaxyTitleMesh !== 'undefined' && deepGalaxyTitleMesh) {
       var tScale = Math.max(0.62, Math.min(0.84, aspect * 0.94));
       deepGalaxyTitleMesh.position.set(0, -265, -1050);
@@ -4950,9 +4940,9 @@ function applyResponsiveGalaxyLayout() {
       ss.z = ss.baseZ;
       ss.baseScale = ss.desktopScale;
     });
-    var celScale = Math.min(1.08, 0.86 + 0.22 * hFit);
-    responsiveCelestialLayout.bhX = -455 * hFit; responsiveCelestialLayout.bhY = -6; responsiveCelestialLayout.bhZ = -570; responsiveCelestialLayout.bhScale = celScale;
-    responsiveCelestialLayout.nsX =  455 * hFit; responsiveCelestialLayout.nsY = -6; responsiveCelestialLayout.nsZ = -570; responsiveCelestialLayout.nsScale = celScale;
+    var celScale = Math.min(1.08, 0.86 + 0.22 * hFit) * 1.32;
+    responsiveCelestialLayout.bhX = -445 * hFit; responsiveCelestialLayout.bhY = -6; responsiveCelestialLayout.bhZ = -570; responsiveCelestialLayout.bhScale = celScale;
+    responsiveCelestialLayout.nsX =  445 * hFit; responsiveCelestialLayout.nsY = -6; responsiveCelestialLayout.nsZ = -570; responsiveCelestialLayout.nsScale = celScale;
     if (typeof deepGalaxyTitleMesh !== 'undefined' && deepGalaxyTitleMesh) {
       deepGalaxyTitleMesh.position.set(0, -255, -1050);
       deepGalaxyTitleMesh.scale.set(hFit * 0.92, hFit * 0.92, 1);
@@ -6001,19 +5991,19 @@ function initCelestialInteractions() {
   var hitBH = document.getElementById('hit-blackhole');
 
   function onEnterBH() {
+    bhHoverBoost = 1;
     if(lblBH) lblBH.classList.add('reticle-active');
-    if(hitBH) hitBH.classList.add('is-cel-hover');
     if(cursorRing) cursorRing.classList.add('cursor-hover');
     if(typeof gsap !== 'undefined' && typeof blackHoleGroup !== 'undefined' && blackHoleGroup && currentState === 'IDLE') {
-      var s = responsiveCelestialLayout.bhScale * 1.1;
+      var s = responsiveCelestialLayout.bhScale * 1.14;
       gsap.to(blackHoleGroup.scale, { x: s, y: s, z: s, duration: 0.25, ease: 'power2.out' });
     }
     AudioEngine.hover();
     prefetchDestination('danh-gia-nang-luc.html');
   }
   function onLeaveBH() {
+    bhHoverBoost = 0;
     if(lblBH) lblBH.classList.remove('reticle-active');
-    if(hitBH) hitBH.classList.remove('is-cel-hover');
     if(cursorRing) cursorRing.classList.remove('cursor-hover');
     if(typeof gsap !== 'undefined' && typeof blackHoleGroup !== 'undefined' && blackHoleGroup && currentState === 'IDLE') {
       var s = responsiveCelestialLayout.bhScale;
@@ -6049,19 +6039,19 @@ function initCelestialInteractions() {
   var hitNS = document.getElementById('hit-neutron');
 
   function onEnterNS() {
+    nsHoverBoost = 1;
     if(lblNS) lblNS.classList.add('reticle-active');
-    if(hitNS) hitNS.classList.add('is-cel-hover');
     if(cursorRing) cursorRing.classList.add('cursor-hover');
     if(typeof gsap !== 'undefined' && typeof neutronGroup !== 'undefined' && neutronGroup && currentState === 'IDLE') {
-      var s = responsiveCelestialLayout.nsScale * 1.1;
+      var s = responsiveCelestialLayout.nsScale * 1.14;
       gsap.to(neutronGroup.scale, { x: s, y: s, z: s, duration: 0.25, ease: 'power2.out' });
     }
     AudioEngine.hover();
     prefetchDestination('baihoc.html');
   }
   function onLeaveNS() {
+    nsHoverBoost = 0;
     if(lblNS) lblNS.classList.remove('reticle-active');
-    if(hitNS) hitNS.classList.remove('is-cel-hover');
     if(cursorRing) cursorRing.classList.remove('cursor-hover');
     if(typeof gsap !== 'undefined' && typeof neutronGroup !== 'undefined' && neutronGroup && currentState === 'IDLE') {
       var s = responsiveCelestialLayout.nsScale;
@@ -6202,24 +6192,27 @@ initCelestialInteractions();
 })();
 </script>
 <script>
-/* ─── ĐIỀU KHIỂN PRELOADER NHANH GỌN (< 0.4S) & HIỆN NHÃN NGAY KHI SẴN SÀNG ─── */
+/* ─── ĐIỀU KHIỂN PRELOADER 0% -> 100% MƯỢT MÀ 60 FPS KHÔNG GIẬT LAG ─── */
 (function runPreloaderAnimation() {
   var bar = document.getElementById('preloader-bar');
   var percentText = document.getElementById('preloader-percent');
   var preloader = document.getElementById('vlxt-preloader');
   var uiLayer = document.getElementById('ui-layer');
   var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  window.__vlxtPreloadDone = true;
 
+  // Biên dịch & warm-up frame Three.js đầu tiên TRƯỚC khi chạy thanh % để tránh khựng giữa chừng
   try {
+    if (typeof renderer !== 'undefined' && typeof scene !== 'undefined' && typeof camera !== 'undefined') {
+      renderer.render(scene, camera);
+    }
     if (typeof updateLabels === 'function') updateLabels();
   } catch(e) {}
   if (uiLayer) uiLayer.classList.add('labels-ready');
 
-  var startVal = Math.max(84, Number(window.__vlxtPreloadProg) || 84);
   if (rm) {
-    if (bar) bar.style.width = '100%';
-    if (percentText) percentText.innerText = '100%';
+    window.__vlxtPauseRenderForPreloader = false;
+    if (bar) bar.style.transform = 'scaleX(1)';
+    if (percentText) percentText.textContent = '100%';
     if (preloader) {
       preloader.classList.add('fade-out');
       preloader.style.display = 'none';
@@ -6227,23 +6220,33 @@ initCelestialInteractions();
     return;
   }
 
-  var t0 = performance.now();
-  var dur = 110;
+  var prog = 0;
+  var lastNow = 0;
+  var dur = 560;
   function finishTick(now) {
-    var p = Math.min((now - t0) / dur, 1.0);
-    var val = Math.round(startVal + (100 - startVal) * p);
-    if (bar) bar.style.width = val + '%';
-    if (percentText) percentText.innerText = val + '%';
-    if (p < 1.0) {
+    if (!lastNow) lastNow = now;
+    var dt = Math.min(28, Math.max(0, now - lastNow));
+    lastNow = now;
+    prog = Math.min(1.0, prog + dt / dur);
+    var eased = 1 - Math.pow(1 - prog, 2.2);
+    if (bar) bar.style.transform = 'scaleX(' + eased.toFixed(4) + ')';
+    if (percentText) percentText.textContent = Math.round(eased * 100) + '%';
+    if (prog < 1.0) {
       requestAnimationFrame(finishTick);
-    } else if (preloader) {
-      preloader.classList.add('fade-out');
-      setTimeout(function() {
-        preloader.style.display = 'none';
-      }, 240);
+    } else {
+      window.__vlxtPauseRenderForPreloader = false;
+      if (percentText) percentText.textContent = '100%';
+      if (preloader) {
+        preloader.classList.add('fade-out');
+        setTimeout(function() {
+          preloader.style.display = 'none';
+        }, 300);
+      }
     }
   }
-  requestAnimationFrame(finishTick);
+  requestAnimationFrame(function() {
+    requestAnimationFrame(finishTick);
+  });
 })();
 </script>
 <script>
@@ -6501,6 +6504,6 @@ initCelestialInteractions();
 })();
 </script>
 <!-- HỆ THỐNG SMART MARKETING POPUP (HIỆN SAU 15 GIÂY ĐỂ HỌC SINH KHÁM PHÁ VŨ TRỤ) -->
-<script src="smart-marketing-popup.js?v=20261124a"></script>
+<script src="smart-marketing-popup.js?v=20261124b"></script>
 </body>
 </html>

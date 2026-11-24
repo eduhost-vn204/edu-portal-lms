@@ -5742,12 +5742,16 @@
         }
 
         window.selectLobbyExam = function(examNum) {
+            _dgnlSmartModalUserHandled = true;
+            if (_dgnlSmartModalBootTimer) { clearTimeout(_dgnlSmartModalBootTimer); _dgnlSmartModalBootTimer = null; }
             selectedLobbyExam = Number(examNum) || 1;
             renderLobbyPreviewPanel();
             renderLobbyCatalogGrid();
         };
 
         window.setLobbyStageFilter = function(stage) {
+            _dgnlSmartModalUserHandled = true;
+            if (_dgnlSmartModalBootTimer) { clearTimeout(_dgnlSmartModalBootTimer); _dgnlSmartModalBootTimer = null; }
             lobbyStageFilter = stage || 'ALL';
             lobbyVisibleLimit = 8;
             document.querySelectorAll('#lobby-stage-tabs .dgnl-stage-tab').forEach(function(btn) {
@@ -5761,6 +5765,8 @@
         };
 
         window.setLobbyStatusFilter = function(st) {
+            _dgnlSmartModalUserHandled = true;
+            if (_dgnlSmartModalBootTimer) { clearTimeout(_dgnlSmartModalBootTimer); _dgnlSmartModalBootTimer = null; }
             lobbyStatusFilter = st || 'ALL';
             lobbyVisibleLimit = 8;
             document.querySelectorAll('#lobby-status-pills .dgnl-status-pill').forEach(function(btn) {
@@ -5774,6 +5780,8 @@
         };
 
         window.setLobbySearchQuery = function(val) {
+            _dgnlSmartModalUserHandled = true;
+            if (_dgnlSmartModalBootTimer) { clearTimeout(_dgnlSmartModalBootTimer); _dgnlSmartModalBootTimer = null; }
             lobbySearchQuery = String(val || '');
             var clr = document.getElementById('lobby-search-clear');
             if (clr) clr.hidden = !lobbySearchQuery.trim();
@@ -6063,13 +6071,26 @@
             }
         }
 
+        var _dgnlSmartModalBootTimer = null;
+        var _dgnlSmartModalUserHandled = false;
+
         window.openSmartRecommendationModal = function() {
+            _dgnlSmartModalUserHandled = true;
+            if (_dgnlSmartModalBootTimer) {
+                clearTimeout(_dgnlSmartModalBootTimer);
+                _dgnlSmartModalBootTimer = null;
+            }
             renderSmartRecommendationModal();
             var m = document.getElementById('start-exam-modal');
             if (m) m.style.display = 'flex';
         };
 
         window.closeSmartPopupToLobby = function() {
+            _dgnlSmartModalUserHandled = true;
+            if (_dgnlSmartModalBootTimer) {
+                clearTimeout(_dgnlSmartModalBootTimer);
+                _dgnlSmartModalBootTimer = null;
+            }
             var m = document.getElementById('start-exam-modal');
             if (m) m.style.display = 'none';
         };
@@ -6080,6 +6101,11 @@
         };
 
         window.enterExamFromLobby = async function(examNum, opts) {
+            _dgnlSmartModalUserHandled = true;
+            if (_dgnlSmartModalBootTimer) {
+                clearTimeout(_dgnlSmartModalBootTimer);
+                _dgnlSmartModalBootTimer = null;
+            }
             opts = opts || {};
             var targetNum = Number(examNum) || 1;
 
@@ -6300,7 +6326,15 @@
                 isViewingReport = false;
                 document.body.classList.add('dgnl-lobby-active');
                 renderLobbyAll();
-                openSmartRecommendationModal();
+                if (_dgnlSmartModalBootTimer) clearTimeout(_dgnlSmartModalBootTimer);
+                _dgnlSmartModalBootTimer = setTimeout(function() {
+                    _dgnlSmartModalBootTimer = null;
+                    if (_dgnlSmartModalUserHandled) return;
+                    if (!document.body.classList.contains('dgnl-lobby-active')) return;
+                    var cmdBd = document.getElementById('dgnl-cmd-backdrop');
+                    if (cmdBd && cmdBd.classList.contains('is-open')) return;
+                    openSmartRecommendationModal();
+                }, 10000);
             }
 
             if (_bootLockRedirectedFrom) {

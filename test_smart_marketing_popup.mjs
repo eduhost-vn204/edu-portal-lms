@@ -20,10 +20,10 @@ console.log('   ✓ Cú pháp hợp lệ 100% (node -c PASS)\n');
 console.log('2. Kiểm tra cấu trúc index.html:');
 const indexHtml = fs.readFileSync('index.html', 'utf8');
 assert.ok(
-  indexHtml.includes('<script src="smart-marketing-popup.js?v=20261124a"></script>'),
-  'index.html phải nhúng thẻ <script src="smart-marketing-popup.js?v=20261124a"></script>'
+  indexHtml.includes('<script src="smart-marketing-popup.js?v=20261124b"></script>'),
+  'index.html phải nhúng thẻ <script src="smart-marketing-popup.js?v=20261124b"></script>'
 );
-console.log('   ✓ Đã nhúng thẻ script smart-marketing-popup.js?v=20261124a trước </body>');
+console.log('   ✓ Đã nhúng thẻ script smart-marketing-popup.js?v=20261124b trước </body>');
 
 assert.ok(indexHtml.trim().endsWith('</html>'), 'index.html phải có thẻ đóng </html>');
 console.log('   ✓ index.html kết thúc chuẩn xác bằng </html>\n');
@@ -197,7 +197,7 @@ function createMockEnvironment(initialLocalStorage = {}, initialSessionStorage =
   closeP2.click();
   env.runTimers();
 
-  const sess = JSON.parse(env.session.getItem('vlxt_popup_session_guest') || '{}');
+  const sess = JSON.parse(env.session.getItem('vlxt_popup_v3_guest') || '{}');
   assert.strictEqual(sess.p2Dismissed, true, 'session phải lưu p2Dismissed');
   console.log('   ✓ Case 4.3 PASS: Đóng Pop-up 2 -> Lưu sessionStorage p2Dismissed = true');
 }
