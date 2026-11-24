@@ -1,3 +1,24 @@
+## Bàn giao gần nhất (24/11/2026 08:11)
+- **Tích Hợp Thư Viện Chuyển Động Lucian UX/UI Đợt 1 (`assets/lucian-uxui.css`, `auth.js`, `login.html`, `goi-hoc.html`, `huongdan.html`) & Triển Khai Production (`main`)**:
+- **Mục tiêu & Hành vi mới**:
+  1. Cài đặt chính thức Skill `lucian-uxui` (`1.2.0`, 480 thành phần tương tác chuẩn MIT) vào hệ thống và xây dựng `assets/lucian-uxui.css` ánh xạ bộ token `--ux-*` về bảng màu phẳng, sắc nét, tương phản cao EdTech VLXT (hỗ trợ Dark/Light mode & `prefers-reduced-motion: reduce`, **0 AI Glow**).
+  2. `auth.js`: Port menu tài khoản bung lò xo (`#408`) vào `#vlxt-user-widget` / `#vlxt-dropdown` (hỗ trợ phím `ArrowUp`/`ArrowDown`/`Escape`), bổ sung hệ thống toast xếp chồng toàn cục `window.vlxtToast()` (`#435`, kéo ngang đóng), và tối ưu padding navbar ở mobile `375px`.
+  3. `login.html`: Port tab trượt đàn hồi (`#416`), trường mật khẩu kèm mắt SVG đóng/mở & thanh độ mạnh 4 nấc + 3 chip quy tắc (`#404`, giữ ngưỡng 6 ký tự), nút gửi thu gọn xoay/dấu tích xanh (`#438`) và rung thẻ khi lỗi, bảo toàn Google GSI và `const GAS`.
+  4. `goi-hoc.html`: Port công tắc chu kỳ kèm bộ số lăn odometer (`#423`), nút sao chép trong modal VietQR/VNPay tự mở rộng thành `✓ Đã chép` inline kèm `vlxtToast` thay thế `window.alert` (`#008`), tab phương thức thanh toán (`#416`) và FAQ Accordion (`#424`).
+  5. `huongdan.html`: Port lộ trình hướng dẫn 4 bước tương tác (`#042`, lưu tiến độ đọc vào `vlxt_guide_progress_v1`), tab chuyển chế độ `Xem từng bước` / `Xem toàn bộ` (`#416`), FAQ Accordion 5 câu (`#424`), dọn sạch AI Glow cũ và đồng bộ Light/Dark.
+- **Commit & File đã sửa**:
+  - **Student Repo (`antigravity/20261124-lucian-uxui-phase1` → đẩy fast-forward vào `upstream/main` & `origin/main`)**:
+    - `assets/lucian-uxui.css`, `auth.js`, `login.html`, `goi-hoc.html`, `huongdan.html`: `33b5127`.
+    - `PROJECT_STATE.md`: Cập nhật bàn giao triển khai production Đợt 1.
+- **Kiểm tra đã chạy**:
+  - `node --check auth.js`, `git diff --check`, `vm.Script` AST `<script>` inline & kết thúc `</html>`, Zero AI Glow (`0` vi phạm), 0 secret/token URL.
+  - 5 bộ test Student: `test-auth-endpoint.mjs` PASS, `test-trial-soft-unlock.mjs` (`22/22`), `test-quiz-merge.mjs` (`6/6`), `test-quiz-publish.mjs` (`12/12`), `test_cro_funnel.mjs` (`8/8`).
+  - Playwright E2E Desktop `1440×900` & Mobile `375×812` + `prefers-reduced-motion: reduce` + Light/Dark theme PASS 100% và đã duyệt trực quan toàn bộ ảnh chụp PNG.
+- **Điều phải giữ nguyên**:
+  - Giao diện CBT sáng chuẩn Bộ GD&ĐT của `phong-thi-thu.html`, sảnh 3D `index.html`, khung 1 màn hình `danh-gia-nang-luc.html`, lớp bảo vệ Fail-Closed của `auth.js` & `trial-manager.js`.
+- **Việc còn lại**:
+  - Tiếp tục triển khai Đợt 2 (`hoso.html`, `baihoc.html`, `live-record.html`) trên nhánh riêng để Thầy xem duyệt trước.
+
 ## Bàn giao gần nhất (23/11/2026 12:38)
 - **Triển Khai Sảnh Đánh Giá Năng Lực 50 Đề, Pop-up Đề Xuất 3 Tầng, Khóa 1 Đề Đang Làm Dở & Tối Ưu UI/UX Vòng 2 (`danh-gia-nang-luc.html`, `main`)**:
 - **Mục tiêu & Hành vi mới**:
