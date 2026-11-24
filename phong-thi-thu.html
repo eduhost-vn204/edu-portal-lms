@@ -468,10 +468,12 @@
             }
         }
     </style>
+    <script src="vlxt-telemetry.js?v=20261124"></script>
     <script src="auth.js?v=20261124"></script>
     <script src="thongbao.js?v=2"></script>
     <script src="device-id.js?v=1"></script>
     <script src="cache.js?v=1"></script>
+    <script defer src="vlxt-feedback-hub.js?v=20261124"></script>
 <style>
 /* ─── NAVBAR ĐỒNG NHẤT TOÀN HỆ THỐNG ─── */
 .top-bar, nav.navbar, header.hud-header, .top-bar-phongthi {
@@ -957,12 +959,20 @@ function initCandidateInfo() {
         currentUser = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null');
     } catch(e){}
 
-    if (!currentUser) {
-        currentUser = {
-            hoten: 'Thí sinh Thử Nghiệm',
-            lop: 'Khóa XPS 2026',
-            sdt: 'HS-THITHU2026'
-        };
+    var _sdt = currentUser && currentUser.sdt ? String(currentUser.sdt).trim().toUpperCase() : '';
+    if (!currentUser || !_sdt || _sdt === 'FREE' || _sdt === 'HS-THITHU2026') {
+        if (typeof VLXT_CAMPAIGN !== 'undefined' && typeof VLXT_CAMPAIGN.requireAuthOrRedirect === 'function') {
+            if (!VLXT_CAMPAIGN.requireAuthOrRedirect('ptt_enter', 'phong-thi-thu.html')) return;
+        }
+        try {
+            if (window.location && typeof window.location.replace === 'function') {
+                window.location.replace('login.html?from=phong-thi-thu.html&trigger=ptt_enter');
+                return;
+            }
+        } catch(e){}
+    }
+    if (typeof VLXT_TELEMETRY !== 'undefined') {
+        VLXT_TELEMETRY.track('ptt_lobby_enter', { target: 'phong-thi-thu.html', label: 'Phòng Thi Thử CBT' });
     }
 
     // Check if previous simulated session exists
@@ -1271,6 +1281,9 @@ function openVideoModal(rawTitle, rawUrl, examId) {
     const title = decodeURIComponent(rawTitle);
     const url = decodeURIComponent(rawUrl);
     const embedUrl = parseEmbedUrl(url);
+    if (typeof VLXT_TELEMETRY !== 'undefined') {
+        VLXT_TELEMETRY.track('ptt_video_open', { target: String(examId || 'video'), label: title });
+    }
 
     document.getElementById('videoModalTitle').innerHTML = '<i class="fa-solid fa-circle-play" style="color:#f59e0b"></i> ' + title;
     document.getElementById('videoExamMeta').textContent = 'Đề thi: ' + examId + ' · Vật Lý Xuân Trường';

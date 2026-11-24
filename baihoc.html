@@ -3248,6 +3248,7 @@
   }
 }
 </style>
+  <script src="vlxt-telemetry.js?v=20261124"></script>
   <script src="auth.js?v=20261124"></script>
   <script src="trial-manager.js?v=20261109p"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
@@ -3259,13 +3260,24 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <script src="device-id.js?v=1"></script>
   <script>
-        // Auth guard — Hỗ trợ Freemium: Cho phép trải nghiệm Chương 1 & 2 không bắt buộc đăng nhập
+    // Auth guard — Bắt buộc đăng nhập (SĐT) trước khi vào học & trải nghiệm sớm
     (function(){
       var u = null;
-      try { u = JSON.parse(localStorage.getItem('vlxt_user_v2')||'null'); } catch(e){}
-      if (!u) {
-        var guestUser = { hoten: 'Học sinh trải nghiệm', sdt: 'FREE', lop: '12', loaiTK: 'free' };
-        try { localStorage.setItem('vlxt_user_v2', JSON.stringify(guestUser)); } catch(e){}
+      try { u = JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null'); } catch(e){}
+      if (u && String(u.sdt || '').trim().toUpperCase() === 'FREE') {
+        try { localStorage.removeItem('vlxt_user_v2'); } catch(e){}
+        u = null;
+      }
+      if (!u || !u.sdt) {
+        if (typeof VLXT_CAMPAIGN !== 'undefined' && typeof VLXT_CAMPAIGN.requireAuthOrRedirect === 'function') {
+          if (!VLXT_CAMPAIGN.requireAuthOrRedirect('baihoc_enter')) return;
+        }
+        try {
+          if (window.location && typeof window.location.replace === 'function') {
+            var cur = (window.location.pathname.split('/').pop() || 'baihoc.html') + (window.location.search || '') + (window.location.hash || '');
+            window.location.replace('login.html?from=' + encodeURIComponent(cur) + '&trigger=baihoc_enter');
+          }
+        } catch(e){}
       }
     })();
   </script>
@@ -4496,6 +4508,20 @@ function isLessonBlocked(course, key){
 
     const targetLesson = flat[idx];
     const chapterName = targetLesson.chapter || targetLesson.Chuong || '';
+
+    // 0. Phân quyền Khóa Giai đoạn 2/3/4 & Khóa 5 Ngày Lấy Gốc (chỉ mở Bài 1 trong Đợt Trải Nghiệm Sớm)
+    if(!isPaid && typeof VLXT_CAMPAIGN !== 'undefined'){
+        if(course && VLXT_CAMPAIGN.isAdvancedStageCourseName(course.name)){
+            return { blocked: true, reason: 'course_vip_locked', courseName: course.name };
+        }
+        if(course && VLXT_CAMPAIGN.isLayGocCourseName(course.name)){
+            if(VLXT_CAMPAIGN.canAccessLayGocLesson(course.name, idx, targetLesson, user)){
+                return { blocked: false };
+            }
+            return { blocked: true, reason: 'lay_goc_locked', lessonIndex: idx, courseName: course.name };
+        }
+    }
+
     const isFreeChap = (typeof FreemiumFlow !== 'undefined') ? FreemiumFlow.isChapterFree(chapterName) : (
         chapterName.includes('Nhiệt') || chapterName.includes('Khí') || chapterName.includes('Chương 1') || chapterName.includes('Chương 2')
     );
@@ -5103,7 +5129,27 @@ function handleOpenLesson(courseName, lessonKey){
     const blk = isLessonBlocked(course, lessonKey);
 
     if(blk.blocked){
+        if(blk.reason === 'course_vip_locked'){
+            showUpgrade(course.name);
+            return;
+        }
+        if(blk.reason === 'lay_goc_locked'){
+            if(typeof VLXT_TELEMETRY !== 'undefined'){
+                VLXT_TELEMETRY.setConversionTrigger('locked_lay_goc_' + ((blk.lessonIndex || 1) + 1), 'Mở khóa Ngày ' + ((blk.lessonIndex || 1) + 1) + ' — 5 Ngày Lấy Gốc');
+                VLXT_TELEMETRY.track('paywall_hit', { target: lessonKey, label: lesson.name, reason: 'lay_goc_locked', courseName: course.name });
+            }
+            if(typeof FreemiumFlow !== 'undefined' && typeof FreemiumFlow.openUpgradeValueModal === 'function'){
+                FreemiumFlow.openUpgradeValueModal('Khóa 5 Ngày Lấy Gốc: Mở Khóa Ngày 2 – 5 & Full VIP');
+            } else {
+                showUpgrade(course.name);
+            }
+            return;
+        }
         if(blk.reason === 'freemium_chapter_locked'){
+            if(typeof VLXT_TELEMETRY !== 'undefined'){
+                VLXT_TELEMETRY.setConversionTrigger('locked_gd1_chapter', 'Mở khóa ' + (blk.chapterName || lesson.name));
+                VLXT_TELEMETRY.track('paywall_hit', { target: lessonKey, label: lesson.name, reason: 'freemium_chapter_locked', chapterName: blk.chapterName || '' });
+            }
             if(typeof FreemiumFlow !== 'undefined') {
                 FreemiumFlow.openDiagnosticModal('Chương 3 & 4: Mở Khóa Mục Tiêu 8.5+');
             }
@@ -5937,6 +5983,7 @@ function renderLesson(key){
     if(_blkCheck.blocked){
         const _isEmpty = _blkCheck.reason==='empty';
         const _isLimit = _blkCheck.reason==='trial_limit';
+        const _isPaywall = _blkCheck.reason==='freemium_chapter_locked' || _blkCheck.reason==='lay_goc_locked' || _blkCheck.reason==='course_vip_locked';
         let _msg = 'Em cần hoàn thành bài trước để mở khoá bài này.';
         let _icon = 'fa-lock';
         if(_isEmpty){
@@ -5945,11 +5992,28 @@ function renderLesson(key){
         } else if(_isLimit){
             _msg = 'Em đã dùng hết 2/2 bài học mới hôm nay theo hạn mức học thử. Lượt học mới sẽ tự động mở lại vào 00:00 ngày mai (theo giờ Việt Nam). Em vẫn có thể ôn tập các bài đã học bên dưới.';
             _icon = 'fa-hourglass-half';
+        } else if(_blkCheck.reason === 'lay_goc_locked'){
+            _msg = 'Đợt trải nghiệm sớm (25/11 – 05/12) đang mở miễn phí Bài 1 (Ngày 1) của khóa 5 Ngày Lấy Gốc. Em có thể đăng ký giữ suất ưu đãi hoặc nâng cấp VIP để mở khóa trọn bộ Ngày 2 – 5 ngay!';
+            _icon = 'fa-crown';
+        } else if(_blkCheck.reason === 'freemium_chapter_locked'){
+            _msg = 'Chương 3 & Chương 4 nằm trong lộ trình VIP. Đăng ký giữ suất ưu đãi hoặc mở khóa gói Pro để bứt phá mục tiêu 8.5+!';
+            _icon = 'fa-crown';
+        } else if(_blkCheck.reason === 'course_vip_locked'){
+            _msg = 'Đợt trải nghiệm sớm (25/11 – 05/12) đang mở Chương 1–2 GĐ1 và Bài 1 Lấy Gốc. Nâng cấp VIP hoặc giữ suất ưu đãi để mở toàn bộ khóa học!';
+            _icon = 'fa-crown';
+        }
+        if(_isPaywall && typeof VLXT_TELEMETRY !== 'undefined'){
+            VLXT_TELEMETRY.setConversionTrigger(_blkCheck.reason, 'Mở khóa ' + lesson.name);
+            VLXT_TELEMETRY.track('paywall_hit', { target: key, label: lesson.name, reason: _blkCheck.reason, courseName: course.name });
         }
         app().innerHTML=`<div class="empty">
-            <i class="fa-solid ${_icon}" style="font-size:34px;opacity:.5;color:${_isLimit?'#f59e0b':'inherit'}"></i>
+            <i class="fa-solid ${_icon}" style="font-size:34px;opacity:.85;color:${(_isLimit||_isPaywall)?'#f59e0b':'inherit'}"></i>
             <p style="margin-top:10px;font-weight:700">${esc(lesson.name)}</p>
-            <p style="color:var(--sub)">${_msg}</p>
+            <p style="color:var(--sub);max-width:520px;margin:8px auto 0">${_msg}</p>
+            ${_isPaywall ? `<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px">
+                <a href="goi-hoc.html" style="padding:10px 16px;border-radius:10px;background:#0ea5e9;color:#ffffff;font-weight:700;text-decoration:none">🔓 Mua VIP Mở Full Ngay</a>
+                <a href="goi-hoc.html?reserve=1" style="padding:10px 16px;border-radius:10px;background:#0f172a;border:1px solid #334155;color:#f8fafc;font-weight:700;text-decoration:none">📌 Giữ Suất Ưu Đãi</a>
+            </div>` : ''}
             <p style="margin-top:14px">
                 ${_isEmpty?`<a onclick="window.location.href='dua-top.html'" style="cursor:pointer;font-weight:700;color:#fbbf24">👉 Vào Đua Top</a>&nbsp;&nbsp;•&nbsp;&nbsp;`:''}<a onclick="go('#course/${encodeURIComponent(course.name)}')">← Về danh sách bài học</a>
             </p>
@@ -5967,6 +6031,7 @@ function renderLesson(key){
       (typeof window !== 'undefined' && (new URLSearchParams(window.location.search).get('remedial') === '1' || sessionStorage.getItem('vlxt_remedial_active') === '1'));
     const _isFreeChapter = course && (
       (course.name && (course.name.includes('Chương 1') || course.name.includes('Chương 2') || course.name.includes('Vật Lý Nhiệt') || course.name.includes('Khí Lí Tưởng'))) ||
+      (typeof VLXT_CAMPAIGN !== 'undefined' && VLXT_CAMPAIGN.isLayGocCourseName(course.name) && typeof flatLessons === 'function' && flatLessons(course).findIndex(l => l.key === key) === 0) ||
       (typeof flatLessons === 'function' && flatLessons(course).findIndex(l => l.key === key) < 14)
     );
 
@@ -5974,6 +6039,20 @@ function renderLesson(key){
         if (!window._trialGrantedLessons) window._trialGrantedLessons = new Set();
         window._trialGrantedLessons.add(key);
         window._trialActiveGrantedLesson = key;
+    }
+    if (typeof VLXT_TELEMETRY !== 'undefined') {
+        VLXT_TELEMETRY.setContext({
+            courseName: course ? course.name : '',
+            chapterName: chapter ? chapter.name : '',
+            lessonKey: key,
+            lessonTitle: lesson ? lesson.name : ''
+        });
+        VLXT_TELEMETRY.track('lesson_open', {
+            target: key,
+            label: lesson ? lesson.name : key,
+            courseName: course ? course.name : '',
+            chapterName: chapter ? chapter.name : ''
+        });
     }
 
     const _sessionGranted = (typeof window !== 'undefined' && window._trialGrantedLessons && window._trialGrantedLessons.has(key));
@@ -7879,6 +7958,9 @@ function vqSubmitTF(){
         if(row) row.classList.add(ok?'result-correct':'result-wrong');
     });
     if(!allAnswered){ toast('<i class="fa-solid fa-triangle-exclamation"></i> Chọn Đúng/Sai cho đủ cả 4 ý nhé!','err'); return; }
+    if (typeof VLXT_TELEMETRY !== 'undefined') {
+        VLXT_TELEMETRY.track('video_quiz_answer', { target: _vqKey || 'vq', qType: 'tf', ok: !!allRight, checkpointIdx: _vqActive });
+    }
     if(allRight){
         document.querySelectorAll('#vq-panel input[type=radio]').forEach(r=>r.disabled=true);
         _vqMarkCorrect(cp);
@@ -7907,6 +7989,9 @@ function vqSubmitShort(){
     const val = inp?inp.value:'';
     if(!val.trim()){ toast('<i class="fa-solid fa-triangle-exclamation"></i> Em chưa nhập đáp án!','err'); return; }
     const ok = normNum(val)!=='' && normNum(val)===normNum(cp.correct||'');
+    if (typeof VLXT_TELEMETRY !== 'undefined') {
+        VLXT_TELEMETRY.track('video_quiz_answer', { target: _vqKey || 'vq', qType: 'short', ok: !!ok, checkpointIdx: _vqActive });
+    }
     if(inp) inp.classList.remove('result-correct','result-wrong');
     if(ok){
         if(inp){ inp.classList.add('result-correct'); inp.disabled=true; }
@@ -8477,6 +8562,7 @@ function isStarted(courseName){
 
 function isUserPaidProOrPremium(u){
     const user = u || (typeof vlxtGetUser === 'function' ? vlxtGetUser() : (JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null')));
+    if(typeof VLXT_CAMPAIGN !== 'undefined' && typeof VLXT_CAMPAIGN.hasFullAccess === 'function' && VLXT_CAMPAIGN.hasFullAccess(user)) return true;
     const rawTier = String((user && user.loaiTK) || '').trim().toLowerCase();
     if(rawTier === 'pro' || rawTier === 'premium') return true;
     if(user && user.isPaid === true && (!user.proExpiry || Number(user.proExpiry) > Date.now())) return true;
@@ -8498,6 +8584,17 @@ function hasCourseTierAccess(cfg, u){
 }
 
 function canAccess(courseName){
+    if(!isTestAccount() && !isUserPaidProOrPremium() && typeof VLXT_CAMPAIGN !== 'undefined'){
+        const _user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : null);
+        const _ea = typeof VLXT_CAMPAIGN.getUserEarlyAccessState === 'function' ? VLXT_CAMPAIGN.getUserEarlyAccessState(_user) : null;
+        if(VLXT_CAMPAIGN.isAdvancedStageCourseName(courseName)){
+            return false;
+        }
+        if(_ea && _ea.active && (VLXT_CAMPAIGN.isLayGocCourseName(courseName) || VLXT_CAMPAIGN.isGd1CourseName(courseName))){
+            const cfgEa = getCourseConfig(courseName);
+            if(!cfgEa || (cfgEa.trangThai !== 'closed' && cfgEa.daKhaiGiang !== false)) return true;
+        }
+    }
     const cfg = getCourseConfig(courseName);
     if(!cfg) return true;
     if(cfg.trangThai === 'closed') return false;
@@ -8508,6 +8605,16 @@ function canAccess(courseName){
 function tierLabel(courseName){
     const cfg = getCourseConfig(courseName);
     if(!cfg || cfg.trangThai === 'closed') return '🔒 Khoá học chưa mở';
+    if(!isTestAccount() && !isUserPaidProOrPremium() && typeof VLXT_CAMPAIGN !== 'undefined'){
+        const _user = (typeof vlxtGetUser === 'function' ? vlxtGetUser() : null);
+        const _ea = typeof VLXT_CAMPAIGN.getUserEarlyAccessState === 'function' ? VLXT_CAMPAIGN.getUserEarlyAccessState(_user) : null;
+        if(VLXT_CAMPAIGN.isAdvancedStageCourseName(courseName)){
+            return '🔒 Khóa VIP · Chưa mở ở đợt Sớm';
+        }
+        if(_ea && _ea.active && cfg.daKhaiGiang !== false && (VLXT_CAMPAIGN.isLayGocCourseName(courseName) || VLXT_CAMPAIGN.isGd1CourseName(courseName))){
+            return '';
+        }
+    }
     const allowed = (cfg.loaiTK||'free,vip,premium').split(',').map(s=>s.trim().toLowerCase());
 
     // 1) Ưu tiên kiểm tra điều kiện phân hạng tài khoản trước
@@ -8527,13 +8634,24 @@ function tierLabel(courseName){
 function showUpgrade(courseName){
     const msg = tierLabel(courseName);
     const cfg = getCourseConfig(courseName);
+    const isAdvLocked = !isTestAccount() && !isUserPaidProOrPremium() && typeof VLXT_CAMPAIGN !== 'undefined' && VLXT_CAMPAIGN.isAdvancedStageCourseName(courseName);
 
-    // Nếu chưa đủ phân hạng tài khoản -> luôn hiện thông báo nâng hạng
-    if(!hasCourseTierAccess(cfg)){
+    if(typeof VLXT_TELEMETRY !== 'undefined'){
+        VLXT_TELEMETRY.setConversionTrigger('locked_course', 'Mở khóa ' + (courseName || 'khóa học VIP'));
+        VLXT_TELEMETRY.track('paywall_hit', { target: courseName || 'course', label: courseName || 'Khóa học VIP', reason: isAdvLocked ? 'advanced_stage_locked' : 'course_tier_locked' });
+    }
+
+    // Nếu chưa đủ phân hạng tài khoản hoặc bị khóa giai đoạn trong đợt trải nghiệm sớm -> luôn hiện thông báo nâng hạng
+    if(isAdvLocked || !hasCourseTierAccess(cfg)){
         app().innerHTML=`<div class="empty">
             <i class="fa-solid fa-crown" style="font-size:40px;color:#d97706;margin-bottom:16px"></i>
-            <p style="font-size:18px;font-weight:700">${msg || '💎 Cần tài khoản Premium'}</p>
-            <p style="color:var(--muted)">Liên hệ thầy Trường qua Zalo hoặc nâng cấp Gói Pro để truy cập khoá học này.</p>
+            <p style="font-size:18px;font-weight:700">${isAdvLocked ? '🔒 Khóa học VIP (Chưa mở trong đợt Trải Nghiệm Sớm)' : (msg || '💎 Cần tài khoản VIP / Pro')}</p>
+            <p style="color:var(--muted);max-width:540px;margin:8px auto 0">Đợt Trải Nghiệm Sớm (25/11 – 05/12) đang mở miễn phí Chương 1 &amp; 2 Giai đoạn 1 và Bài 1 khóa Lấy Gốc. Em có thể nâng cấp VIP mở khóa full ngay hoặc đăng ký giữ suất ưu đãi.</p>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:16px 0">
+                <a href="goi-hoc.html" style="padding:10px 16px;border-radius:10px;background:#0ea5e9;color:#ffffff;font-weight:700;text-decoration:none">🔓 Mua VIP Mở Full</a>
+                <a href="goi-hoc.html?reserve=1" style="padding:10px 16px;border-radius:10px;background:#0f172a;border:1px solid #334155;color:#f8fafc;font-weight:700;text-decoration:none">📌 Giữ Suất Ưu Đãi</a>
+                <a href="https://zalo.me/0964885920" target="_blank" rel="noopener" style="padding:10px 16px;border-radius:10px;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.35);color:#38bdf8;font-weight:700;text-decoration:none">💬 Zalo Thầy (0964.885.920)</a>
+            </div>
             <p><a href="baihoc.html#home" onclick="go('#home');return false;" style="cursor:pointer;color:var(--blue)">← Về danh sách khoá học</a></p>
         </div>`;
         return;
@@ -8739,6 +8857,7 @@ const DEMO_ROWS = [
 window.addEventListener('DOMContentLoaded', init);
 </script>
 <script src="hoat-dong.js?v=1"></script>
+<script defer src="vlxt-feedback-hub.js?v=20261124"></script>
 <script src="huongdan-popup.js?v=1"></script>
 <script>
 // ── TIỆN ÍCH ĐIỀU HƯỚNG DRAWER & CUỘN BÀI TẬP ──

@@ -2522,9 +2522,15 @@ svg.logo-atom-icon,
     </a>
 
     <div class="footer-contact">
-      <a href="https://zalo.me/0904537176" target="_blank" class="footer-contact-item">
-        <i class="fa-solid fa-comment-dots"></i> Zalo: 0904537176
+      <a href="https://zalo.me/0964885920" target="_blank" rel="noopener" class="footer-contact-item" onclick="try{if(window.VLXT_TELEMETRY)window.VLXT_TELEMETRY.track('zalo_teacher_click',{source:'footer'});}catch(e){}">
+        <i class="fa-solid fa-comment-dots"></i> Zalo Thầy: 0964.885.920
       </a>
+      <a href="https://zalo.me/g/str1pllhp4uxa3rtvnou" target="_blank" rel="noopener" class="footer-contact-item" onclick="try{if(window.VLXT_TELEMETRY)window.VLXT_TELEMETRY.track('zalo_group_click',{source:'footer'});}catch(e){}">
+        <i class="fa-solid fa-users"></i> Nhóm Zalo Web VLXT
+      </a>
+      <button type="button" class="footer-contact-item" style="background:none;border:none;cursor:pointer;font-family:inherit" onclick="if(typeof vlxtOpenFeedbackHub==='function')vlxtOpenFeedbackHub('bug')">
+        <i class="fa-solid fa-bug"></i> Báo lỗi &amp; Góp ý
+      </button>
       <a href="mailto:vatlyxuantruong@gmail.com" class="footer-contact-item">
         <i class="fa-solid fa-envelope"></i> vatlyxuantruong@gmail.com
       </a>
@@ -2543,8 +2549,9 @@ svg.logo-atom-icon,
 </div>
 
 <!-- SCRIPTS HỆ THỐNG CỦA VLXT -->
+<script src="vlxt-telemetry.js?v=20261124"></script>
 <script src="auth.js?v=20261124"></script>
-<script src="ho-tro-chat.js?v=1"></script>
+<script defer src="vlxt-feedback-hub.js?v=20261124"></script>
 <script src="cache.js?v=1"></script>
 <!-- THƯ VIỆN ĐỒ HỌA THREE.JS VÀ HIỆU ỨNG GSAP (LOCAL VENDOR - KHÔNG BAO GIỜ LỖI CACHE/OFFLINE) -->
 <script src="vendor/three.min.js"></script>
@@ -5301,6 +5308,15 @@ function triggerWarp(tm) {
   currentState = 'WARPING';
   selectedUrl = tm.data.link;
   activeTarget = tm;
+  try {
+    if (window.VLXT_TELEMETRY) {
+      window.VLXT_TELEMETRY.track('portal_click', {
+        target: tm.data.link,
+        label: tm.data.title || tm.data.label || tm.data.link
+      });
+      window.VLXT_TELEMETRY.flush(true);
+    }
+  } catch (e) {}
 
   var isBH = (tm.data.celestialType === 'blackhole');
   var isNS = (tm.data.celestialType === 'neutron');

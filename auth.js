@@ -16,13 +16,27 @@ function vlxtSyncRootThemeAttr(){
 function vlxtEnsureLucianTokens(){
   try{
     if(typeof document === 'undefined' || !document.head) return;
-    if(window.location.pathname.includes('thithu.html') || window.location.pathname.includes('phong-thi-thu.html')) return;
-    if(document.getElementById('vlxt-lucian-tokens')) return;
-    var link = document.createElement('link');
-    link.id = 'vlxt-lucian-tokens';
-    link.rel = 'stylesheet';
-    link.href = 'assets/lucian-uxui.css?v=20261124';
-    document.head.appendChild(link);
+    if(!window.location.pathname.includes('thithu.html') && !window.location.pathname.includes('phong-thi-thu.html')){
+      if(!document.getElementById('vlxt-lucian-tokens')){
+        var link = document.createElement('link');
+        link.id = 'vlxt-lucian-tokens';
+        link.rel = 'stylesheet';
+        link.href = 'assets/lucian-uxui.css?v=20261124';
+        document.head.appendChild(link);
+      }
+    }
+    if(typeof window.VLXT_TELEMETRY === 'undefined' && !document.querySelector('script[src*="vlxt-telemetry.js"]')){
+      var st = document.createElement('script');
+      st.src = 'vlxt-telemetry.js?v=20261124';
+      st.defer = true;
+      document.head.appendChild(st);
+    }
+    if(typeof window.vlxtOpenFeedbackHub !== 'function' && !document.querySelector('script[src*="vlxt-feedback-hub.js"]')){
+      var sf = document.createElement('script');
+      sf.src = 'vlxt-feedback-hub.js?v=20261124';
+      sf.defer = true;
+      document.head.appendChild(sf);
+    }
   }catch(e){}
 }
 
@@ -440,8 +454,12 @@ function vlxtRenderWidget(user){
     (loaiTK === 'vip' && daysLeft > 8) ||
     (typeof localStorage !== 'undefined' && localStorage.getItem('vlxt_is_paid') === 'true')
   );
+  const eaState = (typeof window !== 'undefined' && window.VLXT_CAMPAIGN && typeof window.VLXT_CAMPAIGN.getUserEarlyAccessState === 'function')
+    ? window.VLXT_CAMPAIGN.getUserEarlyAccessState(user)
+    : null;
   const vipBadge = loaiTK === 'premium' ? '<span class="vlxt-pill-badge pro">💎 VIP</span>'
     : isPaidLocal ? '<span class="vlxt-pill-badge pro">👑 PRO</span>'
+    : (eaState && eaState.active && !eaState.isLegacyTrial) ? '<span class="vlxt-pill-badge pro" style="white-space:nowrap">⏳ Sớm 7d</span>'
     : (loaiTK === 'vip' && msLeft > 0) ? `<span class="vlxt-pill-badge pro">⭐ ${daysLeft}d</span>`
     : '<span class="vlxt-pill-badge free">Free</span>';
 
@@ -490,7 +508,9 @@ function vlxtRenderWidget(user){
     +'<button type="button" class="vlxt-theme-btn vlxt-dd-item" role="menuitem" style="--i:2" id="vlxt-theme-btn" onclick="vlxtToggleTheme(event)">'+_themeLabel+'</button>'
     +'<div class="vlxt-nav-links" style="--i:3">'
     +'<a href="hoso.html" class="vlxt-nav-link vlxt-dd-item" role="menuitem" style="color:#38bdf8;font-weight:700">👤 Hồ sơ cá nhân</a>'
-    +(isPaidLocal ? '<a href="goi-hoc.html" class="vlxt-nav-link vlxt-dd-item" role="menuitem" style="color:#34d399;font-weight:700">👑 Gói Pro đang dùng</a>' : '<a href="goi-hoc.html" class="vlxt-nav-link vlxt-dd-item" role="menuitem" style="color:#fbbf24;font-weight:700">⭐ Nâng cấp Gói Pro (50k)</a>')
+    +(isPaidLocal ? '<a href="goi-hoc.html" class="vlxt-nav-link vlxt-dd-item" role="menuitem" style="color:#34d399;font-weight:700">👑 Gói Pro đang dùng</a>' : '<a href="goi-hoc.html" class="vlxt-nav-link vlxt-dd-item" role="menuitem" style="color:#fbbf24;font-weight:700">⭐ Giữ suất / Nâng cấp VIP</a>')
+    +'<a href="https://zalo.me/g/str1pllhp4uxa3rtvnou" target="_blank" rel="noopener" class="vlxt-nav-link vlxt-dd-item" role="menuitem" style="color:#60a5fa;font-weight:700" onclick="try{if(window.VLXT_TELEMETRY)window.VLXT_TELEMETRY.track(\'zalo_group_click\',{source:\'nav_dropdown\'});}catch(e){}">👥 Nhóm Zalo Thành Viên Web</a>'
+    +'<button type="button" class="vlxt-nav-link vlxt-dd-item" role="menuitem" style="width:100%;background:none;border:none;text-align:left;cursor:pointer;font-family:inherit" onclick="vlxtCloseDropdown(false);if(typeof vlxtOpenFeedbackHub===\'function\'){vlxtOpenFeedbackHub(\'bug\');}">🛠️ Báo lỗi · Góp ý · Zalo Thầy</button>'
     +'<a href="huongdan.html" class="vlxt-nav-link vlxt-dd-item" role="menuitem">🧭 Hướng dẫn học tập</a>'
     +'</div><hr class="vlxt-divider" style="--i:4">'
     +'<button type="button" class="vlxt-logout-btn vlxt-dd-item" role="menuitem" style="--i:5" onclick="vlxtLogout()">↩ Đăng xuất</button>'
@@ -620,12 +640,14 @@ function vlxtRenderWidget(user){
 // Click khi là Khách trải nghiệm
 window.vlxtHandleGuestClick = function(e) {
   if (e) e.stopPropagation();
+  try {
+    if (window.VLXT_TELEMETRY) window.VLXT_TELEMETRY.setConversionTrigger('nav_guest_pill', 'Bấm nút Khách trải nghiệm trên thanh điều hướng');
+  } catch (err) {}
   if (typeof vlxtShowLoginModal === 'function') {
     vlxtShowLoginModal();
   } else {
-    var g = document.getElementById('gate');
-    if (g) g.style.display = 'flex';
-    else window.location.href = 'login.html';
+    var fromUrl = (window.location.pathname.split('/').pop() || 'index.html') + (window.location.search || '') + (window.location.hash || '');
+    window.location.href = 'login.html?from=' + encodeURIComponent(fromUrl) + '&trigger=nav_guest_pill';
   }
 };
 
@@ -697,6 +719,8 @@ function vlxtEnsureGlobalDrawer() {
       '    <a href="huongdan.html"' + (curPath === 'huongdan.html' ? ' class="active"' : '') + '>🧭 Hướng Dẫn Học</a>',
       '    <a href="goi-hoc.html"' + (curPath === 'goi-hoc.html' ? ' class="active"' : '') + ' style="color:#fbbf24;font-weight:700">' + (isPaid ? '👑 Gói Pro Đang Bật' : '⭐ Gói Pro (50k/Tháng)') + '</a>',
       '    <a href="hoso.html"' + (curPath === 'hoso.html' ? ' class="active"' : '') + ' style="font-weight:700;color:#38bdf8">👤 Hồ Sơ Cá Nhân</a>',
+      '    <a href="https://zalo.me/g/str1pllhp4uxa3rtvnou" target="_blank" rel="noopener" style="color:#60a5fa;font-weight:700" onclick="try{if(window.VLXT_TELEMETRY)window.VLXT_TELEMETRY.track(\'zalo_group_click\',{source:\'mobile_drawer\'});}catch(e){}">👥 Nhóm Zalo Thành Viên Web</a>',
+      '    <a href="javascript:void(0)" onclick="toggleNavDrawer(false);if(typeof vlxtOpenFeedbackHub===\'function\')vlxtOpenFeedbackHub(\'bug\')">🛠️ Báo lỗi · Góp ý · Zalo Thầy</a>',
       '  </div>',
       '</aside>'
     ].join('\n');

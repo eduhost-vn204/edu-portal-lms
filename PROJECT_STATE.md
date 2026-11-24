@@ -1,3 +1,31 @@
+## Bàn giao gần nhất (24/11/2026 16:36)
+- **Chiến Dịch Trải Nghiệm Sớm VIP (25/11–05/12, Đếm Ngược 7 Ngày) + Hệ Thống Telemetry Hành Vi & Phản Hồi Toàn Trang + Trung Tâm Phân Tích Admin (Feature Branches — Chờ Thầy Nghiệm Thu Preview Cục Bộ)**:
+- **Trạng thái**: `VERIFY` — Sẵn sàng trên 2 feature branches + 2 local HTTP preview servers (`127.0.0.1:8791` Student & `127.0.0.1:8792` Admin); **chưa merge/push `main`**, **chưa deploy GAS**.
+- **Hành vi mới phía Student (`early_access_telemetry` — branch `antigravity/20261124-early-access-telemetry`)**:
+  1. **Core Telemetry & Campaign Engine (`vlxt-telemetry.js`)**:
+     - Chiến dịch `2026-11-25T00:00:00+07:00` → `2026-12-05T23:59:59+07:00` (`durationDays: 7`), đồng bộ cấu hình từ xa qua Firebase RTDB `support_chats/_vlxt_system/campaign_config.json`.
+     - Bảo toàn quyền nguyên vẹn cho **tài khoản trả phí** (`pro`/`premium`/`isPaid:true`/`vip > 8 ngày`) và **tài khoản đã đăng ký trước chiến dịch** (`isLegacyPreCampaignTrial` trước `2026-11-24T15:00:00+07:00`) + `TEST_ACCOUNTS`.
+     - Telemetry tự động ghi: phiên, thời gian đọc thực tế (`activeSec` mỗi `15s` + `visibilitychange` + `pagehide` `keepalive`), bối cảnh (`courseName`, `lessonTitle`, `examNumber`, `questionNum`), Live Presence (`<= 2 phút`), phễu chuyển đổi & trigger (`setConversionTrigger`), click Nhóm Zalo / Zalo Thầy, lỗi JS runtime, và API gửi Giữ Suất VIP + Báo lỗi/Góp ý.
+  2. **Hub Báo Lỗi · Đóng Góp · Zalo Thầy toàn hệ thống (`vlxt-feedback-hub.js`, cầu nối `ho-tro-chat.js` & `hoat-dong.js`)**:
+     - Phủ 100% trang Student dưới dạng nút nổi phẳng EdTech (Zero AI Glow; `z-index` cao hơn overlay pop-up; góc trái dưới ở màn thi `danh-gia-nang-luc.html` để không đè nút Nộp bài; tự thích nghi nền sáng CBT trên `phong-thi-thu.html`).
+     - Gồm 3 tab: **🐞 Báo lỗi** (tự đính kèm URL, khóa/bài học, đề/câu số, thiết bị, lỗi JS gần nhất), **💡 Đóng góp ý kiến**, và **💬 Zalo Thầy (`0964.885.920` · `https://zalo.me/0964885920`)** + link **Nhóm Zalo Web (`https://zalo.me/g/str1pllhp4uxa3rtvnou`)**. Thống nhất thay toàn bộ số Zalo cũ (`0904537176`, `0964.885.924`, `0987.654.321`) sang `0964.885.920`.
+  3. **Bắt buộc đăng nhập & Ma trận phân quyền Trải Nghiệm Sớm**:
+     - Chuyển hướng khách chưa đăng nhập (`!u || !u.sdt || u.sdt === 'FREE'`) về `login.html?from=...&trigger=...` khi vào `baihoc.html`, `danhsach-ly12.html`, `phong-thi-thu.html`, `thithu.html`, `hoso.html`, `hoso-hud.html`, `solo.html`, `dau-thuong.html`, `dau-thuong-hud.html`, `dua-top.html`, `trochoi.html`, hoặc khi bấm vào làm đề trong `danh-gia-nang-luc.html`. Giữ công khai `index.html`, `login.html`, `huongdan.html`, `goi-hoc.html`, và **bảo toàn 100% Guest Access cho `live-record.html`**.
+     - `baihoc.html`: Tài khoản Trải Nghiệm Sớm mở mượt **Chương 1 & 2 GĐ1**, mở **chỉ Bài 1 (Ngày 1)** trong `5 NGÀY LẤY GỐC VẬT LÍ` (`idx === 0`, khóa Ngày 2–5 với `lay_goc_locked`), khóa Chương 3–4 GĐ1 (`freemium_chapter_locked`) và khóa các khóa GĐ2/GĐ3/GĐ4 (`course_vip_locked`).
+     - `danh-gia-nang-luc.html`: Mở **Đề 01–05**, khóa **Đề 06–50** (hiển thị cả 2 nút **Mua VIP Mở Full** và **📌 Giữ Suất Ưu Đãi**), bảo toàn khóa boot 10s (`dgnl-boot-grace`) và One-Frame Zero-Scroll (`scrollH <= 730` ở `1536×730`).
+     - `phong-thi-thu.html`: Mở cho tài khoản đã đăng nhập trong đợt Trải Nghiệm Sớm, bảo toàn **100% giao diện sáng CBT chuẩn Bộ GD&ĐT** (`data-theme="light"`).
+     - `goi-hoc.html` + `freemium-flow.js`: Hỗ trợ song song **Mua ngay / Mở full VIP (VietQR / VNPay)** và **📌 Đăng ký giữ suất ưu đãi sớm (`#reserve-vip-modal` + `?reserve=1`)**.
+     - Sau khi đăng ký / đăng nhập mới (`login.html` → `index.html` / trang học) + trong menu tài khoản (`auth.js`) + `hoso.html` + `index.html` footer: đề xuất tham gia **Nhóm Zalo Thành Viên Web**.
+- **Hành vi mới phía Admin (`admin_analytics_hub` — branch `antigravity/20261124-admin-analytics-hub`)**:
+  1. `phan-tich-hanh-vi.html`: Trung tâm Điều khiển Chiến dịch (bật/tắt từ xa, chỉnh ngày & đếm ngược 7 ngày), 6 KPI thời gian thực, 6 tab (Tổng quan & Hành vi + Chart.js dwell/triggers + Drop-off Funnel + Live Online, Chi tiết Môn/Đề/Sự kiện, Hành trình từng HS kèm nút Zalo HS, Danh sách Giữ Suất VIP kèm xuất Excel & cập nhật trạng thái, Hộp thư Báo lỗi/Góp ý kèm Auto-Context & ghi chú Thầy, Lỗi JS & Nhật ký Admin), bảo toàn `quan-ly-live.html` trong `.drawer-nav`.
+  2. `assets/admin-telemetry.js`: Ghi nhận thao tác quản trị & lỗi JS về `admin_audit` (tuyệt đối lọc bỏ `adminKey`/secret) và hiện badge số phản hồi mở + giữ suất mới trên menu Admin.
+  3. Lọc node hệ thống `_vlxt_*` ra khỏi danh sách thread chat và unread badge trên cả **12 trang Admin** đọc `support_chats`; gắn banner điều hướng & link từ `index.html` và `ho-tro-hoc-tap.html`.
+- **Kiểm tra đã chạy sau lần sửa cuối**:
+  - `node --check` trên tất cả 7 file JS + `vm.Script` AST toàn bộ inline `<script>` và thẻ `</html>` trên 34 file HTML (19 Student + 15 Admin), `git diff --check` sạch, `0` AI Glow trong code/diff mới, `0` secret leak, `0` số điện thoại cũ còn sót.
+  - Student Node suites PASS (`10/10` suite hiện hành: `test_early_access_and_telemetry.mjs`, `test_cro_funnel.mjs`, `test_diagnostic_mastery_loop.mjs`, `test_remedial_and_prediction.mjs`, `test_smart_marketing_popup.mjs`, `test_wrong_bank.mjs`, `scripts/test-quiz-merge.mjs`, `scripts/test-quiz-publish.mjs`, `scripts/test-trial-soft-unlock.mjs`, `scripts/test-live-record-guest.mjs`; riêng `scripts/test-b11-publish.mjs` có assertion snapshot cũ `41` bài so với `42` bài đang có ở `data/baihoc.json`).
+  - Admin Node suites PASS (`2/2`: `scripts/test-apps-script-logic.mjs`, `scripts/test-sidebar-consistency.mjs` 15/15 file).
+  - Playwright E2E `pw_verify_early_access_system.py` PASS trên Desktop `1536×730` & Mobile `390×844` (0 JS `pageerror`), kiểm định trực quan PNG xác nhận `5 NGÀY LẤY GỐC` mở được ở Sảnh khóa học, `Đề 01` One-Frame vừa khung, `phong-thi-thu.html` giữ sáng CBT, Admin hub sạch sẽ & đã dọn dữ liệu test `0900009991` trên Firebase.
+
 ## Bàn giao gần nhất (24/11/2026 11:38)
 - **Khóa Boot 10s Ở Sảnh ĐGNL Kèm Phá Cache & Hiệu Ứng Đường Sáng Quét Chéo Cho Hố Đen/Sao Neutron (`main`)**:
 - **Mục tiêu & Hành vi mới**:

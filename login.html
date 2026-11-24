@@ -342,6 +342,9 @@ svg.logo-atom-icon,
     <span class="logo">⚛️</span>
     <div class="card-title">Vật Lý Xuân Trường</div>
     <div class="card-sub">Đăng nhập để học và lưu tiến độ</div>
+    <div style="margin-top:10px;padding:7px 11px;border-radius:10px;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.35);font-size:12px;color:#fbbf24;font-weight:700;line-height:1.45;">
+      ⏳ Đợt Trải Nghiệm Sớm (25/11–05/12): Đăng nhập / Đăng ký SĐT để mở 7 ngày học thử + Nhóm Zalo Web
+    </div>
   </div>
   <div class="tabs-wrap">
     <div class="tabs u416-tl" id="auth-tablist" role="tablist" aria-label="Chế độ tài khoản">
@@ -609,7 +612,13 @@ async function doLogin() {
     const d = await r.json();
     if (d.ok) {
       localStorage.setItem('vlxt_user_v2', JSON.stringify(d.user));
-      try{ if(typeof vlxtLog==='function') vlxtLog('Đăng nhập','Bằng SĐT + mật khẩu'); }catch(e){}
+      try{
+        if(typeof vlxtLog==='function') vlxtLog('Đăng nhập','Bằng SĐT + mật khẩu');
+        if(window.VLXT_TELEMETRY){
+          window.VLXT_TELEMETRY.track('auth_login_success',{target:'phone_password',label:d.user.hoten||sdt});
+          await window.VLXT_TELEMETRY.flush(true);
+        }
+      }catch(e){}
       setMorphBtnState(btn, 'ok');
       showMsg('login-msg','success','Đăng nhập thành công! Đang chuyển trang...');
       setTimeout(() => { window.location.href = getRedirect(); }, 750);
@@ -642,10 +651,25 @@ async function doRegister() {
     const d = await r.json();
     if (d.ok) {
       localStorage.setItem('vlxt_user_v2', JSON.stringify(d.user));
+      try {
+        localStorage.setItem('vlxt_just_registered', '1');
+        if (window.VLXT_TELEMETRY) {
+          var trig = window.VLXT_TELEMETRY.getConversionTrigger();
+          window.VLXT_TELEMETRY.track('auth_register_success', {
+            target: 'phone_password',
+            label: hoten + ' (' + lop + ')',
+            trigger: trig.trigger,
+            meta: { lop: lop, sdt: sdt }
+          });
+          await window.VLXT_TELEMETRY.flush(true);
+        }
+      } catch(e) {}
       const daysLeft = d.user.trialExpiry ? Math.ceil((d.user.trialExpiry - Date.now()) / 86400000) : 7;
       setMorphBtnState(btn, 'ok');
-      showMsg('reg-msg','success',`Tạo tài khoản thành công! Bạn có ${daysLeft} ngày VIP dùng thử miễn phí 🎉`);
-      setTimeout(() => { window.location.href = 'index.html?welcome=1'; }, 1400);
+      showMsg('reg-msg','success',`Tạo tài khoản thành công! Bạn có ${daysLeft} ngày Trải nghiệm sớm + link Nhóm Zalo Web 🎉`);
+      const nextUrl = getRedirect();
+      const targetHref = (nextUrl && nextUrl !== 'index.html') ? nextUrl : 'index.html?welcome=1';
+      setTimeout(() => { window.location.href = targetHref; }, 1200);
       return;
     } else {
       if (d.code === 'device_used') {
@@ -697,7 +721,13 @@ async function handleGoogleCredential(response) {
         showSetupModal(user, user.hoten);
       } else {
         localStorage.setItem('vlxt_user_v2', JSON.stringify(user));
-        try{ if(typeof vlxtLog==='function') vlxtLog('Đăng nhập','Bằng Google'); }catch(e){}
+        try{
+          if(typeof vlxtLog==='function') vlxtLog('Đăng nhập','Bằng Google');
+          if(window.VLXT_TELEMETRY){
+            window.VLXT_TELEMETRY.track('auth_login_success',{target:'google',label:user.hoten||user.sdt});
+            await window.VLXT_TELEMETRY.flush(true);
+          }
+        }catch(e){}
         window.location.href = getRedirect();
       }
     } else {
@@ -728,14 +758,22 @@ async function confirmSetup() {
   if (!lop)   { document.getElementById('setup-msg').textContent = 'Vui lòng nhập lớp!'; return; }
   const user = { ...window._pendingUser, hoten, lop };
   localStorage.setItem('vlxt_user_v2', JSON.stringify(user));
-  try{ if(typeof vlxtLog==='function') vlxtLog('Đăng nhập','Bằng Google (lần đầu, lớp '+lop+')'); }catch(e){}
+  try{
+    localStorage.setItem('vlxt_just_registered', '1');
+    if(typeof vlxtLog==='function') vlxtLog('Đăng nhập','Bằng Google (lần đầu, lớp '+lop+')');
+    if(window.VLXT_TELEMETRY){
+      window.VLXT_TELEMETRY.track('auth_register_success',{target:'google_first',label:hoten+' ('+lop+')',meta:{lop:lop}});
+      await window.VLXT_TELEMETRY.flush(true);
+    }
+  }catch(e){}
   // Cập nhật lên Sheets
   try {
     await fetch(GAS, { method:'POST', mode:'cors',
       headers:{'Content-Type':'text/plain;charset=utf-8'},
       body: JSON.stringify({ action:'updateaccount', sdt: user.sdt, hoten: hoten, lop: lop, token: user.token }) });
   } catch(e) {}
-  window.location.href = getRedirect();
+  const nextUrl = getRedirect();
+  window.location.href = (nextUrl && nextUrl !== 'index.html') ? nextUrl : 'index.html?welcome=1';
 }
 
 function switchGoogleAccount(e) {
@@ -802,7 +840,7 @@ if (typeof google !== 'undefined' && google.accounts) {
     <h3>Đã hết thời gian học thử</h3>
     <p id="dbm-text">Thiết bị này đã dùng hết thời gian học thử.</p>
     <div class="dbm-links">
-      <a class="dbm-link zalo" href="https://zalo.me/0904537176" target="_blank" rel="noopener">💬 Nhắn Zalo thầy</a>
+      <a class="dbm-link zalo" href="https://zalo.me/0964885920" target="_blank" rel="noopener">💬 Nhắn Zalo thầy (0964.885.920)</a>
       <a class="dbm-link tiktok" href="https://www.tiktok.com/@vatlyxuantruong?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">🎵 TikTok thầy</a>
     </div>
     <button class="dbm-close" onclick="closeDeviceBlockedModal()">Đóng</button>
@@ -811,7 +849,7 @@ if (typeof google !== 'undefined' && google.accounts) {
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script src="device-id.js?v=1"></script>
-<script src="ho-tro-chat.js?v=1"></script>
-<script src="hoat-dong.js?v=1"></script>
+<script src="vlxt-telemetry.js?v=20261124"></script>
+<script defer src="vlxt-feedback-hub.js?v=20261124"></script>
 </body>
 </html>

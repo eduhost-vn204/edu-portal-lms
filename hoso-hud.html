@@ -9,7 +9,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hồ Sơ Học Sinh | Vật Lý Xuân Trường</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script defer src="auth.js?v=20261118a"></script>
+  <script defer src="vlxt-telemetry.js?v=20261124"></script>
+  <script defer src="auth.js?v=20261124"></script>
+  <script defer src="vlxt-feedback-hub.js?v=20261124"></script>
   <script src="xephang-fx.js?v=1"></script>
   <script defer src="thongbao.js?v=2"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -956,8 +958,8 @@ const user = (function() {
   try { return JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null'); } catch { return null; }
 })();
 
-if (!user) {
-  window.location.href = 'login.html?from=hoso.html';
+if (!user || !user.sdt || String(user.sdt).toUpperCase() === 'FREE') {
+  window.location.href = 'login.html?from=hoso.html&trigger=hoso_enter';
 }
 
 var _latestPaymentCheck = { ok: false, paid: false };

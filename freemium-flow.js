@@ -59,12 +59,18 @@
           user = null;
         }
       }
-      if (!user) return false;
-      if (user.isPaid === true) return true;
+      if (typeof window !== 'undefined' && window.VLXT_CAMPAIGN && typeof window.VLXT_CAMPAIGN.isPaidFullUser === 'function') {
+        return window.VLXT_CAMPAIGN.isPaidFullUser(user);
+      }
+      if (!user) {
+        try { return localStorage.getItem('vlxt_is_paid') === 'true'; } catch (e) { return false; }
+      }
+      if (user.isPaid === true && (!user.proExpiry || Number(user.proExpiry) > Date.now())) return true;
       const tier = String(user.loaiTK || '').toLowerCase();
+      if (tier === 'pro' || tier === 'premium') return true;
+      try { if (localStorage.getItem('vlxt_is_paid') === 'true') return true; } catch (e) {}
       const proExpiry = Number(user.proExpiry || user.trialExpiry || 0);
-      const isStillValid = proExpiry > Date.now();
-      return tier === 'pro' || tier === 'premium' || (tier === 'vip' && isStillValid);
+      return (tier === 'vip' && proExpiry > Date.now() + 8 * 86400000);
     },
 
     // ── 3. Thứ tự gói Quiz & Kiểm tra miễn phí (5 gói đầu) ──
@@ -379,6 +385,21 @@
     },
 
     // ── 7. Component <UpgradeValueModal /> (Bước 5) ──
+    goToReserveVip: function () {
+      try {
+        if (typeof window !== 'undefined' && window.VLXT_TELEMETRY) {
+          var trig = window.VLXT_TELEMETRY.getConversionTrigger();
+          window.VLXT_TELEMETRY.track('reserve_cta_click', { target: 'goi-hoc.html', trigger: trig.trigger });
+          window.VLXT_TELEMETRY.flush(true);
+        }
+      } catch (e) {}
+      this.closeUpgradeValueModal();
+      if (typeof window !== 'undefined' && window.location) {
+        var curTrig = (window.VLXT_TELEMETRY && window.VLXT_TELEMETRY.getConversionTrigger().trigger) || 'upgrade_modal';
+        window.location.href = 'goi-hoc.html?reserve=1&trigger=' + encodeURIComponent(curTrig);
+      }
+    },
+
     openUpgradeValueModal: function (contextTitle) {
       this.ensureModalsInDOM();
       const modal = document.getElementById('cro-upgrade-value-modal');
@@ -387,6 +408,11 @@
         const titleEl = document.getElementById('cro-uvm-context-title');
         if (titleEl) titleEl.textContent = contextTitle;
       }
+      try {
+        if (typeof window !== 'undefined' && window.VLXT_TELEMETRY) {
+          window.VLXT_TELEMETRY.track('upgrade_modal_open', { label: contextTitle || 'Upgrade Modal' });
+        }
+      } catch (e) {}
       // Nếu học sinh đã đăng ký Gói Tháng Pro, đổi nút trong modal thành Nâng cấp Gói Năm (399k) thay vì hiện lại Đăng ký Gói Tháng 50k
       const curUser = this._getCurrentUser();
       if (this.isPaidUser(curUser)) {
@@ -456,6 +482,11 @@
 
       modal.classList.add('cro-modal-open');
       document.body.classList.add('cro-body-locked');
+      try {
+        if (typeof window !== 'undefined' && window.VLXT_TELEMETRY) {
+          window.VLXT_TELEMETRY.track('vietqr_modal_open', { target: this._currentPlan.code, label: this._currentPlan.name });
+        }
+      } catch (e) {}
 
       // Bắt đầu lắng nghe trạng thái thanh toán tự động
       this.startPaymentListener();
@@ -743,6 +774,12 @@
 
       // Phát sự kiện toàn hệ thống để mở khóa ngay trên giao diện web
       window.dispatchEvent(new CustomEvent('vlxt:pro_unlocked', { detail: { user: proUser } }));
+      try {
+        if (typeof window !== 'undefined' && window.VLXT_TELEMETRY) {
+          window.VLXT_TELEMETRY.track('payment_confirmed_pro', { target: planCode, label: planName, meta: { amount: paymentRecord.amount } });
+          window.VLXT_TELEMETRY.flush(true);
+        }
+      } catch (e) {}
     },
 
     finishAndUnlockAll: function () {
@@ -1650,6 +1687,9 @@
             <button type="button" class="cro-btn-upgrade-now" onclick="FreemiumFlow.openVietQRCheckoutModal('THANG50K', 'Gói Tự Học Vật Lý 12 Toàn Diện', 50000)">
               <i class="fa-solid fa-bolt"></i> Tôi muốn đăng ký nâng cấp ngay (50.000đ/tháng)
             </button>
+            <button type="button" id="cro-btn-reserve-early" onclick="FreemiumFlow.goToReserveVip()" style="margin-top:9px;width:100%;padding:11px 16px;border-radius:11px;border:1px solid rgba(56,189,248,0.45);background:rgba(15,23,42,0.85);color:#38bdf8;font-size:13.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;">
+              <i class="fa-solid fa-bookmark"></i> Chưa thanh toán ngay? Đăng Ký Giữ Suất Ưu Đãi VIP Trước →
+            </button>
             <div class="cro-guarantee-note">
               <i class="fa-solid fa-shield-halved" style="color:#10b981"></i> Không tự động gia hạn · Không ràng buộc thẻ · Hỗ trợ giải đáp trọn vẹn
             </div>
@@ -1771,8 +1811,8 @@
             </button>
           </div>
           
-          <div style="font-size:12px;color:#64748b;margin-top:10px">
-            Cần hỗ trợ trực tiếp? Nhắn Zalo Thầy Trường: <strong>0987.654.321</strong>
+          <div style="font-size:12px;color:#94a3b8;margin-top:10px">
+            Cần hỗ trợ trực tiếp? Nhắn Zalo Thầy Trường: <a href="https://zalo.me/0964885920" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:800;">0964.885.920</a>
           </div>
         </div>
       `;

@@ -4443,10 +4443,12 @@
     </div>
 
     <!-- SCRIPTS HỆ THỐNG -->
+    <script src="vlxt-telemetry.js?v=20261124"></script>
     <script src="auth.js?v=20261124"></script>
     <script src="wrong-bank.js?v=20261118a"></script>
     <script src="vnpay-service.js"></script>
     <script src="freemium-flow.js"></script>
+    <script defer src="vlxt-feedback-hub.js?v=20261124"></script>
 
     <!-- THƯ VIỆN MÔ HÌNH VẬT LÝ 60 FPS & MANIFEST 50 ĐỀ THPTQG 2026 -->
     <script src="assets/canvas-core-helpers.js?v=20261118-50de"></script>
@@ -4800,6 +4802,53 @@
             timerSeconds = currentExamDurationSec;
         }
 
+        function isExamUnlockedForUser(examNum) {
+            var n = Number(examNum) || 1;
+            var u = null;
+            try { u = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null'); } catch(e) {}
+            if (typeof VLXT_CAMPAIGN !== 'undefined' && typeof VLXT_CAMPAIGN.canAccessDgnlExam === 'function') {
+                return VLXT_CAMPAIGN.canAccessDgnlExam(n, u);
+            }
+            if (typeof FreemiumFlow !== 'undefined' && typeof FreemiumFlow.isPaidUser === 'function' && FreemiumFlow.isPaidUser(u)) {
+                return true;
+            }
+            return n <= 5;
+        }
+
+        function ensureDgnlLoggedIn(trigger, examNum) {
+            var u = null;
+            try { u = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null'); } catch(e) {}
+            var sdt = u && u.sdt ? String(u.sdt).trim().toUpperCase() : '';
+            if (u && sdt && sdt !== 'FREE') return true;
+            if (typeof VLXT_TELEMETRY !== 'undefined') {
+                VLXT_TELEMETRY.setConversionTrigger(trigger || 'dgnl_login_required', 'Đăng nhập để làm Đề ' + pad2(examNum || 1));
+                VLXT_TELEMETRY.track('auth_gate_redirect', { target: 'danh-gia-nang-luc.html', examNumber: Number(examNum) || 1, trigger: trigger || 'dgnl_enter' });
+            }
+            if (typeof VLXT_CAMPAIGN !== 'undefined' && typeof VLXT_CAMPAIGN.requireAuthOrRedirect === 'function') {
+                return !!VLXT_CAMPAIGN.requireAuthOrRedirect(trigger || ('dgnl_exam_' + pad2(examNum || 1)), 'danh-gia-nang-luc.html?exam=' + pad2(examNum || 1));
+            }
+            try {
+                if (window.location && typeof window.location.replace === 'function') {
+                    var from = 'danh-gia-nang-luc.html?exam=' + pad2(examNum || 1);
+                    window.location.replace('login.html?from=' + encodeURIComponent(from) + '&trigger=' + encodeURIComponent(trigger || 'dgnl_enter'));
+                    return false;
+                }
+            } catch(e) {}
+            return false;
+        }
+
+        function openDgnlUpgradeCta(examNum) {
+            if (typeof VLXT_TELEMETRY !== 'undefined') {
+                VLXT_TELEMETRY.setConversionTrigger('locked_dgnl_' + pad2(examNum || 6), 'Mở khóa Đề số ' + pad2(examNum || 6) + ' — 50 Đề ĐGNL');
+                VLXT_TELEMETRY.track('paywall_hit', { target: 'de-' + pad2(examNum || 6), reason: 'dgnl_preview_cta', examNumber: Number(examNum) || 6 });
+            }
+            if (typeof FreemiumFlow !== 'undefined' && typeof FreemiumFlow.openUpgradeValueModal === 'function') {
+                FreemiumFlow.openUpgradeValueModal('Đề 06–50 THPTQG 2026: Mở Khóa Full Ngân Hàng ĐGNL');
+            } else {
+                window.location.href = 'goi-hoc.html';
+            }
+        }
+
         // Nạp đề đồng bộ ngay lúc boot nếu có trong cache (Đề 01/02 = 0ms) & khôi phục session nếu có
         if (_loadedExamsCache[currentExamNumber]) {
             applyLoadedExamPayload(_loadedExamsCache[currentExamNumber], currentExamNumber);
@@ -4809,7 +4858,7 @@
             if (currentExamNumber === 1 || currentExamNumber === 2) {
                 restoreExamSession(currentExamNumber);
             }
-            if (currentExamNumber > 2 && isAutoStartBoot) {
+            if (currentExamNumber > 2 && isAutoStartBoot && isExamUnlockedForUser(currentExamNumber)) {
                 var bootNum = currentExamNumber;
                 fetch('data/thptqg-exams/de-' + pad2(bootNum) + '.json')
                     .then(function(r) { return r.ok ? r.json() : null; })
@@ -5040,9 +5089,10 @@
                     : (h
                         ? '<span style="font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px;background:rgba(16,185,129,0.16);color:#34d399">Đã làm: ' + h.score10 + 'đ</span>'
                         : '<span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(56,189,248,0.12);color:#38bdf8">Chưa làm</span>');
-                var tierTag = item.accessTier === 'free'
-                    ? '<span style="font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:5px;background:rgba(16,185,129,0.15);color:#34d399">FREE</span>'
-                    : '<span style="font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:5px;background:rgba(245,158,11,0.16);color:#fbbf24">' + (item.accessTier === 'vip' ? 'VIP' : 'PRO') + '</span>';
+                var isUnlocked = isExamUnlockedForUser(item.examNumber);
+                var tierTag = isUnlocked
+                    ? '<span style="font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:5px;background:rgba(16,185,129,0.15);color:#34d399">' + (item.accessTier === 'free' ? 'MỞ SỚM' : 'VIP OK') + '</span>'
+                    : '<span style="font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:5px;background:rgba(245,158,11,0.16);color:#fbbf24"><i class="fa-solid fa-lock"></i> VIP</span>';
                 return '<button type="button" class="drawer50-item ' + (isAct ? 'active' : '') + '" style="' + (isLocked ? 'opacity:0.65;' : '') + '" onclick="switchExam(' + item.examNumber + ')">' +
                     '<div style="display:flex;align-items:center;justify-content:space-between;gap:6px">' +
                         '<span style="font-family:var(--font-mono);font-size:12px;font-weight:800;color:#38bdf8">ĐỀ ' + pad2(item.examNumber) + '</span>' +
@@ -5210,6 +5260,11 @@
         window.switchExam = async function(examArg, opts) {
             opts = opts || {};
             var examNum = parseRequestedExam(examArg) || Number(examArg) || 1;
+            if (!ensureDgnlLoggedIn('dgnl_switch_' + pad2(examNum), examNum)) return false;
+            if (!isExamUnlockedForUser(examNum)) {
+                openDgnlUpgradeCta(examNum);
+                return false;
+            }
 
             // QUY TẮC KHÓA 1 ĐỀ: Phải làm xong & nộp đề đang làm dở mới được chuyển sang đề khác
             var activeLock = getActiveInProgressExam();
@@ -5542,8 +5597,19 @@
             var t = stats.total || 28;
             var nb = stats.nb || 0, th = stats.th || 0, vd = stats.vd || 0;
 
+            var isVipLocked = !isExamUnlockedForUser(selNum);
             var statusActionHtml = '';
-            if (isLockedByOther) {
+            if (isVipLocked) {
+                statusActionHtml =
+                    '<div class="dgnl-lock-box" style="border-color:rgba(245,158,11,0.45);background:rgba(245,158,11,0.08)">' +
+                        '<div style="font-weight:800;color:#fbbf24;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-crown"></i> Đề số ' + pad2(selNum) + ' thuộc lộ trình VIP</div>' +
+                        '<div>Đợt Trải Nghiệm Sớm (25/11 – 05/12) đang mở miễn phí Đề 01 – 05. Em có thể nâng cấp VIP mở khóa full 50 đề ngay hoặc đăng ký giữ suất ưu đãi!</div>' +
+                    '</div>' +
+                    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' +
+                        '<button type="button" class="dgnl-btn-pill primary" id="lobby-btn-unlock-vip" style="width:100%;padding:12px 10px;font-size:13.5px;" onclick="openDgnlUpgradeCta(' + selNum + ')"><i class="fa-solid fa-unlock-keyhole"></i> Mua VIP Mở Full</button>' +
+                        '<button type="button" class="dgnl-btn-pill" id="lobby-btn-reserve-vip" style="width:100%;padding:12px 10px;font-size:13.5px;background:#0f172a;border:1px solid #334155;color:#f8fafc" onclick="window.location.href=\'goi-hoc.html?reserve=1&trigger=dgnl_locked_' + pad2(selNum) + '\'"><i class="fa-solid fa-bookmark"></i> Giữ Suất Ưu Đãi</button>' +
+                    '</div>';
+            } else if (isLockedByOther) {
                 statusActionHtml =
                     '<div class="dgnl-lock-box" id="lobby-lock-notice-box">' +
                         '<div style="font-weight:800;color:#fbbf24;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-lock"></i> Đang khóa — Cần hoàn thành Đề số ' + pad2(activeLock.examNumber) + '</div>' +
@@ -5671,7 +5737,7 @@
                 var s = DgnlSessionStore.get(num);
                 var h = histMap[num];
                 var isSel = Number(selectedLobbyExam) === Number(num);
-                var isFree = item.accessTier === 'free';
+                var isFree = isExamUnlockedForUser(num);
                 var isLockedOther = !!(activeLock && Number(activeLock.examNumber) !== Number(num));
 
                 var rightBadge = st === 'in_progress'
@@ -6152,6 +6218,14 @@
             }
             opts = opts || {};
             var targetNum = Number(examNum) || 1;
+            if (!ensureDgnlLoggedIn('dgnl_start_' + pad2(targetNum), targetNum)) return;
+            if (!isExamUnlockedForUser(targetNum)) {
+                openDgnlUpgradeCta(targetNum);
+                return;
+            }
+            if (typeof VLXT_TELEMETRY !== 'undefined') {
+                VLXT_TELEMETRY.track('exam_start', { target: 'de-' + pad2(targetNum), examNumber: targetNum, mode: opts.reset ? 'new' : 'resume' });
+            }
 
             // QUY TẮC KHÓA 1 ĐỀ: Phải làm xong & nộp đề đang làm dở mới được mở đề khác
             var activeLock = getActiveInProgressExam();
@@ -6201,6 +6275,14 @@
         };
 
         window.pauseAndReturnToLobby = function() {
+            if (hasExamStarted && !isViewingReport && typeof VLXT_TELEMETRY !== 'undefined') {
+                VLXT_TELEMETRY.track('exam_abandon', {
+                    target: 'de-' + pad2(currentExamNumber),
+                    examNumber: currentExamNumber,
+                    lastQuestionNum: currentIndex + 1,
+                    remainingSeconds: timerSeconds
+                });
+            }
             if (timerInterval) {
                 clearInterval(timerInterval);
                 timerInterval = null;
@@ -6310,6 +6392,11 @@
 
         window.startNextExamFromReport = async function() {
             var nextNum = getNextRecommendedExamNumber();
+            if (!ensureDgnlLoggedIn('dgnl_next_exam', nextNum)) return;
+            if (!isExamUnlockedForUser(nextNum)) {
+                openDgnlUpgradeCta(nextNum);
+                return;
+            }
             if (timerInterval) {
                 clearInterval(timerInterval);
                 timerInterval = null;
@@ -6354,9 +6441,21 @@
             syncNavUserChip();
 
             if (isAutoStartBoot) {
+                if (!ensureDgnlLoggedIn('dgnl_autostart_' + pad2(currentExamNumber), currentExamNumber)) return;
+                if (!isExamUnlockedForUser(currentExamNumber)) {
+                    isAutoStartBoot = false;
+                    selectedLobbyExam = currentExamNumber;
+                    document.body.classList.add('dgnl-lobby-active');
+                    renderLobbyAll();
+                    openDgnlUpgradeCta(currentExamNumber);
+                    return;
+                }
                 document.body.classList.remove('dgnl-lobby-active');
                 hasExamStarted = true;
                 isViewingReport = false;
+                if (typeof VLXT_TELEMETRY !== 'undefined') {
+                    VLXT_TELEMETRY.track('exam_start', { target: 'de-' + pad2(currentExamNumber), examNumber: currentExamNumber, mode: 'autostart' });
+                }
                 updateExamChromeUI();
                 renderSidebarLessons();
                 renderPalette();
@@ -6661,6 +6760,21 @@
             var pInfo = getQuestionPartInfo(idx);
             var partNum = pInfo.part;
             updatePartTabsUI(partNum);
+            if (typeof VLXT_TELEMETRY !== 'undefined') {
+                VLXT_TELEMETRY.setContext({
+                    examNumber: currentExamNumber,
+                    examTitle: currentExamTitle || ('Đề ' + pad2(currentExamNumber)),
+                    questionNum: idx + 1,
+                    questionId: (q && q.id) ? String(q.id) : ('Q' + (idx + 1)),
+                    partName: 'P' + partNum
+                });
+                VLXT_TELEMETRY.track('exam_question_view', {
+                    target: 'de-' + pad2(currentExamNumber) + '-q' + (idx + 1),
+                    examNumber: currentExamNumber,
+                    questionNum: idx + 1,
+                    partNum: partNum
+                });
+            }
 
             var partTagLabel = partNum === 1 ? 'Phần I · Trắc nghiệm 4 lựa chọn' : (partNum === 2 ? 'Phần II · Đúng / Sai thực nghiệm' : 'Phần III · Trả lời ngắn');
             var stageHtml = buildWowStageHtml(q);
@@ -7300,6 +7414,15 @@
             var timeFormatted = spentM + ' phút ' + spentS + ' giây';
 
             var g = gradeCurrentExam();
+            if (typeof VLXT_TELEMETRY !== 'undefined') {
+                VLXT_TELEMETRY.track('exam_submit', {
+                    target: 'de-' + pad2(currentExamNumber),
+                    examNumber: currentExamNumber,
+                    score10: g ? g.score10 : 0,
+                    correctCount: g ? g.correctCount : 0,
+                    spentSeconds: spentSeconds
+                });
+            }
             var chapterStats = [
                 { total: 0, correct: 0 },
                 { total: 0, correct: 0 },

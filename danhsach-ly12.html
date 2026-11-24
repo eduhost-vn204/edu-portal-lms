@@ -224,19 +224,21 @@
         }
 
     </style>
-  <script src="auth.js?v=20261118a"></script>
+  <script src="vlxt-telemetry.js?v=20261124"></script>
+  <script src="auth.js?v=20261124"></script>
+  <script defer src="vlxt-feedback-hub.js?v=20261124"></script>
   <script src="thongbao.js?v=2"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <script src="device-id.js?v=1"></script>
   <script src="ho-tro-chat.js?v=1"></script>
   <script>
-    // Auth guard — chạy trước khi trang load
+    // Auth guard — bắt buộc đăng nhập (SĐT) trước khi mở danh sách bài học
     (function(){
       var u = null;
       try { u = JSON.parse(localStorage.getItem('vlxt_user_v2')||'null'); } catch(e){}
-      if (!u) {
-        window.location.replace('login.html?from=' + encodeURIComponent(location.pathname + location.search));
+      if (!u || !u.sdt || String(u.sdt).toUpperCase() === 'FREE') {
+        window.location.replace('login.html?from=' + encodeURIComponent(location.pathname + location.search) + '&trigger=danhsach_enter');
       }
     })();
   </script>

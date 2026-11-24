@@ -525,7 +525,9 @@ svg.logo-atom-icon,
   </div>
 </div>
 
-<script src="auth.js?v=20261118a"></script>
+<script src="vlxt-telemetry.js?v=20261124"></script>
+<script src="auth.js?v=20261124"></script>
+<script defer src="vlxt-feedback-hub.js?v=20261124"></script>
 <script src="cache.js?v=1"></script>
 <script src="teaching-scope.js?v=3"></script>
 <script src="xephang-fx.js?v=1"></script>
@@ -1388,7 +1390,7 @@ svg.logo-atom-icon,
 
   document.addEventListener('DOMContentLoaded', function () {
     user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
-    if (!user) { window.location.href = 'login.html?from=solo.html'; return; }
+    if (!user || !user.sdt || String(user.sdt).toUpperCase() === 'FREE') { window.location.href = 'login.html?from=solo.html&trigger=solo_enter'; return; }
     mySdt = normKey(user.sdt);
     if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(user);
     if (!initFirebase()) {

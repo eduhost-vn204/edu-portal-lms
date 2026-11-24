@@ -12,7 +12,9 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <script defer src="vlxt-telemetry.js?v=20261124"></script>
   <script defer src="auth.js?v=20261124"></script>
+  <script defer src="vlxt-feedback-hub.js?v=20261124"></script>
   <script src="xephang-fx.js?v=1"></script>
   <script defer src="thongbao.js?v=2"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -878,8 +880,8 @@ const user = (function() {
   try { return JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null'); } catch { return null; }
 })();
 
-if (!user) {
-  window.location.href = 'login.html?from=hoso.html';
+if (!user || !user.sdt || String(user.sdt).toUpperCase() === 'FREE') {
+  window.location.href = 'login.html?from=hoso.html&trigger=hoso_enter';
 } else if (typeof VlxtWrongBank !== 'undefined') {
   try {
     const _initWbAcc = VlxtWrongBank.normalizeAccountKey(user.sdt || user.email || '');
@@ -1736,9 +1738,12 @@ function renderPage(profile, lb, nvRes, baihocRows) {
           </a>
         ` : `
           <a href="goi-hoc.html" style="font-size:12.5px;font-weight:800;color:#fbbf24;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.35);text-decoration:none;padding:9px 16px;border-radius:100px;transition:all 0.2s;">
-            👑 Đăng ký Gói Pro 50k
+            👑 Đăng ký Gói Pro / Giữ suất
           </a>
         `}
+        <a href="https://zalo.me/g/str1pllhp4uxa3rtvnou" target="_blank" rel="noopener" onclick="if(window.VLXT_TELEMETRY)VLXT_TELEMETRY.track('zalo_group_click',{target:'hoso_banner'});" style="font-size:12.5px;font-weight:700;color:#38bdf8;background:rgba(14,165,233,0.12);border:1px solid rgba(56,189,248,0.35);text-decoration:none;padding:9px 16px;border-radius:100px;display:inline-flex;align-items:center;gap:6px;">
+          👥 Nhóm Zalo Web
+        </a>
       </div>
     </div>
 

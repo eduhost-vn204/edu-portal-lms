@@ -510,10 +510,12 @@
             overflow-x: auto;
         }
     </style>
-    <script src="auth.js?v=20261110s"></script>
+    <script src="vlxt-telemetry.js?v=20261124"></script>
+    <script src="auth.js?v=20261124"></script>
     <script src="thongbao.js?v=2"></script>
     <script src="device-id.js?v=1"></script>
     <script src="cache.js?v=1"></script>
+    <script defer src="vlxt-feedback-hub.js?v=20261124"></script>
 
 <style id="vlxt-anti-ai-glow-logo">
 /* ─── TRIỆT TIÊU HOÀN TOÀN AI GLOW TRÊN LOGO & BRAND (PHẲNG, SẮC NÉT EDTECH) ─── */
@@ -753,12 +755,18 @@ function initCandidate() {
         currentUser = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : JSON.parse(localStorage.getItem('vlxt_user_v2') || 'null');
     } catch(e){}
 
-    if (!currentUser) {
-        currentUser = {
-            hoten: 'Thí sinh Thử Nghiệm',
-            lop: 'Khóa XPS 2026',
-            sdt: 'HS-THITHU2026'
-        };
+    var _sdt = currentUser && currentUser.sdt ? String(currentUser.sdt).trim().toUpperCase() : '';
+    if (!currentUser || !_sdt || _sdt === 'FREE' || _sdt === 'HS-THITHU2026') {
+        if (typeof VLXT_CAMPAIGN !== 'undefined' && typeof VLXT_CAMPAIGN.requireAuthOrRedirect === 'function') {
+            if (!VLXT_CAMPAIGN.requireAuthOrRedirect('thithu_enter', 'thithu.html')) return;
+        }
+        try {
+            if (window.location && typeof window.location.replace === 'function') {
+                var cur = (window.location.pathname.split('/').pop() || 'thithu.html') + (window.location.search || '');
+                window.location.replace('login.html?from=' + encodeURIComponent(cur) + '&trigger=thithu_enter');
+                return;
+            }
+        } catch(e){}
     }
 
     // Read simulated login candidate if available

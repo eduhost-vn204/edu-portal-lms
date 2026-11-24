@@ -597,10 +597,12 @@
   .nav-hamburger { display: inline-flex !important; }
 }
     </style>
+    <script src="vlxt-telemetry.js?v=20261124"></script>
     <script src="auth.js?v=20261124"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <script src="vnpay-service.js?v=20261109p"></script>
     <script src="freemium-flow.js?v=20261109p"></script>
+    <script defer src="vlxt-feedback-hub.js?v=20261124"></script>
 <style>/* ROBUST_BRAND_CSS */
 .brand-glow-text {
   color: #ffffff !important;
@@ -715,6 +717,22 @@ svg.logo-atom-icon,
         <p class="header-desc">Học bài giảng video độc quyền, giải bộ 20 câu trắc nghiệm dừng video theo từng bài và rèn luyện kỹ năng thực chiến cùng Thầy Xuân Trường.</p>
     </div>
 
+    <!-- ─── BANNER TRẢI NGHIỆM SỚM 25/11 - 05/12 (7 NGÀY) ─── -->
+    <div id="early-access-goihoc-banner" style="max-width:1100px;margin:0 auto 22px;background:#0f172a;border:1px solid #334155;border-radius:16px;padding:16px 20px;box-shadow:0 4px 16px rgba(0,0,0,0.25);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap">
+        <div style="min-width:240px;flex:1">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px">
+                <span style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;background:#fef3c7;color:#92400e;font-size:11.5px;font-weight:800">⏳ TRẢI NGHIỆM SỚM VIP · 25/11 – 05/12</span>
+                <span id="ea-goihoc-countdown" style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;background:rgba(14,165,233,0.16);border:1px solid rgba(56,189,248,0.35);color:#38bdf8;font-size:12px;font-weight:700">Đếm ngược 7 ngày trải nghiệm sớm</span>
+            </div>
+            <div style="font-size:14.5px;font-weight:800;color:#f8fafc;line-height:1.4">Đang mở sớm: Chương 1–2 GĐ1, Bài 1 Lấy Gốc, Đề 01–05 ĐGNL &amp; Phòng Thi Thử CBT</div>
+            <div style="font-size:12.5px;color:#94a3b8;margin-top:3px">Em có thể <b>Mua VIP Mở Full 100%</b> ngay bên dưới hoặc <b>Đăng ký giữ suất ưu đãi</b> trước khi kết thúc đợt trải nghiệm sớm.</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <button type="button" id="btn-banner-reserve-vip" onclick="openReserveVipModal('NAM399K')" style="padding:10px 14px;border-radius:10px;border:1px solid #f59e0b;background:#d97706;color:#ffffff;font-size:13px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:6px">📌 Giữ Suất Ưu Đãi</button>
+            <a href="https://zalo.me/g/str1pllhp4uxa3rtvnou" target="_blank" rel="noopener" onclick="if(window.VLXT_TELEMETRY)VLXT_TELEMETRY.track('zalo_group_click',{target:'goihoc_banner'});" style="padding:10px 14px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#38bdf8;font-size:13px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px">👥 Nhóm Zalo Web</a>
+        </div>
+    </div>
+
     <!-- ─── BANNER GÓI HIỆN TẠI CỦA HỌC SINH ─── -->
     <div id="active-plan-banner" style="display:none;max-width:1100px;margin:0 auto 28px;background:rgba(16,185,129,0.14);border:1.5px solid rgba(16,185,129,0.45);border-radius:18px;padding:18px 22px;box-shadow:0 10px 28px rgba(0,0,0,0.35);"></div>
 
@@ -767,6 +785,9 @@ svg.logo-atom-icon,
                 <button class="btn-vnpay-direct" onclick="openPayment('THANG50K', 'Gói Tháng Linh Hoạt', 50000, 'vnpay')">
                     <span class="vnpay-badge-tag">VNPAY</span> Thanh Toán Qua Cổng VNPay
                 </button>
+                <button type="button" class="btn-select-plan secondary" style="margin-top:8px;background:transparent;border:1px solid #334155;color:#cbd5e1;font-size:13px;padding:10px 12px" onclick="openReserveVipModal('THANG50K')">
+                    📌 Giữ Suất Ưu Đãi Gói 50k (Chưa Cần Thanh Toán)
+                </button>
             </div>
         </div>
 
@@ -795,6 +816,9 @@ svg.logo-atom-icon,
                 <button class="btn-vnpay-direct" onclick="openPayment('NAM399K', 'Gói Trọn Năm XPS 2k9', 399000, 'vnpay')">
                     <span class="vnpay-badge-tag">VNPAY</span> Thanh Toán Qua Cổng VNPay (399k)
                 </button>
+                <button type="button" class="btn-select-plan secondary" style="margin-top:8px;background:#1e293b;border:1px solid #f59e0b;color:#fde68a;font-size:13px;padding:10px 12px" onclick="openReserveVipModal('NAM399K')">
+                    📌 Đăng Ký Giữ Suất Trọn Năm 399k
+                </button>
             </div>
         </div>
 
@@ -821,6 +845,9 @@ svg.logo-atom-icon,
                 </button>
                 <button class="btn-vnpay-direct" onclick="openPayment('VIP850K', 'Lớp Online Cùng Thầy (VIP)', 850000, 'vnpay')">
                     <span class="vnpay-badge-tag">VNPAY</span> Thanh Toán Qua Cổng VNPay (850k)
+                </button>
+                <button type="button" class="btn-select-plan secondary" style="margin-top:8px;background:transparent;border:1px solid #334155;color:#cbd5e1;font-size:13px;padding:10px 12px" onclick="openReserveVipModal('VIP850K')">
+                    📌 Đăng Ký Giữ Suất Lớp VIP 850k
                 </button>
             </div>
         </div>
@@ -1044,8 +1071,75 @@ svg.logo-atom-icon,
         </div>
 
         <p style="font-size:12px;color:#94a3b8;text-align:center;margin-top:12px;">
-            Hỗ trợ nhanh qua Zalo Thầy: <strong>0964.885.924</strong> (24/7)
+            Hỗ trợ nhanh qua Zalo Thầy: <a href="https://zalo.me/0964885920" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:800;text-decoration:none">0964.885.920</a> · <a href="https://zalo.me/g/str1pllhp4uxa3rtvnou" target="_blank" rel="noopener" style="color:#34d399;font-weight:700;text-decoration:none">Nhóm Zalo Web</a>
         </p>
+    </div>
+</div>
+
+<!-- ─── MODAL GIỮ SUẤT ƯU ĐÃI TRẢI NGHIỆM SỚM ─── -->
+<div id="reserve-vip-modal" style="display:none;position:fixed;inset:0;z-index:999990;background:rgba(2,6,23,0.82);align-items:center;justify-content:center;padding:16px">
+    <div style="width:100%;max-width:480px;background:#0f172a;border:1px solid #334155;border-radius:16px;padding:22px;color:#f8fafc;box-shadow:0 16px 40px rgba(0,0,0,0.45);position:relative;max-height:92vh;overflow:auto">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px">
+            <div>
+                <div style="font-size:12px;font-weight:800;color:#fbbf24;letter-spacing:0.3px">TRẢI NGHIỆM SỚM 25/11 – 05/12</div>
+                <h3 style="margin:2px 0 0;font-size:18px;font-weight:800;color:#ffffff">📌 Đăng Ký Giữ Suất Ưu Đãi VIP</h3>
+            </div>
+            <button type="button" onclick="closeReserveVipModal()" aria-label="Đóng" style="width:34px;height:34px;border-radius:8px;border:1px solid #334155;background:#1e293b;color:#cbd5e1;font-size:16px;cursor:pointer">✕</button>
+        </div>
+        <p style="font-size:13px;color:#cbd5e1;margin:0 0 14px;line-height:1.5">Chưa cần đóng tiền ngay — điền thông tin để hệ thống giữ ưu đãi trước ngày 05/12 và thầy Xuân Trường tư vấn trực tiếp qua Zalo.</p>
+        <form id="reserve-vip-form" onsubmit="submitReserveVipForm(event)" style="display:flex;flex-direction:column;gap:10px">
+            <div>
+                <label style="display:block;font-size:12px;font-weight:700;color:#94a3b8;margin-bottom:4px">Họ và tên</label>
+                <input id="rsv-hoten" type="text" required placeholder="Nguyễn Văn A" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#f8fafc;font-size:14px">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 110px;gap:10px">
+                <div>
+                    <label style="display:block;font-size:12px;font-weight:700;color:#94a3b8;margin-bottom:4px">Số điện thoại / Zalo</label>
+                    <input id="rsv-sdt" type="tel" required placeholder="09xxxxxxxx" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#f8fafc;font-size:14px">
+                </div>
+                <div>
+                    <label style="display:block;font-size:12px;font-weight:700;color:#94a3b8;margin-bottom:4px">Lớp</label>
+                    <select id="rsv-lop" style="width:100%;padding:10px 8px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#f8fafc;font-size:14px">
+                        <option value="12" selected>Lớp 12</option>
+                        <option value="11">Lớp 11</option>
+                        <option value="10">Lớp 10</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <label style="display:block;font-size:12px;font-weight:700;color:#94a3b8;margin-bottom:4px">Gói muốn giữ suất</label>
+                <select id="rsv-plan" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#f8fafc;font-size:14px">
+                    <option value="NAM399K">Gói Trọn Năm XPS 2k9 (399.000đ)</option>
+                    <option value="THANG50K">Gói Tháng Linh Hoạt (50.000đ/tháng)</option>
+                    <option value="VIP850K">Lớp Online Cùng Thầy VIP (850.000đ)</option>
+                </select>
+            </div>
+            <div>
+                <label style="display:block;font-size:12px;font-weight:700;color:#94a3b8;margin-bottom:4px">Em ấn tượng &amp; muốn học phần nào nhất?</label>
+                <select id="rsv-reason" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#f8fafc;font-size:14px">
+                    <option value="50 Đề ĐGNL &amp; Mô phỏng 60 FPS">50 Đề ĐGNL &amp; Mô phỏng thí nghiệm</option>
+                    <option value="Khóa Lý Thuyết GĐ1–4 &amp; Video">Bài giảng Video &amp; Câu hỏi tương tác</option>
+                    <option value="Khóa 5 Ngày Lấy Gốc">Khóa 5 Ngày Lấy Gốc Vật Lý 12</option>
+                    <option value="Phòng Thi Thử CBT chuẩn Bộ">Phòng Thi Thử CBT chuẩn Bộ GD&amp;ĐT</option>
+                    <option value="Lộ trình cá nhân hóa với Thầy">Lộ trình cá nhân hóa &amp; hỗ trợ trực tiếp từ Thầy</option>
+                </select>
+            </div>
+            <div>
+                <label style="display:block;font-size:12px;font-weight:700;color:#94a3b8;margin-bottom:4px">Ghi chú thêm cho thầy Trường (tuỳ chọn)</label>
+                <textarea id="rsv-note" rows="2" placeholder="VD: Em muốn xin tư vấn thêm hoặc giữ ưu đãi đến cuối tuần..." style="width:100%;padding:9px 12px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#f8fafc;font-size:13.5px;resize:vertical"></textarea>
+            </div>
+            <div id="rsv-error" style="display:none;color:#f87171;font-size:12.5px;font-weight:700"></div>
+            <button type="submit" id="rsv-submit-btn" style="padding:12px 16px;border-radius:10px;border:none;background:#0ea5e9;color:#ffffff;font-size:14.5px;font-weight:800;cursor:pointer">✅ Xác Nhận Giữ Suất Ưu Đãi</button>
+        </form>
+        <div id="rsv-success-box" style="display:none;margin-top:8px;padding:14px;border-radius:12px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.45)">
+            <div style="font-size:15px;font-weight:800;color:#34d399;margin-bottom:6px">🎉 Đã ghi nhận giữ suất thành công!</div>
+            <div style="font-size:13px;color:#e2e8f0;line-height:1.5;margin-bottom:12px">Hệ thống đã lưu yêu cầu giữ suất ưu đãi của em. Để được thầy duyệt nhanh hoặc hỏi thêm, em nhắn Zalo thầy hoặc tham gia Nhóm Zalo Thành Viên Web nhé:</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+                <a href="https://zalo.me/0964885920" target="_blank" rel="noopener" style="padding:10px;border-radius:9px;background:#0ea5e9;color:#ffffff;font-size:13px;font-weight:700;text-align:center;text-decoration:none">💬 Nhắn Zalo Thầy (0964.885.920)</a>
+                <a href="https://zalo.me/g/str1pllhp4uxa3rtvnou" target="_blank" rel="noopener" style="padding:10px;border-radius:9px;background:#059669;color:#ffffff;font-size:13px;font-weight:700;text-align:center;text-decoration:none">👥 Vào Nhóm Zalo Web</a>
+            </div>
+            <button type="button" onclick="var p=document.getElementById('rsv-plan').value;closeReserveVipModal();var meta=getPlanMetaByCode(p);openPayment(meta.code,meta.name,meta.amount,'vietqr');" style="width:100%;padding:9px 12px;border-radius:9px;border:1px solid #334155;background:#1e293b;color:#f8fafc;font-size:12.5px;font-weight:700;cursor:pointer">🔓 Hoặc thanh toán mở full luôn ngay bây giờ</button>
+        </div>
     </div>
 </div>
 
@@ -1389,6 +1483,13 @@ document.addEventListener('DOMContentLoaded', () => {
         vlxtRenderWidget(u);
     }
     renderCurrentPlanStateOnPricingCards();
+    initEarlyAccessGoiHocBanner();
+    try {
+        const sp = new URLSearchParams(window.location.search);
+        if (sp.get('reserve') === '1') {
+            openReserveVipModal(sp.get('plan') || 'NAM399K');
+        }
+    } catch(e) {}
 
     if (u && u.sdt && u.sdt !== 'FREE' && typeof fetch === 'function') {
         const gasUrl = (typeof window.VLXT_GAS !== 'undefined')
@@ -1642,6 +1743,17 @@ function unlockPaidAccountOnPage(sdt, hoten, res) {
         if (!exists) arr.unshift(paymentRecord);
         localStorage.setItem('vlxt_payment_history', JSON.stringify(arr.slice(0, 50)));
         if (typeof vlxtRenderWidget === 'function') vlxtRenderWidget(updatedUser);
+        if (typeof VLXT_TELEMETRY !== 'undefined') {
+            var _trig = (typeof VLXT_TELEMETRY.getConversionTrigger === 'function') ? VLXT_TELEMETRY.getConversionTrigger() : {};
+            VLXT_TELEMETRY.track('payment_confirmed_pro', {
+                target: planCode,
+                planCode: planCode,
+                amount: paymentRecord.amount,
+                loaiTK: tier,
+                trigger: _trig.trigger || 'goi_hoc_direct',
+                label: paymentRecord.planName
+            });
+        }
         renderCurrentPlanStateOnPricingCards();
     } catch (e) {}
 
@@ -1761,6 +1873,84 @@ function copyAmount(btnEl) {
 function handlePayDone() {
     checkVietQrPaymentStatus(true);
 }
+</script>
+
+<script>
+        /* CHIẾN DỊCH TRẢI NGHIỆM SỚM & GIỮ SUẤT VIP */
+    function initEarlyAccessGoiHocBanner() {
+        function updateCd() {
+            var el = document.getElementById('ea-goihoc-countdown');
+            if (!el) return;
+            var u = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
+            if (typeof VLXT_CAMPAIGN !== 'undefined' && typeof VLXT_CAMPAIGN.getUserEarlyAccessState === 'function') {
+                var st = VLXT_CAMPAIGN.getUserEarlyAccessState(u);
+                el.textContent = st.formattedShort || '7 ngày trải nghiệm sớm';
+            }
+        }
+        updateCd();
+        setInterval(updateCd, 1000);
+    }
+
+    function openReserveVipModal(planCode) {
+        var modal = document.getElementById('reserve-vip-modal');
+        if (!modal) return;
+        var u = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
+        var form = document.getElementById('reserve-vip-form');
+        var succ = document.getElementById('rsv-success-box');
+        var errEl = document.getElementById('rsv-error');
+        if (form) form.style.display = 'flex';
+        if (succ) succ.style.display = 'none';
+        if (errEl) errEl.style.display = 'none';
+        if (u) {
+            var fn = document.getElementById('rsv-hoten');
+            var sp = document.getElementById('rsv-sdt');
+            var lp = document.getElementById('rsv-lop');
+            if (fn && !fn.value && u.hoten) fn.value = u.hoten;
+            if (sp && !sp.value && u.sdt && u.sdt !== 'FREE') sp.value = u.sdt;
+            if (lp && u.lop && ['10','11','12'].indexOf(String(u.lop)) !== -1) lp.value = String(u.lop);
+        }
+        var planEl = document.getElementById('rsv-plan');
+        if (planEl && planCode) planEl.value = planCode;
+        modal.style.display = 'flex';
+        if (typeof VLXT_TELEMETRY !== 'undefined') {
+            VLXT_TELEMETRY.track('reserve_modal_open', { target: planCode || 'NAM399K', label: 'Mở form giữ suất ưu đãi' });
+        }
+    }
+
+    function closeReserveVipModal() {
+        var modal = document.getElementById('reserve-vip-modal');
+        if (modal) modal.style.display = 'none';
+    }
+
+    function submitReserveVipForm(e) {
+        if (e) e.preventDefault();
+        var errEl = document.getElementById('rsv-error');
+        var btn = document.getElementById('rsv-submit-btn');
+        var hoten = (document.getElementById('rsv-hoten').value || '').trim();
+        var sdt = (document.getElementById('rsv-sdt').value || '').replace(/\s+/g, '').trim();
+        var lop = document.getElementById('rsv-lop').value || '12';
+        var planCode = document.getElementById('rsv-plan').value || 'NAM399K';
+        var reasonSelected = document.getElementById('rsv-reason').value || '';
+        var note = (document.getElementById('rsv-note').value || '').trim();
+        if (!hoten || sdt.length < 9) {
+            if (errEl) { errEl.textContent = 'Em vui lòng nhập đầy đủ Họ tên và SĐT Zalo (9–11 số).'; errEl.style.display = 'block'; }
+            return;
+        }
+        if (errEl) errEl.style.display = 'none';
+        if (btn) { btn.disabled = true; btn.textContent = 'Đang lưu giữ suất...'; }
+        var meta = (typeof getPlanMetaByCode === 'function') ? getPlanMetaByCode(planCode) : { code: planCode, name: planCode, amount: 399000 };
+        var p = (typeof VLXT_TELEMETRY !== 'undefined' && typeof VLXT_TELEMETRY.submitVipReservation === 'function')
+            ? VLXT_TELEMETRY.submitVipReservation({ hoten: hoten, sdt: sdt, lop: lop, planCode: meta.code, planName: meta.name, amount: meta.amount, reasonSelected: reasonSelected, note: note })
+            : Promise.reject(new Error('Telemetry offline'));
+        p.then(function () {
+            document.getElementById('reserve-vip-form').style.display = 'none';
+            document.getElementById('rsv-success-box').style.display = 'block';
+        }).catch(function () {
+            if (errEl) { errEl.textContent = 'Kết nối hơi chậm — em nhấn Zalo Thầy 0964.885.920 để giữ suất trực tiếp nhé!'; errEl.style.display = 'block'; }
+        }).finally(function () {
+            if (btn) { btn.disabled = false; btn.textContent = '✅ Xác Nhận Giữ Suất Ưu Đãi'; }
+        });
+    }
 </script>
 
 </body>
