@@ -1,3 +1,20 @@
+## Bàn giao gần nhất (24/11/2026 10:34)
+- **Tinh Chỉnh Preloader Vũ Trụ 60 FPS `0% → 100%`, Pop-up 15s Khi Tải Lại Trang, Cổng Hố Đen/Pulsar Nguyên Bản Lấp Lánh & Hẹn 10s Ở Đánh Giá Năng Lực (`main`)**:
+- **Mục tiêu & Hành vi mới**:
+  1. `smart-marketing-popup.js` (`?v=20261124b`): Đổi key `sessionStorage` sang `vlxt_popup_v3_` và xóa cờ khi phát hiện `reload` (`performance.getEntriesByType('navigation')[0].type === 'reload'`) để tải lại trang luôn chạy lại hẹn giờ `15000ms` (15s), không bị câm lặng bởi phiên đóng popup trước đó.
+  2. `index.html`:
+     - Bỏ khung viền / nút CTA chữ (`cel-cta`) quanh `#lbl-blackhole` & `#lbl-neutron` và bỏ 2 vòng tròn nét đứt (`::before`), trả 2 nhãn chữ nguyên bản thanh thoát (`SINGULARITY / Test Điểm Thi THPT` & `PULSAR / Khóa Học`, giữ `::after` `none`, 0 blur glow).
+     - Tăng kích thước 3D của Hố đen & Sao Neutron (`bhScale` / `nsScale` `×1.32` desktop, `0.78` mobile) và bổ sung 14 điểm sao 4 cánh lấp lánh (`bhSparkles`, `nsSparkles` + beacon glint + ripple pulse) tăng độ rực rỡ khi hover.
+     - Thiết kế lại `#vlxt-preloader` đồng bộ không gian `#010308` Interstellar (`.cosmic-loader` vòng Singularity-Pulsar xoay GPU, font `Orbitron`/`Space Mono`), warm-up frame 1 Three.js trước khi lướt `scaleX` `0% → 100%` và tạm hoãn `renderer.render()` trong `animate()` suốt `560ms` lướt `%` để đạt `60 FPS` mượt mà 23 bước liên tục không khựng ở `27%–30%`.
+  3. `danh-gia-nang-luc.html`: Bỏ mở ngay `#start-exam-modal` khi vừa vào trang; đưa học sinh vào thẳng **Sảnh 50 Đề** và chỉ bật modal đề xuất sau `10000ms` (10s) nếu học sinh chưa thao tác chọn lọc/thi/bảng lệnh.
+- **Commit & File đã sửa**:
+  - **Student Repo (`antigravity/20261124-lucian-uxui-phase3` → đẩy fast-forward `eb518a3..` vào `upstream/main` & `origin/main`)**:
+    - `danh-gia-nang-luc.html`, `index.html`, `smart-marketing-popup.js`, `test_smart_marketing_popup.mjs`: `d48dd64`.
+    - `PROJECT_STATE.md`: Cập nhật bàn giao tinh chỉnh.
+- **Kiểm tra đã chạy**:
+  - `node -c smart-marketing-popup.js`, `vm.Script` AST inline (`danh-gia-nang-luc.html`: 6/6, `index.html`: 4/4, `phong-thi-thu.html`: 2/2), `git diff --check`, 0 blur AI Glow, 0 link Live lộ trên menu.
+  - 9 Node suites PASS (`exit=0`), Playwright E2E `pw_verify_lucian_phase3.py` (`exit=0`, `0` page errors) gồm đo thực tế `reload()` bật pop-up 15s, Sảnh ĐGNL mở sau `10s`, không hộp viền/vòng đứt, `14/14` sparkle sprites, Mobile `375×812` `0` chồng lấp và đo rAF 23 bước `0% → 100%`.
+
 ## Bàn giao gần nhất (24/11/2026 10:05)
 - **Triển Khai Đợt 3 Chuyển Động Lucian UX/UI (`danh-gia-nang-luc.html`, `index.html`, `phong-thi-thu.html`) & Tối Ưu Tải Nhanh / Pop-up 15s / Cổng Hố Đen–Pulsar / Tên Miền Lên Production (`main`)**:
 - **Mục tiêu & Hành vi mới**:
