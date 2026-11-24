@@ -1,3 +1,20 @@
+## Bàn giao gần nhất (24/11/2026 11:38)
+- **Khóa Boot 10s Ở Sảnh ĐGNL Kèm Phá Cache & Hiệu Ứng Đường Sáng Quét Chéo Cho Hố Đen/Sao Neutron (`main`)**:
+- **Mục tiêu & Hành vi mới**:
+  1. `danh-gia-nang-luc.html`: Bổ sung lớp khóa kép CSS + JS (`body.dgnl-lobby-active.dgnl-boot-grace #start-exam-modal:not(.manual-open) { display: none !important; }`, biến `_dgnlBootTs`, chặn mọi lời gọi `openSmartRecommendationModal(false)` trước `9850ms` dù có phiên làm dở Đề 02 hay đồng bộ lại `initApp()`, gỡ grace tự động tại `10000ms`), giữ nút **`✨ Gợi ý đề cho em →`** (`openSmartRecommendationModal(true)`) mở tức thì kể cả trong `10s` đầu, và dọn sạch query `?v=...` khỏi thanh địa chỉ bằng `history.replaceState`.
+  2. **Phá cache trình duyệt sang Sảnh ĐGNL**: Gắn `?v=20261124c` trên các liên kết điều hướng/prefetch vào Sảnh Đánh Giá Năng Lực (trừ các link có chủ đích `?autostart=1` ở `smart-marketing-popup.js` và `hoso.html`) tại `index.html`, `auth.js`, `baihoc.html`, `phong-thi-thu.html`, `huongdan.html`, `goi-hoc.html`, `hoso.html`, `danhsach-ly12.html`, `live-record.html`.
+  3. `index.html`: Giữ 100% nhãn chữ không khung / không vòng tròn nét đứt nguyên bản (`::after content === 'none'`, 0 AI Glow) và bổ sung hiệu ứng **đường sáng quét chéo `3.0s`** (lệch pha `1.5s` giữa Hố đen bên trái và Sao Neutron bên phải) trên cả 3D WebGL (`createCelestialSheenLayer` bám biên dạng đĩa bồi tụ/chùm tia + đồng bộ shader `vWorldRel`) lẫn nhãn chữ (`@keyframes celestialTextSheen`, ghi đè `!important` an toàn cho `.star-vn`).
+- **Commit & File đã sửa**:
+  - **Student Repo (`antigravity/20261124-lucian-uxui-phase3` → đẩy fast-forward `b902460..` vào `upstream/main` & `origin/main`)**:
+    - `danh-gia-nang-luc.html`, `index.html`, `auth.js`, `baihoc.html`, `phong-thi-thu.html`, `huongdan.html`, `goi-hoc.html`, `hoso.html`, `danhsach-ly12.html`, `live-record.html`: `d3cb488`.
+    - `PROJECT_STATE.md`: Cập nhật bàn giao này.
+- **Kiểm tra đã chạy**:
+  - `vm.Script` AST inline toàn bộ `10` file (`danh-gia-nang-luc.html`: 6/6, `index.html`: 4/4, `phong-thi-thu.html`: 2/2, `auth.js` + 7 file HTML), `git diff --check`, `0` dòng AI-Glow mới trong diff, `0` link Live lộ trên menu/palette.
+  - 9 Node suites PASS (8 suite DGNL/quiz/live/trial PASS sau edit Sảnh & link; `test_smart_marketing_popup.mjs` & `vm.Script` `index.html` PASS sau edit cuối).
+  - Playwright E2E `pw_verify_lucian_phase3.py` (`exit=0`, `0` page errors, `0` WebGL/console errors) gồm kịch bản giả lập đúng tài khoản `PRO` + bài làm dở Đề 02 đi từ `index.html` → `danh-gia-nang-luc.html?v=20261124c` (Sảnh sạch không hiện modal ở `350ms` & `4s`, nút gợi ý mở tức thì trong `1s` đầu, modal gợi ý Đề 02 tự bật sau `~10s` khi đứng yên) và kiểm tra trực quan PNG đỉnh quét sáng Hố đen & Sao Neutron.
+- **Điều phải giữ nguyên**:
+  - Live tiếp tục ẩn trên navbar/drawer/palette; `phong-thi-thu.html` khóa sáng CBT chuẩn Bộ; `danh-gia-nang-luc.html` giữ One-Frame Zero-Scroll; `index.html` giữ `.celestial-label` không khung viền, `.star-label::after content === 'none'`, 0 vòng tròn nét đứt.
+
 ## Bàn giao gần nhất (24/11/2026 10:34)
 - **Tinh Chỉnh Preloader Vũ Trụ 60 FPS `0% → 100%`, Pop-up 15s Khi Tải Lại Trang, Cổng Hố Đen/Pulsar Nguyên Bản Lấp Lánh & Hẹn 10s Ở Đánh Giá Năng Lực (`main`)**:
 - **Mục tiêu & Hành vi mới**:
