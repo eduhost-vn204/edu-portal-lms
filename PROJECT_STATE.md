@@ -1,3 +1,22 @@
+## Bàn giao gần nhất (24/11/2026 08:51)
+- **Triển Khai Đợt 2 Chuyển Động Lucian UX/UI (`hoso.html`, `baihoc.html`, `live-record.html`) Lên Production (`main`, Giữ Live Ẩn Trên Menu)**:
+- **Mục tiêu & Hành vi mới**:
+  1. `hoso.html`: Nâng cấp skeleton shimmer `#loading` 2 cột (`#439`), đồng hồ số lăn odometer (`#426`, bảo toàn `#wb-profile-stat-val` cho `wrong-bank-ui.js`), thanh tab `#hoso-tabs-bar` trượt đàn hồi (`#416` + phím mũi tên), tăng `padding-top` `.page` Desktop lên `84px` chống khuất navbar cố định, dọn AI Glow và tối ưu top-bar mobile `<= 480px`.
+  2. `baihoc.html`: Nâng cấp tab lọc khóa học `#bh-home-tabs` (`#416`), bảng lệnh tìm nhanh `Ctrl+K` / nút `Tìm nhanh` (`#046`, lọc in-memory `COURSES` với 0 request GAS khi gõ/tìm), đường dẫn breadcrumb thu gọn sau `…` (`#415`), danh sách Mục tiêu bài học tương tác kèm vòng SVG & lưu `localStorage` (`#014`), nút Lên đầu trang kèm vòng tiến độ đọc (`#450`), nối `toast()` với `window.vlxtToast` (`#435`), đồng bộ `data-theme`, dọn AI Glow và sửa bố cục toolbar/top-bar mobile `375px`.
+  3. `live-record.html`: Giữ 100% Guest Access công khai và giữ trạng thái Live ẩn khỏi menu điều hướng toàn trang; bổ sung `#416` tabs, `#046` Command Palette `Ctrl+K`, `#415` breadcrumb, `#450` Back-to-top phía trên chat hỗ trợ, `#435` toast hook, dọn AI Glow và tối ưu mobile.
+- **Commit & File đã sửa**:
+  - **Student Repo (`antigravity/20261124-lucian-uxui-phase2` → đẩy fast-forward vào `upstream/main` & `origin/main`)**:
+    - `hoso.html`, `baihoc.html`, `live-record.html`: `4a5b182`.
+    - `PROJECT_STATE.md`: Cập nhật bàn giao triển khai Đợt 2.
+- **Kiểm tra đã chạy**:
+  - `vm.Script` AST inline (`hoso.html`: 4, `baihoc.html`: 4, `live-record.html`: 3), `git diff --check`, 0 `?token=`, 0 `_isTrialLimit`, 0 blur AI Glow, 0 link `live-record.html` trong menu điều hướng.
+  - Student regression PASS: `test-trial-soft-unlock.mjs` (`22/22`), `test-live-record-guest.mjs` (`11/11`), `test_diagnostic_mastery_loop.mjs`, `test_wrong_bank.mjs` (`8/8`), `test_cro_funnel.mjs` (`8/8`), `test-quiz-merge.mjs` (`6/6`), `test-quiz-publish.mjs` (`12/12`).
+  - Playwright E2E Desktop `1440×900`, Mobile `375×812`, `prefers-reduced-motion: reduce`, Light/Dark: PASS (`0` pageerror) + duyệt trực quan toàn bộ PNG.
+- **Điều phải giữ nguyên**:
+  - Live (`live-record.html`) tiếp tục ẩn khỏi thanh điều hướng toàn web; giữ nguyên `phong-thi-thu.html` CBT sáng chuẩn Bộ GD&ĐT, bản đồ 3D `index.html`, phòng thi `danh-gia-nang-luc.html`.
+- **Việc còn lại**:
+  - Tiếp tục triển khai Đợt 3 cho `danh-gia-nang-luc.html`, `index.html`, `phong-thi-thu.html` trên nhánh cục bộ để Thầy xem duyệt.
+
 ## Bàn giao gần nhất (24/11/2026 08:11)
 - **Tích Hợp Thư Viện Chuyển Động Lucian UX/UI Đợt 1 (`assets/lucian-uxui.css`, `auth.js`, `login.html`, `goi-hoc.html`, `huongdan.html`) & Triển Khai Production (`main`)**:
 - **Mục tiêu & Hành vi mới**:
