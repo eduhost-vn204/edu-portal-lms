@@ -1,3 +1,16 @@
+## Bàn giao gần nhất (24/11/2026 20:02)
+- **Phát Hành Production (`main`) Chiến Dịch Trải Nghiệm Sớm VIP (25/11–05/12, 7 Ngày) + Telemetry & Hub Báo Lỗi Zalo + Fix Lỗi Google OAuth `401: invalid_client` (`danh-gia-nang-luc.html`, `login.html`, `vlxt-telemetry.js`, `goi-hoc.html`)**:
+- **Trạng thái**: Đã sửa triệt để lỗi đăng nhập Gmail, kiểm định toàn diện và đẩy lên `main` hai repo Student (`upstream/main` & `origin/main`) và Admin (`origin/main`) kèm rollback tag.
+- **Sửa lỗi đăng nhập Gmail (`401: invalid_client` & In-App WebView)**:
+  1. `danh-gia-nang-luc.html`: Thay `DGNL_CLIENT_ID` placeholder sai (`912620759392-...`, nguyên nhân gây trang Google báo `Lỗi 401: invalid_client — Không tìm thấy ứng dụng khách OAuth`) bằng Google OAuth Client ID chuẩn của hệ thống (`1022891995284-miquu1f7rlpie7ug9884sgagf21nputc.apps.googleusercontent.com`); nối `handleGoogleAuthCallback` gửi `credential` lên GAS `action: 'logingoogle'` để xác thực chữ ký token và cấp phiên có `token` thật (chỉ fallback giải mã JWT nếu mất mạng lúc vừa thi xong); thêm cảnh báo hướng dẫn mở bằng Chrome/Safari khi học sinh mở link từ trình duyệt nhúng Zalo/Messenger/TikTok.
+  2. `login.html`: Gắn `onload` + retry tối đa `40×250ms` cho `accounts.google.com/gsi/client` khi mạng 4G chậm để nút Đăng nhập Google luôn render; thêm hướng dẫn mở trình duyệt ngoài / nút Intent Chrome Android khi mở từ Zalo/Messenger/TikTok In-App WebView.
+  3. `vlxt-telemetry.js` & `goi-hoc.html`: Bảo toàn định danh email cho tài khoản Google trong `normSdt()` (không dùng `.replace(/\D/g, '')` cắt chữ khỏi Gmail) và khi kiểm tra `checkpaymentstatus` / điền form Giữ Suất VIP (`#rsv-sdt` để trống nhắc nhập SĐT Zalo liên hệ).
+- **Nội dung Trải Nghiệm Sớm & Telemetry**:
+  - **Student (`antigravity/20261124-early-access-telemetry`)**: `vlxt-telemetry.js`, `vlxt-feedback-hub.js`, cầu nối `ho-tro-chat.js` / `hoat-dong.js`, `auth.js`, `freemium-flow.js`, `login.html`, `index.html`, `baihoc.html`, `danh-gia-nang-luc.html`, `phong-thi-thu.html`, `goi-hoc.html` và đồng bộ auth/script 13 trang Student (giữ nguyên `live-record.html` 100% Guest Access, giữ sáng CBT `phong-thi-thu.html`, giữ One-Frame `<= 730px` & `10s` boot grace `danh-gia-nang-luc.html`, thay toàn bộ SĐT cũ sang Zalo `0964.885.920` & Nhóm Zalo `https://zalo.me/g/str1pllhp4uxa3rtvnou`).
+  - **Admin (`antigravity/20261124-admin-analytics-hub`)**: `phan-tich-hanh-vi.html`, `assets/admin-telemetry.js`, lọc node hệ thống `_vlxt_*` khỏi `support_chats` trên 12 trang Admin, điều hướng từ `index.html` & `ho-tro-hoc-tap.html`.
+- **Kiểm tra trước khi merge**:
+  - `node --check` 7/7 JS, `vm.Script` AST 34/34 HTML, `git diff --check` sạch, `0` AI Glow, `0` secret leak, `10/10` Student suites hiện hành PASS (gồm 4 test mới trong `test_early_access_and_telemetry.mjs`), `2/2` Admin suites PASS (`test-apps-script-logic` 12/12 + `test-sidebar-consistency` 15/15).
+
 ## Bàn giao gần nhất (24/11/2026 16:36)
 - **Chiến Dịch Trải Nghiệm Sớm VIP (25/11–05/12, Đếm Ngược 7 Ngày) + Hệ Thống Telemetry Hành Vi & Phản Hồi Toàn Trang + Trung Tâm Phân Tích Admin (Feature Branches — Chờ Thầy Nghiệm Thu Preview Cục Bộ)**:
 - **Trạng thái**: `VERIFY` — Sẵn sàng trên 2 feature branches + 2 local HTTP preview servers (`127.0.0.1:8791` Student & `127.0.0.1:8792` Admin); **chưa merge/push `main`**, **chưa deploy GAS**.

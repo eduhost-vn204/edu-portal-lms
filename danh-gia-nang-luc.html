@@ -4421,7 +4421,8 @@
             </p>
 
             <!-- Nút Google Login -->
-            <div id="google-signin-btn-slot" style="margin-bottom:18px;display:flex;justify-content:center;"></div>
+            <div id="google-signin-btn-slot" style="margin-bottom:10px;display:flex;justify-content:center;"></div>
+            <div id="dgnl-inapp-google-note" style="display:none;margin:0 0 14px;padding:9px 11px;border-radius:10px;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.35);font-size:12px;color:#fde68a;line-height:1.45;text-align:left;"></div>
 
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
                 <div style="flex:1;height:1px;background:var(--border-subtle);"></div>
@@ -4473,7 +4474,7 @@
 
     <!-- MAIN APP SCRIPT -->
     <script>
-        var DGNL_CLIENT_ID = '912620759392-56s7s14b0g5477m2i8310q45hpl4g8h9.apps.googleusercontent.com';
+        var DGNL_CLIENT_ID = '1022891995284-miquu1f7rlpie7ug9884sgagf21nputc.apps.googleusercontent.com';
         var DGNL_GAS_URL = (typeof window.VLXT_GAS !== 'undefined') ? window.VLXT_GAS : 'https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec';
 
         var currentExamNumber = 1;
@@ -7223,9 +7224,21 @@
             processAndShowReport(user);
         }
 
+        function showDgnlInAppGoogleHint() {
+            var note = document.getElementById('dgnl-inapp-google-note');
+            if (!note) return;
+            var ua = (navigator && navigator.userAgent) || '';
+            if (/Zalo|FBAN|FBAV|Messenger|Instagram|Bytedance|musical_ly|TikTok|Line\//i.test(ua)) {
+                note.innerHTML = '<b>Mẹo mở bằng trình duyệt ngoài:</b> Em đang mở trong Zalo/TikTok/Messenger nên Google có thể chặn đăng nhập nhúng. Bấm <b>⋯ (góc phải) → Mở bằng Chrome / Safari</b> hoặc dùng form <b>SĐT</b> ngay bên dưới nhé!';
+                note.style.display = 'block';
+            }
+        }
+
         function initGoogleLogin() {
+            showDgnlInAppGoogleHint();
+            initGoogleLogin._tries = (initGoogleLogin._tries || 0) + 1;
             if (typeof google === 'undefined' || !google.accounts) {
-                setTimeout(initGoogleLogin, 400);
+                if (initGoogleLogin._tries <= 40) setTimeout(initGoogleLogin, 300);
                 return;
             }
             try {
@@ -7257,17 +7270,53 @@
 
         async function handleGoogleAuthCallback(response) {
             if (!response || !response.credential) return;
-            var payload = decodeJWT(response.credential);
-            var user = {
-                hoten: (payload && payload.name) ? payload.name : 'Học sinh Google',
-                email: (payload && payload.email) ? payload.email : 'hocsinh_google@vlxt.edu.vn',
-                sdt: (payload && payload.email) ? payload.email : 'hocsinh_google@vlxt.edu.vn',
-                lop: '12', loaiTK: 'free', authProvider: 'google', createdAt: Date.now()
-            };
-            try { localStorage.setItem('vlxt_user_v2', JSON.stringify(user)); } catch(e) {}
+            var errEl = document.getElementById('qa-error-msg');
+            if (errEl) { errEl.style.display = 'none'; errEl.textContent = ''; }
+            var finalUser = null;
+            try {
+                var deviceId = (typeof vlxtDeviceFingerprint === 'function') ? await vlxtDeviceFingerprint() : '';
+                var r = await fetch(DGNL_GAS_URL, {
+                    method: 'POST', mode: 'cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'logingoogle', credential: response.credential, deviceId: deviceId })
+                });
+                var d = await r.json();
+                if (d && d.ok && d.user) {
+                    var isFirst = !d.user.lop || d.user.lop === 'Google';
+                    finalUser = Object.assign({}, d.user, {
+                        lop: isFirst ? '12' : d.user.lop,
+                        authProvider: 'google'
+                    });
+                    if (isFirst) {
+                        try { localStorage.setItem('vlxt_just_registered', '1'); } catch(e) {}
+                    }
+                    if (typeof VLXT_TELEMETRY !== 'undefined') {
+                        VLXT_TELEMETRY.track(isFirst ? 'auth_register_success' : 'auth_login_success', {
+                            target: 'google_dgnl',
+                            label: finalUser.hoten || finalUser.sdt
+                        });
+                    }
+                } else if (d && !d.ok) {
+                    if (errEl) {
+                        errEl.textContent = d.msg || 'Không thể đăng nhập bằng Google. Em thử đăng nhập bằng SĐT nhé!';
+                        errEl.style.display = 'block';
+                    }
+                    return;
+                }
+            } catch(e) {
+                var payload = decodeJWT(response.credential);
+                finalUser = {
+                    hoten: (payload && payload.name) ? payload.name : 'Học sinh Google',
+                    email: (payload && payload.email) ? payload.email : 'hocsinh_google@vlxt.edu.vn',
+                    sdt: (payload && payload.email) ? payload.email : 'hocsinh_google@vlxt.edu.vn',
+                    lop: '12', loaiTK: 'free', authProvider: 'google', createdAt: Date.now()
+                };
+            }
+            if (!finalUser) return;
+            try { localStorage.setItem('vlxt_user_v2', JSON.stringify(finalUser)); } catch(e) {}
             syncNavUserChip();
             document.getElementById('login-modal').style.display = 'none';
-            processAndShowReport(user);
+            processAndShowReport(finalUser);
         }
 
         async function handleQuickAuthSubmit(e) {

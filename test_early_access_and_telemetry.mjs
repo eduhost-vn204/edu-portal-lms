@@ -153,3 +153,40 @@ function loadIntoSandbox(filePath, extraGlobals = {}) {
 
   console.log('✓ Test 3: Student HTML integration & preservation contracts passed.');
 }
+
+// ─── Test 4: Google OAuth Client ID Integrity & Gmail Account Telemetry ───
+{
+  const loginHtml = fs.readFileSync('login.html', 'utf8');
+  const dgnlHtml = fs.readFileSync('danh-gia-nang-luc.html', 'utf8');
+  const validClientId = '1022891995284-miquu1f7rlpie7ug9884sgagf21nputc.apps.googleusercontent.com';
+
+  assert(!loginHtml.includes('912620759392'), 'login.html must never contain broken placeholder client ID');
+  assert(!dgnlHtml.includes('912620759392'), 'danh-gia-nang-luc.html must never contain broken 401 invalid_client ID');
+  assert(loginHtml.includes(validClientId), 'login.html must use real Google Client ID');
+  assert(dgnlHtml.includes(validClientId), 'danh-gia-nang-luc.html must sync real Google Client ID');
+  assert(dgnlHtml.includes("action: 'logingoogle'"), 'danh-gia-nang-luc.html must verify Google token with GAS');
+  assert(loginHtml.includes('onGoogleLibraryLoad') && loginHtml.includes('login-inapp-google-note'), 'login.html handles slow GSI load & In-App WebViews');
+
+  const gmailUser = {
+    sdt: 'minhvu20999@gmail.com',
+    hoten: 'Minh Vu',
+    lop: '12',
+    loaiTK: 'vip',
+    trialExpiry: Date.now() + 7 * 86400000
+  };
+  const { win, storage } = loadIntoSandbox('vlxt-telemetry.js');
+  win.localStorage.setItem('vlxt_user_v2', JSON.stringify(gmailUser));
+  const C = win.VLXT_CAMPAIGN;
+  const T = win.VLXT_TELEMETRY;
+  const authed = C.requireAuthOrRedirect('gmail_test');
+  assert(authed && authed.sdt === 'minhvu20999@gmail.com', 'Gmail user must pass auth guard without redirect');
+  assert.strictEqual(T.getActorInfo().sdt, 'minhvu20999@gmail.com', 'Telemetry normSdt must preserve full email (not strip to digits)');
+  assert.strictEqual(C.canAccessCourseChapter('CHUYÊN ĐỀ LÝ THUYẾT GĐ1 - Vật Lý 12', 'Chương 1: Vật lý nhiệt', gmailUser), true);
+  assert.strictEqual(C.canAccessLayGocLesson('5 NGÀY LẤY GỐC VẬT LÍ', 0, {}, gmailUser), true);
+  assert.strictEqual(C.canAccessDgnlExam(5, gmailUser), true);
+  assert.strictEqual(C.canAccessDgnlExam(6, gmailUser), false);
+  assert.strictEqual(C.canAccessPhongThiThu(gmailUser), true);
+  assert(storage.size >= 0);
+
+  console.log('✓ Test 4: Google OAuth 401 invalid_client fix & Gmail Early Access flow passed.');
+}

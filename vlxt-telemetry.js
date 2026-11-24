@@ -70,7 +70,9 @@
   }
 
   function normSdt(s) {
-    return String(s || '').replace(/\D/g, '');
+    var str = String(s || '').trim();
+    if (str.indexOf('@') !== -1) return str.toLowerCase();
+    return str.replace(/\D/g, '');
   }
 
   function getVnDateStr(ts) {

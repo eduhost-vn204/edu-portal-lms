@@ -1499,7 +1499,7 @@ document.addEventListener('DOMContentLoaded', () => {
             method: 'POST',
             mode: 'cors',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: 'checkpaymentstatus', sdt: String(u.sdt).replace(/\D/g, ''), hoten: u.hoten || '' })
+            body: JSON.stringify({ action: 'checkpaymentstatus', sdt: String(u.sdt).includes('@') ? String(u.sdt).trim().toLowerCase() : String(u.sdt).replace(/\D/g, ''), hoten: u.hoten || '' })
         }).then(r => r.json()).then(res => {
             if (res && res.ok && res.paid) {
                 const planCode = res.planCode || u.planCode || 'THANG50K';
@@ -1906,7 +1906,13 @@ function handlePayDone() {
             var sp = document.getElementById('rsv-sdt');
             var lp = document.getElementById('rsv-lop');
             if (fn && !fn.value && u.hoten) fn.value = u.hoten;
-            if (sp && !sp.value && u.sdt && u.sdt !== 'FREE') sp.value = u.sdt;
+            if (sp && !sp.value && u.sdt && u.sdt !== 'FREE') {
+                if (String(u.sdt).indexOf('@') !== -1) {
+                    sp.placeholder = 'Nhập SĐT Zalo của em để Thầy liên hệ';
+                } else {
+                    sp.value = u.sdt;
+                }
+            }
             if (lp && u.lop && ['10','11','12'].indexOf(String(u.lop)) !== -1) lp.value = String(u.lop);
         }
         var planEl = document.getElementById('rsv-plan');

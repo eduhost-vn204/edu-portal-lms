@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Đăng nhập · Vật Lý Xuân Trường</title>
-<script src="https://accounts.google.com/gsi/client" defer></script>
+<script src="https://accounts.google.com/gsi/client" defer onload="if(window.onGoogleLibraryLoad)window.onGoogleLibraryLoad()"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/lucian-uxui.css?v=20261124">
 <style>
@@ -356,6 +356,7 @@ svg.logo-atom-icon,
   <div class="form-body">
     <!-- GOOGLE SIGN-IN (dùng chung cả 2 tab) -->
     <div class="google-btn-wrap" id="google-btn-container"></div>
+    <div id="login-inapp-google-note" style="display:none;margin:4px 0 8px;padding:9px 11px;border-radius:10px;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.35);font-size:12px;color:#fde68a;line-height:1.45;"></div>
     <div style="text-align:center;margin:2px 0 8px;">
       <a href="#" onclick="switchGoogleAccount(event)" style="font-size:12px;color:#94a3b8;text-decoration:underline;text-underline-offset:3px;">
         🔄 Dùng tài khoản Google khác
@@ -799,9 +800,35 @@ function switchGoogleAccount(e) {
   }
 }
 
+function checkInAppGoogleNotice() {
+  const note = document.getElementById('login-inapp-google-note');
+  if (!note) return;
+  const ua = (navigator && navigator.userAgent) || '';
+  if (!/Zalo|FBAN|FBAV|Messenger|Instagram|Bytedance|musical_ly|TikTok|Line\//i.test(ua)) return;
+  const isAndroid = /Android/i.test(ua);
+  const curUrl = window.location.href;
+  const intentHref = isAndroid
+    ? ('intent://' + curUrl.replace(/^https?:\/\//i, '') + '#Intent;scheme=https;package=com.android.chrome;end')
+    : curUrl;
+  note.innerHTML = '<b>Lưu ý mở trên Zalo / TikTok / Messenger:</b> Trình duyệt bên trong ứng dụng thường bị Google chặn đăng nhập Gmail. Em hãy bấm <b>⋯ → Mở bằng Chrome / Safari</b>'
+    + (isAndroid ? ` hoặc <a href="${intentHref}" style="color:#38bdf8;font-weight:700;text-decoration:underline;">Mở nhanh bằng Chrome</a>` : '')
+    + ` · <a href="#" onclick="navigator.clipboard&&navigator.clipboard.writeText(location.href);this.textContent='✓ Đã chép link';return false;" style="color:#38bdf8;font-weight:700;">Chép link</a>, hoặc đăng nhập bằng SĐT ngay bên dưới.`;
+  note.style.display = 'block';
+}
+
 function onGoogleLibraryLoad() {
+  checkInAppGoogleNotice();
+  if (typeof google === 'undefined' || !google.accounts || !google.accounts.id) {
+    window._gsiRetryCount = (window._gsiRetryCount || 0) + 1;
+    if (window._gsiRetryCount <= 40) {
+      setTimeout(onGoogleLibraryLoad, 250);
+    }
+    return;
+  }
   const container = document.getElementById('google-btn-container');
-  const btnWidth = container ? Math.min(372, Math.max(240, (container.clientWidth || 360))) : 360;
+  if (!container || window._vlxtGsiRendered) return;
+  window._vlxtGsiRendered = true;
+  const btnWidth = Math.min(372, Math.max(240, (container.clientWidth || 360)));
   google.accounts.id.initialize({
     client_id: GOOGLE_CLIENT_ID,
     callback: handleGoogleCredential,
@@ -815,6 +842,7 @@ function onGoogleLibraryLoad() {
   );
 }
 
+window.addEventListener('DOMContentLoaded', onGoogleLibraryLoad);
 if (typeof google !== 'undefined' && google.accounts) {
   onGoogleLibraryLoad();
 }
