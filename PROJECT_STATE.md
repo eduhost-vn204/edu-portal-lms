@@ -1,3 +1,23 @@
+## Bàn giao gần nhất (24/11/2026 10:05)
+- **Triển Khai Đợt 3 Chuyển Động Lucian UX/UI (`danh-gia-nang-luc.html`, `index.html`, `phong-thi-thu.html`) & Tối Ưu Tải Nhanh / Pop-up 15s / Cổng Hố Đen–Pulsar / Tên Miền Lên Production (`main`)**:
+- **Mục tiêu & Hành vi mới**:
+  1. `danh-gia-nang-luc.html`: Nâng cấp Sảnh 50 Đề với `#416` (`#lobby-stage-tabs`, `#lobby-status-pills`), `#426` (`#lobby-stat-done/avg/best`), `#092` (`#lobby-search-clear`, `loosenLobbyFilter`), `#046` bảng lệnh `Ctrl+K` chỉ bật tại Sảnh (tự tắt trong phòng thi), `#435` hook `vlxtToast`, giữ nguyên phòng thi 60 FPS & One-Frame Zero-Scroll (`1536×730` đáy khung `539px <= 730px`).
+  2. `phong-thi-thu.html`: Khóa cứng giao diện sáng CBT chuẩn Bộ GD&ĐT (`<html lang="vi" data-theme="light">`, nền `rgb(240, 244, 249)`), `#438` nút `#btnSimEnter`, `#416` `#ptt-filter-tabs`, `#439` skeleton sáng, `#092` xóa/nới lọc, `#450` Back-to-top sáng, bổ sung `#navDrawer` mobile (0 link Live), `padding-top: 78px`, sửa grid `minmax(0, 1fr)` chống tràn ngang `375px`.
+  3. `index.html` + `smart-marketing-popup.js`: Port `#002`, `#426` odometer, `#046` tìm nhanh (`0` link Live), `#450`; tối ưu tải trang & `#vlxt-preloader` xuống dưới 0.5s (tải font không chặn render, preload `three.min.js`/`gsap.min.js`, audio preload `'none'` lúc đầu, bỏ CSS `width: 0% !important`, bỏ link FA trùng); chuyển lịch pop-up sang `15000ms` (15s) kèm thiết kế card gọn `460px` ít chữ 3 ô điểm nhấn (`vlxt-smart-metrics`); nâng cấp Hố đen (`SINGULARITY · HỐ ĐEN`) & Sao Neutron (`PULSAR · SAO NEUTRON`) thành 2 cổng CTA nổi bật; thay chữ nền WebGL mờ bằng biểu trưng `VATLYXUANTRUONG.IO.VN` sắc nét, đọc rõ trên cả mobile `375px`.
+- **Commit & File đã sửa**:
+  - **Student Repo (`antigravity/20261124-lucian-uxui-phase3` → đẩy fast-forward vào `upstream/main` & `origin/main`)**:
+    - `danh-gia-nang-luc.html`, `index.html`, `phong-thi-thu.html` (Đợt 3 Lucian UX/UI): `4dd5047`.
+    - `index.html`, `smart-marketing-popup.js`, `test_smart_marketing_popup.mjs` (Tối ưu preloader, pop-up 15s, cổng thiên thể, tên miền): `3d40347`.
+    - `PROJECT_STATE.md`: Cập nhật bàn giao triển khai.
+- **Kiểm tra đã chạy**:
+  - `node -c smart-marketing-popup.js`, `vm.Script` AST inline (`danh-gia-nang-luc.html`: 6/6, `index.html`: 5/5, `phong-thi-thu.html`: 2/2), `git diff --check`, 0 `?token=`, 0 blur AI Glow, 0 link Live lộ trên menu/palette.
+  - 9 Node suites PASS (`exit=0`): `test_smart_marketing_popup.mjs`, `test_cro_funnel.mjs` (`8/8`), `test_diagnostic_mastery_loop.mjs`, `test_remedial_and_prediction.mjs`, `test_wrong_bank.mjs` (`8/8`), `scripts/test-trial-soft-unlock.mjs` (`22/22`), `scripts/test-live-record-guest.mjs` (`11/11`), `scripts/test-quiz-merge.mjs` (`6/6`), `scripts/test-quiz-publish.mjs` (`12/12`).
+  - Playwright E2E (`pw_verify_lucian_phase3.py`, `exit=0`, `0` page errors) + duyệt trực quan toàn bộ PNG Desktop `1440×900`, Laptop `1536×730`, Mobile `375×812`, `prefers-reduced-motion: reduce`, OS dark mode trên `phong-thi-thu.html`.
+- **Điều phải giữ nguyên**:
+  - Live (`live-record.html`) tiếp tục ẩn khỏi thanh điều hướng toàn web; `phong-thi-thu.html` giữ tuyệt đối giao diện sáng CBT chuẩn Bộ GD&ĐT; `danh-gia-nang-luc.html` giữ One-Frame Zero-Scroll; `index.html` giữ bản đồ sao 3D & `::after content === 'none'`.
+- **Việc còn lại**:
+  - Sau khi push `main`, kiểm tra live `vatlyxuantruong.io.vn` (HTTP `200`, đúng marker mới).
+
 ## Bàn giao gần nhất (24/11/2026 08:51)
 - **Triển Khai Đợt 2 Chuyển Động Lucian UX/UI (`hoso.html`, `baihoc.html`, `live-record.html`) Lên Production (`main`, Giữ Live Ẩn Trên Menu)**:
 - **Mục tiêu & Hành vi mới**:
