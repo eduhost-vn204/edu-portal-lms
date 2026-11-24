@@ -1,9 +1,14 @@
+<!-- Lucian UX/UI Prompt #046 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#046 -->
+<!-- Lucian UX/UI Prompt #415 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#415 -->
+<!-- Lucian UX/UI Prompt #416 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#416 -->
+<!-- Lucian UX/UI Prompt #450 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#450 -->
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live & Xem Lại | Vật Lý Xuân Trường</title>
+    <link rel="stylesheet" href="assets/lucian-uxui.css?v=20261124">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
@@ -608,7 +613,6 @@
     .nav-live-dot {
       width: 7px; height: 7px; border-radius: 50%;
       background: #ef4444;
-      box-shadow: 0 0 8px #ef4444;
       display: inline-block;
       animation: navLiveBlink 1.5s infinite ease-in-out;
       flex-shrink: 0;
@@ -634,7 +638,7 @@
       border-radius: 14px;
       padding: 8px;
       min-width: 220px;
-      box-shadow: 0 16px 45px rgba(0,0,0,0.85), 0 0 20px rgba(0, 240, 255, 0.1);
+      box-shadow: 0 16px 45px rgba(0,0,0,0.85);
       z-index: 1100;
     }
     .nav-dropdown:hover .nav-dropdown-content { display: block; }
@@ -725,7 +729,7 @@
             border-radius: 20px;
             background: linear-gradient(135deg, rgba(12, 24, 52, 0.88) 0%, rgba(8, 15, 34, 0.94) 60%, rgba(22, 16, 50, 0.88) 100%);
             border: 1px solid rgba(0, 240, 255, 0.28);
-            box-shadow: 0 16px 44px rgba(0, 0, 0, 0.48), inset 0 0 32px rgba(0, 240, 255, 0.06);
+            box-shadow: 0 16px 44px rgba(0, 0, 0, 0.48);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -762,7 +766,7 @@
         }
         .gsb-eyebrow .dot {
             width: 6px; height: 6px; border-radius: 50%;
-            background: #00f0ff; box-shadow: 0 0 8px #00f0ff;
+            background: #00f0ff;
         }
         .gsb-title {
             font-size: clamp(20px, 2.4vw, 27px);
@@ -770,7 +774,6 @@
             color: #ffffff;
             letter-spacing: -0.02em;
             margin-bottom: 4px;
-            text-shadow: 0 0 24px rgba(0, 240, 255, 0.25);
         }
         .gsb-sub {
             font-size: 13.5px;
@@ -794,13 +797,13 @@
             letter-spacing: 0.03em;
             text-decoration: none !important;
             transition: all 0.2s ease;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
             white-space: nowrap;
         }
         .gsb-back-galaxy:hover {
             background: #00f0ff;
             color: #030712 !important;
-            box-shadow: 0 0 28px rgba(0, 240, 255, 0.55);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.38);
             transform: translateY(-2px);
         }
         body.dark .course-card {
@@ -811,8 +814,8 @@
         }
         body.dark .course-card:hover {
             transform: translateY(-6px);
-            border-color: #00f0ff;
-            box-shadow: 0 18px 42px rgba(0, 240, 255, 0.18), 0 0 0 1px rgba(0, 240, 255, 0.35);
+            border-color: #38bdf8;
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.48), inset 0 0 0 1px rgba(56, 189, 248, 0.4);
         }
         body.dark .course-card.locked {
             opacity: 0.84;
@@ -888,20 +891,20 @@
             background: rgba(8, 14, 28, 0.82) !important;
         }
         body.dark .cc-btn {
-            background: linear-gradient(90deg, #0284c7, #00c8ff);
+            background: linear-gradient(90deg, #0284c7, #38bdf8);
             color: #031126;
             font-weight: 800;
-            box-shadow: 0 4px 16px rgba(0, 200, 255, 0.25);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
         }
         body.dark .course-card:hover .cc-btn {
-            background: linear-gradient(90deg, #00f0ff, #38bdf8);
+            background: linear-gradient(90deg, #38bdf8, #7dd3fc);
             color: #020817;
         }
         body.dark .tab-btn.active {
-            background: linear-gradient(90deg, #0284c7, #00e1ff);
-            color: #020817;
-            border-color: #00f0ff;
-            box-shadow: 0 0 18px rgba(0, 240, 255, 0.28);
+            background: #0284c7;
+            color: #ffffff;
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
         }
         @media (max-width: 768px) {
             .galaxy-sector-banner { padding: 16px 18px; margin: 72px 0 16px; }
@@ -911,8 +914,158 @@
             .container { padding: 0 12px; }
         }
 
+/* ─── LUCIAN UX/UI PHASE 2 (#046, #415, #416, #450) · ZERO AI GLOW ─── */
+#lr-home-tabs.u416-tl {
+  position: relative; display: inline-flex; align-items: center; flex-wrap: nowrap;
+  gap: 4px; padding: 4px; border-radius: 999px;
+  background: var(--ux-surface-2, #111a2e);
+  border: 1px solid var(--ux-line, rgba(148,163,184,0.22));
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+}
+#lr-home-tabs .u416-th {
+  position: absolute; top: 4px; bottom: 4px; left: var(--l, 4px); right: var(--r, 4px);
+  border-radius: 999px; background: var(--ux-accent, #0284c7);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  transition: left var(--tl, .48s) cubic-bezier(.3,1.25,.45,1), right var(--tr, .34s) cubic-bezier(.3,1.25,.45,1);
+  pointer-events: none; z-index: 0;
+}
+#lr-home-tabs .tab-btn {
+  position: relative; z-index: 1; background: transparent !important; border: 1px solid transparent !important;
+  box-shadow: none !important; color: var(--ux-ink-2, #94a3b8) !important;
+  padding: 7px 14px; border-radius: 999px; white-space: nowrap; transition: color .2s ease;
+}
+#lr-home-tabs .tab-btn:hover { color: var(--ux-ink, #f8fafc) !important; }
+#lr-home-tabs .tab-btn.active { color: #ffffff !important; }
+#lr-home-tabs .tab-btn:focus-visible { outline: 2px solid var(--ux-accent, #38bdf8); outline-offset: 2px; }
+
+.u046-trigger {
+  display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px;
+  border-radius: 999px; background: var(--ux-surface, #161b22);
+  border: 1px solid var(--ux-line-2, rgba(148,163,184,0.28)); color: var(--ux-ink-2, #cbd5e1);
+  font-size: 13px; font-weight: 650; cursor: pointer; white-space: nowrap;
+  transition: border-color .18s, background-color .18s, color .18s, transform .2s var(--ux-spring);
+}
+.u046-trigger:hover { border-color: var(--ux-accent, #38bdf8); color: var(--ux-ink, #f8fafc); background: var(--ux-surface-2, #1e293b); }
+.u046-trigger:active { transform: scale(.97); }
+.u046-kbd-badge {
+  display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 5px;
+  background: var(--ux-surface-2, #0f172a); border: 1px solid var(--ux-line, rgba(148,163,184,0.22));
+  font-size: 11px; font-weight: 700; color: var(--ux-ink-3, #94a3b8);
+}
+
+#lr-cmd-backdrop {
+  position: fixed; inset: 0; z-index: 99990; background: rgba(2, 6, 23, 0.72);
+  backdrop-filter: blur(6px); display: flex; align-items: flex-start; justify-content: center;
+  padding: 84px 14px 20px; opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity .22s ease, visibility 0s .22s;
+}
+#lr-cmd-backdrop.is-open { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity .22s ease, visibility 0s; }
+#lr-cmd-backdrop .u046 { position: relative; width: min(540px, 100%); height: min(460px, calc(100vh - 110px)); }
+#lr-cmd-backdrop .u046-pal {
+  position: absolute; inset: 0; display: flex; flex-direction: column; border-radius: 20px;
+  background: var(--ux-surface, #0f172a); border: 1px solid var(--ux-line-2, rgba(148,163,184,0.25));
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55); clip-path: inset(0 0 0 0 round 20px);
+  transition: clip-path .42s var(--ux-ease), transform .36s var(--ux-spring), opacity .22s;
+}
+#lr-cmd-backdrop:not(.is-open) .u046-pal { clip-path: inset(0 0 calc(100% - 54px) 0 round 22px); transform: translateY(-8px) scale(.98); opacity: .5; }
+#lr-cmd-backdrop .u046-field {
+  position: relative; display: flex; align-items: center; gap: 10px; height: 54px; flex: none;
+  padding: 0 14px 0 16px; border-bottom: 1px solid var(--ux-line, rgba(148,163,184,0.2));
+}
+#lr-cmd-backdrop .u046-field svg { width: 18px; height: 18px; flex: none; fill: none; stroke: var(--ux-ink-3, #94a3b8); stroke-width: 2; stroke-linecap: round; }
+#lr-cmd-backdrop .u046-in { flex: 1; min-width: 0; height: 100%; border: 0; background: none; font-size: 15px; font-weight: 560; color: var(--ux-ink, #f8fafc); outline: none; }
+#lr-cmd-backdrop .u046-in::placeholder { color: var(--ux-ink-3, #64748b); }
+#lr-cmd-backdrop .u046-body { position: relative; flex: 1; min-height: 0; overflow-y: auto; padding: 6px 8px; }
+#lr-cmd-backdrop .u046-hl {
+  position: absolute; left: 8px; right: 8px; top: 0; height: 46px; border-radius: 12px;
+  background: var(--ux-accent-soft, rgba(56,189,248,0.14)); box-shadow: inset 3px 0 0 var(--ux-accent, #38bdf8);
+  transform: translateY(var(--y, 0)); transition: transform .32s var(--ux-spring), opacity .18s; pointer-events: none;
+}
+#lr-cmd-backdrop .u046-list { position: relative; margin: 0; padding: 0; list-style: none; }
+#lr-cmd-backdrop .u046-g { padding: 10px 10px 5px; font-size: 11px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: var(--ux-ink-3, #64748b); }
+#lr-cmd-backdrop .u046-op { display: flex; align-items: center; gap: 11px; height: 46px; padding: 0 10px; border-radius: 12px; font-size: 14px; font-weight: 600; color: var(--ux-ink-2, #cbd5e1); cursor: pointer; }
+#lr-cmd-backdrop .u046-op[aria-selected="true"] { color: var(--ux-ink, #ffffff); }
+#lr-cmd-backdrop .u046-op mark { background: none; color: var(--ux-accent, #38bdf8); font-weight: 800; }
+#lr-cmd-backdrop .u046-op-lbl { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#lr-cmd-backdrop .u046-op-sub { font-size: 11.5px; color: var(--ux-ink-3, #64748b); white-space: nowrap; flex-shrink: 0; }
+#lr-cmd-backdrop .u046-ic {
+  width: 28px; height: 28px; flex: none; border-radius: 8px; display: grid; place-items: center;
+  background: var(--ux-surface-2, #1e293b); border: 1px solid var(--ux-line, rgba(148,163,184,0.22));
+  color: var(--ux-accent, #38bdf8); font-size: 12px;
+}
+#lr-cmd-backdrop .u046-empty { padding: 38px 14px; text-align: center; font-size: 14px; color: var(--ux-ink-3, #94a3b8); }
+#lr-cmd-backdrop .u046-empty b { display: block; margin-bottom: 4px; color: var(--ux-ink, #f8fafc); }
+#lr-cmd-backdrop .u046-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; height: 42px; flex: none;
+  padding: 0 14px; border-top: 1px solid var(--ux-line, rgba(148,163,184,0.2));
+  font-size: 12px; font-weight: 600; color: var(--ux-ink-3, #94a3b8);
+}
+
+.u415-bc {
+  display: inline-flex !important; align-items: center !important; flex-wrap: nowrap !important;
+  max-width: 100%; overflow-x: auto; scrollbar-width: none; min-height: 38px;
+  padding: 3px 10px 3px 6px !important; border-radius: 12px !important;
+  background: var(--ux-surface, #0f172a) !important; border: 1px solid var(--ux-line, rgba(148,163,184,0.22)) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.22) !important;
+}
+.u415-bc::-webkit-scrollbar { display: none; }
+.u415-ol { display: flex; align-items: center; margin: 0; padding: 0; list-style: none; }
+.u415-li { display: grid; grid-template-columns: 1fr; opacity: 1; transition: grid-template-columns .45s cubic-bezier(.25,1,.35,1), opacity .25s var(--ux-ease); }
+.u415-li > span { display: flex; align-items: center; min-width: 0; overflow: hidden; }
+.u415-li.is-shut { grid-template-columns: 0fr; opacity: 0; pointer-events: none; }
+.u415-li.is-shut .u415-in { transform: translateX(-8px) scale(.94); }
+.u415-in { display: flex; align-items: center; transition: transform .5s cubic-bezier(.3,1.4,.5,1); }
+.u415-sep { display: grid; place-items: center; width: 14px; flex: none; color: var(--ux-ink-3, #64748b); }
+.u415-sep svg { width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.u415-a, .u415-more {
+  display: inline-flex; align-items: center; height: 28px; padding: 0 8px; border: 0; border-radius: 8px;
+  background: none; font-size: 13px; font-weight: 600; color: var(--ux-ink-2, #94a3b8) !important;
+  text-decoration: none !important; white-space: nowrap; cursor: pointer; transition: color .18s, background-color .18s;
+}
+.u415-a:hover, .u415-more:hover { color: var(--ux-ink, #f8fafc) !important; background: var(--ux-surface-2, rgba(255,255,255,0.08)); }
+.u415-a.hm { padding: 0 7px; }
+.u415-a.hm svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linejoin: round; stroke-linecap: round; }
+.u415-more { font-weight: 800; letter-spacing: .08em; }
+.u415-cur { display: inline-flex; align-items: center; height: 28px; padding: 0 8px; font-size: 13px; font-weight: 750; color: var(--ux-ink, #f8fafc) !important; white-space: nowrap; }
+
+.u450-top {
+  position: fixed; right: 22px; bottom: 92px; z-index: 940;
+  width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%;
+  background: var(--ux-surface, #0f172a); color: var(--ux-ink, #f8fafc);
+  box-shadow: 0 0 0 1px var(--ux-line-2, rgba(148,163,184,0.3)), 0 8px 20px rgba(0, 0, 0, 0.42);
+  cursor: pointer; overflow: hidden; transition: transform .4s var(--ux-spring), opacity .22s, visibility 0s;
+}
+.u450-top:hover { transform: translateY(-2px); }
+.u450-top:active { transform: scale(.92); }
+.u450-top:focus-visible { outline: 2px solid var(--ux-accent, #38bdf8); outline-offset: 2px; }
+.u450-top > * { grid-area: 1/1; }
+.u450-top svg.rg { position: absolute; inset: 0; width: 44px; height: 44px; transform: rotate(-90deg); }
+.u450-top .rg circle { fill: none; stroke-width: 2.5; }
+.u450-top .rg .tr { stroke: var(--ux-line, rgba(148,163,184,0.22)); }
+.u450-top .rg .pr { stroke: var(--ux-accent, #38bdf8); stroke-linecap: round; stroke-dasharray: 122.5; stroke-dashoffset: calc(122.5 * (1 - var(--p, 0))); transition: stroke-dashoffset var(--pd, .25s) ease; }
+.u450-top svg.ar { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.u450-top.is-fly svg.ar { animation: u450-fly .65s cubic-bezier(.5,0,.3,1); }
+@keyframes u450-fly { 45% { transform: translateY(-28px); opacity: 0; } 46% { transform: translateY(24px); opacity: 0; } }
+.u450-top.is-hide { transform: translateY(10px) scale(.65); opacity: 0; visibility: hidden; pointer-events: none; transition: transform .3s ease, opacity .22s, visibility 0s .3s; }
+
+@media (max-width: 768px) {
+  .u046-kbd-badge { display: none; }
+  .u450-top { right: 16px; bottom: 86px; }
+  .toolbar .grow { display: none !important; }
+  .toolbar .u416-tl { order: 1; }
+  .toolbar .u046-trigger { order: 2; margin-left: auto; }
+  .toolbar .search-box { order: 3 !important; width: 100% !important; flex: 1 1 100% !important; min-width: 0 !important; }
+  .toolbar select.sort { order: 4; width: 100%; flex: 1 1 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #lr-home-tabs .u416-th, #lr-cmd-backdrop .u046-pal, #lr-cmd-backdrop .u046-hl,
+  .u415-li, .u415-in, .u450-top, .u450-top .rg .pr, .u450-top.is-fly svg.ar {
+    transition: none !important; animation: none !important; transition-delay: 0s !important; animation-delay: 0s !important;
+  }
+}
+
 </style>
-  <script src="auth.js?v=20261118a"></script>
+  <script src="auth.js?v=20261124"></script>
   <script src="trial-manager.js?v=1"></script>
   <script src="xephang-fx.js?v=1"></script>
   <script src="thongbao.js?v=2"></script>
@@ -1027,7 +1180,7 @@
   height: 7px !important;
   border-radius: 50% !important;
   background: #ef4444 !important;
-  box-shadow: 0 0 8px #ef4444 !important;
+  box-shadow: none !important;
   display: inline-block !important;
 }
 .nav-dropdown {
@@ -1136,6 +1289,10 @@ svg.logo-atom-icon,
   -webkit-background-clip: border-box !important;
   text-shadow: none !important;
   filter: none !important;
+}
+@media (max-width: 480px) {
+  .top-bar .brand-glow-text { display: none !important; }
+  .top-bar { padding-left: 10px !important; padding-right: 10px !important; }
 }
 </style>
 </head>
@@ -1339,7 +1496,21 @@ function pqSafe(s){
             .replace(/(^|[\s>])[A-Za-z0-9+\/]{400,}={0,2}(?=$|[\s<])/g,'$1');
 }
 function field(row,names){ for(const k in row){ const nk=norm(k); for(const n of names){ if(nk===norm(n)) return row[k]; } } return ''; }
-function toast(msg,type){ const t=$('#toast'); t.className='toast show '+(type||''); t.innerHTML=msg; clearTimeout(t._t); t._t=setTimeout(()=>t.className='toast',2600); }
+function toast(msg,type){
+    const t=$('#toast');
+    if(t){
+        t.innerHTML=msg;
+        if(typeof window !== 'undefined' && typeof window.vlxtToast === 'function'){
+            t.className='toast';
+            const plain=(t.textContent||String(msg||'')).replace(/\s+/g,' ').trim();
+            window.vlxtToast(plain,{tone:type==='err'?'err':(type==='ok'?'ok':'info')});
+            return;
+        }
+        t.className='toast show '+(type||'');
+        clearTimeout(t._t);
+        t._t=setTimeout(()=>t.className='toast',2600);
+    }
+}
 function renderMath(el){ if(typeof renderMathInElement==='function'){ try{ renderMathInElement(el,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]}); }catch(e){} } }
 /* Chuẩn hoá vài lỗi công thức hay gặp khi bóc từ Word/MathType (giống hệt bản
    dùng cho trang thi thử thithu.html — trước đây trang bài học KHÔNG có, nên
@@ -1960,18 +2131,22 @@ function getGalaxyCourseBanner(c, idx){
     if(USING_DEMO) h+=`<div class="notice"><i class="fa-solid fa-circle-info"></i> Đang hiển thị <b>dữ liệu mẫu</b>. Tạo tab <b>BaiHoc</b> trong Google Sheets và điền dữ liệu để hiện bài giảng thật.</div>`;
     h+=`<div class="galaxy-sector-banner">
             <div class="gsb-left">
-                <div class="gsb-eyebrow"><span class="dot" style="background:#f59e0b;box-shadow:0 0 8px #f59e0b"></span> HÀNH TINH SADALMELIK · TRẠM PHÁT SÓNG TRỰC TUYẾN</div>
+                <div class="gsb-eyebrow"><span class="dot" style="background:#f59e0b"></span> HÀNH TINH SADALMELIK · TRẠM PHÁT SÓNG TRỰC TUYẾN</div>
                 <div class="gsb-title">Live Class & Xem Lại Bài Giảng</div>
                 <div class="gsb-sub">Tham gia các buổi học trực tuyến tương tác cùng thầy Xuân Trường hoặc xem lại toàn bộ video ghi hình chất lượng cao.</div>
             </div>
             <a href="index.html" class="gsb-back-galaxy"><i class="fa-solid fa-shuttle-space"></i> Quay về Vũ Trụ 3D</a>
         </div>
         <div class="toolbar">
-            <div class="tabs">
-                <button class="tab-btn ${homeState.tab==='all'?'active':''}" onclick="setTab('all')"><i class="fa-solid fa-layer-group"></i> Tất cả <span class="pill">${visibleCourses.length}</span></button>
-                <button class="tab-btn ${homeState.tab==='mine'?'active':''}" onclick="setTab('mine')"><i class="fa-solid fa-bookmark"></i> Đang học <span class="pill">${mine.length}</span></button>
+            <div class="tabs u416-tl" id="lr-home-tabs" role="tablist" aria-label="Bộ lọc chuyên đề Live">
+                <span class="u416-th" id="lr-home-tab-thumb" aria-hidden="true"></span>
+                <button class="tab-btn ${homeState.tab==='all'?'active':''}" type="button" role="tab" aria-selected="${homeState.tab==='all'}" tabindex="${homeState.tab==='all'?'0':'-1'}" onclick="setTab('all')"><i class="fa-solid fa-layer-group"></i> Tất cả <span class="pill">${visibleCourses.length}</span></button>
+                <button class="tab-btn ${homeState.tab==='mine'?'active':''}" type="button" role="tab" aria-selected="${homeState.tab==='mine'}" tabindex="${homeState.tab==='mine'?'0':'-1'}" onclick="setTab('mine')"><i class="fa-solid fa-bookmark"></i> Đang học <span class="pill">${mine.length}</span></button>
             </div>
             <div class="grow"></div>
+            <button type="button" class="u046-trigger" onclick="if(typeof vlxtOpenLrCmdPalette==='function') vlxtOpenLrCmdPalette()" aria-label="Tìm nhanh buổi Live (Ctrl+K)">
+                <i class="fa-solid fa-magnifying-glass"></i><span>Tìm nhanh</span><kbd class="u046-kbd-badge">Ctrl K</kbd>
+            </button>
             <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input placeholder="Tìm khóa học..." value="${esc(homeState.q)}" oninput="onSearch(this.value)"></div>
             <select class="sort" onchange="setSort(this.value)">
                 <option value="default" ${homeState.sort==='default'?'selected':''}>Mặc định</option>
@@ -2016,8 +2191,10 @@ function getGalaxyCourseBanner(c, idx){
         if(solo.length){ h+='<div class="grid">'; solo.forEach((c,ci)=>{ h+=ccHTML(c,ci); }); h+='</div>'; }
     }
     app().innerHTML=h; renderMath(app());
+    if(typeof vlxtSyncLrTabs === 'function') vlxtSyncLrTabs();
 }
-function setTab(t){ homeState.tab=t; renderHome(); }
+let _lrTabSwitching = false;
+function setTab(t){ _lrTabSwitching = true; homeState.tab=t; renderHome(); _lrTabSwitching = false; }
 function setSort(s){ homeState.sort=s; renderHome(); }
 let _sT; function onSearch(v){ homeState.q=v; clearTimeout(_sT); _sT=setTimeout(renderHome,180); }
 
@@ -2254,8 +2431,10 @@ function renderCourse(name){
     // Live & Xem lại là công khai 100%, không chặn canAccess
     const pct=coursePct(c),w=courseWatched(c);
     const thumb=c.img&&/^https?:|^data:/.test(c.img)?`<img src="${esc(c.img)}" alt="">`:'<i class="fa-solid fa-satellite-dish" style="color:#00f0ff;)"></i>';
-    const grpCrumb=c.group?'<span class="sep">›</span><a onclick="go(\'#home\')">'+esc(c.group)+'</a>':'';
-    let h=`<div class="crumb"><a onclick="go('#home')">Khóa học</a>${grpCrumb}<span class="sep">›</span><span class="cur">${esc(c.dname||c.name)}</span></div>
+    const _lrCrumbItems = [{ home: true, label: 'Trang chủ', href: 'index.html' }, { label: 'Live & Xem Lại', onclick: "go('#home')" }];
+    if(c.group) _lrCrumbItems.push({ label: c.group, onclick: "go('#home')" });
+    _lrCrumbItems.push({ label: c.dname||c.name, current: true });
+    let h=`${typeof vlxtRenderBreadcrumb === 'function' ? vlxtRenderBreadcrumb(_lrCrumbItems, 'crumb') : '<div class="crumb"><a onclick="go(\'#home\')">Khóa học</a><span class="sep">›</span><span class="cur">' + esc(c.dname||c.name) + '</span></div>'}
         <div class="course-hero">
             <div class="ch-icon">${thumb}</div>
             <div style="flex:1;min-width:200px">
@@ -2560,13 +2739,10 @@ function renderLesson(key){
     else if(_hasQuiz) _doneLabel='Làm đúng ≥90% bài tập luyện tập để hoàn thành';
     else _doneLabel='Tự động lưu sau 30 giây';
 
+    const _lsnCrumb = [{ home: true, label: 'Trang chủ', href: 'index.html' }, { label: 'Live & Xem Lại', onclick: "go('#home')" }, { label: course.name, onclick: "go('#course/" + encodeURIComponent(course.name) + "')" }, { label: lesson.name, current: true }];
     app().classList.add('wide-lesson'); // bài học hiển thị gần hết chiều ngang màn hình
     app().innerHTML=`
-        <div class="crumb">
-            <a onclick="go('#home')">Khóa học</a><span class="sep">›</span>
-            <a onclick="go('#course/${encodeURIComponent(course.name)}')">${esc(course.name)}</a>
-            <span class="sep">›</span><span class="cur">${esc(lesson.name)}</span>
-        </div>
+        ${typeof vlxtRenderBreadcrumb === 'function' ? vlxtRenderBreadcrumb(_lsnCrumb, 'crumb') : `<div class="crumb"><a onclick="go('#home')">Khóa học</a><span class="sep">›</span><a onclick="go('#course/${encodeURIComponent(course.name)}')">${esc(course.name)}</a><span class="sep">›</span><span class="cur">${esc(lesson.name)}</span></div>`}
         <div class="player-layout">
             <div class="lesson-main">
                 ${liveCardHtml}
@@ -2876,13 +3052,10 @@ async function renderLiveLesson(){
     else if(_hasQuiz) _doneLabel='Làm đúng ≥90% bài tập luyện tập để hoàn thành';
     else _doneLabel='Tự động lưu sau 30 giây';
 
+    const _lsn2Crumb = [{ home: true, label: 'Trang chủ', href: 'index.html' }, { label: 'Live & Xem Lại', onclick: "go('#home')" }, { label: course.name, onclick: "go('#course/" + encodeURIComponent(course.name) + "')" }, { label: lesson.name, current: true }];
     app().classList.add('wide-lesson');
     app().innerHTML=`
-        <div class="crumb">
-            <a onclick="go('#home')">Khóa học</a><span class="sep">›</span>
-            <a onclick="go('#course/${encodeURIComponent(course.name)}')">${esc(course.name)}</a>
-            <span class="sep">›</span><span class="cur">${esc(lesson.name)}</span>
-        </div>
+        ${typeof vlxtRenderBreadcrumb === 'function' ? vlxtRenderBreadcrumb(_lsn2Crumb, 'crumb') : `<div class="crumb"><a onclick="go('#home')">Khóa học</a><span class="sep">›</span><a onclick="go('#course/${encodeURIComponent(course.name)}')">${esc(course.name)}</a><span class="sep">›</span><span class="cur">${esc(lesson.name)}</span></div>`}
         <div class="player-layout">
             <div class="lesson-main">
                 <div class="video-sticky-wrap">${videoTabsHtml}</div>
@@ -4405,8 +4578,14 @@ function startQuizTimer(key, minutes){
 /* ═══════════════════════════════════════════
    THEME
 ═══════════════════════════════════════════ */
-function toggleTheme(){ document.body.classList.toggle('dark'); localStorage.setItem('vlxt_theme',document.body.classList.contains('dark')?'dark':'light'); }
+function _syncLrDataTheme(){
+    if(typeof document === 'undefined' || !document.documentElement) return;
+    const isDark = document.body.classList.contains('dark');
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+}
+function toggleTheme(){ document.body.classList.toggle('dark'); localStorage.setItem('vlxt_theme',document.body.classList.contains('dark')?'dark':'light'); _syncLrDataTheme(); }
 if(localStorage.getItem('vlxt_theme')!=='light') document.body.classList.add('dark');
+_syncLrDataTheme();
 function toggleNavDrawer(open){
     const d = document.getElementById('navDrawer');
     const o = document.getElementById('navDrawerOverlay');
@@ -4525,5 +4704,290 @@ window.addEventListener('DOMContentLoaded', init);
 </script>
 <script src="hoat-dong.js?v=1"></script>
 <script src="huongdan-popup.js?v=1"></script>
+<script>
+// ─── LUCIAN UX/UI PHASE 2 RUNTIME (#046, #415, #416, #450) ───
+(function () {
+  var SEP_SVG = '<span class="u415-sep" aria-hidden="true"><svg viewBox="0 0 10 10"><path d="M3.8 2 6.8 5l-3 3"/></svg></span>';
+  var HOME_SVG = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 7 8 2.5 13.5 7v6.5H9.8V10H6.2v3.5H2.5z"/></svg>';
+
+  window.vlxtRenderBreadcrumb = function (items, extraClass) {
+    if (!Array.isArray(items) || !items.length) return '';
+    var hasCollapsed = items.length >= 4;
+    var lis = '';
+    items.forEach(function (it, i) {
+      if (hasCollapsed && i === 1) {
+        lis += '<li class="u415-li u415-more-li"><span><span class="u415-in">' + SEP_SVG + '<button class="u415-more" type="button" aria-label="Mở rộng đường dẫn" aria-expanded="false">…</button></span></span></li>';
+      }
+      var hidden = hasCollapsed && i === 1;
+      var cls = 'u415-li' + (hidden ? ' u415-hidden-step is-shut' : '');
+      var inner = (i > 0 ? SEP_SVG : '');
+      if (it.current) {
+        inner += '<span class="u415-cur" aria-current="page">' + esc(it.label || '') + '</span>';
+      } else if (it.home) {
+        inner += '<a class="u415-a hm" href="' + esc(it.href || 'index.html') + '" aria-label="' + esc(it.label || 'Trang chủ') + '">' + HOME_SVG + '</a>';
+      } else {
+        var hrefAttr = it.href ? ' href="' + esc(it.href) + '"' : '';
+        var clickAttr = it.onclick ? ' onclick="' + esc(it.onclick) + '"' : '';
+        inner += '<a class="u415-a"' + hrefAttr + clickAttr + '>' + esc(it.label || '') + '</a>';
+      }
+      lis += '<li class="' + cls + '"><span><span class="u415-in">' + inner + '</span></span></li>';
+    });
+    return '<nav class="' + esc(extraClass || 'crumb') + ' u415-bc" aria-label="Đường dẫn"><ol class="u415-ol">' + lis + '</ol></nav>';
+  };
+
+  if (typeof document === 'undefined' || typeof window === 'undefined') return;
+
+  var _prevLrTabIdx = 0;
+  function _positionLrThumb(tl, th, idx, instant, dir) {
+    if (!tl || !th) return;
+    var btns = Array.prototype.slice.call(tl.querySelectorAll('.tab-btn'));
+    var btn = btns[idx];
+    if (!btn) return;
+    var w = tl.clientWidth;
+    if (!w) return;
+    if (instant) th.style.transition = 'none';
+    th.style.setProperty('--tl', dir > 0 ? '.56s' : '.34s');
+    th.style.setProperty('--tr', dir > 0 ? '.34s' : '.56s');
+    th.style.setProperty('--l', btn.offsetLeft + 'px');
+    th.style.setProperty('--r', Math.max(4, w - btn.offsetLeft - btn.offsetWidth) + 'px');
+    if (instant) { void th.offsetWidth; th.style.transition = ''; }
+  }
+
+  window.vlxtSyncLrTabs = function () {
+    var tl = document.getElementById('lr-home-tabs');
+    var th = document.getElementById('lr-home-tab-thumb');
+    if (!tl || !th) return;
+    var btns = Array.prototype.slice.call(tl.querySelectorAll('.tab-btn'));
+    var curIdx = Math.max(0, btns.findIndex(function (b) { return b.classList.contains('active'); }));
+    var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (_lrTabSwitching && !rm && _prevLrTabIdx !== curIdx && btns[_prevLrTabIdx]) {
+      var dir = curIdx > _prevLrTabIdx ? 1 : -1;
+      _positionLrThumb(tl, th, _prevLrTabIdx, true, dir);
+      requestAnimationFrame(function () { _positionLrThumb(tl, th, curIdx, false, dir); });
+    } else {
+      _positionLrThumb(tl, th, curIdx, true, 1);
+    }
+    _prevLrTabIdx = curIdx;
+    if (!tl.dataset.u416Bound) {
+      tl.dataset.u416Bound = '1';
+      tl.addEventListener('keydown', function (e) {
+        var bList = Array.prototype.slice.call(tl.querySelectorAll('.tab-btn'));
+        var cur = Math.max(0, bList.findIndex(function (b) { return b.classList.contains('active'); }));
+        var to = e.key === 'ArrowRight' ? cur + 1 : e.key === 'ArrowLeft' ? cur - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? bList.length - 1 : null;
+        if (to === null || !bList.length) return;
+        e.preventDefault();
+        var next = (to + bList.length) % bList.length;
+        bList[next].click();
+        var updated = document.querySelectorAll('#lr-home-tabs .tab-btn');
+        if (updated[next]) updated[next].focus({ preventScroll: true });
+      });
+    }
+  };
+
+  window.addEventListener('resize', function () {
+    var tl = document.getElementById('lr-home-tabs');
+    var th = document.getElementById('lr-home-tab-thumb');
+    if (!tl || !th) return;
+    var btns = Array.prototype.slice.call(tl.querySelectorAll('.tab-btn'));
+    var cur = Math.max(0, btns.findIndex(function (b) { return b.classList.contains('active'); }));
+    _positionLrThumb(tl, th, cur, true, 1);
+  });
+
+  document.addEventListener('click', function (e) {
+    var more = e.target && e.target.closest ? e.target.closest('.u415-more') : null;
+    if (!more) return;
+    var ol = more.closest('.u415-ol');
+    if (!ol) return;
+    var moreLi = more.closest('.u415-more-li');
+    if (moreLi) moreLi.classList.add('is-shut');
+    more.setAttribute('aria-expanded', 'true');
+    ol.querySelectorAll('.u415-hidden-step').forEach(function (li) { li.classList.remove('is-shut'); });
+    var firstA = ol.querySelector('.u415-hidden-step .u415-a');
+    if (firstA) firstA.focus({ preventScroll: true });
+  });
+
+  var _cmdBackdrop = null, _cmdInput = null, _cmdList = null, _cmdHl = null, _cmdBody = null, _cmdOpts = [], _cmdItems = [], _cmdAct = 0;
+
+  function _foldVi(str) {
+    return String(str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase().trim();
+  }
+  function _highlightMatch(text, rawQuery) {
+    var s = String(text || ''), q = String(rawQuery || '').trim();
+    if (!q) return esc(s);
+    var idx = s.toLowerCase().indexOf(q.toLowerCase());
+    if (idx < 0) return esc(s);
+    return esc(s.slice(0, idx)) + '<mark>' + esc(s.slice(idx, idx + q.length)) + '</mark>' + esc(s.slice(idx + q.length));
+  }
+  function _buildCmdData() {
+    var items = [];
+    if (typeof COURSES !== 'undefined' && Array.isArray(COURSES)) {
+      COURSES.forEach(function (c) {
+        if (typeof isVisible === 'function' && !isVisible(c.name)) return;
+        items.push({
+          group: 'Chuyên đề Live',
+          title: c.dname || c.name,
+          sub: c.total + ' buổi',
+          icon: 'fa-solid fa-satellite-dish',
+          run: function () { go('#course/' + encodeURIComponent(c.name)); }
+        });
+      });
+      COURSES.forEach(function (c) {
+        if (typeof isVisible === 'function' && !isVisible(c.name)) return;
+        (c.chapters || []).forEach(function (ch) {
+          (ch.lessons || []).forEach(function (l) {
+            items.push({
+              group: 'Buổi học & Video',
+              title: l.name,
+              sub: c.dname || c.name,
+              icon: (typeof WATCHED !== 'undefined' && WATCHED.has(l.key)) ? 'fa-solid fa-circle-check' : 'fa-solid fa-video',
+              run: function () {
+                if (typeof handleOpenLesson === 'function') handleOpenLesson(c.name, l.key);
+                else go('#lesson/' + encodeURIComponent(l.key));
+              }
+            });
+          });
+        });
+      });
+    }
+    items.push({ group: 'Điều hướng', title: 'Về danh sách Live & Xem lại', sub: 'Trang chủ', icon: 'fa-solid fa-house', run: function () { go('#home'); } });
+    items.push({ group: 'Tiện ích', title: 'Chuyển giao diện Sáng / Tối', sub: 'Theme', icon: 'fa-solid fa-circle-half-stroke', run: function () { toggleTheme(); } });
+    return items;
+  }
+
+  function _ensureCmdPalette() {
+    if (_cmdBackdrop) return;
+    _cmdBackdrop = document.createElement('div');
+    _cmdBackdrop.id = 'lr-cmd-backdrop';
+    _cmdBackdrop.setAttribute('aria-hidden', 'true');
+    _cmdBackdrop.innerHTML =
+      '<div class="ux u046" role="dialog" aria-modal="true" aria-label="Tìm kiếm nhanh Live & Xem lại">' +
+        '<div class="u046-pal">' +
+          '<label class="u046-field">' +
+            '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>' +
+            '<input class="u046-in" type="text" role="combobox" aria-expanded="true" aria-autocomplete="list" autocomplete="off" spellcheck="false" placeholder="Tìm chuyên đề Live, buổi học...">' +
+            '<kbd class="u046-kbd-badge">esc</kbd>' +
+          '</label>' +
+          '<div class="u046-body"><span class="u046-hl" aria-hidden="true"></span><ul class="u046-list" role="listbox"></ul></div>' +
+          '<div class="u046-foot" aria-hidden="true"><span>↑↓ Di chuyển · ↵ Mở ngay</span><span>Ctrl+K / Esc</span></div>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(_cmdBackdrop);
+    _cmdInput = _cmdBackdrop.querySelector('.u046-in');
+    _cmdList = _cmdBackdrop.querySelector('.u046-list');
+    _cmdHl = _cmdBackdrop.querySelector('.u046-hl');
+    _cmdBody = _cmdBackdrop.querySelector('.u046-body');
+    _cmdBackdrop.addEventListener('click', function (e) { if (e.target === _cmdBackdrop) window.vlxtCloseLrCmdPalette(); });
+    _cmdInput.addEventListener('input', _renderCmdList);
+    _cmdInput.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); _markCmdOpt(_cmdAct + (e.key === 'ArrowDown' ? 1 : -1)); }
+      else if (e.key === 'Enter' && !e.isComposing && e.keyCode !== 229) { e.preventDefault(); _runCmdOpt(_cmdAct); }
+      else if (e.key === 'Escape') { e.preventDefault(); window.vlxtCloseLrCmdPalette(); }
+    });
+  }
+
+  function _markCmdOpt(i, instant) {
+    if (!_cmdOpts.length) { _cmdInput.removeAttribute('aria-activedescendant'); return; }
+    _cmdAct = (i + _cmdOpts.length) % _cmdOpts.length;
+    _cmdOpts.forEach(function (o, k) { o.setAttribute('aria-selected', String(k === _cmdAct)); });
+    _cmdInput.setAttribute('aria-activedescendant', _cmdOpts[_cmdAct].id);
+    if (instant) _cmdHl.style.transition = 'none';
+    var o = _cmdOpts[_cmdAct], top = o.offsetTop;
+    _cmdHl.style.setProperty('--y', top + 'px');
+    if (instant) { void _cmdHl.offsetWidth; _cmdHl.style.transition = ''; }
+    if (top + o.offsetHeight > _cmdBody.scrollTop + _cmdBody.clientHeight) _cmdBody.scrollTop = top + o.offsetHeight - _cmdBody.clientHeight + 6;
+    else if (top < _cmdBody.scrollTop + 28) _cmdBody.scrollTop = _cmdAct === 0 ? 0 : Math.max(0, top - 28);
+  }
+  function _runCmdOpt(i) {
+    var item = _cmdItems[i];
+    if (!item) return;
+    window.vlxtCloseLrCmdPalette();
+    try { item.run(); } catch (err) {}
+  }
+  function _renderCmdList() {
+    var rawQ = _cmdInput.value.trim(), qFold = _foldVi(rawQ), all = _buildCmdData();
+    var filtered = all.filter(function (it) {
+      if (!qFold) return true;
+      return _foldVi(it.title).indexOf(qFold) >= 0 || _foldVi(it.sub).indexOf(qFold) >= 0;
+    }).slice(0, 22);
+    _cmdItems = filtered;
+    var html = '', lastGroup = '';
+    filtered.forEach(function (it, idx) {
+      if (it.group !== lastGroup) { lastGroup = it.group; html += '<li class="u046-g" role="presentation">' + esc(it.group) + '</li>'; }
+      html += '<li class="u046-op" role="option" id="lr-u046-opt-' + idx + '" data-idx="' + idx + '" aria-selected="false">' +
+        '<span class="u046-ic" aria-hidden="true"><i class="' + esc(it.icon) + '"></i></span>' +
+        '<span class="u046-op-lbl">' + _highlightMatch(it.title, rawQ) + '</span>' +
+        '<span class="u046-op-sub">' + esc(it.sub || '') + '</span>' +
+      '</li>';
+    });
+    if (!filtered.length) html = '<li class="u046-empty" role="presentation"><b>Không tìm thấy “' + esc(rawQ) + '”</b>Thử từ khóa khác</li>';
+    _cmdList.innerHTML = html;
+    _cmdOpts = Array.prototype.slice.call(_cmdList.querySelectorAll('.u046-op'));
+    _cmdOpts.forEach(function (el, idx) {
+      el.addEventListener('pointermove', function () { if (_cmdAct !== idx) _markCmdOpt(idx); });
+      el.addEventListener('click', function () { _runCmdOpt(idx); });
+    });
+    _cmdHl.style.opacity = filtered.length ? '1' : '0';
+    _markCmdOpt(0, true);
+  }
+
+  window.vlxtOpenLrCmdPalette = function () {
+    _ensureCmdPalette();
+    _cmdInput.value = '';
+    _renderCmdList();
+    _cmdBackdrop.classList.add('is-open');
+    _cmdBackdrop.setAttribute('aria-hidden', 'false');
+    setTimeout(function () { if (_cmdInput) _cmdInput.focus({ preventScroll: true }); }, 40);
+  };
+  window.vlxtCloseLrCmdPalette = function () {
+    if (!_cmdBackdrop) return;
+    _cmdBackdrop.classList.remove('is-open');
+    _cmdBackdrop.setAttribute('aria-hidden', 'true');
+  };
+
+  document.addEventListener('keydown', function (e) {
+    if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
+      var ae = document.activeElement;
+      if (ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName) && (!_cmdBackdrop || !_cmdBackdrop.contains(ae))) return;
+      e.preventDefault();
+      if (_cmdBackdrop && _cmdBackdrop.classList.contains('is-open')) window.vlxtCloseLrCmdPalette();
+      else window.vlxtOpenLrCmdPalette();
+    } else if (e.key === 'Escape' && _cmdBackdrop && _cmdBackdrop.classList.contains('is-open')) {
+      e.preventDefault();
+      window.vlxtCloseLrCmdPalette();
+    }
+  });
+
+  function _initReadingTopBtn() {
+    if (!document.body) return;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'u450-top is-hide';
+    btn.setAttribute('aria-label', 'Lên đầu trang');
+    btn.innerHTML = '<svg class="rg" viewBox="0 0 44 44" aria-hidden="true"><circle class="tr" cx="22" cy="22" r="19.5"/><circle class="pr" cx="22" cy="22" r="19.5"/></svg>' +
+      '<svg class="ar" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 14.5V4M4.5 8 9 3.5 13.5 8"/></svg>';
+    document.body.appendChild(btn);
+
+    function syncScroll() {
+      var doc = document.documentElement;
+      var max = Math.max(1, doc.scrollHeight - window.innerHeight);
+      var y = window.scrollY || doc.scrollTop || 0;
+      btn.style.setProperty('--p', Math.min(1, Math.max(0, y / max)).toFixed(3));
+      btn.classList.toggle('is-hide', y < 180);
+    }
+    btn.addEventListener('click', function () {
+      var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      btn.classList.remove('is-fly'); void btn.offsetWidth; btn.classList.add('is-fly');
+      window.scrollTo({ top: 0, behavior: rm ? 'auto' : 'smooth' });
+      setTimeout(function () { btn.classList.remove('is-fly'); }, rm ? 10 : 700);
+    });
+    window.addEventListener('scroll', syncScroll, { passive: true });
+    window.addEventListener('hashchange', function () { setTimeout(syncScroll, 120); });
+    syncScroll();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', _initReadingTopBtn);
+  else _initReadingTopBtn();
+})();
+</script>
 </body>
 </html>
