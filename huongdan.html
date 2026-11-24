@@ -1,106 +1,271 @@
+<!-- Lucian UX/UI Prompt #042 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#042 -->
+<!-- Lucian UX/UI Prompt #416 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#416 -->
+<!-- Lucian UX/UI Prompt #424 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#424 -->
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hướng Dẫn Học | Vật Lý Xuân Trường</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/lucian-uxui.css?v=20261124">
     <script src="cache.js?v=5"></script>
-    <script src="auth.js?v=20261118a"></script>
-  <script src="thongbao.js?v=2"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-  <script src="device-id.js?v=1"></script>
-  <script src="ho-tro-chat.js?v=1"></script>
+    <script src="auth.js?v=20261124"></script>
+    <script src="thongbao.js?v=2"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+    <script src="device-id.js?v=1"></script>
+    <script src="ho-tro-chat.js?v=1"></script>
     <style>
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
     :root {
-        --bg:#060a12;
-        --card:#0d162b;
-        --card2:#121f3d;
-        --line:rgba(0, 240, 255, 0.22);
+        --bg:#0d1117;
+        --card:#151c2c;
+        --card2:#1e293b;
+        --line:rgba(56, 189, 248, 0.22);
         --text:#f1f5f9;
         --sub:#94a3b8;
-        --blue:#00f0ff;
+        --blue:#38bdf8;
         --green:#10b981;
         --red:#ef4444;
         --gold:#fbbf24;
         --radius:16px;
     }
+    html[data-theme="light"] body:not(.dark) {
+        --bg:#f8fafc;
+        --card:#ffffff;
+        --card2:#f1f5f9;
+        --line:rgba(15, 23, 42, 0.12);
+        --text:#0f172a;
+        --sub:#475569;
+        --blue:#0b84f3;
+        background-color: #f8fafc !important;
+        color: #0f172a !important;
+    }
     body {
-        background-color: #060a12 !important;
-        background-image: 
-            radial-gradient(ellipse 65% 55% at 50% -10%, rgba(0, 240, 255, 0.14), transparent 75%),
-            radial-gradient(ellipse 50% 40% at 85% 25%, rgba(11, 132, 243, 0.10), transparent 70%),
-            radial-gradient(ellipse 55% 45% at 15% 75%, rgba(0, 240, 255, 0.08), transparent 70%) !important;
-        background-attachment: fixed !important;
+        background-color: #0d1117 !important;
         color: #f1f5f9 !important;
         font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
         -webkit-font-smoothing: antialiased;
         min-height: 100vh;
+        overflow-x: hidden;
     }
+    html[data-theme="light"] body:not(.dark) .page-hero h1,
+    html[data-theme="light"] body:not(.dark) .step-section-title,
+    html[data-theme="light"] body:not(.dark) .step-title,
+    html[data-theme="light"] body:not(.dark) .link-card,
+    html[data-theme="light"] body:not(.dark) .link-card .lc-name,
+    html[data-theme="light"] body:not(.dark) .u424-q {
+        color: #0f172a;
+    }
+    html[data-theme="light"] body:not(.dark) .page-hero p,
+    html[data-theme="light"] body:not(.dark) .step-desc,
+    html[data-theme="light"] body:not(.dark) .link-card .lc-desc,
+    html[data-theme="light"] body:not(.dark) .u424-a p {
+        color: #475569;
+    }
+    html[data-theme="light"] body:not(.dark) .step-item,
+    html[data-theme="light"] body:not(.dark) .link-card,
+    html[data-theme="light"] body:not(.dark) .u042-hub,
+    html[data-theme="light"] body:not(.dark) .u424-ls {
+        background: #ffffff;
+        border-color: rgba(15, 23, 42, 0.12);
+        box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
+    }
+    html[data-theme="light"] body:not(.dark) .u416-tl,
+    html[data-theme="light"] body:not(.dark) .u042-prev,
+    html[data-theme="light"] body:not(.dark) .u424-pm {
+        background: #f1f5f9;
+        border-color: rgba(15, 23, 42, 0.14);
+        color: #0f172a;
+    }
+    html[data-theme="light"] body:not(.dark) .u424-pm::before,
+    html[data-theme="light"] body:not(.dark) .u424-pm::after {
+        background: #0f172a;
+    }
+    html[data-theme="light"] body:not(.dark) .u416-tab { color: #64748b; }
+    html[data-theme="light"] body:not(.dark) .u416-tab.active { color: #ffffff; }
+    html[data-theme="light"] body:not(.dark) .u042-st small { color: #64748b; }
+    html[data-theme="light"] body:not(.dark) .u042-st.cur small,
+    html[data-theme="light"] body:not(.dark) .u042-st.done small { color: #0f172a; }
+    html[data-theme="light"] body:not(.dark) .u042-dot { background: #ffffff; color: #64748b; }
+    html[data-theme="light"] body:not(.dark) .u042-st.cur .u042-dot { background: #eff6ff; color: #0b84f3; }
+    html[data-theme="light"] body:not(.dark) .u042-st.done .u042-dot { background: #10b981; color: #ffffff; }
 
     /* PAGE HERO */
-    .page-hero { text-align:center; padding:96px 20px 40px; max-width:760px; margin:0 auto; }
-    .page-hero h1 { font-size:36px; font-weight:900; letter-spacing:-.04em; margin-bottom:12px; color:#ffffff; text-shadow:0 0 25px rgba(0,240,255,0.35); }
-    .page-hero p { font-size:16px; color:#94a3b8; line-height:1.7; }
+    .page-hero { text-align:center; padding:92px 20px 32px; max-width:760px; margin:0 auto; }
+    .page-hero h1 { font-size:34px; font-weight:900; letter-spacing:-.03em; margin-bottom:12px; color:#ffffff; }
+    .page-hero p { font-size:15.5px; color:#94a3b8; line-height:1.65; }
     .badge-hd {
         display:inline-flex; align-items:center; gap:8px;
-        background:rgba(0, 240, 255, 0.12);
-        color:#00f0ff;
-        border:1px solid rgba(0, 240, 255, 0.45);
+        background:rgba(11, 132, 243, 0.14);
+        color:#38bdf8;
+        border:1px solid rgba(56, 189, 248, 0.35);
         border-radius:100px;
-        font-size:13px; font-weight:800;
-        padding:6px 16px; margin-bottom:18px;
+        font-size:12.5px; font-weight:800;
+        padding:6px 16px; margin-bottom:16px;
         letter-spacing:0.04em; text-transform:uppercase;
-        box-shadow:0 0 20px rgba(0, 240, 255, 0.25);
     }
 
-    /* STEPS */
-    .steps-wrap { max-width:880px; margin:0 auto; padding:0 20px 60px; }
-    .step-section { margin-bottom:44px; }
+    /* STEPS CONTAINER */
+    .steps-wrap { max-width:880px; margin:0 auto; padding:0 20px 64px; }
+
+    /* ─── LUCIAN #042 INTERACTIVE STEPPER + #416 VIEW TABS ─── */
+    .u042-hub {
+        background:#151c2c;
+        border:1.5px solid rgba(56, 189, 248, 0.24);
+        border-radius:20px;
+        padding:20px 22px;
+        margin-bottom:34px;
+        box-shadow:0 10px 28px rgba(0, 0, 0, 0.38);
+    }
+    .u042-hub-top {
+        display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
+        margin-bottom:18px;
+    }
+    .u042-hub-title {
+        font-size:15px; font-weight:800; color:var(--text); display:flex; align-items:center; gap:9px;
+    }
+    .u042-hub-title span.pill-pct {
+        font-size:11.5px; font-weight:800; padding:3px 9px; border-radius:99px;
+        background:rgba(16, 185, 129, 0.16); color:#10b981; border:1px solid rgba(16, 185, 129, 0.32);
+    }
+
+    /* Lucian #416 Sliding Tabs */
+    .u416-tl {
+        position:relative; display:inline-flex; padding:4px; border-radius:12px;
+        background:#0f172a; border:1px solid rgba(255, 255, 255, 0.1);
+    }
+    .u416-th {
+        position:absolute; top:4px; bottom:4px; left:var(--l, 4px); right:var(--r, 50%);
+        border-radius:9px; background:#0b84f3;
+        box-shadow:0 2px 6px rgba(0, 0, 0, 0.32);
+        transition:left var(--tl, .46s) cubic-bezier(.3, 1.25, .45, 1),
+                   right var(--tr, .46s) cubic-bezier(.3, 1.25, .45, 1);
+    }
+    .u416-tab {
+        position:relative; z-index:1; height:32px; padding:0 14px; border:0; border-radius:9px;
+        background:none; font-size:12.5px; font-weight:700; color:#94a3b8;
+        cursor:pointer; font-family:inherit; transition:color .22s; white-space:nowrap;
+    }
+    .u416-tab.active, .u416-tab[aria-selected="true"] { color:#ffffff; }
+    .u416-tab:focus-visible { outline:2px solid #38bdf8; outline-offset:2px; }
+
+    /* Lucian #042 Stepper Track */
+    .u042-steps {
+        position:relative; display:flex; justify-content:space-between; margin:4px 8px 0; padding:0; list-style:none;
+    }
+    .u042-line {
+        position:absolute; left:12.5%; right:12.5%; top:17px; height:3px; border-radius:2px;
+        background:rgba(148, 163, 184, 0.22); z-index:0;
+    }
+    .u042-line i {
+        position:absolute; inset:0; border-radius:inherit;
+        background:linear-gradient(90deg, #0b84f3, #10b981);
+        transform-origin:0 50%; transform:scaleX(var(--p, 0));
+        transition:transform .55s var(--ux-ease);
+    }
+    .u042-st {
+        position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; gap:7px; flex:1;
+    }
+    .u042-dot {
+        position:relative; width:36px; height:36px; border:0; padding:0; border-radius:50%;
+        background:#0f172a; box-shadow:inset 0 0 0 2px rgba(148, 163, 184, 0.35);
+        font-size:13.5px; font-weight:800; color:#94a3b8; display:grid; place-items:center;
+        cursor:pointer; transition:box-shadow .3s, background-color .3s, color .3s, transform .4s var(--ux-spring);
+    }
+    .u042-dot:focus-visible { outline:2px solid #38bdf8; outline-offset:3px; }
+    .u042-dot svg {
+        position:absolute; width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:3;
+        stroke-linecap:round; stroke-linejoin:round; opacity:0;
+    }
+    .u042-dot path {
+        stroke-dasharray:16; stroke-dashoffset:16; transition:stroke-dashoffset .35s var(--ux-ease) .08s;
+    }
+    .u042-st.cur .u042-dot {
+        box-shadow:inset 0 0 0 2px #0b84f3;
+        background:#132542;
+        color:#38bdf8; transform:scale(1.06);
+    }
+    .u042-st.done .u042-dot {
+        background:#10b981; box-shadow:none; color:#04101e;
+    }
+    .u042-st.done .u042-dot span { opacity:0; }
+    .u042-st.done .u042-dot svg { opacity:1; }
+    .u042-st.done .u042-dot path { stroke-dashoffset:0; }
+    .u042-st small {
+        font-size:12px; font-weight:700; color:#94a3b8; text-align:center; line-height:1.25;
+        transition:color .25s;
+    }
+    .u042-st.cur small, .u042-st.done small { color:var(--text); }
+
+    .u042-foot {
+        display:flex; align-items:center; justify-content:space-between; gap:10px;
+        margin-top:18px; padding-top:14px; border-top:1px solid rgba(255, 255, 255, 0.08);
+    }
+    .u042-b {
+        height:40px; padding:0 18px; border:0; border-radius:11px; font-size:13.5px; font-weight:700;
+        font-family:inherit; cursor:pointer; display:inline-flex; align-items:center; gap:7px;
+        transition:transform .32s var(--ux-spring), opacity .25s, background-color .25s;
+    }
+    .u042-b:active { transform:scale(.96); }
+    .u042-b:focus-visible { outline:2px solid #38bdf8; outline-offset:2px; }
+    .u042-prev { background:rgba(255, 255, 255, 0.08); color:var(--text); border:1px solid rgba(255, 255, 255, 0.12); }
+    .u042-prev[aria-disabled="true"] { opacity:.38; cursor:not-allowed; }
+    .u042-next { background:#0b84f3; color:#ffffff; }
+    .u042-hub.is-last .u042-next { background:#10b981; color:#04101e; }
+
+    /* Step panes transition */
+    .step-section { margin-bottom:42px; }
+    .step-section.u042-hidden { display:none; }
+    .step-section.u042-pane-enter {
+        animation:u042PaneIn .38s var(--ux-spring) both;
+    }
+    @keyframes u042PaneIn {
+        from { opacity:0; transform:translateX(calc(var(--dir, 1) * 24px)); }
+        to { opacity:1; transform:none; }
+    }
+
     .step-section-title {
-        font-size:19px; font-weight:800; margin-bottom:20px;
+        font-size:19px; font-weight:800; margin-bottom:18px;
         display:flex; align-items:center; gap:12px;
-        padding-bottom:14px; border-bottom:1.5px solid rgba(0, 240, 255, 0.22);
+        padding-bottom:12px; border-bottom:1.5px solid rgba(56, 189, 248, 0.22);
         color:#ffffff;
     }
     .step-section-title .icon {
         width:38px; height:38px; border-radius:10px;
         display:flex; align-items:center; justify-content:center;
         font-size:18px; flex-shrink:0;
-        background:rgba(0, 240, 255, 0.12);
-        border:1px solid rgba(0, 240, 255, 0.35);
-        color:#00f0ff;
+        background:rgba(11, 132, 243, 0.14);
+        border:1px solid rgba(56, 189, 248, 0.3);
+        color:#38bdf8;
     }
 
-    .step-list { display:flex; flex-direction:column; gap:16px; }
+    .step-list { display:flex; flex-direction:column; gap:14px; }
     .step-item {
-        display:flex; gap:18px;
-        background:#0d162b;
-        border:1.5px solid rgba(0, 240, 255, 0.22);
-        border-radius:18px;
-        padding:20px 22px;
-        box-shadow:0 8px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 240, 255, 0.03);
-        backdrop-filter:blur(12px);
-        transition:all .2s cubic-bezier(0.16, 1, 0.3, 1);
+        display:flex; gap:16px;
+        background:#151c2c;
+        border:1.5px solid rgba(56, 189, 248, 0.2);
+        border-radius:16px;
+        padding:18px 20px;
+        box-shadow:0 6px 20px rgba(0, 0, 0, 0.35);
+        transition:border-color .2s, transform .22s var(--ux-spring);
     }
     .step-item:hover {
-        border-color:#00f0ff;
+        border-color:#38bdf8;
         transform:translateY(-2px);
-        box-shadow:0 12px 35px rgba(0, 240, 255, 0.18), inset 0 0 25px rgba(0, 240, 255, 0.06);
     }
     .step-num {
-        width:36px; height:36px; border-radius:50%;
-        background:linear-gradient(135deg, #00f0ff 0%, #0b84f3 100%);
-        color:#04101e; font-size:15px; font-weight:900;
+        width:34px; height:34px; border-radius:50%;
+        background:#0b84f3;
+        color:#ffffff; font-size:14.5px; font-weight:900;
         display:flex; align-items:center; justify-content:center;
-        flex-shrink:0; box-shadow:0 0 15px rgba(0, 240, 255, 0.5);
+        flex-shrink:0;
     }
     .step-body { flex:1; min-width:0; }
-    .step-title { font-size:15.5px; font-weight:800; margin-bottom:6px; color:#ffffff; }
-    .step-desc { font-size:13.5px; color:#94a3b8; line-height:1.65; }
+    .step-title { font-size:15.5px; font-weight:800; margin-bottom:5px; color:#ffffff; }
+    .step-desc { font-size:13.5px; color:#94a3b8; line-height:1.6; }
     .step-tip {
         display:inline-flex; align-items:center; gap:6px; margin-top:10px;
         font-size:12px; font-weight:700; color:#10b981;
@@ -109,56 +274,85 @@
         border-radius:8px; padding:4px 10px;
     }
 
-    /* FAQ */
-    .faq-list { display:flex; flex-direction:column; gap:12px; }
-    .faq-item {
-        background:#0d162b;
-        border:1.5px solid rgba(0, 240, 255, 0.22);
-        border-radius:16px; overflow:hidden;
-        box-shadow:0 8px 30px rgba(0, 0, 0, 0.45);
-        transition:border-color .15s;
+    /* FAQ LUCIAN #424 ACCORDION */
+    .u424-ls {
+        margin:0; padding:8px; border-radius:18px; list-style:none;
+        background:#151c2c; border:1.5px solid rgba(56, 189, 248, 0.2);
+        box-shadow:0 8px 24px rgba(0, 0, 0, 0.38);
     }
-    .faq-item:hover { border-color:rgba(0, 240, 255, 0.45); }
-    .faq-q {
-        padding:17px 20px; font-size:14.5px; font-weight:700;
-        cursor:pointer; display:flex; align-items:center; justify-content:space-between;
-        gap:12px; user-select:none; transition:background .12s; color:#ffffff;
+    .u424-it + .u424-it { border-top:1px solid rgba(255, 255, 255, 0.08); }
+    .u424-q {
+        display:flex; align-items:center; gap:14px; width:100%; min-height:52px;
+        padding:13px 12px 13px 14px; border:0; border-radius:12px; background:none;
+        font-size:14.5px; font-weight:700; color:#ffffff; text-align:left; font-family:inherit;
+        cursor:pointer; transition:background-color .2s;
     }
-    .faq-q:hover { background:rgba(0, 240, 255, 0.05); }
-    .faq-q i { color:#00f0ff; transition:transform .2s; font-size:13px; flex-shrink:0; }
-    .faq-item.open .faq-q i { transform:rotate(180deg); }
-    .faq-a {
-        display:none; padding:0 20px 18px; font-size:13.5px;
-        color:#94a3b8; line-height:1.7;
-        border-top:1px solid rgba(0, 240, 255, 0.15);
-        padding-top:14px;
+    .u424-q:hover { background:rgba(255, 255, 255, 0.05); }
+    .u424-q span { flex:1; line-height:1.4; }
+    .u424-q:focus-visible { outline:2px solid #38bdf8; outline-offset:-2px; }
+    .u424-pm {
+        position:relative; width:26px; height:26px; flex:none; border-radius:50%;
+        background:#1e293b; border:1px solid rgba(255, 255, 255, 0.12);
+        transition:background-color .28s, transform .45s var(--ux-spring);
     }
-    .faq-item.open .faq-a { display:block; }
+    .u424-pm::before, .u424-pm::after {
+        content:""; position:absolute; left:50%; top:50%; width:10px; height:1.8px;
+        margin:-.9px 0 0 -5px; border-radius:2px; background:#f1f5f9;
+        transition:transform .5s cubic-bezier(.3, 1.6, .5, 1), background-color .25s;
+    }
+    .u424-pm::after { transform:rotate(90deg); }
+    .u424-it.open .u424-pm { background:#0b84f3; border-color:#0b84f3; }
+    .u424-it.open .u424-pm::before, .u424-it.open .u424-pm::after { background:#ffffff; }
+    .u424-it.open .u424-pm::after { transform:rotate(180deg); }
+    .u424-a { display:grid; grid-template-rows:0fr; transition:grid-template-rows .42s cubic-bezier(.25, 1, .35, 1); }
+    .u424-it.open .u424-a { grid-template-rows:1fr; }
+    .u424-a > div { min-height:0; overflow:hidden; }
+    .u424-a p {
+        margin:0; padding:0 44px 15px 14px; font-size:13.5px; line-height:1.65;
+        color:#94a3b8; opacity:0; transform:translateY(-6px);
+        transition:opacity .2s, transform .3s var(--ux-ease);
+    }
+    .u424-it.open .u424-a p {
+        opacity:1; transform:none;
+        transition:opacity .32s var(--ux-ease) .08s, transform .45s cubic-bezier(.3, 1.4, .5, 1) .06s;
+    }
 
     /* QUICK LINKS */
     .links-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:16px; }
     .link-card {
         display:flex; flex-direction:column; align-items:center; gap:10px;
-        background:#0d162b;
-        border:1.5px solid rgba(0, 240, 255, 0.22);
-        border-radius:18px; padding:24px 18px;
+        background:#151c2c;
+        border:1.5px solid rgba(56, 189, 248, 0.2);
+        border-radius:16px; padding:22px 16px;
         text-decoration:none; color:#ffffff;
-        transition:all .2s cubic-bezier(0.16, 1, 0.3, 1);
+        transition:border-color .2s, transform .22s var(--ux-spring), box-shadow .2s;
         text-align:center;
-        box-shadow:0 8px 30px rgba(0, 0, 0, 0.45);
+        box-shadow:0 6px 20px rgba(0, 0, 0, 0.35);
     }
     .link-card:hover {
-        border-color:#00f0ff; transform:translateY(-3px);
-        box-shadow:0 12px 35px rgba(0, 240, 255, 0.25);
+        border-color:#38bdf8; transform:translateY(-3px);
+        box-shadow:0 12px 26px rgba(0, 0, 0, 0.45);
     }
-    .link-card .lc-icon { font-size:30px; color:#00f0ff; }
+    .link-card .lc-icon { font-size:28px; color:#38bdf8; }
     .link-card .lc-name { font-size:14.5px; font-weight:800; color:#ffffff; }
     .link-card .lc-desc { font-size:12.5px; color:#94a3b8; }
 
     @media(max-width:600px) {
-        .page-hero { padding:84px 16px 30px; }
+        .page-hero { padding:82px 16px 26px; }
         .page-hero h1 { font-size:26px; }
         .step-item { flex-direction:column; gap:12px; }
+        .u042-hub { padding:16px 14px; }
+        .u042-st small { font-size:11px; }
+        .u042-foot { flex-direction:column; align-items:stretch; }
+        .u042-b { justify-content:center; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .u416-th, .u042-line i, .u042-dot, .u042-dot svg, .u042-dot path, .u042-b,
+        .step-section.u042-pane-enter, .u424-a, .u424-a p,
+        .u424-pm::before, .u424-pm::after {
+            animation:none !important; animation-delay:0s !important;
+            transition:none !important; transition-delay:0s !important;
+        }
     }
     </style>
 <style>
@@ -169,16 +363,16 @@
   left: 0 !important;
   right: 0 !important;
   height: 60px !important;
-  background: rgba(13, 17, 23, 0.92) !important;
+  background: rgba(13, 17, 23, 0.94) !important;
   backdrop-filter: blur(14px) !important;
   -webkit-backdrop-filter: blur(14px) !important;
-  border-bottom: 1px solid rgba(0, 240, 255, 0.18) !important;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.2) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
   padding: 0 20px !important;
   z-index: 10000 !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45) !important;
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
 }
 .nav-left-wrap, .nav-left, .hud-header-left {
@@ -207,12 +401,13 @@
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
   text-shadow: none !important;
- filter: none !important;}
+  filter: none !important;
+}
 .nav-hamburger {
   display: none;
   background: transparent !important;
   border: none !important;
-  color: #00f0ff !important;
+  color: #38bdf8 !important;
   font-size: 18px !important;
   padding: 6px !important;
   cursor: pointer !important;
@@ -262,7 +457,6 @@
   height: 7px !important;
   border-radius: 50% !important;
   background: #ef4444 !important;
-  box-shadow: 0 0 8px #ef4444 !important;
   display: inline-block !important;
 }
 .nav-dropdown {
@@ -276,7 +470,7 @@
   left: 0 !important;
   min-width: 230px !important;
   background: #0d1527 !important;
-  border: 1px solid rgba(0, 240, 255, 0.22) !important;
+  border: 1px solid rgba(56, 189, 248, 0.22) !important;
   border-radius: 12px !important;
   padding: 8px !important;
   box-shadow: 0 12px 36px rgba(0,0,0,0.7) !important;
@@ -297,8 +491,8 @@
   transition: all 0.15s !important;
 }
 .nav-dropdown-content a:hover {
-  background: rgba(0, 240, 255, 0.1) !important;
-  color: #00f0ff !important;
+  background: rgba(11, 132, 243, 0.16) !important;
+  color: #38bdf8 !important;
 }
 @media (max-width: 992px) {
   .nav-menu-links { display: none !important; }
@@ -306,7 +500,6 @@
 }
 </style>
 <style>/* ROBUST_BRAND_CSS */
-
 .brand-glow-text {
   color: #ffffff !important;
   font-weight: 800 !important;
@@ -318,7 +511,8 @@
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
   text-shadow: none !important;
- filter: none !important;}
+  filter: none !important;
+}
 .nav-brand-logo, .nav-logo {
   display: inline-flex !important;
   align-items: center !important;
@@ -396,7 +590,6 @@ svg.logo-atom-icon,
         <span class="brand-glow-text">Vật Lý Xuân Trường</span>
       </a>
 
-      <!-- MENU DESKTOP ĐỒNG NHẤT KHÔNG RỚT DÒNG -->
       <nav class="nav-menu-links">
         <a href="danh-gia-nang-luc.html">🎯 Đánh Giá Năng Lực</a>
         <a href="baihoc.html">Khóa Học</a>
@@ -408,26 +601,63 @@ svg.logo-atom-icon,
 
     <div class="nav-right-wrap" style="display:flex;align-items:center;gap:12px">
       <div id="vlxt-nav-user-area"></div>
+      <button type="button" class="theme-toggle" onclick="toggleTheme()" title="Đổi giao diện Sáng/Tối" aria-label="Đổi giao diện Sáng/Tối" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);color:#cbd5e1;width:34px;height:34px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;"><i class="fa-solid fa-circle-half-stroke"></i></button>
     </div>
   </header>
-    <div class="nav-right">
-        <div id="vlxt-nav-user-area"></div>
-        <button class="theme-toggle" onclick="toggleTheme()" title="Đổi giao diện"><i class="fa-solid fa-circle-half-stroke"></i></button>
-    </div>
-</header>
 
 <div class="page-hero">
     <div class="badge-hd"><i class="fa-solid fa-book-open"></i> Hướng dẫn học</div>
     <h1>Bắt đầu học như thế nào?</h1>
-    <p>Làm theo 5 bước đơn giản dưới đây để tận dụng tối đa tất cả tính năng của web Vật Lý Xuân Trường.</p>
+    <p>Làm theo 4 bước đơn giản dưới đây để tận dụng tối đa tất cả tính năng của web Vật Lý Xuân Trường.</p>
 </div>
 
-<div class="steps-wrap">
+<div class="steps-wrap ux">
+
+    <!-- ─── LUCIAN #042 INTERACTIVE STEPPER + #416 VIEW MODE TABS ─── -->
+    <section class="u042-hub" id="guide-wizard-hub" aria-label="Tiến trình làm quen hệ thống">
+        <div class="u042-hub-top">
+            <div class="u042-hub-title">
+                <i class="fa-solid fa-route" style="color:#38bdf8;"></i>
+                <span>Lộ trình làm quen hệ thống</span>
+                <span class="pill-pct" id="u042-progress-pill">Bước 1 / 4</span>
+            </div>
+            <div class="u416-tl" id="guide-mode-tablist" role="tablist" aria-label="Chế độ xem hướng dẫn">
+                <span class="u416-th" id="guide-mode-thumb" aria-hidden="true"></span>
+                <button type="button" class="u416-tab active" role="tab" aria-selected="true" data-mode="step">Xem từng bước</button>
+                <button type="button" class="u416-tab" role="tab" aria-selected="false" tabindex="-1" data-mode="all">Xem toàn bộ</button>
+            </div>
+        </div>
+
+        <ol class="u042-steps" aria-label="Các bước hướng dẫn">
+            <li class="u042-line" aria-hidden="true"><i></i></li>
+            <li class="u042-st cur" data-step="0">
+                <button class="u042-dot" type="button"><span>1</span><svg viewBox="0 0 16 16"><path d="M3.5 8.4l3 3 6-6.4"/></svg></button>
+                <small>Tạo tài khoản</small>
+            </li>
+            <li class="u042-st" data-step="1">
+                <button class="u042-dot" type="button"><span>2</span><svg viewBox="0 0 16 16"><path d="M3.5 8.4l3 3 6-6.4"/></svg></button>
+                <small>Xem bài học</small>
+            </li>
+            <li class="u042-st" data-step="2">
+                <button class="u042-dot" type="button"><span>3</span><svg viewBox="0 0 16 16"><path d="M3.5 8.4l3 3 6-6.4"/></svg></button>
+                <small>Luyện đề thi</small>
+            </li>
+            <li class="u042-st" data-step="3">
+                <button class="u042-dot" type="button"><span>4</span><svg viewBox="0 0 16 16"><path d="M3.5 8.4l3 3 6-6.4"/></svg></button>
+                <small>Theo dõi LP</small>
+            </li>
+        </ol>
+
+        <div class="u042-foot">
+            <button class="u042-b u042-prev" id="u042-btn-prev" type="button" aria-disabled="true">← Chặng trước</button>
+            <button class="u042-b u042-next" id="u042-btn-next" type="button">Đã hiểu · Sang bước tiếp →</button>
+        </div>
+    </section>
 
     <!-- BƯỚC 1: Đăng ký -->
-    <div class="step-section">
+    <div class="step-section guide-step-pane" data-step="0">
         <div class="step-section-title">
-            <div class="icon" style="background:rgba(11,132,243,.1)">👤</div>
+            <div class="icon">👤</div>
             Bước 1: Tạo tài khoản
         </div>
         <div class="step-list">
@@ -457,9 +687,9 @@ svg.logo-atom-icon,
     </div>
 
     <!-- BƯỚC 2: Xem bài học -->
-    <div class="step-section">
+    <div class="step-section guide-step-pane" data-step="1">
         <div class="step-section-title">
-            <div class="icon" style="background:rgba(22,163,74,.1)">📚</div>
+            <div class="icon" style="background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.3);color:#10b981;">📚</div>
             Bước 2: Xem bài học
         </div>
         <div class="step-list">
@@ -489,9 +719,9 @@ svg.logo-atom-icon,
     </div>
 
     <!-- BƯỚC 3: Thi thử -->
-    <div class="step-section">
+    <div class="step-section guide-step-pane" data-step="2">
         <div class="step-section-title">
-            <div class="icon" style="background:rgba(245,158,11,.1)">📝</div>
+            <div class="icon" style="background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.3);color:#f59e0b;">📝</div>
             Bước 3: Luyện đề thi thử
         </div>
         <div class="step-list">
@@ -514,10 +744,10 @@ svg.logo-atom-icon,
     </div>
 
     <!-- BƯỚC 4: Hồ sơ & LP -->
-    <div class="step-section">
+    <div class="step-section guide-step-pane" data-step="3">
         <div class="step-section-title">
-            <div class="icon" style="background:rgba(124,58,237,.1)">⚡</div>
-            Bước 4: Theo dõi tiến độ & LP
+            <div class="icon" style="background:rgba(139,92,246,.14);border-color:rgba(139,92,246,.3);color:#a78bfa;">⚡</div>
+            Bước 4: Theo dõi tiến độ &amp; LP
         </div>
         <div class="step-list">
             <div class="step-item">
@@ -538,40 +768,65 @@ svg.logo-atom-icon,
         </div>
     </div>
 
-    <!-- FAQ -->
-    <div class="step-section">
+    <!-- FAQ (LUCIAN #424 ACCORDION) -->
+    <div class="step-section" id="huongdan-faq">
         <div class="step-section-title">
-            <div class="icon" style="background:rgba(11,132,243,.1)">❓</div>
+            <div class="icon">❓</div>
             Câu hỏi thường gặp
         </div>
-        <div class="faq-list">
-            <div class="faq-item" onclick="this.classList.toggle('open')">
-                <div class="faq-q">Quên không đăng nhập, bài học có bị mất không? <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="faq-a">Tiến độ xem video được lưu tạm trong máy (localStorage). Nếu đăng nhập đúng tài khoản, dữ liệu sẽ đồng bộ lại. Hãy đăng nhập trước khi học để chắc chắn không mất tiến độ.</div>
-            </div>
-            <div class="faq-item" onclick="this.classList.toggle('open')">
-                <div class="faq-q">Dùng điện thoại có học được không? <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="faq-a">Hoàn toàn được! Web được thiết kế tương thích điện thoại. Tuy nhiên để xem công thức vật lý rõ hơn, dùng máy tính sẽ tiện lợi hơn.</div>
-            </div>
-            <div class="faq-item" onclick="this.classList.toggle('open')">
-                <div class="faq-q">Bài học bị khóa, phải làm gì? <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="faq-a">Một số bài yêu cầu xem hết 90% video mới mở được bài tập. Hãy xem video đến gần cuối. Nếu vẫn bị khóa, thử làm mới trang (F5) sau khi xem xong.</div>
-            </div>
-            <div class="faq-item" onclick="this.classList.toggle('open')">
-                <div class="faq-q">Kết quả thi có lưu lại không? <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="faq-a">Có! Kết quả mỗi lần thi được lưu vào hệ thống và hiển thị trong mục Hồ Sơ. Thầy cũng có thể xem kết quả của tất cả học sinh.</div>
-            </div>
-            <div class="faq-item" onclick="this.classList.toggle('open')">
-                <div class="faq-q">Quên số điện thoại đăng ký phải làm sao? <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="faq-a">Nhắn tin cho thầy qua Zalo để thầy tra cứu và hỗ trợ đặt lại tài khoản.</div>
-            </div>
-        </div>
+        <ul class="u424-ls">
+            <li class="u424-it open">
+                <button class="u424-q" type="button" aria-expanded="true">
+                    <span>Quên không đăng nhập, bài học có bị mất không?</span>
+                    <i class="u424-pm" aria-hidden="true"></i>
+                </button>
+                <div class="u424-a" role="region">
+                    <div><p>Tiến độ xem video được lưu tạm trong máy (localStorage). Nếu đăng nhập đúng tài khoản, dữ liệu sẽ đồng bộ lại. Hãy đăng nhập trước khi học để chắc chắn không mất tiến độ.</p></div>
+                </div>
+            </li>
+            <li class="u424-it">
+                <button class="u424-q" type="button" aria-expanded="false">
+                    <span>Dùng điện thoại có học được không?</span>
+                    <i class="u424-pm" aria-hidden="true"></i>
+                </button>
+                <div class="u424-a" role="region">
+                    <div><p>Hoàn toàn được! Web được thiết kế tương thích điện thoại. Tuy nhiên để xem công thức vật lý rõ hơn, dùng máy tính sẽ tiện lợi hơn.</p></div>
+                </div>
+            </li>
+            <li class="u424-it">
+                <button class="u424-q" type="button" aria-expanded="false">
+                    <span>Bài học bị khóa, phải làm gì?</span>
+                    <i class="u424-pm" aria-hidden="true"></i>
+                </button>
+                <div class="u424-a" role="region">
+                    <div><p>Một số bài yêu cầu xem hết 90% video mới mở được bài tập. Hãy xem video đến gần cuối. Nếu vẫn bị khóa, thử làm mới trang (F5) sau khi xem xong.</p></div>
+                </div>
+            </li>
+            <li class="u424-it">
+                <button class="u424-q" type="button" aria-expanded="false">
+                    <span>Kết quả thi có lưu lại không?</span>
+                    <i class="u424-pm" aria-hidden="true"></i>
+                </button>
+                <div class="u424-a" role="region">
+                    <div><p>Có! Kết quả mỗi lần thi được lưu vào hệ thống và hiển thị trong mục Hồ Sơ. Thầy cũng có thể xem kết quả của tất cả học sinh.</p></div>
+                </div>
+            </li>
+            <li class="u424-it">
+                <button class="u424-q" type="button" aria-expanded="false">
+                    <span>Quên số điện thoại đăng ký phải làm sao?</span>
+                    <i class="u424-pm" aria-hidden="true"></i>
+                </button>
+                <div class="u424-a" role="region">
+                    <div><p>Nhắn tin cho thầy qua Zalo để thầy tra cứu và hỗ trợ đặt lại tài khoản.</p></div>
+                </div>
+            </li>
+        </ul>
     </div>
 
     <!-- QUICK LINKS -->
     <div class="step-section">
         <div class="step-section-title">
-            <div class="icon" style="background:rgba(22,163,74,.1)">🔗</div>
+            <div class="icon" style="background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.3);color:#10b981;">🔗</div>
             Truy cập nhanh
         </div>
         <div class="links-grid">
@@ -602,8 +857,8 @@ svg.logo-atom-icon,
             </a>
             <a href="hoso.html" class="link-card">
                 <div class="lc-icon">⚡</div>
-                <div class="lc-name">Hồ Sơ & LP</div>
-                <div class="lc-desc">Tiến độ & xếp hạng</div>
+                <div class="lc-name">Hồ Sơ &amp; LP</div>
+                <div class="lc-desc">Tiến độ &amp; xếp hạng</div>
             </a>
         </div>
     </div>
@@ -611,8 +866,168 @@ svg.logo-atom-icon,
 </div>
 
 <script>
-function toggleTheme(){document.body.classList.toggle('dark');localStorage.setItem('vlxt_theme',document.body.classList.contains('dark')?'dark':'light');}
-if(localStorage.getItem('vlxt_theme')==='dark')document.body.classList.add('dark');
+(function initGuideTheme() {
+    var saved = 'dark';
+    try { saved = localStorage.getItem('vlxt_theme') || 'dark'; } catch (e) {}
+    var isDark = saved !== 'light';
+    document.body.classList.toggle('dark', isDark);
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+})();
+
+(function initGuideWizardAndFaq() {
+    var STORAGE_KEY = 'vlxt_guide_progress_v1';
+    var hub = document.getElementById('guide-wizard-hub');
+    if (!hub) return;
+
+    var sts = Array.prototype.slice.call(hub.querySelectorAll('.u042-st'));
+    var line = hub.querySelector('.u042-line i');
+    var prevBtn = document.getElementById('u042-btn-prev');
+    var nextBtn = document.getElementById('u042-btn-next');
+    var pill = document.getElementById('u042-progress-pill');
+    var panes = Array.prototype.slice.call(document.querySelectorAll('.guide-step-pane'));
+
+    var tablist = document.getElementById('guide-mode-tablist');
+    var tabThumb = document.getElementById('guide-mode-thumb');
+    var modeTabs = tablist ? Array.prototype.slice.call(tablist.querySelectorAll('.u416-tab')) : [];
+
+    var curStep = 0;
+    var viewMode = 'step';
+    try {
+        var savedStep = Number(localStorage.getItem(STORAGE_KEY));
+        if (!isNaN(savedStep) && savedStep >= 0 && savedStep <= 3) curStep = savedStep;
+    } catch (e) {}
+
+    function positionModeThumb(idx, dir, instant) {
+        var t = modeTabs[idx];
+        if (!tablist || !tabThumb || !t) return;
+        if (instant) tabThumb.style.transition = 'none';
+        tabThumb.style.setProperty('--tl', dir > 0 ? '.52s' : '.34s');
+        tabThumb.style.setProperty('--tr', dir > 0 ? '.34s' : '.52s');
+        tabThumb.style.setProperty('--l', t.offsetLeft + 'px');
+        tabThumb.style.setProperty('--r', Math.max(4, (tablist.clientWidth - t.offsetLeft - t.offsetWidth)) + 'px');
+        if (instant) { void tabThumb.offsetWidth; tabThumb.style.transition = ''; }
+    }
+
+    function setMode(nextMode, focusTab) {
+        var nextIdx = nextMode === 'all' ? 1 : 0;
+        var prevIdx = viewMode === 'all' ? 1 : 0;
+        viewMode = nextMode === 'all' ? 'all' : 'step';
+        modeTabs.forEach(function (t, k) {
+            var on = k === nextIdx;
+            t.classList.toggle('active', on);
+            t.setAttribute('aria-selected', String(on));
+            t.tabIndex = on ? 0 : -1;
+        });
+        positionModeThumb(nextIdx, nextIdx >= prevIdx ? 1 : -1, false);
+        renderStepView(0);
+        if (focusTab && modeTabs[nextIdx]) modeTabs[nextIdx].focus({ preventScroll: true });
+    }
+
+    function renderStepView(dir) {
+        panes.forEach(function (p, k) {
+            var show = viewMode === 'all' || k === curStep;
+            p.classList.toggle('u042-hidden', !show);
+            p.classList.remove('u042-pane-enter');
+            if (show && dir !== 0 && viewMode === 'step') {
+                p.style.setProperty('--dir', String(dir));
+                void p.offsetWidth;
+                p.classList.add('u042-pane-enter');
+            }
+        });
+        sts.forEach(function (s, k) {
+            s.classList.toggle('done', k < curStep);
+            s.classList.toggle('cur', k === curStep);
+            var dot = s.querySelector('.u042-dot');
+            if (k === curStep) dot.setAttribute('aria-current', 'step');
+            else dot.removeAttribute('aria-current');
+        });
+        if (line && line.parentNode) line.parentNode.style.setProperty('--p', (curStep / 3).toFixed(3));
+        if (pill) pill.textContent = 'Bước ' + (curStep + 1) + ' / 4';
+        if (prevBtn) prevBtn.setAttribute('aria-disabled', String(curStep === 0));
+        hub.classList.toggle('is-last', curStep === 3);
+        if (nextBtn) nextBtn.textContent = curStep === 3 ? '🎉 Hoàn tất · Vào Khóa Học →' : 'Đã hiểu · Sang bước tiếp →';
+    }
+
+    function goToStep(next) {
+        if (next < 0 || next > 3) return;
+        var dir = next >= curStep ? 1 : -1;
+        curStep = next;
+        try { localStorage.setItem(STORAGE_KEY, String(curStep)); } catch (e) {}
+        renderStepView(dir);
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', function () {
+            if (curStep === 3) {
+                if (typeof window.vlxtToast === 'function') {
+                    window.vlxtToast('Hoàn thành hướng dẫn! Chúc em học tốt Vật Lý 12.', { tone: 'success' });
+                }
+                setTimeout(function () { window.location.href = 'baihoc.html'; }, 700);
+                return;
+            }
+            goToStep(curStep + 1);
+        });
+    }
+    if (prevBtn) {
+        prevBtn.addEventListener('click', function () {
+            if (curStep > 0) goToStep(curStep - 1);
+        });
+    }
+    sts.forEach(function (s, k) {
+        var dot = s.querySelector('.u042-dot');
+        if (dot) dot.addEventListener('click', function () { goToStep(k); });
+    });
+
+    modeTabs.forEach(function (t) {
+        t.addEventListener('click', function () { setMode(t.dataset.mode, false); });
+    });
+    if (tablist) {
+        tablist.addEventListener('keydown', function (e) {
+            if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight' && e.key !== 'Home' && e.key !== 'End') return;
+            e.preventDefault();
+            var target = e.key === 'Home' ? 'step' : e.key === 'End' ? 'all' : (viewMode === 'step' ? 'all' : 'step');
+            setMode(target, true);
+        });
+    }
+
+    positionModeThumb(0, 1, true);
+    window.addEventListener('resize', function () { positionModeThumb(viewMode === 'all' ? 1 : 0, 1, true); });
+    renderStepView(0);
+
+    var faqRoot = document.getElementById('huongdan-faq');
+    if (faqRoot) {
+        var its = Array.prototype.slice.call(faqRoot.querySelectorAll('.u424-it'));
+        var qs = its.map(function (it) { return it.querySelector('.u424-q'); });
+        its.forEach(function (it, idx) {
+            var a = it.querySelector('.u424-a');
+            qs[idx].id = 'hd-faq-q' + idx;
+            a.id = 'hd-faq-a' + idx;
+            qs[idx].setAttribute('aria-controls', a.id);
+            a.setAttribute('aria-labelledby', qs[idx].id);
+            var isOpen = it.classList.contains('open');
+            qs[idx].setAttribute('aria-expanded', String(isOpen));
+            a.inert = !isOpen;
+        });
+        function toggleFaq(idx) {
+            its.forEach(function (it, k) {
+                var v = k === idx && !it.classList.contains('open');
+                it.classList.toggle('open', v);
+                qs[k].setAttribute('aria-expanded', String(v));
+                it.querySelector('.u424-a').inert = !v;
+            });
+        }
+        qs.forEach(function (q, idx) {
+            q.addEventListener('click', function () { toggleFaq(idx); });
+            q.addEventListener('keydown', function (e) {
+                var n = qs.length;
+                var to = e.key === 'ArrowDown' ? idx + 1 : e.key === 'ArrowUp' ? idx - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? n - 1 : null;
+                if (to === null) return;
+                e.preventDefault();
+                qs[(to + n) % n].focus();
+            });
+        });
+    }
+})();
 </script>
 <script src="hoat-dong.js?v=1"></script>
 </body>

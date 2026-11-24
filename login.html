@@ -1,150 +1,303 @@
+<!-- Lucian UX/UI Prompt #404 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#404 -->
+<!-- Lucian UX/UI Prompt #416 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#416 -->
+<!-- Lucian UX/UI Prompt #438 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#438 -->
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Đăng nhập · Vật Lý Xuân Trường</title>
 <script src="https://accounts.google.com/gsi/client" defer></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/lucian-uxui.css?v=20261124">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     min-height: 100vh; display: flex; align-items: center; justify-content: center;
     background: #0d1117;
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    overflow: hidden;
-  }
-  body::before {
-    content: '';
-    position: fixed; inset: 0; z-index: 0;
-    background:
-      radial-gradient(circle at 20% 30%, rgba(0,114,255,0.12) 0%, transparent 50%),
-      radial-gradient(circle at 80% 70%, rgba(0,240,255,0.08) 0%, transparent 50%),
-      #0d1117;
+    overflow-x: hidden; overflow-y: auto; padding: 20px 0;
+    color: #f1f5f9;
   }
   .card {
     position: relative; z-index: 1;
-    width: 100%; max-width: 420px; margin: 20px;
-    background: rgba(13,17,23,0.95);
-    border: 1px solid rgba(0,240,255,0.15);
+    width: 100%; max-width: 432px; margin: 0 16px;
+    background: #151c2c;
+    border: 1px solid rgba(56, 189, 248, 0.22);
     border-radius: 20px;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 40px rgba(0,240,255,0.05);
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.55);
     overflow: hidden;
   }
+  .card.u-shake {
+    animation: vlxtCardShake .36s cubic-bezier(.36,.07,.19,.97) both;
+  }
+  @keyframes vlxtCardShake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-7px); }
+    40% { transform: translateX(7px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(4px); }
+  }
   .card-header {
-    padding: 32px 32px 24px;
-    background: linear-gradient(180deg, rgba(0,114,255,0.08) 0%, transparent 100%);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 28px 28px 20px;
+    background: #111827;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     text-align: center;
   }
-  .logo { font-size: 36px; margin-bottom: 8px; display: block; filter: drop-shadow(0 0 12px rgba(0,240,255,0.4)); }
-  .card-title { font-size: 20px; font-weight: 800; color: #e6edf3; margin-bottom: 4px; }
-  .card-sub { font-size: 13px; color: #8b949e; }
-  .tabs { display: flex; padding: 20px 24px 0; gap: 8px; }
+  .logo {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px; border-radius: 14px;
+    background: rgba(11, 132, 243, 0.14);
+    border: 1px solid rgba(56, 189, 248, 0.28);
+    font-size: 28px; margin: 0 auto 10px;
+    filter: none;
+  }
+  .card-title { font-size: 20px; font-weight: 800; color: #f8fafc; margin-bottom: 4px; }
+  .card-sub { font-size: 13px; color: #94a3b8; }
+
+  /* ─── LUCIAN #416 SLIDING PILL TABS ─── */
+  .tabs-wrap { padding: 18px 24px 0; }
+  .u416-tl {
+    position: relative; display: flex; padding: 4px;
+    border-radius: 14px; background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .u416-th {
+    position: absolute; top: 4px; bottom: 4px;
+    left: var(--l, 4px); right: var(--r, 50%);
+    border-radius: 10px; background: #0b84f3;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    transition: left var(--tl, .48s) cubic-bezier(.3, 1.25, .45, 1),
+                right var(--tr, .48s) cubic-bezier(.3, 1.25, .45, 1);
+  }
   .tab-btn {
-    flex: 1; padding: 10px; border: none; border-radius: 10px;
-    font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; font-family: inherit;
+    position: relative; z-index: 1; flex: 1; height: 38px;
+    border: none; border-radius: 10px; background: transparent;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+    color: #94a3b8; transition: color .25s ease; font-family: inherit;
   }
-  .tab-btn.active {
-    background: #0b84f3;
-    color: #fff;
-  }
-  .tab-btn:not(.active) { background: rgba(255,255,255,0.05); color: #8b949e; }
-  .tab-btn:not(.active):hover { background: rgba(255,255,255,0.09); color: #c9d1d9; }
-  .form-body { padding: 20px 24px 28px; }
+  .tab-btn:hover { color: #e2e8f0; }
+  .tab-btn.active { color: #ffffff; }
+  .tab-btn:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
+
+  .form-body { padding: 18px 24px 26px; }
+  .tab-panels { position: relative; }
   .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
-  .field { margin-bottom: 14px; }
-  label { display: block; font-size: 12px; font-weight: 600; color: #8b949e;
-    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-  input {
-    width: 100%; padding: 11px 14px; border-radius: 10px;
-    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-    color: #e6edf3; font-size: 15px; font-family: inherit;
+  .tab-panel.active {
+    display: block;
+    animation: u416PanelIn .36s var(--ux-spring, cubic-bezier(.34,1.45,.64,1)) both;
+  }
+  @keyframes u416PanelIn {
+    from { opacity: 0; transform: translateX(calc(var(--dir, 1) * 16px)); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .field { margin-bottom: 13px; }
+  .field label {
+    display: block; font-size: 12px; font-weight: 600; color: #94a3b8;
+    text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px;
+  }
+  .field input {
+    width: 100%; padding: 11px 14px; border-radius: 11px;
+    background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #f8fafc; font-size: 15px; font-family: inherit;
     transition: border-color 0.2s, box-shadow 0.2s; outline: none;
   }
-  input:focus { border-color: rgba(0,240,255,0.4); box-shadow: 0 0 0 3px rgba(0,240,255,0.08); }
-  input::placeholder { color: #484f58; }
-  .submit-btn {
-    width: 100%; padding: 13px; margin-top: 6px;
-    border: none; border-radius: 12px; cursor: pointer;
-    background: #0b84f3;
-    color: #fff; font-size: 16px; font-weight: 800; letter-spacing: 0.3px; font-family: inherit;
-    transition: opacity 0.2s;
+  .field input:focus {
+    border-color: #0b84f3;
+    box-shadow: 0 0 0 3px rgba(11, 132, 243, 0.22);
   }
-  .submit-btn:hover { opacity: 0.9; }
-  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .field input::placeholder { color: #475569; }
+
+  /* ─── LUCIAN #404 PASSWORD FIELD, EYE TOGGLE & STRENGTH METER ─── */
+  .u404-pw-wrap { position: relative; }
+  .u404-pw-wrap input { padding-right: 46px; }
+  .u404-eye {
+    position: absolute; right: 7px; top: 50%; transform: translateY(-50%);
+    width: 34px; height: 34px; display: grid; place-items: center;
+    border: 0; border-radius: 9px; background: transparent; color: #94a3b8;
+    cursor: pointer; transition: color .2s, background-color .2s;
+  }
+  .u404-eye:hover { color: #f8fafc; background: rgba(255, 255, 255, 0.08); }
+  .u404-eye:focus-visible { outline: 2px solid #38bdf8; outline-offset: -2px; }
+  .u404-eye svg {
+    width: 20px; height: 20px; overflow: visible;
+    fill: none; stroke: currentColor; stroke-width: 1.7;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .u404-eye .lid { transform-origin: 10px 10px; transform: scaleY(.12); transition: transform .4s var(--ux-spring); }
+  .u404-eye .lash { transition: opacity .18s, transform .35s var(--ux-spring); }
+  .u404-eye[aria-pressed="true"] .lid { transform: none; }
+  .u404-eye[aria-pressed="true"] .lash { opacity: 0; transform: translateY(-3px); }
+
+  .u404-meter-box { margin-top: 8px; }
+  .u404-st { display: flex; align-items: center; gap: 10px; height: 16px; }
+  .u404-bars { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+  .u404-bars i {
+    position: relative; height: 5px; border-radius: 3px;
+    background: #293548; overflow: hidden;
+  }
+  .u404-bars i::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit;
+    background: var(--c, #64748b); transform: scaleX(0); transform-origin: left;
+    transition: transform .45s var(--ux-spring), background-color .25s;
+  }
+  .u404-bars i.is-on::after { transform: none; }
+  .u404-st em {
+    width: 74px; flex: none; text-align: right; font-style: normal;
+    font-size: 11.5px; font-weight: 700; color: var(--c, #94a3b8); transition: color .25s;
+  }
+  .u404-meter-box[data-lv="1"] { --c: #ef4444; }
+  .u404-meter-box[data-lv="2"] { --c: #f59e0b; }
+  .u404-meter-box[data-lv="3"],
+  .u404-meter-box[data-lv="4"] { --c: #10b981; }
+
+  .u404-rules {
+    margin: 9px 0 2px; padding: 0; list-style: none;
+    display: flex; flex-wrap: wrap; gap: 6px 12px;
+  }
+  .u404-rules li {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600; color: #64748b; transition: color .25s;
+  }
+  .u404-rules svg { width: 15px; height: 15px; flex: none; overflow: visible; }
+  .u404-rules circle {
+    fill: transparent; stroke: rgba(148, 163, 184, 0.35); stroke-width: 1.5;
+    transition: fill .25s, stroke .25s;
+  }
+  .u404-rules path {
+    fill: none; stroke: #04101e; stroke-width: 2.3;
+    stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 12; stroke-dashoffset: 12;
+    transition: stroke-dashoffset .32s var(--ux-ease) .06s;
+  }
+  .u404-rules li.is-ok { color: #e2e8f0; }
+  .u404-rules li.is-ok circle { fill: #10b981; stroke: #10b981; }
+  .u404-rules li.is-ok path { stroke-dashoffset: 0; }
+  .u404-rules li.is-ok svg { animation: u404Pop .45s var(--ux-spring); }
+  @keyframes u404Pop { 0% { transform: scale(.65); } 55% { transform: scale(1.22); } 100% { transform: none; } }
+
+  /* ─── LUCIAN #438 LOADING TO DONE MORPH BUTTON ─── */
+  .u438-wrap { display: flex; justify-content: center; margin-top: 8px; }
+  .submit-btn.u438-b {
+    --w: 100%;
+    position: relative; width: var(--w); max-width: 100%; height: 48px;
+    padding: 0; border: none; border-radius: 24px; cursor: pointer;
+    background: #0b84f3; color: #ffffff;
+    font-size: 15.5px; font-weight: 800; letter-spacing: 0.2px; font-family: inherit;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.32);
+    transform: scale(var(--k, 1));
+    transition: width .42s cubic-bezier(.65, 0, .35, 1),
+                background-color .3s var(--ux-ease),
+                transform .45s cubic-bezier(.34, 1.7, .5, 1),
+                opacity .2s;
+  }
+  .submit-btn.u438-b:hover:not(:disabled) { background: #1d90fa; }
+  .submit-btn.u438-b:active:not(:disabled) { --k: .96; }
+  .submit-btn.u438-b:disabled { cursor: not-allowed; }
+  .u438-l {
+    display: block; padding: 0 24px; white-space: nowrap;
+    transition: opacity .2s var(--ux-ease), transform .25s var(--ux-ease);
+  }
+  .submit-btn.u438-b[data-s="busy"] .u438-l,
+  .submit-btn.u438-b[data-s="ok"] .u438-l {
+    opacity: 0; transform: scale(.9);
+  }
+  .u438-sp, .u438-ck {
+    position: absolute; left: 50%; top: 50%; width: 22px; height: 22px;
+    margin: -11px 0 0 -11px; opacity: 0; transform: scale(.45);
+    transition: opacity .2s var(--ux-ease), transform .38s cubic-bezier(.34, 1.6, .5, 1);
+    pointer-events: none;
+  }
+  .u438-sp {
+    border-radius: 50%; border: 2.5px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #ffffff; animation: spin .75s linear infinite;
+  }
+  .submit-btn.u438-b[data-s="busy"] .u438-sp { opacity: 1; transform: none; transition-delay: .16s; }
+  .u438-ck { fill: none; stroke: #ffffff; stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; }
+  .u438-ck path { stroke-dasharray: 20; stroke-dashoffset: 20; transition: stroke-dashoffset .36s var(--ux-ease) .1s; }
+  .submit-btn.u438-b[data-s="ok"] { background: #10b981; }
+  .submit-btn.u438-b[data-s="ok"] .u438-ck { opacity: 1; transform: none; }
+  .submit-btn.u438-b[data-s="ok"] .u438-ck path { stroke-dashoffset: 0; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
   .msg {
     margin-top: 12px; padding: 10px 14px; border-radius: 10px;
     font-size: 13px; font-weight: 600; text-align: center; display: none;
   }
-  .msg.success { background: rgba(34,197,94,0.12); color: #4ade80; border: 1px solid rgba(34,197,94,0.2); }
-  .msg.error   { background: rgba(239,68,68,0.12);  color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+  .msg.success { background: rgba(16, 185, 129, 0.14); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+  .msg.error { background: rgba(239, 68, 68, 0.14); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
   .msg.show { display: block; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .spinner { display: inline-block; width: 16px; height: 16px; border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
-    animation: spin 0.7s linear infinite; vertical-align: -3px; margin-right: 6px; }
-  .google-btn-wrap { margin-bottom: 4px; min-height: 44px; }
-  .google-btn-wrap > div { width: 100% !important; }
-  .or-divider { display: flex; align-items: center; gap: 10px; margin: 14px 0 10px; }
+
+  .google-btn-wrap { margin-bottom: 4px; min-height: 44px; display: flex; justify-content: center; }
+  .google-btn-wrap > div { width: 100% !important; max-width: 100% !important; }
+  .or-divider { display: flex; align-items: center; gap: 10px; margin: 14px 0 12px; }
   .or-divider::before, .or-divider::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.1); }
-  .or-divider span { font-size: 12px; color: #484f58; white-space: nowrap; }
+  .or-divider span { font-size: 12px; color: #64748b; white-space: nowrap; }
 
   /* ─── SETUP MODAL ─── */
   #setup-modal {
     display: none; position: fixed; inset: 0; z-index: 9999;
-    background: rgba(0,0,0,0.7); align-items: center; justify-content: center;
+    background: rgba(0, 0, 0, 0.72); align-items: center; justify-content: center; padding: 16px;
   }
   .setup-box {
-    background: #1a1a2e; border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 16px; padding: 36px 32px; width: 100%; max-width: 400px;
+    background: #151c2c; border: 1px solid rgba(56, 189, 248, 0.24);
+    border-radius: 16px; padding: 32px 28px; width: 100%; max-width: 400px;
     color: #fff; font-family: 'Plus Jakarta Sans', sans-serif;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
   }
   .setup-box h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
-  .setup-box p  { font-size: 14px; color: #aaa; margin-bottom: 24px; }
-  .setup-box label { font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px; color: #ccc; }
+  .setup-box p  { font-size: 14px; color: #94a3b8; margin-bottom: 22px; }
+  .setup-box label { font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px; color: #cbd5e1; }
   .setup-box input {
-    width: 100%; padding: 11px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.08); color: #fff; font-size: 14px; margin-bottom: 16px;
+    width: 100%; padding: 11px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.16);
+    background: #0f172a; color: #fff; font-size: 14px; margin-bottom: 16px;
   }
-  .setup-box input:focus { outline: none; border-color: #4f8ef7; }
+  .setup-box input:focus { outline: none; border-color: #0b84f3; }
   .setup-btn {
-    width: 100%; padding: 13px; border-radius: 8px; border: none;
+    width: 100%; padding: 13px; border-radius: 10px; border: none;
     background: #0b84f3; color: #fff;
     font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 4px; transition: opacity 0.2s;
   }
-  .setup-btn:hover { opacity: 0.9; }
+  .setup-btn:hover { opacity: 0.92; }
   #setup-msg { color: #f87171; font-size: 13px; margin-top: 8px; min-height: 18px; }
 
-  /* ─── DEVICE BLOCKED MODAL (het han hoc thu) ─── */
+  /* ─── DEVICE BLOCKED MODAL ─── */
   #device-blocked-modal {
     display: none; position: fixed; inset: 0; z-index: 10000;
-    background: rgba(0,0,0,0.75); align-items: center; justify-content: center; padding: 16px;
+    background: rgba(0, 0, 0, 0.78); align-items: center; justify-content: center; padding: 16px;
   }
   .dbm-box {
-    background: #1a1a2e; border: 1px solid rgba(239,68,68,0.35);
-    border-radius: 16px; padding: 32px 28px; width: 100%; max-width: 420px;
+    background: #151c2c; border: 1px solid rgba(239, 68, 68, 0.4);
+    border-radius: 16px; padding: 30px 26px; width: 100%; max-width: 420px;
     color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; text-align: center;
   }
   .dbm-icon { font-size: 42px; margin-bottom: 10px; }
   .dbm-box h3 { font-size: 20px; font-weight: 800; margin-bottom: 14px; color: #f87171; }
-  .dbm-box p { font-size: 16px; line-height: 1.65; color: #f1f1f1; margin-bottom: 22px; }
+  .dbm-box p { font-size: 15px; line-height: 1.6; color: #e2e8f0; margin-bottom: 22px; }
   .dbm-links { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
   .dbm-link {
-    flex: 1; min-width: 140px; padding: 13px; border-radius: 10px; text-decoration: none;
+    flex: 1; min-width: 140px; padding: 12px; border-radius: 10px; text-decoration: none;
     font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center;
     gap: 6px; transition: opacity 0.2s;
   }
-  .dbm-link:hover { opacity: 0.88; }
-  .dbm-link.zalo   { background: #0068ff; color: #fff; }
+  .dbm-link:hover { opacity: 0.9; }
+  .dbm-link.zalo { background: #0068ff; color: #fff; }
   .dbm-link.tiktok { background: #fff; color: #111; }
   .dbm-close {
-    background: transparent; border: 1px solid rgba(255,255,255,0.25); color: #ccc;
+    background: transparent; border: 1px solid rgba(255,255,255,0.22); color: #cbd5e1;
     padding: 10px 18px; border-radius: 8px; cursor: pointer; font-size: 13px; margin-top: 4px;
   }
   .dbm-close:hover { background: rgba(255,255,255,0.06); }
-  </style>
+
+  @media (prefers-reduced-motion: reduce) {
+    .u416-th, .tab-panel.active, .u404-eye .lid, .u404-eye .lash,
+    .u404-bars i::after, .u404-rules svg, .submit-btn.u438-b,
+    .card.u-shake {
+      animation: none !important; transition: none !important;
+    }
+  }
+</style>
 
 <style id="vlxt-anti-ai-glow-logo">
 /* ─── TRIỆT TIÊU HOÀN TOÀN AI GLOW TRÊN LOGO & BRAND (PHẲNG, SẮC NÉT EDTECH) ─── */
@@ -184,65 +337,111 @@ svg.logo-atom-icon,
 </style>
 </head>
 <body>
-<div class="card">
+<div class="card ux" id="auth-card">
   <div class="card-header">
     <span class="logo">⚛️</span>
     <div class="card-title">Vật Lý Xuân Trường</div>
     <div class="card-sub">Đăng nhập để học và lưu tiến độ</div>
   </div>
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('login')">Đăng nhập</button>
-    <button class="tab-btn" onclick="switchTab('register')">Đăng ký mới</button>
+  <div class="tabs-wrap">
+    <div class="tabs u416-tl" id="auth-tablist" role="tablist" aria-label="Chế độ tài khoản">
+      <span class="u416-th" id="auth-tab-thumb" aria-hidden="true"></span>
+      <button type="button" class="tab-btn active" id="tab-btn-login" role="tab" aria-selected="true" aria-controls="panel-login" onclick="switchTab('login')">Đăng nhập</button>
+      <button type="button" class="tab-btn" id="tab-btn-register" role="tab" aria-selected="false" aria-controls="panel-register" tabindex="-1" onclick="switchTab('register')">Đăng ký mới</button>
+    </div>
   </div>
   <div class="form-body">
     <!-- GOOGLE SIGN-IN (dùng chung cả 2 tab) -->
     <div class="google-btn-wrap" id="google-btn-container"></div>
-    <div style="text-align:center;margin:-4px 0 8px;">
-      <a href="#" onclick="switchGoogleAccount(event)" style="font-size:12px;color:#aaa;text-decoration:underline;text-underline-offset:3px;">
+    <div style="text-align:center;margin:2px 0 8px;">
+      <a href="#" onclick="switchGoogleAccount(event)" style="font-size:12px;color:#94a3b8;text-decoration:underline;text-underline-offset:3px;">
         🔄 Dùng tài khoản Google khác
       </a>
     </div>
     <div class="or-divider"><span>hoặc dùng SĐT</span></div>
 
-    <!-- LOGIN -->
-    <div class="tab-panel active" id="panel-login">
-      <div class="field">
-        <label>Số điện thoại</label>
-        <input type="tel" id="login-sdt" placeholder="0912345678" autocomplete="username">
+    <div class="tab-panels">
+      <!-- LOGIN -->
+      <div class="tab-panel active" id="panel-login" role="tabpanel" aria-labelledby="tab-btn-login">
+        <div class="field">
+          <label for="login-sdt">Số điện thoại</label>
+          <input type="tel" id="login-sdt" placeholder="0912345678" autocomplete="username">
+        </div>
+        <div class="field">
+          <label for="login-pw">Mật khẩu</label>
+          <div class="u404-pw-wrap">
+            <input type="password" id="login-pw" placeholder="••••••••" autocomplete="current-password"
+              onkeydown="if(event.key==='Enter') doLogin()">
+            <button type="button" class="u404-eye" aria-label="Hiện mật khẩu" aria-pressed="false" onclick="togglePwEye(this, 'login-pw')">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><g class="lid"><path d="M2 10s3-5.2 8-5.2S18 10 18 10s-3 5.2-8 5.2S2 10 2 10z"/><circle cx="10" cy="10" r="2.4"/></g><g class="lash"><path d="M3 10.4c2 2.4 4.4 3.4 7 3.4s5-1 7-3.4M6 13l-1 1.6M10 14v1.8M14 13l1 1.6"/></g></svg>
+            </button>
+          </div>
+        </div>
+        <div class="u438-wrap">
+          <button type="button" class="submit-btn u438-b" id="login-btn" data-s="idle" data-label="Đăng nhập" onclick="doLogin()">
+            <span class="u438-l">Đăng nhập</span>
+            <i class="u438-sp" aria-hidden="true"></i>
+            <svg class="u438-ck" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.5 4.5 4.5 8.5-9.5"/></svg>
+          </button>
+        </div>
+        <div class="msg" id="login-msg" role="status"></div>
       </div>
-      <div class="field">
-        <label>Mật khẩu</label>
-        <input type="password" id="login-pw" placeholder="••••••••" autocomplete="current-password"
-          onkeydown="if(event.key==='Enter') doLogin()">
+
+      <!-- REGISTER -->
+      <div class="tab-panel" id="panel-register" role="tabpanel" aria-labelledby="tab-btn-register">
+        <div class="field">
+          <label for="reg-hoten">Họ và tên</label>
+          <input type="text" id="reg-hoten" placeholder="Nguyễn Văn A" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="reg-lop">Lớp</label>
+          <input type="text" id="reg-lop" placeholder="12A1">
+        </div>
+        <div class="field">
+          <label for="reg-sdt">Số điện thoại</label>
+          <input type="tel" id="reg-sdt" placeholder="0912345678" autocomplete="username">
+        </div>
+        <div class="field">
+          <label for="reg-pw">Mật khẩu</label>
+          <div class="u404-pw-wrap">
+            <input type="password" id="reg-pw" placeholder="Tối thiểu 6 ký tự" autocomplete="new-password" oninput="updateRegStrength()">
+            <button type="button" class="u404-eye" aria-label="Hiện mật khẩu" aria-pressed="false" onclick="togglePwEye(this, 'reg-pw')">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><g class="lid"><path d="M2 10s3-5.2 8-5.2S18 10 18 10s-3 5.2-8 5.2S2 10 2 10z"/><circle cx="10" cy="10" r="2.4"/></g><g class="lash"><path d="M3 10.4c2 2.4 4.4 3.4 7 3.4s5-1 7-3.4M6 13l-1 1.6M10 14v1.8M14 13l1 1.6"/></g></svg>
+            </button>
+          </div>
+          <div class="u404-meter-box" id="reg-pw-box" data-lv="0">
+            <div class="u404-st">
+              <div class="u404-bars" id="reg-pw-bars" role="meter" aria-label="Độ mạnh mật khẩu" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0">
+                <i></i><i></i><i></i><i></i>
+              </div>
+              <em id="reg-pw-lvl"></em>
+            </div>
+            <ul class="u404-rules" id="reg-pw-rules">
+              <li id="rule-len"><svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8"/><path d="M5.6 9.3l2.3 2.3 4.6-4.8"/></svg><span>≥ 6 ký tự</span></li>
+              <li id="rule-mix"><svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8"/><path d="M5.6 9.3l2.3 2.3 4.6-4.8"/></svg><span>Có chữ &amp; số</span></li>
+              <li id="rule-match"><svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8"/><path d="M5.6 9.3l2.3 2.3 4.6-4.8"/></svg><span>Khớp xác nhận</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="field">
+          <label for="reg-pw2">Xác nhận mật khẩu</label>
+          <div class="u404-pw-wrap">
+            <input type="password" id="reg-pw2" placeholder="Nhập lại mật khẩu" oninput="updateRegStrength()"
+              onkeydown="if(event.key==='Enter') doRegister()">
+            <button type="button" class="u404-eye" aria-label="Hiện mật khẩu xác nhận" aria-pressed="false" onclick="togglePwEye(this, 'reg-pw2')">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><g class="lid"><path d="M2 10s3-5.2 8-5.2S18 10 18 10s-3 5.2-8 5.2S2 10 2 10z"/><circle cx="10" cy="10" r="2.4"/></g><g class="lash"><path d="M3 10.4c2 2.4 4.4 3.4 7 3.4s5-1 7-3.4M6 13l-1 1.6M10 14v1.8M14 13l1 1.6"/></g></svg>
+            </button>
+          </div>
+        </div>
+        <div class="u438-wrap">
+          <button type="button" class="submit-btn u438-b" id="reg-btn" data-s="idle" data-label="Tạo tài khoản" onclick="doRegister()">
+            <span class="u438-l">Tạo tài khoản</span>
+            <i class="u438-sp" aria-hidden="true"></i>
+            <svg class="u438-ck" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.5 4.5 4.5 8.5-9.5"/></svg>
+          </button>
+        </div>
+        <div class="msg" id="reg-msg" role="status"></div>
       </div>
-      <button class="submit-btn" id="login-btn" onclick="doLogin()">Đăng nhập</button>
-      <div class="msg" id="login-msg"></div>
-    </div>
-    <!-- REGISTER -->
-    <div class="tab-panel" id="panel-register">
-      <div class="field">
-        <label>Họ và tên</label>
-        <input type="text" id="reg-hoten" placeholder="Nguyễn Văn A" autocomplete="name">
-      </div>
-      <div class="field">
-        <label>Lớp</label>
-        <input type="text" id="reg-lop" placeholder="12A1">
-      </div>
-      <div class="field">
-        <label>Số điện thoại</label>
-        <input type="tel" id="reg-sdt" placeholder="0912345678" autocomplete="username">
-      </div>
-      <div class="field">
-        <label>Mật khẩu</label>
-        <input type="password" id="reg-pw" placeholder="Tối thiểu 6 ký tự" autocomplete="new-password">
-      </div>
-      <div class="field">
-        <label>Xác nhận mật khẩu</label>
-        <input type="password" id="reg-pw2" placeholder="Nhập lại mật khẩu"
-          onkeydown="if(event.key==='Enter') doRegister()">
-      </div>
-      <button class="submit-btn" id="reg-btn" onclick="doRegister()">Tạo tài khoản</button>
-      <div class="msg" id="reg-msg"></div>
     </div>
   </div>
 </div>
@@ -252,16 +451,135 @@ svg.logo-atom-icon,
 // tài khoản, khiến cả Đăng ký và Đăng nhập Google thất bại.
 const GAS = 'https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec';
 
-function switchTab(t) {
-  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', t==='login'?i===0:i===1));
-  document.getElementById('panel-login').classList.toggle('active', t==='login');
-  document.getElementById('panel-register').classList.toggle('active', t==='register');
+var _curAuthTab = 0;
+
+function positionAuthThumb(idx, dir, instant) {
+  var tl = document.getElementById('auth-tablist');
+  var th = document.getElementById('auth-tab-thumb');
+  var btns = tl ? tl.querySelectorAll('.tab-btn') : [];
+  var b = btns[idx];
+  if (!tl || !th || !b) return;
+  if (instant) th.style.transition = 'none';
+  th.style.setProperty('--tl', dir > 0 ? '.56s' : '.36s');
+  th.style.setProperty('--tr', dir > 0 ? '.36s' : '.56s');
+  th.style.setProperty('--l', b.offsetLeft + 'px');
+  th.style.setProperty('--r', Math.max(4, (tl.clientWidth - b.offsetLeft - b.offsetWidth)) + 'px');
+  if (instant) { void th.offsetWidth; th.style.transition = ''; }
+}
+
+function switchTab(t, focusTab) {
+  var nextIdx = t === 'register' ? 1 : 0;
+  var dir = nextIdx >= _curAuthTab ? 1 : -1;
+  _curAuthTab = nextIdx;
+  var btns = document.querySelectorAll('#auth-tablist .tab-btn');
+  btns.forEach(function (b, i) {
+    var on = i === nextIdx;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-selected', String(on));
+    b.tabIndex = on ? 0 : -1;
+  });
+  var pLogin = document.getElementById('panel-login');
+  var pReg = document.getElementById('panel-register');
+  if (pLogin) {
+    pLogin.style.setProperty('--dir', String(dir));
+    pLogin.classList.toggle('active', nextIdx === 0);
+  }
+  if (pReg) {
+    pReg.style.setProperty('--dir', String(dir));
+    pReg.classList.toggle('active', nextIdx === 1);
+  }
+  positionAuthThumb(nextIdx, dir, false);
+  if (focusTab && btns[nextIdx]) btns[nextIdx].focus({ preventScroll: true });
+}
+
+(function initAuthTabs() {
+  var tl = document.getElementById('auth-tablist');
+  if (!tl) return;
+  positionAuthThumb(0, 1, true);
+  window.addEventListener('resize', function () { positionAuthThumb(_curAuthTab, 1, true); });
+  tl.addEventListener('keydown', function (e) {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight' && e.key !== 'Home' && e.key !== 'End') return;
+    e.preventDefault();
+    var next = e.key === 'Home' ? 'login' : e.key === 'End' ? 'register' : (_curAuthTab === 0 ? 'register' : 'login');
+    switchTab(next, true);
+  });
+})();
+
+function togglePwEye(btn, inputId) {
+  var inp = document.getElementById(inputId);
+  if (!inp) return;
+  var show = btn.getAttribute('aria-pressed') !== 'true';
+  btn.setAttribute('aria-pressed', String(show));
+  btn.setAttribute('aria-label', show ? 'Ẩn mật khẩu' : 'Hiện mật khẩu');
+  inp.type = show ? 'text' : 'password';
+}
+
+function updateRegStrength() {
+  var inp = document.getElementById('reg-pw');
+  var inp2 = document.getElementById('reg-pw2');
+  var box = document.getElementById('reg-pw-box');
+  var meter = document.getElementById('reg-pw-bars');
+  var lvlEl = document.getElementById('reg-pw-lvl');
+  if (!inp || !box || !meter || !lvlEl) return;
+
+  var v = inp.value || '';
+  var v2 = inp2 ? (inp2.value || '') : '';
+  var hasLen = v.length >= 6;
+  var hasMix = /[A-Za-z]/.test(v) && /\d/.test(v);
+  var hasMatch = Boolean(v && v2 && v === v2);
+
+  var lv = 0;
+  if (v.length > 0) {
+    lv = 1 + (hasLen ? 1 : 0) + (hasMix ? 1 : 0) + ((v.length >= 10 || /[^A-Za-z0-9\s]/.test(v)) ? 1 : 0);
+    if (lv > 4) lv = 4;
+  }
+  var labels = ['', 'Còn yếu', 'Trung bình', 'Khá mạnh', 'Rất mạnh'];
+  box.setAttribute('data-lv', String(lv));
+  meter.setAttribute('aria-valuenow', String(lv));
+  lvlEl.textContent = labels[lv] || '';
+  Array.prototype.slice.call(meter.querySelectorAll('i')).forEach(function (bar, i) {
+    bar.classList.toggle('is-on', i < lv);
+  });
+  var rLen = document.getElementById('rule-len');
+  var rMix = document.getElementById('rule-mix');
+  var rMatch = document.getElementById('rule-match');
+  if (rLen) rLen.classList.toggle('is-ok', hasLen);
+  if (rMix) rMix.classList.toggle('is-ok', hasMix);
+  if (rMatch) rMatch.classList.toggle('is-ok', hasMatch);
+}
+
+function setMorphBtnState(btn, state) {
+  if (!btn) return;
+  if (state === 'busy') {
+    btn.disabled = true;
+    btn.dataset.s = 'busy';
+    btn.style.setProperty('--w', '48px');
+  } else if (state === 'ok') {
+    btn.disabled = true;
+    btn.dataset.s = 'ok';
+    btn.style.setProperty('--w', '48px');
+  } else {
+    btn.disabled = false;
+    btn.dataset.s = 'idle';
+    btn.style.setProperty('--w', '100%');
+    var lbl = btn.querySelector('.u438-l');
+    if (lbl && btn.dataset.label) lbl.textContent = btn.dataset.label;
+  }
+}
+
+function shakeAuthCard() {
+  var card = document.getElementById('auth-card');
+  if (!card) return;
+  card.classList.remove('u-shake');
+  void card.offsetWidth;
+  card.classList.add('u-shake');
 }
 
 function showMsg(id, type, text) {
   const el = document.getElementById(id);
   el.className = 'msg ' + type + ' show';
   el.textContent = text;
+  if (type === 'error') shakeAuthCard();
 }
 
 function showDeviceBlockedModal(msg) {
@@ -283,8 +601,7 @@ async function doLogin() {
   const pw  = document.getElementById('login-pw').value;
   if (!sdt || !pw) return showMsg('login-msg','error','Vui lòng điền đầy đủ thông tin.');
   const btn = document.getElementById('login-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>Đang đăng nhập...';
+  setMorphBtnState(btn, 'busy');
   try {
     const r = await fetch(GAS, { method:'POST', mode:'cors',
       headers:{'Content-Type':'text/plain;charset=utf-8'},
@@ -293,16 +610,17 @@ async function doLogin() {
     if (d.ok) {
       localStorage.setItem('vlxt_user_v2', JSON.stringify(d.user));
       try{ if(typeof vlxtLog==='function') vlxtLog('Đăng nhập','Bằng SĐT + mật khẩu'); }catch(e){}
-      showMsg('login-msg','success','Đang chuyển trang...');
-      setTimeout(() => { window.location.href = getRedirect(); }, 700);
+      setMorphBtnState(btn, 'ok');
+      showMsg('login-msg','success','Đăng nhập thành công! Đang chuyển trang...');
+      setTimeout(() => { window.location.href = getRedirect(); }, 750);
+      return;
     } else {
       showMsg('login-msg','error', d.msg || 'Sai số điện thoại hoặc mật khẩu.');
     }
   } catch(e) {
     showMsg('login-msg','error','Lỗi kết nối. Thử lại nhé!');
   }
-  btn.disabled = false;
-  btn.textContent = 'Đăng nhập';
+  setMorphBtnState(btn, 'idle');
 }
 
 async function doRegister() {
@@ -315,8 +633,7 @@ async function doRegister() {
   if (pw.length < 6) return showMsg('reg-msg','error','Mật khẩu tối thiểu 6 ký tự.');
   if (pw !== pw2) return showMsg('reg-msg','error','Mật khẩu xác nhận không khớp.');
   const btn = document.getElementById('reg-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>Đang tạo tài khoản...';
+  setMorphBtnState(btn, 'busy');
   try {
     const deviceId = (typeof vlxtDeviceFingerprint === 'function') ? await vlxtDeviceFingerprint() : '';
     const r = await fetch(GAS, { method:'POST', mode:'cors',
@@ -326,8 +643,10 @@ async function doRegister() {
     if (d.ok) {
       localStorage.setItem('vlxt_user_v2', JSON.stringify(d.user));
       const daysLeft = d.user.trialExpiry ? Math.ceil((d.user.trialExpiry - Date.now()) / 86400000) : 7;
+      setMorphBtnState(btn, 'ok');
       showMsg('reg-msg','success',`Tạo tài khoản thành công! Bạn có ${daysLeft} ngày VIP dùng thử miễn phí 🎉`);
       setTimeout(() => { window.location.href = 'index.html?welcome=1'; }, 1400);
+      return;
     } else {
       if (d.code === 'device_used') {
         showDeviceBlockedModal(d.msg);
@@ -338,8 +657,7 @@ async function doRegister() {
   } catch(e) {
     showMsg('reg-msg','error','Lỗi kết nối. Thử lại nhé!');
   }
-  btn.disabled = false;
-  btn.textContent = 'Tạo tài khoản';
+  setMorphBtnState(btn, 'idle');
 }
 
 // Đã đăng nhập rồi → redirect thẳng
@@ -420,14 +738,10 @@ async function confirmSetup() {
   window.location.href = getRedirect();
 }
 
-// Khởi tạo Google Sign-In sau khi thư viện load
-// Google GSI gọi hàm này tự động khi thư viện load xong
 function switchGoogleAccount(e) {
   e.preventDefault();
   try {
-    // Xóa trạng thái auto-select hiện tại
     google.accounts.id.disableAutoSelect();
-    // Xóa container và render lại button không có account hint
     const container = document.getElementById('google-btn-container');
     container.innerHTML = '';
     google.accounts.id.initialize({
@@ -438,16 +752,18 @@ function switchGoogleAccount(e) {
       hint: '',
       use_fedcm_for_prompt: false
     });
+    const btnWidth = Math.min(372, Math.max(240, (container.clientWidth || 360)));
     google.accounts.id.renderButton(container,
-      { theme:'filled_blue', size:'large', width:372, text:'signin_with', shape:'rectangular', logo_alignment:'left' }
+      { theme:'filled_blue', size:'large', width:btnWidth, text:'signin_with', shape:'rectangular', logo_alignment:'left' }
     );
   } catch(err) {
-    // Fallback: mở trang chọn tài khoản Google
     window.open('https://accounts.google.com/accountchooser', '_blank');
   }
 }
 
 function onGoogleLibraryLoad() {
+  const container = document.getElementById('google-btn-container');
+  const btnWidth = container ? Math.min(372, Math.max(240, (container.clientWidth || 360))) : 360;
   google.accounts.id.initialize({
     client_id: GOOGLE_CLIENT_ID,
     callback: handleGoogleCredential,
@@ -456,13 +772,11 @@ function onGoogleLibraryLoad() {
     use_fedcm_for_prompt: false
   });
   google.accounts.id.renderButton(
-    document.getElementById('google-btn-container'),
-    { theme: 'filled_blue', size: 'large', width: 372, text: 'signin_with', shape: 'rectangular', logo_alignment: 'left' }
+    container,
+    { theme: 'filled_blue', size: 'large', width: btnWidth, text: 'signin_with', shape: 'rectangular', logo_alignment: 'left' }
   );
-  // Bỏ google.accounts.id.prompt() vì gây lỗi COOP trên GitHub Pages
 }
 
-// Fallback: nếu script đã load trước khi hàm này được định nghĩa
 if (typeof google !== 'undefined' && google.accounts) {
   onGoogleLibraryLoad();
 }

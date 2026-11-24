@@ -1,5 +1,9 @@
+<!-- Lucian UX/UI Prompt #008 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#008 -->
+<!-- Lucian UX/UI Prompt #416 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#416 -->
+<!-- Lucian UX/UI Prompt #423 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#423 -->
+<!-- Lucian UX/UI Prompt #424 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#424 -->
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,20 +11,21 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=DM+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/lucian-uxui.css?v=20261124">
 
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
             --blue: #0b84f3;
-            --cyan: #00f0ff;
+            --cyan: #38bdf8;
             --green: #10b981;
             --yellow: #f59e0b;
             --purple: #8b5cf6;
             --bg: #0d1117;
-            --bg-card: rgba(22, 27, 34, 0.95);
+            --bg-card: #151c2c;
             --border: rgba(255, 255, 255, 0.1);
             --text: #e6edf3;
-            --text-muted: #8b949e;
+            --text-muted: #94a3b8;
         }
 
         body {
@@ -35,23 +40,13 @@
             position: relative;
         }
 
-        body::before {
-            content: '';
-            position: fixed; inset: 0; z-index: 0;
-            background:
-                radial-gradient(circle at 20% 15%, rgba(11, 132, 243, 0.12) 0%, transparent 45%),
-                radial-gradient(circle at 80% 85%, rgba(0, 240, 255, 0.08) 0%, transparent 45%),
-                #0d1117;
-            pointer-events: none;
-        }
-
         /* ─── NAVBAR ─── */
         .navbar {
             position: sticky; top: 0; left: 0; right: 0; z-index: 200;
             height: 60px;
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 24px;
-            background: rgba(13, 17, 23, 0.92);
+            background: rgba(13, 17, 23, 0.94);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
         }
@@ -79,99 +74,175 @@
         }
 
         /* ─── HEADER ─── */
-        .header-section { text-align: center; margin-bottom: 44px; }
+        .header-section { text-align: center; margin-bottom: 28px; }
         .badge-pill {
             display: inline-flex; align-items: center; gap: 8px;
             padding: 6px 16px; border-radius: 30px;
-            background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3);
+            background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35);
             color: #fbbf24; font-size: 13px; font-weight: 700; margin-bottom: 16px;
         }
         .header-title {
-            font-size: clamp(30px, 5vw, 44px); font-weight: 900; color: #fff; line-height: 1.2; margin-bottom: 12px;
+            font-size: clamp(28px, 4.8vw, 42px); font-weight: 900; color: #fff; line-height: 1.2; margin-bottom: 12px;
         }
         .header-title span {
-            background: linear-gradient(135deg, #00f0ff 0%, #0b84f3 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            color: #38bdf8;
         }
-        .header-desc { font-size: 16px; color: var(--text-muted); max-width: 640px; margin: 0 auto; line-height: 1.6; }
+        .header-desc { font-size: 15.5px; color: var(--text-muted); max-width: 640px; margin: 0 auto; line-height: 1.6; }
+
+        /* ─── LUCIAN #423 PLAN SWITCH & ODOMETER BAR ─── */
+        .u423-bar-wrap {
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            margin: 0 auto 28px;
+        }
+        .u423-seg-row {
+            display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px;
+        }
+        .u423-seg {
+            position: relative; display: inline-flex; padding: 4px; border-radius: 99px;
+            background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .u423-th {
+            position: absolute; left: 4px; top: 4px; bottom: 4px; width: calc(50% - 4px);
+            border-radius: 99px; background: #0b84f3;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+            transition: transform .5s cubic-bezier(.3, 1.5, .5, 1);
+        }
+        .u423-bar-wrap.is-y .u423-th { transform: translateX(100%); }
+        .u423-opt {
+            position: relative; z-index: 1; min-width: 148px; height: 34px; padding: 0 14px;
+            border: 0; border-radius: 99px; background: transparent;
+            font-size: 13px; font-weight: 700; color: #94a3b8;
+            transition: color .25s ease; font-family: inherit; white-space: nowrap;
+        }
+        .u423-opt[aria-checked="true"] { color: #ffffff; }
+        .u423-opt:hover { color: #e2e8f0; }
+        .u423-opt:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
+        .u423-bd {
+            display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px;
+            border-radius: 99px; background: rgba(16, 185, 129, 0.14);
+            border: 1px solid rgba(16, 185, 129, 0.35); color: #34d399;
+            font-size: 12px; font-weight: 800; white-space: nowrap;
+            opacity: .45; transform: scale(.92);
+            transition: opacity .22s ease, transform .5s cubic-bezier(.3, 1.7, .5, 1);
+        }
+        .u423-bar-wrap.is-y .u423-bd { opacity: 1; transform: none; }
+
+        .u423-odo-line {
+            display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center;
+            font-size: 13.5px; color: #cbd5e1;
+        }
+        .u423-num {
+            display: inline-flex; font-size: 22px; line-height: 28px; height: 28px;
+            font-weight: 900; color: #38bdf8; font-family: 'DM Mono', monospace;
+            font-variant-numeric: tabular-nums; overflow: hidden; vertical-align: middle;
+        }
+        .u423-num i { font-style: normal; }
+        .u423-col { display: block; height: 28px; overflow: hidden; }
+        .u423-col span {
+            display: flex; flex-direction: column;
+            transform: translateY(calc(var(--d, 0) * -28px));
+            transition: transform .65s cubic-bezier(.3, 1.25, .45, 1);
+            transition-delay: calc(var(--k, 0) * 40ms);
+        }
+        .u423-col span b {
+            display: block; height: 28px; font-weight: inherit; text-align: center;
+        }
+        .u423-sub-toggle {
+            position: relative; display: inline-block; min-width: 190px; height: 20px;
+            font-size: 12.5px; color: #94a3b8; vertical-align: middle;
+        }
+        .u423-sub-toggle span {
+            position: absolute; left: 0; top: 0; white-space: nowrap;
+            transition: opacity .28s var(--ux-ease), transform .4s var(--ux-ease);
+        }
+        .u423-sub-toggle span:last-child,
+        .u423-bar-wrap.is-y .u423-sub-toggle span:first-child { opacity: 0; transform: translateY(6px); }
+        .u423-bar-wrap.is-y .u423-sub-toggle span:first-child { transform: translateY(-6px); }
+        .u423-bar-wrap.is-y .u423-sub-toggle span:last-child { opacity: 1; transform: none; }
 
         /* ─── PRICING TIERS ─── */
         .pricing-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 24px; align-items: stretch;
         }
 
         .pricing-card {
             background: var(--bg-card); border: 1.5px solid var(--border);
-            border-radius: 22px; padding: 32px 26px; display: flex; flex-direction: column;
+            border-radius: 20px; padding: 30px 24px; display: flex; flex-direction: column;
             justify-content: space-between; position: relative;
-            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+            transition: transform 0.28s var(--ux-spring), border-color 0.22s, box-shadow 0.22s;
         }
         .pricing-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(0, 240, 255, 0.4);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(-3px);
+            border-color: rgba(56, 189, 248, 0.45);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.48);
+        }
+        .pricing-card.is-focus-plan {
+            border-color: #0b84f3;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(11, 132, 243, 0.45);
         }
 
         /* Featured tier */
         .pricing-card.featured {
-            border-color: var(--cyan);
-            background: linear-gradient(180deg, rgba(11, 132, 243, 0.08) 0%, rgba(22, 27, 34, 0.98) 100%);
-            box-shadow: 0 12px 36px rgba(0, 240, 255, 0.15);
+            border-color: #0b84f3;
+            background: #172136;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.48);
         }
         .featured-tag {
             position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
-            background: linear-gradient(135deg, #0b84f3, #00f0ff); color: #04101e;
+            background: #0b84f3; color: #ffffff;
             font-size: 11.5px; font-weight: 800; padding: 4px 14px; border-radius: 20px;
-            text-transform: uppercase; letter-spacing: 0.5px;
+            text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap;
         }
 
-        .plan-header { margin-bottom: 22px; }
+        .plan-header { margin-bottom: 20px; }
         .plan-name { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 6px; }
-        .plan-sub { font-size: 13.5px; color: var(--text-muted); line-height: 1.4; }
+        .plan-sub { font-size: 13.5px; color: var(--text-muted); line-height: 1.45; }
 
         .plan-price-wrap {
-            display: flex; align-items: baseline; gap: 6px; margin: 20px 0 24px;
+            display: flex; align-items: baseline; gap: 6px; margin: 18px 0 22px; flex-wrap: wrap;
         }
-        .plan-price { font-size: 40px; font-weight: 900; color: #fff; font-family: 'DM Mono', monospace; }
+        .plan-price { font-size: 38px; font-weight: 900; color: #fff; font-family: 'DM Mono', monospace; }
         .plan-cycle { font-size: 14px; color: var(--text-muted); font-weight: 600; }
 
-        .features-list { list-style: none; display: flex; flex-direction: column; gap: 13px; margin-bottom: 30px; }
+        .features-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
         .features-list li {
             display: flex; gap: 10px; font-size: 14.5px; color: #cbd5e1; line-height: 1.45;
         }
         .features-list li i {
-            color: var(--cyan); font-size: 14px; margin-top: 3px; flex-shrink: 0;
+            color: #38bdf8; font-size: 14px; margin-top: 3px; flex-shrink: 0;
         }
 
         .btn-select-plan {
             width: 100%; padding: 14px; border-radius: 12px; border: none;
             font-size: 15px; font-weight: 800; cursor: pointer;
-            transition: all 0.2s; font-family: inherit; display: inline-flex;
+            transition: background-color 0.2s, transform 0.3s var(--ux-spring); font-family: inherit; display: inline-flex;
             align-items: center; justify-content: center; gap: 8px; text-decoration: none;
         }
+        .btn-select-plan:active { transform: scale(0.97); }
         .btn-select-plan.primary {
-            background: linear-gradient(135deg, #0b84f3 0%, #00f0ff 100%);
-            color: #04101e; box-shadow: 0 8px 24px rgba(0, 240, 255, 0.25);
+            background: #0b84f3; color: #ffffff;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
         }
         .btn-select-plan.primary:hover {
-            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.4); transform: translateY(-2px);
+            background: #1d90fa; transform: translateY(-2px);
         }
         .btn-select-plan.secondary {
             background: rgba(255, 255, 255, 0.08); color: #fff; border: 1px solid var(--border);
         }
-        .btn-select-plan.secondary:hover { background: rgba(255, 255, 255, 0.15); }
+        .btn-select-plan.secondary:hover { background: rgba(255, 255, 255, 0.14); }
 
         /* ─── PAYMENT MODAL (VIETQR) ─── */
         .payment-modal {
             display: none; position: fixed; inset: 0; z-index: 9999;
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.84); backdrop-filter: blur(8px);
             align-items: center; justify-content: center; padding: 16px;
         }
         .payment-box {
-            background: #111827; border: 1.5px solid rgba(0, 240, 255, 0.3);
+            background: #111827; border: 1.5px solid rgba(56, 189, 248, 0.32);
             border-radius: 22px; max-width: 500px; width: 100%; padding: 28px 24px;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7); position: relative;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.72); position: relative;
             max-height: 90vh; overflow-y: auto;
         }
         .modal-close-btn {
@@ -181,7 +252,7 @@
         }
         .modal-close-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
 
-        .payment-head { text-align: center; margin-bottom: 20px; }
+        .payment-head { text-align: center; margin-bottom: 18px; }
         .payment-title { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 4px; }
         .payment-sub { font-size: 13.5px; color: var(--text-muted); }
 
@@ -194,122 +265,195 @@
 
         .bank-details-card {
             background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);
-            border-radius: 14px; padding: 16px; margin-bottom: 20px;
+            border-radius: 14px; padding: 14px 16px; margin-bottom: 18px;
         }
         .detail-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 13.5px;
+            position: relative; display: flex; justify-content: space-between; align-items: center; gap: 10px;
+            padding: 9px 4px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); font-size: 13.5px;
+            overflow: visible;
         }
         .detail-row:last-child { border-bottom: none; }
-        .detail-label { color: var(--text-muted); }
-        .detail-val { font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
-        .btn-copy {
-            background: rgba(255, 255, 255, 0.1); border: none; color: var(--cyan);
-            padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer;
+        .detail-label { color: var(--text-muted); flex-shrink: 0; }
+        .detail-val { font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; min-width: 0; text-align: right; }
+        .u008-val {
+            position: relative; display: inline-block; overflow: hidden; border-radius: 4px; padding: 1px 4px;
         }
-        .btn-copy:hover { background: rgba(0, 240, 255, 0.2); }
+        .u008-val::after {
+            content: ""; position: absolute; inset: 0;
+            background: linear-gradient(100deg, transparent 20%, rgba(16, 185, 129, 0.35) 50%, transparent 80%);
+            transform: translateX(-110%); pointer-events: none;
+        }
+        .detail-row.is-copied .u008-val::after { animation: u008Sweep .65s var(--ux-ease); }
+        @keyframes u008Sweep { to { transform: translateX(110%); } }
+
+        /* ─── LUCIAN #008 COPY BUTTON -> CHECK ─── */
+        .btn-copy.u008-btn {
+            position: relative; flex: none; width: 30px; height: 30px; padding: 0;
+            border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 8px;
+            background: rgba(255, 255, 255, 0.07); color: #38bdf8;
+            display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+            transition: background-color .3s var(--ux-ease), color .3s var(--ux-ease),
+                        border-color .3s var(--ux-ease), transform .4s var(--ux-spring);
+        }
+        .btn-copy.u008-btn:hover { background: rgba(56, 189, 248, 0.18); color: #ffffff; }
+        .btn-copy.u008-btn:active { transform: scale(.88); }
+        .btn-copy.u008-btn svg {
+            position: absolute; width: 15px; height: 15px; fill: none; stroke: currentColor;
+            stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+            transition: opacity .22s var(--ux-ease), transform .45s var(--ux-spring);
+        }
+        .btn-copy.u008-btn .u008-ok { opacity: 0; transform: scale(.4) rotate(-30deg); }
+        .btn-copy.u008-btn .u008-ok path {
+            stroke-width: 2.6; stroke-dasharray: 22; stroke-dashoffset: 22;
+            transition: stroke-dashoffset .36s var(--ux-ease) .08s;
+        }
+        .btn-copy.u008-btn.is-copied {
+            background: #10b981; border-color: #10b981; color: #04101e;
+        }
+        .btn-copy.u008-btn.is-copied .u008-cp { opacity: 0; transform: scale(.4) rotate(30deg); }
+        .btn-copy.u008-btn.is-copied .u008-ok { opacity: 1; transform: none; }
+        .btn-copy.u008-btn.is-copied .u008-ok path { stroke-dashoffset: 0; }
+        .u008-tip { display: none; }
+        .btn-copy.u008-btn.is-copied {
+            background: #10b981; border-color: #10b981; color: #04101e;
+            width: auto; padding: 0 9px; gap: 5px;
+        }
+        .btn-copy.u008-btn.is-copied .u008-ok {
+            position: static;
+        }
+        .btn-copy.u008-btn.is-copied .u008-tip {
+            display: inline-block; position: static; opacity: 1; transform: none;
+            background: transparent; color: #04101e; padding: 0; font-size: 11px; font-weight: 800;
+        }
 
         .btn-confirm-pay {
             width: 100%; padding: 14px; border-radius: 12px; border: none;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: #fff; font-size: 15px; font-weight: 800; cursor: pointer;
+            background: #10b981; color: #04101e; font-size: 15px; font-weight: 800; cursor: pointer;
             display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
             transition: all 0.25s; font-family: inherit;
         }
         .btn-confirm-pay:disabled, .btn-confirm-pay.is-locked {
-            background: rgba(30, 41, 59, 0.9);
-            border: 1px solid rgba(148, 163, 184, 0.28);
-            color: #94a3b8;
-            cursor: not-allowed;
-            box-shadow: none;
+            background: #1e293b; border: 1px solid rgba(148, 163, 184, 0.28);
+            color: #94a3b8; cursor: not-allowed; box-shadow: none;
         }
         .account-locked-card {
             background: rgba(11, 132, 243, 0.1);
-            border: 1px solid rgba(0, 240, 255, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.3);
             border-radius: 12px; padding: 11px 14px; margin-bottom: 14px;
             display: flex; align-items: center; justify-content: space-between; gap: 10px;
             font-size: 13px; color: #e2e8f0;
         }
-        .account-locked-info {
-            display: flex; align-items: center; gap: 8px; font-weight: 700;
-        }
+        .account-locked-info { display: flex; align-items: center; gap: 8px; font-weight: 700; }
         .account-locked-badge {
-            background: rgba(16, 185, 129, 0.18); color: #34d399;
+            background: rgba(16, 185, 129, 0.16); color: #34d399;
             border: 1px solid rgba(16, 185, 129, 0.35);
-            font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 99px;
-            white-space: nowrap;
+            font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 99px; white-space: nowrap;
         }
 
         /* ─── VNPAY INTEGRATION STYLES (STANDBY BY DEFAULT) ─── */
         .btn-vnpay-direct {
             width: 100%; margin-top: 10px; padding: 12px 14px; border-radius: 12px;
             border: 1px solid rgba(56, 189, 248, 0.45);
-            background: linear-gradient(135deg, rgba(0, 91, 170, 0.35) 0%, rgba(11, 132, 243, 0.2) 100%);
+            background: rgba(11, 132, 243, 0.18);
             color: #e0f2fe; font-size: 14px; font-weight: 800; cursor: pointer;
             transition: all 0.2s; font-family: inherit;
             display: none; align-items: center; justify-content: center; gap: 8px;
         }
         .btn-vnpay-direct:hover {
-            background: linear-gradient(135deg, #005baa 0%, #0b84f3 100%);
-            color: #fff; border-color: var(--cyan);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 22px rgba(11, 132, 243, 0.35);
+            background: #0b84f3; color: #fff; border-color: #38bdf8;
         }
         .vnpay-badge-tag {
             background: #ed1c24; color: #fff; font-size: 10px; font-weight: 900;
             padding: 2px 6px; border-radius: 4px; letter-spacing: 0.4px;
         }
+        /* ─── LUCIAN #416 SLIDING PAY TABS ─── */
         .pay-tabs {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-            background: rgba(255, 255, 255, 0.04); padding: 5px; border-radius: 12px;
+            position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+            background: #0f172a; padding: 4px; border-radius: 12px;
             border: 1px solid var(--border); margin-bottom: 18px;
         }
+        .pay-tab-thumb {
+            position: absolute; top: 4px; bottom: 4px; left: var(--l, 4px); right: var(--r, 50%);
+            border-radius: 9px; background: #0b84f3;
+            transition: left var(--tl, .46s) cubic-bezier(.3, 1.25, .45, 1),
+                        right var(--tr, .46s) cubic-bezier(.3, 1.25, .45, 1);
+        }
         .pay-tab-btn {
-            padding: 10px 12px; border-radius: 9px; border: none;
+            position: relative; z-index: 1; padding: 10px 12px; border-radius: 9px; border: none;
             background: transparent; color: var(--text-muted);
             font-size: 13px; font-weight: 800; cursor: pointer; font-family: inherit;
             display: flex; align-items: center; justify-content: center; gap: 7px;
-            transition: all 0.2s;
+            transition: color 0.2s;
         }
-        .pay-tab-btn.active {
-            background: linear-gradient(135deg, #0b84f3 0%, #0284c7 100%);
-            color: #fff; box-shadow: 0 4px 14px rgba(11, 132, 243, 0.35);
-        }
+        .pay-tab-btn.active { color: #fff; }
         .btn-vnpay-gateway {
             width: 100%; padding: 15px; border-radius: 12px;
             border: 1px solid rgba(56, 189, 248, 0.5);
-            background: linear-gradient(135deg, #005baa 0%, #0284c7 50%, #ed1c24 140%);
-            color: #fff; font-size: 15.5px; font-weight: 900; cursor: pointer;
+            background: #0b84f3; color: #fff; font-size: 15.5px; font-weight: 900; cursor: pointer;
             display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-            box-shadow: 0 10px 26px rgba(2, 132, 199, 0.4);
-            transition: all 0.2s; font-family: inherit;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+            transition: background-color 0.2s; font-family: inherit;
         }
-        .btn-vnpay-gateway:hover {
-            filter: brightness(1.12); transform: translateY(-2px);
-        }
-        .user-input-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;
-        }
-        @media(max-width: 500px) { .user-input-grid { grid-template-columns: 1fr; } }
-        .user-input-field {
-            width: 100%; padding: 10px 12px; border-radius: 10px;
-            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
-            color: #fff; font-size: 13.5px; font-weight: 600; font-family: inherit; outline: none;
-        }
-        .user-input-field:focus { border-color: var(--cyan); }
+        .btn-vnpay-gateway:hover { background: #1d90fa; }
 
-        /* ─── FAQ SECTION ─── */
-        .faq-section { margin-top: 60px; }
+        /* ─── LUCIAN #424 FAQ ACCORDION ─── */
+        .faq-section { margin-top: 56px; max-width: 820px; margin-left: auto; margin-right: auto; }
         .faq-title { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 20px; text-align: center; }
-        .faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
-        .faq-item {
+        .u424-ls {
+            margin: 0; padding: 8px; border-radius: 20px; list-style: none;
             background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 14px; padding: 18px;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
         }
-        .faq-q { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px; }
-        .faq-a { font-size: 13.5px; color: var(--text-muted); line-height: 1.5; }
-    
+        .u424-it + .u424-it { border-top: 1px solid rgba(255, 255, 255, 0.08); }
+        .u424-q {
+            display: flex; align-items: center; gap: 14px; width: 100%; min-height: 54px;
+            padding: 14px 12px 14px 16px; border: 0; border-radius: 14px; background: none;
+            font-size: 15px; font-weight: 700; color: #f8fafc; text-align: left; font-family: inherit;
+            cursor: pointer; transition: background-color .2s;
+        }
+        .u424-q:hover { background: rgba(255, 255, 255, 0.04); }
+        .u424-q span { flex: 1; line-height: 1.4; }
+        .u424-q:focus-visible { outline: 2px solid #38bdf8; outline-offset: -2px; }
+        .u424-pm {
+            position: relative; width: 28px; height: 28px; flex: none; border-radius: 50%;
+            background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: background-color .3s, transform .45s var(--ux-spring);
+        }
+        .u424-q:hover .u424-pm { transform: scale(1.06); }
+        .u424-pm::before, .u424-pm::after {
+            content: ""; position: absolute; left: 50%; top: 50%; width: 11px; height: 2px;
+            margin: -1px 0 0 -5.5px; border-radius: 2px; background: #f1f5f9;
+            transition: transform .5s cubic-bezier(.3, 1.6, .5, 1), background-color .25s;
+        }
+        .u424-pm::after { transform: rotate(90deg); }
+        .u424-it.open .u424-pm { background: #0b84f3; border-color: #0b84f3; }
+        .u424-it.open .u424-pm::before, .u424-it.open .u424-pm::after { background: #ffffff; }
+        .u424-it.open .u424-pm::after { transform: rotate(180deg); }
+        .u424-a {
+            display: grid; grid-template-rows: 0fr;
+            transition: grid-template-rows .42s cubic-bezier(.25, 1, .35, 1);
+        }
+        .u424-it.open .u424-a { grid-template-rows: 1fr; }
+        .u424-a > div { min-height: 0; overflow: hidden; }
+        .u424-a p {
+            margin: 0; padding: 0 46px 16px 16px; font-size: 14px; line-height: 1.65;
+            color: #94a3b8; opacity: 0; transform: translateY(-6px);
+            transition: opacity .2s, transform .3s var(--ux-ease);
+        }
+        .u424-it.open .u424-a p {
+            opacity: 1; transform: none;
+            transition: opacity .32s var(--ux-ease) .08s, transform .46s cubic-bezier(.3, 1.4, .5, 1) .06s;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .u423-th, .u423-bd, .u423-col span, .u423-sub-toggle span,
+            .pricing-card, .btn-copy.u008-btn, .u008-tip,
+            .pay-tab-thumb, .u424-a, .u424-a p, .u424-pm::before, .u424-pm::after {
+                transition: none !important; animation: none !important;
+            }
+        }
+
 /* ─── NAVBAR ĐỒNG NHẤT TOÀN HỆ THỐNG ─── */
 .top-bar, nav.navbar {
   position: fixed !important;
@@ -317,16 +461,16 @@
   left: 0 !important;
   right: 0 !important;
   height: 60px !important;
-  background: rgba(13, 17, 23, 0.92) !important;
+  background: rgba(13, 17, 23, 0.94) !important;
   backdrop-filter: blur(14px) !important;
   -webkit-backdrop-filter: blur(14px) !important;
-  border-bottom: 1px solid rgba(0, 240, 255, 0.18) !important;
+  border-bottom: 1px solid rgba(56, 189, 248, 0.2) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
   padding: 0 20px !important;
   z-index: 10000 !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45) !important;
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
 }
 .nav-left-wrap, .nav-left {
@@ -355,12 +499,13 @@
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
   text-shadow: none !important;
- filter: none !important;}
+  filter: none !important;
+}
 .nav-hamburger {
   display: none;
   background: transparent !important;
   border: none !important;
-  color: #00f0ff !important;
+  color: #38bdf8 !important;
   font-size: 18px !important;
   padding: 6px !important;
   cursor: pointer !important;
@@ -410,7 +555,6 @@
   height: 7px !important;
   border-radius: 50% !important;
   background: #ef4444 !important;
-  box-shadow: 0 0 8px #ef4444 !important;
   display: inline-block !important;
 }
 .nav-dropdown {
@@ -424,7 +568,7 @@
   left: 0 !important;
   min-width: 230px !important;
   background: #0d1527 !important;
-  border: 1px solid rgba(0, 240, 255, 0.22) !important;
+  border: 1px solid rgba(56, 189, 248, 0.22) !important;
   border-radius: 12px !important;
   padding: 8px !important;
   box-shadow: 0 12px 36px rgba(0,0,0,0.7) !important;
@@ -445,21 +589,19 @@
   transition: all 0.15s !important;
 }
 .nav-dropdown-content a:hover {
-  background: rgba(0, 240, 255, 0.1) !important;
-  color: #00f0ff !important;
+  background: rgba(11, 132, 243, 0.16) !important;
+  color: #38bdf8 !important;
 }
 @media (max-width: 992px) {
   .nav-menu-links { display: none !important; }
   .nav-hamburger { display: inline-flex !important; }
 }
-
-</style>
-    <script src="auth.js?v=20261118a"></script>
+    </style>
+    <script src="auth.js?v=20261124"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <script src="vnpay-service.js?v=20261109p"></script>
     <script src="freemium-flow.js?v=20261109p"></script>
 <style>/* ROBUST_BRAND_CSS */
-
 .brand-glow-text {
   color: #ffffff !important;
   font-weight: 800 !important;
@@ -471,7 +613,8 @@
   -webkit-text-fill-color: #ffffff !important;
   -webkit-background-clip: border-box !important;
   text-shadow: none !important;
- filter: none !important;}
+  filter: none !important;
+}
 .nav-brand-logo, .nav-logo {
   display: inline-flex !important;
   align-items: center !important;
@@ -530,9 +673,6 @@ svg.logo-atom-icon,
 <body>
 
 <!-- ─── NAVBAR ─── -->
-
-  
-  <!-- ─── THANH ĐIỀU HƯỚNG CHUẨN ĐỒNG NHẤT TOÀN HỆ THỐNG (VẬT LÝ XUÂN TRƯỜNG) ─── -->
   <header class="top-bar" id="main-top-bar">
     <div class="nav-left-wrap">
       <button class="nav-hamburger" id="navHamburgerBtn" aria-label="Mở menu" onclick="toggleNavDrawer(true)">
@@ -552,7 +692,6 @@ svg.logo-atom-icon,
         <span class="brand-glow-text">Vật Lý Xuân Trường</span>
       </a>
 
-      <!-- MENU DESKTOP ĐỒNG NHẤT KHÔNG RỚT DÒNG -->
       <nav class="nav-menu-links">
         <a href="danh-gia-nang-luc.html">🎯 Đánh Giá Năng Lực</a>
         <a href="baihoc.html">Khóa Học</a>
@@ -567,7 +706,7 @@ svg.logo-atom-icon,
     </div>
   </header>
 
-<div class="container">
+<div class="container ux">
 
     <!-- ─── HEADER ─── -->
     <div class="header-section">
@@ -576,15 +715,37 @@ svg.logo-atom-icon,
         <p class="header-desc">Học bài giảng video độc quyền, giải bộ 20 câu trắc nghiệm dừng video theo từng bài và rèn luyện kỹ năng thực chiến cùng Thầy Xuân Trường.</p>
     </div>
 
-    <!-- ─── BANNER GÓI HIỆN TẠI CỦA HỌC SINH (Tự động hiển thị nếu đã kích hoạt Pro/VIP) ─── -->
-    <div id="active-plan-banner" style="display:none;max-width:1100px;margin:0 auto 28px;background:linear-gradient(135deg,rgba(16,185,129,0.14),rgba(6,78,59,0.28));border:1.5px solid rgba(16,185,129,0.45);border-radius:18px;padding:18px 22px;box-shadow:0 12px 32px rgba(0,0,0,0.35);"></div>
+    <!-- ─── BANNER GÓI HIỆN TẠI CỦA HỌC SINH ─── -->
+    <div id="active-plan-banner" style="display:none;max-width:1100px;margin:0 auto 28px;background:rgba(16,185,129,0.14);border:1.5px solid rgba(16,185,129,0.45);border-radius:18px;padding:18px 22px;box-shadow:0 10px 28px rgba(0,0,0,0.35);"></div>
+
+    <!-- ─── LUCIAN #423 PLAN SWITCH & ODOMETER COMPARISON ─── -->
+    <div class="u423-bar-wrap is-y" id="u423-billing-bar">
+        <div class="u423-seg-row">
+            <div class="u423-seg" role="radiogroup" aria-label="Chu kỳ so sánh học phí">
+                <span class="u423-th" aria-hidden="true"></span>
+                <button class="u423-opt" type="button" role="radio" aria-checked="false" tabindex="-1" data-cycle="monthly">Theo Tháng (50k)</button>
+                <button class="u423-opt" type="button" role="radio" aria-checked="true" tabindex="0" data-cycle="yearly">Trọn Năm XPS</button>
+            </div>
+            <span class="u423-bd"><i class="fa-solid fa-piggy-bank"></i> Tiết kiệm 201.000đ (35%)</span>
+        </div>
+        <div class="u423-odo-line">
+            <span>Mức quy đổi trung bình:</span>
+            <span class="u423-num" id="u423-odo-num" aria-hidden="true"></span>
+            <span style="font-weight:700;color:#e2e8f0;">/ tháng</span>
+            <span class="u423-sub-toggle">
+                <span>Thanh toán linh hoạt từng tháng (50.000đ)</span>
+                <span>Khi chọn Trọn Khóa Cả Năm (399.000đ)</span>
+            </span>
+            <span class="u423-sr" id="u423-odo-sr" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;"></span>
+        </div>
+    </div>
 
     <!-- ─── PRICING TIERS ─── -->
     <div class="pricing-grid">
 
         <!-- GÓI 1: THEO THÁNG (50K) -->
         <div class="pricing-card" id="plan-card-THANG50K">
-            <div id="current-tag-THANG50K" style="display:none;position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#10b981,#34d399);color:#022c22;font-size:11px;font-weight:900;padding:4px 14px;border-radius:100px;letter-spacing:0.04em;white-space:nowrap;box-shadow:0 4px 14px rgba(16,185,129,0.4);">👑 GÓI HIỆN TẠI CỦA BẠN</div>
+            <div id="current-tag-THANG50K" style="display:none;position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:#10b981;color:#022c22;font-size:11px;font-weight:900;padding:4px 14px;border-radius:100px;letter-spacing:0.04em;white-space:nowrap;">👑 GÓI HIỆN TẠI CỦA BẠN</div>
             <div class="plan-header">
                 <div class="plan-name">Gói Tháng Linh Hoạt</div>
                 <div class="plan-sub">Trải nghiệm toàn bộ bài giảng video và trắc nghiệm tương tác từng tháng một.</div>
@@ -594,9 +755,9 @@ svg.logo-atom-icon,
                 <div class="plan-cycle">/ tháng</div>
             </div>
             <ul class="features-list">
-                <li><i class="fa-solid fa-circle-check"></i> <span>Mở khóa 100% <strong>toàn bộ các khóa học & bài giảng video</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Mở khóa 100% <strong>toàn bộ các khóa học &amp; bài giảng video</strong></span></li>
                 <li><i class="fa-solid fa-circle-check"></i> <span>Tương tác hệ thống <strong>20 câu dừng video</strong> mỗi bài</span></li>
-                <li><i class="fa-solid fa-circle-check"></i> <span>Tải toàn bộ <strong>PDF lý thuyết & bài tập</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Tải toàn bộ <strong>PDF lý thuyết &amp; bài tập</strong></span></li>
                 <li><i class="fa-solid fa-circle-check"></i> <span>Ôn tập không giới hạn trên cả Web và Điện thoại</span></li>
             </ul>
             <div id="action-wrap-THANG50K">
@@ -610,7 +771,7 @@ svg.logo-atom-icon,
         </div>
 
         <!-- GÓI 2: THEO NĂM (TIẾT KIỆM) -->
-        <div class="pricing-card featured" id="plan-card-NAM399K">
+        <div class="pricing-card featured is-focus-plan" id="plan-card-NAM399K">
             <div class="featured-tag" id="current-tag-NAM399K">ĐƯỢC CHỌN NHIỀU NHẤT ⭐</div>
             <div class="plan-header">
                 <div class="plan-name">Trọn Khóa Cả Năm (XPS 2k9)</div>
@@ -623,7 +784,7 @@ svg.logo-atom-icon,
             <ul class="features-list">
                 <li><i class="fa-solid fa-circle-check"></i> <span>Toàn bộ quyền lợi của <strong>Gói Tháng</strong> trọn năm học</span></li>
                 <li><i class="fa-solid fa-circle-check"></i> <span>Mở khóa toàn bộ <strong>Phòng Thi Thử CBT chuẩn cấu trúc Bộ</strong></span></li>
-                <li><i class="fa-solid fa-circle-check"></i> <span>Khóa học cấp tốc <strong>Tổng ôn & Luyện đề về đích</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Khóa học cấp tốc <strong>Tổng ôn &amp; Luyện đề về đích</strong></span></li>
                 <li><i class="fa-solid fa-circle-check"></i> <span>Huy hiệu <strong>VIP Member</strong> trên bảng xếp hạng Đấu Hạng</span></li>
                 <li><i class="fa-solid fa-circle-check"></i> <span>Tiết kiệm <strong>35% học phí</strong> so với đăng ký từng tháng</span></li>
             </ul>
@@ -639,7 +800,7 @@ svg.logo-atom-icon,
 
         <!-- GÓI 3: LỚP ONLINE CÙNG THẦY -->
         <div class="pricing-card" id="plan-card-VIP850K">
-            <div id="current-tag-VIP850K" style="display:none;position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#a855f7,#ec4899);color:#fff;font-size:11px;font-weight:900;padding:4px 14px;border-radius:100px;letter-spacing:0.04em;white-space:nowrap;box-shadow:0 4px 14px rgba(168,85,247,0.45);">💎 GÓI HIỆN TẠI CỦA BẠN</div>
+            <div id="current-tag-VIP850K" style="display:none;position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:#8b5cf6;color:#fff;font-size:11px;font-weight:900;padding:4px 14px;border-radius:100px;letter-spacing:0.04em;white-space:nowrap;">💎 GÓI HIỆN TẠI CỦA BẠN</div>
             <div class="plan-header">
                 <div class="plan-name">Lớp Online Cùng Thầy (VIP)</div>
                 <div class="plan-sub">Học tương tác trực tiếp hàng tuần cùng Thầy Xuân Trường và đội ngũ trợ giảng.</div>
@@ -651,7 +812,7 @@ svg.logo-atom-icon,
             <ul class="features-list">
                 <li><i class="fa-solid fa-circle-check"></i> <span>Bao gồm toàn bộ quyền lợi của <strong>Gói Trọn Năm</strong></span></li>
                 <li><i class="fa-solid fa-circle-check"></i> <span>Học trực tiếp qua <strong>Google Meet/Zoom 2-3 buổi/tuần</strong></span></li>
-                <li><i class="fa-solid fa-circle-check"></i> <span>Hỏi đáp bài tập <strong>1-1 với Thầy & Trợ giảng</strong></span></li>
+                <li><i class="fa-solid fa-circle-check"></i> <span>Hỏi đáp bài tập <strong>1-1 với Thầy &amp; Trợ giảng</strong></span></li>
                 <li><i class="fa-solid fa-circle-check"></i> <span>Kiểm tra định kỳ và sửa bài cá nhân hóa chi tiết</span></li>
             </ul>
             <div id="action-wrap-VIP850K">
@@ -667,50 +828,66 @@ svg.logo-atom-icon,
     </div>
 
     <!-- ─── LỊCH SỬ GIAO DỊCH & THANH TOÁN CỦA HỌC SINH ─── -->
-    <div id="goihoc-payment-history" style="display:none;max-width:1100px;margin:28px auto 0;background:rgba(15,23,42,0.85);border:1px solid rgba(56,189,248,0.22);border-radius:18px;padding:22px 24px;"></div>
+    <div id="goihoc-payment-history" style="display:none;max-width:1100px;margin:28px auto 0;background:#151c2c;border:1px solid rgba(56,189,248,0.22);border-radius:18px;padding:22px 24px;"></div>
 
-    <!-- ─── FAQ ─── -->
-    <div class="faq-section">
+    <!-- ─── FAQ (LUCIAN #424 ACCORDION) ─── -->
+    <div class="faq-section" id="goihoc-faq">
         <h2 class="faq-title">CÂU HỎI THƯỜNG GẶP</h2>
-        <div class="faq-grid">
-            <div class="faq-item">
-                <div class="faq-q">Sau khi chuyển khoản bao lâu thì tài khoản được kích hoạt?</div>
-                <div class="faq-a">Sau khi bạn quét mã VietQR chuyển khoản với đúng nội dung, hệ thống sẽ kích hoạt tài khoản trong vòng 5 - 15 phút. Bạn chỉ cần tải lại trang là học được ngay.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q">Em có thể học trên điện thoại được không?</div>
-                <div class="faq-a">Hoàn toàn được! Website Vật Lý Xuân Trường được tối ưu mượt mà 100% cho cả iPhone, Android, iPad và Máy tính.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q">Gói 50k/tháng có bị tự động trừ tiền tháng sau không?</div>
-                <div class="faq-a">Không. Bạn chuyển khoản tháng nào sẽ được sử dụng tháng đó, hoàn toàn chủ động, không có cơ chế tự động trừ tiền trong thẻ hay tài khoản của bạn.</div>
-            </div>
-        </div>
+        <ul class="u424-ls">
+            <li class="u424-it open">
+                <button class="u424-q" type="button" aria-expanded="true">
+                    <span>Sau khi chuyển khoản bao lâu thì tài khoản được kích hoạt?</span>
+                    <i class="u424-pm" aria-hidden="true"></i>
+                </button>
+                <div class="u424-a" role="region">
+                    <div><p>Sau khi bạn quét mã VietQR chuyển khoản với đúng nội dung, hệ thống tự động đối soát VietinBank trong vài giây đến 5 phút. Bạn chỉ cần giữ nguyên cửa sổ hoặc tải lại trang là học được ngay.</p></div>
+                </div>
+            </li>
+            <li class="u424-it">
+                <button class="u424-q" type="button" aria-expanded="false">
+                    <span>Em có thể học trên điện thoại được không?</span>
+                    <i class="u424-pm" aria-hidden="true"></i>
+                </button>
+                <div class="u424-a" role="region">
+                    <div><p>Hoàn toàn được! Website Vật Lý Xuân Trường được tối ưu mượt mà 100% cho cả iPhone, Android, iPad và Máy tính.</p></div>
+                </div>
+            </li>
+            <li class="u424-it">
+                <button class="u424-q" type="button" aria-expanded="false">
+                    <span>Gói 50k/tháng có bị tự động trừ tiền tháng sau không?</span>
+                    <i class="u424-pm" aria-hidden="true"></i>
+                </button>
+                <div class="u424-a" role="region">
+                    <div><p>Không. Bạn chuyển khoản tháng nào sẽ được sử dụng tháng đó, hoàn toàn chủ động, không có cơ chế tự động trừ tiền trong thẻ hay tài khoản của bạn.</p></div>
+                </div>
+            </li>
+        </ul>
     </div>
 
 </div>
 
 <!-- ─── VIETQR & VNPAY PAYMENT MODAL ─── -->
-<div id="payment-modal" class="payment-modal">
+<div id="payment-modal" class="payment-modal ux">
     <div class="payment-box">
-        <button class="modal-close-btn" onclick="closePayment()"><i class="fa-solid fa-xmark"></i></button>
+        <button class="modal-close-btn" onclick="closePayment()" aria-label="Đóng bảng thanh toán"><i class="fa-solid fa-xmark"></i></button>
 
         <div class="payment-head">
             <h3 class="payment-title" id="modal-plan-name">Thanh Toán Gói Học</h3>
             <p class="payment-sub">Chọn phương thức thanh toán tự động 24/7</p>
         </div>
 
-        <!-- 2 TAB CHUYỂN ĐỔI PHƯƠNG THỨC (Ẩn mặc định khi VNPay ở chế độ chờ Hộ Kinh Doanh) -->
-        <div class="pay-tabs" id="modal-pay-tabs" style="display:none;">
-            <button type="button" id="tab-btn-vnpay" class="pay-tab-btn" onclick="switchPayTab('vnpay')">
+        <!-- 2 TAB CHUYỂN ĐỔI PHƯƠNG THỨC -->
+        <div class="pay-tabs" id="modal-pay-tabs" style="display:none;" role="tablist">
+            <span class="pay-tab-thumb" id="pay-tab-thumb" aria-hidden="true"></span>
+            <button type="button" id="tab-btn-vnpay" class="pay-tab-btn" role="tab" onclick="switchPayTab('vnpay')">
                 <span class="vnpay-badge-tag">VNPAY</span> Cổng VNPay
             </button>
-            <button type="button" id="tab-btn-vietqr" class="pay-tab-btn active" onclick="switchPayTab('vietqr')">
+            <button type="button" id="tab-btn-vietqr" class="pay-tab-btn active" role="tab" onclick="switchPayTab('vietqr')">
                 <i class="fa-solid fa-qrcode"></i> Quét Mã VietQR
             </button>
         </div>
 
-        <!-- Thẻ hiển thị tự động Tài khoản học sinh đã đăng nhập (không cần gõ lại Tên & SĐT) -->
+        <!-- Thẻ hiển thị tự động Tài khoản học sinh đã đăng nhập -->
         <div class="account-locked-card" id="pay-account-locked-card">
             <div class="account-locked-info">
                 <i class="fa-solid fa-user-shield" style="color:var(--cyan);font-size:16px;"></i>
@@ -724,7 +901,7 @@ svg.logo-atom-icon,
         <input type="hidden" id="pay-student-name" value="">
         <input type="hidden" id="pay-student-phone" value="">
 
-        <!-- PANEL 1: CỔNG THANH TOÁN VNPAY (Chế độ chờ Hộ Kinh Doanh) -->
+        <!-- PANEL 1: CỔNG THANH TOÁN VNPAY -->
         <div id="panel-vnpay" style="display:none;">
             <div class="bank-details-card" style="border-color:rgba(56,189,248,0.35);background:rgba(11,132,243,0.06);">
                 <div class="detail-row">
@@ -755,7 +932,6 @@ svg.logo-atom-icon,
                 </div>
             </div>
 
-            <!-- Khung thông tin Thẻ Ngân Hàng NCB Demo để Thầy & Học sinh test -->
             <div class="bank-details-card" style="background:rgba(15,23,42,0.85);border-color:rgba(245,158,11,0.3);">
                 <div style="font-size:11.5px;font-weight:800;color:#fbbf24;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
                     <span><i class="fa-solid fa-flask"></i> Thẻ Ngân Hàng Demo Test (VNPAY Sandbox)</span>
@@ -768,22 +944,34 @@ svg.logo-atom-icon,
                 <div class="detail-row" style="padding:5px 0;font-size:12.5px;">
                     <span class="detail-label">Số thẻ</span>
                     <span class="detail-val">
-                        <code id="ncb-card-no" style="color:#38bdf8;font-family:'DM Mono',monospace;">9704198526191432198</code>
-                        <button class="btn-copy" onclick="copyText('ncb-card-no')">Copy</button>
+                        <span class="u008-val"><code id="ncb-card-no" style="color:#38bdf8;font-family:'DM Mono',monospace;">9704198526191432198</code></span>
+                        <button type="button" class="btn-copy u008-btn" aria-label="Sao chép số thẻ" onclick="copyText('ncb-card-no', this)">
+                            <svg class="u008-cp" viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6.5a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg>
+                            <svg class="u008-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 12.5l4.2 4.2L18.5 8"/></svg>
+                            <span class="u008-tip" role="status">Đã chép</span>
+                        </button>
                     </span>
                 </div>
                 <div class="detail-row" style="padding:5px 0;font-size:12.5px;">
-                    <span class="detail-label">Chủ thẻ & Ngày PH</span>
+                    <span class="detail-label">Chủ thẻ &amp; Ngày PH</span>
                     <span class="detail-val">
-                        <code id="ncb-card-holder" style="color:#e2e8f0">NGUYEN VAN A</code> · <code style="color:#fbbf24">07/15</code>
-                        <button class="btn-copy" onclick="copyText('ncb-card-holder')">Copy</button>
+                        <span class="u008-val"><code id="ncb-card-holder" style="color:#e2e8f0">NGUYEN VAN A</code> · <code style="color:#fbbf24">07/15</code></span>
+                        <button type="button" class="btn-copy u008-btn" aria-label="Sao chép tên chủ thẻ" onclick="copyText('ncb-card-holder', this)">
+                            <svg class="u008-cp" viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6.5a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg>
+                            <svg class="u008-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 12.5l4.2 4.2L18.5 8"/></svg>
+                            <span class="u008-tip" role="status">Đã chép</span>
+                        </button>
                     </span>
                 </div>
                 <div class="detail-row" style="padding:5px 0;font-size:12.5px;">
                     <span class="detail-label">Mật khẩu OTP</span>
                     <span class="detail-val">
-                        <code id="ncb-card-otp" style="color:#34d399;font-weight:900">123456</code>
-                        <button class="btn-copy" onclick="copyText('ncb-card-otp')">Copy</button>
+                        <span class="u008-val"><code id="ncb-card-otp" style="color:#34d399;font-weight:900">123456</code></span>
+                        <button type="button" class="btn-copy u008-btn" aria-label="Sao chép mã OTP" onclick="copyText('ncb-card-otp', this)">
+                            <svg class="u008-cp" viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6.5a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg>
+                            <svg class="u008-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 12.5l4.2 4.2L18.5 8"/></svg>
+                            <span class="u008-tip" role="status">Đã chép</span>
+                        </button>
                     </span>
                 </div>
             </div>
@@ -793,7 +981,7 @@ svg.logo-atom-icon,
             </button>
         </div>
 
-        <!-- PANEL 2: QUÉT MÃ VIETQR (MẶC ĐỊNH TỰ ĐỘNG KHỚP LỆNH) -->
+        <!-- PANEL 2: QUÉT MÃ VIETQR -->
         <div id="panel-vietqr">
             <div class="qr-frame">
                 <img id="vietqr-image" class="qr-image" src="" alt="Mã VietQR Chuyển Khoản">
@@ -812,22 +1000,34 @@ svg.logo-atom-icon,
                 <div class="detail-row">
                     <span class="detail-label">Số tài khoản</span>
                     <span class="detail-val">
-                        <span id="bank-acc-val">198490756789</span>
-                        <button class="btn-copy" onclick="copyText('bank-acc-val')">Copy</button>
+                        <span class="u008-val"><span id="bank-acc-val">198490756789</span></span>
+                        <button type="button" class="btn-copy u008-btn" aria-label="Sao chép số tài khoản" onclick="copyText('bank-acc-val', this)">
+                            <svg class="u008-cp" viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6.5a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg>
+                            <svg class="u008-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 12.5l4.2 4.2L18.5 8"/></svg>
+                            <span class="u008-tip" role="status">Đã chép</span>
+                        </button>
                     </span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Số tiền</span>
                     <span class="detail-val" style="color:#10b981">
-                        <span id="bank-amount-val">50.000đ</span>
-                        <button class="btn-copy" onclick="copyAmount()">Copy</button>
+                        <span class="u008-val"><span id="bank-amount-val">50.000đ</span></span>
+                        <button type="button" class="btn-copy u008-btn" aria-label="Sao chép số tiền" onclick="copyAmount(this)">
+                            <svg class="u008-cp" viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6.5a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg>
+                            <svg class="u008-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 12.5l4.2 4.2L18.5 8"/></svg>
+                            <span class="u008-tip" role="status">Đã chép</span>
+                        </button>
                     </span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Nội dung CK</span>
                     <span class="detail-val" style="color:var(--cyan)">
-                        <span id="bank-memo-val">VLXT HS01 THANG50K</span>
-                        <button class="btn-copy" onclick="copyText('bank-memo-val')">Copy</button>
+                        <span class="u008-val"><span id="bank-memo-val">VLXT HS01 THANG50K</span></span>
+                        <button type="button" class="btn-copy u008-btn" aria-label="Sao chép nội dung chuyển khoản" onclick="copyText('bank-memo-val', this)">
+                            <svg class="u008-cp" viewBox="0 0 24 24" aria-hidden="true"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6.5a2 2 0 0 0-2-2h-7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2"/></svg>
+                            <svg class="u008-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 12.5l4.2 4.2L18.5 8"/></svg>
+                            <span class="u008-tip" role="status">Đã chép</span>
+                        </button>
                     </span>
                 </div>
             </div>
@@ -852,7 +1052,7 @@ svg.logo-atom-icon,
 <script>
 // Cấu hình thông tin tài khoản ngân hàng thật của Thầy Xuân Trường (VietinBank - BIN 970415 / ICB)
 const PAYMENT_CONFIG = {
-    bankId: 'ICB', // VietinBank (Ngân hàng TMCP Công Thương Việt Nam)
+    bankId: 'ICB',
     bankName: 'VietinBank (Công Thương)',
     accountNo: '198490756789',
     accountName: 'NGUYEN XUAN TRUONG',
@@ -863,6 +1063,112 @@ let currentAmount = 50000;
 let currentPlanCode = 'THANG50K';
 let currentPlanName = 'Gói Tháng Linh Hoạt';
 let vietQrPollTimer = null;
+
+function initLucianPlanSwitch() {
+    const bar = document.getElementById('u423-billing-bar');
+    const num = document.getElementById('u423-odo-num');
+    const sr = document.getElementById('u423-odo-sr');
+    if (!bar || !num) return;
+
+    const opts = Array.prototype.slice.call(bar.querySelectorAll('.u423-opt'));
+    const PRICE = [50000, 33000];
+    let yearly = true;
+    let cols = [];
+
+    function fmt(v) { return String(v).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + 'đ'; }
+
+    function build(txt) {
+        num.innerHTML = '';
+        cols = [];
+        let k = 0;
+        txt.split('').forEach(ch => {
+            if (!/\d/.test(ch)) {
+                const i = document.createElement('i');
+                i.textContent = ch;
+                num.appendChild(i);
+                return;
+            }
+            const c = document.createElement('span');
+            c.className = 'u423-col';
+            c.innerHTML = '<span>' + '0123456789'.split('').map(d => '<b>' + d + '</b>').join('') + '</span>';
+            c.firstChild.style.setProperty('--k', k++);
+            num.appendChild(c);
+            cols.push(c.firstChild);
+        });
+    }
+
+    function show(v) {
+        const digits = String(v).split('');
+        cols.forEach((c, idx) => { c.style.setProperty('--d', digits[idx] || '0'); });
+        if (sr) sr.textContent = v.toLocaleString('vi-VN') + ' đồng mỗi tháng';
+    }
+
+    function setCycle(isYearly, focus) {
+        yearly = Boolean(isYearly);
+        bar.classList.toggle('is-y', yearly);
+        opts.forEach((b, idx) => {
+            const on = (idx === 1) === yearly;
+            b.setAttribute('aria-checked', String(on));
+            b.tabIndex = on ? 0 : -1;
+        });
+        show(PRICE[yearly ? 1 : 0]);
+        const cMonth = document.getElementById('plan-card-THANG50K');
+        const cYear = document.getElementById('plan-card-NAM399K');
+        if (cMonth) cMonth.classList.toggle('is-focus-plan', !yearly);
+        if (cYear) cYear.classList.toggle('is-focus-plan', yearly);
+        if (focus) opts[yearly ? 1 : 0].focus({ preventScroll: true });
+    }
+
+    opts.forEach((b, idx) => {
+        b.addEventListener('click', () => setCycle(idx === 1, false));
+        b.addEventListener('keydown', e => {
+            if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].indexOf(e.key) < 0) return;
+            e.preventDefault();
+            setCycle(!yearly, true);
+        });
+    });
+
+    build(fmt(PRICE[1]));
+    cols.forEach(c => { c.style.transition = 'none'; });
+    show(PRICE[1]);
+    void num.offsetWidth;
+    cols.forEach(c => { c.style.transition = ''; });
+}
+
+function initLucianFaqAccordion() {
+    const root = document.getElementById('goihoc-faq');
+    if (!root) return;
+    const its = Array.prototype.slice.call(root.querySelectorAll('.u424-it'));
+    const qs = its.map(it => it.querySelector('.u424-q'));
+    its.forEach((it, idx) => {
+        const a = it.querySelector('.u424-a');
+        qs[idx].id = 'goihoc-faq-q' + idx;
+        a.id = 'goihoc-faq-a' + idx;
+        qs[idx].setAttribute('aria-controls', a.id);
+        a.setAttribute('aria-labelledby', qs[idx].id);
+        const isOpen = it.classList.contains('open');
+        qs[idx].setAttribute('aria-expanded', String(isOpen));
+        a.inert = !isOpen;
+    });
+    function toggle(idx) {
+        its.forEach((it, k) => {
+            const v = k === idx && !it.classList.contains('open');
+            it.classList.toggle('open', v);
+            qs[k].setAttribute('aria-expanded', String(v));
+            it.querySelector('.u424-a').inert = !v;
+        });
+    }
+    qs.forEach((q, idx) => {
+        q.addEventListener('click', () => toggle(idx));
+        q.addEventListener('keydown', e => {
+            const n = qs.length;
+            const to = e.key === 'ArrowDown' ? idx + 1 : e.key === 'ArrowUp' ? idx - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? n - 1 : null;
+            if (to === null) return;
+            e.preventDefault();
+            qs[(to + n) % n].focus();
+        });
+    });
+}
 
 function getPlanMetaByCode(code) {
     if (code === 'VIP850K') return { code: 'VIP850K', name: 'Lớp Online Cùng Thầy (VIP)', priceText: '850.000đ / khóa học', amount: 850000, rank: 3 };
@@ -884,7 +1190,6 @@ function getEffectiveSubscriptionOnPricingPage() {
     const expiry = (serverTrialExpiry > Date.now() + 8 * 86400000) ? serverTrialExpiry : Number(u.proExpiry || u.trialExpiry || 0);
     const daysLeft = expiry > Date.now() ? Math.ceil((expiry - Date.now()) / 86400000) : 0;
 
-    // Chuẩn hóa lại các bản ghi trong lịch sử nếu bị lưu nhầm thời gian tải web sáng nay
     if (trueActivatedMs > 0 && Array.isArray(hist)) {
         hist.forEach(item => {
             if (item && item.paidAt) {
@@ -952,18 +1257,17 @@ function renderCurrentPlanStateOnPricingCards() {
                     </div>
                 </div>
                 <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                    <a href="baihoc.html" style="padding:10px 18px;border-radius:10px;background:linear-gradient(90deg,#10b981,#059669);color:#022c22;font-weight:800;font-size:13.5px;text-decoration:none;display:inline-flex;align-items:center;gap:7px;box-shadow:0 4px 14px rgba(16,185,129,0.35);">
+                    <a href="baihoc.html" style="padding:10px 18px;border-radius:10px;background:#10b981;color:#022c22;font-weight:800;font-size:13.5px;text-decoration:none;display:inline-flex;align-items:center;gap:7px;">
                         <i class="fa-solid fa-rocket"></i> Vào Học Ngay
                     </a>
                     <a href="hoso.html" style="padding:10px 16px;border-radius:10px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);color:#e2e8f0;font-weight:700;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:7px;">
-                        <i class="fa-solid fa-clock-rotate-left"></i> Hồ Sơ & Lịch Sử Giao Dịch
+                        <i class="fa-solid fa-clock-rotate-left"></i> Hồ Sơ &amp; Lịch Sử Giao Dịch
                     </a>
                 </div>
             </div>
         `;
     }
 
-    // Cập nhật trạng thái nút trên 3 thẻ gói học để không hiện "Đăng ký gói tháng" khi đang ở Gói Tháng
     const cardMonth = document.getElementById('plan-card-THANG50K');
     const cardYear = document.getElementById('plan-card-NAM399K');
     const cardVip = document.getElementById('plan-card-VIP850K');
@@ -977,15 +1281,14 @@ function renderCurrentPlanStateOnPricingCards() {
     if (state.planCode === 'THANG50K') {
         if (cardMonth) {
             cardMonth.style.borderColor = '#10b981';
-            cardMonth.style.boxShadow = '0 0 28px rgba(16,185,129,0.22)';
         }
         if (tagMonth) tagMonth.style.display = 'block';
         if (wrapMonth) {
             wrapMonth.innerHTML = `
-                <button class="btn-select-plan primary" style="background:linear-gradient(90deg,#10b981,#059669);color:#022c22;box-shadow:0 4px 16px rgba(16,185,129,0.35);" onclick="window.location.href='baihoc.html'">
+                <button class="btn-select-plan primary" style="background:#10b981;color:#022c22;" onclick="window.location.href='baihoc.html'">
                     <i class="fa-solid fa-circle-check"></i> Đang Sử Dụng Gói Này — Vào Học Ngay
                 </button>
-                <button class="btn-select-plan secondary" style="margin-top:8px;padding:9px 12px;font-size:12.5px;opacity:0.88;" onclick="openPayment('THANG50K', 'Gia Hạn Gói Tháng Linh Hoạt (+30 ngày)', 50000, 'vietqr')">
+                <button class="btn-select-plan secondary" style="margin-top:8px;padding:9px 12px;font-size:12.5px;opacity:0.9;" onclick="openPayment('THANG50K', 'Gia Hạn Gói Tháng Linh Hoạt (+30 ngày)', 50000, 'vietqr')">
                     <i class="fa-solid fa-rotate"></i> Gia hạn cộng dồn thêm 1 tháng (+30 ngày)
                 </button>
             `;
@@ -997,11 +1300,10 @@ function renderCurrentPlanStateOnPricingCards() {
     } else if (state.planCode === 'NAM399K') {
         if (cardYear) {
             cardYear.style.borderColor = '#10b981';
-            cardYear.style.boxShadow = '0 0 28px rgba(16,185,129,0.25)';
         }
         if (tagYear) {
             tagYear.textContent = '👑 GÓI HIỆN TẠI CỦA BẠN';
-            tagYear.style.background = 'linear-gradient(90deg,#10b981,#34d399)';
+            tagYear.style.background = '#10b981';
             tagYear.style.color = '#022c22';
         }
         if (wrapMonth) {
@@ -1013,7 +1315,7 @@ function renderCurrentPlanStateOnPricingCards() {
         }
         if (wrapYear) {
             wrapYear.innerHTML = `
-                <button class="btn-select-plan primary" style="background:linear-gradient(90deg,#10b981,#059669);color:#022c22;" onclick="window.location.href='baihoc.html'">
+                <button class="btn-select-plan primary" style="background:#10b981;color:#022c22;" onclick="window.location.href='baihoc.html'">
                     <i class="fa-solid fa-circle-check"></i> Đang Sử Dụng Gói Cả Năm — Vào Học Ngay
                 </button>
             `;
@@ -1022,8 +1324,7 @@ function renderCurrentPlanStateOnPricingCards() {
         if (btnVip) btnVip.innerHTML = '<i class="fa-solid fa-arrow-up-right-dots"></i> Nâng Cấp Lên Lớp VIP Cùng Thầy (850k)';
     } else if (state.planCode === 'VIP850K') {
         if (cardVip) {
-            cardVip.style.borderColor = '#a855f7';
-            cardVip.style.boxShadow = '0 0 28px rgba(168,85,247,0.28)';
+            cardVip.style.borderColor = '#8b5cf6';
         }
         if (tagVip) tagVip.style.display = 'block';
         if (wrapMonth) {
@@ -1034,14 +1335,13 @@ function renderCurrentPlanStateOnPricingCards() {
         }
         if (wrapVip) {
             wrapVip.innerHTML = `
-                <button class="btn-select-plan primary" style="background:linear-gradient(90deg,#a855f7,#ec4899);color:#fff;" onclick="window.location.href='baihoc.html'">
+                <button class="btn-select-plan primary" style="background:#8b5cf6;color:#fff;" onclick="window.location.href='baihoc.html'">
                     <i class="fa-solid fa-circle-check"></i> Đang Sử Dụng Gói VIP — Vào Học Ngay
                 </button>
             `;
         }
     }
 
-    // Hiển thị bảng lịch sử giao dịch ngay dưới bảng giá
     if (histBox) {
         const rows = state.history.length > 0 ? state.history : [{
             id: (state.user.lastPayment && state.user.lastPayment.transactionId) || ('PRO-' + (state.user.sdt || 'ACTIVE')),
@@ -1057,7 +1357,7 @@ function renderCurrentPlanStateOnPricingCards() {
         histBox.innerHTML = `
             <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
                 <div style="font-size:16px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px;">
-                    <i class="fa-solid fa-receipt" style="color:#38bdf8;"></i> Lịch Sử Giao Dịch & Thanh Toán (${rows.length})
+                    <i class="fa-solid fa-receipt" style="color:#38bdf8;"></i> Lịch Sử Giao Dịch &amp; Thanh Toán (${rows.length})
                 </div>
                 <a href="hoso.html" style="font-size:12.5px;color:#38bdf8;text-decoration:none;font-weight:700;">Xem trong Hồ sơ cá nhân →</a>
             </div>
@@ -1082,13 +1382,14 @@ function renderCurrentPlanStateOnPricingCards() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    initLucianPlanSwitch();
+    initLucianFaqAccordion();
     const u = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
     if (u && typeof vlxtRenderWidget === 'function') {
         vlxtRenderWidget(u);
     }
     renderCurrentPlanStateOnPricingCards();
 
-    // Tự động đồng bộ trạng thái gói & mã giao dịch thật từ GAS cho tài khoản đang đăng nhập
     if (u && u.sdt && u.sdt !== 'FREE' && typeof fetch === 'function') {
         const gasUrl = (typeof window.VLXT_GAS !== 'undefined')
             ? window.VLXT_GAS
@@ -1147,7 +1448,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }).catch(() => {});
     }
 
-    // Chỉ hiển thị nút/tab VNPay nếu VNPay được bật trong cấu hình (hoặc ?vnpay=1)
     if (typeof window.VnPayService !== 'undefined' && typeof window.VnPayService.isEnabled === 'function' && window.VnPayService.isEnabled()) {
         document.querySelectorAll('.btn-vnpay-direct').forEach(btn => { btn.style.display = 'inline-flex'; });
         const tabs = document.getElementById('modal-pay-tabs');
@@ -1155,6 +1455,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+let _lastPayTabIdx = 1;
 function switchPayTab(mode) {
     const vnpEnabled = (typeof window.VnPayService !== 'undefined' && typeof window.VnPayService.isEnabled === 'function' && window.VnPayService.isEnabled());
     const isVnPay = vnpEnabled && mode === 'vnpay';
@@ -1162,18 +1463,35 @@ function switchPayTab(mode) {
     const tabVietQr = document.getElementById('tab-btn-vietqr');
     const panelVnPay = document.getElementById('panel-vnpay');
     const panelVietQr = document.getElementById('panel-vietqr');
+    const tl = document.getElementById('modal-pay-tabs');
+    const th = document.getElementById('pay-tab-thumb');
 
     if (tabVnPay) tabVnPay.classList.toggle('active', isVnPay);
     if (tabVietQr) tabVietQr.classList.toggle('active', !isVnPay);
     if (panelVnPay) panelVnPay.style.display = isVnPay ? 'block' : 'none';
     if (panelVietQr) panelVietQr.style.display = isVnPay ? 'none' : 'block';
+
+    const nextIdx = isVnPay ? 0 : 1;
+    const targetBtn = isVnPay ? tabVnPay : tabVietQr;
+    if (tl && th && targetBtn && tl.clientWidth > 0) {
+        const dir = nextIdx >= _lastPayTabIdx ? 1 : -1;
+        th.style.setProperty('--tl', dir > 0 ? '.52s' : '.34s');
+        th.style.setProperty('--tr', dir > 0 ? '.34s' : '.52s');
+        th.style.setProperty('--l', targetBtn.offsetLeft + 'px');
+        th.style.setProperty('--r', Math.max(4, (tl.clientWidth - targetBtn.offsetLeft - targetBtn.offsetWidth)) + 'px');
+    }
+    _lastPayTabIdx = nextIdx;
 }
 
 function openPayment(code, planName, amount, defaultTab) {
     const user = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
     if (!user || !user.sdt || user.sdt === 'FREE') {
-        alert('Em vui lòng đăng nhập tài khoản học sinh trước khi đăng ký gói học để hệ thống tự động lấy Họ tên & Số điện thoại kích hoạt gói nhé!');
-        window.location.href = 'login.html?from=' + encodeURIComponent(window.location.pathname + window.location.search);
+        if (typeof window.vlxtToast === 'function') {
+            window.vlxtToast('Vui lòng đăng nhập trước khi đăng ký gói học.', { tone: 'info' });
+        }
+        setTimeout(() => {
+            window.location.href = 'login.html?from=' + encodeURIComponent(window.location.pathname + window.location.search);
+        }, 450);
         return;
     }
 
@@ -1188,7 +1506,6 @@ function openPayment(code, planName, amount, defaultTab) {
     if (phoneInput) phoneInput.value = sdt;
     if (accDisplay) accDisplay.textContent = `${hoten} · ${sdt}`;
 
-    // Đặt lại nút ở trạng thái khóa tự động chờ ngân hàng
     const btn = document.getElementById('btn-confirm-vietqr');
     if (btn) {
         btn.disabled = true;
@@ -1210,9 +1527,8 @@ function openPayment(code, planName, amount, defaultTab) {
     document.getElementById('vnpay-amount-val').textContent = amount.toLocaleString('vi-VN') + 'đ';
 
     refreshVietQrMemo();
-    switchPayTab(defaultTab || 'vietqr');
-
     document.getElementById('payment-modal').style.display = 'flex';
+    switchPayTab(defaultTab || 'vietqr');
     startVietQrPolling();
 }
 
@@ -1332,6 +1648,9 @@ function unlockPaidAccountOnPage(sdt, hoten, res) {
     if (typeof window.confetti === 'function') {
         window.confetti({ particleCount: 130, spread: 80, origin: { y: 0.6 } });
     }
+    if (typeof window.vlxtToast === 'function') {
+        window.vlxtToast('Kích hoạt thành công gói ' + currentPlanName + '!', { tone: 'success' });
+    }
 
     const statusBox = document.getElementById('vietqr-listen-status');
     if (statusBox) {
@@ -1385,8 +1704,8 @@ function handleVnPayCheckout() {
             sdt: sdt,
             bankCode: bankCode
         });
-    } else {
-        alert('Không tìm thấy dịch vụ VNPay. Vui lòng tải lại trang!');
+    } else if (typeof window.vlxtToast === 'function') {
+        window.vlxtToast('Không tìm thấy dịch vụ VNPay. Vui lòng tải lại trang!', { tone: 'error' });
     }
 }
 
@@ -1395,18 +1714,47 @@ function closePayment() {
     document.getElementById('payment-modal').style.display = 'none';
 }
 
-function copyText(elemId) {
-    const txt = document.getElementById(elemId).textContent;
-    navigator.clipboard.writeText(txt).then(() => {
-        alert('Đã sao chép: ' + txt);
-    }).catch(() => {
-        alert('Nội dung: ' + txt);
+function triggerCopyMorph(btn, labelText) {
+    if (!btn) return;
+    const row = btn.closest('.detail-row');
+    clearTimeout(btn._u008Timer);
+    btn.classList.remove('is-copied');
+    if (row) row.classList.remove('is-copied');
+    void btn.offsetWidth;
+    btn.classList.add('is-copied');
+    if (row) row.classList.add('is-copied');
+    btn._u008Timer = setTimeout(() => {
+        btn.classList.remove('is-copied');
+        if (row) row.classList.remove('is-copied');
+    }, 1600);
+    if (typeof window.vlxtToast === 'function') {
+        window.vlxtToast('Đã sao chép: ' + labelText, { tone: 'success', duration: 2800 });
+    }
+}
+
+function writeClipboardSafe(text) {
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            return navigator.clipboard.writeText(text).catch(() => {});
+        }
+    } catch (e) {}
+    return Promise.resolve();
+}
+
+function copyText(elemId, btnEl) {
+    const el = document.getElementById(elemId);
+    const txt = el ? el.textContent.trim() : '';
+    const btn = btnEl || (el ? el.closest('.detail-row')?.querySelector('.u008-btn') : null);
+    writeClipboardSafe(txt).then(() => {
+        triggerCopyMorph(btn, txt);
     });
 }
 
-function copyAmount() {
-    navigator.clipboard.writeText(String(currentAmount)).then(() => {
-        alert('Đã sao chép số tiền: ' + currentAmount.toLocaleString('vi-VN') + 'đ');
+function copyAmount(btnEl) {
+    const str = String(currentAmount);
+    const btn = btnEl || document.getElementById('bank-amount-val')?.closest('.detail-row')?.querySelector('.u008-btn');
+    writeClipboardSafe(str).then(() => {
+        triggerCopyMorph(btn, currentAmount.toLocaleString('vi-VN') + 'đ');
     });
 }
 

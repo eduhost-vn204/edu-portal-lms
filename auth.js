@@ -1,13 +1,48 @@
+/* Lucian UX/UI Prompt #408 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#408 */
+/* Lucian UX/UI Prompt #435 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#435 */
 /* ═══════════════════════════════════════════
    AUTH MODULE — Vật Lý Xuân Trường
 ═══════════════════════════════════════════ */
 
+function vlxtSyncRootThemeAttr(){
+  try{
+    if(typeof document === 'undefined' || !document.documentElement) return;
+    var isDark = document.body ? document.body.classList.contains('dark') : (localStorage.getItem('vlxt_theme') === 'dark');
+    document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    document.documentElement.classList.toggle('dark', isDark);
+  }catch(e){}
+}
+
+function vlxtEnsureLucianTokens(){
+  try{
+    if(typeof document === 'undefined' || !document.head) return;
+    if(window.location.pathname.includes('thithu.html') || window.location.pathname.includes('phong-thi-thu.html')) return;
+    if(document.getElementById('vlxt-lucian-tokens')) return;
+    var link = document.createElement('link');
+    link.id = 'vlxt-lucian-tokens';
+    link.rel = 'stylesheet';
+    link.href = 'assets/lucian-uxui.css?v=20261124';
+    document.head.appendChild(link);
+  }catch(e){}
+}
+
 /* Theme toggle — định nghĩa sớm để onclick="toggleTheme()" luôn hoạt động */
 function toggleTheme(){
   document.body.classList.toggle('dark');
-  try{ localStorage.setItem('vlxt_theme', document.body.classList.contains('dark')?'dark':'light'); }catch(e){}
+  var isDark = document.body.classList.contains('dark');
+  try{ localStorage.setItem('vlxt_theme', isDark ? 'dark' : 'light'); }catch(e){}
+  vlxtSyncRootThemeAttr();
+  var btn = document.getElementById('vlxt-theme-btn');
+  if(btn) btn.textContent = isDark ? '☀️ Chuyển sang giao diện sáng' : '🌙 Chuyển sang giao diện tối';
 }
-(function(){ try{ if(localStorage.getItem('vlxt_theme')==='dark') document.body.classList.add('dark'); }catch(e){} })();
+(function(){
+  try{
+    if(localStorage.getItem('vlxt_theme')==='dark' && document.body) document.body.classList.add('dark');
+    vlxtEnsureLucianTokens();
+    vlxtSyncRootThemeAttr();
+  }catch(e){}
+})();
+
 const VLXT_AUTH_KEY = 'vlxt_user_v2';
 const VLXT_GAS = 'https://script.google.com/macros/s/AKfycbwF8whuCRmJtodfusehx6CWYS04yRlsVvQWNp0X2dBTCfZF-AmqmJ_KR0MIVLekVFqW/exec';
 if (typeof window !== 'undefined') window.VLXT_GAS = VLXT_GAS;
@@ -47,9 +82,27 @@ function vlxtRefreshUser(){
 }
 window.vlxtRefreshUser=vlxtRefreshUser;
 
-function vlxtToggleDropdown(){
-  const dd=document.getElementById('vlxt-dropdown');
-  if(dd) dd.classList.toggle('open');
+function vlxtCloseDropdown(focusBtn){
+  var dd = document.getElementById('vlxt-dropdown');
+  var btn = document.getElementById('vlxt-avatar-btn');
+  if(dd) dd.classList.remove('open');
+  if(btn){
+    btn.classList.remove('is-open');
+    btn.setAttribute('aria-expanded', 'false');
+    if(focusBtn && typeof btn.focus === 'function') btn.focus({ preventScroll: true });
+  }
+}
+
+function vlxtToggleDropdown(e){
+  if(e && typeof e.stopPropagation === 'function') e.stopPropagation();
+  const dd = document.getElementById('vlxt-dropdown');
+  const btn = document.getElementById('vlxt-avatar-btn');
+  if(!dd) return;
+  const isOpen = dd.classList.toggle('open');
+  if(btn){
+    btn.classList.toggle('is-open', isOpen);
+    btn.setAttribute('aria-expanded', String(isOpen));
+  }
 }
 
 // Đổi giao diện sáng/tối DÙNG CHUNG cho mọi trang (gọi từ menu dropdown avatar).
@@ -60,6 +113,7 @@ function vlxtToggleTheme(e){
   const isDark = document.body.classList.toggle('dark');
   document.documentElement.classList.toggle('dark', isDark);
   try{ localStorage.setItem('vlxt_theme', isDark ? 'dark' : 'light'); }catch(err){}
+  vlxtSyncRootThemeAttr();
   const btn = document.getElementById('vlxt-theme-btn');
   if(btn) btn.textContent = isDark ? '☀️ Chuyển sang giao diện sáng' : '🌙 Chuyển sang giao diện tối';
 }
@@ -67,8 +121,213 @@ window.vlxtToggleTheme = vlxtToggleTheme;
 
 document.addEventListener('click',function(e){
   const w=document.getElementById('vlxt-user-widget');
-  if(w&&!w.contains(e.target)){ const dd=document.getElementById('vlxt-dropdown'); if(dd) dd.classList.remove('open'); }
+  if(w&&!w.contains(e.target)) vlxtCloseDropdown(false);
 });
+document.addEventListener('keydown',function(e){
+  const dd=document.getElementById('vlxt-dropdown');
+  if(!dd || !dd.classList.contains('open')) return;
+  if(e.key === 'Escape'){
+    e.preventDefault();
+    e.stopPropagation();
+    vlxtCloseDropdown(true);
+    return;
+  }
+  if(e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Home' || e.key === 'End'){
+    var items = Array.prototype.slice.call(dd.querySelectorAll('.vlxt-dd-item'));
+    if(!items.length) return;
+    e.preventDefault();
+    var idx = items.indexOf(document.activeElement);
+    var nextIdx = 0;
+    if(e.key === 'ArrowDown') nextIdx = (idx + 1) % items.length;
+    else if(e.key === 'ArrowUp') nextIdx = (idx - 1 + items.length) % items.length;
+    else if(e.key === 'End') nextIdx = items.length - 1;
+    items[nextIdx].focus({ preventScroll: true });
+  }
+});
+
+/* ─── LUCIAN #435 TOAST STACK (window.vlxtToast) ─── */
+(function(){
+  if(typeof window === 'undefined' || typeof document === 'undefined') return;
+  var H = 56, GAP = 8, LIFE = 4200, MAX = 3;
+  var toasts = [], open = false, paused = false, leaveT = 0;
+  var host = null, rg = null;
+  var rm = function(){ return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; };
+
+  function ensureHost(){
+    vlxtEnsureLucianTokens();
+    if(host && host.isConnected && rg && rg.isConnected) return rg;
+    host = document.getElementById('vlxt-toast-host');
+    if(!host){
+      host = document.createElement('div');
+      host.id = 'vlxt-toast-host';
+      host.className = 'ux vlxt-toast-host';
+      host.innerHTML = '<section class="vlxt-toast-rg" id="vlxt-toast-region" aria-label="Thông báo hệ thống" aria-live="polite"></section>';
+      (document.body || document.documentElement).appendChild(host);
+    }
+    rg = host.querySelector('.vlxt-toast-rg');
+    if(rg && !rg.__vlxtBound){
+      rg.__vlxtBound = true;
+      rg.addEventListener('pointerenter', function(){ clearTimeout(leaveT); setOpen(true); });
+      rg.addEventListener('pointerleave', function(){ clearTimeout(leaveT); leaveT = setTimeout(function(){ if(!rg.contains(document.activeElement)) setOpen(false); }, 120); });
+      rg.addEventListener('focusin', function(){ setOpen(true); });
+      rg.addEventListener('focusout', function(e){ if(!rg.contains(e.relatedTarget)) setOpen(false); });
+    }
+    return rg;
+  }
+
+  function layout(){
+    if(!rg) return;
+    var live = toasts.filter(function(t){ return !t.gone; }), n = live.length;
+    live.forEach(function(t, k){
+      var i = n - 1 - k;
+      var y = open ? -i * (H + GAP) : -i * 10;
+      var s = open ? 1 : 1 - i * 0.05;
+      t.el.style.setProperty('--y', y + 'px');
+      t.el.style.setProperty('--s', s.toFixed(3));
+      t.el.style.setProperty('--o', i < MAX ? 1 : 0);
+      t.el.style.zIndex = String(20 - i);
+      t.el.classList.toggle('is-back', !open && i > 0);
+    });
+    rg.style.height = (open && n > 1 ? n * H + (n - 1) * GAP : H + 20) + 'px';
+  }
+
+  function timer(t){
+    clearTimeout(t.tm);
+    t.t0 = Date.now();
+    if(!paused) t.tm = setTimeout(function(){ if(t.el.isConnected) dismiss(t); }, t.left);
+  }
+
+  function bar(t, ms){
+    var pb = t.el.querySelector('.vlxt-toast-pb');
+    pb.innerHTML = '<i style="animation-duration:' + ms + 'ms"></i>';
+    t.left = ms;
+    timer(t);
+  }
+
+  function dismiss(t, dir, quiet){
+    if(t.gone) return;
+    t.gone = true;
+    clearTimeout(t.tm);
+    var el = t.el;
+    el.style.pointerEvents = 'none';
+    var done = function(){ el.remove(); var idx = toasts.indexOf(t); if(idx >= 0) toasts.splice(idx, 1); layout(); };
+    layout();
+    if(rm() || !el.animate){ done(); return; }
+    var y = el.style.getPropertyValue('--y') || '0px';
+    var s = el.style.getPropertyValue('--s') || '1';
+    if(dir){
+      var v = Math.max(1.2, Math.abs(t.v || 0));
+      var dist = 360;
+      var dur = Math.max(150, Math.min(300, dist / v));
+      el.classList.add('is-drag');
+      el.animate(
+        [{ transform: 'translate3d(' + (t.dx || 0) + 'px,' + y + ',0) scale(' + s + ')', opacity: 1 },
+         { transform: 'translate3d(' + dir * dist + 'px,' + y + ',0) scale(' + s + ') rotate(' + dir * 5 + 'deg)', opacity: 0 }],
+        { duration: dur, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'forwards' }
+      ).onfinish = done;
+    } else {
+      el.animate(
+        [{ opacity: quiet ? 0 : 1 }, { transform: 'translate3d(0,calc(' + y + ' + 14px),0) scale(' + (Number(s) * 0.94) + ')', opacity: 0 }],
+        { duration: 240, easing: 'cubic-bezier(.4,0,.6,1)', fill: 'forwards' }
+      ).onfinish = done;
+    }
+  }
+
+  function swipe(t){
+    var el = t.el, on = false, x0 = 0, last = [];
+    el.addEventListener('pointerdown', function(e){
+      if(e.button !== 0 || e.target.closest('button') || t.gone) return;
+      on = true; x0 = e.clientX; t.dx = 0; t.v = 0; last = [[e.clientX, e.timeStamp]];
+      el.classList.add('is-drag');
+      try{ el.setPointerCapture(e.pointerId); }catch(er){}
+    });
+    el.addEventListener('pointermove', function(e){
+      if(!on) return;
+      t.dx = e.clientX - x0;
+      last.push([e.clientX, e.timeStamp]);
+      if(last.length > 5) last.shift();
+      el.style.setProperty('--x', t.dx.toFixed(1) + 'px');
+      el.style.opacity = String(Math.max(0.35, 1 - Math.abs(t.dx) / 300));
+    });
+    function end(){
+      if(!on) return;
+      on = false;
+      var a = last[0], b = last[last.length - 1];
+      t.v = b && a && b[1] > a[1] ? (b[0] - a[0]) / (b[1] - a[1]) : 0;
+      el.style.opacity = '';
+      if(Math.abs(t.dx) > 80 || Math.abs(t.v) > 0.6){
+        dismiss(t, (Math.abs(t.v) > 0.6 ? t.v : t.dx) > 0 ? 1 : -1);
+        return;
+      }
+      el.classList.remove('is-drag');
+      el.style.setProperty('--x', '0px');
+      t.dx = 0;
+    }
+    el.addEventListener('pointerup', end);
+    el.addEventListener('pointercancel', end);
+  }
+
+  function setOpen(v){
+    if(open === v) return;
+    open = v; paused = v;
+    if(rg) rg.classList.toggle('is-paused', v);
+    toasts.forEach(function(t){
+      if(t.gone) return;
+      if(v){ clearTimeout(t.tm); t.left = Math.max(500, t.left - (Date.now() - t.t0)); }
+      else timer(t);
+    });
+    layout();
+  }
+
+  window.vlxtToast = function(message, options){
+    var opts = options || {};
+    var tone = opts.tone || opts.type || 'success';
+    var duration = Number(opts.duration) > 0 ? Number(opts.duration) : LIFE;
+    var region = ensureHost();
+    if(!region) return null;
+
+    var toneClass = tone === 'error' ? 'err' : tone === 'warn' ? 'warn' : tone === 'info' ? 'info' : 'ok';
+    var iconSvg = toneClass === 'err'
+      ? '<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>'
+      : toneClass === 'warn'
+        ? '<svg viewBox="0 0 24 24"><path d="M12 8v5"/><path d="M12 16.5v.5"/></svg>'
+        : toneClass === 'info'
+          ? '<svg viewBox="0 0 24 24"><path d="M12 11v5"/><path d="M12 7.5v.5"/></svg>'
+          : '<svg viewBox="0 0 24 24"><path d="m6 12.5 4 4 8-9"/></svg>';
+
+    var el = document.createElement('div');
+    el.className = 'vlxt-toast-t';
+    el.setAttribute('role', 'status');
+    el.setAttribute('data-tone', tone);
+    el.innerHTML = '<span class="vlxt-toast-ic" aria-hidden="true"><span class="' + toneClass + '">' + iconSvg + '</span></span>'
+      + '<span class="vlxt-toast-tx"></span>'
+      + '<button type="button" class="vlxt-toast-x" aria-label="Đóng thông báo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>'
+      + '<span class="vlxt-toast-pb" aria-hidden="true"></span>';
+    el.querySelector('.vlxt-toast-tx').textContent = String(message || '');
+
+    var t = { el: el, dx: 0, v: 0, gone: false, left: duration };
+    el.querySelector('.vlxt-toast-x').addEventListener('click', function(){ dismiss(t); });
+    swipe(t);
+    toasts.push(t);
+    if(!rm()){
+      el.classList.add('is-in');
+      el.style.setProperty('--y', '84px');
+      el.style.setProperty('--s', '.9');
+      el.style.setProperty('--o', '0');
+      el.style.transition = 'none';
+      region.appendChild(el);
+      void el.offsetWidth;
+      el.style.transition = '';
+    } else {
+      region.appendChild(el);
+    }
+    bar(t, duration);
+    var live = toasts.filter(function(x){ return !x.gone; });
+    if(live.length > MAX) dismiss(live[0], 0, true);
+    layout();
+    return t;
+  };
+})();
 
 // Đọc số bài đã học từ localStorage (chính xác hơn GAS)
 function vlxtLocalDoneCount(sdt){
@@ -82,6 +341,9 @@ function vlxtLocalDoneCount(sdt){
 function vlxtRenderWidget(user){
   // Trong phòng thi thử CBT (thithu.html, phong-thi-thu.html), không hiện widget nổi để học sinh tập trung tối đa làm bài
   if(window.location.pathname.includes('thithu.html') || window.location.pathname.includes('phong-thi-thu.html')) return;
+  vlxtEnsureLucianTokens();
+  vlxtSyncRootThemeAttr();
+
   const ex = document.getElementById('vlxt-user-widget');
   if(ex) ex.remove();
 
@@ -90,7 +352,7 @@ function vlxtRenderWidget(user){
 
   // Nếu là KHÁCH (chưa đăng nhập)
   if(!isValidUser) {
-    if(!navArea) return; // Nếu không có navArea thì không làm gì
+    if(!navArea) return;
     navArea.innerHTML = '';
     const guestWidget = document.createElement('div');
     guestWidget.id = 'vlxt-user-widget';
@@ -109,15 +371,16 @@ function vlxtRenderWidget(user){
         font-weight: 600 !important;
         color: #e2e8f0 !important;
         cursor: pointer !important;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        transition: background-color 0.2s var(--ux-ease, ease), border-color 0.2s var(--ux-ease, ease), transform 0.35s var(--ux-spring, ease) !important;
         user-select: none !important;
       }
       .vlxt-pill-btn:hover {
-        background: rgba(16, 185, 129, 0.1) !important;
-        border-color: rgba(16, 185, 129, 0.4) !important;
+        background: rgba(16, 185, 129, 0.12) !important;
+        border-color: rgba(16, 185, 129, 0.45) !important;
         color: #ffffff !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
       }
+      .vlxt-pill-btn:active { transform: scale(0.96) !important; }
       .vlxt-dot-neon {
         width: 8px !important;
         height: 8px !important;
@@ -127,12 +390,12 @@ function vlxtRenderWidget(user){
       }
       .vlxt-dot-neon.green {
         background: #10b981 !important;
-        box-shadow: 0 0 4px #10b981 !important;
+        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25) !important;
         animation: vlxtDotPulse 2s infinite !important;
       }
       @keyframes vlxtDotPulse {
         0%, 100% { opacity: 1; transform: scale(1); }
-        50% { opacity: 0.6; transform: scale(1.15); }
+        50% { opacity: 0.65; transform: scale(1.12); }
       }
       .vlxt-pill-name {
         font-size: 13px !important;
@@ -140,14 +403,21 @@ function vlxtRenderWidget(user){
         color: #e2e8f0 !important;
         white-space: nowrap !important;
       }
+      @media (max-width: 420px) {
+        .vlxt-pill-btn { padding: 4px 10px !important; gap: 6px !important; }
+        .vlxt-pill-name { font-size: 12px !important; }
+        .top-bar { padding: 0 12px !important; }
+        .nav-left-wrap { gap: 8px !important; }
+        .brand-glow-text { font-size: 13.5px !important; }
+      }
     `;
 
     guestWidget.innerHTML = `
       <style>${guestCSS}</style>
-      <div id="vlxt-avatar-btn" class="vlxt-pill-btn guest" onclick="vlxtHandleGuestClick(event)">
+      <button type="button" id="vlxt-avatar-btn" class="vlxt-pill-btn guest" onclick="vlxtHandleGuestClick(event)">
         <span class="vlxt-dot-neon green"></span>
         <span class="vlxt-pill-name">Khách trải nghiệm</span>
-      </div>
+      </button>
     `;
     navArea.appendChild(guestWidget);
     return;
@@ -159,7 +429,6 @@ function vlxtRenderWidget(user){
   const widget = document.createElement('div');
   widget.id = 'vlxt-user-widget';
 
-  // VIP badge
   const loaiTK = user.loaiTK || 'vip';
   const trialExpiry = user.trialExpiry || 0;
   const msLeft = trialExpiry ? (trialExpiry - Date.now()) : 0;
@@ -176,81 +445,90 @@ function vlxtRenderWidget(user){
     : (loaiTK === 'vip' && msLeft > 0) ? `<span class="vlxt-pill-badge pro">⭐ ${daysLeft}d</span>`
     : '<span class="vlxt-pill-badge free">Free</span>';
 
-  // Số bài từ localStorage
   const localDone = vlxtLocalDoneCount(user.sdt);
 
   const ddCSS = [
-    '#vlxt-dropdown{display:none;position:absolute;top:calc(100% + 8px);right:0;',
-    'background:#0f172a;border:1px solid rgba(0,240,255,0.25);border-radius:14px;',
-    'padding:14px;min-width:230px;max-width:280px;box-shadow:0 12px 36px rgba(0,0,0,0.75);',
-    'animation:vlxtDropIn 0.15s ease-out;z-index:99999;}',
-    '@keyframes vlxtDropIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}',
-    '#vlxt-dropdown.open{display:block;}',
-    '.vlxt-user-name{font-size:14.5px;font-weight:700;color:#f8fafc;margin-bottom:2px;display:flex;align-items:center;justify-content:space-between;}',
+    '#vlxt-dropdown{position:absolute;top:calc(100% + 10px);right:0;',
+    'background:#151c2c;border:1px solid rgba(56,189,248,0.24);border-radius:16px;',
+    'padding:14px;min-width:246px;max-width:288px;box-shadow:0 16px 38px rgba(0,0,0,0.65),0 2px 8px rgba(0,0,0,0.35);',
+    'transform-origin:calc(100% - 26px) -10px;transform:scale(.86) translateY(-6px);opacity:0;visibility:hidden;pointer-events:none;',
+    'transition:transform .24s var(--ux-ease,ease),opacity .18s ease,visibility 0s .24s;z-index:99999;}',
+    '#vlxt-dropdown::before{content:"";position:absolute;right:20px;top:-6px;width:10px;height:10px;border-radius:2px;',
+    'background:#151c2c;border-top:1px solid rgba(56,189,248,0.24);border-left:1px solid rgba(56,189,248,0.24);transform:rotate(45deg);}',
+    '#vlxt-dropdown.open{transform:none;opacity:1;visibility:visible;pointer-events:auto;',
+    'transition:transform .44s var(--ux-spring,cubic-bezier(.34,1.45,.64,1)),opacity .16s ease,visibility 0s;}',
+    '#vlxt-dropdown>*{opacity:0;transform:translateY(-5px);transition:opacity .15s ease,transform .32s var(--ux-spring,ease);}',
+    '#vlxt-dropdown.open>*{opacity:1;transform:none;transition-delay:calc(36ms + var(--i,0) * 28ms);}',
+    '.vlxt-user-name{font-size:14.5px;font-weight:700;color:#f8fafc;margin-bottom:2px;display:flex;align-items:center;justify-content:space-between;gap:8px;}',
     '.vlxt-user-meta{font-size:11.5px;color:#94a3b8;margin-bottom:12px;}',
     '.vlxt-stats{display:flex;gap:8px;margin-bottom:12px;}',
-    '.vlxt-stat{flex:1;background:rgba(15,23,42,0.8);border:1px solid rgba(0,240,255,0.2);border-radius:8px;padding:6px 8px;text-align:center;}',
-    '.vlxt-stat-val{font-size:15px;font-weight:800;color:#00f0ff;}',
+    '.vlxt-stat{flex:1;background:#0f172a;border:1px solid rgba(56,189,248,0.2);border-radius:10px;padding:7px 8px;text-align:center;}',
+    '.vlxt-stat-val{font-size:15px;font-weight:800;color:#38bdf8;}',
     '.vlxt-stat-label{font-size:10.5px;color:#94a3b8;margin-top:2px;}',
-    '.vlxt-nav-links{display:flex;flex-direction:column;gap:5px;margin-bottom:10px;}',
-    '.vlxt-nav-link{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;font-size:13px;font-weight:600;color:#e2e8f0;text-decoration:none;transition:background 0.15s;}',
-    '.vlxt-nav-link:hover{background:rgba(255,255,255,0.08);color:#fff;}',
+    '.vlxt-nav-links{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;}',
+    '.vlxt-nav-link{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;font-size:13px;font-weight:600;color:#e2e8f0;text-decoration:none;transition:background-color 0.15s,color 0.15s;}',
+    '.vlxt-nav-link:hover,.vlxt-nav-link:focus-visible{background:rgba(255,255,255,0.08);color:#fff;outline:none;}',
     '.vlxt-divider{border:none;border-top:1px solid rgba(255,255,255,0.1);margin:10px 0;}',
-    '.vlxt-theme-btn{width:100%;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.05);color:#cbd5e1;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;transition:background 0.15s;font-family:inherit;margin-bottom:8px;}',
-    '.vlxt-theme-btn:hover{background:rgba(255,255,255,0.1);color:#fff;}',
-    '.vlxt-logout-btn{width:100%;padding:8px 10px;border-radius:8px;border:none;background:rgba(239,68,68,0.12);color:#f87171;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;transition:background 0.15s;font-family:inherit;}',
-    '.vlxt-logout-btn:hover{background:rgba(239,68,68,0.25);color:#fca5a5;}',
-    '@media(max-width:600px){#vlxt-dropdown{right:0;left:auto;min-width:220px;max-width:92vw;}}'
+    '.vlxt-theme-btn{width:100%;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.09);background:rgba(255,255,255,0.05);color:#cbd5e1;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;transition:background-color 0.15s,color 0.15s;font-family:inherit;margin-bottom:8px;}',
+    '.vlxt-theme-btn:hover,.vlxt-theme-btn:focus-visible{background:rgba(255,255,255,0.1);color:#fff;outline:none;}',
+    '.vlxt-logout-btn{width:100%;padding:8px 10px;border-radius:10px;border:none;background:rgba(239,68,68,0.12);color:#f87171;font-size:12.5px;font-weight:600;cursor:pointer;text-align:left;transition:background-color 0.15s,color 0.15s;font-family:inherit;}',
+    '.vlxt-logout-btn:hover,.vlxt-logout-btn:focus-visible{background:rgba(239,68,68,0.25);color:#fca5a5;outline:none;}',
+    '@media(max-width:600px){#vlxt-dropdown{right:0;left:auto;min-width:225px;max-width:92vw;}}',
+    '@media(prefers-reduced-motion:reduce){#vlxt-dropdown,#vlxt-dropdown>*,.vlxt-pill-chevron{transition:none!important;}}'
   ].join('');
 
   var _isDarkNow = document.body.classList.contains('dark');
   var _themeLabel = _isDarkNow ? '☀️ Chuyển sang giao diện sáng' : '🌙 Chuyển sang giao diện tối';
 
-  const ddHTML = '<div id="vlxt-dropdown">'
-    +'<div class="vlxt-user-name"><span>'+user.hoten+'</span>'+vipBadge+'</div>'
-    +'<div class="vlxt-user-meta">Lớp '+(user.lop || '12')+' · '+(user.sdt || '')+'</div>'
-    +'<div class="vlxt-stats">'
+  const ddHTML = '<div id="vlxt-dropdown" role="menu" aria-label="Menu tài khoản">'
+    +'<div style="--i:0"><div class="vlxt-user-name"><span>'+user.hoten+'</span>'+vipBadge+'</div>'
+    +'<div class="vlxt-user-meta">Lớp '+(user.lop || '12')+' · '+(user.sdt || '')+'</div></div>'
+    +'<div class="vlxt-stats" style="--i:1">'
     +'<div class="vlxt-stat"><div class="vlxt-stat-val" id="vlxt-lp">'+(isNaN(Number(user.lpTotal))?0:(Number(user.lpTotal)||0))+'</div><div class="vlxt-stat-label">⚡ LP</div></div>'
     +'<div class="vlxt-stat"><div class="vlxt-stat-val" id="vlxt-done">'+localDone+'</div><div class="vlxt-stat-label">📚 Bài học</div></div>'
     +'</div>'
-    +'<button type="button" class="vlxt-theme-btn" id="vlxt-theme-btn" onclick="vlxtToggleTheme(event)">'+_themeLabel+'</button>'
-    +'<div class="vlxt-nav-links">'
-    +'<a href="hoso.html" class="vlxt-nav-link" style="color:#38bdf8;font-weight:700">👤 Hồ sơ cá nhân</a>'
-    +(isPaidLocal ? '<a href="goi-hoc.html" class="vlxt-nav-link" style="color:#34d399;font-weight:700">👑 Gói Pro đang dùng</a>' : '<a href="goi-hoc.html" class="vlxt-nav-link" style="color:#fbbf24;font-weight:700">⭐ Nâng cấp Gói Pro (50k)</a>')
-    +'<a href="huongdan.html" class="vlxt-nav-link">🧭 Hướng dẫn học tập</a>'
-    +'</div><hr class="vlxt-divider">'
-    +'<button class="vlxt-logout-btn" onclick="vlxtLogout()">↩ Đăng xuất</button>'
+    +'<button type="button" class="vlxt-theme-btn vlxt-dd-item" role="menuitem" style="--i:2" id="vlxt-theme-btn" onclick="vlxtToggleTheme(event)">'+_themeLabel+'</button>'
+    +'<div class="vlxt-nav-links" style="--i:3">'
+    +'<a href="hoso.html" class="vlxt-nav-link vlxt-dd-item" role="menuitem" style="color:#38bdf8;font-weight:700">👤 Hồ sơ cá nhân</a>'
+    +(isPaidLocal ? '<a href="goi-hoc.html" class="vlxt-nav-link vlxt-dd-item" role="menuitem" style="color:#34d399;font-weight:700">👑 Gói Pro đang dùng</a>' : '<a href="goi-hoc.html" class="vlxt-nav-link vlxt-dd-item" role="menuitem" style="color:#fbbf24;font-weight:700">⭐ Nâng cấp Gói Pro (50k)</a>')
+    +'<a href="huongdan.html" class="vlxt-nav-link vlxt-dd-item" role="menuitem">🧭 Hướng dẫn học tập</a>'
+    +'</div><hr class="vlxt-divider" style="--i:4">'
+    +'<button type="button" class="vlxt-logout-btn vlxt-dd-item" role="menuitem" style="--i:5" onclick="vlxtLogout()">↩ Đăng xuất</button>'
     +'</div>';
 
   if(navArea){
     navArea.innerHTML = '';
     var inlineCSS = [
-      '#vlxt-user-widget{position:relative;font-family:\'Inter\',system-ui,sans-serif;}',
+      '#vlxt-user-widget{position:relative;font-family:\'Plus Jakarta Sans\',system-ui,sans-serif;}',
       '.vlxt-pill-btn{display:inline-flex!important;align-items:center!important;gap:8px!important;',
       'background:rgba(255,255,255,0.05)!important;border:1px solid rgba(255,255,255,0.14)!important;',
       'padding:5px 14px!important;border-radius:100px!important;font-size:13px!important;font-weight:600!important;',
-      'color:#f1f5f9!important;cursor:pointer!important;transition:all 0.2s cubic-bezier(0.4,0,0.2,1)!important;',
+      'color:#f1f5f9!important;cursor:pointer!important;transition:background-color 0.2s ease,border-color 0.2s ease,transform 0.35s var(--ux-spring,ease)!important;',
       'user-select:none!important;}',
-      '.vlxt-pill-btn:hover{background:rgba(16,185,129,0.1)!important;border-color:rgba(16,185,129,0.4)!important;',
-      'color:#fff!important;box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;}',
+      '.vlxt-pill-btn:hover{background:rgba(16,185,129,0.1)!important;border-color:rgba(16,185,129,0.45)!important;',
+      'color:#fff!important;box-shadow:0 2px 8px rgba(0,0,0,0.3)!important;}',
+      '.vlxt-pill-btn:active{transform:scale(0.96)!important;}',
+      '.vlxt-pill-btn.is-open{border-color:#0b84f3!important;box-shadow:0 0 0 2px rgba(11,132,243,0.35)!important;}',
       '.vlxt-dot-neon{width:8px!important;height:8px!important;border-radius:50%!important;flex-shrink:0!important;display:inline-block!important;}',
-      '.vlxt-dot-neon.green{background:#10b981!important;box-shadow: 0 0 4px #10b981 !important;animation:vlxtDotPulse 2s infinite!important;}',
-      '@keyframes vlxtDotPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.6;transform:scale(1.15);}}',
+      '.vlxt-dot-neon.green{background:#10b981!important;box-shadow:0 0 0 2px rgba(16,185,129,0.25)!important;animation:vlxtDotPulse 2s infinite!important;}',
+      '@keyframes vlxtDotPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.65;transform:scale(1.12);}}',
       '.vlxt-pill-name{font-size:13px!important;font-weight:600!important;color:#f1f5f9!important;white-space:nowrap!important;}',
       '.vlxt-pill-badge{font-size:10.5px!important;font-weight:800!important;padding:1px 6px!important;border-radius:4px!important;}',
       '.vlxt-pill-badge.free{background:rgba(255,255,255,0.1)!important;color:#94a3b8!important;}',
       '.vlxt-pill-badge.pro{background:rgba(245,158,11,0.2)!important;color:#fbbf24!important;border:1px solid rgba(245,158,11,0.4)!important;}',
-      '.vlxt-pill-chevron{font-size:10px!important;color:#94a3b8!important;margin-left:2px!important;}',
+      '.vlxt-pill-chevron{font-size:10px!important;color:#94a3b8!important;margin-left:2px!important;transition:transform .28s var(--ux-spring,ease)!important;}',
+      '.vlxt-pill-btn.is-open .vlxt-pill-chevron{transform:rotate(180deg)!important;}',
+      '@media(max-width:420px){.vlxt-pill-btn{padding:4px 10px!important;gap:6px!important;}.vlxt-pill-name{font-size:12px!important;}.top-bar{padding:0 12px!important;}.nav-left-wrap{gap:8px!important;}.brand-glow-text{font-size:13.5px!important;}}',
       ddCSS
     ].join('');
 
     widget.innerHTML = '<style>' + inlineCSS + '</style>'
-      + '<div id="vlxt-avatar-btn" class="vlxt-pill-btn" onclick="vlxtToggleDropdown(event)">'
+      + '<button type="button" id="vlxt-avatar-btn" class="vlxt-pill-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="vlxt-dropdown" onclick="vlxtToggleDropdown(event)">'
       + '<span class="vlxt-dot-neon green"></span>'
       + '<span class="vlxt-pill-name">' + shortName + '</span>'
       + vipBadge
       + '<i class="fa-solid fa-chevron-down vlxt-pill-chevron"></i>'
-      + '</div>' + ddHTML;
+      + '</button>' + ddHTML;
     navArea.appendChild(widget);
 
     if(isPaidLocal){
@@ -259,7 +537,6 @@ function vlxtRenderWidget(user){
       });
     }
   } else {
-    // Nếu không có navArea, không render widget nổi đè lên màn hình nữa
     return;
   }
 
@@ -280,18 +557,16 @@ function vlxtRenderWidget(user){
       : fetch(VLXT_GAS + '?type=profile&hs=' + encodeURIComponent(user.sdt)).then(function(r){ return r.json(); });
 
     pFetch
-      .then(function(r){return r.json();}).then(function(d){
-        if(d.ok){
+      .then(function(d){
+        if(d && d.ok){
           var lpEl=document.getElementById('vlxt-lp');
           var doneEl=document.getElementById('vlxt-done');
           if(lpEl) lpEl.textContent=(isNaN(Number(d.user.lpTotal))?0:(Number(d.user.lpTotal)||0));
-          // Lấy max giữa GAS và localStorage (tránh hiện số thấp hơn thực tế)
           if(doneEl){
             var gasDone=(d.tiendo||[]).length;
             var best=Math.max(gasDone, vlxtLocalDoneCount(user.sdt));
             doneEl.textContent=best;
           }
-          // Đồng bộ toàn bộ hồ sơ, đặc biệt loaiTK/trialExpiry sau khi admin nâng cấp.
           var fresh=Object.assign({},user,d.user);
           var wasPaidLocal = Boolean(
             user.isPaid ||
@@ -355,6 +630,11 @@ window.vlxtHandleGuestClick = function(e) {
 };
 
 document.addEventListener('DOMContentLoaded', function(){
+  try{
+    if(localStorage.getItem('vlxt_theme')==='dark') document.body.classList.add('dark');
+  }catch(e){}
+  vlxtEnsureLucianTokens();
+  vlxtSyncRootThemeAttr();
   var user = vlxtGetUser();
   if(!document.getElementById('vlxt-user-widget')) vlxtRenderWidget(user);
 });
@@ -364,7 +644,6 @@ document.addEventListener('DOMContentLoaded', function(){
 function vlxtEnsureGlobalDrawer() {
   if (typeof document === 'undefined') return;
 
-  // Cung cấp toggleNavDrawer toàn cục để các trang luôn hoạt động đồng nhất
   window.toggleNavDrawer = function(show) {
     var drawer = document.getElementById('navDrawer') || document.getElementById('vlxt-global-drawer');
     var overlay = document.getElementById('navDrawerOverlay') || document.getElementById('vlxt-global-drawer-overlay');
@@ -383,7 +662,6 @@ function vlxtEnsureGlobalDrawer() {
     }
   };
 
-  // Đảm bảo các nút .nav-hamburger hoặc #navHamburgerBtn luôn kích hoạt toggleNavDrawer
   document.querySelectorAll('.nav-hamburger, #navHamburgerBtn').forEach(function(btn) {
     if (!btn.__vlxtBound) {
       btn.__vlxtBound = true;
@@ -395,7 +673,6 @@ function vlxtEnsureGlobalDrawer() {
     }
   });
 
-  // Nếu trang chưa có navDrawer, tự động tạo Drawer đồng bộ chuẩn VLXT
   if (!document.getElementById('navDrawer') && !document.getElementById('vlxt-global-drawer')) {
     var u = null;
     try { u = vlxtGetUser(); } catch(e){}
@@ -429,20 +706,19 @@ function vlxtEnsureGlobalDrawer() {
     drawerWrap.innerHTML = drawerHTML;
     document.body.appendChild(drawerWrap);
 
-    // CSS chuẩn cho Global Drawer
     var dStyle = document.createElement('style');
     dStyle.id = 'vlxt-global-drawer-css';
     dStyle.textContent = [
       '.nav-drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);z-index:99990;opacity:0;visibility:hidden;transition:all 0.25s;}',
       '.nav-drawer-overlay.open{opacity:1;visibility:visible;}',
-      '.nav-drawer{position:fixed;top:0;left:0;bottom:0;width:82vw;max-width:300px;background:#0d1117;border-right:1px solid rgba(0,240,255,0.2);box-shadow:8px 0 32px rgba(0,0,0,0.8);z-index:99991;transform:translateX(-105%);transition:transform 0.28s cubic-bezier(0.16,1,0.3,1);display:flex;flex-direction:column;font-family:\'Plus Jakarta Sans\',system-ui,sans-serif;}',
+      '.nav-drawer{position:fixed;top:0;left:0;bottom:0;width:82vw;max-width:300px;background:#0d1117;border-right:1px solid rgba(56,189,248,0.22);box-shadow:8px 0 32px rgba(0,0,0,0.8);z-index:99991;transform:translateX(-105%);transition:transform 0.28s cubic-bezier(0.16,1,0.3,1);display:flex;flex-direction:column;font-family:\'Plus Jakarta Sans\',system-ui,sans-serif;}',
       '.nav-drawer.open{transform:translateX(0);}',
       '.nav-drawer-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,0.08);}',
       '.ndh-brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;color:#f8fafc;text-decoration:none;}',
       '.nav-drawer-close{background:rgba(255,255,255,0.06);border:none;color:#94a3b8;font-size:16px;width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;}',
       '.nav-drawer-links{display:flex;flex-direction:column;gap:4px;padding:12px;overflow-y:auto;}',
       '.nav-drawer-links a{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;color:#cbd5e1;text-decoration:none;font-size:13.5px;font-weight:600;transition:background 0.15s;}',
-      '.nav-drawer-links a:hover,.nav-drawer-links a.active{background:rgba(0,240,255,0.12);color:#00f0ff;}',
+      '.nav-drawer-links a:hover,.nav-drawer-links a.active{background:rgba(11,132,243,0.16);color:#38bdf8;}',
       'body.nav-drawer-locked{overflow:hidden;}'
     ].join('');
     document.head.appendChild(dStyle);
