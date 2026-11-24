@@ -1,9 +1,15 @@
+<!-- Lucian UX/UI Prompt #046 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#046 -->
+<!-- Lucian UX/UI Prompt #092 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#092 -->
+<!-- Lucian UX/UI Prompt #416 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#416 -->
+<!-- Lucian UX/UI Prompt #426 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#426 -->
+<!-- Lucian UX/UI Prompt #435 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#435 -->
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chiến Dịch 50 Đề THPTQG 2026 — Mô Phỏng Vật Lý 60 FPS | Vật Lý Xuân Trường</title>
+    <link rel="stylesheet" href="assets/lucian-uxui.css?v=20261124">
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2954,6 +2960,201 @@
             .dgnl-cards-grid { grid-template-columns: 1fr; gap: 12px; }
             .dgnl-btn-pill.suggest { width: 100%; }
         }
+        @media (max-width: 480px) {
+            .top-bar .brand-glow-text { display: none !important; }
+            .top-bar { padding: 0 10px !important; }
+            .u046-kbd-badge { display: none; }
+        }
+
+        /* ─── LUCIAN UX/UI PHASE 3 (#046, #092, #416, #426) · LOBBY ONLY · ZERO AI GLOW ─── */
+        #lobby-stage-tabs.u416-tl,
+        #lobby-status-pills.u416-tl {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: nowrap;
+            gap: 4px;
+            padding: 4px;
+            max-width: 100%;
+            overflow-x: auto;
+            scrollbar-width: none;
+            border-radius: 999px;
+            background: #0a1224;
+            border: 1px solid rgba(56, 189, 248, 0.22);
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.28);
+        }
+        #lobby-stage-tabs::-webkit-scrollbar,
+        #lobby-status-pills::-webkit-scrollbar { display: none; }
+        #lobby-stage-tabs .u416-th,
+        #lobby-status-pills .u416-th {
+            position: absolute;
+            top: 4px;
+            bottom: 4px;
+            left: var(--l, 4px);
+            width: var(--w, 0px);
+            border-radius: 999px;
+            background: #0284c7;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+            transition: left var(--tl, .46s) cubic-bezier(.3, 1.25, .45, 1), width var(--tw, .34s) cubic-bezier(.3, 1.25, .45, 1);
+            pointer-events: none;
+            z-index: 0;
+        }
+        #lobby-status-pills .u416-th {
+            background: #e2e8f0;
+        }
+        #lobby-stage-tabs .dgnl-stage-tab,
+        #lobby-status-pills .dgnl-status-pill {
+            position: relative;
+            z-index: 1;
+            flex: 0 0 auto;
+            white-space: nowrap;
+            background: transparent !important;
+            border-color: transparent !important;
+            box-shadow: none !important;
+            transition: color .18s ease;
+        }
+        #lobby-stage-tabs .dgnl-stage-tab.active { color: #ffffff !important; }
+        #lobby-status-pills .dgnl-status-pill.active { color: #0f172a !important; }
+
+        .dgnl-metric-value .u426-n {
+            display: inline-flex;
+            align-items: baseline;
+            line-height: 1.2;
+            font-variant-numeric: tabular-nums;
+            overflow: hidden;
+        }
+        .dgnl-metric-value .u426-n > i { font-style: normal; white-space: pre; }
+        .dgnl-metric-value .u426-col {
+            display: inline-block;
+            height: 1.2em;
+            overflow: hidden;
+            line-height: 1.2em;
+        }
+        .dgnl-metric-value .u426-col > span {
+            display: flex;
+            flex-direction: column;
+            transform: translateY(calc(var(--d, 0) * -1.2em));
+            transition: transform .88s cubic-bezier(.22, 1, .36, 1);
+            transition-delay: calc(var(--k, 0) * 55ms);
+        }
+        .dgnl-metric-value .u426-col > span > b {
+            display: block;
+            height: 1.2em;
+            line-height: 1.2em;
+            font-weight: inherit;
+        }
+
+        .u092-x {
+            width: 24px; height: 24px; flex: none; border: 0; padding: 0; border-radius: 50%;
+            display: grid; place-items: center; background: transparent; color: #94a3b8; cursor: pointer;
+            transition: background-color .16s, color .16s, transform .25s var(--ux-spring);
+        }
+        .u092-x:hover { background: rgba(148, 163, 184, 0.16); color: #f8fafc; }
+        .u092-x[hidden] { display: none; }
+        .u092-x svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2.3; stroke-linecap: round; }
+
+        .u092-none {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 28px 20px;
+            background: rgba(13, 22, 44, 0.88);
+            border: 1px solid rgba(56, 189, 248, 0.22);
+            border-radius: 16px;
+        }
+        .u092-art { width: 136px; height: 78px; margin-bottom: 6px; }
+        .u092-art svg { width: 100%; height: 100%; overflow: visible; }
+        .u092-shelf { stroke: rgba(148, 163, 184, 0.28); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 2 8; }
+        .u092-lens { animation: u092-scan 3.6s ease-in-out infinite; }
+        @keyframes u092-scan {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(40px, 8px) rotate(8deg); }
+            50% { transform: translate(68px, -3px) rotate(-4deg); }
+            75% { transform: translate(24px, -6px) rotate(-9deg); }
+        }
+        .u092-lens circle { fill: rgba(56, 189, 248, 0.12); stroke: #e2e8f0; stroke-width: 4; }
+        .u092-lens path { stroke: #e2e8f0; stroke-width: 6; stroke-linecap: round; }
+        .u092-nt { font-size: 16px; font-weight: 800; color: #f8fafc; margin-bottom: 4px; }
+        .u092-ns { font-size: 13px; color: #94a3b8; margin-bottom: 14px; }
+        .u092-sgs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 560px; }
+        .u092-sg {
+            display: inline-flex; align-items: center; gap: 8px; min-height: 38px; padding: 6px 14px;
+            border-radius: 999px; border: 1px solid rgba(56, 189, 248, 0.34);
+            background: rgba(15, 23, 42, 0.9); color: #e2e8f0; font-size: 12.5px; font-weight: 700;
+            cursor: pointer; transition: border-color .16s, background-color .16s, transform .2s var(--ux-spring);
+        }
+        .u092-sg:hover { border-color: #38bdf8; background: rgba(2, 132, 199, 0.22); color: #ffffff; transform: translateY(-1px); }
+        .u092-sg s { color: #94a3b8; text-decoration-color: #ef4444; font-weight: 600; }
+        .u092-sg b { color: #38bdf8; }
+        .dgnl-mini-card.u092-in { animation: u092-card-up .42s var(--ux-spring) backwards; animation-delay: calc(var(--i, 0) * 38ms); }
+        @keyframes u092-card-up { from { opacity: 0; transform: translateY(12px) scale(.97); } }
+
+        .u046-trigger {
+            display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 12px;
+            border-radius: 999px; background: #0d162c; border: 1px solid rgba(56, 189, 248, 0.25);
+            color: #cbd5e1; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap;
+            transition: border-color .16s, color .16s, background-color .16s;
+        }
+        .u046-trigger:hover { border-color: #38bdf8; color: #ffffff; background: #13203d; }
+        .u046-kbd-badge {
+            display: inline-flex; align-items: center; height: 19px; padding: 0 6px; border-radius: 5px;
+            background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(148, 163, 184, 0.28);
+            font-size: 10.5px; font-weight: 700; color: #94a3b8;
+        }
+        #dgnl-cmd-backdrop {
+            position: fixed; inset: 0; z-index: 99992; background: rgba(2, 6, 23, 0.72);
+            backdrop-filter: blur(6px); display: flex; align-items: flex-start; justify-content: center;
+            padding: 84px 14px 20px; opacity: 0; visibility: hidden; pointer-events: none;
+            transition: opacity .22s ease, visibility 0s .22s;
+        }
+        #dgnl-cmd-backdrop.is-open { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity .22s ease, visibility 0s; }
+        #dgnl-cmd-backdrop .u046 { position: relative; width: min(540px, 100%); height: min(470px, calc(100vh - 110px)); }
+        #dgnl-cmd-backdrop .u046-pal {
+            position: absolute; inset: 0; display: flex; flex-direction: column; border-radius: 20px;
+            background: #0f172a; border: 1px solid rgba(56, 189, 248, 0.28);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.56); clip-path: inset(0 0 0 0 round 20px);
+            transition: clip-path .4s var(--ux-ease), transform .34s var(--ux-spring), opacity .22s;
+        }
+        #dgnl-cmd-backdrop:not(.is-open) .u046-pal { clip-path: inset(0 0 calc(100% - 54px) 0 round 22px); transform: translateY(-8px) scale(.98); opacity: .5; }
+        #dgnl-cmd-backdrop .u046-field {
+            display: flex; align-items: center; gap: 10px; height: 54px; flex: none; padding: 0 14px 0 16px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        #dgnl-cmd-backdrop .u046-field svg { width: 18px; height: 18px; flex: none; fill: none; stroke: #94a3b8; stroke-width: 2; stroke-linecap: round; }
+        #dgnl-cmd-backdrop .u046-in { flex: 1; min-width: 0; height: 100%; border: 0; background: none; font-size: 15px; font-weight: 560; color: #f8fafc; outline: none; }
+        #dgnl-cmd-backdrop .u046-in::placeholder { color: #64748b; }
+        #dgnl-cmd-backdrop .u046-body { position: relative; flex: 1; min-height: 0; overflow-y: auto; padding: 6px 8px; }
+        #dgnl-cmd-backdrop .u046-hl {
+            position: absolute; left: 8px; right: 8px; top: 0; height: 46px; border-radius: 12px;
+            background: rgba(56, 189, 248, 0.14); box-shadow: inset 3px 0 0 #38bdf8;
+            transform: translateY(var(--y, 0)); transition: transform .32s var(--ux-spring), opacity .18s; pointer-events: none;
+        }
+        #dgnl-cmd-backdrop .u046-list { position: relative; margin: 0; padding: 0; list-style: none; }
+        #dgnl-cmd-backdrop .u046-g { padding: 10px 10px 5px; font-size: 11px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: #64748b; }
+        #dgnl-cmd-backdrop .u046-op { display: flex; align-items: center; gap: 11px; height: 46px; padding: 0 10px; border-radius: 12px; font-size: 13.5px; font-weight: 600; color: #cbd5e1; cursor: pointer; }
+        #dgnl-cmd-backdrop .u046-op[aria-selected="true"] { color: #ffffff; }
+        #dgnl-cmd-backdrop .u046-op mark { background: none; color: #38bdf8; font-weight: 800; }
+        #dgnl-cmd-backdrop .u046-op-lbl { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        #dgnl-cmd-backdrop .u046-op-sub { font-size: 11.5px; color: #94a3b8; white-space: nowrap; flex-shrink: 0; }
+        #dgnl-cmd-backdrop .u046-ic {
+            width: 28px; height: 28px; flex: none; border-radius: 8px; display: grid; place-items: center;
+            background: #1e293b; border: 1px solid rgba(148, 163, 184, 0.22); color: #38bdf8; font-size: 12px;
+        }
+        #dgnl-cmd-backdrop .u046-empty { padding: 38px 14px; text-align: center; font-size: 14px; color: #94a3b8; }
+        #dgnl-cmd-backdrop .u046-empty b { display: block; margin-bottom: 4px; color: #f8fafc; }
+        #dgnl-cmd-backdrop .u046-foot {
+            display: flex; align-items: center; justify-content: space-between; gap: 10px; height: 42px; flex: none;
+            padding: 0 14px; border-top: 1px solid rgba(148, 163, 184, 0.2); font-size: 12px; font-weight: 600; color: #94a3b8;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #lobby-stage-tabs .u416-th, #lobby-status-pills .u416-th,
+            .dgnl-metric-value .u426-col > span, .u092-lens, .dgnl-mini-card.u092-in,
+            #dgnl-cmd-backdrop .u046-pal, #dgnl-cmd-backdrop .u046-hl {
+                transition: none !important; animation: none !important; transition-delay: 0s !important; animation-delay: 0s !important;
+            }
+        }
     </style>
 </head>
 <body class="dgnl-lobby-active">
@@ -3685,23 +3886,33 @@
 
             <div class="dgnl-catalog-panel">
                 <div class="dgnl-filter-bar">
-                    <div class="dgnl-stage-tabs" id="lobby-stage-tabs">
-                        <button type="button" class="dgnl-stage-tab active" data-stage="ALL" onclick="setLobbyStageFilter('ALL')">Tất cả (50)</button>
-                        <button type="button" class="dgnl-stage-tab" data-stage="KHAO_SAT_FREE" onclick="setLobbyStageFilter('KHAO_SAT_FREE')">Khảo sát Free (1–5)</button>
-                        <button type="button" class="dgnl-stage-tab" data-stage="THUC_CHIEN_8PLUS" onclick="setLobbyStageFilter('THUC_CHIEN_8PLUS')">Thực chiến 8+ (6–20)</button>
-                        <button type="button" class="dgnl-stage-tab" data-stage="VE_DICH_9PLUS" onclick="setLobbyStageFilter('VE_DICH_9PLUS')">Về đích 9+ (21–40)</button>
-                        <button type="button" class="dgnl-stage-tab" data-stage="TONG_DUYET_2026" onclick="setLobbyStageFilter('TONG_DUYET_2026')">Tổng duyệt (41–50)</button>
+                    <div class="dgnl-stage-tabs u416-tl" id="lobby-stage-tabs" role="tablist" aria-label="Phân nhóm giai đoạn đề">
+                        <span class="u416-th" id="dgnl-stage-thumb" aria-hidden="true"></span>
+                        <button type="button" class="dgnl-stage-tab active" role="tab" aria-selected="true" tabindex="0" data-stage="ALL" onclick="setLobbyStageFilter('ALL')">Tất cả (50)</button>
+                        <button type="button" class="dgnl-stage-tab" role="tab" aria-selected="false" tabindex="-1" data-stage="KHAO_SAT_FREE" onclick="setLobbyStageFilter('KHAO_SAT_FREE')">Khảo sát Free (1–5)</button>
+                        <button type="button" class="dgnl-stage-tab" role="tab" aria-selected="false" tabindex="-1" data-stage="THUC_CHIEN_8PLUS" onclick="setLobbyStageFilter('THUC_CHIEN_8PLUS')">Thực chiến 8+ (6–20)</button>
+                        <button type="button" class="dgnl-stage-tab" role="tab" aria-selected="false" tabindex="-1" data-stage="VE_DICH_9PLUS" onclick="setLobbyStageFilter('VE_DICH_9PLUS')">Về đích 9+ (21–40)</button>
+                        <button type="button" class="dgnl-stage-tab" role="tab" aria-selected="false" tabindex="-1" data-stage="TONG_DUYET_2026" onclick="setLobbyStageFilter('TONG_DUYET_2026')">Tổng duyệt (41–50)</button>
                     </div>
                     <div class="dgnl-filter-subrow">
-                        <div class="dgnl-status-pills" id="lobby-status-pills">
-                            <button type="button" class="dgnl-status-pill active" data-status="ALL" onclick="setLobbyStatusFilter('ALL')">Tất cả</button>
-                            <button type="button" class="dgnl-status-pill" data-status="in_progress" onclick="setLobbyStatusFilter('in_progress')">Làm dở</button>
-                            <button type="button" class="dgnl-status-pill" data-status="new" onclick="setLobbyStatusFilter('new')">Chưa làm</button>
-                            <button type="button" class="dgnl-status-pill" data-status="done" onclick="setLobbyStatusFilter('done')">Đã thi</button>
+                        <div class="dgnl-status-pills u416-tl" id="lobby-status-pills" role="tablist" aria-label="Lọc trạng thái đề">
+                            <span class="u416-th" id="dgnl-status-thumb" aria-hidden="true"></span>
+                            <button type="button" class="dgnl-status-pill active" role="tab" aria-selected="true" tabindex="0" data-status="ALL" onclick="setLobbyStatusFilter('ALL')">Tất cả</button>
+                            <button type="button" class="dgnl-status-pill" role="tab" aria-selected="false" tabindex="-1" data-status="in_progress" onclick="setLobbyStatusFilter('in_progress')">Làm dở</button>
+                            <button type="button" class="dgnl-status-pill" role="tab" aria-selected="false" tabindex="-1" data-status="new" onclick="setLobbyStatusFilter('new')">Chưa làm</button>
+                            <button type="button" class="dgnl-status-pill" role="tab" aria-selected="false" tabindex="-1" data-status="done" onclick="setLobbyStatusFilter('done')">Đã thi</button>
                         </div>
-                        <div class="dgnl-search-box">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" class="dgnl-search-input" id="lobby-search-input" placeholder="Tìm nhanh đề (VD: 01, 21, khảo sát...)" oninput="setLobbySearchQuery(this.value)">
+                        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                            <button type="button" class="u046-trigger" onclick="if(typeof vlxtOpenDgnlPalette==='function') vlxtOpenDgnlPalette()" aria-label="Tìm nhanh trong 50 đề (Ctrl+K)">
+                                <i class="fa-solid fa-bolt"></i><span>Chọn nhanh 50 đề</span><kbd class="u046-kbd-badge">Ctrl K</kbd>
+                            </button>
+                            <div class="dgnl-search-box">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" class="dgnl-search-input" id="lobby-search-input" placeholder="Tìm nhanh đề (VD: 01, 21, khảo sát...)" oninput="setLobbySearchQuery(this.value)">
+                                <button type="button" class="u092-x" id="lobby-search-clear" hidden aria-label="Xóa tìm kiếm" onclick="clearLobbySearch()">
+                                    <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -4220,7 +4431,7 @@
     </div>
 
     <!-- SCRIPTS HỆ THỐNG -->
-    <script src="auth.js?v=20261118a"></script>
+    <script src="auth.js?v=20261124"></script>
     <script src="wrong-bank.js?v=20261118a"></script>
     <script src="vnpay-service.js"></script>
     <script src="freemium-flow.js"></script>
@@ -5275,9 +5486,21 @@
                 badgeEl.className = 'dgnl-level-badge ' + lvl.cls;
                 badgeEl.textContent = lvl.text;
             }
-            if (doneEl) doneEl.textContent = doneCount + ' / 50';
-            if (avgEl) avgEl.textContent = doneCount > 0 ? formatScoreComma(avgScore) : '--';
-            if (bestEl) bestEl.textContent = bestScore > 0 ? formatScoreComma(bestScore) : '--';
+            if (doneEl) {
+                var doneTxt = doneCount + ' / 50';
+                doneEl.textContent = doneTxt;
+                if (typeof vlxtDgnlEnhanceOdo === 'function') vlxtDgnlEnhanceOdo(doneEl, doneTxt);
+            }
+            if (avgEl) {
+                var avgTxt = doneCount > 0 ? formatScoreComma(avgScore) : '--';
+                avgEl.textContent = avgTxt;
+                if (typeof vlxtDgnlEnhanceOdo === 'function') vlxtDgnlEnhanceOdo(avgEl, avgTxt);
+            }
+            if (bestEl) {
+                var bestTxt = bestScore > 0 ? formatScoreComma(bestScore) : '--';
+                bestEl.textContent = bestTxt;
+                if (typeof vlxtDgnlEnhanceOdo === 'function') vlxtDgnlEnhanceOdo(bestEl, bestTxt);
+            }
             if (pausedCountEl) pausedCountEl.textContent = activeLock ? ('Đang làm dở (Đề ' + pad2(activeLock.examNumber) + ')') : 'Đang làm dở (0 đề)';
             if (pausedChipsEl) {
                 if (activeLock) {
@@ -5382,16 +5605,55 @@
 
             var moreBar = document.getElementById('lobby-grid-more-bar');
             if (!filtered.length) {
-                grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:34px;color:#94a3b8;background:#0d162c;border:1px solid rgba(56,189,248,0.18);border-radius:16px;">Không có đề phù hợp bộ lọc.</div>';
+                var sgsHtml = '';
+                function countIf(stF, statusF, queryStr) {
+                    var qCheck = String(queryStr || '').trim().toLowerCase();
+                    return list.filter(function(item) {
+                        if (stF !== 'ALL' && item.purpose !== stF) return false;
+                        var st = getLobbyExamStatus(item.examNumber, histMap);
+                        if (statusF !== 'ALL' && st !== statusF) return false;
+                        if (qCheck) {
+                            var hay = (item.tenDe + ' ' + getShortLobbySubtitle(item) + ' de ' + item.examNumber + ' ' + pad2(item.examNumber)).toLowerCase();
+                            if (hay.indexOf(qCheck) === -1) return false;
+                        }
+                        return true;
+                    }).length;
+                }
+                if (q) {
+                    var cntNoQ = countIf(lobbyStageFilter, lobbyStatusFilter, '');
+                    sgsHtml += '<button type="button" class="u092-sg" onclick="loosenLobbyFilter(\'query\')"><span>Bỏ từ khóa <s>“' + escHtml(lobbySearchQuery.trim()) + '”</s></span><b>→ ' + cntNoQ + ' đề</b></button>';
+                }
+                if (lobbyStatusFilter !== 'ALL') {
+                    var cntNoStatus = countIf(lobbyStageFilter, 'ALL', lobbySearchQuery);
+                    sgsHtml += '<button type="button" class="u092-sg" onclick="loosenLobbyFilter(\'status\')"><span>Mọi trạng thái</span><b>→ ' + cntNoStatus + ' đề</b></button>';
+                }
+                if (lobbyStageFilter !== 'ALL') {
+                    var cntNoStage = countIf('ALL', lobbyStatusFilter, lobbySearchQuery);
+                    sgsHtml += '<button type="button" class="u092-sg" onclick="loosenLobbyFilter(\'stage\')"><span>Tất cả 50 đề (mọi giai đoạn)</span><b>→ ' + cntNoStage + ' đề</b></button>';
+                }
+                sgsHtml += '<button type="button" class="u092-sg" onclick="loosenLobbyFilter(\'all\')"><span>Đặt lại toàn bộ bộ lọc</span><b>' + list.length + ' đề</b></button>';
+
+                grid.innerHTML =
+                    '<div class="u092-none">' +
+                        '<div class="u092-art" aria-hidden="true">' +
+                            '<svg viewBox="0 0 150 84"><path class="u092-shelf" d="M8 26h134M8 50h134M8 74h134"/><g class="u092-lens"><circle cx="34" cy="36" r="18"/><path d="M47 49l13 13"/></g></svg>' +
+                        '</div>' +
+                        '<p class="u092-nt">Không có đề phù hợp bộ lọc hiện tại</p>' +
+                        '<p class="u092-ns">Thử nới lỏng nhanh một tiêu chí bên dưới để mở lại danh sách đề:</p>' +
+                        '<div class="u092-sgs">' + sgsHtml + '</div>' +
+                    '</div>';
                 if (moreBar) moreBar.style.display = 'none';
+                window._dgnlAnimateCardsOnce = false;
                 return;
             }
 
             var isSearching = q.length > 0;
             var visibleCount = isSearching ? filtered.length : Math.min(filtered.length, Math.max(8, Number(lobbyVisibleLimit || 8)));
             var displayList = filtered.slice(0, visibleCount);
+            var doCardAnim = !!window._dgnlAnimateCardsOnce;
+            window._dgnlAnimateCardsOnce = false;
 
-            grid.innerHTML = displayList.map(function(item) {
+            grid.innerHTML = displayList.map(function(item, dIdx) {
                 var num = item.examNumber;
                 var st = getLobbyExamStatus(num, histMap);
                 var s = DgnlSessionStore.get(num);
@@ -5414,7 +5676,7 @@
                     ? '<span style="color:#fbbf24;font-weight:700;"><i class="fa-solid fa-lock"></i> Đang khóa</span>'
                     : '<span style="color:' + (isSel ? '#38bdf8' : '#94a3b8') + ';font-weight:700;">' + (st === 'done' ? 'Thi lại' : (st === 'in_progress' ? 'Tiếp tục' : 'Chọn')) + '</span>';
 
-                return '<div class="dgnl-mini-card ' + (isSel ? 'selected ' : '') + (isLockedOther ? 'locked-other ' : '') + (st === 'in_progress' ? 'in-progress' : (st === 'done' ? 'done' : '')) + '" data-lobby-exam="' + num + '" onclick="selectLobbyExam(' + num + ')">' +
+                return '<div class="dgnl-mini-card ' + (doCardAnim ? 'u092-in ' : '') + (isSel ? 'selected ' : '') + (isLockedOther ? 'locked-other ' : '') + (st === 'in_progress' ? 'in-progress' : (st === 'done' ? 'done' : '')) + '" style="--i:' + dIdx + '" data-lobby-exam="' + num + '" onclick="selectLobbyExam(' + num + ')">' +
                     '<div class="dgnl-mini-top">' +
                         '<span class="dgnl-badge dgnl-badge-num">ĐỀ ' + pad2(num) + '</span>' +
                         rightBadge +
@@ -5476,6 +5738,7 @@
             renderLobbyAbilityHeader();
             renderLobbyPreviewPanel();
             renderLobbyCatalogGrid();
+            if (typeof vlxtSyncDgnlTabs === 'function') vlxtSyncDgnlTabs(true);
         }
 
         window.selectLobbyExam = function(examNum) {
@@ -5488,8 +5751,12 @@
             lobbyStageFilter = stage || 'ALL';
             lobbyVisibleLimit = 8;
             document.querySelectorAll('#lobby-stage-tabs .dgnl-stage-tab').forEach(function(btn) {
-                btn.classList.toggle('active', btn.getAttribute('data-stage') === lobbyStageFilter);
+                var on = btn.getAttribute('data-stage') === lobbyStageFilter;
+                btn.classList.toggle('active', on);
+                btn.setAttribute('aria-selected', String(on));
+                btn.tabIndex = on ? 0 : -1;
             });
+            if (typeof vlxtSyncDgnlTabs === 'function') vlxtSyncDgnlTabs(false, 'stage');
             renderLobbyCatalogGrid();
         };
 
@@ -5497,13 +5764,58 @@
             lobbyStatusFilter = st || 'ALL';
             lobbyVisibleLimit = 8;
             document.querySelectorAll('#lobby-status-pills .dgnl-status-pill').forEach(function(btn) {
-                btn.classList.toggle('active', btn.getAttribute('data-status') === lobbyStatusFilter);
+                var on = btn.getAttribute('data-status') === lobbyStatusFilter;
+                btn.classList.toggle('active', on);
+                btn.setAttribute('aria-selected', String(on));
+                btn.tabIndex = on ? 0 : -1;
             });
+            if (typeof vlxtSyncDgnlTabs === 'function') vlxtSyncDgnlTabs(false, 'status');
             renderLobbyCatalogGrid();
         };
 
         window.setLobbySearchQuery = function(val) {
             lobbySearchQuery = String(val || '');
+            var clr = document.getElementById('lobby-search-clear');
+            if (clr) clr.hidden = !lobbySearchQuery.trim();
+            renderLobbyCatalogGrid();
+        };
+
+        window.clearLobbySearch = function() {
+            var inp = document.getElementById('lobby-search-input');
+            if (inp) { inp.value = ''; inp.focus({ preventScroll: true }); }
+            window.setLobbySearchQuery('');
+        };
+
+        window.loosenLobbyFilter = function(kind) {
+            window._dgnlAnimateCardsOnce = true;
+            if (kind === 'query') {
+                window.clearLobbySearch();
+                return;
+            }
+            if (kind === 'status') {
+                window.setLobbyStatusFilter('ALL');
+                return;
+            }
+            if (kind === 'stage') {
+                window.setLobbyStageFilter('ALL');
+                return;
+            }
+            lobbyStageFilter = 'ALL';
+            lobbyStatusFilter = 'ALL';
+            lobbySearchQuery = '';
+            var inp = document.getElementById('lobby-search-input');
+            if (inp) inp.value = '';
+            var clr = document.getElementById('lobby-search-clear');
+            if (clr) clr.hidden = true;
+            document.querySelectorAll('#lobby-stage-tabs .dgnl-stage-tab').forEach(function(b) {
+                var on = b.getAttribute('data-stage') === 'ALL';
+                b.classList.toggle('active', on); b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1;
+            });
+            document.querySelectorAll('#lobby-status-pills .dgnl-status-pill').forEach(function(b) {
+                var on = b.getAttribute('data-status') === 'ALL';
+                b.classList.toggle('active', on); b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1;
+            });
+            if (typeof vlxtSyncDgnlTabs === 'function') vlxtSyncDgnlTabs(false);
             renderLobbyCatalogGrid();
         };
 
@@ -5800,6 +6112,7 @@
             }
 
             closeSmartPopupToLobby();
+            if (typeof vlxtCloseDgnlPalette === 'function') vlxtCloseDgnlPalette();
             document.body.classList.remove('dgnl-lobby-active');
             hasExamStarted = false;
             isViewingReport = false;
@@ -7267,6 +7580,273 @@
                 if (scBtn) scBtn.classList.remove('active');
             }
         });
+</script>
+<script>
+// ─── LUCIAN UX/UI PHASE 3 RUNTIME (#046, #416, #426) — LOBBY ONLY ───
+(function () {
+  if (typeof document === 'undefined' || typeof window === 'undefined') return;
+
+  // #416 Tablist thumb sync + Arrow keyboard navigation
+  var _lastIdx = { stage: 0, status: 0 };
+  function _syncOneTabBar(barId, thumbId, btnSel, key, instant) {
+    var tl = document.getElementById(barId), th = document.getElementById(thumbId);
+    if (!tl || !th) return;
+    var btns = Array.prototype.slice.call(tl.querySelectorAll(btnSel));
+    if (!btns.length) return;
+    var curIdx = Math.max(0, btns.findIndex(function (b) { return b.classList.contains('active'); }));
+    var active = btns[curIdx];
+    var dir = curIdx >= (_lastIdx[key] || 0) ? 1 : -1;
+    _lastIdx[key] = curIdx;
+    if (instant) th.style.transition = 'none';
+    th.style.setProperty('--tl', dir > 0 ? '.50s' : '.34s');
+    th.style.setProperty('--tw', dir > 0 ? '.34s' : '.50s');
+    th.style.setProperty('--l', active.offsetLeft + 'px');
+    th.style.setProperty('--w', active.offsetWidth + 'px');
+    if (instant) {
+      void th.offsetWidth;
+      th.style.transition = '';
+    } else if (typeof active.scrollIntoView === 'function') {
+      try { active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' }); } catch (e) {}
+    }
+    if (!tl.dataset.u416Bound) {
+      tl.dataset.u416Bound = '1';
+      tl.addEventListener('keydown', function (e) {
+        var bList = Array.prototype.slice.call(tl.querySelectorAll(btnSel));
+        var cur = Math.max(0, bList.findIndex(function (b) { return b.classList.contains('active'); }));
+        var to = e.key === 'ArrowRight' ? cur + 1 : e.key === 'ArrowLeft' ? cur - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? bList.length - 1 : null;
+        if (to === null || !bList.length) return;
+        e.preventDefault();
+        var nx = (to + bList.length) % bList.length;
+        bList[nx].click();
+        bList[nx].focus({ preventScroll: true });
+      });
+    }
+  }
+
+  window.vlxtSyncDgnlTabs = function (instant, onlyWhich) {
+    if (!onlyWhich || onlyWhich === 'stage') {
+      _syncOneTabBar('lobby-stage-tabs', 'dgnl-stage-thumb', '.dgnl-stage-tab', 'stage', instant);
+    }
+    if (!onlyWhich || onlyWhich === 'status') {
+      _syncOneTabBar('lobby-status-pills', 'dgnl-status-thumb', '.dgnl-status-pill', 'status', instant);
+    }
+  };
+
+  window.addEventListener('resize', function () {
+    if (document.body && document.body.classList.contains('dgnl-lobby-active')) {
+      window.vlxtSyncDgnlTabs(true);
+    }
+  });
+
+  // #426 Odometer KPI digit drums
+  var _DIG = '01234567890123456789'.split('').map(function (d) { return '<b>' + d + '</b>'; }).join('');
+  window.vlxtDgnlEnhanceOdo = function (el, rawStr) {
+    if (!el || typeof rawStr !== 'string' || !/\d/.test(rawStr)) return;
+    if (el.getAttribute('data-odo-last') === rawStr && el.querySelector('.u426-n')) return;
+    el.setAttribute('data-odo-last', rawStr);
+    el.setAttribute('aria-label', rawStr);
+    var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    el.innerHTML = '';
+    var wrap = document.createElement('span');
+    wrap.className = 'u426-n';
+    wrap.setAttribute('aria-hidden', 'true');
+    var cols = [], k = 0;
+    rawStr.split('').forEach(function (ch) {
+      if (/\d/.test(ch)) {
+        var c = document.createElement('span');
+        c.className = 'u426-col';
+        c.innerHTML = '<span>' + _DIG + '</span>';
+        c.firstChild.style.setProperty('--k', k++);
+        c.firstChild.setAttribute('data-d', ch);
+        wrap.appendChild(c);
+        cols.push(c.firstChild);
+      } else {
+        var it = document.createElement('i');
+        it.textContent = ch;
+        wrap.appendChild(it);
+      }
+    });
+    el.appendChild(wrap);
+    function roll(from) {
+      if (rm) {
+        cols.forEach(function (c) { c.style.setProperty('--d', Number(c.getAttribute('data-d')) + 10); });
+        return;
+      }
+      cols.forEach(function (c) {
+        var d = Number(c.getAttribute('data-d'));
+        c.style.transition = 'none';
+        c.style.setProperty('--d', from === null ? d : from);
+      });
+      void document.body.offsetWidth;
+      cols.forEach(function (c) {
+        c.style.transition = '';
+        c.style.setProperty('--d', Number(c.getAttribute('data-d')) + 10);
+      });
+    }
+    roll(0);
+    var tile = el.closest ? el.closest('.dgnl-metric-tile') : null;
+    if (tile && !tile.dataset.u426Hover) {
+      tile.dataset.u426Hover = '1';
+      var lastH = 0;
+      tile.addEventListener('pointerenter', function () {
+        if (rm || Date.now() - lastH < 900) return;
+        lastH = Date.now();
+        var liveCols = Array.prototype.slice.call(tile.querySelectorAll('.u426-col > span'));
+        if (!liveCols.length) return;
+        liveCols.forEach(function (c) { c.style.transition = 'none'; c.style.setProperty('--d', Number(c.getAttribute('data-d'))); });
+        void document.body.offsetWidth;
+        liveCols.forEach(function (c) { c.style.transition = ''; c.style.setProperty('--d', Number(c.getAttribute('data-d')) + 10); });
+      });
+    }
+  };
+
+  // #046 Command Palette for 50 Exams (Lobby ONLY!)
+  var _cmdBd = null, _cmdIn = null, _cmdList = null, _cmdHl = null, _cmdBody = null, _cmdOpts = [], _cmdItems = [], _cmdAct = 0;
+  function _foldVi(str) {
+    return String(str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase().trim();
+  }
+  function _esc(s) {
+    return typeof escHtml === 'function' ? escHtml(s) : String(s || '').replace(/[&<>"]/g, function (c) { return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]; });
+  }
+  function _markText(txt, rawQ) {
+    var s = String(txt || ''), q = String(rawQ || '').trim();
+    if (!q) return _esc(s);
+    var idx = s.toLowerCase().indexOf(q.toLowerCase());
+    if (idx < 0) return _esc(s);
+    return _esc(s.slice(0, idx)) + '<mark>' + _esc(s.slice(idx, idx + q.length)) + '</mark>' + _esc(s.slice(idx + q.length));
+  }
+  function _buildDgnlItems() {
+    var items = [];
+    if (typeof getManifestList === 'function') {
+      var list = getManifestList();
+      var hist = typeof getNormalizedHistoryMap === 'function' ? getNormalizedHistoryMap() : {};
+      var lock = typeof getActiveInProgressExam === 'function' ? getActiveInProgressExam() : null;
+      list.forEach(function (ex) {
+        var num = ex.examNumber;
+        var label = 'Đề ' + (num < 10 ? '0' + num : num) + ' · ' + (typeof getShortLobbySubtitle === 'function' ? getShortLobbySubtitle(ex) : (ex.tenDe || ''));
+        var st = hist[num] ? ('Đã thi · ' + hist[num].bestScore + 'đ') : ((lock && Number(lock.examNumber) === Number(num)) ? 'Đang làm dở' : ((ex.modelCount || 0) + ' MH 60 FPS'));
+        items.push({
+          group: 'Kho 50 Đề THPTQG 2026',
+          title: label,
+          sub: st,
+          icon: hist[num] ? 'fa-solid fa-circle-check' : (num <= 5 ? 'fa-solid fa-bolt' : 'fa-solid fa-file-lines'),
+          examNum: num
+        });
+      });
+    }
+    return items;
+  }
+  function _ensureCmd() {
+    if (_cmdBd) return;
+    _cmdBd = document.createElement('div');
+    _cmdBd.id = 'dgnl-cmd-backdrop';
+    _cmdBd.setAttribute('aria-hidden', 'true');
+    _cmdBd.innerHTML =
+      '<div class="ux u046" role="dialog" aria-modal="true" aria-label="Chọn nhanh 50 đề THPTQG">' +
+        '<div class="u046-pal">' +
+          '<label class="u046-field">' +
+            '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>' +
+            '<input class="u046-in" type="text" role="combobox" aria-expanded="true" aria-autocomplete="list" autocomplete="off" spellcheck="false" placeholder="Gõ số đề hoặc chủ đề (VD: 01, Thực chiến, Về đích)...">' +
+            '<kbd class="u046-kbd-badge">esc</kbd>' +
+          '</label>' +
+          '<div class="u046-body"><span class="u046-hl" aria-hidden="true"></span><ul class="u046-list" role="listbox"></ul></div>' +
+          '<div class="u046-foot" aria-hidden="true"><span>↑↓ Di chuyển · ↵ Chọn đề xem chi tiết</span><span>Ctrl+K / Esc</span></div>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(_cmdBd);
+    _cmdIn = _cmdBd.querySelector('.u046-in');
+    _cmdList = _cmdBd.querySelector('.u046-list');
+    _cmdHl = _cmdBd.querySelector('.u046-hl');
+    _cmdBody = _cmdBd.querySelector('.u046-body');
+    _cmdBd.addEventListener('click', function (e) { if (e.target === _cmdBd) window.vlxtCloseDgnlPalette(); });
+    _cmdIn.addEventListener('input', _renderCmd);
+    _cmdIn.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); _markCmd(_cmdAct + (e.key === 'ArrowDown' ? 1 : -1)); }
+      else if (e.key === 'Enter' && !e.isComposing && e.keyCode !== 229) { e.preventDefault(); _runCmd(_cmdAct); }
+      else if (e.key === 'Escape') { e.preventDefault(); window.vlxtCloseDgnlPalette(); }
+    });
+  }
+  function _markCmd(i, instant) {
+    if (!_cmdOpts.length) { _cmdIn.removeAttribute('aria-activedescendant'); return; }
+    _cmdAct = (i + _cmdOpts.length) % _cmdOpts.length;
+    _cmdOpts.forEach(function (o, k) { o.setAttribute('aria-selected', String(k === _cmdAct)); });
+    _cmdIn.setAttribute('aria-activedescendant', _cmdOpts[_cmdAct].id);
+    if (instant) _cmdHl.style.transition = 'none';
+    var o = _cmdOpts[_cmdAct], top = o.offsetTop;
+    _cmdHl.style.setProperty('--y', top + 'px');
+    if (instant) { void _cmdHl.offsetWidth; _cmdHl.style.transition = ''; }
+    if (top + o.offsetHeight > _cmdBody.scrollTop + _cmdBody.clientHeight) _cmdBody.scrollTop = top + o.offsetHeight - _cmdBody.clientHeight + 6;
+    else if (top < _cmdBody.scrollTop + 28) _cmdBody.scrollTop = _cmdAct === 0 ? 0 : Math.max(0, top - 28);
+  }
+  function _runCmd(i) {
+    var it = _cmdItems[i];
+    if (!it) return;
+    window.vlxtCloseDgnlPalette();
+    if (typeof window.selectLobbyExam === 'function') {
+      window.selectLobbyExam(it.examNum);
+      var pv = document.getElementById('lobby-preview-panel');
+      if (pv && typeof pv.scrollIntoView === 'function') {
+        try { pv.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (err) {}
+      }
+      if (typeof window.vlxtToast === 'function') {
+        window.vlxtToast('Đã chọn Đề số ' + (it.examNum < 10 ? '0' + it.examNum : it.examNum), { tone: 'ok' });
+      }
+    }
+  }
+  function _renderCmd() {
+    var rawQ = _cmdIn.value.trim(), qF = _foldVi(rawQ), all = _buildDgnlItems();
+    var found = all.filter(function (it) {
+      return !qF || _foldVi(it.title).indexOf(qF) >= 0 || _foldVi(it.sub).indexOf(qF) >= 0;
+    }).slice(0, 24);
+    _cmdItems = found;
+    var html = '', lg = '';
+    found.forEach(function (it, idx) {
+      if (it.group !== lg) { lg = it.group; html += '<li class="u046-g" role="presentation">' + _esc(it.group) + '</li>'; }
+      html += '<li class="u046-op" role="option" id="dgnl-u046-' + idx + '" aria-selected="false">' +
+        '<span class="u046-ic" aria-hidden="true"><i class="' + _esc(it.icon) + '"></i></span>' +
+        '<span class="u046-op-lbl">' + _markText(it.title, rawQ) + '</span>' +
+        '<span class="u046-op-sub">' + _esc(it.sub) + '</span>' +
+      '</li>';
+    });
+    if (!found.length) html = '<li class="u046-empty" role="presentation"><b>Không tìm thấy đề “' + _esc(rawQ) + '”</b>Thử gõ 01..50 hoặc Khảo sát / Về đích</li>';
+    _cmdList.innerHTML = html;
+    _cmdOpts = Array.prototype.slice.call(_cmdList.querySelectorAll('.u046-op'));
+    _cmdOpts.forEach(function (el, idx) {
+      el.addEventListener('pointermove', function () { if (_cmdAct !== idx) _markCmd(idx); });
+      el.addEventListener('click', function () { _runCmd(idx); });
+    });
+    _cmdHl.style.opacity = found.length ? '1' : '0';
+    _markCmd(0, true);
+  }
+  window.vlxtOpenDgnlPalette = function () {
+    if (!document.body.classList.contains('dgnl-lobby-active')) return;
+    if (typeof window.closeSmartPopupToLobby === 'function') window.closeSmartPopupToLobby();
+    _ensureCmd();
+    _cmdIn.value = '';
+    _renderCmd();
+    _cmdBd.classList.add('is-open');
+    _cmdBd.setAttribute('aria-hidden', 'false');
+    setTimeout(function () { if (_cmdIn) _cmdIn.focus({ preventScroll: true }); }, 40);
+  };
+  window.vlxtCloseDgnlPalette = function () {
+    if (!_cmdBd) return;
+    _cmdBd.classList.remove('is-open');
+    _cmdBd.setAttribute('aria-hidden', 'true');
+  };
+  document.addEventListener('keydown', function (e) {
+    if (!document.body.classList.contains('dgnl-lobby-active')) return;
+    if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
+      var ae = document.activeElement;
+      if (ae && ae.id !== 'lobby-search-input' && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName) && (!_cmdBd || !_cmdBd.contains(ae))) return;
+      e.preventDefault();
+      if (_cmdBd && _cmdBd.classList.contains('is-open')) window.vlxtCloseDgnlPalette();
+      else window.vlxtOpenDgnlPalette();
+    } else if (e.key === 'Escape' && _cmdBd && _cmdBd.classList.contains('is-open')) {
+      e.preventDefault();
+      window.vlxtCloseDgnlPalette();
+    }
+  });
+})();
 </script>
 </body>
 </html>
