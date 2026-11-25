@@ -1,0 +1,506 @@
+[
+  {
+    "id": 1,
+    "bankId": "VLXT-PT-P013-Q14",
+    "type": "mc",
+    "chapterCode": "C1",
+    "subTopic": "CD01 – Cấu trúc chất, Lực tương tác phân tử & 3 thể Rắn–Lỏng–Khí",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Các nguyên tử sắp xếp theo một trật tự nhất định trong không gian được gọi là",
+    "options": {
+      "A": "mạng nguyên tử.",
+      "B": "mạng internet.",
+      "C": "mạng tinh thể.",
+      "D": "mạng nhện."
+    },
+    "correct": "C",
+    "giaiThich": "Mạng tinh thể là cấu trúc không gian có trật tự tuần hoàn của các nguyên tử/ion trong chất rắn kết tinh."
+  },
+  {
+    "id": 2,
+    "bankId": "VLXT-PT-P053-Q11",
+    "type": "mc",
+    "chapterCode": "C1",
+    "subTopic": "CD03 – Nhiệt độ, Sự truyền nhiệt, Nhiệt kế & Thang đo nhiệt độ",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Người ta chọn thủy ngân và rượu để chế tạo nhiệt kế vì",
+    "options": {
+      "A": "chúng có nhiệt độ nóng chảy cao.",
+      "B": "nhiệt độ nóng chảy thấp.",
+      "C": "nhiệt độ đông đặc cao.",
+      "D": "tất cả các câu trên đều sai."
+    },
+    "correct": "B",
+    "giaiThich": "Thuỷ ngân và rượu có nhiệt độ nóng chảy (đông đặc) rất thấp ($-38,83^\\circ\\text{C}$ và $-117^\\circ\\text{C}$) nên ở nhiệt độ phòng và nhiệt độ đo thông thường chúng luôn ở thể lỏng và có thể đo được nhiệt độ âm."
+  },
+  {
+    "id": 3,
+    "bankId": "VLXT-PT-P108-B6-Q05",
+    "type": "mc",
+    "chapterCode": "C1",
+    "subTopic": "CD04 – Nhiệt dung riêng, Nhiệt nóng chảy riêng, Hóa hơi riêng & Thí nghiệm",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Nhiệt hoá hơi riêng $L$ của một chất lỏng phụ thuộc vào",
+    "options": {
+      "A": "bản chất của chất lỏng và nhiệt độ mà ở đó chất lỏng hoá hơi.",
+      "B": "chỉ khối lượng của khối chất lỏng.",
+      "C": "thời gian đun sôi chất lỏng.",
+      "D": "thể tích của bình chứa chất lỏng."
+    },
+    "correct": "A",
+    "giaiThich": "Nhiệt hoá hơi riêng $L$ phụ thuộc vào bản chất của chất lỏng và nhiệt độ tại đó sự hoá hơi diễn ra."
+  },
+  {
+    "id": 4,
+    "bankId": "VLXT-PT-P031-Q02",
+    "type": "mc",
+    "chapterCode": "C1",
+    "subTopic": "CD05 – Nội năng, Định luật I NĐLH (ΔU = A + Q) & Động cơ nhiệt",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Khi nhiệt độ của vật tăng lên thì",
+    "options": {
+      "A": "động năng của các phân tử cấu tạo nên vật tăng.",
+      "B": "động năng của các phân tử cấu tạo nên vật giảm.",
+      "C": "nội năng của vật giảm.",
+      "D": "thế năng của các phân tử cấu tạo nên vật tăng."
+    },
+    "correct": "A",
+    "giaiThich": "Nhiệt độ của vật càng cao thì các phân tử cấu tạo nên vật chuyển động nhiệt càng nhanh, do đó động năng trung bình của các phân tử tăng lên."
+  },
+  {
+    "id": 5,
+    "bankId": "VLXT-PT-KLT-DE06-P114-Q11",
+    "type": "mc",
+    "chapterCode": "C2",
+    "subTopic": "CD06 – Mô hình ĐHPT chất khí, Áp suất thành bình & Động năng phân tử",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Gọi $p$ là áp suất, $V$ là thể tích, $R$ là hằng số khí lí tưởng, $k$ là hằng số Boltzmann và $T$ là nhiệt độ tuyệt đối. Số mol khí có trong một khối lượng chất khí cho trước được xác định bởi biểu thức nào sau đây?",
+    "options": {
+      "A": "$\\frac{pR}{VT}$.",
+      "B": "$pV$.",
+      "C": "$\\frac{pV}{kT}$.",
+      "D": "$\\frac{pV}{RT}$."
+    },
+    "correct": "D",
+    "giaiThich": "Theo phương trình trạng thái khí lí tưởng Clapeyron - Mendeleev: $p V = n R T \\Rightarrow n = \\frac{p V}{R T}$."
+  },
+  {
+    "id": 6,
+    "bankId": "VLXT-PT-KLT-DE05-P108-Q14",
+    "type": "mc",
+    "chapterCode": "C1",
+    "subTopic": "CD09 – PT trạng thái, Clapeyron, Đồ thị & Công/Nội năng chất khí",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Đơn vị đo áp suất trong hệ SI là gì?",
+    "options": {
+      "A": "$\\text{N/m}$.",
+      "B": "$\\text{kg/m}^3$.",
+      "C": "$\\text{N}\\cdot\\text{m}$.",
+      "D": "$\\text{Pa}$."
+    },
+    "correct": "D",
+    "giaiThich": "Đơn vị đo áp suất trong hệ đơn vị chuẩn quốc tế SI là Pascal (ký hiệu: $\\text{Pa}$, $1\\text{ Pa} = 1\\text{ N/m}^2$)."
+  },
+  {
+    "id": 7,
+    "bankId": "VLXT-PT-TT-B01-P09-Q06",
+    "type": "mc",
+    "chapterCode": "C3",
+    "subTopic": "CD10 – Tương tác từ, Nguồn gốc từ trường, Đường sức & Từ trường Trái Đất",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Dây dẫn mang dòng điện không tương tác với",
+    "options": {
+      "A": "các điện tích chuyển động.",
+      "B": "nam châm đứng yên.",
+      "C": "các điện tích đứng yên.",
+      "D": "nam châm chuyển động."
+    },
+    "correct": "C",
+    "giaiThich": "Dây dẫn trung hòa điện mang dòng điện chỉ sinh ra từ trường, mà từ trường không tác dụng lực từ lên điện tích đứng yên."
+  },
+  {
+    "id": 8,
+    "bankId": "VLXT-PT-TT-B04-P163-Q02",
+    "type": "mc",
+    "chapterCode": "C3",
+    "subTopic": "CD12 – Từ thông (Weber), Cảm ứng điện từ, Định luật Lenz & Faraday",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Khi nói về từ thông, phát biểu nào dưới đây là sai?",
+    "options": {
+      "A": "Từ thông là một đại lượng luôn dương vì nó tỉ lệ với số đường sức từ xuyên qua diện tích khung dây.",
+      "B": "Từ thông có thể dương, âm hoặc bằng không.",
+      "C": "Từ thông là một đại lượng vô hướng.",
+      "D": "Đơn vị từ thông là $\\text{T.m}^2 = \\text{Wb}$."
+    },
+    "correct": "A",
+    "giaiThich": "Từ thông $\\Phi = BS\\cos\\alpha$ là đại lượng vô hướng có thể mang giá trị dương, âm hoặc bằng 0 tùy thuộc vào góc $\\alpha$ giữa vectơ cảm ứng từ $\\vec{B}$ và vectơ pháp tuyến $\\vec{n}$ của mặt phẳng khung dây. Vì vậy phát biểu \"Từ thông là một đại lượng luôn dương\" là sai."
+  },
+  {
+    "id": 9,
+    "bankId": "VLXT-PT-TT-B05-P221-Q05",
+    "type": "mc",
+    "chapterCode": "C3",
+    "subTopic": "CD13 – Dòng xoay chiều, Máy phát, Biến áp, Foucault & Sóng điện từ",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Chọn cụm từ đúng để điền vào chỗ trống: Cường độ dòng điện của một dòng điện không đổi bằng với...... của một dòng điện xoay chiều khi hai dòng điện đi qua hai điện trở giống nhau và nhiệt lượng toả ra trong khoảng thời gian dài là bằng nhau",
+    "options": {
+      "A": "cường độ dòng điện trung bình.",
+      "B": "cường độ dòng điện cực đại.",
+      "C": "cường độ dòng điện hiệu dụng.",
+      "D": "cường độ dòng điện định mức."
+    },
+    "correct": "C",
+    "giaiThich": "Cường độ hiệu dụng của dòng điện xoay chiều bằng cường độ của một dòng điện không đổi mà khi cùng chạy qua một điện trở trong cùng khoảng thời gian thì tỏa ra nhiệt lượng bằng nhau."
+  },
+  {
+    "id": 10,
+    "bankId": "VLXT-PT-TT-B05-P225-Q04",
+    "type": "mc",
+    "chapterCode": "C3",
+    "subTopic": "CD13 – Dòng xoay chiều, Máy phát, Biến áp, Foucault & Sóng điện từ",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Một ví dụ về nguồn cung cấp điện áp xoay chiều là",
+    "options": {
+      "A": "ắc quy ô tô.",
+      "B": "pin điện hoá.",
+      "C": "nhà máy nhiệt điện.",
+      "D": "tụ điện."
+    },
+    "correct": "C",
+    "giaiThich": "Nhà máy nhiệt điện sử dụng máy phát điện xoay chiều công suất lớn để tạo ra dòng điện và điện áp xoay chiều. Ắc quy và pin điện hoá cung cấp điện áp không đổi (một chiều), còn tụ điện là linh kiện tích điện."
+  },
+  {
+    "id": 11,
+    "bankId": "VLXT-PT-HN-B01-P17-Q01",
+    "type": "mc",
+    "chapterCode": "C4",
+    "subTopic": "CD14 – Thí nghiệm Rutherford, Cấu tạo hạt nhân (Z, N, A), Đồng vị & amu",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Hạt nhân ${}^{17}_8\\text{O}$ có",
+    "options": {
+      "A": "8 proton, 17 neutron.",
+      "B": "9 proton, 17 neutron.",
+      "C": "8 proton, 9 neutron.",
+      "D": "9 proton, 8 neutron."
+    },
+    "correct": "C",
+    "giaiThich": "Hạt nhân ${}^{17}_8\\text{O}$ có 8 proton và $17 - 8 = 9$ neutron."
+  },
+  {
+    "id": 12,
+    "bankId": "VLXT-PT-HN-B01-P37-Q07",
+    "type": "mc",
+    "chapterCode": "C4",
+    "subTopic": "CD15 – Lực hạt nhân, Độ hụt khối, Năng lượng liên kết & Độ bền vững hạt nhân",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Độ bền vững của hạt nhân càng cao khi",
+    "options": {
+      "A": "số nucleon của hạt nhân càng nhỏ.",
+      "B": "số nucleon của hạt nhân càng lớn.",
+      "C": "năng lượng liên kết của nó càng lớn.",
+      "D": "năng lượng liên kết riêng của nó càng lớn."
+    },
+    "correct": "D",
+    "giaiThich": "Năng lượng liên kết riêng càng lớn thì hạt nhân càng bền vững."
+  },
+  {
+    "id": 13,
+    "bankId": "VLXT-PT-HN-B02-P78-Q06",
+    "type": "mc",
+    "chapterCode": "C4",
+    "subTopic": "CD16 – Phản ứng hạt nhân, Phóng xạ, Ứng dụng & An toàn bức xạ",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Hạt nhân ${}^{235}_{92}\\text{U}$ hấp thụ một hạt neutron rồi vỡ ra thành hai hạt nhân nhẹ hơn. Đây là",
+    "options": {
+      "A": "quá trình phóng xạ.",
+      "B": "phản ứng nhiệt hạch.",
+      "C": "phản ứng phân hạch.",
+      "D": "phản ứng thu năng lượng."
+    },
+    "correct": "C",
+    "giaiThich": "Đó là định nghĩa của phản ứng phân hạch."
+  },
+  {
+    "id": 14,
+    "bankId": "VLXT-PT-DE_01-P1-Q16",
+    "type": "mc",
+    "chapterCode": "C1",
+    "subTopic": "CD02 – Sự chuyển thể (Nóng chảy, Đông đặc, Hóa hơi, Sôi, Ngưng tụ)",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Một số phân tử ở gần mặt thoáng chất lỏng, chuyển động hướng ra ngoài, có ...(1).. đủ lớn thắng được lực tương tác giữa các phân tử thì có thể thoát ra ngoài khỏi chất lỏng. Như vậy, có thể nói sự bay hơi là sự hoá hơi xảy ra ở..(2).. của khối chất lỏng. Điền vào chỗ trống các cụm từ thích hợp.",
+    "options": {
+      "A": "(1) động năng; (2) mặt thoáng.",
+      "B": "(1) thế năng; (2) mặt thoáng.",
+      "C": "(1) động năng; (2) trong lòng.",
+      "D": "(1) thế năng; (2) trong lòng."
+    },
+    "correct": "A",
+    "giaiThich": "Các phân tử ở mặt thoáng có động năng chuyển động nhiệt đủ lớn để thắng lực hút của các phân tử lân cận sẽ thoát ra ngoài không khí. Do đó sự bay hơi là sự hoá hơi xảy ra ở mặt thoáng của chất lỏng."
+  },
+  {
+    "id": 15,
+    "bankId": "VLXT-ST220-C1-CD05-003",
+    "type": "mc",
+    "chapterCode": "C1",
+    "subTopic": "CD05 – Nội năng, Định luật I NĐLH (ΔU = A + Q) & Động cơ nhiệt",
+    "nhomId": "",
+    "modelId": "MH-TN220-C1-03",
+    "question": "Hiện tượng quả bóng bàn bị móp (nhưng chưa bị thủng) khi thả vào cốc nước nóng sẽ phồng trở lại là do\n<div class=\"vlxt-model-slot\" data-model-id=\"MH-TN220-C1-03\"></div>",
+    "options": {
+      "A": "Nội năng của chất khí giảm xuống.",
+      "B": "Nội năng của chất khí tăng lên.",
+      "C": "Nội năng của chất khí không thay đổi.",
+      "D": "Quả bóng nhận nhiệt và sinh công."
+    },
+    "correct": "B",
+    "giaiThich": "Khi ngâm quả bóng bàn bị móp vào nước nóng, không khí bên trong quả bóng nhận nhiệt lượng nên nhiệt độ tăng, làm <strong>nội năng của chất khí tăng lên</strong> và các phân tử chuyển động nhanh hơn. Áp suất khí trong bóng tăng lớn hơn áp suất bên ngoài, đẩy phần vỏ bị móp phồng trở lại. Vậy chọn <strong>B</strong>."
+  },
+  {
+    "id": 16,
+    "bankId": "VLXT-ST220-C2-CD08-LT16",
+    "type": "mc",
+    "chapterCode": "C2",
+    "subTopic": "CD08 – Quá trình đẳng áp (Charles) & Quá trình đẳng tích (Gay-Lussac)",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Trong quá trình đẳng áp, khối lượng riêng ρ của khí và nhiệt độ tuyệt đối T có liên hệ với nhau bởi biểu thức nào dưới đây?",
+    "options": {
+      "A": "$\\frac{\\rho_1}{\\rho_2} = \\frac{T_2}{T_1}$",
+      "B": "$\\frac{\\rho_1}{\\rho_2} = \\frac{T_1}{T_2}$",
+      "C": "$\\frac{\\rho_1}{T_1} = \\frac{\\rho_2}{T_2}$",
+      "D": "$\\rho_1 \\cdot T_2 = \\rho_2 \\cdot T_1$"
+    },
+    "correct": "A",
+    "giaiThich": "Theo định luật Charles trong quá trình đẳng áp: $\\frac{V_1}{T_1} = \\frac{V_2}{T_2}$. Mặt khác khối lượng riêng $\\rho = \\frac{m}{V} \\Rightarrow \\frac{V_1}{V_2} = \\frac{\\rho_2}{\\rho_1}$. Kết hợp hai hệ thức ta được $\\frac{\\rho_1}{\\rho_2} = \\frac{T_2}{T_1}$ (tức $\\rho_1 T_1 = \\rho_2 T_2$). Vậy chọn <strong>A</strong>."
+  },
+  {
+    "id": 17,
+    "bankId": "VLXT-PT-TT-B02-P41-Q08",
+    "type": "mc",
+    "chapterCode": "C3",
+    "subTopic": "CD11 – Cảm ứng từ (Tesla), Lực từ đoạn dây & Lực Lorentz",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Khi tăng đồng thời số vòng dây và chiều dài của ống dây hình trụ lên $2$ lần trong khi cường độ dòng điện không đổi thì cảm ứng từ trong lòng ống dây",
+    "options": {
+      "A": "không đổi.",
+      "B": "tăng lên 2 lần.",
+      "C": "giảm đi 2 lần.",
+      "D": "tăng lên 4 lần."
+    },
+    "correct": "A",
+    "giaiThich": "$B = 4\\pi \\cdot 10^{-7} \\frac{N}{l} I$. Khi cả $N$ và $l$ cùng tăng 2 lần thì tỉ số $\\frac{N}{l}$ không đổi, do đó $B$ không đổi."
+  },
+  {
+    "id": 18,
+    "bankId": "VLXT-STAGE-C2-CD07-258",
+    "type": "mc",
+    "chapterCode": "C2",
+    "subTopic": "CD07 – Quá trình đẳng nhiệt & Định luật Boyle",
+    "nhomId": "",
+    "modelId": "MH-TN50-C2-258",
+    "question": "Một xilanh được lắp một pit-tông trơn chứa khí lý tưởng như hình vẽ bên. Đầu tiên, pít-tông được giữ cố định và khí được làm mát. Tiếp theo, pit-tông được đẩy vào trong từ từ dưới nhiệt độ không đổi. Nếu $i$ là trạng thái ban đầu và $f$ là trạng thái cuối cùng, thì đồ thị nào sau đây biểu diễn sự thay đổi của áp suất khí $p$ theo thể tích khí $V$?\n<div class=\"vlxt-model-slot\" data-model-id=\"MH-TN50-C2-258\"></div>",
+    "options": {
+      "A": "<img src=\"assets/images/staging/q_258_1.jpg\" alt=\"Đồ thị A\" style=\"max-height:130px; display:block; margin:auto;\" />",
+      "B": "<img src=\"assets/images/staging/q_258_2.jpg\" alt=\"Đồ thị B\" style=\"max-height:130px; display:block; margin:auto;\" />",
+      "C": "<img src=\"assets/images/staging/q_258_3.jpg\" alt=\"Đồ thị C\" style=\"max-height:130px; display:block; margin:auto;\" />",
+      "D": "<img src=\"assets/images/staging/q_258_4.jpg\" alt=\"Đồ thị D\" style=\"max-height:130px; display:block; margin:auto;\" />"
+    },
+    "correct": "A",
+    "giaiThich": "Phân tích hai giai đoạn biến đổi trạng thái của lượng khí trong xilanh:<br>• <b>Giai đoạn 1:</b> Pít-tông được giữ cố định ($V = \\text{const}$, quá trình đẳng tích) và khí được làm mát ($T$ giảm). Theo định luật Charles, áp suất $p$ giảm nên đồ thị là đoạn thẳng đứng hướng từ trạng thái $i$ đi xuống.<br>• <b>Giai đoạn 2:</b> Pít-tông được đẩy vào trong từ từ ở nhiệt độ không đổi ($T = \\text{const}$, quá trình đẳng nhiệt) làm thể tích giảm ($V$ giảm). Theo định luật Boyle, áp suất $p$ tăng theo đường cong hypebol dốc lên về phía bên trái đến trạng thái cuối $f$.<br>Đồ thị ở phương án <b>A</b> mô tả chính xác cả hai quá trình này."
+  },
+  {
+    "id": 19,
+    "bankId": "VLXT-G12-C1-MH-18",
+    "type": "tf",
+    "chapterCode": "C1",
+    "subTopic": "DS-C1.4 – Chuyển hóa năng lượng & Công suất cấp nhiệt thực tế",
+    "nhomId": "",
+    "modelId": "MH-C1-18",
+    "question": "<p>Làng Trà Đông, xưa kia gọi là Sơn Trang, tên nôm là Kẻ Chè, một vùng đất cổ cách tỉnh lỵ Thanh Hóa $12\\text{ km}$ về phía Tây Bắc (nay thuộc xã Thiệu Trung, huyện Thiệu Hóa, tỉnh Thanh Hóa) nằm trong địa vực của nền văn hóa Đông Sơn vốn nổi tiếng với nghề đúc đồng. Ở một cơ sở đúc đồng tại làng Trà Đông, người ta tiến hành đúc một quả chuông bằng đồng nguyên chất có khối lượng $20\\text{ kg}$ qua $6$ bước sau đây:</p>\n<ol class=\"pq-sub-list\">\n<li>Tạo mẫu.</li>\n<li>Tạo khuôn.</li>\n<li>Nấu chảy đồng.</li>\n<li>Rót khuôn.</li>\n<li>Làm nguội và tách sản phẩm khỏi khuôn.</li>\n<li>Hoàn thiện sản phẩm.</li>\n</ol>\n<p>Biết đồng có nhiệt độ nóng chảy là $1084^\\circ\\text{C}$, nhiệt nóng chảy riêng là $180\\text{ kJ/kg}$, nhiệt dung riêng là $380\\text{ J/(kg.K)}$, nhiệt độ ban đầu của môi trường và hỗn hợp nguyên liệu là $31^\\circ\\text{C}$. Biết trong quá trình đúc có $40\\%$ lượng nhiệt bị hao phí ra môi trường. Xét tính đúng/sai trong các phát biểu sau:</p>\n<div class=\"vlxt-model-slot\" data-model-id=\"MH-C1-18\" data-model-topic=\"DS-C1.4\"></div>",
+    "options": {
+      "A": "Biết năng suất tỏa nhiệt của than đá là $27\\text{ MJ/kg}$. Khối lượng than đá ít nhất có thể dùng để đúc được quả chuông đồng là $7{,}20\\text{ kg}$ (làm tròn kết quả đến chữ số hàng phần trăm).",
+      "B": "Cần cung cấp nhiệt lượng $11{,}6\\text{ MJ}$ cho lượng đồng dùng để đúc chuông nóng chảy hoàn toàn từ nhiệt độ ban đầu (làm tròn kết quả đến chữ số hàng phần mười).",
+      "C": "Quá trình nóng chảy diễn ra trong bước $5$.",
+      "D": "Cơ sở này dùng nhiên liệu hóa thạch để đun nóng chảy đồng, nên nếu thiết kế ống khói của cơ sở đúc đồng này không đạt tiêu chuẩn thì sẽ làm ảnh hưởng lớn đến môi trường và sức khỏe của người dân."
+    },
+    "correct": "SĐSĐ",
+    "giaiThich": "<div class=\"exp-stmt-item\"><span class=\"exp-key-badge false\">a — SAI</span> Nhiệt lượng có ích cần cung cấp để $20\\text{ kg}$ đồng nóng lên đến $1084^\\circ\\text{C}$ và nóng chảy hoàn toàn:<div class=\"vlxt-math-callout\">$$Q' = m c \\Delta t + m \\lambda = 20 \\cdot 380 \\cdot (1084 - 31) + 20 \\cdot 180 \\cdot 10^3 \\approx 11{,}6 \\cdot 10^6\\text{ J} = 11{,}6\\text{ MJ}$$</div>Do có $40\\%$ nhiệt lượng bị hao phí ($60\\%$ có ích) từ than đá $Q = m q$:<div class=\"vlxt-math-callout\">$$Q' = 0{,}6 Q = 0{,}6 m q \\implies m = \\frac{11{,}6 \\cdot 10^6}{0{,}6 \\cdot 27 \\cdot 10^6} \\approx 0{,}72\\text{ kg} \\neq 7{,}20\\text{ kg}$$</div></div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">b — ĐÚNG</span> Theo phép tính ở ý a): $Q' = 20 \\cdot 380 \\cdot (1084 - 31) + 20 \\cdot 180 \\cdot 10^3 = 11\\,602\\,800\\text{ J} \\approx 11{,}6\\text{ MJ}$.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge false\">c — SAI</span> Quá trình nóng chảy của đồng diễn ra ở <strong>bước 3 (Nấu chảy đồng)</strong>, còn bước 5 là quá trình đông đặc — làm nguội và tách sản phẩm khỏi khuôn.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">d — ĐÚNG</span> Thành phần chính của than đá là carbon và một số nguyên tố khác như hydro, lưu huỳnh, oxy, nitơ nên khi đốt cháy phát thải các khí $\\text{CO}_x, \\text{NO}_x, \\text{SO}_x, \\dots$ rất độc hại, có thể tạo thành axit $\\text{H}_2\\text{SO}_4$ khi gặp hơi nước gây ăn mòn và ô nhiễm môi trường, ảnh hưởng nghiêm trọng tới hô hấp và sức khỏe người dân.</div>"
+  },
+  {
+    "id": 20,
+    "bankId": "VLXT-G12-C2-MH-42",
+    "type": "tf",
+    "chapterCode": "C2",
+    "subTopic": "DS-C2.3 – Định luật Boyle trong Thủy tĩnh, Y sinh & Kỹ thuật",
+    "nhomId": "",
+    "modelId": "MH-C2-42",
+    "question": "<p>Một trong những bệnh nghề nghiệp của thợ lặn có tỉ lệ gây tử vong và mất sức lao động cao là bệnh giảm áp. Nếu một thợ lặn từ độ sâu $30\\text{ m}$ nổi lên mặt nước quá nhanh, nitrogen không vận chuyển kịp đến phổi giải phóng ra ngoài sẽ tích lại trong cơ thể hình thành các bọt khí gây nguy hiểm. Giả sử sự chênh lệch nhiệt độ là không đáng kể. Cho biết khối lượng riêng của nước là $1000\\text{ kg/m}^3$, áp suất khí quyển là $1{,}013\\cdot 10^5\\text{ Pa}$. Lấy $g = 9{,}8\\text{ m/s}^2$.</p>\n<div class=\"vlxt-model-slot\" data-model-id=\"MH-C2-42\" data-model-topic=\"DS-C2.3\"></div>",
+    "options": {
+      "A": "Khi thợ lặn nổi lên mặt nước quá nhanh, áp suất giảm đột ngột làm các bọt khí nitrogen nở ra, to dần gây tắc mạch chèn ép các tế bào thần kinh gây liệt, tổn thương các cơ quan.",
+      "B": "Áp suất người thợ lặn phải chịu khi ở độ sâu $30\\text{ m}$ là $294\\text{ kPa}$.",
+      "C": "Khi nổi lên mặt nước áp suất tại mặt nước khi đó bằng áp suất khí quyển $1{,}013\\cdot 10^5\\text{ Pa}$.",
+      "D": "Thể tích của bọt khí nitrogen (coi là lí tưởng) khi lên đến mặt nước lớn gấp $2{,}9$ lần thể tích bọt khí này ở độ sâu $30\\text{ m}$."
+    },
+    "correct": "ĐSĐS",
+    "giaiThich": "<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">a — ĐÚNG</span> Khi nổi lên quá nhanh ở nhiệt độ cơ thể gần như không đổi, áp suất xung quanh giảm đột ngột làm bọt khí $\\text{N}_2$ giãn nở mạnh (định luật Boyle), dễ gây tắc mạch máu và tổn thương mô thần kinh.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge false\">b — SAI</span> Áp suất tuyệt đối tác dụng lên thợ lặn ở độ sâu $h = 30\\text{ m}$ gồm cả áp suất khí quyển và áp suất thủy tĩnh cột nước:<div class=\"vlxt-math-callout\">$$p = p_0 + \\rho g h = 1{,}013\\cdot 10^5 + 1000 \\cdot 9{,}8 \\cdot 30 = 395\\,300\\text{ Pa} = 395{,}3\\text{ kPa} \\neq 294\\text{ kPa}$$</div></div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">c — ĐÚNG</span> Khi lên sát mặt nước ($h = 0$), cột nước phía trên bằng $0$ nên áp suất bằng áp suất khí quyển $p' = p_0 = 1{,}013\\cdot 10^5\\text{ Pa}$.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge false\">d — SAI</span> Áp dụng định luật Boyle đẳng nhiệt cho bọt khí $\\text{N}_2$:<div class=\"vlxt-math-callout\">$$p V = p' V' \\Rightarrow \\dfrac{V'}{V} = \\dfrac{p}{p'} = \\dfrac{395\\,300}{101\\,300} \\approx 3{,}9\\text{ lần} \\neq 2{,}9\\text{ lần}$$</div></div>"
+  },
+  {
+    "id": 21,
+    "bankId": "VLXT-G12-C3-MH-83",
+    "type": "tf",
+    "chapterCode": "C3",
+    "subTopic": "DS-C3.1 – Cân từ trường, Lực từ trên dây dẫn & Tương tác hai dòng điện",
+    "nhomId": "",
+    "modelId": "MH-C3-83",
+    "question": "<p>Một nhóm học sinh tìm hiểu tương tác từ của hai dòng điện thẳng song song bằng các dụng cụ: ba thanh đồng đường kính $2\\text{ mm}$ dài $25\\text{ cm}$; hai thanh đồng đường kính $0{,}5\\text{ mm}$ dài $25\\text{ cm}$ được kéo thật thẳng; nguồn điện không đổi $12\\text{ V}$; bảng nhựa, băng dính, dây nối.</p>\n<p><strong>Thực hiện (như Hình a):</strong> Bước 1: Cố định hai thanh đồng $(1), (2)$ đường kính $2\\text{ mm}$ lên bảng nhựa cách điện. Bước 2: Đặt hai thanh đồng mảnh $(4), (5)$ đường kính $0{,}5\\text{ mm}$ lên trên $(1)$ và $(2)$ (cách nhau không quá $1\\text{ cm}$). Bước 3: Nối hai thanh $(1)$ và $(2)$ vào nguồn điện trong $1$–$2\\text{ s}$ (hoặc mắc thêm thanh $(3)$ như Hình b).</p>\n<div class=\"vlxt-model-slot\" data-model-id=\"MH-C3-83\" data-model-topic=\"DS-C3.1\"></div>",
+    "options": {
+      "A": "Tương tác giữa hai dòng điện $(4), (5)$ là tương tác từ.",
+      "B": "Từ trường do dòng điện $(4)$ gây ra tại điểm $A$ có phương vuông góc mặt phẳng chứa các dây dẫn, chiều hướng vào trong mặt phẳng hình vẽ.",
+      "C": "Bố trí thí nghiệm như Hình b. Lực từ tác dụng làm cho hai dòng điện $(4)$ và $(5)$ bị hút vào.",
+      "D": "Lực từ do dòng điện $(4)$ tác dụng lên dòng điện $(5)$ làm cho dòng điện $(5)$ bị đẩy ra."
+    },
+    "correct": "ĐĐSĐ",
+    "giaiThich": "<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">a — ĐÚNG</span> Hai dây dẫn mang dòng điện thẳng song song đặt gần nhau tác dụng lực hút hoặc đẩy lẫn nhau là biểu hiện trực tiếp của tương tác từ.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">b — ĐÚNG</span> Dòng điện chạy qua dây $(4)$ đi từ cực dương bên trái $(1)$ sang phải $(2)$. Áp dụng quy tắc nắm tay phải, tại điểm $A$ nằm dưới dây $(4)$, vectơ cảm ứng từ hướng vuông góc <strong>vào trong</strong> mặt phẳng hình vẽ.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge false\">c — SAI</span> Ở Hình b, có thêm thanh dẫn $(3)$ làm dòng điện qua $(4)$ và $(5)$ chạy <strong>ngược chiều nhau</strong> nên hai dòng điện đẩy nhau ra xa, không hút vào.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">d — ĐÚNG</span> <strong>Ghi chú rà soát:</strong> Đề nguồn nối tiếp ý c) (<em>bố trí như Hình b</em>) nhưng ghi thiếu chữ \"Ở Hình b\". Nếu xét theo <strong>Hình b</strong> (hai dòng điện ngược chiều) thì nhận định này là <strong>ĐÚNG</strong>; nếu chỉ xét theo Hình a (hai dòng điện cùng chiều hút nhau) thì nhận định này là Sai.</div>"
+  },
+  {
+    "id": 22,
+    "bankId": "VLXT-G12-C4-MH-95",
+    "type": "tf",
+    "chapterCode": "C4",
+    "subTopic": "DS-C4.2 – Lò phản ứng hạt nhân, Phân hạch, Nhiệt hạch & Hiệu suất nhà máy điện",
+    "nhomId": "",
+    "modelId": "MH-C4-95",
+    "question": "<p>Dùng hạt neutron chậm bắn vào hạt nhân ${}_{92}^{235}\\text{U}$ gây ra phản ứng ${}_{92}^{235}\\text{U} + {}_0^1\\text{n} \\to {}_{60}^{143}\\text{Nd} + {}_{40}^{90}\\text{La} + k\\,{}_0^1\\text{n} + 8\\,{}_{-1}^0\\text{e}$. Biết năng lượng tỏa ra của mỗi phản ứng bằng $200\\text{ MeV}$.</p>\n<div class=\"vlxt-model-slot\" data-model-id=\"MH-C4-95\" data-model-topic=\"DS-C4.2\"></div>",
+    "options": {
+      "A": "Ở phản ứng trên, tổng số proton được bảo toàn.",
+      "B": "Một tàu phá băng chạy bằng năng lượng hạt nhân có tổng công suất phát điện $120\\text{ MW}$, sử dụng nhiên liệu ${}_{92}^{235}\\text{U}$ ($235\\text{ g/mol}$) với hiệu suất $30\\%$. Khối lượng ${}_{92}^{235}\\text{U}$ cần dùng để tàu hoạt động liên tục trong $24\\text{ giờ}$ bằng $360\\text{ g}$.",
+      "C": "Trong phản ứng trên giá trị $k = 3$.",
+      "D": "Phản ứng trên là phản ứng phân hạch."
+    },
+    "correct": "SSĐĐ",
+    "giaiThich": "<div class=\"exp-stmt-item\"><span class=\"exp-key-badge false\">a — SAI</span> Tổng số proton trước phản ứng là $92$, còn tổng số proton sau phản ứng (của $\\text{Nd}$ và $\\text{La}$) là $60 + 40 = 100$ (vì $8$ neutron đã phân rã beta trừ tạo thêm $8$ proton và $8$ electron); đại lượng bảo toàn là tổng điện tích $Z = 92$.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge false\">b — SAI</span> Áp dụng công thức hiệu suất $H = \\dfrac{Pt}{\\frac{m}{M}N_A E_0}$:<div class=\"vlxt-math-callout\">$$0{,}30 = \\dfrac{120\\cdot 10^6\\cdot 24\\cdot 3600}{\\dfrac{m}{235}\\cdot 6{,}02\\cdot 10^{23}\\cdot 200\\cdot 1{,}6\\cdot 10^{-13}} \\Rightarrow m \\approx 421{,}6\\text{ g} \\neq 360\\text{ g}$$</div></div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">c — ĐÚNG</span> Bảo toàn số khối $A$: $235 + 1 = 143 + 90 + k\\cdot 1 + 0 \\Rightarrow k = 3$.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">d — ĐÚNG</span> Hạt nhân nặng ${}_{92}^{235}\\text{U}$ hấp thụ neutron chậm rồi vỡ thành hai hạt nhân trung bình kèm $k = 3$ neutron mới nên đây là phản ứng phân hạch.</div>"
+  },
+  {
+    "id": 23,
+    "bankId": "VLXT-TLN-VD28-13",
+    "type": "short",
+    "chapterCode": "C2",
+    "subTopic": "",
+    "nhomId": "TLN-NHOM-VD28-07",
+    "modelId": "",
+    "question": "<div class=\"q-context\"><strong>Dùng thông tin sau cho Câu 23 và Câu 24:</strong> Một xilanh hình trụ kín hai đầu có chiều dài $L = 51\\text{ cm}$, tiết diện trong $S = 25\\text{ cm}^2 = 25 \\cdot 10^{-4}\\text{ m}^2$, đặt thẳng đứng. Trong xilanh có một pít-tông cách nhiệt mỏng khối lượng $m = 1\\text{ kg}$ chia xilanh thành hai phần, mỗi phần chứa một lượng khí lí tưởng giống nhau. Khi nhiệt độ khí ở cả hai phần cùng bằng $27^\\circ\\text{C}$ ($300\\text{ K}$), pít-tông nằm cân bằng và đáy pít-tông cách đáy xilanh một khoảng $h = 25\\text{ cm}$. Lấy $g = 10\\text{ m/s}^2$. Xem ma sát không đáng kể và nhiệt độ khí phần trên không đổi.</div>\nÁp suất của lượng khí ở phần trên trong xilanh tại trạng thái ban đầu bằng bao nhiêu kilôpascal (kPa)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "100",
+    "giaiThich": "<p>• Áp suất do trọng lượng pít-tông gây ra lên khối khí phía dưới:</p>$$p_{\\text{piston}} = \\dfrac{P}{S} = \\dfrac{m g}{S} = \\dfrac{1 \\cdot 10}{25 \\cdot 10^{-4}} = 4000\\text{ Pa} = 4\\text{ kPa}$$<p>• Khi pít-tông nằm cân bằng, áp suất phần dưới cân bằng với áp suất phần trên cộng áp suất trọng lượng pít-tông:</p>$$p_d = p_t + p_{\\text{piston}} = p_t + 4000$$<p>• Chiều cao cột khí phần trên và phần dưới:</p>$$h_d = 25\\text{ cm}, \\quad h_t = 51 - 25 = 26\\text{ cm}$$<p>• Vì hai phần chứa lượng khí bằng nhau và cùng nhiệt độ $300\\text{ K}$, theo định luật Boyle - Mariotte:</p>$$p_t V_t = p_d V_d \\iff p_t \\cdot (S \\cdot h_t) = p_d \\cdot (S \\cdot h_d) \\iff p_t \\cdot 26 = (p_t + 4) \\cdot 25$$<p>• Giải phương trình bậc nhất:</p>$$26 p_t = 25 p_t + 100 \\implies p_t = 100\\text{ kPa}$$<p>• Đáp số: <strong>100</strong> kPa.</p>"
+  },
+  {
+    "id": 24,
+    "bankId": "VLXT-TLN-VD28-14",
+    "type": "short",
+    "chapterCode": "C2",
+    "subTopic": "",
+    "nhomId": "TLN-NHOM-VD28-07",
+    "modelId": "",
+    "question": "<div class=\"q-context\"><strong>Dùng thông tin sau cho Câu 23 và Câu 24:</strong> Một xilanh hình trụ kín hai đầu có chiều dài $L = 51\\text{ cm}$, tiết diện trong $S = 25\\text{ cm}^2 = 25 \\cdot 10^{-4}\\text{ m}^2$, đặt thẳng đứng. Trong xilanh có một pít-tông cách nhiệt mỏng khối lượng $m = 1\\text{ kg}$ chia xilanh thành hai phần, mỗi phần chứa một lượng khí lí tưởng giống nhau. Khi nhiệt độ khí ở cả hai phần cùng bằng $27^\\circ\\text{C}$ ($300\\text{ K}$), pít-tông nằm cân bằng và đáy pít-tông cách đáy xilanh một khoảng $h = 25\\text{ cm}$. Lấy $g = 10\\text{ m/s}^2$. Xem ma sát không đáng kể và nhiệt độ khí phần trên không đổi.</div>\nĐể pít-tông dịch chuyển đến vị trí chính giữa xilanh thì cần nung nóng khí ở phần dưới đến nhiệt độ bằng bao nhiêu kelvin (K)? (làm tròn kết quả đến chữ số hàng đơn vị).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "312",
+    "giaiThich": "<p>• Khi pít-tông nằm chính giữa xilanh, chiều cao hai ngăn bằng nhau: $h_t' = h_d' = \\dfrac{51}{2} = 25,5\\text{ cm}$.</p><p>• Phần khí trên biến đổi đẳng nhiệt ($T_t = 300\\text{ K}$ không đổi):</p>$$p_t' = p_t \\cdot \\dfrac{h_t}{h_t'} = 100 \\cdot \\dfrac{26}{25,5} \\approx 101,96\\text{ kPa}$$<p>• Khi pít-tông nằm cân bằng tại vị trí giữa:</p>$$p_d' = p_t' + p_{\\text{piston}} = 101,96 + 4 = 105,96\\text{ kPa}$$<p>• Áp dụng phương trình trạng thái khí lí tưởng cho khối khí phần dưới:</p>$$\\dfrac{p_d \\cdot h_d}{T_d} = \\dfrac{p_d' \\cdot h_d'}{T_d'} \\implies T_d' = T_d \\cdot \\dfrac{p_d' \\cdot h_d'}{p_d \\cdot h_d}$$<p>• Thay các giá trị: $p_d = 104\\text{ kPa}$, $h_d = 25\\text{ cm}$, $T_d = 300\\text{ K}$:</p>$$T_d' = 300 \\cdot \\dfrac{105,96 \\cdot 25,5}{104 \\cdot 25} = 300 \\cdot \\dfrac{2701,98}{2600} \\approx 311,77\\text{ K} \\approx \\lt strong\\gt 312\\lt /strong\\gt \\text{ K}.$$"
+  },
+  {
+    "id": 25,
+    "bankId": "VLXT-TLN-W20-07",
+    "type": "short",
+    "chapterCode": "C3",
+    "subTopic": "",
+    "nhomId": "TLN-NHOM-W20-04",
+    "modelId": "",
+    "question": "<div class=\"q-context\"><strong>Dùng thông tin sau cho Câu 25 và Câu 26:</strong> <p>Khi chụp cộng hưởng từ (MRI), để đảm bảo an toàn và tránh gây bỏng nhiệt do dòng điện cảm ứng, bệnh nhân được yêu cầu tháo bỏ các vật dụng kim loại khỏi cơ thể. Giả sử một bệnh nhân sơ suất quên tháo một chiếc vòng tay kim loại hình tròn có bán kính $r = 4,2\\text{ cm}$ và điện trở $R = 0,015\\ \\Omega$. Trong quá trình chụp, mặt phẳng của chiếc vòng vuông góc với vectơ cảm ứng từ của từ trường máy MRI. Trong khoảng thời gian $\\Delta t = 0,50\\text{ s}$, độ lớn cảm ứng từ giảm đều từ $B_1 = 2,00\\text{ T}$ xuống $B_2 = 0,50\\text{ T}$. Lấy $\\pi \\approx 3,1416$.</p></div>\nĐộ lớn suất điện động cảm ứng xuất hiện trong chiếc vòng tay kim loại trong khoảng thời gian từ trường biến thiên nói trên là bao nhiêu milivôn (mV) (làm tròn kết quả đến chữ số hàng phần mười)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "16,6",
+    "giaiThich": "<p><strong>Hướng dẫn giải chi tiết:</strong></p><p>• Diện tích giới hạn bởi chiếc vòng tay hình tròn ($r = 0,042\\text{ m}$):</p>$$S = \\pi r^2 = 3,1416 \\times (0,042)^2 \\approx 5,5418 \\cdot 10^{-3}\\text{ m}^2.$$<p>• Độ lớn suất điện động cảm ứng sinh ra trong vòng tay theo định luật Faraday:</p>$$|e_c| = \\dfrac{|\\Delta \\Phi|}{\\Delta t} = \\dfrac{|B_2 - B_1| \\cdot S}{\\Delta t} = \\dfrac{|0,50 - 2,00| \\times 5,5418 \\cdot 10^{-3}}{0,50} \\approx 0,016625\\text{ V} = 16,6\\text{ mV}.$$<p>• Đáp số: <strong>16,6</strong>.</p>"
+  },
+  {
+    "id": 26,
+    "bankId": "VLXT-TLN-W20-08",
+    "type": "short",
+    "chapterCode": "C3",
+    "subTopic": "",
+    "nhomId": "TLN-NHOM-W20-04",
+    "modelId": "",
+    "question": "<div class=\"q-context\"><strong>Dùng thông tin sau cho Câu 25 và Câu 26:</strong> <p>Khi chụp cộng hưởng từ (MRI), để đảm bảo an toàn và tránh gây bỏng nhiệt do dòng điện cảm ứng, bệnh nhân được yêu cầu tháo bỏ các vật dụng kim loại khỏi cơ thể. Giả sử một bệnh nhân sơ suất quên tháo một chiếc vòng tay kim loại hình tròn có bán kính $r = 4,2\\text{ cm}$ và điện trở $R = 0,015\\ \\Omega$. Trong quá trình chụp, mặt phẳng của chiếc vòng vuông góc với vectơ cảm ứng từ của từ trường máy MRI. Trong khoảng thời gian $\\Delta t = 0,50\\text{ s}$, độ lớn cảm ứng từ giảm đều từ $B_1 = 2,00\\text{ T}$ xuống $B_2 = 0,50\\text{ T}$. Lấy $\\pi \\approx 3,1416$.</p></div>\nCường độ dòng điện cảm ứng chạy trong chiếc vòng kim loại trong khoảng thời gian $0,50\\text{ s}$ đó bằng bao nhiêu ampe (A) (làm tròn kết quả đến chữ số hàng phần trăm)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "1,11",
+    "giaiThich": "<p><strong>Hướng dẫn giải chi tiết:</strong></p><p>• Cường độ dòng điện cảm ứng chạy trong chiếc vòng tay:</p>$$I = \\dfrac{|e_c|}{R} = \\dfrac{0,016625\\text{ V}}{0,015\\ \\Omega} \\approx 1,108\\text{ A} \\approx 1,11\\text{ A}.$$<p>*(Nếu học sinh lấy giá trị làm tròn $e_c = 16,6\\text{ mV}$ ở Câu 1 thì $I = \\frac{0,0166}{0,015} \\approx 1,11\\text{ A}$, kết quả hoàn toàn trùng khớp).* </p><p>• Đáp số: <strong>1,11</strong>.</p>"
+  },
+  {
+    "id": 27,
+    "bankId": "VLXT-TLN-MH36-03",
+    "type": "short",
+    "chapterCode": "C4",
+    "subTopic": "",
+    "nhomId": "NHOM-MH36-P3-34",
+    "modelId": "",
+    "question": "<div class=\"q-context\"><strong>Dùng thông tin sau cho Câu 27 và Câu 28:</strong> <p>Thành phần dinh dưỡng trong sữa bò tự nhiên luôn có chứa nguyên tố potassium (kali) với nồng độ khoảng $c = 1,60\\text{ g/lít}$. Trong potassium tự nhiên, có tỷ lệ $0,012\\%$ là đồng vị phóng xạ potassium $^{40}_{19}\\text{K}$ với chu kì bán rã rất lớn là $T = 1,25 \\cdot 10^9\\text{ năm}$. Biết khối lượng mol của kali là $M = 39,1\\text{ g/mol}$ và số Avogadro $N_A = 6,022 \\cdot 10^{23}\\text{ mol}^{-1}$. Lấy $1\\text{ năm} = 365,25\\text{ ngày}$.</p></div>\nSố lượng hạt nhân đồng vị phóng xạ $^{40}_{19}\\text{K}$ có trong 1 lít sữa bò là $x \\cdot 10^{19}\\text{ hạt}$. Giá trị của $x$ là bao nhiêu (kết quả làm tròn đến chữ số hàng phần trăm)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "3,52",
+    "giaiThich": "<p><strong>Hướng dẫn giải chi tiết:</strong></p>\n<p>• Trong 1 lít sữa bò có $m_K = 1,60\\text{ g}$ kali tổng cộng.</p>\n<p>• Số hạt nhân kali tổng cộng trong 1 lít sữa:</p>\n$$N_{\\text{tổng}} = \\dfrac{m_K}{M} \\cdot N_A = \\dfrac{1,60}{39,1} \\cdot 6,022 \\cdot 10^{23} \\approx 2,464 \\cdot 10^{22}\\text{ hạt}$$\n<p>• Số hạt nhân đồng vị phóng xạ $^{40}_{19}\\text{K}$ chiếm tỷ lệ $0,012\\%$:</p>\n$$N = N_{\\text{tổng}} \\cdot 0,012\\% = 2,464 \\cdot 10^{22} \\cdot 1,2 \\cdot 10^{-4} \\approx 3,52 \\cdot 10^{19}\\text{ hạt}$$\n<p>• Đáp số: <strong>3,52</strong>.</p>"
+  },
+  {
+    "id": 28,
+    "bankId": "VLXT-TLN-MH36-04",
+    "type": "short",
+    "chapterCode": "C4",
+    "subTopic": "",
+    "nhomId": "NHOM-MH36-P3-34",
+    "modelId": "",
+    "question": "<div class=\"q-context\"><strong>Dùng thông tin sau cho Câu 27 và Câu 28:</strong> <p>Thành phần dinh dưỡng trong sữa bò tự nhiên luôn có chứa nguyên tố potassium (kali) với nồng độ khoảng $c = 1,60\\text{ g/lít}$. Trong potassium tự nhiên, có tỷ lệ $0,012\\%$ là đồng vị phóng xạ potassium $^{40}_{19}\\text{K}$ với chu kì bán rã rất lớn là $T = 1,25 \\cdot 10^9\\text{ năm}$. Biết khối lượng mol của kali là $M = 39,1\\text{ g/mol}$ và số Avogadro $N_A = 6,022 \\cdot 10^{23}\\text{ mol}^{-1}$. Lấy $1\\text{ năm} = 365,25\\text{ ngày}$.</p></div>\nĐộ phóng xạ tự nhiên do đồng vị $^{40}_{19}\\text{K}$ phát ra trong 1 lít sữa bò là bao nhiêu becquerel (Bq) (kết quả làm tròn đến chữ số hàng phần mười)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "61,9",
+    "giaiThich": "<p><strong>Hướng dẫn giải chi tiết:</strong></p>\n<p>• Đổi chu kì bán rã $T$ sang giây:</p>\n$$T = 1,25 \\cdot 10^9 \\cdot 365,25 \\cdot 86400 \\approx 3,9447 \\cdot 10^{16}\\text{ s}$$\n<p>• Hằng số phóng xạ $\\lambda$:</p>\n$$\\lambda = \\dfrac{\\ln 2}{T} = \\dfrac{0,69315}{3,9447 \\cdot 10^{16}} \\approx 1,757 \\cdot 10^{-17}\\text{ s}^{-1}$$\n<p>• Độ phóng xạ của 1 lít sữa bò:</p>\n$$H = \\lambda \\cdot N = 1,757 \\cdot 10^{-17} \\cdot 3,52 \\cdot 10^{19} \\approx 61,85\\text{ Bq} \\approx 61,9\\text{ Bq}$$\n<p>• Nhận xét: Độ phóng xạ 61,9 Bq/lít này là bức xạ nền tự nhiên hoàn toàn vô hại đối với con người.</p>\n<p>• Đáp số: <strong>61,9</strong>.</p>"
+  }
+]

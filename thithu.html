@@ -8,7 +8,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-    <script src="data/mo-hinh-thuc-te-models.js"></script>
+    <script src="assets/canvas-core-helpers.js?v=20261125"></script>
+    <script src="assets/mo-hinh-thuc-te-models.js?v=20261125"></script>
+    <script src="assets/staging-ds-models.js?v=20261125"></script>
+    <script src="assets/staging-tn50-models.js?v=20261125"></script>
+    <script src="assets/staging-tn220-models.js?v=20261125"></script>
+    <script src="assets/tln-thuc-te-models.js?v=20261125"></script>
     <script src="wrong-bank.js?v=20261118a"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -509,6 +514,47 @@
             font-size: 13.5px;
             overflow-x: auto;
         }
+        .q-context {
+            margin-bottom: 12px;
+            padding: 11px 14px;
+            border-left: 4px solid #0a4b9c;
+            background: #eef5ff;
+            border-radius: 0 8px 8px 0;
+            color: #0f172a;
+            font-size: 14.5px;
+            line-height: 1.65;
+        }
+        .vstep-data-panel {
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .vstep-data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            background: #ffffff;
+        }
+        .vstep-data-table th, .vstep-data-table td {
+            border: 1px solid #cbd5e1;
+            padding: 6px 10px;
+            text-align: center;
+            color: #0f172a;
+        }
+        .vstep-data-table th {
+            background: #eef5ff;
+            font-weight: 800;
+            color: #0a4b9c;
+        }
+        .vlxt-model-slot {
+            margin: 12px auto;
+            max-width: 780px;
+        }
+        .vlxt-model-slot .vlxt-model-card {
+            border-radius: 10px;
+            border: 1.5px solid #cbd5e1;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+        }
     </style>
     <script src="vlxt-telemetry.js?v=20261124"></script>
     <script src="auth.js?v=20261124"></script>
@@ -748,6 +794,7 @@ let timeLeft = 3000;     // 50 minutes = 3000s
 let timerInterval = null;
 let isSubmitting = false;
 let isSubmitted = false;
+let currentExamTitle = '';
 
 // Initialize candidate & auth (READ-ONLY, NEVER OVERWRITES vlxt_user_v2)
 function initCandidate() {
@@ -932,6 +979,7 @@ async function loadExam() {
             const list = meta.data || meta;
             if (Array.isArray(list)) {
                 const ex = list.find(e => String(e.examId).toLowerCase() === String(_examId).toLowerCase());
+                if (ex && ex.tenDe) currentExamTitle = String(ex.tenDe);
                 if (ex && ex.thoiGian) {
                     const totalSec = parseInt(ex.thoiGian, 10) * 60;
                     if (!localStorage.getItem('vlxt_cbt_timer_' + _examId + '_' + (currentUser.sdt || 'guest'))) {
@@ -1072,6 +1120,40 @@ function renderPalette() {
     document.getElementById('statFlagged').textContent = 'Đánh dấu: ' + flaggedCount;
 }
 
+function getThiThuModelCaption(mid) {
+    if (!mid) return '';
+    return (window.VLXT_TN220_CAPTIONS && window.VLXT_TN220_CAPTIONS[mid])
+        || (window.VLXT_TN50_CAPTIONS && window.VLXT_TN50_CAPTIONS[mid])
+        || (window.VLXT_DS106_CAPTIONS && window.VLXT_DS106_CAPTIONS[mid])
+        || (window.VLXT_TLN_MODELS && window.VLXT_TLN_MODELS[mid] && window.VLXT_TLN_MODELS[mid].title)
+        || '';
+}
+
+function mountThiThuModels(rootEl) {
+    if (!rootEl) return;
+    if (window.VLXT_TLN_MODELS) {
+        rootEl.querySelectorAll('.vlxt-model-slot[data-model-id]').forEach(slot => {
+            const mid = slot.getAttribute('data-model-id');
+            const hasCanvas = window.VLXTModels && window.VLXTModels._canvasRegistry && typeof window.VLXTModels._canvasRegistry[mid] === 'function';
+            if (!hasCanvas && mid && window.VLXT_TLN_MODELS[mid] && !slot.dataset.tlnMounted) {
+                slot.dataset.tlnMounted = '1';
+                slot.innerHTML = '<div style="padding:8px;background:#0f172a;border-radius:10px">' + window.VLXT_TLN_MODELS[mid].svg + '</div>';
+            }
+        });
+    }
+    if (window.VLXTModels && typeof window.VLXTModels.mountAll === 'function') {
+        try { window.VLXTModels.mountAll(rootEl, { compact: true }); } catch(e){}
+    }
+    rootEl.querySelectorAll('.vlxt-model-slot[data-model-id]').forEach(slot => {
+        const mid = slot.getAttribute('data-model-id');
+        const capTxt = getThiThuModelCaption(mid);
+        const capEl = slot.querySelector('.vlxt-model-caption');
+        if (capEl && capTxt && capEl.textContent.indexOf(mid) !== -1) {
+            capEl.textContent = capTxt;
+        }
+    });
+}
+
 // ATOMIC QUESTION NAVIGATION WITH ASSET PRELOADING & RACE-CONDITION SHIELD
 async function goToQuestion(idx) {
     if (idx < 0 || idx >= questions.length) return;
@@ -1184,9 +1266,7 @@ async function goToQuestion(idx) {
     });
 
     // 6. Reveal rendered question, mount VLXT models & Reset scroll inside scroll-body
-    if (qBox && window.VLXTModels && typeof window.VLXTModels.mountAll === 'function') {
-        try { window.VLXTModels.mountAll(qBox, { compact: true }); } catch(e){}
-    }
+    if (qBox) mountThiThuModels(qBox);
     if (qBox) qBox.classList.remove('q-loading');
     const scrollBody = document.getElementById('qScrollBody');
     if (scrollBody) scrollBody.scrollTop = 0;
@@ -1470,7 +1550,7 @@ async function doSubmitExam() {
     const displayClass = (currentUser ? currentUser.lop : 'Khóa XPS 2026') || 'Khóa XPS 2026';
     const resultObj = {
         examId: _examId,
-        examName: 'Đề ' + _examId.replace('vedich2k9_de','') + ' — Về Đích 2K9 (Kỳ thi THPT QG 2027)',
+        examName: currentExamTitle || (_examId.startsWith('thithu_2026_') ? ('Đề Thi Thử 2026 – ' + _examId) : ('Đề ' + _examId.replace('vedich2k9_de','') + ' — Về Đích 2K9 (Kỳ thi THPT QG 2027)')),
         score: score,
         maxScore: maxScore,
         correctCount: correctCount,
@@ -1524,9 +1604,7 @@ async function doSubmitExam() {
     const revEl = document.getElementById('reviewQuestionsArea');
     if (revEl) {
         revEl.innerHTML = reviewHtml;
-        if (window.VLXTModels && typeof window.VLXTModels.mountAll === 'function') {
-            try { window.VLXTModels.mountAll(revEl, { compact: true }); } catch(e){}
-        }
+        mountThiThuModels(revEl);
         if (typeof renderMathInElement === 'function') {
             try {
                 renderMathInElement(revEl, {
@@ -1549,9 +1627,7 @@ function toggleGiai(qid) {
     const isShow = (box.style.display === 'block');
     box.style.display = isShow ? 'none' : 'block';
     if (!isShow) {
-        if (window.VLXTModels && typeof window.VLXTModels.mountAll === 'function') {
-            try { window.VLXTModels.mountAll(box, { compact: true }); } catch(e){}
-        }
+        mountThiThuModels(box);
         if (typeof renderMathInElement === 'function') {
             try {
                 renderMathInElement(box, {

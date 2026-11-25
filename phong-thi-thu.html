@@ -278,6 +278,16 @@
             transition: all 0.15s; text-decoration: none;
         }
         .btn-exam-video:hover { background: var(--amber-bg); border-color: var(--amber); }
+        .btn-exam-doc {
+            background: #fff; color: var(--black); border: 1.5px solid var(--border);
+            font-size: 12.5px; font-weight: 700; padding: 8px 12px; border-radius: 8px;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+            transition: background 0.15s, border-color 0.15s; text-decoration: none;
+        }
+        .btn-exam-doc.pdf { color: var(--red); border-color: #fecaca; }
+        .btn-exam-doc.pdf:hover { background: var(--red-bg); border-color: var(--red); }
+        .btn-exam-doc.word { color: var(--primary); border-color: #bfdbfe; }
+        .btn-exam-doc.word:hover { background: var(--primary-bg); border-color: var(--primary); }
 
         /* ─── VIDEO MODAL ─── */
         .video-modal-overlay {
@@ -1084,9 +1094,25 @@ async function loadExams() {
             '<div class="u439-ptt-card"><div style="flex:1;display:flex;flex-direction:column;gap:10px;"><i class="u439-ptt-bone" style="width:130px;height:14px;"></i><i class="u439-ptt-bone" style="width:70%;height:18px;"></i><i class="u439-ptt-bone" style="width:82%;height:13px;"></i></div><i class="u439-ptt-bone" style="width:120px;height:38px;border-radius:8px;flex:none;"></i></div>';
     }
     try {
-        const r = await cachedFetch(DB_URL + '?type=danhsachde');
+        const [r, catRes] = await Promise.all([
+            cachedFetch(DB_URL + '?type=danhsachde'),
+            fetch('data/thithu_2026_catalog.json').then(x => x.ok ? x.json() : []).catch(() => [])
+        ]);
         const j = await r.json();
-        const rawData = (j.ok && Array.isArray(j.data)) ? j.data : (Array.isArray(j) ? j : []);
+        const serverRows = (j.ok && Array.isArray(j.data)) ? j.data : (Array.isArray(j) ? j : []);
+        const catRows = Array.isArray(catRes) ? catRes : [];
+        const catById = new Map(catRows.map(c => [String(c.examId || '').toLowerCase(), c]));
+        const seenIds = new Set();
+        const rawData = serverRows.map(ex => {
+            const eid = String(ex.examId || '').toLowerCase();
+            seenIds.add(eid);
+            const c = catById.get(eid);
+            return c ? Object.assign({}, c, ex, { pdfUrl: ex.pdfUrl || c.pdfUrl, docxUrl: ex.docxUrl || c.docxUrl }) : ex;
+        });
+        catRows.forEach(c => {
+            const eid = String(c.examId || '').toLowerCase();
+            if (!seenIds.has(eid)) rawData.unshift(c);
+        });
 
         // Lọc đề thuộc Phòng Thi Thử: loaiDe === 'thithu' hoặc examId bắt đầu bằng vedich2k9 / thithu
         // Ẩn các đề có hienThi === 'an'
@@ -1247,6 +1273,12 @@ function renderExams() {
         const videoBtnHtml = videoUrl
             ? `<button class="btn-exam-video" onclick="openVideoModal('${encodeURIComponent(ex.tenDe||ex.examId)}', '${encodeURIComponent(videoUrl)}', '${ex.examId}')"><i class="fa-solid fa-play"></i> Video chữa</button>`
             : '';
+        const pdfBtnHtml = ex.pdfUrl
+            ? `<a href="${ex.pdfUrl}" target="_blank" download class="btn-exam-doc pdf" title="Tải đề thi chuẩn Bộ GD&ĐT (PDF)"><i class="fa-regular fa-file-pdf"></i> Đề PDF</a>`
+            : '';
+        const docxBtnHtml = ex.docxUrl
+            ? `<a href="${ex.docxUrl}" download class="btn-exam-doc word" title="Tải file Word (.docx) chuẩn Bộ GD&ĐT"><i class="fa-regular fa-file-word"></i> File Word</a>`
+            : '';
 
         let actionBtnHtml = '';
         if (isOpen) {
@@ -1271,6 +1303,8 @@ function renderExams() {
             </div>
             <div class="exam-row-actions">
                 ${actionBtnHtml}
+                ${pdfBtnHtml}
+                ${docxBtnHtml}
                 ${videoBtnHtml}
             </div>
         </div>`;
