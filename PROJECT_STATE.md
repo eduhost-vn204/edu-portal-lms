@@ -1,3 +1,29 @@
+## Bàn giao gần nhất (25/11/2026 09:35)
+- **Phát Hành Production (`main`) Bộ 5 Đề Thi Thử THPTQG 2026 Biên Soạn Mới 100% Chuẩn Bộ 2025–2026 (`thithu_2026_de01..05`) + 30 Mô Hình Canvas 60 FPS + Fix Lỗi KaTeX Đồng Vị Hạt Nhân + 15 File Word/PDF (`phong-thi-thu.html`, `thithu.html`, Admin & `canvas-studio.html`)**:
+- **Trạng thái**: Đã merge lên `main` cả 2 repo Student (`origin/main` & `mirror/main`) và Admin (`origin/main` @ `cef5614`, rollback tag `rollback-before-thithu5-admin-20261125` @ `b362dd8`), chuẩn bị nghiệm thu GitHub Pages live.
+- **Mục tiêu & Hành vi mới**:
+  1. **5 đề thi thử biên soạn mới 100% (`thithu_2026_de01..05`, mã `0201..0205`, 140 câu `VLXT-TT26-D01-Q01..D05-Q28`)**:
+     - Tổ hợp trực tiếp từ cấu trúc đề Bộ 2025–2026 và 50 đề ĐGNL, đối soát `0` trùng lặp câu chữ với 3.514 câu ngân hàng & đề `vedich2k9`.
+     - **Phần I (18 câu/đề)**: 100% Trắc nghiệm Lý thuyết phủ `16/16` chuyên đề + 2 chuyên đề trọng tâm Bộ + 2 mô hình Canvas 60 FPS/đề.
+     - **Phần II (4 câu/đề)**: Mỗi đề đúng 1 câu/chương (`C1..C4`), `0` VDC nặng tính toán, 100% gắn mô hình Canvas 60 FPS mới + bảng số liệu thực nghiệm & 4 mệnh đề `a..d` phân tầng.
+     - **Phần III (6 câu/đề)**: 3 cặp câu ghép đôi (`nhomId`) trải đều các chương, kiểm chứng phép tính độc lập bằng Python (`verify_new_thithu5_math.py`).
+  2. **30 mô hình Canvas 60 FPS độc bản (`assets/thithu-2026-new-models.js`) & 15 file Word/PDF (`DE_THI_THU_CHUAN_BO_2026/` & `assets/exams/thithu_2026/`)**:
+     - Đủ 5 file `.docx` in ấn (`146..206` `<m:oMath>`, `0` raw LaTeX), 5 `- wed.docx`, 5 `.pdf` nhúng 30 hình Retina `2x`; gắn nút tải `.btn-exam-doc` trên `phong-thi-thu.html`.
+  3. **Sửa triệt để lỗi KaTeX đồng vị hạt nhân & tích hợp chống ghi đè cron 15 phút**:
+     - Chuẩn hóa toàn bộ đồng vị `{}^{A}_{Z}\text{X}`, bổ sung `normalizeMathExpr()`, nâng cấp `formatQuestionHtml()` & `renderThiThuMath()` (`thithu.html`) và `normalizeAdminModalMath()` (`admin/phong-thi-thu.html`).
+     - Bổ sung `data/thithu_2026_catalog.json` vào `phong-thi-thu.html` và `scripts/sync-public-data.mjs` để giữ nguyên 7 đề mở trên Web học sinh kể cả khi cron `refresh-data.yml` chạy mỗi 15 phút.
+     - Admin (`cef5614`): `phong-thi-thu.html` (nạp `assets/thithu-5-exams-pack.js` + nút `Đẩy Cloud`), `ngan-hang-de.html`, `canvas-studio.html` (`THITHU_2026_NEW_140` + tab `P_THITHU26_30`).
+- **Commit & File đã sửa**:
+  - **Student (`feat/thithu-5-de-chuan-bo-2026` `5baa69f`, `0ccbfaa` → merge `main`)**: `thithu.html`, `phong-thi-thu.html`, `scripts/sync-public-data.mjs`, `assets/thithu-2026-new-models.js`, `assets/thithu-5-exams-pack.js`, `data/thithu_2026_catalog.json`, `data/danhsachde.json`, `data/exams_manifest.json`, `data/exams/thithu_2026_de01..05.json`, `assets/exams/thithu_2026/De_Thi_Thu_THPTQG_2026_De_01..05.{docx,pdf}`, `PROJECT_STATE.md`. Rollback tag: `rollback-before-thithu5-lms-20261125` (`2510da3`).
+  - **Admin (`eduhost-vn204/edu-portal-console` `main` `cef5614` ← `7f74b08` ← `b362dd8`)**: `assets/thithu-2026-new-models.js`, `assets/thithu-5-exams-pack.js`, `assets/staging-thithu26-140-questions.js`, `phong-thi-thu.html`, `ngan-hang-de.html`, `canvas-studio.html`. Rollback tag: `rollback-before-thithu5-admin-20261125` (`b362dd8`).
+- **Kiểm tra đã chạy**:
+  - Admin `main`: `node --check` 3 JS, `vm.Script` AST 3 HTML, `test-apps-script-logic.mjs` (12/12 PASS), `test-sidebar-consistency.mjs` (15/15 PASS), `git diff --check` sạch.
+  - Student `main`: `node --check` 3 JS, parse 8 JSON, `vm.Script` AST HTML + `</html>`, Playwright Retina 2x quét `140/140` câu (`0` `.katex-error`, `0` `$` sót, `30/30` Canvas, `0` pageerror), Student Node suites + `git diff --check`.
+- **Điều phải giữ nguyên**:
+  - Giao diện sáng CBT chuẩn Bộ GD&ĐT của `phong-thi-thu.html` (`data-theme="light"`), tên tab Navbar `Test Điểm Thi Khảo Sát Quốc Gia`, không phụ thuộc tốc độ GAS trên danh sách đề công khai, Zero AI Glow, quy trình duyệt `canvas-studio.html` trước khi nạp Ngân Hàng Đề.
+- **Việc còn lại**:
+  - Xác minh live trên `https://vatlyxuantruong.io.vn/` & `https://eduhost-vn204.github.io/edu-portal-console/`; Thầy bấm `Đẩy Cloud` trên Admin `phong-thi-thu.html` khi muốn đồng bộ thêm bản sao vào Google Sheets.
+
 ## Bàn giao gần nhất (25/11/2026 07:45)
 - **Cô Lập & Đồng Bộ Đa Thiết Bị Tiến Độ 50 Đề Theo Tài Khoản (`dgnl-progress-store.js`) + Sửa Lọc Tab `Đã thi` Khi Đang Thi Lại (`danh-gia-nang-luc.html`) + Đổi Tên Tab Navbar Thành `Test Điểm Thi Khảo Sát Quốc Gia` (15 File)**:
 - **Mục tiêu & Hành vi mới**:
