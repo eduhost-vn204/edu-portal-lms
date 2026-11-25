@@ -3,7 +3,7 @@
     "examId": "thithu_2026_de01",
     "codeLabel": "0201",
     "tenDe": "Đề Thi Thử Tốt Nghiệp THPT 2026 – Chuẩn Bộ GD&ĐT (Đề số 01)",
-    "moTa": "Chuẩn Đề Chính Thức 2026 (+CD02 Chuyển thể, +CD16 An toàn bức xạ). Cấu trúc chuẩn Bộ GD&ĐT (18 TN Lý thuyết phủ 16/16 CĐ · 4 Đúng/Sai 4 chương tích hợp 6 mô hình Canvas 60 FPS · 3 cặp Trả lời ngắn ghép đôi). Có sẵn bản Word & PDF chuẩn đề thi thật.",
+    "moTa": "Chuẩn Bộ 2025–2026 (CD02, CD16). Cấu trúc chuẩn Bộ GD&ĐT (18 TN Lý thuyết phủ 16/16 CĐ · 4 Đúng/Sai 4 chương tích hợp 6 mô hình Canvas 60 FPS · 3 cặp Trả lời ngắn ghép đôi). Có sẵn bản Word & PDF chuẩn đề thi thật.",
     "thoiGian": 50,
     "trangThai": "mo",
     "lop": 12,
@@ -15,13 +15,13 @@
     "modelCount": 6,
     "pdfUrl": "assets/exams/thithu_2026/De_Thi_Thu_THPTQG_2026_De_01.pdf",
     "docxUrl": "assets/exams/thithu_2026/De_Thi_Thu_THPTQG_2026_De_01.docx",
-    "updatedAt": "2026-11-25T00:37:04.219Z"
+    "updatedAt": "2026-11-25T02:17:18.683Z"
   },
   {
     "examId": "thithu_2026_de02",
     "codeLabel": "0202",
     "tenDe": "Đề Thi Thử Tốt Nghiệp THPT 2026 – Chuẩn Bộ GD&ĐT (Đề số 02)",
-    "moTa": "Chuẩn Đề Chính Thức 2025 (+CD04 Nhiệt dung/Nóng chảy, +CD12 Cảm ứng điện từ). Cấu trúc chuẩn Bộ GD&ĐT (18 TN Lý thuyết phủ 16/16 CĐ · 4 Đúng/Sai 4 chương tích hợp 6 mô hình Canvas 60 FPS · 3 cặp Trả lời ngắn ghép đôi). Có sẵn bản Word & PDF chuẩn đề thi thật.",
+    "moTa": "Chuẩn Bộ 2025–2026 (CD04, CD12). Cấu trúc chuẩn Bộ GD&ĐT (18 TN Lý thuyết phủ 16/16 CĐ · 4 Đúng/Sai 4 chương tích hợp 6 mô hình Canvas 60 FPS · 3 cặp Trả lời ngắn ghép đôi). Có sẵn bản Word & PDF chuẩn đề thi thật.",
     "thoiGian": 50,
     "trangThai": "mo",
     "lop": 12,
@@ -33,13 +33,13 @@
     "modelCount": 6,
     "pdfUrl": "assets/exams/thithu_2026/De_Thi_Thu_THPTQG_2026_De_02.pdf",
     "docxUrl": "assets/exams/thithu_2026/De_Thi_Thu_THPTQG_2026_De_02.docx",
-    "updatedAt": "2026-11-25T00:37:04.219Z"
+    "updatedAt": "2026-11-25T02:17:18.683Z"
   },
   {
     "examId": "thithu_2026_de03",
     "codeLabel": "0203",
     "tenDe": "Đề Thi Thử Tốt Nghiệp THPT 2026 – Chuẩn Bộ GD&ĐT (Đề số 03)",
-    "moTa": "Chuẩn Bộ 2026 (+CD08 Đẳng áp/Đẳng tích, +CD16 Phóng xạ y học). Cấu trúc chuẩn Bộ GD&ĐT (18 TN Lý thuyết phủ 16/16 CĐ · 4 Đúng/Sai 4 chương tích hợp 6 mô hình Canvas 60 FPS · 3 cặp Trả lời ngắn ghép đôi). Có sẵn bản Word & PDF chuẩn đề thi thật.",
+    "moTa": "Chuẩn Bộ 2025–2026 (CD08, CD16). Cấu trúc chuẩn Bộ GD&ĐT (18 TN Lý thuyết phủ 16/16 CĐ · 4 Đúng/Sai 4 chương tích hợp 6 mô hình Canvas 60 FPS · 3 cặp Trả lời ngắn ghép đôi). Có sẵn bản Word & PDF chuẩn đề thi thật.",
     "thoiGian": 50,
     "trangThai": "mo",
     "lop": 12,
@@ -51,13 +51,13 @@
     "modelCount": 6,
     "pdfUrl": "assets/exams/thithu_2026/De_Thi_Thu_THPTQG_2026_De_03.pdf",
     "docxUrl": "assets/exams/thithu_2026/De_Thi_Thu_THPTQG_2026_De_03.docx",
-    "updatedAt": "2026-11-25T00:37:04.219Z"
+    "updatedAt": "2026-11-25T02:17:18.683Z"
   },
   {
     "examId": "thithu_2026_de04",
     "codeLabel": "0204",
     "tenDe": "Đề Thi Thử Tốt Nghiệp THPT 2026 – Chuẩn Bộ GD&ĐT (Đề số 04)",
-    "moTa": "Chuẩn Minh Họa Bộ (+CD05 Nội năng & ĐL I, +CD13 Xoay chiều & Sóng điện từ). Cấu trúc chuẩn Bộ GD&ĐT (18 TN Lý thuyết phủ 16/16 CĐ · 4 Đúng/Sai 4 chương tích hợp 6 mô hình Canvas 60 FPS · 3 cặp Trả lời ngắn ghép đôi). Có sẵn bản Word & PDF chuẩn đề thi thật.",
+    "moTa": "Chuẩn Bộ 2025–2026 (CD05, CD13). Cấu trúc chuẩn Bộ GD&ĐT (18 TN Lý thuyết phủ 16/16 CĐ · 4 Đúng/Sai 4 chương tích hợp 6 mô hình Canvas 60 FPS · 3 cặp Trả lời ngắn ghép đôi). Có sẵn bản Word & PDF chuẩn đề thi thật.",
     "thoiGian": 50,
     "trangThai": "mo",
     "lop": 12,
@@ -69,13 +69,13 @@
     "modelCount": 6,
     "pdfUrl": "assets/exams/thithu_2026/De_Thi_Thu_THPTQG_2026_De_04.pdf",
     "docxUrl": "assets/exams/thithu_2026/De_Thi_Thu_THPTQG_2026_De_04.docx",
-    "updatedAt": "2026-11-25T00:37:04.219Z"
+    "updatedAt": "2026-11-25T02:17:18.683Z"
   },
   {
     "examId": "thithu_2026_de05",
     "codeLabel": "0205",
     "tenDe": "Đề Thi Thử Tốt Nghiệp THPT 2026 – Chuẩn Bộ GD&ĐT (Đề số 05)",
-    "moTa": "Chuẩn Bộ 2025–2026 (+CD10 Đường sức từ, +CD14 Rutherford & Hạt nhân). Cấu trúc chuẩn Bộ GD&ĐT (18 TN Lý thuyết phủ 16/16 CĐ · 4 Đúng/Sai 4 chương tích hợp 6 mô hình Canvas 60 FPS · 3 cặp Trả lời ngắn ghép đôi). Có sẵn bản Word & PDF chuẩn đề thi thật.",
+    "moTa": "Chuẩn Bộ 2025–2026 (CD10, CD14). Cấu trúc chuẩn Bộ GD&ĐT (18 TN Lý thuyết phủ 16/16 CĐ · 4 Đúng/Sai 4 chương tích hợp 6 mô hình Canvas 60 FPS · 3 cặp Trả lời ngắn ghép đôi). Có sẵn bản Word & PDF chuẩn đề thi thật.",
     "thoiGian": 50,
     "trangThai": "mo",
     "lop": 12,
@@ -87,6 +87,6 @@
     "modelCount": 6,
     "pdfUrl": "assets/exams/thithu_2026/De_Thi_Thu_THPTQG_2026_De_05.pdf",
     "docxUrl": "assets/exams/thithu_2026/De_Thi_Thu_THPTQG_2026_De_05.docx",
-    "updatedAt": "2026-11-25T00:37:04.219Z"
+    "updatedAt": "2026-11-25T02:17:18.683Z"
   }
 ]
