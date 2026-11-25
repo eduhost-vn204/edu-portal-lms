@@ -22,9 +22,37 @@
     return null;
   }
 
-  // Kiểm tra kết quả test thực tế: chỉ coi là đã làm bài test nếu trong localStorage thực sự có dữ liệu kết quả đã nộp
+  function normalizeAccKeyLocal(u) {
+    if (!u || typeof u !== 'object') return 'guest';
+    var s = String(u.sdt || u.email || '').trim();
+    if (!s) return 'guest';
+    var up = s.toUpperCase();
+    if (up === 'FREE' || up === 'GUEST' || up.indexOf('HS-THITHU') === 0) return 'guest';
+    if (s.indexOf('@') > -1) return s.toLowerCase().replace(/[.#$\[\]\/]/g, '_');
+    var digits = s.replace(/\D/g, '');
+    if (digits.length >= 6) return digits;
+    return s.toLowerCase().replace(/[^a-z0-9_-]/g, '_').replace(/_+/g, '_') || 'guest';
+  }
+
+  // Kiểm tra kết quả test thực tế theo đúng tài khoản (cô lập hoàn toàn giữa các tài khoản)
   function hasActualTestResult() {
     try {
+      var accKey = (typeof window !== 'undefined' && window.VlxtDgnlProgress)
+        ? window.VlxtDgnlProgress.getCurrentAccountKey()
+        : normalizeAccKeyLocal(getCurrentUser());
+      if (accKey && accKey !== 'guest') {
+        var rawLatestAcc = localStorage.getItem('vlxt_dgnl_latest_v2_' + accKey);
+        if (rawLatestAcc) {
+          var dAcc = JSON.parse(rawLatestAcc);
+          if (dAcc && typeof dAcc === 'object' && dAcc.examNumber) return true;
+        }
+        var rawHistAcc = localStorage.getItem('vlxt_dgnl_history_v2_' + accKey);
+        if (rawHistAcc) {
+          var hAcc = JSON.parse(rawHistAcc);
+          if (hAcc && typeof hAcc === 'object' && Object.keys(hAcc).length > 0) return true;
+        }
+        return false;
+      }
       var raw = localStorage.getItem('vlxt_dgnl_latest_result');
       if (raw) {
         var data = JSON.parse(raw);

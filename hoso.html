@@ -23,6 +23,7 @@
   <script src="ho-tro-chat.js?v=1"></script>
   <script src="ban-be.js?v=4"></script>
   <script src="wrong-bank.js?v=20261118a"></script>
+  <script src="dgnl-progress-store.js?v=20261125a"></script>
   <script src="wrong-bank-ui.js?v=20261118a"></script>
   <style>
     /* ─── TYPOGRAPHY TOÀN CỤC CHUẨN EDTECH ─── */
@@ -882,13 +883,23 @@ const user = (function() {
 
 if (!user || !user.sdt || String(user.sdt).toUpperCase() === 'FREE') {
   window.location.href = 'login.html?from=hoso.html&trigger=hoso_enter';
-} else if (typeof VlxtWrongBank !== 'undefined') {
-  try {
-    const _initWbAcc = VlxtWrongBank.normalizeAccountKey(user.sdt || user.email || '');
-    if (_initWbAcc !== 'guest') {
-      VlxtWrongBank.migrateGuestToAccount(_initWbAcc);
-    }
-  } catch (e) {}
+} else {
+  if (typeof VlxtWrongBank !== 'undefined') {
+    try {
+      const _initWbAcc = VlxtWrongBank.normalizeAccountKey(user.sdt || user.email || '');
+      if (_initWbAcc !== 'guest') {
+        VlxtWrongBank.migrateGuestToAccount(_initWbAcc);
+      }
+    } catch (e) {}
+  }
+  if (typeof VlxtDgnlProgress !== 'undefined') {
+    try {
+      const _initDgnlAcc = VlxtDgnlProgress.normalizeAccountKey(user.sdt || user.email || '');
+      if (_initDgnlAcc !== 'guest') {
+        VlxtDgnlProgress.migrateGuestToAccount(_initDgnlAcc);
+      }
+    } catch (e) {}
+  }
 }
 
 var _latestPaymentCheck = { ok: false, paid: false };
@@ -898,21 +909,30 @@ function renderRadarChart() {
   if (!container) return;
 
   let attempt = null;
-  try {
-    const raw = localStorage.getItem('vlxt_zero_friction_state');
-    if (raw) {
-      const state = JSON.parse(raw);
-      attempt = state.lastAttempt || (state.attempts && state.attempts.length > 0 ? state.attempts[state.attempts.length - 1] : null);
-    }
-  } catch(e) {}
-
-  if (!attempt) {
+  const _radarAcc = (typeof VlxtDgnlProgress !== 'undefined' && user)
+    ? VlxtDgnlProgress.normalizeAccountKey(user.sdt || user.email || '')
+    : 'guest';
+  if (_radarAcc !== 'guest' && typeof VlxtDgnlProgress !== 'undefined') {
     try {
-      const rawLatest = localStorage.getItem('vlxt_dgnl_latest_result');
-      if (rawLatest) {
-        attempt = JSON.parse(rawLatest);
+      attempt = VlxtDgnlProgress.getLatestResult(_radarAcc);
+    } catch(e) {}
+  } else {
+    try {
+      const raw = localStorage.getItem('vlxt_zero_friction_state');
+      if (raw) {
+        const state = JSON.parse(raw);
+        attempt = state.lastAttempt || (state.attempts && state.attempts.length > 0 ? state.attempts[state.attempts.length - 1] : null);
       }
     } catch(e) {}
+
+    if (!attempt) {
+      try {
+        const rawLatest = localStorage.getItem('vlxt_dgnl_latest_result');
+        if (rawLatest) {
+          attempt = JSON.parse(rawLatest);
+        }
+      } catch(e) {}
+    }
   }
 
   const isDemo = !attempt;
@@ -1127,6 +1147,19 @@ if (user && typeof VlxtWrongBank !== 'undefined') {
       VlxtWrongBank.syncFromCloud(_syncWbAcc).then(function(res) {
         if (res && res.changed && typeof vlxtRenderWrongBankTab === 'function') {
           vlxtRenderWrongBankTab();
+        }
+      }).catch(function() {});
+    }
+  } catch (e) {}
+}
+// Đồng bộ nền Tiến độ & Lịch sử 50 Đề đa thiết bị (fail-silent, không chặn render)
+if (user && typeof VlxtDgnlProgress !== 'undefined') {
+  try {
+    const _syncDgnlAcc = VlxtDgnlProgress.normalizeAccountKey(user.sdt || user.email || '');
+    if (_syncDgnlAcc !== 'guest') {
+      VlxtDgnlProgress.syncFromCloud(_syncDgnlAcc).then(function(res) {
+        if (res && res.changed) {
+          renderRadarChart();
         }
       }).catch(function() {});
     }

@@ -1,3 +1,22 @@
+## Bàn giao gần nhất (25/11/2026 07:45)
+- **Cô Lập & Đồng Bộ Đa Thiết Bị Tiến Độ 50 Đề Theo Tài Khoản (`dgnl-progress-store.js`) + Sửa Lọc Tab `Đã thi` Khi Đang Thi Lại (`danh-gia-nang-luc.html`) + Đổi Tên Tab Navbar Thành `Test Điểm Thi Khảo Sát Quốc Gia` (15 File)**:
+- **Mục tiêu & Hành vi mới**:
+  1. **Cô lập tuyệt đối theo tài khoản & Đồng bộ đa thiết bị (`dgnl-progress-store.js`)**:
+     - Tạo module `VlxtDgnlProgress` (`dgnl-progress-store.js`) tách riêng toàn bộ lịch sử 50 đề (`vlxt_dgnl_history_v2_<acc>`), phiên làm dở (`vlxt_dgnl_sessions_v3_<acc>`) và kết quả gần nhất (`vlxt_dgnl_latest_v2_<acc>`) theo từng SĐT/Email đăng nhập (không dùng chung khóa toàn cục và không trộn khóa legacy khi đã đăng nhập).
+     - Đồng bộ nền 2 chiều qua Firebase RTDB (`profiles/<acc>/dgnlProgress.json`): offline-first `0ms`, debounce `3,5s` khi đang làm bài, đẩy ngay khi nộp bài và `flushCloudPush()` (`keepalive`) khi tạm dừng/thoát trang, tự gộp đa thiết bị (`mergeProgress` giữ `Math.max(bestScore)`, `Math.max(attempts)`, loại bỏ phiên `in_progress` cũ nếu đề đó đã được nộp ở thiết bị khác) và di trú dữ liệu `guest` sang tài khoản lúc vừa đăng nhập.
+     - Tích hợp vào `danh-gia-nang-luc.html`, `hoso.html` (Radar HUD cô lập theo tài khoản & tự cập nhật khi đồng bộ cloud) và `smart-marketing-popup.js`.
+  2. **Sửa lỗi Sảnh ĐGNL hiển thị `1 / 50 · 0,25` nhưng tab `Đã thi` trống (`danh-gia-nang-luc.html`)**:
+     - Thêm `matchesLobbyStatusFilter()` để mọi đề có lịch sử nộp bài đều hiển thị ở tab `Đã thi` kể cả khi đang mở lượt thi lại (`in_progress`), hiện rõ `Đang thi lại · 0/28` và hộp `Đã thi trước đó` + `Đang làm dở` song song ở khung xem trước bên trái; sửa `renderLobbyAbilityHeader()` hiển thị đúng `0,00` khi điểm bằng 0.
+  3. **Đổi tên tab Navbar `Đánh Giá Năng Lực` → `Test Điểm Thi Khảo Sát Quốc Gia`** đồng bộ 15 file (`auth.js`, `index.html`, `danh-gia-nang-luc.html`, `baihoc.html`, `phong-thi-thu.html`, `goi-hoc.html`, `huongdan.html`, `hoso.html`, `danhsach-ly12.html`, `live-record.html`, `dau-thuong.html`, `dau-thuong-hud.html`, `dua-top.html`, `hoso-hud.html`, `solo.html`) kèm CSS responsive 1 hàng cho `.top-bar` trên `index.html`, `goi-hoc.html`, `huongdan.html`.
+- **Kiểm tra đã chạy**:
+  - `node --check` (`auth.js`, `dgnl-progress-store.js`, `smart-marketing-popup.js`), `vm.Script` AST 14/14 HTML + `</html>`, `git diff --check`, `0` AI Glow, `0` secret leak.
+  - 7/7 Student test suites PASS (`test_dgnl_progress_sync.mjs` 4/4 + `test_cro_funnel` + `test_diagnostic_mastery_loop` + `test_remedial_and_prediction` + `test_wrong_bank` + `test_early_access_and_telemetry` + `test_smart_marketing_popup`).
+  - Playwright E2E (`verify_dgnl_fix.py` & `verify_dgnl_cloud_e2e.py`): PASS 100% lọc `Đã thi`/`Làm dở`, responsive Navbar 1 dòng `1280px`/`1440px`/`390px`, cô lập tài khoản A/B trên cùng máy và đồng bộ Cloud RTDB sang thiết bị mới.
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên giao diện sáng CBT của `phong-thi-thu.html`, `live-record.html` Guest Access, khóa boot 10s `dgnl-boot-grace`, One-Frame `<= 730px` ở `danh-gia-nang-luc.html`, Zero AI Glow.
+- **Việc còn lại**:
+  - Thầy kiểm tra live trên `https://vatlyxuantruong.io.vn/` (F5/Ctrl+F5 để nạp bản mới nhất).
+
 ## Bàn giao gần nhất (24/11/2026 20:02)
 - **Phát Hành Production (`main`) Chiến Dịch Trải Nghiệm Sớm VIP (25/11–05/12, 7 Ngày) + Telemetry & Hub Báo Lỗi Zalo + Fix Lỗi Google OAuth `401: invalid_client` (`danh-gia-nang-luc.html`, `login.html`, `vlxt-telemetry.js`, `goi-hoc.html`)**:
 - **Trạng thái**: Đã sửa triệt để lỗi đăng nhập Gmail, kiểm định toàn diện và đẩy lên `main` hai repo Student (`upstream/main` & `origin/main`) và Admin (`origin/main`) kèm rollback tag.
