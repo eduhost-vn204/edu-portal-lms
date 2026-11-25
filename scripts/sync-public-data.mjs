@@ -1,4 +1,5 @@
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { planQuizPublish, applyQuizPublishPlan } from './quiz-publish.mjs';
 
@@ -71,7 +72,32 @@ const liveRecords = rawLiveRecords.filter(l => {
 const configs = rowsOf(configData, ['khoaconfig', 'data']);
 const quizRows = rowsOf(quizData, ['baitaptracnghiem', 'data']);
 const liveRows = rowsOf(liveData, ['lichlive', 'data']);
-const exams = Array.isArray(examData) ? examData : examData;
+const examsRaw = Array.isArray(examData) ? examData : examData;
+let exams = examsRaw;
+const catalogFile = path.join(dataDir, 'thithu_2026_catalog.json');
+if (existsSync(catalogFile)) {
+  try {
+    const catalog = JSON.parse(await readFile(catalogFile, 'utf8'));
+    if (Array.isArray(catalog) && catalog.length) {
+      const catById = new Map(catalog.map(c => [String(c.examId || '').toLowerCase(), c]));
+      const curList = Array.isArray(examsRaw) ? examsRaw : (Array.isArray(examsRaw?.data) ? examsRaw.data : []);
+      const seenIds = new Set();
+      const merged = curList.map(r => {
+        const eid = String(r.examId || '').toLowerCase();
+        seenIds.add(eid);
+        const c = catById.get(eid);
+        return c ? { ...c, ...r, pdfUrl: r.pdfUrl || c.pdfUrl, docxUrl: r.docxUrl || c.docxUrl } : r;
+      });
+      for (const c of catalog) {
+        const eid = String(c.examId || '').toLowerCase();
+        if (!seenIds.has(eid)) merged.unshift(c);
+      }
+      exams = Array.isArray(examsRaw) ? merged : { ...(examsRaw || { ok: true }), data: merged };
+    }
+  } catch (e) {
+    console.warn('Không thể gộp thithu_2026_catalog.json:', e.message);
+  }
+}
 
 if (!lessons.length) throw new Error('Không nhận được dữ liệu BaiHoc; giữ nguyên JSON cũ.');
 

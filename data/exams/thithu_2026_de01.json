@@ -1,0 +1,506 @@
+[
+  {
+    "id": 1,
+    "bankId": "VLXT-TT26-D01-Q01",
+    "type": "mc",
+    "chapterCode": "C1",
+    "subTopic": "CD01 – Cấu trúc chất, Lực tương tác phân tử & 3 thể Rắn–Lỏng–Khí",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Ở thể lỏng, các phân tử chất lỏng có đặc điểm sắp xếp và chuyển động là",
+    "options": {
+      "A": "nằm cố định tại các nút mạng tinh thể và không dao động nhiệt.",
+      "B": "chuyển động hỗn loạn tự do, lấp đầy toàn bộ thể tích bình chứa.",
+      "C": "dao động quanh vị trí cân bằng không cố định nên chất lỏng có thể tích xác định nhưng không có hình dạng riêng.",
+      "D": "chỉ hút nhau mà không bao giờ có lực đẩy phân tử."
+    },
+    "correct": "C",
+    "giaiThich": "Các phân tử chất lỏng ở gần nhau và dao động quanh các vị trí cân bằng có thể di chuyển được, nên chất lỏng có thể tích riêng nhưng mang hình dạng phần bình chứa nó."
+  },
+  {
+    "id": 2,
+    "bankId": "VLXT-TT26-D01-Q02",
+    "type": "mc",
+    "chapterCode": "C1",
+    "subTopic": "CD02 – Sự chuyển thể (Nóng chảy, Đông đặc, Hóa hơi, Sôi, Ngưng tụ)",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Sự khác nhau cơ bản giữa sự bay hơi và sự sôi của một chất lỏng tinh khiết là sự bay hơi",
+    "options": {
+      "A": "xảy ra đồng thời cả trên mặt thoáng và bên trong lòng khối chất lỏng.",
+      "B": "chỉ xảy ra ở một nhiệt độ xác định phụ thuộc áp suất trên mặt thoáng.",
+      "C": "luôn làm nhiệt độ chất lỏng tăng nhanh lên đến nhiệt độ sôi.",
+      "D": "xảy ra ở bất kì nhiệt độ nào và chỉ diễn ra trên bề mặt thoáng của chất lỏng."
+    },
+    "correct": "D",
+    "giaiThich": "Bay hơi xảy ra ở mọi nhiệt độ trên mặt thoáng chất lỏng; còn sự sôi xảy ra ở nhiệt độ sôi xác định cả trên mặt thoáng lẫn trong lòng chất lỏng."
+  },
+  {
+    "id": 3,
+    "bankId": "VLXT-TT26-D01-Q03",
+    "type": "mc",
+    "chapterCode": "C1",
+    "subTopic": "CD02 – Sự chuyển thể (Nóng chảy, Đông đặc, Hóa hơi, Sôi, Ngưng tụ)",
+    "nhomId": "",
+    "modelId": "MH-TT26-D1-P1-01",
+    "question": "<p>Quan sát đồ thị sự thay đổi nhiệt độ $t$ theo thời gian nung nóng $\\tau$ của hai chất rắn (1) và (2) trong mô hình mô phỏng. Phát biểu nào sau đây đúng về cấu trúc hai chất rắn này?</p><div class=\"vlxt-model-slot\" data-model-id=\"MH-TT26-D1-P1-01\"></div>",
+    "options": {
+      "A": "Chất (1) là chất rắn vô định hình, chất (2) là chất rắn kết tinh.",
+      "B": "Chất (1) có nhiệt độ nóng chảy xác định nên thuộc nhóm chất rắn kết tinh; chất (2) là chất rắn vô định hình.",
+      "C": "Cả hai chất đều là chất rắn kết tinh vì nhiệt độ đều tăng theo thời gian.",
+      "D": "Chất (2) có nhiệt độ nóng chảy xác định cao hơn chất (1)."
+    },
+    "correct": "B",
+    "giaiThich": "Đồ thị (1) có đoạn nằm ngang ở $t_{\\text{nc}}$ ứng với quá trình nóng chảy đẳng nhiệt của chất rắn kết tinh; đồ thị (2) mềm dần liên tục là đặc trưng của chất rắn vô định hình."
+  },
+  {
+    "id": 4,
+    "bankId": "VLXT-TT26-D01-Q04",
+    "type": "mc",
+    "chapterCode": "C1",
+    "subTopic": "CD03 – Nhiệt độ, Sự truyền nhiệt, Nhiệt kế & Thang đo nhiệt độ",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Trong thang nhiệt độ Kelvin, khoảng cách mỗi độ chia ($1\\text{ K}$) có độ lớn",
+    "options": {
+      "A": "bằng đúng một độ chia trong thang nhiệt độ Celsius ($1^\\circ\\text{C}$).",
+      "B": "lớn gấp $273{,}15$ lần một độ chia trong thang Celsius.",
+      "C": "bằng $1{,}8$ lần một độ chia trong thang Celsius.",
+      "D": "thay đổi tùy theo bản chất chất khí trong nhiệt kế."
+    },
+    "correct": "A",
+    "giaiThich": "Theo quy ước quốc tế, khoảng độ chia $1\\text{ K}$ bằng đúng $1^\\circ\\text{C}$, tức $\\Delta T\\text{ (K)} = \\Delta t\\text{ }(\\text{°C})$."
+  },
+  {
+    "id": 5,
+    "bankId": "VLXT-TT26-D01-Q05",
+    "type": "mc",
+    "chapterCode": "C1",
+    "subTopic": "CD04 – Nhiệt dung riêng, Nhiệt chuyển thể & Thí nghiệm đo nhiệt",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Đơn vị chuẩn SI của nhiệt dung riêng là",
+    "options": {
+      "A": "$\\text{J/kg}$.",
+      "B": "$\\text{J}\\cdot\\text{kg}^{-1}\\cdot\\text{K}^{-1}$.",
+      "C": "$\\text{J/K}$.",
+      "D": "$\\text{W}\\cdot\\text{kg}^{-1}\\cdot\\text{K}^{-1}$."
+    },
+    "correct": "B",
+    "giaiThich": "Từ hệ thức $c = \\dfrac{Q}{m\\Delta T}$, đơn vị chuẩn SI của nhiệt dung riêng là $\\text{J/(kg}\\cdot\\text{K)}$ hay $\\text{J}\\cdot\\text{kg}^{-1}\\cdot\\text{K}^{-1}$."
+  },
+  {
+    "id": 6,
+    "bankId": "VLXT-TT26-D01-Q06",
+    "type": "mc",
+    "chapterCode": "C1",
+    "subTopic": "CD05 – Nội năng, Định luật I NĐLH (ΔU = A + Q) & Động cơ nhiệt",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Một khối khí đựng trong bình kín nhận nhiệt lượng $Q > 0$ và truyền ra ngoài công cơ học (tức là khí thực hiện công làm pít-tông dịch chuyển ra ngoài). Theo định luật I nhiệt động lực học $\\Delta U = A + Q$, dấu của đại lượng $A$ là",
+    "options": {
+      "A": "$A > 0$.",
+      "B": "$A = 0$.",
+      "C": "$A < 0$.",
+      "D": "$A = -Q$ trong mọi trường hợp."
+    },
+    "correct": "C",
+    "giaiThich": "Theo quy ước dấu $\\Delta U = A + Q$, khi hệ thực hiện công lên môi trường ngoài thì hệ mất cơ năng nên $A < 0$."
+  },
+  {
+    "id": 7,
+    "bankId": "VLXT-TT26-D01-Q07",
+    "type": "mc",
+    "chapterCode": "C2",
+    "subTopic": "CD06 – Mô hình ĐHPT chất khí, Áp suất thành bình & Động năng phân tử",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Theo thuyết động học phân tử chất khí, động năng tịnh tiến trung bình của phân tử khí lí tưởng phụ thuộc trực tiếp vào đại lượng nào sau đây?",
+    "options": {
+      "A": "Khối lượng riêng của khối khí.",
+      "B": "Nhiệt độ tuyệt đối của khối khí.",
+      "C": "Thể tích bình chứa khí.",
+      "D": "Hình dạng hình học của bình chứa."
+    },
+    "correct": "B",
+    "giaiThich": "Động năng tịnh tiến trung bình của phân tử khí lí tưởng là $\\overline{E}_\\text{đ} = \\dfrac{3}{2}kT$, chỉ tỉ lệ thuận với nhiệt độ tuyệt đối $T$."
+  },
+  {
+    "id": 8,
+    "bankId": "VLXT-TT26-D01-Q08",
+    "type": "mc",
+    "chapterCode": "C2",
+    "subTopic": "CD07 – Quá trình đẳng nhiệt & Định luật Boyle",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Khi nén chậm một lượng khí lí tưởng xác định sao cho nhiệt độ không đổi, đại lượng nào sau đây của khối khí giảm đi?",
+    "options": {
+      "A": "Mật độ phân tử khí.",
+      "B": "Áp suất khối khí.",
+      "C": "Động năng trung bình mỗi phân tử.",
+      "D": "Thể tích khối khí."
+    },
+    "correct": "D",
+    "giaiThich": "Khi nén đẳng nhiệt, thể tích $V$ giảm làm mật độ phân tử tăng và áp suất $p$ tăng (vì $pV = \\text{const}$), còn nhiệt độ giữ nguyên nên động năng trung bình không đổi."
+  },
+  {
+    "id": 9,
+    "bankId": "VLXT-TT26-D01-Q09",
+    "type": "mc",
+    "chapterCode": "C2",
+    "subTopic": "CD08 – Quá trình đẳng áp (Charles) & Quá trình đẳng tích (Gay-Lussac)",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Một khối khí lí tưởng xác định biến đổi theo quá trình đẳng áp từ nhiệt độ tuyệt đối $T_1$ đến $T_2 > T_1$. Kết luận nào sau đây là sai?",
+    "options": {
+      "A": "Tỉ số $\\dfrac{V}{T}$ của khối khí luôn giữ không đổi.",
+      "B": "Thể tích của khối khí tăng lên tỉ lệ thuận với $T$.",
+      "C": "Khối lượng riêng của khối khí giảm đi.",
+      "D": "Động năng trung bình của phân tử khí không đổi."
+    },
+    "correct": "D",
+    "giaiThich": "Khi nhiệt độ tuyệt đối tăng từ $T_1$ lên $T_2$, động năng trung bình của các phân tử khí $\\overline{E}_\\text{đ} = \\frac{3}{2}kT$ phải tăng theo."
+  },
+  {
+    "id": 10,
+    "bankId": "VLXT-TT26-D01-Q10",
+    "type": "mc",
+    "chapterCode": "C2",
+    "subTopic": "CD09 – PT trạng thái, Clapeyron, Đồ thị & Công/Nội năng chất khí",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Biểu thức nào sau đây diễn tả đúng phương trình Clapeyron cho $n$ mol khí lí tưởng ở áp suất $p$, thể tích $V$ và nhiệt độ tuyệt đối $T$?",
+    "options": {
+      "A": "$pV = nRT$.",
+      "B": "$\\dfrac{pT}{V} = nR$.",
+      "C": "$pV = \\dfrac{nR}{T}$.",
+      "D": "$pT = nRV$."
+    },
+    "correct": "A",
+    "giaiThich": "Phương trình Clapeyron cho $n$ mol khí lí tưởng là $pV = nRT$ với $R \\approx 8{,}31\\text{ J/(mol}\\cdot\\text{K)}$."
+  },
+  {
+    "id": 11,
+    "bankId": "VLXT-TT26-D01-Q11",
+    "type": "mc",
+    "chapterCode": "C3",
+    "subTopic": "CD10 – Tương tác từ, Nguồn gốc từ trường, Đường sức & Từ trường Trái Đất",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Phát biểu nào sau đây đúng khi nói về tính chất của các đường sức từ?",
+    "options": {
+      "A": "Tại một điểm bất kì trong từ trường có thể vẽ vô số đường sức từ cắt nhau.",
+      "B": "Các đường sức từ của nam châm thẳng đều là những đường cong hở, xuất phát từ cực Nam.",
+      "C": "Các đường sức từ luôn là những đường cong kín hoặc vô hạn ở hai đầu và không bao giờ cắt nhau.",
+      "D": "Từ trường mạnh hay yếu không liên quan đến độ mau thưa của các đường sức từ."
+    },
+    "correct": "C",
+    "giaiThich": "Đường sức từ có tính chất: qua mỗi điểm trong từ trường chỉ có một đường sức từ (chúng không cắt nhau), luôn là đường cong kín, và nơi từ trường mạnh có đường sức dày hơn."
+  },
+  {
+    "id": 12,
+    "bankId": "VLXT-TT26-D01-Q12",
+    "type": "mc",
+    "chapterCode": "C3",
+    "subTopic": "CD11 – Cảm ứng từ (Tesla), Lực từ đoạn dây & Lực Lorentz",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Một electron bay vào vùng từ trường đều với vectơ vận tốc $\\vec{v}$ song song với các đường sức từ $\\vec{B}$. Ngay khi vào từ trường, quỹ đạo chuyển động của electron là",
+    "options": {
+      "A": "đường tròn nằm trong mặt phẳng vuông góc với $\\vec{B}$.",
+      "B": "đường thẳng theo phương ban đầu vì lực từ bằng không.",
+      "C": "đường xoắn ốc có bán kính tăng dần.",
+      "D": "đường parabol uốn cong về phía bản cực âm."
+    },
+    "correct": "B",
+    "giaiThich": "Độ lớn lực Lorentz là $f = |q|vB\\sin\\alpha$. Do $\\vec{v} \\parallel \\vec{B}$ nên $\\sin\\alpha = 0 \\Rightarrow f = 0$, hạt chuyển động thẳng đều theo phương ban đầu."
+  },
+  {
+    "id": 13,
+    "bankId": "VLXT-TT26-D01-Q13",
+    "type": "mc",
+    "chapterCode": "C3",
+    "subTopic": "CD12 – Từ thông (Weber), Cảm ứng điện từ, Định luật Lenz & Faraday",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Đơn vị đo của từ thông trong hệ SI là",
+    "options": {
+      "A": "tesla ($\\text{T}$).",
+      "B": "weber ($\\text{Wb}$).",
+      "C": "henry ($\\text{H}$).",
+      "D": "vôn trên mét ($\\text{V/m}$)."
+    },
+    "correct": "B",
+    "giaiThich": "Trong hệ SI, từ thông $\\Phi = BS\\cos\\alpha$ có đơn vị là weber ($\\text{Wb}$), với $1\\text{ Wb} = 1\\text{ T}\\cdot\\text{m}^2$."
+  },
+  {
+    "id": 14,
+    "bankId": "VLXT-TT26-D01-Q14",
+    "type": "mc",
+    "chapterCode": "C3",
+    "subTopic": "CD13 – Dòng xoay chiều, Máy phát, Biến áp, Foucault & Sóng điện từ",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Máy biến áp lí tưởng không thể làm biến đổi điện áp của nguồn điện một chiều không đổi chạy qua cuộn sơ cấp vì dòng điện một chiều không đổi",
+    "options": {
+      "A": "không có khả năng truyền qua dây đồng của cuộn sơ cấp.",
+      "B": "làm lõi sắt non bị nóng chảy ngay lập tức.",
+      "C": "tạo ra từ thông qua cuộn thứ cấp không biến thiên theo thời gian nên suất điện động cảm ứng bằng không.",
+      "D": "bị cuộn thứ cấp chặn lại bằng định luật Ohm."
+    },
+    "correct": "C",
+    "giaiThich": "Máy biến áp hoạt động dựa trên hiện tượng cảm ứng điện từ: chỉ khi từ thông biến thiên theo thời gian mới sinh ra suất điện động cảm ứng ở cuộn thứ cấp."
+  },
+  {
+    "id": 15,
+    "bankId": "VLXT-TT26-D01-Q15",
+    "type": "mc",
+    "chapterCode": "C4",
+    "subTopic": "CD14 – Thí nghiệm Rutherford, Cấu tạo hạt nhân (Z, N, A), Đồng vị & amu",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Các hạt nhân đồng vị của cùng một nguyên tố hóa học là những hạt nhân có cùng",
+    "options": {
+      "A": "số neutron $N$ nhưng khác số proton $Z$.",
+      "B": "số khối $A$ nhưng khác số proton $Z$.",
+      "C": "số proton $Z$ nhưng khác số neutron $N$ (nên khác số khối $A$).",
+      "D": "khối lượng hạt nhân nhưng khác điện tích hạt nhân."
+    },
+    "correct": "C",
+    "giaiThich": "Đồng vị là các hạt nhân có cùng số proton $Z$ (cùng vị trí trong bảng tuần hoàn) nhưng khác nhau về số neutron $N$, do đó khác số khối $A = Z + N$."
+  },
+  {
+    "id": 16,
+    "bankId": "VLXT-TT26-D01-Q16",
+    "type": "mc",
+    "chapterCode": "C4",
+    "subTopic": "CD15 – Lực hạt nhân, Độ hụt khối, Năng lượng liên kết & Độ bền vững hạt nhân",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Lực hạt nhân có bản chất là lực tương tác mạnh giữ các nucleon liên kết thành hạt nhân. Phát biểu nào sau đây đúng về bán kính tác dụng của lực hạt nhân?",
+    "options": {
+      "A": "Tác dụng mạnh ở khoảng cách cỡ bán kính nguyên tử ($10^{-10}\\text{ m}$).",
+      "B": "Chỉ phát huy tác dụng trong phạm vi kích thước hạt nhân (cỡ $10^{-15}\\text{ m}$).",
+      "C": "Giảm tỉ lệ nghịch với bình phương khoảng cách như lực tĩnh điện Coulomb.",
+      "D": "Chỉ tác dụng giữa các proton mang điện dương, không tác dụng lên neutron."
+    },
+    "correct": "B",
+    "giaiThich": "Lực hạt nhân là lực tương tác tầm cực ngắn, chỉ có tác dụng trong phạm vi kích thước hạt nhân cỡ $10^{-15}\\text{ m}$ và không phụ thuộc vào điện tích của nucleon."
+  },
+  {
+    "id": 17,
+    "bankId": "VLXT-TT26-D01-Q17",
+    "type": "mc",
+    "chapterCode": "C4",
+    "subTopic": "CD16 – Phản ứng hạt nhân, Phóng xạ, Ứng dụng & An toàn bức xạ",
+    "nhomId": "",
+    "modelId": "MH-TT26-D1-P1-02",
+    "question": "<p>Cho chùm tia phóng xạ hẹp phát ra từ một nguồn đi vào khoảng không gian giữa hai bản kim loại phẳng tích điện trái dấu như hình mô phỏng. Thứ tự đúng của các tia (1), (2), (3) lần lượt là</p><div class=\"vlxt-model-slot\" data-model-id=\"MH-TT26-D1-P1-02\"></div>",
+    "options": {
+      "A": "tia (1) là $\\beta^-$, tia (2) là $\\gamma$, tia (3) là $\\alpha$.",
+      "B": "tia (1) là $\\alpha$, tia (2) là $\\gamma$, tia (3) là $\\beta^-$.",
+      "C": "tia (1) là $\\gamma$, tia (2) là $\\beta^-$, tia (3) là $\\alpha$.",
+      "D": "tia (1) là $\\beta^-$, tia (2) là $\\alpha$, tia (3) là $\\gamma$."
+    },
+    "correct": "A",
+    "giaiThich": "Tia $\\beta^-$ mang điện âm có khối lượng rất nhỏ nên lệch mạnh về bản dương (+); tia $\\gamma$ không mang điện nên truyền thẳng; tia $\\alpha$ mang điện dương nặng hơn nhiều nên lệch ít hơn về bản âm (−)."
+  },
+  {
+    "id": 18,
+    "bankId": "VLXT-TT26-D01-Q18",
+    "type": "mc",
+    "chapterCode": "C4",
+    "subTopic": "CD16 – Phản ứng hạt nhân, Phóng xạ, Ứng dụng & An toàn bức xạ",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Một bệnh viện bảo quản nguồn đồng vị phóng xạ dùng để xạ trị trong hộp chì dày có cửa đóng mở. Tổng thời gian nguồn phóng xạ này còn đủ hoạt độ để sử dụng hiệu quả trong điều trị",
+    "options": {
+      "A": "tăng lên nếu bệnh viện mở cửa hộp ít lần hơn mỗi tuần.",
+      "B": "kéo dài hơn khi đặt nguồn trong phòng có nhiệt độ thật thấp.",
+      "C": "giảm đi một nửa nếu số lần chiếu xạ mỗi ngày tăng gấp đôi.",
+      "D": "không phụ thuộc vào số lần đóng mở cửa hộp hay nhiệt độ phòng mà chỉ phụ thuộc quy luật phân rã tự phát theo chu kì bán rã."
+    },
+    "correct": "D",
+    "giaiThich": "Phóng xạ là quá trình biến đổi hạt nhân tự phát, không phụ thuộc các tác nhân bên ngoài như nhiệt độ hay số lần đóng mở cửa che chắn."
+  },
+  {
+    "id": 19,
+    "bankId": "VLXT-TT26-D01-Q19",
+    "type": "tf",
+    "chapterCode": "C1",
+    "subTopic": "DS-C1.2 – Thí nghiệm thực hành đo Nhiệt dung riêng",
+    "nhomId": "",
+    "modelId": "MH-TT26-D1-P2-C1",
+    "question": "<p>Nhiệt dung riêng của dầu ô-liu được xác định theo công thức $c = \\dfrac{Q}{m\\Delta T}$. Để kiểm chứng giả thuyết cho rằng <em>\"nhiệt dung riêng của dầu ô-liu phụ thuộc vào khối lượng mẫu dầu\"</em>, một nhóm học sinh tiến hành đun hai mẫu dầu ô-liu có khối lượng $m_1 = 150\\text{ g}$ và $m_2 = 300\\text{ g}$ trong cùng một nhiệt lượng kế bằng dây điện trở hoạt động ở công suất không đổi $P = 20{,}0\\text{ W}$.</p>\n<div class=\"vlxt-model-slot\" data-model-id=\"MH-TT26-D1-P2-C1\"></div>\n<div class=\"vstep-data-panel\">\n<div class=\"vstep-data-title\"><i class=\"fa-solid fa-table-list\"></i> Bảng Số Liệu Đo Nhiệt Độ Hai Mẫu Dầu Theo Thời Gian Đun ($P = 20{,}0\\text{ W}$)</div>\n<table class=\"vstep-data-table\"><thead><tr><th>Thời gian $\\tau$ (phút)</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead>\n<tbody>\n<tr><td class=\"text-left\">Nhiệt độ mẫu 1 ($m_1 = 150\\text{ g}$) (${}\\circ\\text{C}$)</td><td>25,0</td><td>29,0</td><td>33,0</td><td>36,8</td><td>40,4</td></tr>\n<tr><td class=\"text-left\">Nhiệt độ mẫu 2 ($m_2 = 300\\text{ g}$) (${}\\circ\\text{C}$)</td><td>25,0</td><td>27,0</td><td>29,0</td><td>31,0</td><td>32,9</td></tr>\n</tbody></table></div>",
+    "options": {
+      "A": "Thời gian cấp điện càng dài thì điện năng dây điện trở tỏa ra làm nóng dầu càng lớn.",
+      "B": "Toàn bộ điện năng $P\\cdot\\tau$ tiêu thụ ở dây điện trở đều chuyển hoàn toàn thành độ tăng nhiệt độ của dầu mà không có hao phí nhiệt ra vỏ bình và môi trường.",
+      "C": "Dựa vào số liệu trong $2\\text{ phút}$ đầu của mẫu 1 (bỏ qua hao phí), nhiệt dung riêng thực nghiệm đo được của dầu ô-liu xấp xỉ $2000\\text{ J/(kg}\\cdot\\text{K)}$.",
+      "D": "Từ bảng số liệu, tốc độ tăng nhiệt độ của mẫu $300\\text{ g}$ gần bằng một nửa mẫu $150\\text{ g}$, cho thấy kết quả thí nghiệm bác bỏ giả thuyết của nhóm học sinh."
+    },
+    "correct": "ĐSĐĐ",
+    "giaiThich": "<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">a — ĐÚNG</span> Với công suất điện không đổi $P = 20{,}0\\text{ W}$, nhiệt lượng tỏa ra $Q = P\\tau$ tỉ lệ thuận với thời gian đun $\\tau$.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge false\">b — SAI</span> Trong thực tế luôn có một phần nhiệt làm nóng vỏ bình nhiệt lượng kế, nhiệt kế và thất thoát ra không khí xung quanh (thể hiện ở phút 3–4 mức tăng nhiệt giảm nhẹ).</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">c — ĐÚNG</span> Trong $\\tau = 2\\text{ phút} = 120\\text{ s}$, $Q = 20{,}0 \\times 120 = 2400\\text{ J}$, $\\Delta T_1 = 33{,}0 - 25{,}0 = 8{,}0\\text{ K}$: $c = \\dfrac{2400}{0{,}150 \\times 8{,}0} = 2000\\text{ J/(kg}\\cdot\\text{K)}$.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">d — ĐÚNG</span> Khi khối lượng tăng gấp đôi ($150\\text{ g} \\to 300\\text{ g}$) thì $\\Delta T$ giảm một nửa ($8{,}0^\\circ\\text{C} \\to 4{,}0^\\circ\\text{C}$), chứng tỏ tích $m\\Delta T$ không đổi nên $c$ không phụ thuộc khối lượng mẫu.</div>"
+  },
+  {
+    "id": 20,
+    "bankId": "VLXT-TT26-D01-Q20",
+    "type": "tf",
+    "chapterCode": "C2",
+    "subTopic": "DS-C2.5 – Hệ thống Biến thiên Lượng khí, Khí nén & Xilanh thủy ngân",
+    "nhomId": "",
+    "modelId": "MH-TT26-D1-P2-C2",
+    "question": "<p>Một xilanh có vỏ hoàn toàn cách nhiệt với bên ngoài đặt nằm ngang, bên trong chia thành hai ngăn kín A và B bởi một pit-tông cách nhiệt có thể chuyển động không ma sát. Ban đầu cả hai ngăn đều chứa khí lí tưởng ở trạng thái cân bằng. Dùng một dây điện trở đặt trong ngăn A cấp cho khí ở ngăn A một nhiệt lượng $Q = 480\\text{ J}$ làm pit-tông dịch chuyển chậm sang phía ngăn B, thực hiện công có độ lớn $180\\text{ J}$ để nén khí ngăn B.</p><div class=\"vlxt-model-slot\" data-model-id=\"MH-TT26-D1-P2-C2\"></div>",
+    "options": {
+      "A": "Do vỏ xilanh và pit-tông đều cách nhiệt nên trong suốt quá trình trên, khí ở ngăn B không trao đổi nhiệt lượng với ngăn A và môi trường ngoài.",
+      "B": "Khí ở ngăn A thực hiện công lên pit-tông nên trong hệ thức $\\Delta U_A = A_A + Q_A$, đại lượng $A_A > 0$.",
+      "C": "Độ biến thiên nội năng của khối khí ở ngăn A bằng $300\\text{ J}$.",
+      "D": "Nhiệt độ của khối khí lí tưởng ở ngăn B giảm xuống vì thể tích ngăn B bị thu hẹp."
+    },
+    "correct": "ĐSĐS",
+    "giaiThich": "<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">a — ĐÚNG</span> Thành bình và pit-tông cách nhiệt lí tưởng nên không có sự truyền nhiệt lượng qua ranh giới ngăn B ($Q_B = 0$).</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge false\">b — SAI</span> Khí ở ngăn A dãn nở đẩy pit-tông là thực hiện công ra ngoài nên $A_A = -180\\text{ J} < 0$.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">c — ĐÚNG</span> Áp dụng định luật I nhiệt động lực học cho ngăn A: $\\Delta U_A = Q_A + A_A = 480 + (-180) = 300\\text{ J}$.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge false\">d — SAI</span> Khí ở ngăn B bị nén đoạn nhiệt ($Q_B = 0$, $A_B = +180\\text{ J} > 0$) nên $\\Delta U_B = +180\\text{ J} > 0$, nội năng tăng khiến nhiệt độ ngăn B tăng lên.</div>"
+  },
+  {
+    "id": 21,
+    "bankId": "VLXT-TT26-D01-Q21",
+    "type": "tf",
+    "chapterCode": "C3",
+    "subTopic": "DS-C3.1 – Thí nghiệm Cân từ trường & Khảo sát Lực từ trên dây dẫn",
+    "nhomId": "",
+    "modelId": "MH-TT26-D1-P2-C3",
+    "question": "<p>Trên mặt bàn nằm ngang đặt một đoạn dây dẫn thẳng có phần nằm trong từ trường đều dài $\\ell = 20\\text{ cm}$, mang dòng điện không đổi $I = 2{,}5\\text{ A}$. Cảm ứng từ $\\vec{B}$ nằm song song với mặt bàn, có độ lớn $B = 0{,}40\\text{ T}$. Người ta xoay đoạn dây trên mặt bàn sao cho góc $\\alpha$ hợp bởi chiều dòng điện và vectơ $\\vec{B}$ thay đổi liên tục từ $30^\\circ$ đến $90^\\circ$.</p><div class=\"vlxt-model-slot\" data-model-id=\"MH-TT26-D1-P2-C3\"></div>",
+    "options": {
+      "A": "Lực từ tác dụng lên đoạn dây dẫn luôn có phương vuông góc với mặt phẳng chứa đoạn dây dẫn và vectơ $\\vec{B}$, tức là phương thẳng đứng.",
+      "B": "Khi đoạn dây dẫn được xoay đến vị trí hợp với đường sức từ góc $\\alpha = 30^\\circ$, độ lớn lực từ bằng $0{,}10\\text{ N}$.",
+      "C": "Khi tăng góc $\\alpha$ từ $30^\\circ$ đến $90^\\circ$, phương của lực từ tác dụng lên đoạn dây luôn đổi hướng liên tục nằm ngang trên mặt bàn.",
+      "D": "Nếu giữ $\\alpha = 90^\\circ$ và đảo ngược chiều dòng điện thì chiều của lực từ cũng đảo ngược lại."
+    },
+    "correct": "ĐĐSĐ",
+    "giaiThich": "<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">a — ĐÚNG</span> Cả đoạn dây dẫn và đường sức từ $\\vec{B}$ luôn nằm trong mặt phẳng bàn nằm ngang nên lực từ $\\vec{F}$ luôn vuông góc với mặt bàn (phương thẳng đứng).</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">b — ĐÚNG</span> Tại $\\alpha = 30^\\circ$: $F = BI\\ell\\sin 30^\\circ = 0{,}40 \\times 2{,}5 \\times 0{,}20 \\times 0{,}5 = 0{,}10\\text{ N}$.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge false\">c — SAI</span> Như ý (a), lực từ luôn có phương thẳng đứng vuông góc mặt bàn khi góc $\\alpha$ thay đổi trong mặt bàn, không quay nằm ngang.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">d — ĐÚNG</span> Theo quy tắc bàn tay trái, khi giữ nguyên chiều $\\vec{B}$ và đảo chiều dòng điện $I$ thì lực từ đảo chiều ngược lại ($180^\\circ$).</div>"
+  },
+  {
+    "id": 22,
+    "bankId": "VLXT-TT26-D01-Q22",
+    "type": "tf",
+    "chapterCode": "C4",
+    "subTopic": "DS-C4.1 – Thí nghiệm tán xạ Rutherford & Cấu trúc hạt nhân",
+    "nhomId": "",
+    "modelId": "MH-TT26-D1-P2-C4",
+    "question": "<p>Năm 1911, Ernest Rutherford cùng hai cộng sự đã thực hiện thí nghiệm kinh điển: chiếu chùm hạt alpha (${}^{4}_{2}\\text{He}$) hẹp bắn phá vào một lá vàng mỏng trong buồng chân không và dùng kính hiển vi gắn màn huỳnh quang $\\text{ZnS}$ quay quanh lá vàng ở các góc lệch $\\theta$ khác nhau để đếm số điểm sáng nhấp nháy.</p><div class=\"vlxt-model-slot\" data-model-id=\"MH-TT26-D1-P2-C4\"></div>",
+    "options": {
+      "A": "Phần lớn hạt alpha xuyên thẳng qua lá vàng mỏng chứng tỏ nguyên tử có cấu tạo rất rỗng.",
+      "B": "Tồn tại một tỉ lệ rất nhỏ hạt alpha bị bật ngược trở lại với góc lệch $\\theta > 90^\\circ$, điều này ủng hộ hoàn toàn mô hình \"bánh pudding mận\" của J.J. Thomson.",
+      "C": "Các hạt alpha bị tán xạ mạnh ở góc lớn là do lực đẩy tĩnh điện của hạt nhân nguyên tử vàng mang điện dương tập trung trong vùng thể tích rất nhỏ.",
+      "D": "Từ riêng thí nghiệm tán xạ hạt alpha này, Rutherford đã đo được chính xác bước sóng các vạch quang phổ của nguyên tử hydrogen."
+    },
+    "correct": "ĐSĐS",
+    "giaiThich": "<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">a — ĐÚNG</span> Đa số hạt $\\alpha$ đi thẳng hoặc lệch góc nhỏ cho thấy khoảng không gian trong nguyên tử phần lớn là trống rỗng.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge false\">b — SAI</span> Sự kiện bật ngược góc lớn bác bỏ mô hình Thomson (vì điện tích dương phân bố đều không thể tạo điện trường đủ mạnh đẩy ngược hạt $\\alpha$ nặng).</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">c — ĐÚNG</span> Khối lượng và toàn bộ điện tích dương tập trung tại hạt nhân cực nhỏ nên hạt $\\alpha$ bay sát tâm mới chịu lực đẩy Coulomb cực đại bật ngược lại.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge false\">d — SAI</span> Giải thích các vạch quang phổ nguyên tử hydrogen là thành tựu của mẫu nguyên tử Niels Bohr (1913), không phải kết quả trực tiếp từ thí nghiệm lá vàng.</div>"
+  },
+  {
+    "id": 23,
+    "bankId": "VLXT-TT26-D01-Q23",
+    "type": "short",
+    "chapterCode": "C1",
+    "subTopic": "",
+    "nhomId": "VLXT-TT26-D01-P3A",
+    "modelId": "",
+    "question": "<div class=\"q-context\"><strong>Dùng thông tin sau cho Câu 23 và Câu 24:</strong> Một bình nhiệt lượng kế chứa $m = 0{,}60\\text{ kg}$ nước tinh khiết có nhiệt dung riêng $c = 4180\\text{ J/(kg}\\cdot\\text{K)}$. Nhúng dây điện trở nối với nguồn một chiều không đổi hiệu điện thế $U = 12{,}0\\text{ V}$, cường độ dòng điện qua dây đo được là $I = 5{,}0\\text{ A}$. Sau thời gian đun liên tục $t = 240\\text{ s}$, nhiệt độ nước trong bình tăng thêm $\\Delta t = 5{,}0^\\circ\\text{C}$.</div>\nĐiện năng mà dây điện trở đã tiêu thụ trong khoảng thời gian $240\\text{ s}$ bằng bao nhiêu kilôjun (kJ) (làm tròn kết quả đến chữ số hàng phần mười)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "14,4",
+    "giaiThich": "<p>Điện năng tiêu thụ của dây điện trở: $A = U \\cdot I \\cdot t = 12{,}0 \\times 5{,}0 \\times 240 = 14\\,400\\text{ J} = 14{,}4\\text{ kJ}$.</p><p>• Đáp số: <strong>14,4</strong>.</p>"
+  },
+  {
+    "id": 24,
+    "bankId": "VLXT-TT26-D01-Q24",
+    "type": "short",
+    "chapterCode": "C1",
+    "subTopic": "",
+    "nhomId": "VLXT-TT26-D01-P3A",
+    "modelId": "",
+    "question": "<div class=\"q-context\"><strong>Dùng thông tin sau cho Câu 23 và Câu 24:</strong> Một bình nhiệt lượng kế chứa $m = 0{,}60\\text{ kg}$ nước tinh khiết có nhiệt dung riêng $c = 4180\\text{ J/(kg}\\cdot\\text{K)}$. Nhúng dây điện trở nối với nguồn một chiều không đổi hiệu điện thế $U = 12{,}0\\text{ V}$, cường độ dòng điện qua dây đo được là $I = 5{,}0\\text{ A}$. Sau thời gian đun liên tục $t = 240\\text{ s}$, nhiệt độ nước trong bình tăng thêm $\\Delta t = 5{,}0^\\circ\\text{C}$.</div>\nHiệu suất đun nóng nước của bộ thí nghiệm trên bằng bao nhiêu phần trăm (làm tròn kết quả đến chữ số hàng phần mười)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "87,1",
+    "giaiThich": "<p>Nhiệt lượng nước thu vào: $Q_{\\text{ích}} = m c \\Delta t = 0{,}60 \\times 4180 \\times 5{,}0 = 12\\,540\\text{ J}$.</p><p>Hiệu suất: $H = \\dfrac{Q_{\\text{ích}}}{A}\\cdot 100\\% = \\dfrac{12\\,540}{14\\,400}\\cdot 100\\% = 87{,}083\\% \\approx 87{,}1\\%$.</p><p>• Đáp số: <strong>87,1</strong>.</p>"
+  },
+  {
+    "id": 25,
+    "bankId": "VLXT-TT26-D01-Q25",
+    "type": "short",
+    "chapterCode": "C2",
+    "subTopic": "",
+    "nhomId": "VLXT-TT26-D01-P3B",
+    "modelId": "",
+    "question": "<div class=\"q-context\"><strong>Dùng thông tin sau cho Câu 25 và Câu 26:</strong> Một bình thép cứng dung tích không đổi $V = 45{,}0\\text{ lít}$ chứa khí oxygen ($\\text{O}_2$, khối lượng mol $M = 32\\text{ g/mol}$) ở áp suất $p_1 = 150\\text{ kPa}$ và nhiệt độ $27^\\circ\\text{C}$. Coi $\\text{O}_2$ là khí lí tưởng và hằng số khí lí tưởng $R = 8{,}31\\text{ J/(mol}\\cdot\\text{K)}$. Lấy $T(\\text{K}) = t(\\text{°C}) + 273$.</div>\nKhối lượng khí oxygen ban đầu chứa trong bình là bao nhiêu gam (làm tròn kết quả đến chữ số hàng phần mười)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "86,6",
+    "giaiThich": "<p>Ta có $V = 0{,}045\\text{ m}^3$, $T_1 = 27 + 273 = 300\\text{ K}$. Từ $p_1 V = \\dfrac{m_1}{M} R T_1$:</p>$$m_1 = \\dfrac{p_1 V M}{R T_1} = \\dfrac{150 \\cdot 10^3 \\times 0{,}045 \\times 32}{8{,}31 \\times 300} \\approx 86{,}64\\text{ g} \\approx 86{,}6\\text{ g}.$$<p>• Đáp số: <strong>86,6</strong>.</p>"
+  },
+  {
+    "id": 26,
+    "bankId": "VLXT-TT26-D01-Q26",
+    "type": "short",
+    "chapterCode": "C2",
+    "subTopic": "",
+    "nhomId": "VLXT-TT26-D01-P3B",
+    "modelId": "",
+    "question": "<div class=\"q-context\"><strong>Dùng thông tin sau cho Câu 25 và Câu 26:</strong> Một bình thép cứng dung tích không đổi $V = 45{,}0\\text{ lít}$ chứa khí oxygen ($\\text{O}_2$, khối lượng mol $M = 32\\text{ g/mol}$) ở áp suất $p_1 = 150\\text{ kPa}$ và nhiệt độ $27^\\circ\\text{C}$. Coi $\\text{O}_2$ là khí lí tưởng và hằng số khí lí tưởng $R = 8{,}31\\text{ J/(mol}\\cdot\\text{K)}$. Lấy $T(\\text{K}) = t(\\text{°C}) + 273$.</div>\nSau khi xả bớt một phần khí oxygen ra ngoài rồi khóa van lại, người ta đưa bình đến nơi có nhiệt độ $47^\\circ\\text{C}$ thì áp kế gắn trên bình chỉ $p_2 = 120\\text{ kPa}$. Phần trăm khối lượng khí oxygen đã xả ra so với khối lượng ban đầu là bao nhiêu phần trăm (làm tròn đến chữ số hàng đơn vị)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "25",
+    "giaiThich": "<p>Ở trạng thái sau: $T_2 = 47 + 273 = 320\\text{ K}$. Tỉ số khối lượng còn lại:</p>$$\\dfrac{m_2}{m_1} = \\dfrac{p_2}{p_1}\\cdot\\dfrac{T_1}{T_2} = \\dfrac{120}{150}\\cdot\\dfrac{300}{320} = 0{,}75 = 75\\%.$$<p>Phần trăm khối lượng đã xả ra: $100\\% - 75\\% = 25\\%$.</p><p>• Đáp số: <strong>25</strong>.</p>"
+  },
+  {
+    "id": 27,
+    "bankId": "VLXT-TT26-D01-Q27",
+    "type": "short",
+    "chapterCode": "C4",
+    "subTopic": "",
+    "nhomId": "VLXT-TT26-D01-P3C",
+    "modelId": "",
+    "question": "<div class=\"q-context\"><strong>Dùng thông tin sau cho Câu 27 và Câu 28:</strong> Một mô hình lò tổng hợp hạt nhân sạch sử dụng phản ứng nhiệt hạch giữa deuterium (${}^{2}_{1}\\text{D}$) và helium-3 (${}^{3}_{2}\\text{He}$): ${}^{2}_{1}\\text{D} + {}^{3}_{2}\\text{He} \\to {}^{4}_{2}\\text{He} + {}^{1}_{1}\\text{H}$. Cho khối lượng nghỉ các hạt nhân: $m_{\\text{D}} = 2{,}01355\\text{ amu}$, $m_{\\text{He3}} = 3{,}01493\\text{ amu}$, $m_{\\text{He4}} = 4{,}00151\\text{ amu}$, $m_{\\text{H}} = 1{,}00728\\text{ amu}$. Lấy $1\\text{ amu}\\cdot c^2 = 931{,}5\\text{ MeV}$, $1\\text{ eV} = 1{,}60\\cdot 10^{-19}\\text{ J}$, khối lượng mol của ${}^{3}_{2}\\text{He}$ là $3\\text{ g/mol}$ và $N_A = 6{,}02\\cdot 10^{23}\\text{ mol}^{-1}$.</div>\nNăng lượng tỏa ra của mỗi phản ứng nhiệt hạch trên bằng bao nhiêu MeV (làm tròn kết quả đến chữ số hàng phần trăm)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "18,34",
+    "giaiThich": "<p>Độ hụt khối phản ứng: $\\Delta m = (2{,}01355 + 3{,}01493) - (4{,}00151 + 1{,}00728) = 0{,}01969\\text{ amu}$.</p><p>Năng lượng tỏa ra: $\\Delta E = 0{,}01969 \\times 931{,}5 = 18{,}3412\\text{ MeV} \\approx 18{,}34\\text{ MeV}$.</p><p>• Đáp số: <strong>18,34</strong>.</p>"
+  },
+  {
+    "id": 28,
+    "bankId": "VLXT-TT26-D01-Q28",
+    "type": "short",
+    "chapterCode": "C4",
+    "subTopic": "",
+    "nhomId": "VLXT-TT26-D01-P3C",
+    "modelId": "",
+    "question": "<div class=\"q-context\"><strong>Dùng thông tin sau cho Câu 27 và Câu 28:</strong> Một mô hình lò tổng hợp hạt nhân sạch sử dụng phản ứng nhiệt hạch giữa deuterium (${}^{2}_{1}\\text{D}$) và helium-3 (${}^{3}_{2}\\text{He}$): ${}^{2}_{1}\\text{D} + {}^{3}_{2}\\text{He} \\to {}^{4}_{2}\\text{He} + {}^{1}_{1}\\text{H}$. Cho khối lượng nghỉ các hạt nhân: $m_{\\text{D}} = 2{,}01355\\text{ amu}$, $m_{\\text{He3}} = 3{,}01493\\text{ amu}$, $m_{\\text{He4}} = 4{,}00151\\text{ amu}$, $m_{\\text{H}} = 1{,}00728\\text{ amu}$. Lấy $1\\text{ amu}\\cdot c^2 = 931{,}5\\text{ MeV}$, $1\\text{ eV} = 1{,}60\\cdot 10^{-19}\\text{ J}$, khối lượng mol của ${}^{3}_{2}\\text{He}$ là $3\\text{ g/mol}$ và $N_A = 6{,}02\\cdot 10^{23}\\text{ mol}^{-1}$.</div>\nNếu tổng hợp hoàn toàn $2{,}0\\text{ gam}$ đồng vị ${}^{3}_{2}\\text{He}$ với lượng deuterium dư thì tổng năng lượng tỏa ra là $x\\cdot 10^{11}\\text{ J}$. Tìm $x$ (làm tròn kết quả đến chữ số hàng phần trăm).",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "11,78",
+    "giaiThich": "<p>Số hạt nhân ${}^{3}_{2}\\text{He}$ trong $2{,}0\\text{ g}$: $N = \\dfrac{2{,}0}{3}\\cdot 6{,}02\\cdot 10^{23} \\approx 4{,}0133\\cdot 10^{23}\\text{ hạt}$.</p><p>Tổng năng lượng: $Q = N \\cdot (18{,}3412\\cdot 10^6 \\times 1{,}60\\cdot 10^{-19}) \\approx 11{,}777\\cdot 10^{11}\\text{ J} \\approx 11{,}78\\cdot 10^{11}\\text{ J}$.</p><p>• Đáp số: <strong>11,78</strong>.</p>"
+  }
+]

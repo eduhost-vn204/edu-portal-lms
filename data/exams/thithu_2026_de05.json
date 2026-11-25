@@ -1,0 +1,506 @@
+[
+  {
+    "id": 1,
+    "bankId": "VLXT-TT26-D05-Q01",
+    "type": "mc",
+    "chapterCode": "C1",
+    "subTopic": "CD01 – Cấu trúc chất, Lực tương tác phân tử & 3 thể Rắn–Lỏng–Khí",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Một khối chất rắn kết tinh khác với chất rắn vô định hình ở đặc điểm nào sau đây?",
+    "options": {
+      "A": "Chất rắn kết tinh có cấu trúc mạng tinh thể trật tự và có nhiệt độ nóng chảy xác định.",
+      "B": "Chất rắn kết tinh không có hình dạng riêng.",
+      "C": "Chất rắn kết tinh khi bị nung nóng chỉ mềm dần liên tục ở mọi nhiệt độ.",
+      "D": "Thủy tinh và nhựa đường là hai ví dụ điển hình của đơn tinh thể."
+    },
+    "correct": "A",
+    "giaiThich": "Chất rắn kết tinh có cấu trúc mạng tinh thể xác định nên nóng chảy ở một nhiệt độ xác định (dưới áp suất cho trước), còn chất rắn vô định hình không có cấu trúc tinh thể và không có nhiệt độ nóng chảy xác định."
+  },
+  {
+    "id": 2,
+    "bankId": "VLXT-TT26-D05-Q02",
+    "type": "mc",
+    "chapterCode": "C1",
+    "subTopic": "CD02 – Sự chuyển thể (Nóng chảy, Đông đặc, Hóa hơi, Sôi, Ngưng tụ)",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Quần áo ướt phơi ngoài sân khô nhanh hơn khi có gió thổi mạnh và nắng ấm vì tốc độ bay hơi của nước tăng khi",
+    "options": {
+      "A": "nhiệt độ tăng và gió thổi làm giảm mật độ hơi nước sát mặt thoáng.",
+      "B": "nhiệt độ giảm sâu xuống dưới $0^\\circ\\text{C}$.",
+      "C": "diện tích mặt thoáng của nước trên quần áo thu hẹp lại.",
+      "D": "áp suất hơi bão hòa trên bề mặt vải tăng lên vô hạn."
+    },
+    "correct": "A",
+    "giaiThich": "Tốc độ bay hơi tăng khi nhiệt độ tăng, diện tích mặt thoáng tăng và gió thổi đưa các phân tử hơi vừa bay lên đi xa mặt thoáng."
+  },
+  {
+    "id": 3,
+    "bankId": "VLXT-TT26-D05-Q03",
+    "type": "mc",
+    "chapterCode": "C1",
+    "subTopic": "CD03 – Nhiệt độ, Sự truyền nhiệt, Nhiệt kế & Thang đo nhiệt độ",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Hai vật có nhiệt độ ban đầu bằng nhau tiếp xúc nhiệt với nhau và cách nhiệt hoàn toàn với môi trường xung quanh thì",
+    "options": {
+      "A": "nhiệt độ của hai vật tự tăng lên do cọ xát bề mặt.",
+      "B": "không có sự truyền năng lượng nhiệt vĩ mô giữa hai vật vì chúng đang ở trạng thái cân bằng nhiệt.",
+      "C": "vật có khối lượng lớn hơn truyền nhiệt cho vật có khối lượng nhỏ hơn.",
+      "D": "nội năng của cả hai vật giảm về không."
+    },
+    "correct": "B",
+    "giaiThich": "Hai vật ở cùng một nhiệt độ ở trạng thái cân bằng nhiệt nên tổng nhiệt lượng trao đổi qua lại giữa chúng bằng không."
+  },
+  {
+    "id": 4,
+    "bankId": "VLXT-TT26-D05-Q04",
+    "type": "mc",
+    "chapterCode": "C1",
+    "subTopic": "CD04 – Nhiệt dung riêng, Nhiệt chuyển thể & Thí nghiệm đo nhiệt",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Hệ thức tính nhiệt lượng $Q$ cần cung cấp để làm một khối chất khối lượng $m$ có nhiệt dung riêng $c$ tăng nhiệt độ từ $t_1$ lên $t_2$ (không xảy ra chuyển thể) là",
+    "options": {
+      "A": "$Q = m c (t_2 - t_1)$.",
+      "B": "$Q = \\dfrac{mc}{t_2 - t_1}$.",
+      "C": "$Q = m \\lambda$.",
+      "D": "$Q = c (t_2 + t_1)$."
+    },
+    "correct": "A",
+    "giaiThich": "Nhiệt lượng làm vật nóng lên khi không chuyển thể được tính bằng công thức $Q = m c \\Delta T = m c (t_2 - t_1)$."
+  },
+  {
+    "id": 5,
+    "bankId": "VLXT-TT26-D05-Q05",
+    "type": "mc",
+    "chapterCode": "C1",
+    "subTopic": "CD05 – Nội năng, Định luật I NĐLH (ΔU = A + Q) & Động cơ nhiệt",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Khi cọ xát một đồng xu kim loại liên tục lên mặt bàn gỗ, đồng xu nóng lên rõ rệt. Trong quá trình này, nội năng của đồng xu tăng lên chủ yếu bằng cách nào?",
+    "options": {
+      "A": "Truyền nhiệt tự phát từ không khí lạnh sang đồng xu.",
+      "B": "Thực hiện công cơ học thắng lực ma sát chuyển thành nội năng.",
+      "C": "Phản ứng hóa học giữa kim loại và gỗ.",
+      "D": "Sự bay hơi của bề mặt kim loại."
+    },
+    "correct": "B",
+    "giaiThich": "Cọ xát cơ học làm lực ma sát sinh công khiến đồng xu nóng lên; đây là quá trình biến đổi nội năng bằng cách thực hiện công."
+  },
+  {
+    "id": 6,
+    "bankId": "VLXT-TT26-D05-Q06",
+    "type": "mc",
+    "chapterCode": "C2",
+    "subTopic": "CD06 – Mô hình ĐHPT chất khí, Áp suất thành bình & Động năng phân tử",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Ở cùng một nhiệt độ tuyệt đối $T$, hỗn hợp gồm hai khí lí tưởng khác nhau là khí nhẹ Hydrogen ($\\text{H}_2$) và khí nặng Oxygen ($\\text{O}_2$) ở trạng thái cân bằng nhiệt thì các phân tử của hai khí có cùng",
+    "options": {
+      "A": "khối lượng phân tử.",
+      "B": "tốc độ căn quân phương.",
+      "C": "động năng tịnh tiến trung bình của mỗi phân tử.",
+      "D": "kích thước phân tử."
+    },
+    "correct": "C",
+    "giaiThich": "Vì $\\overline{E}_\\text{đ} = \\dfrac{3}{2}kT$ chỉ phụ thuộc $T$, nên ở cùng nhiệt độ thì động năng tịnh tiến trung bình của mọi phân tử khí đều bằng nhau (phân tử nhẹ chạy nhanh hơn)."
+  },
+  {
+    "id": 7,
+    "bankId": "VLXT-TT26-D05-Q07",
+    "type": "mc",
+    "chapterCode": "C2",
+    "subTopic": "CD07 – Quá trình đẳng nhiệt & Định luật Boyle",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Nếu giữ nguyên nhiệt độ của một khối khí lí tưởng đựng trong xilanh và kéo pit-tông làm thể tích khí tăng lên gấp $3$ lần thì áp suất khí trong xilanh sẽ",
+    "options": {
+      "A": "tăng lên $3$ lần.",
+      "B": "giảm đi $3$ lần.",
+      "C": "không thay đổi.",
+      "D": "tăng lên $9$ lần."
+    },
+    "correct": "B",
+    "giaiThich": "Theo định luật Boyle ($pV = \\text{const}$), khi $V$ tăng $3$ lần thì áp suất $p$ giảm $3$ lần."
+  },
+  {
+    "id": 8,
+    "bankId": "VLXT-TT26-D05-Q08",
+    "type": "mc",
+    "chapterCode": "C2",
+    "subTopic": "CD08 – Quá trình đẳng áp (Charles) & Quá trình đẳng tích (Gay-Lussac)",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Một lốp xe đạp để ngoài nắng gắt từ sáng tới trưa, coi thể tích không gian bên trong lốp thay đổi không đáng kể. So với buổi sáng, vào buổi trưa không khí trong lốp có",
+    "options": {
+      "A": "áp suất lớn hơn do nhiệt độ tăng trong quá trình gần như đẳng tích.",
+      "B": "áp suất nhỏ hơn vì không khí nóng nhẹ đi.",
+      "C": "số phân tử khí tăng gấp đôi.",
+      "D": "thể tích tăng gấp đôi."
+    },
+    "correct": "A",
+    "giaiThich": "Vì $V$ không đổi, khi nhiệt độ tăng theo thời tiết trưa nắng thì áp suất khí trong lốp tăng tỉ lệ thuận với nhiệt độ tuyệt đối $T$."
+  },
+  {
+    "id": 9,
+    "bankId": "VLXT-TT26-D05-Q09",
+    "type": "mc",
+    "chapterCode": "C2",
+    "subTopic": "CD09 – PT trạng thái, Clapeyron, Đồ thị & Công/Nội năng chất khí",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Khi chuyển một lượng khí lí tưởng xác định từ trạng thái 1 sang trạng thái 2, nếu áp suất tăng gấp đôi và nhiệt độ tuyệt đối cũng tăng gấp đôi thì thể tích của khối khí sẽ",
+    "options": {
+      "A": "tăng lên $4$ lần.",
+      "B": "giảm đi $4$ lần.",
+      "C": "giữ nguyên không đổi.",
+      "D": "tăng lên $2$ lần."
+    },
+    "correct": "C",
+    "giaiThich": "Từ phương trình trạng thái $\\dfrac{p_1 V_1}{T_1} = \\dfrac{p_2 V_2}{T_2}$, khi $p_2 = 2p_1$ và $T_2 = 2T_1$ thì $V_2 = V_1$."
+  },
+  {
+    "id": 10,
+    "bankId": "VLXT-TT26-D05-Q10",
+    "type": "mc",
+    "chapterCode": "C3",
+    "subTopic": "CD10 – Tương tác từ, Nguồn gốc từ trường, Đường sức & Từ trường Trái Đất",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Ở gần bề mặt Trái Đất, cực Bắc địa từ nằm gần vùng cực nào về mặt địa lí của Trái Đất khiến đầu kim Bắc của la bàn luôn hướng về phía Bắc địa lí?",
+    "options": {
+      "A": "Cực Bắc địa lí tương ứng với cực từ Nam của nam châm Trái Đất.",
+      "B": "Cực Bắc địa lí là cực từ Bắc nên hút cực Bắc kim la bàn.",
+      "C": "Tại xích đạo đường sức từ luôn thẳng đứng hướng vào tâm Trái Đất.",
+      "D": "Trái Đất không có từ trường riêng."
+    },
+    "correct": "A",
+    "giaiThich": "Kim nam châm Bắc chỉ hướng Bắc địa lí là vì gần cực Bắc địa lí có cực từ Nam của từ trường Trái Đất hút cực Bắc của kim la bàn."
+  },
+  {
+    "id": 11,
+    "bankId": "VLXT-TT26-D05-Q11",
+    "type": "mc",
+    "chapterCode": "C3",
+    "subTopic": "CD10 – Tương tác từ, Nguồn gốc từ trường, Đường sức & Từ trường Trái Đất",
+    "nhomId": "",
+    "modelId": "MH-TT26-D5-P1-01",
+    "question": "<p>Quan sát từ phổ và ba kim nam châm thử đặt quanh một ống dây dẫn hình trụ (solenoid) mang dòng điện không đổi như hình minh họa. Kết luận nào sau đây là đúng?</p><div class=\"vlxt-model-slot\" data-model-id=\"MH-TT26-D5-P1-01\"></div>",
+    "options": {
+      "A": "Bên ngoài ống dây, các đường sức từ đi ra từ đầu Nam (S) và đi vào đầu Bắc (N).",
+      "B": "Trong lòng ống dây có dòng điện không đổi, từ trường có dạng gần như từ trường đều với các đường sức đi từ Nam sang Bắc.",
+      "C": "Cực Bắc (màu đỏ) của kim nam châm thử đặt tại điểm nào sẽ hướng ngược chiều vectơ cảm ứng từ $\\vec{B}$ tại điểm đó.",
+      "D": "Các đường sức từ của ống dây là những đoạn thẳng hở cắt nhau tại hai đầu ống."
+    },
+    "correct": "B",
+    "giaiThich": "Bên ngoài ống dây đường sức ra Bắc vào Nam, còn trong lòng ống dây các đường sức gần như thẳng song song cách đều (từ trường đều) hướng từ cực Nam sang cực Bắc."
+  },
+  {
+    "id": 12,
+    "bankId": "VLXT-TT26-D05-Q12",
+    "type": "mc",
+    "chapterCode": "C3",
+    "subTopic": "CD11 – Cảm ứng từ (Tesla), Lực từ đoạn dây & Lực Lorentz",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Khi một hạt mang điện tích chuyển động trong vùng chỉ có từ trường đều theo phương vuông góc với các đường sức từ, lực Lorentz do từ trường tác dụng lên hạt luôn",
+    "options": {
+      "A": "thực hiện công dương làm tăng động năng của hạt.",
+      "B": "vuông góc với vectơ vận tốc tức thời nên chỉ làm đổi hướng vận tốc chứ không đổi độ lớn vận tốc.",
+      "C": "cùng phương cùng chiều với các đường sức từ.",
+      "D": "triệt tiêu hoàn toàn bằng không."
+    },
+    "correct": "B",
+    "giaiThich": "Lực Lorentz luôn vuông góc với vận tốc $\\vec{v}$ nên công suất tức thời bằng không, không làm thay đổi tốc độ mà chỉ đóng vai trò lực hướng tâm uốn cong quỹ đạo."
+  },
+  {
+    "id": 13,
+    "bankId": "VLXT-TT26-D05-Q13",
+    "type": "mc",
+    "chapterCode": "C3",
+    "subTopic": "CD12 – Từ thông (Weber), Cảm ứng điện từ, Định luật Lenz & Faraday",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Hiện tượng cảm ứng điện từ xuất hiện trong một mạch điện kín bất kì khi",
+    "options": {
+      "A": "điện trở của mạch kín tăng lên thật lớn.",
+      "B": "từ thông gửi qua diện tích giới hạn bởi mạch kín biến thiên theo thời gian.",
+      "C": "mạch kín được đặt cố định trong một từ trường đều không đổi.",
+      "D": "cường độ dòng điện không đổi chạy qua một cuộn dây đứng yên gần đó."
+    },
+    "correct": "B",
+    "giaiThich": "Điều kiện cần và đủ để xuất hiện dòng điện cảm ứng trong mạch kín là từ thông qua mạch phải biến thiên theo thời gian."
+  },
+  {
+    "id": 14,
+    "bankId": "VLXT-TT26-D05-Q14",
+    "type": "mc",
+    "chapterCode": "C3",
+    "subTopic": "CD13 – Dòng xoay chiều, Máy phát, Biến áp, Foucault & Sóng điện từ",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Trong quá trình truyền tải điện năng đi xa từ nhà máy phát điện đến nơi tiêu thụ, biện pháp hiệu quả và phổ biến nhất để giảm hao phí tỏa nhiệt trên đường dây truyền tải mà không cần tăng tiết diện dây là",
+    "options": {
+      "A": "giảm điện áp tại trạm phát điện bằng máy hạ áp.",
+      "B": "tăng điện áp trước khi truyền tải lên đường dây bằng máy tăng áp.",
+      "C": "thay dây đồng dẫn điện bằng dây thép có điện trở suất cao.",
+      "D": "chuyển dòng điện xoay chiều thành dòng một chiều có điện áp nhỏ hơn $10\\text{ V}$."
+    },
+    "correct": "B",
+    "giaiThich": "Công suất hao phí $P_{\\text{hp}} = R\\dfrac{P^2}{U^2\\cos^2\\varphi}$; tăng điện áp truyền tải $U$ lên $n$ lần giúp giảm công suất hao phí đi $n^2$ lần."
+  },
+  {
+    "id": 15,
+    "bankId": "VLXT-TT26-D05-Q15",
+    "type": "mc",
+    "chapterCode": "C4",
+    "subTopic": "CD14 – Thí nghiệm Rutherford, Cấu tạo hạt nhân (Z, N, A), Đồng vị & amu",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Trong kí hiệu hạt nhân của một nguyên tố bất kì ${}^{A}_{Z}\\text{X}$, tổng số hạt mang điện dương trong hạt nhân là",
+    "options": {
+      "A": "$A$.",
+      "B": "$Z$.",
+      "C": "$A - Z$.",
+      "D": "$A + Z$."
+    },
+    "correct": "B",
+    "giaiThich": "Trong hạt nhân gồm proton ($+e$) và neutron (trung hòa điện), nên số hạt mang điện dương trong hạt nhân chính là số proton $Z$."
+  },
+  {
+    "id": 16,
+    "bankId": "VLXT-TT26-D05-Q16",
+    "type": "mc",
+    "chapterCode": "C4",
+    "subTopic": "CD14 – Thí nghiệm Rutherford, Cấu tạo hạt nhân (Z, N, A), Đồng vị & amu",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Bán kính hạt nhân nguyên tử phụ thuộc gần đúng theo số khối $A$ với hệ thức kinh nghiệm $R \\approx 1{,}2\\cdot 10^{-15} A^{1/3}\\text{ (m)}$. Hệ thức này cho thấy điều gì về mật độ vật chất trong các hạt nhân khác nhau?",
+    "options": {
+      "A": "Khối lượng riêng của mọi hạt nhân đều gần như bằng nhau và cực kì lớn.",
+      "B": "Hạt nhân có số khối càng lớn thì khối lượng riêng càng giảm mạnh.",
+      "C": "Thể tích hạt nhân tỉ lệ nghịch với số khối $A$.",
+      "D": "Bán kính hạt nhân tỉ lệ thuận bậc nhất với số khối $A$."
+    },
+    "correct": "A",
+    "giaiThich": "Do thể tích $V = \\dfrac{4}{3}\\pi R^3 \\propto A$ và khối lượng $m \\propto A$ nên khối lượng riêng $\\rho = m/V$ hầu như không phụ thuộc số khối $A$."
+  },
+  {
+    "id": 17,
+    "bankId": "VLXT-TT26-D05-Q17",
+    "type": "mc",
+    "chapterCode": "C4",
+    "subTopic": "CD15 – Lực hạt nhân, Độ hụt khối, Năng lượng liên kết & Độ bền vững hạt nhân",
+    "nhomId": "",
+    "modelId": "",
+    "question": "Đại lượng nào đặc trưng trực tiếp cho mức độ bền vững của một hạt nhân?",
+    "options": {
+      "A": "Năng lượng liên kết toàn phần $W_{\\text{lk}}$.",
+      "B": "Năng lượng liên kết riêng $W_{\\text{lk}}/A$.",
+      "C": "Số neutron $N$ trong hạt nhân.",
+      "D": "Độ hụt khối $\\Delta m$."
+    },
+    "correct": "B",
+    "giaiThich": "Hạt nhân có năng lượng liên kết riêng (năng lượng liên kết tính trên một nucleon) càng lớn thì càng bền vững."
+  },
+  {
+    "id": 18,
+    "bankId": "VLXT-TT26-D05-Q18",
+    "type": "mc",
+    "chapterCode": "C4",
+    "subTopic": "CD16 – Phản ứng hạt nhân, Phóng xạ, Ứng dụng & An toàn bức xạ",
+    "nhomId": "",
+    "modelId": "MH-TT26-D5-P1-02",
+    "question": "<p>Đồ thị mô phỏng dưới đây biểu diễn số hạt nhân còn lại $N(t)$ và số hạt nhân đã phân rã $\\Delta N(t)$ của một mẫu chất phóng xạ nguyên chất theo thời gian $t$ tính theo chu kì bán rã $T$. Tại thời điểm nào thì số hạt nhân đã bị phân rã bằng đúng $3$ lần số hạt nhân còn lại?</p><div class=\"vlxt-model-slot\" data-model-id=\"MH-TT26-D5-P1-02\"></div>",
+    "options": {
+      "A": "$t = T$.",
+      "B": "$t = 2T$.",
+      "C": "$t = 3T$.",
+      "D": "$t = 4T$."
+    },
+    "correct": "B",
+    "giaiThich": "Theo định luật phân rã: $\\Delta N = N_0 - N = 3N \\Rightarrow N = \\dfrac{N_0}{4} = N_0\\cdot 2^{-2} \\Rightarrow t = 2T$."
+  },
+  {
+    "id": 19,
+    "bankId": "VLXT-TT26-D05-Q19",
+    "type": "tf",
+    "chapterCode": "C1",
+    "subTopic": "DS-C1.5 – Hệ thống Làm mát, Hút ẩm & Động cơ nhiệt 4 kỳ",
+    "nhomId": "",
+    "modelId": "MH-TT26-D5-P2-C1",
+    "question": "<p>Một hệ thống làm mát bằng chất lỏng tuần hoàn dùng để tản nhiệt cho cụm bộ xử lý máy chủ công suất tỏa nhiệt ổn định. Bơm đẩy dòng nước tinh khiết có nhiệt dung riêng $c = 4180\\text{ J/(kg}\\cdot\\text{K)}$ đi qua khối đồng tiếp xúc CPU với lưu lượng khối $\\mu = 0{,}050\\text{ kg/s}$ và đo được nhiệt độ đầu vào, đầu ra ổn định như bảng dưới (coi toàn bộ nhiệt lượng CPU tỏa ra được nước hấp thụ hoàn toàn).</p>\n<div class=\"vlxt-model-slot\" data-model-id=\"MH-TT26-D5-P2-C1\"></div>\n<div class=\"vstep-data-panel\">\n<div class=\"vstep-data-title\"><i class=\"fa-solid fa-table-list\"></i> Bảng Thông Số Vận Hành Hệ Tản Nhiệt Nước ($mu = 0{,}050\\text{ kg/s}$)</div>\n<table class=\"vstep-data-table\"><thead><tr><th>Chế độ tải</th><th>Nhiệt độ nước vào $t_1$ (${}\\circ\\text{C}$)</th><th>Nhiệt độ nước ra $t_2$ (${}\\circ\\text{C}$)</th></tr></thead>\n<tbody>\n<tr><td class=\"text-left\">Tải trung bình</td><td>30,0</td><td>32,0</td></tr>\n<tr><td class=\"text-left\">Tải cao cực đại</td><td>32,0</td><td>36,0</td></tr>\n</tbody></table></div>",
+    "options": {
+      "A": "Khi nước đi qua khối tản nhiệt trên cụm chip, nội năng của nước tăng lên nhờ nhận nhiệt lượng từ khối đồng nóng.",
+      "B": "Quạt gió thổi qua két tản nhiệt bên ngoài giúp đẩy nhiệt lượng từ nước nóng truyền ra không khí xung quanh để nước nguội trở lại $t_1$.",
+      "C": "Ở chế độ tải trung bình, công suất tỏa nhiệt của cụm chip xử lý bằng $418\\text{ W}$.",
+      "D": "Nếu thay nước bằng một chất lỏng có nhiệt dung riêng nhỏ hơn một nửa mà vẫn giữ nguyên lưu lượng khối và công suất ở tải cao cực đại thì độ chênh lệch nhiệt độ $(t_2 - t_1)$ cũng giảm đi một nửa."
+    },
+    "correct": "ĐĐĐS",
+    "giaiThich": "<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">a — ĐÚNG</span> Khối đồng nhiệt độ cao hơn truyền nhiệt lượng cho dòng nước lạnh hơn đi qua, làm nhiệt độ và nội năng nước tăng.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">b — ĐÚNG</span> Két tản nhiệt + quạt giúp dòng khí lưu thông liên tục giải phóng nhiệt lượng ra phòng, khép kín vòng tuần hoàn.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">c — ĐÚNG</span> $P = \\mu\\cdot c\\cdot(t_2 - t_1) = 0{,}050 \\times 4180 \\times (32{,}0 - 30{,}0) = 418\\text{ W}$.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge false\">d — SAI</span> Từ $\\Delta t = \\dfrac{P}{\\mu c}$, nếu $c$ giảm đi một nửa trong khi $P$ và $\\mu$ giữ nguyên thì độ tăng nhiệt $\\Delta t$ phải tăng gấp đôi (từ $4{,}0^\\circ\\text{C}$ lên $8{,}0^\\circ\\text{C}$).</div>"
+  },
+  {
+    "id": 20,
+    "bankId": "VLXT-TT26-D05-Q20",
+    "type": "tf",
+    "chapterCode": "C2",
+    "subTopic": "DS-C2.4 – Đẳng tích, Động năng phân tử & An toàn Áp suất",
+    "nhomId": "",
+    "modelId": "MH-TT26-D5-P2-C2",
+    "question": "<p>Một nồi áp suất kín có van an toàn dạng đối trọng khối lượng $m = 160\\text{ g}$ đậy kín trên lỗ thoát hơi tròn tiết diện $S = 2{,}0\\cdot 10^{-5}\\text{ m}^2$. Trong nồi ban đầu chứa không khí ẩm ở áp suất khí quyển $p_0 = 1{,}00\\cdot 10^5\\text{ Pa}$ và nhiệt độ $27^\\circ\\text{C}$. Lấy gia tốc trọng trường $g = 10\\text{ m/s}^2$. Bỏ qua ma sát ở cổ van.</p><div class=\"vlxt-model-slot\" data-model-id=\"MH-TT26-D5-P2-C2\"></div>",
+    "options": {
+      "A": "Trước khi van an toàn bị nhấc lên, khí và hơi nước trong nồi được giữ trong một thể tích không đổi.",
+      "B": "Áp suất cực đại bên trong nồi khi van bắt đầu nhấc nhẹ để xả áp bằng $1{,}80\\cdot 10^5\\text{ Pa}$.",
+      "C": "Áp suất trong nồi áp suất lớn hơn $1\\text{ atm}$ giúp nhiệt độ sôi của nước tăng cao hơn $100^\\circ\\text{C}$, làm thức ăn nhanh chín mềm hơn.",
+      "D": "Nếu bỏ qua áp suất hơi nước bảo hòa thêm vào và chỉ xét không khí khô, van sẽ bắt đầu mở khi nhiệt độ trong nồi đạt tới $500\\text{ K}$."
+    },
+    "correct": "ĐĐĐS",
+    "giaiThich": "<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">a — ĐÚNG</span> Nắp và thành nồi cứng kín khiến thể tích bên trong nồi giữ không đổi cho tới khi van nhấc lên.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">b — ĐÚNG</span> Điều kiện cân bằng lực lên van: $p_{\\text{max}} = p_0 + \\dfrac{mg}{S} = 1{,}00\\cdot 10^5 + \\dfrac{0{,}160\\times 10}{2{,}0\\cdot 10^{-5}} = 1{,}80\\cdot 10^5\\text{ Pa}$.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">c — ĐÚNG</span> Nhiệt độ sôi của chất lỏng tăng theo áp suất hơi trên mặt thoáng ($> 100^\\circ\\text{C}$ trong nồi áp suất).</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge false\">d — SAI</span> Nếu chỉ xét khí khô đẳng tích ($T_1 = 300\\text{ K}$): $T_2 = T_1\\cdot\\dfrac{p_{\\text{max}}}{p_0} = 300\\times 1{,}80 = 540\\text{ K} \\neq 500\\text{ K}$.</div>"
+  },
+  {
+    "id": 21,
+    "bankId": "VLXT-TT26-D05-Q21",
+    "type": "tf",
+    "chapterCode": "C3",
+    "subTopic": "DS-C3.2 – Thanh kim loại chuyển động trên ray & Biến thiên từ thông",
+    "nhomId": "",
+    "modelId": "MH-TT26-D5-P2-C3",
+    "question": "<p>Trong phòng thí nghiệm, hai con lắc đơn làm bằng hai tấm nhôm giống hệt về kích thước ngoài: tấm (1) là nhôm liền nguyên khối, tấm (2) được xẻ các khe rãnh sâu song song như răng lược. Cho cả hai tấm dao động quanh trục treo để lần lượt đi xuyên qua khe giữa hai cực của cùng một nam châm điện mạnh đang bật dòng điện.</p><div class=\"vlxt-model-slot\" data-model-id=\"MH-TT26-D5-P2-C3\"></div>",
+    "options": {
+      "A": "Khi các tấm nhôm đi vào hoặc đi ra khỏi vùng từ trường giữa hai cực nam châm, từ thông qua từng phần của tấm biến thiên làm xuất hiện các dòng điện xoáy (dòng Foucault).",
+      "B": "Theo định luật Lenz, lực từ tác dụng lên dòng điện xoáy luôn có xu hướng cản trở chuyển động của con lắc nên gọi là phanh điện từ.",
+      "C": "Trong thực nghiệm, tấm nhôm xẻ rãnh (2) sẽ tắt dao động nhanh hơn nhiều so với tấm liền khối (1).",
+      "D": "Khi phanh điện từ hoạt động ở tấm (1), một phần cơ năng dao động của con lắc đã chuyển hóa thành nhiệt năng tỏa ra trên tấm nhôm."
+    },
+    "correct": "ĐĐSĐ",
+    "giaiThich": "<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">a — ĐÚNG</span> Do sự biến thiên từ thông khi khối kim loại quét qua biên vùng từ trường, trong khối vật dẫn xuất hiện các dòng điện cảm ứng khép kín (dòng Foucault).</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">b — ĐÚNG</span> Định luật Lenz luôn chống lại nguyên nhân sinh ra dòng cảm ứng (tức là cản trở chuyển động của con lắc qua khe từ trường).</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge false\">c — SAI</span> Việc xẻ rãnh làm ngắt mạch các vòng dòng điện xoáy rộng, làm giảm mạnh cường độ dòng Foucault và lực cản, nên tấm xẻ rãnh (2) dao động duy trì lâu hơn tấm liền (1).</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">d — ĐÚNG</span> Công cản phanh làm tiêu hao cơ năng, biến đổi thành nhiệt năng Joule trong tấm nhôm.</div>"
+  },
+  {
+    "id": 22,
+    "bankId": "VLXT-TT26-D05-Q22",
+    "type": "tf",
+    "chapterCode": "C4",
+    "subTopic": "DS-C4.5 – Phóng xạ môi trường, Chu kỳ bán rã & An toàn bức xạ",
+    "nhomId": "",
+    "modelId": "MH-TT26-D5-P2-C4",
+    "question": "<p>Kĩ thuật định tuổi cổ vật bằng đồng vị phóng xạ carbon ${}^{14}_{6}\\text{C}$ (chu kì bán rã $T = 5730\\text{ năm}$) dựa vào việc cây xanh còn sống luôn duy trì tỉ lệ ${}^{14}_{6}\\text{C}/{}^{12}_{6}\\text{C}$ ổn định. Khi cây chết đi, sự trao đổi carbon ngừng lại và lượng ${}^{14}_{6}\\text{C}$ phân rã $\\beta^-$ giảm dần. Người ta đo độ phóng xạ của một mẫu gỗ cổ tìm thấy là $H = 120\\text{ phân rã/phút}$, trong khi mẫu gỗ tươi cùng loại và cùng khối lượng carbon có độ phóng xạ là $H_0 = 480\\text{ phân rã/phút}$.</p><div class=\"vlxt-model-slot\" data-model-id=\"MH-TT26-D5-P2-C4\"></div>",
+    "options": {
+      "A": "Đồng vị ${}^{14}_{6}\\text{C}$ khi phân rã $\\beta^-$ sẽ biến đổi thành hạt nhân con ${}^{14}_{7}\\text{N}$.",
+      "B": "Tỉ lệ độ phóng xạ còn lại của mẫu gỗ cổ so với mẫu gỗ tươi cùng khối lượng là $\\dfrac{H}{H_0} = \\dfrac{1}{4}$.",
+      "C": "Tuổi của mẫu gỗ khảo cổ xác định từ số liệu đo trên là $11\\,460\\text{ năm}$.",
+      "D": "Phương pháp định tuổi bằng ${}^{14}_{6}\\text{C}$ thích hợp để đo trực tiếp tuổi các khối đá núi lửa hàng tỉ năm không chứa chất hữu cơ."
+    },
+    "correct": "ĐĐĐS",
+    "giaiThich": "<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">a — ĐÚNG</span> Phương trình: ${}^{14}_{6}\\text{C} \\to {}^{14}_{7}\\text{N} + {}^{0}_{-1}e + \\tilde{\\nu}_e$.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">b — ĐÚNG</span> $\\dfrac{H}{H_0} = \\dfrac{120}{480} = \\dfrac{1}{4}$.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge true\">c — ĐÚNG</span> $\\dfrac{H}{H_0} = 2^{-t/T} = \\dfrac{1}{4} = 2^{-2} \\Rightarrow t = 2T = 2\\times 5730 = 11\\,460\\text{ năm}$.</div>\n<div class=\"exp-stmt-item\"><span class=\"exp-key-badge false\">d — SAI</span> ${}^{14}_{6}\\text{C}$ có chu kì bán rã $5730\\text{ năm}$ nên sau vài chục nghìn năm lượng còn lại quá nhỏ khó đo; đá cổ hàng tỉ năm dùng các đồng vị chu kì rất dài như U-Pb hoặc K-Ar, hơn nữa đá vô cơ không trao đổi $\\text{CO}_2$ sinh học.</div>"
+  },
+  {
+    "id": 23,
+    "bankId": "VLXT-TT26-D05-Q23",
+    "type": "short",
+    "chapterCode": "C1",
+    "subTopic": "",
+    "nhomId": "VLXT-TT26-D05-P3A",
+    "modelId": "",
+    "question": "<div class=\"q-context\"><strong>Dùng thông tin sau cho Câu 23 và Câu 24:</strong> Một hệ thống làm mát bằng chất lỏng cho cụm bộ xử lý máy chủ công suất tỏa nhiệt ổn định $P = 418\\text{ W}$ dùng nước tuần hoàn có nhiệt dung riêng $c = 4180\\text{ J/(kg}\\cdot\\text{K)}$. Nước mát được bơm liên tục đi qua khối đồng tiếp xúc với lưu lượng khối $\\mu = 0{,}025\\text{ kg/s}$ và nhiệt độ nước đầu vào giữ ổn định ở $t_1 = 30{,}0^\\circ\\text{C}$. Coi toàn bộ nhiệt lượng cụm chip tỏa ra truyền hoàn toàn cho dòng nước.</div>\nTổng nhiệt lượng cụm chip truyền cho dòng nước trong thời gian $5{,}0\\text{ phút}$ bằng bao nhiêu kilôjun (kJ) (làm tròn kết quả đến chữ số hàng phần mười)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "125,4",
+    "giaiThich": "<p>Thời gian $t = 5{,}0\\times 60 = 300\\text{ s}$. Nhiệt lượng truyền cho nước:</p>$$Q = P\\cdot t = 418 \\times 300 = 125\\,400\\text{ J} = 125{,}4\\text{ kJ}.$$<p>• Đáp số: <strong>125,4</strong>.</p>"
+  },
+  {
+    "id": 24,
+    "bankId": "VLXT-TT26-D05-Q24",
+    "type": "short",
+    "chapterCode": "C1",
+    "subTopic": "",
+    "nhomId": "VLXT-TT26-D05-P3A",
+    "modelId": "",
+    "question": "<div class=\"q-context\"><strong>Dùng thông tin sau cho Câu 23 và Câu 24:</strong> Một hệ thống làm mát bằng chất lỏng cho cụm bộ xử lý máy chủ công suất tỏa nhiệt ổn định $P = 418\\text{ W}$ dùng nước tuần hoàn có nhiệt dung riêng $c = 4180\\text{ J/(kg}\\cdot\\text{K)}$. Nước mát được bơm liên tục đi qua khối đồng tiếp xúc với lưu lượng khối $\\mu = 0{,}025\\text{ kg/s}$ và nhiệt độ nước đầu vào giữ ổn định ở $t_1 = 30{,}0^\\circ\\text{C}$. Coi toàn bộ nhiệt lượng cụm chip tỏa ra truyền hoàn toàn cho dòng nước.</div>\nKhi hệ thống vận hành ở trạng thái cân bằng ổn định, nhiệt độ dòng nước nóng thoát ra khỏi khối làm mát là bao nhiêu độ Celsius (${}\\circ\\text{C}$) (làm tròn kết quả đến chữ số hàng phần mười)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "34,0",
+    "giaiThich": "<p>Mỗi giây dòng nước có khối lượng $m = \\mu\\cdot 1\\text{ s} = 0{,}025\\text{ kg}$ nhận nhiệt $Q_1 = 418\\text{ J}$:</p>$$\\Delta t = \\dfrac{P}{\\mu\\cdot c} = \\dfrac{418}{0{,}025\\times 4180} = 4{,}0^\\circ\\text{C} \\Rightarrow t_2 = 30{,}0 + 4{,}0 = 34{,}0^\\circ\\text{C}.$$<p>• Đáp số: <strong>34,0</strong>.</p>"
+  },
+  {
+    "id": 25,
+    "bankId": "VLXT-TT26-D05-Q25",
+    "type": "short",
+    "chapterCode": "C2",
+    "subTopic": "",
+    "nhomId": "VLXT-TT26-D05-P3B",
+    "modelId": "",
+    "question": "<div class=\"q-context\"><strong>Dùng thông tin sau cho Câu 25 và Câu 26:</strong> Một ống thủy tinh hình trụ tiết diện đều đặt thẳng đứng, đầu dưới hàn kín và đầu trên để hở hướng lên trên. Trong ống có một cột không khí dài $L_1 = 28{,}0\\text{ cm}$ được giam bởi một cột thủy ngân ngắn có chiều cao $h = 12{,}0\\text{ cm}$. Áp suất khí quyển bên ngoài bằng $p_0 = 76{,}0\\text{ cmHg}$ và nhiệt độ phòng giữ không đổi.</div>\nÁp suất của cột không khí đang bị giam bên trong ống khi đặt thẳng đứng bằng bao nhiêu $\\text{cmHg}$ (làm tròn đến chữ số hàng đơn vị)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "88",
+    "giaiThich": "<p>Khi đầu hở hướng lên trên, cột khí chịu tổng áp suất khí quyển và trọng lượng cột thủy ngân:</p>$$p_1 = p_0 + h = 76{,}0 + 12{,}0 = 88{,}0\\text{ cmHg}.$$<p>• Đáp số: <strong>88</strong>.</p>"
+  },
+  {
+    "id": 26,
+    "bankId": "VLXT-TT26-D05-Q26",
+    "type": "short",
+    "chapterCode": "C2",
+    "subTopic": "",
+    "nhomId": "VLXT-TT26-D05-P3B",
+    "modelId": "",
+    "question": "<div class=\"q-context\"><strong>Dùng thông tin sau cho Câu 25 và Câu 26:</strong> Một ống thủy tinh hình trụ tiết diện đều đặt thẳng đứng, đầu dưới hàn kín và đầu trên để hở hướng lên trên. Trong ống có một cột không khí dài $L_1 = 28{,}0\\text{ cm}$ được giam bởi một cột thủy ngân ngắn có chiều cao $h = 12{,}0\\text{ cm}$. Áp suất khí quyển bên ngoài bằng $p_0 = 76{,}0\\text{ cmHg}$ và nhiệt độ phòng giữ không đổi.</div>\nĐặt từ từ ống thủy tinh nằm ngang trong cùng phòng thí nghiệm (thủy ngân không chảy ra khỏi ống). Chiều dài mới của cột không khí trong ống lúc này là bao nhiêu centimét (làm tròn kết quả đến chữ số hàng phần mười)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "32,4",
+    "giaiThich": "<p>Khi ống nằm ngang, áp suất khí cân bằng khí quyển $p_2 = p_0 = 76{,}0\\text{ cmHg}$. Do quá trình đẳng nhiệt và ống tiết diện đều ($V = SL$):</p>$$p_1 L_1 = p_2 L_2 \\Rightarrow L_2 = \\dfrac{88{,}0\\times 28{,}0}{76{,}0} \\approx 32{,}42\\text{ cm} \\approx 32{,}4\\text{ cm}.$$<p>• Đáp số: <strong>32,4</strong>.</p>"
+  },
+  {
+    "id": 27,
+    "bankId": "VLXT-TT26-D05-Q27",
+    "type": "short",
+    "chapterCode": "C3",
+    "subTopic": "",
+    "nhomId": "VLXT-TT26-D05-P3C",
+    "modelId": "",
+    "question": "<div class=\"q-context\"><strong>Dùng thông tin sau cho Câu 27 và Câu 28:</strong> Một máy biến áp lí tưởng có cuộn sơ cấp gồm $N_1 = 1100\\text{ vòng}$ dây và cuộn thứ cấp gồm $N_2 = 150\\text{ vòng}$ dây. Đặt vào hai đầu cuộn sơ cấp một điện áp xoay chiều có giá trị hiệu dụng $U_1 = 220\\text{ V}$, hai đầu cuộn thứ cấp nối kín với một điện trở thuần $R = 12\\ \\Omega$.</div>\nĐiện áp hiệu dụng ở hai đầu cuộn thứ cấp khi máy hoạt động bình thường bằng bao nhiêu vôn (làm tròn đến chữ số hàng đơn vị)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "30",
+    "giaiThich": "<p>Theo công thức máy biến áp lí tưởng: $\\dfrac{U_2}{U_1} = \\dfrac{N_2}{N_1} \\Rightarrow U_2 = 220 \\times \\dfrac{150}{1100} = 30\\text{ V}$.</p><p>• Đáp số: <strong>30</strong>.</p>"
+  },
+  {
+    "id": 28,
+    "bankId": "VLXT-TT26-D05-Q28",
+    "type": "short",
+    "chapterCode": "C3",
+    "subTopic": "",
+    "nhomId": "VLXT-TT26-D05-P3C",
+    "modelId": "",
+    "question": "<div class=\"q-context\"><strong>Dùng thông tin sau cho Câu 27 và Câu 28:</strong> Một máy biến áp lí tưởng có cuộn sơ cấp gồm $N_1 = 1100\\text{ vòng}$ dây và cuộn thứ cấp gồm $N_2 = 150\\text{ vòng}$ dây. Đặt vào hai đầu cuộn sơ cấp một điện áp xoay chiều có giá trị hiệu dụng $U_1 = 220\\text{ V}$, hai đầu cuộn thứ cấp nối kín với một điện trở thuần $R = 12\\ \\Omega$.</div>\nCường độ dòng điện hiệu dụng chạy trong cuộn dây sơ cấp bằng bao nhiêu ampe (làm tròn kết quả đến chữ số hàng phần trăm)?",
+    "options": {
+      "A": "",
+      "B": "",
+      "C": "",
+      "D": ""
+    },
+    "correct": "0,34",
+    "giaiThich": "<p>Dòng điện thứ cấp $I_2 = \\dfrac{U_2}{R} = \\dfrac{30}{12} = 2{,}50\\text{ A}$. Vì máy biến áp lí tưởng ($U_1 I_1 = U_2 I_2$):</p>$$I_1 = I_2\\cdot\\dfrac{N_2}{N_1} = 2{,}50\\times\\dfrac{150}{1100} \\approx 0{,}3409\\text{ A} \\approx 0{,}34\\text{ A}.$$<p>• Đáp số: <strong>0,34</strong>.</p>"
+  }
+]
