@@ -431,6 +431,7 @@
   font-weight: 600 !important;
   color: #94a3b8 !important;
   text-decoration: none !important;
+  white-space: nowrap !important;
   transition: all 0.15s !important;
   background: transparent !important;
   border: none !important;
@@ -495,6 +496,12 @@
 .nav-dropdown-content a:hover {
   background: rgba(11, 132, 243, 0.16) !important;
   color: #38bdf8 !important;
+}
+@media (max-width: 1380px) and (min-width: 1025px) {
+  .top-bar { padding: 0 14px !important; }
+  .nav-left-wrap { gap: 10px !important; }
+  .nav-menu-links { gap: 3px !important; }
+  .nav-menu-links a, .nav-dropdown-btn { padding: 5px 8px !important; font-size: 12.5px !important; }
 }
 @media (max-width: 992px) {
   .nav-menu-links { display: none !important; }
@@ -593,7 +600,7 @@ svg.logo-atom-icon,
       </a>
 
       <nav class="nav-menu-links">
-        <a href="danh-gia-nang-luc.html?v=20261124c">🎯 Đánh Giá Năng Lực</a>
+        <a href="danh-gia-nang-luc.html?v=20261124c">🎯 Test Điểm Thi Khảo Sát Quốc Gia</a>
         <a href="baihoc.html">Khóa Học</a>
         <a href="phong-thi-thu.html">Phòng Thi Thử</a>
         <a href="huongdan.html" class="active">Hướng Dẫn Học</a>

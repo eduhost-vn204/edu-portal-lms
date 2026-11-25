@@ -3200,7 +3200,7 @@
 
             <!-- MENU DESKTOP ĐỒNG NHẤT KHÔNG RỚT DÒNG -->
             <nav class="nav-menu-links">
-                <a href="danh-gia-nang-luc.html" class="nav-item-active">🎯 Đánh Giá Năng Lực</a>
+                <a href="danh-gia-nang-luc.html" class="nav-item-active">🎯 Test Điểm Thi Khảo Sát Quốc Gia</a>
                 <a href="baihoc.html">Khóa Học</a>
                 <a href="phong-thi-thu.html">Phòng Thi Thử</a>
                 <a href="huongdan.html">Hướng Dẫn Học</a>
@@ -3241,7 +3241,7 @@
         </div>
         <div class="nav-drawer-links">
             <a href="index.html">🏠 Trang Chủ</a>
-            <a href="danh-gia-nang-luc.html" class="active">🎯 Đánh Giá Năng Lực</a>
+            <a href="danh-gia-nang-luc.html" class="active">🎯 Test Điểm Thi Khảo Sát Quốc Gia</a>
             <a href="baihoc.html">Khóa Học</a>
             <a href="phong-thi-thu.html">Phòng Thi Thử</a>
             <a href="huongdan.html">Hướng Dẫn Học</a>
@@ -5522,6 +5522,15 @@
             return 'new';
         }
 
+        function matchesLobbyStatusFilter(examNum, statusFilter, histMap) {
+            if (!statusFilter || statusFilter === 'ALL') return true;
+            var st = getLobbyExamStatus(examNum, histMap);
+            if (statusFilter === 'done') return !!(histMap && histMap[examNum]);
+            if (statusFilter === 'in_progress') return st === 'in_progress';
+            if (statusFilter === 'new') return st === 'new';
+            return st === statusFilter;
+        }
+
         function renderLobbyAbilityHeader() {
             var acc = getLobbyAccountSummary();
             var histMap = getNormalizedHistoryMap();
@@ -5565,7 +5574,7 @@
                 if (typeof vlxtDgnlEnhanceOdo === 'function') vlxtDgnlEnhanceOdo(avgEl, avgTxt);
             }
             if (bestEl) {
-                var bestTxt = bestScore > 0 ? formatScoreComma(bestScore) : '--';
+                var bestTxt = doneCount > 0 ? formatScoreComma(bestScore) : '--';
                 bestEl.textContent = bestTxt;
                 if (typeof vlxtDgnlEnhanceOdo === 'function') vlxtDgnlEnhanceOdo(bestEl, bestTxt);
             }
@@ -5621,6 +5630,7 @@
                 var stopQ = Math.min(meta.soCau || 28, (activeLock.currentIndex || 0) + 1);
                 var pct = Math.min(100, Math.round(((activeLock.answeredCount || 0) / (meta.soCau || 28)) * 100));
                 statusActionHtml =
+                    (hist ? '<div class="dgnl-done-box"><span><i class="fa-solid fa-circle-check"></i> Đã thi trước đó (' + (hist.attempts || 1) + ' lượt)</span><strong>Cao nhất: ' + formatScoreComma(hist.bestScore) + 'đ</strong></div>' : '') +
                     '<div class="dgnl-resume-box">' +
                         '<div style="display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:#7dd3fc;">' +
                             '<span><i class="fa-solid fa-clock-rotate-left"></i> Đang làm dở</span>' +
@@ -5673,8 +5683,7 @@
 
             var filtered = list.filter(function(item) {
                 if (lobbyStageFilter !== 'ALL' && item.purpose !== lobbyStageFilter) return false;
-                var st = getLobbyExamStatus(item.examNumber, histMap);
-                if (lobbyStatusFilter !== 'ALL' && st !== lobbyStatusFilter) return false;
+                if (!matchesLobbyStatusFilter(item.examNumber, lobbyStatusFilter, histMap)) return false;
                 if (q) {
                     var hay = (item.tenDe + ' ' + getShortLobbySubtitle(item) + ' de ' + item.examNumber + ' ' + pad2(item.examNumber)).toLowerCase();
                     if (hay.indexOf(q) === -1) return false;
@@ -5689,8 +5698,7 @@
                     var qCheck = String(queryStr || '').trim().toLowerCase();
                     return list.filter(function(item) {
                         if (stF !== 'ALL' && item.purpose !== stF) return false;
-                        var st = getLobbyExamStatus(item.examNumber, histMap);
-                        if (statusF !== 'ALL' && st !== statusF) return false;
+                        if (!matchesLobbyStatusFilter(item.examNumber, statusF, histMap)) return false;
                         if (qCheck) {
                             var hay = (item.tenDe + ' ' + getShortLobbySubtitle(item) + ' de ' + item.examNumber + ' ' + pad2(item.examNumber)).toLowerCase();
                             if (hay.indexOf(qCheck) === -1) return false;
@@ -5741,14 +5749,19 @@
                 var isFree = isExamUnlockedForUser(num);
                 var isLockedOther = !!(activeLock && Number(activeLock.examNumber) !== Number(num));
 
-                var rightBadge = st === 'in_progress'
-                    ? '<span class="dgnl-badge dgnl-badge-prog">' + formatMMSS(s.remainingSeconds) + '</span>'
-                    : (st === 'done'
-                        ? '<span class="dgnl-badge dgnl-badge-done">' + formatScoreComma(h.bestScore) + 'đ</span>'
-                        : '<span class="dgnl-badge ' + (isFree ? 'dgnl-badge-free' : 'dgnl-badge-vip') + '">' + (isFree ? 'Free' : 'Đề chuẩn') + '</span>');
+                var isDoneView = (lobbyStatusFilter === 'done' && !!h);
+                var rightBadge = isDoneView
+                    ? '<span class="dgnl-badge dgnl-badge-done">' + formatScoreComma(h.bestScore) + 'đ</span>'
+                    : (st === 'in_progress'
+                        ? '<span class="dgnl-badge dgnl-badge-prog">' + formatMMSS(s.remainingSeconds) + '</span>'
+                        : (st === 'done'
+                            ? '<span class="dgnl-badge dgnl-badge-done">' + formatScoreComma(h.bestScore) + 'đ</span>'
+                            : '<span class="dgnl-badge ' + (isFree ? 'dgnl-badge-free' : 'dgnl-badge-vip') + '">' + (isFree ? 'Free' : 'Đề chuẩn') + '</span>'));
 
                 var footLeft = st === 'in_progress'
-                    ? '<span style="color:#38bdf8;font-weight:700;">' + (s.answeredCount || 0) + '/28 · Câu ' + ((s.currentIndex || 0) + 1) + '</span>'
+                    ? (isDoneView
+                        ? '<span style="color:#38bdf8;font-weight:700;">Đang thi lại · ' + (s.answeredCount || 0) + '/28</span>'
+                        : '<span style="color:#38bdf8;font-weight:700;">' + (s.answeredCount || 0) + '/28' + (h ? (' · Cao nhất ' + formatScoreComma(h.bestScore) + 'đ') : (' · Câu ' + ((s.currentIndex || 0) + 1))) + '</span>')
                     : '<span>' + (item.modelCount || 0) + ' MH 60 FPS</span>';
 
                 var footRight = isLockedOther
