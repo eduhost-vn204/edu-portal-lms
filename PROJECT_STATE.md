@@ -1,3 +1,12 @@
+## Bàn giao gần nhất (27/11/2026 08:52) — Phát hành main: Chiến dịch 3 Ngày Viral Loop & 5 Đề Thi Thử 2026 Đóng Dấu QR (Không In Đáp Án)
+- **Trạng thái**: Đã hoàn thành tích hợp QR vào 5 đề thi thử 2026 (De_01–De_05), loại bỏ hoàn toàn bảng đáp án & lời giải khỏi file PDF/DOCX phát cho học sinh (sao lưu bản gốc có lời giải tại DE_THI_THU_CHUAN_BO_2026/Ban_Goc_Co_Loi_Giai_Cho_Thay/), kiểm thử toàn diện và phát hành lên main cho cả Student LMS & Admin Console theo chỉ thị của Thầy.
+- **Thay đổi bổ sung sau vòng trước**:
+  1. 	hithu.html: Giữ nguyên window.location.search và 	rigger qua bước 
+equireAuthOrRedirect khi học sinh quét QR (?exam=thithu_2026_de0X&utm_source=pdf_qr&trigger=pdf_qr_de0X); thêm banner chào mừng #qrPdfWelcomeBanner và track sự kiện pdf_qr_scan; thêm nút 👥 Vào Nhóm Zalo Nhận Bộ Đề Mới & Lịch Live (https://zalo.me/g/str1pllhp4uxa3rtvnou, track zalo_group_click) ở màn hình kết quả #thithu-viral-growth-slot cho mọi tài khoản.
+  2. ssets/exams/thithu_2026/De_Thi_Thu_THPTQG_2026_De_01..05.{pdf,docx}: Dựng mới bản đề thi 8 trang chuẩn Bộ GD&ĐT 2026 giữ nguyên công thức <m:oMath> / KaTeX & ảnh model_renders/*.png, đóng dấu hộp QR đầu đề (trang 1) + thẻ QR kép cuối đề (trang 8: Chấm điểm/Lời giải/Mô phỏng 60 FPS + Nhóm Zalo 2K9), không in sẵn đáp án/lời giải.
+- **Kiểm tra sau sửa đổi**: 
+ode --check + m.Script AST 	hithu.html (0 AI Glow, đóng </html>), PyMuPDF quét 5/5 PDF (0 chuỗi HƯỚNG DẪN GIẢI CHI TIẾT, có URL web + Zalo), alidate_docx_integrity 5/5 DOCX (oMath 89–153, 0 raw LaTeX), 	est_viral_growth_loop.mjs (6/6), 	est_early_access_and_telemetry.mjs (4/4), scripts/test-quiz-merge.mjs (6/6), scripts/test-quiz-publish.mjs (12/12), scripts/test-apps-script-logic.mjs (12/12), scripts/test-sidebar-consistency.mjs (15/15), git diff --check sạch.
+
 ## Bàn giao gần nhất (27/11/2026 08:25) — Nhánh Tính Năng `antigravity/20261127-viral-trial-growth-loop` (Chờ Duyệt Merge `main`)
 - **Trạng thái**: Đã hoàn thiện & kiểm định 100% trên 2 nhánh tính năng `antigravity/20261127-viral-trial-growth-loop` (Student worktree `_wt_lms_viral3d` & Admin worktree `_wt_admin_viral3d`), **CHƯA merge/push vào `main` và CHƯA ghi đè `campaign_config.json` trên Firebase production** (đang chờ Thầy xác nhận phát hành).
 - **Mục tiêu & Hành vi mới**:
