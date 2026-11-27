@@ -525,9 +525,9 @@ svg.logo-atom-icon,
   </div>
 </div>
 
-<script src="vlxt-telemetry.js?v=20261124"></script>
-<script src="auth.js?v=20261124"></script>
-<script defer src="vlxt-feedback-hub.js?v=20261124"></script>
+<script src="vlxt-telemetry.js?v=20261127"></script>
+<script src="auth.js?v=20261127"></script>
+<script defer src="vlxt-feedback-hub.js?v=20261127"></script>
 <script src="cache.js?v=1"></script>
 <script src="teaching-scope.js?v=3"></script>
 <script src="xephang-fx.js?v=1"></script>
@@ -883,9 +883,17 @@ svg.logo-atom-icon,
     arena.innerHTML =
       '<div style="text-align:center">' +
         '<div class="rank-chip">🎖️ Hạng hiện tại: ' + rankBadgeHtml(myLp) + '</div>' +
-        '<div><button class="btn-primary" id="btn-find">🔍 Tìm trận</button></div>' +
+        '<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">' +
+          '<button class="btn-primary" id="btn-find">🔍 Tìm trận</button>' +
+          '<button class="btn-secondary" id="btn-solo-invite">⚔️ Rủ bạn cùng lớp (+2d VIP)</button>' +
+        '</div>' +
       '</div>';
     document.getElementById('btn-find').onclick = startSearch;
+    document.getElementById('btn-solo-invite').onclick = function () {
+      if (window.VLXT_GROWTH && typeof window.VLXT_GROWTH.copyChallengeLink === 'function') {
+        window.VLXT_GROWTH.copyChallengeLink({ ctype: 'solo', source: 'solo_idle' });
+      }
+    };
   }
 
   function resetMatchState() {
@@ -1367,11 +1375,32 @@ svg.logo-atom-icon,
         '</div>' +
         '<div class="result-actions">' +
           '<button class="btn-primary" id="btn-again">Đấu tiếp ⚔️</button>' +
+          '<button class="btn-secondary" id="btn-solo-share">🎁 Rủ bạn thi (+2d VIP)</button>' +
           '<a href="hoso.html" class="btn-secondary">Xem hồ sơ →</a>' +
           '<a href="index.html" class="btn-secondary">Về trang chủ</a>' +
         '</div>' +
+        '<div id="solo-viral-note" style="margin-top:10px;font-size:12.5px;color:#34d399;font-weight:700;"></div>' +
       '</div>';
     document.getElementById('btn-again').onclick = function () { renderIdle(); };
+    document.getElementById('btn-solo-share').onclick = function () {
+      if (window.VLXT_GROWTH && typeof window.VLXT_GROWTH.copyChallengeLink === 'function') {
+        window.VLXT_GROWTH.copyChallengeLink({ ctype: 'solo', score10: myProgress.score, source: 'solo_result' });
+      }
+    };
+    if (window.VLXT_GROWTH && typeof window.VLXT_GROWTH.recordQualifiedActivity === 'function') {
+      window.VLXT_GROWTH.recordQualifiedActivity({
+        type: 'solo_match',
+        examId: 'solo_1v1',
+        score10: myProgress.score,
+        answeredCount: Q_PER_MATCH,
+        spentSeconds: 60
+      }).then(function (qRes) {
+        var noteEl = document.getElementById('solo-viral-note');
+        if (noteEl && qRes && qRes.justQualifiedReferral) {
+          noteEl.textContent = '🎉 Hoàn thành trận Solo! Em và bạn mời đã được cộng +' + (qRes.bonusAdded || 2) + ' ngày VIP!';
+        }
+      }).catch(function () {});
+    }
 
     if (typeof vlxtShowLPGain === 'function') vlxtShowLPGain(lpAward);
     fetch(GAS, { method: 'POST', body: JSON.stringify({ action: 'savesoloresult', sdt: mySdt, diemCong: lpAward, ketQua: outcome }) })

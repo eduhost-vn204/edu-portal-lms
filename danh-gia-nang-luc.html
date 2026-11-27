@@ -4221,6 +4221,9 @@
                     </div>
                 </div>
 
+                <!-- NHIỆM VỤ VIRAL +2 NGÀY VIP & THÁCH ĐẤU BẠN CÙNG LỚP -->
+                <div id="viral-growth-report-slot"></div>
+
                 <!-- HỘP LỘ TRÌNH KHẮC PHỤC CẤP TỐC TỪ THẦY (BƯỚC 5) -->
                 <div id="remedial-spotlight-slot"></div>
 
@@ -4444,13 +4447,13 @@
     </div>
 
     <!-- SCRIPTS HỆ THỐNG -->
-    <script src="vlxt-telemetry.js?v=20261124"></script>
-    <script src="auth.js?v=20261124"></script>
+    <script src="vlxt-telemetry.js?v=20261127"></script>
+    <script src="auth.js?v=20261127"></script>
     <script src="wrong-bank.js?v=20261118a"></script>
     <script src="dgnl-progress-store.js?v=20261125a"></script>
     <script src="vnpay-service.js"></script>
     <script src="freemium-flow.js"></script>
-    <script defer src="vlxt-feedback-hub.js?v=20261124"></script>
+    <script defer src="vlxt-feedback-hub.js?v=20261127"></script>
 
     <!-- THƯ VIỆN MÔ HÌNH VẬT LÝ 60 FPS & MANIFEST 50 ĐỀ THPTQG 2026 -->
     <script src="assets/canvas-core-helpers.js?v=20261118-50de"></script>
@@ -7692,7 +7695,57 @@
             renderRemedialSpotlight(g.topicStats, g.rawScore);
             renderReviewQuestions(g.wrongIndices);
             syncExamActionButtonsMode(true);
+            renderViralGrowthReportCard(g, spentSeconds);
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderViralGrowthReportCard(g, spentSeconds) {
+            var slot = document.getElementById('viral-growth-report-slot');
+            if (!slot) return;
+            var answeredCount = 0;
+            for (var i = 0; i < questions.length; i++) {
+                if (isQuestionAnswered(questions[i], i)) answeredCount++;
+            }
+            var drawCard = function (qRes) {
+                var gp = (typeof VLXT_GROWTH !== 'undefined' && VLXT_GROWTH.getGrowthProfile) ? VLXT_GROWTH.getGrowthProfile() : null;
+                var ea = (typeof VLXT_CAMPAIGN !== 'undefined' && VLXT_CAMPAIGN.getUserEarlyAccessState) ? VLXT_CAMPAIGN.getUserEarlyAccessState() : null;
+                if (!gp || !ea || ea.hasFullAccess) { slot.innerHTML = ''; return; }
+                var bannerHtml = '';
+                if (qRes && qRes.justQualifiedReferral) {
+                    bannerHtml = '<div style="margin-bottom:12px;padding:11px 14px;border-radius:11px;background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.4);color:#ecfdf5;font-size:13px;font-weight:700;">🎉 <b>Thử thách thành công!</b> Em và <b>' + String(qRes.inviterName || 'bạn cùng lớp').replace(/</g, '&lt;') + '</b> vừa được cộng thêm <b>+' + (qRes.bonusAdded || 2) + ' ngày VIP</b>!' + (qRes.challengeScore ? (' (Điểm bạn ấy: ' + qRes.challengeScore + 'đ · Điểm của em: ' + g.finalScore + 'đ)') : '') + '</div>';
+                } else if (qRes && !qRes.qualified) {
+                    bannerHtml = '<div style="margin-bottom:12px;padding:10px 14px;border-radius:11px;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.35);color:#fde68a;font-size:12.5px;font-weight:600;">💡 Hoàn thành nghiêm túc từ 3 câu &amp; 60 giây trở lên để tích lũy điều kiện nhận <b>+2 ngày VIP</b> &amp; mở Đề 06.</div>';
+                }
+                var fbBtnHtml = gp.feedbackMissionDone
+                    ? '<span style="font-size:12.5px;font-weight:700;color:#10b981;">✅ Đã nhận +2d Đánh giá &amp; Mở Đề 06</span>'
+                    : '<button type="button" class="dgnl-btn-pill primary" onclick="if(window.VLXT_GROWTH)window.VLXT_GROWTH.openMissionModal(\'feedback\')">⭐ Đánh giá đề nhận +2 ngày VIP &amp; Mở Đề 06</button>';
+                slot.innerHTML =
+                    '<div style="margin:0 0 18px;padding:18px 20px;border-radius:14px;background:#11192b;border:1px solid rgba(56,189,248,0.28);box-shadow:0 4px 16px rgba(0,0,0,0.24);">' +
+                    bannerHtml +
+                    '<div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;">' +
+                    '  <div>' +
+                    '    <div style="font-size:12px;font-weight:800;color:#38bdf8;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px;">🎁 Quỹ VIP của em: ' + (ea.totalDays || 3) + ' ngày (' + ea.formattedShort + ') · Đang mở Đề 01–' + String(gp.unlockedMaxDgnlExam || 5).padStart(2, '0') + '</div>' +
+                    '    <h4 style="font-size:16.5px;font-weight:800;color:#ffffff;margin-bottom:3px;">Rủ bạn cùng lớp vượt mức ' + g.finalScore + 'đ — CẢ HAI nhận +2 ngày VIP!</h4>' +
+                    '    <p style="font-size:13px;color:#94a3b8;">Mỗi bạn hoàn thành 1 đề từ link của em: cộng dồn tới +14 ngày &amp; mở dần tới Đề 10.</p>' +
+                    '  </div>' +
+                    '  <div style="display:flex;gap:9px;flex-wrap:wrap;align-items:center;">' +
+                         fbBtnHtml +
+                    '    <button type="button" class="dgnl-btn-pill" style="background:#059669;border-color:#10b981;color:#ffffff;" onclick="if(window.VLXT_GROWTH)window.VLXT_GROWTH.copyChallengeLink({ctype:\'dgnl\',examNumber:' + Number(currentExamNumber || 1) + ',score10:\'' + String(g.finalScore || '') + '\',source:\'dgnl_report\'})">⚔️ Chép Link Thách Đấu (+2d/bạn)</button>' +
+                    '  </div>' +
+                    '</div></div>';
+            };
+            if (typeof VLXT_GROWTH !== 'undefined' && typeof VLXT_GROWTH.recordQualifiedActivity === 'function') {
+                VLXT_GROWTH.recordQualifiedActivity({
+                    type: 'dgnl_exam',
+                    examId: 'de-' + pad2(currentExamNumber),
+                    examNumber: currentExamNumber,
+                    score10: g.finalScore,
+                    answeredCount: answeredCount,
+                    spentSeconds: spentSeconds
+                }).then(drawCard).catch(function () { drawCard(null); });
+            } else {
+                drawCard(null);
+            }
         }
 
         window.goToRemedialLesson = function(lessonKey, topic) {
