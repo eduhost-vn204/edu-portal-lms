@@ -3248,8 +3248,8 @@
   }
 }
 </style>
-  <script src="vlxt-telemetry.js?v=20261124"></script>
-  <script src="auth.js?v=20261124"></script>
+  <script src="vlxt-telemetry.js?v=20261127"></script>
+  <script src="auth.js?v=20261127"></script>
   <script src="trial-manager.js?v=20261109p"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script src="vnpay-service.js?v=20261109p"></script>
@@ -6031,7 +6031,7 @@ function renderLesson(key){
       (typeof window !== 'undefined' && (new URLSearchParams(window.location.search).get('remedial') === '1' || sessionStorage.getItem('vlxt_remedial_active') === '1'));
     const _isFreeChapter = course && (
       (course.name && (course.name.includes('Chương 1') || course.name.includes('Chương 2') || course.name.includes('Vật Lý Nhiệt') || course.name.includes('Khí Lí Tưởng'))) ||
-      (typeof VLXT_CAMPAIGN !== 'undefined' && VLXT_CAMPAIGN.isLayGocCourseName(course.name) && typeof flatLessons === 'function' && flatLessons(course).findIndex(l => l.key === key) === 0) ||
+      (typeof VLXT_CAMPAIGN !== 'undefined' && VLXT_CAMPAIGN.isLayGocCourseName(course.name) && VLXT_CAMPAIGN.canAccessLayGocLesson(course.name, typeof flatLessons === 'function' ? flatLessons(course).findIndex(l => l.key === key) : 0, lesson, _curUser)) ||
       (typeof flatLessons === 'function' && flatLessons(course).findIndex(l => l.key === key) < 14)
     );
 
@@ -8857,7 +8857,7 @@ const DEMO_ROWS = [
 window.addEventListener('DOMContentLoaded', init);
 </script>
 <script src="hoat-dong.js?v=1"></script>
-<script defer src="vlxt-feedback-hub.js?v=20261124"></script>
+<script defer src="vlxt-feedback-hub.js?v=20261127"></script>
 <script src="huongdan-popup.js?v=1"></script>
 <script>
 // ── TIỆN ÍCH ĐIỀU HƯỚNG DRAWER & CUỘN BÀI TẬP ──

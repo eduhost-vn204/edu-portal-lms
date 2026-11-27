@@ -12,9 +12,9 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-  <script defer src="vlxt-telemetry.js?v=20261124"></script>
-  <script defer src="auth.js?v=20261124"></script>
-  <script defer src="vlxt-feedback-hub.js?v=20261124"></script>
+  <script defer src="vlxt-telemetry.js?v=20261127"></script>
+  <script defer src="auth.js?v=20261127"></script>
+  <script defer src="vlxt-feedback-hub.js?v=20261127"></script>
   <script src="xephang-fx.js?v=1"></script>
   <script defer src="thongbao.js?v=2"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -1770,6 +1770,9 @@ function renderPage(profile, lb, nvRes, baihocRows) {
             Nâng cấp Gói Năm (399k)
           </a>
         ` : `
+          <button type="button" onclick="if(window.VLXT_GROWTH&&typeof window.VLXT_GROWTH.openMissionModal==='function'){window.VLXT_GROWTH.openMissionModal('referral');}" style="font-size:12.5px;font-weight:800;color:#34d399;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.4);padding:9px 16px;border-radius:100px;cursor:pointer;font-family:inherit;">
+            🎁 Cộng thêm ngày VIP (+2d)
+          </button>
           <a href="goi-hoc.html" style="font-size:12.5px;font-weight:800;color:#fbbf24;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.35);text-decoration:none;padding:9px 16px;border-radius:100px;transition:all 0.2s;">
             👑 Đăng ký Gói Pro / Giữ suất
           </a>

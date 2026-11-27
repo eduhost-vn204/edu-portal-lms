@@ -1,3 +1,28 @@
+## Bàn giao gần nhất (27/11/2026 08:25) — Nhánh Tính Năng `antigravity/20261127-viral-trial-growth-loop` (Chờ Duyệt Merge `main`)
+- **Trạng thái**: Đã hoàn thiện & kiểm định 100% trên 2 nhánh tính năng `antigravity/20261127-viral-trial-growth-loop` (Student worktree `_wt_lms_viral3d` & Admin worktree `_wt_admin_viral3d`), **CHƯA merge/push vào `main` và CHƯA ghi đè `campaign_config.json` trên Firebase production** (đang chờ Thầy xác nhận phát hành).
+- **Mục tiêu & Hành vi mới**:
+  1. **Chiến dịch Trải Nghiệm Sớm 3 Ngày Rolling Evergreen (`vlxt-telemetry.js`)**:
+     - Giảm thời hạn mặc định xuống **`durationDays: 3`** (72 giờ tính từ thời điểm kích hoạt cá nhân) và mở rộng `endAt` sang `'2027-06-30T23:59:59+07:00'` để cỗ máy vận hành tự động 24/7; bảo toàn 100% quyền của tài khoản trả phí (`Pro`/`Premium`/`VIP > 8d`/`isPaid`) và tài khoản cũ trước chiến dịch (`isLegacyPreCampaignTrial`).
+  2. **Động cơ Tăng trưởng Viral `VLXT_GROWTH` (Cấp số cộng cá nhân × Cấp số nhân mạng lưới lớp học, trần `+14 ngày`)**:
+     - **Nhiệm vụ 1 (`+2 ngày VIP` + Mở Đề 06 ĐGNL & Ngày 2 Lấy Gốc, 1 lần/tài khoản)**: Bắt buộc hoàn thành ≥ 1 đề hợp lệ (`answeredCount >= 3 && spentSeconds >= 60`, hoặc 1 trận `solo.html`) + gửi đánh giá có cấu trúc (`favoriteFeature`, `targetScore`, `rating`, nhận xét thật `>= 15` ký tự không lặp spam).
+     - **Nhiệm vụ 2 (`+2 ngày VIP` cho CẢ HAI / mỗi bạn cùng lớp, cộng dồn tới trần `maxBonusDays = 14`, tối đa 17 ngày tổng)**: Sinh mã `refCode` định danh 8 ký tự (`VL...`) và link thách đấu mang ngữ cảnh điểm số (`?ref=...&cscore=...&cname=...`). Trang bị **4 chốt chống gian lận**: cấm tự mời chính mình, cấm trùng `anonId`, cấm trùng `deviceId`, chỉ cộng thưởng `qualified` khi người được mời hoàn thành đề hợp lệ đầu tiên; mở dần tới **Đề 10** & **Ngày 3 Lấy Gốc** + Huy hiệu **`🏆 Thủ Lĩnh Học Tập Lớp`** khi đạt ≥ 3 bạn thi thật (giữ khóa tuyệt đối Đề 11–50, Ngày 4–5 Lấy Gốc, Chương 3–4 GĐ1 & GĐ2–GĐ4 cho gói trả phí).
+  3. **Tích hợp toàn hệ thống Học sinh (`_wt_lms_viral3d`) & Admin (`_wt_admin_viral3d`)**:
+     - `vlxt-feedback-hub.js`, `auth.js`, `login.html`, `danh-gia-nang-luc.html`, `thithu.html`, `solo.html`, `hoso.html`, `baihoc.html`, `goi-hoc.html`, đồng bộ cache-busting `?v=20261127` trên 19 file HTML LMS.
+     - Admin `phan-tich-hanh-vi.html`: Thêm điều khiển `3d` / `+2d` / `+2d` / trần `14d`, bổ sung Tab **`🚀 Viral Lớp Học & Khảo Sát`** (K-factor, Bảng xếp hạng mời bạn, Thống kê tính năng yêu thích/mục tiêu điểm) & sheet Excel `Viral_MoiBan`.
+- **File đã sửa / tạo mới**:
+  - **Student (`antigravity/20261127-viral-trial-growth-loop`)**: `vlxt-telemetry.js`, `vlxt-feedback-hub.js`, `auth.js`, `login.html`, `danh-gia-nang-luc.html`, `thithu.html`, `solo.html`, `hoso.html`, `baihoc.html`, `goi-hoc.html`, 10 file HTML khác (cache `?v=20261127`), `test_early_access_and_telemetry.mjs`, `test_viral_growth_loop.mjs`, `PROJECT_STATE.md`.
+  - **Admin (`antigravity/20261127-viral-trial-growth-loop`)**: `phan-tich-hanh-vi.html`.
+- **Kiểm tra đã chạy sau lần sửa cuối**:
+  - `node --check` 5 file JS/MJS + `vm.Script` AST 9 file HTML + thẻ đóng `</html>`: PASS 100%.
+  - 12/12 suite Node LMS PASS (`test_viral_growth_loop.mjs` 6/6, `test_early_access_and_telemetry.mjs` 4/4, `test_dgnl_progress_sync.mjs` 4/4, `test_cro_funnel.mjs` 8/8, `test_diagnostic_mastery_loop.mjs`, `test_remedial_and_prediction.mjs`, `test_smart_marketing_popup.mjs`, `test_wrong_bank.mjs`, `scripts/test-quiz-merge.mjs`, `scripts/test-quiz-publish.mjs`, `scripts/test-trial-soft-unlock.mjs` 22/22, `scripts/test-live-record-guest.mjs` 11/11).
+  - 2/2 suite Node Admin PASS (`scripts/test-apps-script-logic.mjs` 12/12, `scripts/test-sidebar-consistency.mjs` 15/15).
+  - Quét diff: `0` AI Glow, `0` secret leak, `git diff --check` sạch hoàn toàn.
+  - Playwright E2E (`00-BRAIN-VLXT/scratch/pw_verify_viral_3d.mjs` mock hoàn toàn Firebase/GAS): PASS 100% với `0` `pageerror`, ĐGNL One-Frame `scrollHeight = 730px <= 735px`, Mobile `390px` `scrollWidth = 390`, `phong-thi-thu.html` giữ nguyên `data-theme="light"`, và Tab Viral Admin hiển thị chuẩn.
+- **Điều phải giữ nguyên**:
+  - Giao diện sáng CBT chuẩn Bộ GD&ĐT của `phong-thi-thu.html` & `thithu.html`, One-Frame `<= 730px` của `danh-gia-nang-luc.html`, Guest Access của `live-record.html`, quyền của tài khoản Pro/Legacy, Zero AI Glow.
+- **Việc còn lại**:
+  - Chờ Thầy xác nhận để merge `antigravity/20261127-viral-trial-growth-loop` lên `main` hai repo Student/Admin (và quyết định xem có cập nhật node `campaign_config` từ xa hay dùng mặc định code mới).
+
 ## Bàn giao gần nhất (25/11/2026 09:35)
 - **Phát Hành Production (`main`) Bộ 5 Đề Thi Thử THPTQG 2026 Biên Soạn Mới 100% Chuẩn Bộ 2025–2026 (`thithu_2026_de01..05`) + 30 Mô Hình Canvas 60 FPS + Fix Lỗi KaTeX Đồng Vị Hạt Nhân + 15 File Word/PDF (`phong-thi-thu.html`, `thithu.html`, Admin & `canvas-studio.html`)**:
 - **Trạng thái**: Đã merge lên `main` cả 2 repo Student (`origin/main` & `mirror/main`) và Admin (`origin/main` @ `cef5614`, rollback tag `rollback-before-thithu5-admin-20261125` @ `b362dd8`), chuẩn bị nghiệm thu GitHub Pages live.

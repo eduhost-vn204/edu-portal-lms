@@ -557,12 +557,12 @@
             box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
         }
     </style>
-    <script src="vlxt-telemetry.js?v=20261124"></script>
-    <script src="auth.js?v=20261124"></script>
+    <script src="vlxt-telemetry.js?v=20261127"></script>
+    <script src="auth.js?v=20261127"></script>
     <script src="thongbao.js?v=2"></script>
     <script src="device-id.js?v=1"></script>
     <script src="cache.js?v=1"></script>
-    <script defer src="vlxt-feedback-hub.js?v=20261124"></script>
+    <script defer src="vlxt-feedback-hub.js?v=20261127"></script>
 
 <style id="vlxt-anti-ai-glow-logo">
 /* ─── TRIỆT TIÊU HOÀN TOÀN AI GLOW TRÊN LOGO & BRAND (PHẲNG, SẮC NÉT EDTECH) ─── */
@@ -753,6 +753,8 @@ svg.logo-atom-icon,
             <i class="fa-solid fa-bookmark"></i> Sổ Tay Câu Sai
         </a>
     </div>
+
+    <div id="thithu-viral-growth-slot" style="margin-bottom:18px;"></div>
 
     <!-- Review items list -->
     <div id="reviewQuestionsArea"></div>
@@ -1662,6 +1664,43 @@ async function doSubmitExam() {
         revEl.innerHTML = reviewHtml;
         mountThiThuModels(revEl);
         renderThiThuMath(revEl);
+    }
+
+    const ansCount = Object.keys(answers || {}).filter(k => {
+        const v = answers[k];
+        if (v === null || v === undefined || v === '') return false;
+        if (typeof v === 'object') return Object.keys(v).some(sk => v[sk] !== null && v[sk] !== undefined && v[sk] !== '');
+        return true;
+    }).length;
+    if (typeof VLXT_GROWTH !== 'undefined' && typeof VLXT_GROWTH.recordQualifiedActivity === 'function') {
+        VLXT_GROWTH.recordQualifiedActivity({
+            type: 'thithu_exam',
+            examId: _examId,
+            score10: score,
+            answeredCount: ansCount,
+            spentSeconds: totalTime
+        }).then(res => {
+            const slot = document.getElementById('thithu-viral-growth-slot');
+            if (!slot) return;
+            const ea = (typeof VLXT_CAMPAIGN !== 'undefined') ? VLXT_CAMPAIGN.getUserEarlyAccessState() : null;
+            if (!ea || ea.hasFullAccess) return;
+            const bonusNote = (res && res.justQualifiedReferral)
+                ? `<div style="margin-bottom:10px;padding:9px 12px;border-radius:8px;background:#ecfdf5;border:1px solid #10b981;color:#065f46;font-size:13px;font-weight:700;">🎉 Hoàn thành đề thi thử! Em và bạn mời đã được cộng <b>+${res.bonusAdded || 2} ngày VIP</b>!</div>`
+                : '';
+            slot.innerHTML = `<div style="background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:16px 18px;color:#0f172a;">
+                ${bonusNote}
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+                    <div>
+                        <div style="font-size:12px;font-weight:800;color:#1d4ed8;text-transform:uppercase;">🎁 Cộng thêm ngày VIP miễn phí (Quỹ hiện tại: ${ea.totalDays || 3} ngày)</div>
+                        <div style="font-size:14.5px;font-weight:800;margin-top:2px;">Thách đấu bạn cùng lớp đạt trên ${score} đ — CẢ HAI nhận +2 ngày VIP!</div>
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button type="button" class="btn-q-nav primary" onclick="if(window.VLXT_GROWTH)window.VLXT_GROWTH.copyChallengeLink({ctype:'thithu',score10:'${score}',source:'thithu_result'})">⚔️ Chép Link Thách Đấu (+2d)</button>
+                        <button type="button" class="btn-q-nav" onclick="if(window.VLXT_GROWTH)window.VLXT_GROWTH.openMissionModal('feedback')">⭐ Đánh giá đề (+2d)</button>
+                    </div>
+                </div>
+            </div>`;
+        }).catch(() => {});
     }
 }
 

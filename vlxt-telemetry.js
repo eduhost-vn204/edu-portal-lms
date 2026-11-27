@@ -16,6 +16,10 @@
   var ANON_ID_KEY = 'vlxt_anon_id_v1';
   var EA_STARTED_PREFIX = 'vlxt_ea_started_';
   var EA_ZALO_PROMPT_PREFIX = 'vlxt_zalo_group_prompted_';
+  var GROWTH_PREFIX = 'vlxt_growth_v1_';
+  var PENDING_REF_KEY = 'vlxt_pending_ref_v1';
+  var DEVICE_ID_FALLBACK_KEY = 'vlxt_growth_dev_id_v1';
+  var REF_VISIT_PREFIX = 'vlxt_ref_visit_';
   var TRIGGER_KEY = 'vlxt_last_conv_trigger_v1';
   var SESSION_ID_KEY = 'vlxt_session_id_v1';
   var JOURNEY_LOCAL_KEY = 'vlxt_journey_summary_v1';
@@ -25,8 +29,11 @@
     title: 'Trải Nghiệm Sớm VIP',
     enabled: true,
     startAt: '2026-11-25T00:00:00+07:00',
-    endAt: '2026-12-05T23:59:59+07:00',
-    durationDays: 7,
+    endAt: '2027-06-30T23:59:59+07:00',
+    durationDays: 3,
+    bonusDaysFeedback: 2,
+    bonusDaysReferral: 2,
+    maxBonusDays: 14,
     cutoffExistingTrialAt: '2026-11-24T15:00:00+07:00',
     zaloGroupUrl: 'https://zalo.me/g/str1pllhp4uxa3rtvnou',
     zaloTeacherUrl: 'https://zalo.me/0964885920',
@@ -170,6 +177,641 @@
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
+  // PHẦN 1B: ĐỘNG CƠ TĂNG TRƯỞNG VIRAL (3 NGÀY GỐC + NHIỆM VỤ CỘNG +2 NGÀY VIP)
+  // ═══════════════════════════════════════════════════════════════════════════
+  function makeRefCode(sdt) {
+    var norm = normSdt(sdt) || String(sdt || '').trim().toLowerCase();
+    if (!norm) return '';
+    var h1 = 2166136261;
+    var h2 = 5381;
+    for (var i = 0; i < norm.length; i++) {
+      var c = norm.charCodeAt(i);
+      h1 ^= c;
+      h1 = (typeof Math.imul === 'function') ? Math.imul(h1, 16777619) : ((h1 * 16777619) >>> 0);
+      h2 = (((h2 << 5) + h2) + c) >>> 0;
+    }
+    var p1 = ((h1 >>> 0).toString(36)).toUpperCase();
+    var p2 = ((h2 >>> 0).toString(36)).toUpperCase();
+    while (p1.length < 4) p1 = '0' + p1;
+    while (p2.length < 4) p2 = '0' + p2;
+    return 'VL' + p1.slice(-3) + p2.slice(-3);
+  }
+
+  function getClientDeviceId() {
+    try {
+      var existing = safeStorageGet(global.localStorage, DEVICE_ID_FALLBACK_KEY);
+      if (existing) return existing;
+      if (typeof global.vlxtDeviceFingerprint === 'function') {
+        var fp = global.vlxtDeviceFingerprint();
+        if (typeof fp === 'string' && fp) {
+          safeStorageSet(global.localStorage, DEVICE_ID_FALLBACK_KEY, fp);
+          return fp;
+        }
+      }
+      var storedFp = safeStorageGet(global.localStorage, 'vlxt_device_fp') || safeStorageGet(global.localStorage, 'vlxt_device_id');
+      if (storedFp) return storedFp;
+    } catch (e) {}
+    return getOrCreateAnonId();
+  }
+
+  function getGrowthStorageKey(u) {
+    var user = u || getUser();
+    if (!isLoggedInUser(user)) return '';
+    var sdtKey = safeKey(normSdt(user.sdt) || user.sdt);
+    return GROWTH_PREFIX + sdtKey;
+  }
+
+  function recomputeGrowthMetrics(profile, cfg) {
+    var c = cfg || getCampaignConfig();
+    var bonusFb = Math.max(0, Number(c.bonusDaysFeedback != null ? c.bonusDaysFeedback : 2));
+    var bonusRef = Math.max(0, Number(c.bonusDaysReferral != null ? c.bonusDaysReferral : 2));
+    var maxBonus = Math.max(0, Number(c.maxBonusDays != null ? c.maxBonusDays : 14));
+
+    var qRefs = Math.max(0, Number(profile.qualifiedReferralsCount || 0));
+    var rRefs = Math.max(qRefs, Number(profile.registeredReferralsCount || 0));
+    var fbDays = profile.feedbackMissionDone ? bonusFb : 0;
+    var inviteeDays = profile.inviteBonusClaimed ? bonusRef : 0;
+    var rawInviterDays = qRefs * bonusRef;
+    var rawTotal = fbDays + inviteeDays + rawInviterDays;
+    var totalBonus = Math.min(maxBonus, rawTotal);
+    var cappedInviterDays = Math.max(0, totalBonus - fbDays - inviteeDays);
+
+    profile.qualifiedReferralsCount = qRefs;
+    profile.registeredReferralsCount = rRefs;
+    profile.feedbackBonusDays = fbDays;
+    profile.inviteeBonusDays = inviteeDays;
+    profile.inviterBonusDays = cappedInviterDays;
+    profile.totalBonusDays = totalBonus;
+    profile.isClassLeader = qRefs >= 3;
+    profile.unlockedMaxDgnlExam = Math.min(10, 5 + (profile.feedbackMissionDone ? 1 : 0) + qRefs + (qRefs >= 3 ? 1 : 0));
+    profile.unlockedLayGocDay = qRefs >= 3 ? 3 : ((profile.feedbackMissionDone || qRefs >= 1) ? 2 : 1);
+    return profile;
+  }
+
+  function buildDefaultGrowthProfile(user) {
+    var sdt = user ? (normSdt(user.sdt) || String(user.sdt || '').trim()) : '';
+    var actorKey = sdt ? ('hs_' + safeKey(sdt)) : safeKey(getOrCreateAnonId());
+    return recomputeGrowthMetrics({
+      actorKey: actorKey,
+      sdt: sdt,
+      hoten: user ? String(user.hoten || user.name || '').trim() : '',
+      lop: user ? String(user.lop || '').trim() : '',
+      refCode: makeRefCode(sdt),
+      qualifiedExamsCount: 0,
+      firstExamSummary: null,
+      feedbackMissionDone: false,
+      feedbackBonusDays: 0,
+      feedbackCompletedAt: 0,
+      favoriteFeature: '',
+      targetScore: '',
+      invitedByCode: '',
+      invitedByActorKey: '',
+      invitedByName: '',
+      invitedBySdt: '',
+      inviteChallengeExam: '',
+      inviteChallengeScore: '',
+      inviteBonusClaimed: false,
+      inviteeBonusDays: 0,
+      qualifiedReferralsCount: 0,
+      registeredReferralsCount: 0,
+      inviterBonusDays: 0,
+      referralsList: [],
+      totalBonusDays: 0,
+      unlockedMaxDgnlExam: 5,
+      unlockedLayGocDay: 1,
+      isClassLeader: false,
+      anonId: getOrCreateAnonId(),
+      deviceId: getClientDeviceId(),
+      updatedAt: 0
+    });
+  }
+
+  function getGrowthProfile(u) {
+    var user = u || getUser();
+    if (!isLoggedInUser(user)) return buildDefaultGrowthProfile(null);
+    var base = buildDefaultGrowthProfile(user);
+    var sk = getGrowthStorageKey(user);
+    var raw = sk ? safeStorageGet(global.localStorage, sk) : null;
+    var parsed = raw ? safeJsonParse(raw, null) : null;
+    if (parsed && typeof parsed === 'object') {
+      var merged = Object.assign(base, parsed);
+      merged.actorKey = base.actorKey;
+      merged.sdt = base.sdt;
+      merged.refCode = merged.refCode || base.refCode;
+      merged.hoten = base.hoten || merged.hoten;
+      merged.lop = base.lop || merged.lop;
+      return recomputeGrowthMetrics(merged);
+    }
+    return base;
+  }
+
+  function saveGrowthProfileLocal(u, data) {
+    var user = u || getUser();
+    if (!isLoggedInUser(user)) return buildDefaultGrowthProfile(null);
+    var cur = Object.assign(getGrowthProfile(user), data || {});
+    cur.updatedAt = Date.now();
+    recomputeGrowthMetrics(cur);
+    var sk = getGrowthStorageKey(user);
+    if (sk) safeStorageSet(global.localStorage, sk, JSON.stringify(cur));
+    updateCountdownUI();
+    return cur;
+  }
+
+  function publishMyRefCode(profile) {
+    if (!profile || !profile.refCode || !profile.actorKey || typeof fetch !== 'function') {
+      return Promise.resolve(false);
+    }
+    var guardKey = 'vlxt_refpub_' + profile.refCode;
+    if (safeStorageGet(global.sessionStorage, guardKey) === '1') return Promise.resolve(true);
+    var payload = {
+      refCode: profile.refCode,
+      actorKey: profile.actorKey,
+      sdt: profile.sdt,
+      hoten: profile.hoten || 'Học sinh VLXT',
+      lop: profile.lop || '12',
+      anonId: getOrCreateAnonId(),
+      deviceId: profile.deviceId || getClientDeviceId(),
+      updatedAt: Date.now()
+    };
+    return fetch(RTDB_ROOT + '/referral_codes/' + encodeURIComponent(profile.refCode) + '.json', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      if (r && r.ok) safeStorageSet(global.sessionStorage, guardKey, '1');
+      return !!(r && r.ok);
+    }).catch(function () { return false; });
+  }
+
+  function persistGrowthProfileRemote(profile) {
+    if (!profile || !profile.actorKey || typeof fetch !== 'function') return Promise.resolve(false);
+    var out = Object.assign({}, profile);
+    delete out.referralsList;
+    return fetch(RTDB_ROOT + '/growth_profiles/' + encodeURIComponent(profile.actorKey) + '.json', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(out)
+    }).then(function (r) { return !!(r && r.ok); }).catch(function () { return false; });
+  }
+
+  function notifyGrowthToast(msg) {
+    try {
+      if (typeof global.vlxtToast === 'function') {
+        global.vlxtToast(msg, { tone: 'ok' });
+        return;
+      }
+      if (typeof document === 'undefined' || !document.body) return;
+      var box = document.getElementById('vlxt-growth-toast');
+      if (!box) {
+        box = document.createElement('div');
+        box.id = 'vlxt-growth-toast';
+        box.style.cssText = 'position:fixed;top:74px;right:16px;z-index:2147483250;background:#0f172a;color:#ecfdf5;border:1px solid #10b981;padding:11px 16px;border-radius:12px;font-family:"Inter",system-ui,sans-serif;font-size:13px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.42);max-width:340px;line-height:1.45;';
+        document.body.appendChild(box);
+      }
+      box.textContent = msg;
+      box.style.display = 'block';
+      clearTimeout(box._tm);
+      box._tm = setTimeout(function () { box.style.display = 'none'; }, 5500);
+    } catch (e) {}
+  }
+
+  function syncGrowthProfile(u) {
+    var user = u || getUser();
+    if (!isLoggedInUser(user)) return Promise.resolve(buildDefaultGrowthProfile(null));
+    var localP = getGrowthProfile(user);
+    if (typeof fetch !== 'function') return Promise.resolve(localP);
+
+    publishMyRefCode(localP);
+
+    return Promise.all([
+      fetch(RTDB_ROOT + '/growth_profiles/' + encodeURIComponent(localP.actorKey) + '.json', { cache: 'no-store' })
+        .then(function (r) { return r && r.ok ? r.json() : null; }).catch(function () { return null; }),
+      fetch(RTDB_ROOT + '/referrals/' + encodeURIComponent(localP.actorKey) + '.json', { cache: 'no-store' })
+        .then(function (r) { return r && r.ok ? r.json() : null; }).catch(function () { return null; })
+    ]).then(function (res) {
+      var remoteP = (res[0] && typeof res[0] === 'object') ? res[0] : null;
+      var refsMap = (res[1] && typeof res[1] === 'object') ? res[1] : null;
+      var prevQualified = Number(localP.qualifiedReferralsCount || 0);
+
+      if (remoteP) {
+        localP.qualifiedExamsCount = Math.max(Number(localP.qualifiedExamsCount || 0), Number(remoteP.qualifiedExamsCount || 0));
+        localP.firstExamSummary = localP.firstExamSummary || remoteP.firstExamSummary || null;
+        localP.feedbackMissionDone = Boolean(localP.feedbackMissionDone || remoteP.feedbackMissionDone);
+        localP.feedbackCompletedAt = Math.max(Number(localP.feedbackCompletedAt || 0), Number(remoteP.feedbackCompletedAt || 0));
+        localP.favoriteFeature = localP.favoriteFeature || remoteP.favoriteFeature || '';
+        localP.targetScore = localP.targetScore || remoteP.targetScore || '';
+        localP.invitedByCode = localP.invitedByCode || remoteP.invitedByCode || '';
+        localP.invitedByActorKey = localP.invitedByActorKey || remoteP.invitedByActorKey || '';
+        localP.invitedByName = localP.invitedByName || remoteP.invitedByName || '';
+        localP.invitedBySdt = localP.invitedBySdt || remoteP.invitedBySdt || '';
+        localP.inviteChallengeExam = localP.inviteChallengeExam || remoteP.inviteChallengeExam || '';
+        localP.inviteChallengeScore = localP.inviteChallengeScore || remoteP.inviteChallengeScore || '';
+        localP.inviteBonusClaimed = Boolean(localP.inviteBonusClaimed || remoteP.inviteBonusClaimed);
+      }
+
+      if (refsMap) {
+        var keys = Object.keys(refsMap);
+        var list = [];
+        var qCnt = 0;
+        keys.forEach(function (k) {
+          var item = refsMap[k];
+          if (!item || typeof item !== 'object') return;
+          if (item.status === 'qualified') qCnt++;
+          list.push({
+            actorKey: item.actorKey || k,
+            hoten: item.hoten || 'Bạn học',
+            lop: item.lop || '12',
+            status: item.status || 'registered',
+            firstScore: item.firstScore || '',
+            examNumber: item.examNumber || null,
+            createdAt: Number(item.createdAt || 0),
+            qualifiedAt: Number(item.qualifiedAt || 0)
+          });
+        });
+        list.sort(function (a, b) { return (b.qualifiedAt || b.createdAt) - (a.qualifiedAt || a.createdAt); });
+        localP.referralsList = list;
+        localP.registeredReferralsCount = Math.max(list.length, Number(localP.registeredReferralsCount || 0));
+        localP.qualifiedReferralsCount = Math.max(qCnt, Number(localP.qualifiedReferralsCount || 0));
+      } else if (remoteP) {
+        localP.registeredReferralsCount = Math.max(Number(localP.registeredReferralsCount || 0), Number(remoteP.registeredReferralsCount || 0));
+        localP.qualifiedReferralsCount = Math.max(Number(localP.qualifiedReferralsCount || 0), Number(remoteP.qualifiedReferralsCount || 0));
+      }
+
+      saveGrowthProfileLocal(user, localP);
+      persistGrowthProfileRemote(localP);
+
+      if (localP.qualifiedReferralsCount > prevQualified) {
+        var addedFriends = localP.qualifiedReferralsCount - prevQualified;
+        var cfg = getCampaignConfig();
+        notifyGrowthToast('🎉 ' + addedFriends + ' bạn cùng lớp vừa hoàn thành đề qua link của em! Cộng thêm +' + (addedFriends * Number(cfg.bonusDaysReferral || 2)) + ' ngày VIP.');
+      }
+      return localP;
+    }).catch(function () {
+      return localP;
+    });
+  }
+
+  function getPendingReferral() {
+    var raw = safeStorageGet(global.localStorage, PENDING_REF_KEY) || safeStorageGet(global.sessionStorage, PENDING_REF_KEY);
+    if (!raw) return null;
+    var parsed = safeJsonParse(raw, null);
+    return (parsed && parsed.refCode) ? parsed : null;
+  }
+
+  function captureIncomingReferralFromUrl() {
+    try {
+      if (!global.location || !global.location.search) return getPendingReferral();
+      var sp = new URLSearchParams(global.location.search);
+      var rawRef = sp.get('ref');
+      if (!rawRef) return getPendingReferral();
+      var refCode = String(rawRef).trim().toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 16);
+      if (!refCode) return getPendingReferral();
+
+      var user = getUser();
+      if (isLoggedInUser(user) && makeRefCode(user.sdt) === refCode) {
+        return getPendingReferral();
+      }
+
+      var data = {
+        refCode: refCode,
+        cexam: String(sp.get('cexam') || sp.get('exam') || '').trim().slice(0, 24),
+        cscore: String(sp.get('cscore') || '').trim().slice(0, 12),
+        cname: String(sp.get('cname') || '').trim().slice(0, 60),
+        clop: String(sp.get('clop') || '').trim().slice(0, 16),
+        ctype: String(sp.get('ctype') || 'dgnl').trim().slice(0, 24),
+        capturedAt: Date.now()
+      };
+      var json = JSON.stringify(data);
+      safeStorageSet(global.localStorage, PENDING_REF_KEY, json);
+      safeStorageSet(global.sessionStorage, PENDING_REF_KEY, json);
+      setConversionTrigger('referral_' + refCode, 'Thách đấu từ ' + (data.cname || refCode));
+
+      var visitGuard = REF_VISIT_PREFIX + refCode;
+      if (safeStorageGet(global.sessionStorage, visitGuard) !== '1') {
+        safeStorageSet(global.sessionStorage, visitGuard, '1');
+        track('referral_link_visit', {
+          target: refCode,
+          label: (data.cname || 'Bạn học') + (data.cscore ? (' (' + data.cscore + 'đ)') : ''),
+          meta: data
+        });
+      }
+      return data;
+    } catch (e) {
+      return getPendingReferral();
+    }
+  }
+
+  function bindReferralOnRegister(u, deviceId) {
+    var user = u || getUser();
+    if (!isLoggedInUser(user)) return Promise.resolve({ bound: false, reason: 'not_logged_in' });
+    var devId = String(deviceId || getClientDeviceId() || '');
+    if (devId) safeStorageSet(global.localStorage, DEVICE_ID_FALLBACK_KEY, devId);
+
+    var profile = getGrowthProfile(user);
+    if (devId && !profile.deviceId) {
+      profile.deviceId = devId;
+      saveGrowthProfileLocal(user, profile);
+    }
+    publishMyRefCode(profile);
+
+    var pending = getPendingReferral();
+    if (!pending || !pending.refCode) {
+      persistGrowthProfileRemote(profile);
+      return Promise.resolve({ bound: false, reason: 'no_pending_ref', profile: profile });
+    }
+    if (profile.invitedByActorKey || profile.inviteBonusClaimed) {
+      return Promise.resolve({ bound: false, reason: 'already_bound', profile: profile });
+    }
+    if (hasFullAccess(user)) {
+      return Promise.resolve({ bound: false, reason: 'already_full_access', profile: profile });
+    }
+    if (pending.refCode === profile.refCode) {
+      return Promise.resolve({ bound: false, reason: 'self_referral', profile: profile });
+    }
+    if (typeof fetch !== 'function') {
+      return Promise.resolve({ bound: false, reason: 'no_fetch', profile: profile });
+    }
+
+    return fetch(RTDB_ROOT + '/referral_codes/' + encodeURIComponent(pending.refCode) + '.json', { cache: 'no-store' })
+      .then(function (r) { return r && r.ok ? r.json() : null; })
+      .then(function (inviter) {
+        if (!inviter || !inviter.actorKey) {
+          return { bound: false, reason: 'invalid_ref_code', profile: profile };
+        }
+        var myAnon = getOrCreateAnonId();
+        var myNorm = normSdt(user.sdt) || String(user.sdt || '').trim().toLowerCase();
+        var invNorm = normSdt(inviter.sdt || '') || String(inviter.sdt || '').trim().toLowerCase();
+        if (inviter.actorKey === profile.actorKey || (invNorm && invNorm === myNorm)) {
+          return { bound: false, reason: 'self_referral', profile: profile };
+        }
+        if (inviter.anonId && myAnon && inviter.anonId === myAnon) {
+          return { bound: false, reason: 'same_browser_device', profile: profile };
+        }
+        if (devId && inviter.deviceId && String(devId) === String(inviter.deviceId)) {
+          return { bound: false, reason: 'same_device_fingerprint', profile: profile };
+        }
+
+        profile.invitedByCode = pending.refCode;
+        profile.invitedByActorKey = inviter.actorKey;
+        profile.invitedByName = inviter.hoten || pending.cname || 'Bạn học';
+        profile.invitedBySdt = inviter.sdt || '';
+        profile.inviteChallengeExam = pending.cexam || '';
+        profile.inviteChallengeScore = pending.cscore || '';
+        if (devId) profile.deviceId = devId;
+
+        saveGrowthProfileLocal(user, profile);
+        safeStorageRemove(global.localStorage, PENDING_REF_KEY);
+        safeStorageRemove(global.sessionStorage, PENDING_REF_KEY);
+
+        var refEntry = {
+          actorKey: profile.actorKey,
+          hoten: profile.hoten || 'Học sinh',
+          lop: profile.lop || '12',
+          status: 'registered',
+          createdAt: Date.now(),
+          qualifiedAt: 0,
+          firstScore: null,
+          examNumber: null
+        };
+
+        track('referral_bound', {
+          target: inviter.actorKey,
+          label: (profile.hoten || profile.sdt) + ' được mời bởi ' + profile.invitedByName,
+          meta: { refCode: pending.refCode, inviterActorKey: inviter.actorKey }
+        });
+
+        return Promise.all([
+          persistGrowthProfileRemote(profile),
+          fetch(RTDB_ROOT + '/referrals/' + encodeURIComponent(inviter.actorKey) + '/' + encodeURIComponent(profile.actorKey) + '.json', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(refEntry)
+          }).catch(function () {})
+        ]).then(function () {
+          return { bound: true, inviterName: profile.invitedByName, profile: profile };
+        });
+      })
+      .catch(function () {
+        return { bound: false, reason: 'network_error', profile: profile };
+      });
+  }
+
+  function recordQualifiedActivity(activity) {
+    var user = getUser();
+    if (!isLoggedInUser(user)) {
+      return Promise.resolve({ ok: false, qualified: false, reason: 'not_logged_in' });
+    }
+    var act = activity || {};
+    var answeredCount = Number(act.answeredCount || 0);
+    var spentSeconds = Number(act.spentSeconds || 0);
+    var isSolo = act.type === 'solo_match';
+    var isQualified = isSolo ? (answeredCount >= 3) : (answeredCount >= 3 && spentSeconds >= 60);
+
+    if (!isQualified) {
+      return Promise.resolve({
+        ok: false,
+        qualified: false,
+        reason: answeredCount < 3 ? 'too_few_answers' : 'too_fast',
+        minAnswers: 3,
+        minSeconds: 60
+      });
+    }
+
+    var profile = getGrowthProfile(user);
+    profile.qualifiedExamsCount = Number(profile.qualifiedExamsCount || 0) + 1;
+    if (!profile.firstExamSummary) {
+      profile.firstExamSummary = {
+        type: act.type || 'dgnl_exam',
+        examId: String(act.examId || ''),
+        examNumber: act.examNumber || null,
+        score10: act.score10 != null ? String(act.score10) : '',
+        answeredCount: answeredCount,
+        spentSeconds: spentSeconds,
+        ts: Date.now()
+      };
+    }
+
+    var cfg = getCampaignConfig();
+    var justQualifiedReferral = false;
+    var bonusAdded = 0;
+
+    if (profile.invitedByActorKey && profile.invitedByActorKey !== profile.actorKey && !profile.inviteBonusClaimed && !hasFullAccess(user)) {
+      profile.inviteBonusClaimed = true;
+      justQualifiedReferral = true;
+      bonusAdded = Number(cfg.bonusDaysReferral != null ? cfg.bonusDaysReferral : 2);
+    }
+
+    saveGrowthProfileLocal(user, profile);
+
+    track('qualified_exam_recorded', {
+      target: String(act.examId || act.type || 'exam'),
+      label: 'Hoàn thành đề hợp lệ (' + answeredCount + ' câu · ' + spentSeconds + 's)',
+      meta: { score10: act.score10 || '', justQualifiedReferral: justQualifiedReferral }
+    });
+
+    var reqs = [persistGrowthProfileRemote(profile)];
+    if (justQualifiedReferral) {
+      track('referral_qualified', {
+        target: profile.invitedByActorKey,
+        label: (profile.hoten || profile.sdt) + ' hoàn thành đề đầu tiên · +' + bonusAdded + 'd cho cả hai',
+        meta: {
+          inviterActorKey: profile.invitedByActorKey,
+          inviteeActorKey: profile.actorKey,
+          score10: act.score10 != null ? String(act.score10) : '',
+          examNumber: act.examNumber || null
+        }
+      });
+      if (typeof fetch === 'function') {
+        reqs.push(
+          fetch(RTDB_ROOT + '/referrals/' + encodeURIComponent(profile.invitedByActorKey) + '/' + encodeURIComponent(profile.actorKey) + '.json', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              status: 'qualified',
+              qualifiedAt: Date.now(),
+              firstScore: act.score10 != null ? String(act.score10) : '',
+              examNumber: act.examNumber || null,
+              examType: act.type || 'dgnl_exam'
+            })
+          }).catch(function () {})
+        );
+      }
+      flush(true);
+    }
+
+    return Promise.all(reqs).then(function () {
+      return {
+        ok: true,
+        qualified: true,
+        justQualifiedReferral: justQualifiedReferral,
+        bonusAdded: bonusAdded,
+        inviterName: profile.invitedByName || '',
+        challengeScore: profile.inviteChallengeScore || '',
+        profile: profile
+      };
+    });
+  }
+
+  function completeFeedbackMission(payload) {
+    var user = getUser();
+    if (!isLoggedInUser(user)) {
+      return Promise.resolve({ ok: false, reason: 'not_logged_in' });
+    }
+    var profile = getGrowthProfile(user);
+    if (profile.feedbackMissionDone) {
+      return Promise.resolve({ ok: false, reason: 'already_completed', profile: profile });
+    }
+    if (Number(profile.qualifiedExamsCount || 0) < 1) {
+      return Promise.resolve({ ok: false, reason: 'need_exam_first', profile: profile });
+    }
+
+    var p = payload || {};
+    var msg = String(p.message || '').trim();
+    var compact = msg.replace(/\s+/g, '');
+    var uniq = {};
+    for (var i = 0; i < compact.length; i++) {
+      uniq[compact[i].toLowerCase()] = true;
+    }
+    var wordCount = msg.split(/\s+/).filter(Boolean).length;
+    if (msg.length < 15 || Object.keys(uniq).length < 4 || wordCount < 3) {
+      return Promise.resolve({ ok: false, reason: 'message_too_short_or_spam', profile: profile });
+    }
+
+    var cfg = getCampaignConfig();
+    var bonusDays = Number(cfg.bonusDaysFeedback != null ? cfg.bonusDaysFeedback : 2);
+    var favoriteFeature = String(p.favoriteFeature || 'Mô phỏng 60 FPS').trim().slice(0, 80);
+    var targetScore = String(p.targetScore || '8.5+').trim().slice(0, 20);
+    var rating = Math.min(5, Math.max(1, Number(p.rating || 5)));
+
+    profile.feedbackMissionDone = true;
+    profile.feedbackCompletedAt = Date.now();
+    profile.favoriteFeature = favoriteFeature;
+    profile.targetScore = targetScore;
+    saveGrowthProfileLocal(user, profile);
+
+    track('mission_feedback_completed', {
+      target: favoriteFeature,
+      label: 'Đánh giá ' + rating + '★ · Mục tiêu ' + targetScore + ' (+' + bonusDays + ' ngày VIP)',
+      meta: { rating: rating, favoriteFeature: favoriteFeature, targetScore: targetScore }
+    });
+
+    var reportPromise = submitFeedbackReport({
+      type: 'idea',
+      category: 'mission_feedback',
+      rating: rating,
+      favoriteFeature: favoriteFeature,
+      targetScore: targetScore,
+      isMissionFeedback: true,
+      firstExamSummary: profile.firstExamSummary || null,
+      message: msg
+    }).catch(function () { return { ok: false }; });
+
+    return Promise.all([
+      reportPromise,
+      persistGrowthProfileRemote(profile)
+    ]).then(function () {
+      return {
+        ok: true,
+        bonusAdded: bonusDays,
+        profile: profile
+      };
+    });
+  }
+
+  function buildSharePayload(opts) {
+    var user = getUser();
+    var profile = getGrowthProfile(user);
+    var o = opts || {};
+    var refCode = profile.refCode || 'VLXT';
+    var name = (profile.hoten || (user && user.hoten) || 'Mình').trim();
+    var lop = (profile.lop || (user && user.lop) || '').trim();
+    var cexam = o.examNumber ? String(o.examNumber) : '';
+    var cscore = (o.score10 !== undefined && o.score10 !== null && String(o.score10) !== '') ? String(o.score10) : '';
+    var ctype = o.ctype || 'dgnl';
+
+    var originBase = 'https://vatlyxuantruong.io.vn/';
+    try {
+      if (global.location && global.location.origin && /^https?:/i.test(global.location.origin)) {
+        var dirPath = (global.location.pathname || '/').replace(/[^/]*$/, '');
+        originBase = global.location.origin + dirPath;
+      }
+    } catch (e) {}
+
+    var targetPage = (ctype === 'thithu')
+      ? 'thithu.html'
+      : (ctype === 'solo' ? 'solo.html' : 'danh-gia-nang-luc.html');
+    var qp = [];
+    if (cexam && ctype === 'dgnl') qp.push('exam=' + encodeURIComponent(String(cexam).padStart(2, '0')));
+    qp.push('ref=' + encodeURIComponent(refCode));
+    if (cexam) qp.push('cexam=' + encodeURIComponent(cexam));
+    if (cscore) qp.push('cscore=' + encodeURIComponent(cscore));
+    if (name) qp.push('cname=' + encodeURIComponent(name));
+    if (lop) qp.push('clop=' + encodeURIComponent(lop));
+    if (ctype) qp.push('ctype=' + encodeURIComponent(ctype));
+
+    var url = originBase + targetPage + '?' + qp.join('&');
+    var challengeLine = cscore
+      ? (name + ' vừa đạt ' + cscore + 'đ ở Đề ' + (cexam ? ('số ' + cexam) : 'Vật Lý 12') + ' chuẩn Bộ 2026 trên Web Vật Lý Xuân Trường (có mô phỏng thí nghiệm 60 FPS)!')
+      : (name + ' đang luyện đề Vật Lý 12 có mô phỏng thí nghiệm 60 FPS trực quan trên Web Vật Lý Xuân Trường!');
+    var text = challengeLine + '\nBấm link vào thi thử phá kỷ lục cùng mình — hoàn thành 1 đề CẢ HAI được cộng +2 ngày VIP miễn phí:\n' + url;
+    return { url: url, text: text, refCode: refCode };
+  }
+
+  function copyChallengeLink(opts) {
+    var payload = buildSharePayload(opts);
+    track('referral_share_copy', { target: payload.refCode, label: (opts && opts.source) || 'mission_modal' });
+    if (typeof navigator !== 'undefined' && navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      return navigator.clipboard.writeText(payload.text).then(function () {
+        notifyGrowthToast('✓ Đã chép lời thách đấu kèm link! Dán gửi nhóm lớp Zalo/Messenger ngay nhé.');
+        return Object.assign({ copied: true }, payload);
+      }).catch(function () {
+        return Object.assign({ copied: false }, payload);
+      });
+    }
+    return Promise.resolve(Object.assign({ copied: false }, payload));
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
   // PHẦN 1: QUẢN LÝ CHIẾN DỊCH TRẢI NGHIỆM SỚM & PHÂN QUYỀN KIẾN THỨC
   // ═══════════════════════════════════════════════════════════════════════════
   function getCampaignConfig() {
@@ -267,11 +909,16 @@
     var now = Number(nowMs || Date.now());
     var startMs = Date.parse(cfg.startAt) || Date.parse(DEFAULT_CAMPAIGN_CONFIG.startAt);
     var endMs = Date.parse(cfg.endAt) || Date.parse(DEFAULT_CAMPAIGN_CONFIG.endAt);
-    var durationMs = Math.max(1, Number(cfg.durationDays || 7)) * 86400000;
+    var baseDays = Math.max(1, Number(cfg.durationDays != null ? cfg.durationDays : 3));
 
     var paidFull = isPaidFullUser(user);
     var legacyTrial = isLegacyPreCampaignTrial(user);
     var full = paidFull || legacyTrial;
+    var gp = (!full && isLoggedInUser(user)) ? getGrowthProfile(user) : null;
+    var bonusDays = gp ? Math.max(0, Number(gp.totalBonusDays || 0)) : 0;
+    var totalDays = baseDays + bonusDays;
+    var durationMs = totalDays * 86400000;
+    var windowLbl = cfg.windowLabel || ('Gốc ' + baseDays + ' ngày + Thưởng VIP');
 
     if (!cfg.enabled || now > endMs) {
       return {
@@ -286,8 +933,11 @@
         startedAt: startMs,
         expiresAt: endMs,
         remainingMs: 0,
+        baseDays: baseDays,
+        bonusDays: bonusDays,
+        totalDays: totalDays,
         formattedShort: now > endMs ? 'Đã kết thúc đợt trải nghiệm sớm' : 'Đang tạm đóng',
-        windowLabel: '25/11 – 05/12',
+        windowLabel: windowLbl,
         config: cfg
       };
     }
@@ -298,7 +948,6 @@
     var effectiveStart;
 
     if (now < startMs) {
-      // Cho phep xem truoc ngay hom nay, moc dem nguoc 7 ngay bat dau tu startAt
       effectiveStart = startMs;
     } else {
       if (!storedStart || storedStart < startMs || storedStart > endMs) {
@@ -327,10 +976,13 @@
       startedAt: effectiveStart,
       expiresAt: expiresAt,
       remainingMs: remainingMs,
+      baseDays: baseDays,
+      bonusDays: bonusDays,
+      totalDays: totalDays,
       formattedShort: now < startMs
-        ? ('Còn ' + (cfg.durationDays || 7) + ' ngày · 25/11–05/12')
+        ? ('Còn ' + totalDays + ' ngày')
         : ('Còn ' + formatDurationVN(remainingMs)),
-      windowLabel: '25/11 – 05/12',
+      windowLabel: windowLbl,
       config: cfg
     };
   }
@@ -373,17 +1025,30 @@
   function canAccessLayGocLesson(courseName, lessonIndexZeroBased, lessonObj, u) {
     if (hasFullAccess(u)) return true;
     if (!isLayGocCourseName(courseName)) return true;
-    if (typeof lessonIndexZeroBased === 'number' && lessonIndexZeroBased === 0) return true;
-    if (typeof lessonIndexZeroBased === 'number' && lessonIndexZeroBased > 0) return false;
-    var lname = String((lessonObj && (lessonObj.name || lessonObj.TenBai)) || '').trim();
-    if (/^\s*(?:ngày|bài|buổi)\s*1(?:\b|[:.\-\s])/i.test(lname)) return true;
-    return false;
+    var idx = (typeof lessonIndexZeroBased === 'number') ? lessonIndexZeroBased : null;
+    if (idx === null) {
+      var lname = String((lessonObj && (lessonObj.name || lessonObj.TenBai)) || '').trim();
+      var m = lname.match(/^\s*(?:ngày|bài|buổi)\s*(\d+)(?:\b|[:.\-\s])/i);
+      if (m) idx = Number(m[1]) - 1;
+    }
+    if (idx === 0) return true;
+    if (idx === null || idx < 0 || idx > 2) return false; // Ngày 4-5 khóa tuyệt đối cho Paid Pro
+    var st = getUserEarlyAccessState(u);
+    if (!st.active) return false;
+    var gp = getGrowthProfile(u);
+    var maxDay = Number((gp && gp.unlockedLayGocDay) || 1);
+    return (idx + 1) <= maxDay;
   }
 
   function canAccessDgnlExam(examNumber, u) {
     if (hasFullAccess(u)) return true;
     var n = Number(examNumber);
-    return n >= 1 && n <= 5;
+    if (n >= 1 && n <= 5) return true;
+    if (n < 1 || n > 10) return false; // Đề 11-50 khóa tuyệt đối cho Paid Pro
+    var st = getUserEarlyAccessState(u);
+    if (!st.active) return false;
+    var gp = getGrowthProfile(u);
+    return n <= Number((gp && gp.unlockedMaxDgnlExam) || 5);
   }
 
   function canAccessPhongThiThu(u) {
@@ -410,7 +1075,7 @@
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // PHẦN 2: CHIP ĐẾM NGƯỢC & MODAL CHÀO MỪNG NHÓM ZALO (ZERO AI GLOW)
+  // PHẦN 2: CHIP ĐẾM NGƯỢC & TRUNG TÂM NHIỆM VỤ CỘNG NGÀY VIP (ZERO AI GLOW)
   // ═══════════════════════════════════════════════════════════════════════════
   function injectEarlyAccessCSS() {
     if (typeof document === 'undefined' || !document.head) return;
@@ -422,25 +1087,48 @@
       '.vlxt-ea-chip:hover{background:rgba(245,158,11,0.2);border-color:rgba(245,158,11,0.7);color:#fef3c7;}',
       '.vlxt-ea-chip .ea-dot{width:7px;height:7px;border-radius:50%;background:#f59e0b;flex-shrink:0;}',
       '@media(max-width:780px){.vlxt-ea-chip.in-topbar{display:none!important;}}',
-      '.vlxt-ea-modal-bd{position:fixed;inset:0;z-index:99994;background:rgba(2,6,23,0.78);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:16px;}',
+      '.vlxt-ea-modal-bd{--ea-bg:#0f172a;--ea-card:#151f33;--ea-border:rgba(148,163,184,0.24);--ea-text:#f1f5f9;--ea-sub:#cbd5e1;--ea-muted:#94a3b8;position:fixed;inset:0;z-index:2147483150;background:rgba(2,6,23,0.78);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:16px;}',
+      '.vlxt-ea-modal-bd.vlxt-ea-cbt-light{--ea-bg:#ffffff;--ea-card:#f8fafc;--ea-border:#cbd5e1;--ea-text:#0f172a;--ea-sub:#334155;--ea-muted:#64748b;}',
       '.vlxt-ea-modal-bd.open{display:flex;}',
-      '.vlxt-ea-modal{width:100%;max-width:500px;background:#0f172a;border:1px solid rgba(56,189,248,0.3);border-radius:18px;padding:24px;color:#f1f5f9;font-family:"Inter",system-ui,sans-serif;box-shadow:0 20px 50px rgba(0,0,0,0.65);position:relative;max-height:92vh;overflow-y:auto;}',
-      '.vlxt-ea-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:8px;border:1px solid rgba(148,163,184,0.2);background:rgba(255,255,255,0.05);color:#94a3b8;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}',
-      '.vlxt-ea-close:hover{background:rgba(255,255,255,0.12);color:#fff;}',
-      '.vlxt-ea-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:rgba(245,158,11,0.14);border:1px solid rgba(245,158,11,0.35);color:#fbbf24;font-size:11.5px;font-weight:800;margin-bottom:10px;max-width:calc(100% - 42px);line-height:1.35;}',
-      '.vlxt-ea-title{font-size:19px;font-weight:800;color:#ffffff;line-height:1.35;margin-bottom:8px;}',
-      '.vlxt-ea-sub{font-size:13.5px;color:#cbd5e1;line-height:1.55;margin-bottom:14px;}',
-      '.vlxt-ea-list{list-style:none;padding:12px 14px;margin:0 0 16px;border-radius:12px;background:#131c31;border:1px solid rgba(148,163,184,0.18);display:flex;flex-direction:column;gap:8px;font-size:13px;color:#e2e8f0;}',
-      '.vlxt-ea-list li{display:flex;align-items:flex-start;gap:8px;line-height:1.45;}',
-      '.vlxt-ea-actions{display:flex;flex-direction:column;gap:9px;}',
-      '.vlxt-ea-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;border-radius:11px;font-size:13.5px;font-weight:800;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:background-color .16s ease,transform .12s ease;}',
+      '.vlxt-ea-modal{width:100%;max-width:580px;background:var(--ea-bg);border:1px solid var(--ea-border);border-radius:18px;padding:22px;color:var(--ea-text);font-family:"Inter",system-ui,sans-serif;box-shadow:0 20px 50px rgba(0,0,0,0.55);position:relative;max-height:92vh;overflow-y:auto;}',
+      '.vlxt-ea-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:8px;border:1px solid var(--ea-border);background:var(--ea-card);color:var(--ea-muted);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}',
+      '.vlxt-ea-close:hover{color:var(--ea-text);border-color:#0b84f3;}',
+      '.vlxt-ea-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:rgba(245,158,11,0.14);border:1px solid rgba(245,158,11,0.38);color:#d97706;font-size:11.5px;font-weight:800;margin-bottom:8px;max-width:calc(100% - 42px);line-height:1.35;}',
+      '.vlxt-ea-modal-bd:not(.vlxt-ea-cbt-light) .vlxt-ea-badge{color:#fbbf24;}',
+      '.vlxt-ea-title{font-size:19px;font-weight:800;color:var(--ea-text);line-height:1.35;margin-bottom:6px;}',
+      '.vlxt-ea-sub{font-size:13.5px;color:var(--ea-sub);line-height:1.5;margin-bottom:12px;}',
+      '.vlxt-ea-quota{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}',
+      '.vlxt-ea-qbox{padding:10px 12px;border-radius:11px;background:var(--ea-card);border:1px solid var(--ea-border);text-align:center;}',
+      '.vlxt-ea-qval{font-size:16px;font-weight:800;color:var(--ea-text);}',
+      '.vlxt-ea-qlbl{font-size:11px;color:var(--ea-muted);margin-top:2px;font-weight:600;}',
+      '.vlxt-ea-mission-card{padding:14px 15px;border-radius:14px;background:var(--ea-card);border:1px solid var(--ea-border);margin-bottom:12px;}',
+      '.vlxt-ea-mission-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;flex-wrap:wrap;}',
+      '.vlxt-ea-mission-title{font-size:14px;font-weight:800;color:var(--ea-text);}',
+      '.vlxt-ea-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:800;}',
+      '.vlxt-ea-tag.ok{background:rgba(16,185,129,0.16);color:#10b981;border:1px solid rgba(16,185,129,0.35);}',
+      '.vlxt-ea-tag.wait{background:rgba(245,158,11,0.16);color:#d97706;border:1px solid rgba(245,158,11,0.38);}',
+      '.vlxt-ea-modal-bd:not(.vlxt-ea-cbt-light) .vlxt-ea-tag.wait{color:#fbbf24;}',
+      '.vlxt-ea-chips{display:flex;flex-wrap:wrap;gap:6px;margin:7px 0 10px;}',
+      '.vlxt-ea-chip-opt{padding:5px 10px;border-radius:8px;border:1px solid var(--ea-border);background:var(--ea-bg);color:var(--ea-sub);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;}',
+      '.vlxt-ea-chip-opt.active{background:#0b84f3;border-color:#0b84f3;color:#ffffff;}',
+      '.vlxt-ea-input,.vlxt-ea-textarea{width:100%;box-sizing:border-box;padding:9px 11px;border-radius:9px;border:1px solid var(--ea-border);background:var(--ea-bg);color:var(--ea-text);font-family:inherit;font-size:13px;outline:none;}',
+      '.vlxt-ea-textarea{min-height:70px;resize:vertical;line-height:1.45;margin-bottom:8px;}',
+      '.vlxt-ea-share-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;}',
+      '.vlxt-ea-progress{width:100%;height:7px;border-radius:999px;background:rgba(148,163,184,0.2);overflow:hidden;margin:8px 0;}',
+      '.vlxt-ea-progress>i{display:block;height:100%;background:#10b981;border-radius:999px;transition:width .25s ease;}',
+      '.vlxt-ea-ref-list{margin-top:8px;display:flex;flex-direction:column;gap:5px;max-height:120px;overflow-y:auto;}',
+      '.vlxt-ea-ref-item{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;padding:6px 9px;border-radius:8px;background:var(--ea-bg);border:1px solid var(--ea-border);}',
+      '.vlxt-ea-actions{display:flex;flex-direction:column;gap:8px;margin-top:6px;}',
+      '.vlxt-ea-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:11px 15px;border-radius:11px;font-size:13.5px;font-weight:800;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:background-color .16s ease,transform .12s ease;}',
       '.vlxt-ea-btn:active{transform:scale(0.98);}',
+      '.vlxt-ea-btn.primary{background:#10b981;color:#ffffff;}',
+      '.vlxt-ea-btn.primary:hover{background:#059669;}',
       '.vlxt-ea-btn.zalo{background:#0068ff;color:#ffffff;}',
       '.vlxt-ea-btn.zalo:hover{background:#1677ff;}',
       '.vlxt-ea-btn.vip{background:#0b84f3;color:#ffffff;}',
       '.vlxt-ea-btn.vip:hover{background:#1d90fa;}',
-      '.vlxt-ea-btn.ghost{background:rgba(255,255,255,0.06);color:#cbd5e1;border:1px solid rgba(148,163,184,0.25);}',
-      '.vlxt-ea-btn.ghost:hover{background:rgba(255,255,255,0.12);color:#fff;}'
+      '.vlxt-ea-btn.ghost{background:var(--ea-card);color:var(--ea-sub);border:1px solid var(--ea-border);}',
+      '.vlxt-ea-btn.ghost:hover{border-color:#0b84f3;color:var(--ea-text);}'
     ].join('');
     document.head.appendChild(s);
   }
@@ -451,63 +1139,192 @@
     var modalTimerEl = document.getElementById('vlxt-ea-modal-timer');
     var st = getUserEarlyAccessState(getUser());
     if (el) el.textContent = st.formattedShort;
-    if (modalTimerEl) modalTimerEl.textContent = st.formattedShort + ' (25/11 – 05/12/2026)';
+    if (modalTimerEl) modalTimerEl.textContent = st.formattedShort + ' (' + st.baseDays + 'd gốc + ' + st.bonusDays + 'd thưởng)';
+  }
+
+  function openMissionModal(defaultFocus) {
+    if (typeof document === 'undefined' || !document.body) return;
+    injectEarlyAccessCSS();
+    var oldBd = document.getElementById('vlxt-ea-modal-bd');
+    if (oldBd) oldBd.remove();
+
+    var cfg = getCampaignConfig();
+    var user = getUser();
+    var st = getUserEarlyAccessState(user);
+    var gp = getGrowthProfile(user);
+    var isWelcome = defaultFocus === 'welcome';
+    var page = getPageFile();
+    var isLight = (page === 'phong-thi-thu.html' || page === 'thithu.html');
+    var nameDisplay = (user && user.hoten) ? escHtml(user.hoten) : 'em';
+    var share = buildSharePayload({ source: 'mission_modal' });
+    var bonusFb = Number(cfg.bonusDaysFeedback != null ? cfg.bonusDaysFeedback : 2);
+    var bonusRef = Number(cfg.bonusDaysReferral != null ? cfg.bonusDaysReferral : 2);
+    var maxBonus = Number(cfg.maxBonusDays != null ? cfg.maxBonusDays : 14);
+    var leaderPct = Math.min(100, Math.round((gp.qualifiedReferralsCount / 3) * 100));
+
+    var bd = document.createElement('div');
+    bd.id = 'vlxt-ea-modal-bd';
+    bd.className = 'vlxt-ea-modal-bd open' + (isLight ? ' vlxt-ea-cbt-light' : '');
+
+    var selectedFeat = gp.favoriteFeature || 'Mô phỏng 60 FPS';
+    var selectedTarget = gp.targetScore || '8.5+';
+    var selectedRate = 5;
+
+    function buildModalHtml() {
+      st = getUserEarlyAccessState(getUser());
+      gp = getGrowthProfile(getUser());
+      share = buildSharePayload({ source: 'mission_modal' });
+      leaderPct = Math.min(100, Math.round((gp.qualifiedReferralsCount / 3) * 100));
+
+      var refItemsHtml = (gp.referralsList && gp.referralsList.length)
+        ? gp.referralsList.map(function (it) {
+            var isQ = it.status === 'qualified';
+            return '<div class="vlxt-ea-ref-item"><span><b>' + escHtml(it.hoten) + '</b> (' + escHtml(it.lop || '12') + ')' + (it.firstScore ? (' · ' + escHtml(it.firstScore) + 'đ') : '') + '</span><span class="vlxt-ea-tag ' + (isQ ? 'ok' : 'wait') + '">' + (isQ ? ('✓ +' + bonusRef + 'd') : '⏳ Chờ làm 1 đề') + '</span></div>';
+          }).join('')
+        : '<div style="font-size:12px;color:var(--ea-muted);margin-top:6px">Chưa có bạn cùng lớp nào. Gửi link để nhận +' + bonusRef + ' ngày VIP cho cả 2 ngay khi bạn làm xong đề đầu tiên!</div>';
+
+      var mission1Html = gp.feedbackMissionDone
+        ? ('<div class="vlxt-ea-mission-head"><span class="vlxt-ea-mission-title">✅ Nhiệm vụ 1: Làm 1 đề &amp; Đánh giá Web</span><span class="vlxt-ea-tag ok">Đã nhận +' + bonusFb + ' ngày &amp; Mở Đề 06</span></div><div style="font-size:12.5px;color:var(--ea-sub)">Cảm ơn em đã góp ý (<b>' + escHtml(gp.favoriteFeature || '—') + '</b> · Mục tiêu <b>' + escHtml(gp.targetScore || '8.5+') + '</b>). Đề 06 ĐGNL &amp; Ngày 2 Lấy Gốc đã được mở!</div>')
+        : ('<div class="vlxt-ea-mission-head"><span class="vlxt-ea-mission-title">🎯 Nhiệm vụ 1: Làm 1 đề &amp; Gửi Đánh Giá</span><span class="vlxt-ea-tag wait">+' + bonusFb + ' ngày VIP + Mở Đề 06</span></div>'
+          + '<div style="font-size:12.5px;color:var(--ea-sub);margin-bottom:8px">'
+          + (gp.qualifiedExamsCount >= 1
+            ? '✅ Bước 1: Em đã hoàn thành <b>' + gp.qualifiedExamsCount + '</b> đề hợp lệ. Gửi nhanh 15 giây đánh giá bên dưới để nhận thưởng ngay!'
+            : '⏳ Bước 1: Em hãy vào làm &amp; nộp ít nhất <b>1 đề bất kỳ</b> (trả lời ≥ 3 câu, tối thiểu 60s) để đủ điều kiện nhận thưởng.')
+          + '</div>'
+          + (gp.qualifiedExamsCount >= 1 ? [
+              '<div style="font-size:11.5px;font-weight:700;color:var(--ea-muted)">Tính năng em mê nhất trên Web:</div>',
+              '<div class="vlxt-ea-chips" id="ea-feat-chips">',
+              ['Mô phỏng 60 FPS', 'Chẩn đoán lỗ hổng', 'Đề chuẩn Bộ 2026', 'Sổ tay câu sai', 'Đấu trường Solo'].map(function (f) {
+                return '<button type="button" class="vlxt-ea-chip-opt ' + (selectedFeat === f ? 'active' : '') + '" data-feat="' + escHtml(f) + '">' + escHtml(f) + '</button>';
+              }).join(''),
+              '</div>',
+              '<div style="font-size:11.5px;font-weight:700;color:var(--ea-muted)">Mục tiêu điểm Vật Lý &amp; mức hài lòng:</div>',
+              '<div class="vlxt-ea-chips" id="ea-target-chips">',
+              ['7+', '8+', '8.5+', '9+'].map(function (t) {
+                return '<button type="button" class="vlxt-ea-chip-opt ' + (selectedTarget === t ? 'active' : '') + '" data-target="' + escHtml(t) + '">Mục tiêu ' + escHtml(t) + '</button>';
+              }).join(''),
+              [5, 4, 3].map(function (r) {
+                return '<button type="button" class="vlxt-ea-chip-opt ' + (selectedRate === r ? 'active' : '') + '" data-rate="' + r + '">' + r + '★</button>';
+              }).join(''),
+              '</div>',
+              '<textarea id="ea-fb-msg" class="vlxt-ea-textarea" placeholder="Nhận xét thật của em sau khi làm đề (tối thiểu 15 ký tự, VD: Mô phỏng dễ hiểu, muốn thêm đề nhiệt học...)"></textarea>',
+              '<button type="button" class="vlxt-ea-btn primary" id="ea-fb-submit-btn">🎁 Gửi Đánh Giá &amp; Nhận +' + bonusFb + ' Ngày VIP</button>',
+              '<div id="ea-fb-err" style="font-size:12px;color:#ef4444;margin-top:6px"></div>'
+            ].join('') : '<a href="danh-gia-nang-luc.html?exam=01" class="vlxt-ea-btn vip" style="margin-top:4px">Làm ngay Đề 01 ĐGNL (60 FPS) →</a>'));
+
+      return [
+        '<div class="vlxt-ea-modal" role="dialog" aria-modal="true" aria-labelledby="vlxt-ea-modal-title">',
+        '  <button type="button" class="vlxt-ea-close" aria-label="Đóng" id="vlxt-ea-close-btn">✕</button>',
+        '  <div class="vlxt-ea-badge">' + (gp.isClassLeader ? '🏆 THỦ LĨNH HỌC TẬP LỚP' : (isWelcome ? '🎉 KÍCH HOẠT 3 NGÀY TRẢI NGHIỆM VIP' : '⏳ QUỸ THỜI GIAN &amp; NHIỆM VỤ VIP')) + '</div>',
+        '  <h3 class="vlxt-ea-title" id="vlxt-ea-modal-title">' + (isWelcome ? ('Chào mừng ' + nameDisplay + ' nhận 3 ngày VIP!') : 'Nhiệm Vụ Cộng Ngày VIP &amp; Mở Khóa Đề') + '</h3>',
+        '  <p class="vlxt-ea-sub">Thời hạn còn lại: <strong id="vlxt-ea-modal-timer" style="color:#f59e0b">' + escHtml(st.formattedShort) + ' (' + st.baseDays + 'd gốc + ' + st.bonusDays + 'd thưởng)</strong></p>',
+        '  <div class="vlxt-ea-quota">',
+        '    <div class="vlxt-ea-qbox"><div class="vlxt-ea-qval">' + st.totalDays + ' ngày</div><div class="vlxt-ea-qlbl">Tổng quỹ (tối đa ' + (st.baseDays + maxBonus) + 'd)</div></div>',
+        '    <div class="vlxt-ea-qbox"><div class="vlxt-ea-qval">Đề 01–' + String(gp.unlockedMaxDgnlExam).padStart(2, '0') + '</div><div class="vlxt-ea-qlbl">Kho 50 Đề đang mở</div></div>',
+        '    <div class="vlxt-ea-qbox"><div class="vlxt-ea-qval">Ngày 1–' + gp.unlockedLayGocDay + '</div><div class="vlxt-ea-qlbl">Khóa 5 Ngày Lấy Gốc</div></div>',
+        '  </div>',
+        '  <div class="vlxt-ea-mission-card" id="ea-mission-1-box">' + mission1Html + '</div>',
+        '  <div class="vlxt-ea-mission-card" id="ea-mission-2-box">',
+        '    <div class="vlxt-ea-mission-head"><span class="vlxt-ea-mission-title">⚔️ Nhiệm vụ 2: Rủ Bạn Cùng Lớp Thi Đấu</span><span class="vlxt-ea-tag ok">+' + bonusRef + 'd cho CẢ HAI / bạn</span></div>',
+        '    <div style="font-size:12.5px;color:var(--ea-sub)">Mỗi bạn cùng lớp bấm link của em và làm xong 1 đề, <b>cả 2 đều được cộng +' + bonusRef + ' ngày VIP</b> &amp; mở thêm đề mới tới <b>Đề 10</b> (tối đa +' + maxBonus + 'd).</div>',
+        '    <div style="margin-top:8px;font-size:12px;color:var(--ea-muted)">Tiến độ Thủ Lĩnh Lớp (<b>' + gp.qualifiedReferralsCount + '/3</b> bạn đã thi · +Ngày 3 Lấy Gốc &amp; Đề 10):</div>',
+        '    <div class="vlxt-ea-progress"><i style="width:' + leaderPct + '%"></i></div>',
+        '    <div class="vlxt-ea-share-row">',
+        '      <input type="text" class="vlxt-ea-input" readonly value="' + escHtml(share.url) + '" id="ea-share-url-inp" style="flex:1;min-width:180px;font-size:12px">',
+        '      <button type="button" class="vlxt-ea-btn primary" id="ea-copy-challenge-btn" style="width:auto;padding:9px 14px;white-space:nowrap">📋 Chép Lời Thách Đấu</button>',
+        '    </div>',
+        '    <div class="vlxt-ea-ref-list">' + refItemsHtml + '</div>',
+        '  </div>',
+        '  <div class="vlxt-ea-actions">',
+        '    <a href="' + escHtml(cfg.zaloGroupUrl) + '" target="_blank" rel="noopener" id="vlxt-ea-join-zalo-btn" class="vlxt-ea-btn zalo">👥 Tham gia Nhóm Zalo Nhận PDF &amp; Lịch Live</a>',
+        '    <a href="goi-hoc.html?reserve=1&trigger=ea_mission_modal" id="vlxt-ea-goihoc-btn" class="vlxt-ea-btn ghost">👑 Mở khóa trọn bộ 50 Đề &amp; 4 Chương (50.000đ/tháng)</a>',
+        '  </div>',
+        '</div>'
+      ].join('');
+    }
+
+    function mountAndBind() {
+      bd.innerHTML = buildModalHtml();
+      var close = function () { bd.remove(); };
+      var cBtn = document.getElementById('vlxt-ea-close-btn');
+      if (cBtn) cBtn.onclick = close;
+
+      bd.querySelectorAll('#ea-feat-chips .vlxt-ea-chip-opt').forEach(function (btn) {
+        btn.onclick = function () {
+          selectedFeat = btn.getAttribute('data-feat');
+          bd.querySelectorAll('#ea-feat-chips .vlxt-ea-chip-opt').forEach(function (b) { b.classList.toggle('active', b === btn); });
+        };
+      });
+      bd.querySelectorAll('#ea-target-chips .vlxt-ea-chip-opt[data-target]').forEach(function (btn) {
+        btn.onclick = function () {
+          selectedTarget = btn.getAttribute('data-target');
+          bd.querySelectorAll('#ea-target-chips .vlxt-ea-chip-opt[data-target]').forEach(function (b) { b.classList.toggle('active', b === btn); });
+        };
+      });
+      bd.querySelectorAll('#ea-target-chips .vlxt-ea-chip-opt[data-rate]').forEach(function (btn) {
+        btn.onclick = function () {
+          selectedRate = Number(btn.getAttribute('data-rate') || 5);
+          bd.querySelectorAll('#ea-target-chips .vlxt-ea-chip-opt[data-rate]').forEach(function (b) { b.classList.toggle('active', b === btn); });
+        };
+      });
+
+      var fbBtn = document.getElementById('ea-fb-submit-btn');
+      if (fbBtn) {
+        fbBtn.onclick = function () {
+          var msgEl = document.getElementById('ea-fb-msg');
+          var errEl = document.getElementById('ea-fb-err');
+          var msg = msgEl ? msgEl.value.trim() : '';
+          fbBtn.disabled = true;
+          fbBtn.textContent = 'Đang xác nhận...';
+          completeFeedbackMission({
+            rating: selectedRate,
+            favoriteFeature: selectedFeat,
+            targetScore: selectedTarget,
+            message: msg
+          }).then(function (res) {
+            if (res && res.ok) {
+              notifyGrowthToast('🎉 Tuyệt vời! Cộng +' + res.bonusAdded + ' ngày VIP & Đã mở Đề 06 ĐGNL + Ngày 2 Lấy Gốc!');
+              mountAndBind();
+            } else {
+              fbBtn.disabled = false;
+              fbBtn.textContent = '🎁 Gửi Đánh Giá & Nhận +' + bonusFb + ' Ngày VIP';
+              if (errEl) {
+                errEl.textContent = (res && res.reason === 'message_too_short_or_spam')
+                  ? 'Em viết nhận xét thật tối thiểu 15 ký tự (ít nhất 3 từ) nhé!'
+                  : 'Chưa thể hoàn tất lúc này, em thử lại nhé.';
+              }
+            }
+          });
+        };
+      }
+
+      var cpBtn = document.getElementById('ea-copy-challenge-btn');
+      if (cpBtn) {
+        cpBtn.onclick = function () {
+          copyChallengeLink({ source: 'mission_modal' }).then(function (res) {
+            cpBtn.textContent = res.copied ? '✓ Đã chép link & lời mời!' : '✓ Đã tạo link';
+            setTimeout(function () { if (cpBtn) cpBtn.textContent = '📋 Chép Lời Thách Đấu'; }, 2400);
+          });
+        };
+      }
+
+      var zBtn = document.getElementById('vlxt-ea-join-zalo-btn');
+      var gBtn = document.getElementById('vlxt-ea-goihoc-btn');
+      if (zBtn) zBtn.onclick = function () { track('zalo_group_click', { source: 'mission_modal', url: cfg.zaloGroupUrl }); };
+      if (gBtn) gBtn.onclick = function () { setConversionTrigger('ea_mission_modal', 'Nâng cấp VIP từ Modal Nhiệm Vụ'); };
+    }
+
+    bd.addEventListener('click', function (e) { if (e.target === bd) bd.remove(); });
+    document.body.appendChild(bd);
+    mountAndBind();
+
+    if (defaultFocus === 'feedback' && document.getElementById('ea-fb-msg')) {
+      setTimeout(function () { var m = document.getElementById('ea-fb-msg'); if (m) m.focus(); }, 120);
+    }
   }
 
   function openEarlyAccessModal(mode) {
-    if (typeof document === 'undefined' || !document.body) return;
-    injectEarlyAccessCSS();
-    var bd = document.getElementById('vlxt-ea-modal-bd');
-    if (bd) bd.remove();
-
-    var cfg = getCampaignConfig();
-    var st = getUserEarlyAccessState(getUser());
-    var isWelcome = mode === 'welcome';
-    var user = getUser();
-    var nameDisplay = (user && user.hoten) ? escHtml(user.hoten) : 'em';
-
-    bd = document.createElement('div');
-    bd.id = 'vlxt-ea-modal-bd';
-    bd.className = 'vlxt-ea-modal-bd open';
-    bd.innerHTML = [
-      '<div class="vlxt-ea-modal" role="dialog" aria-modal="true" aria-labelledby="vlxt-ea-modal-title">',
-      '  <button type="button" class="vlxt-ea-close" aria-label="Đóng" id="vlxt-ea-close-btn">✕</button>',
-      '  <div class="vlxt-ea-badge">⏳ ' + (isWelcome ? 'ĐĂNG KÝ THÀNH CÔNG · TRẢI NGHIỆM SỚM' : 'CHIẾN DỊCH TRẢI NGHIỆM SỚM') + '</div>',
-      '  <h3 class="vlxt-ea-title" id="vlxt-ea-modal-title">' + (isWelcome ? ('Chào mừng ' + nameDisplay + ' vào nhóm thành viên Web VLXT!') : 'Quyền Lợi Đợt Trải Nghiệm Sớm (7 Ngày)') + '</h3>',
-      '  <p class="vlxt-ea-sub">' + (isWelcome
-        ? 'Em đã mở khóa trải nghiệm miễn phí đợt <strong>25/11 – 05/12/2026</strong>. Hãy tham gia ngay <strong>Nhóm Zalo Thành Viên Web</strong> để nhận lịch live chữa đề, tài liệu PDF và thông báo ưu đãi gói VIP từ Thầy Xuân Trường.'
-        : 'Đợt trải nghiệm sớm diễn ra từ <strong>25/11 đến 05/12/2026</strong>. Thời hạn còn lại của em: <strong id="vlxt-ea-modal-timer" style="color:#fbbf24">' + escHtml(st.formattedShort) + '</strong>.') + '</p>',
-      '  <ul class="vlxt-ea-list">',
-      '    <li><span>✅</span><span><strong>Khóa GĐ1:</strong> Mở miễn phí trọn vẹn Chương 1 (Nhiệt) &amp; Chương 2 (Khí lí tưởng).</span></li>',
-      '    <li><span>✅</span><span><strong>Khóa 5 Ngày Lấy Gốc:</strong> Mở miễn phí Bài 1 (Ngày 1) chuẩn hóa nền tảng.</span></li>',
-      '    <li><span>✅</span><span><strong>Sảnh 50 Đề 60 FPS:</strong> Mở miễn phí 5 đề đầu (Đề 01 – Đề 05) kèm mô phỏng &amp; chẩn đoán lỗ hổng.</span></li>',
-      '    <li><span>✅</span><span><strong>Phòng Thi Thử CBT:</strong> Mở trải nghiệm làm đề thi thử trực tuyến chuẩn cấu trúc Bộ.</span></li>',
-      '  </ul>',
-      '  <div class="vlxt-ea-actions">',
-      '    <a href="' + escHtml(cfg.zaloGroupUrl) + '" target="_blank" rel="noopener" id="vlxt-ea-join-zalo-btn" class="vlxt-ea-btn zalo">👥 Tham gia Nhóm Zalo Thành Viên Web</a>',
-      '    <a href="goi-hoc.html?reserve=1&trigger=' + encodeURIComponent(isWelcome ? 'welcome_modal' : 'ea_countdown_chip') + '" id="vlxt-ea-goihoc-btn" class="vlxt-ea-btn vip">👑 Giữ Suất Ưu Đãi / Nâng Cấp Full VIP</a>',
-      '    <button type="button" id="vlxt-ea-continue-btn" class="vlxt-ea-btn ghost">Tiếp tục học ngay →</button>',
-      '  </div>',
-      '</div>'
-    ].join('');
-
-    document.body.appendChild(bd);
-
-    function close() { bd.remove(); }
-    bd.addEventListener('click', function (e) { if (e.target === bd) close(); });
-    var cBtn = document.getElementById('vlxt-ea-close-btn');
-    var contBtn = document.getElementById('vlxt-ea-continue-btn');
-    var zBtn = document.getElementById('vlxt-ea-join-zalo-btn');
-    var gBtn = document.getElementById('vlxt-ea-goihoc-btn');
-    if (cBtn) cBtn.onclick = close;
-    if (contBtn) contBtn.onclick = close;
-    if (zBtn) zBtn.onclick = function () {
-      track('zalo_group_click', { source: isWelcome ? 'welcome_modal' : 'ea_info_modal', url: cfg.zaloGroupUrl });
-    };
-    if (gBtn) gBtn.onclick = function () {
-      setConversionTrigger(isWelcome ? 'welcome_modal' : 'ea_countdown_chip', 'Bấm từ modal Trải nghiệm sớm');
-      track('conversion_intent', { target: 'goi-hoc.html', trigger: isWelcome ? 'welcome_modal' : 'ea_countdown_chip' });
-    };
+    return openMissionModal(mode || 'info');
   }
 
   function renderCountdownChip() {
@@ -533,12 +1350,12 @@
     chip.type = 'button';
     chip.id = 'vlxt-ea-chip';
     chip.className = 'vlxt-ea-chip in-topbar';
-    chip.title = 'Xem quyền lợi Trải nghiệm sớm (25/11–05/12)';
+    chip.title = 'Xem quỹ ngày VIP & làm nhiệm vụ nhận thêm +2 ngày/bạn';
     chip.innerHTML = '<span class="ea-dot"></span><span id="vlxt-ea-chip-text">' + escHtml(st.formattedShort) + '</span>';
     chip.onclick = function () {
-      setConversionTrigger('ea_countdown_chip', 'Bấm đồng hồ đếm ngược 7 ngày');
-      track('ea_chip_click', { page: page });
-      openEarlyAccessModal('info');
+      setConversionTrigger('ea_countdown_chip', 'Bấm đồng hồ đếm ngược ' + st.totalDays + ' ngày');
+      track('ea_chip_click', { page: page, totalDays: st.totalDays });
+      openMissionModal('info');
     };
     host.insertBefore(chip, host.firstChild);
   }
@@ -849,14 +1666,22 @@
     var actor = getActorInfo();
     var ctx = getContext();
     var id = genId('fb');
+    var cPhone = String((payload && payload.contactPhone) || actor.sdt || '').trim();
+    var cName = String((payload && payload.contactName) || actor.hoten || 'Khách').trim();
     var record = {
       id: id,
       type: (payload && payload.type) === 'idea' ? 'idea' : 'bug',
       category: (payload && payload.category) || 'general',
       rating: (payload && payload.rating) ? Number(payload.rating) : null,
+      favoriteFeature: (payload && payload.favoriteFeature) ? String(payload.favoriteFeature).trim().slice(0, 80) : '',
+      targetScore: (payload && payload.targetScore) ? String(payload.targetScore).trim().slice(0, 20) : '',
+      isMissionFeedback: Boolean(payload && payload.isMissionFeedback),
+      firstExamSummary: (payload && payload.firstExamSummary) || null,
       message: String((payload && payload.message) || '').trim().slice(0, 1500),
-      contactPhone: String((payload && payload.contactPhone) || actor.sdt || '').trim(),
-      contactName: String((payload && payload.contactName) || actor.hoten || 'Khách').trim(),
+      contactPhone: cPhone,
+      contactName: cName,
+      sdt: cPhone,
+      hoten: cName,
       lop: actor.lop || '',
       anonId: actor.anonId,
       page: ctx.page,
@@ -872,6 +1697,7 @@
         questionId: ctx.questionId || '',
         partName: ctx.partName || ''
       },
+      deviceType: getDeviceType(),
       deviceInfo: getDeviceType() + ' · ' + ((global.innerWidth || 0) + 'x' + (global.innerHeight || 0)),
       lastError: safeStorageGet(global.sessionStorage, 'vlxt_last_js_err') || '',
       status: 'open',
@@ -985,9 +1811,12 @@
     global.addEventListener('pagehide', handleLeave);
 
     var onReady = function () {
+      captureIncomingReferralFromUrl();
       refreshCampaignConfig(false);
+      var uNow = getUser();
+      if (isLoggedInUser(uNow)) syncGrowthProfile(uNow);
       renderCountdownChip();
-      maybeShowZaloGroupWelcomeModal(getUser(), false);
+      maybeShowZaloGroupWelcomeModal(uNow, false);
       track('page_enter', { target: getPageFile(), label: (document.title || getPageFile()).slice(0, 90) });
       pushLivePresence(false);
     };
@@ -1020,7 +1849,23 @@
     requireAuthOrRedirect: requireAuthOrRedirect,
     renderCountdownChip: renderCountdownChip,
     openEarlyAccessModal: openEarlyAccessModal,
+    openMissionModal: openMissionModal,
     maybeShowZaloGroupWelcomeModal: maybeShowZaloGroupWelcomeModal
+  };
+
+  var VLXT_GROWTH = {
+    makeRefCode: makeRefCode,
+    getGrowthProfile: getGrowthProfile,
+    saveGrowthProfileLocal: saveGrowthProfileLocal,
+    syncGrowthProfile: syncGrowthProfile,
+    getPendingReferral: getPendingReferral,
+    captureIncomingReferralFromUrl: captureIncomingReferralFromUrl,
+    bindReferralOnRegister: bindReferralOnRegister,
+    recordQualifiedActivity: recordQualifiedActivity,
+    completeFeedbackMission: completeFeedbackMission,
+    buildSharePayload: buildSharePayload,
+    copyChallengeLink: copyChallengeLink,
+    openMissionModal: openMissionModal
   };
 
   var VLXT_TELEMETRY = {
@@ -1040,12 +1885,13 @@
   };
 
   global.VLXT_CAMPAIGN = VLXT_CAMPAIGN;
+  global.VLXT_GROWTH = VLXT_GROWTH;
   global.VLXT_TELEMETRY = VLXT_TELEMETRY;
   global.vlxtLog = legacyCompatibleLog;
 
   startBrowserLifecycle();
 
   if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { VLXT_CAMPAIGN: VLXT_CAMPAIGN, VLXT_TELEMETRY: VLXT_TELEMETRY };
+    module.exports = { VLXT_CAMPAIGN: VLXT_CAMPAIGN, VLXT_GROWTH: VLXT_GROWTH, VLXT_TELEMETRY: VLXT_TELEMETRY };
   }
 })(typeof window !== 'undefined' ? window : globalThis);

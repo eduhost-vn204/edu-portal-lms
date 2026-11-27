@@ -15,6 +15,8 @@
   var _activeTab = 'bug';
   var _selectedBugCat = 'Sai đáp án / Công thức';
   var _selectedRating = 5;
+  var _selectedFeature = 'Mô phỏng 60 FPS';
+  var _selectedTarget = '8.5+';
   var _panelOpen = false;
 
   function escHtml(s) {
@@ -223,19 +225,44 @@
         { v: 2, ico: '😕', txt: 'Hơi rối' },
         { v: 1, ico: '⚠️', txt: 'Cần sửa' }
       ];
+      var features = ['Mô phỏng 60 FPS', 'Chẩn đoán lỗ hổng', 'Đề chuẩn Bộ 2026', 'Sổ tay câu sai', 'Đấu trường Solo'];
+      var targets = ['7+', '8+', '8.5+', '9+'];
+      var gpIdea = (global.VLXT_GROWTH && typeof global.VLXT_GROWTH.getGrowthProfile === 'function')
+        ? global.VLXT_GROWTH.getGrowthProfile(u)
+        : null;
+      var canEarnMission = Boolean(gpIdea && !gpIdea.feedbackMissionDone && gpIdea.qualifiedExamsCount >= 1);
+      var missionNoteHtml = '';
+      if (gpIdea && !gpIdea.feedbackMissionDone) {
+        missionNoteHtml = canEarnMission
+          ? '<div class="vfb-done-box" style="padding:9px 11px;font-size:12px;">🎁 <strong>Đủ điều kiện Nhiệm vụ 1:</strong> Gửi nhận xét thật ≥ 15 ký tự để nhận ngay <b>+2 ngày VIP &amp; Mở Đề 06</b>!</div>'
+          : '<div class="vfb-ctx-box">💡 Làm xong 1 đề bất kỳ rồi quay lại đây gửi đánh giá để nhận <b>+2 ngày VIP + Mở Đề 06</b> nhé!</div>';
+      }
       body.innerHTML = [
+        missionNoteHtml,
         '<div style="font-size:12px;font-weight:700;color:var(--vfb-text)">Trải nghiệm học hôm nay của em thế nào?</div>',
         '<div class="vfb-ratings" id="vfb-ratings">',
         ratings.map(function (r) {
           return '<button type="button" class="vfb-rate ' + (_selectedRating === r.v ? 'active' : '') + '" data-rate="' + r.v + '"><span style="font-size:16px">' + r.ico + '</span><span>' + r.txt + '</span></button>';
         }).join(''),
         '</div>',
+        '<div style="font-size:12px;font-weight:700;color:var(--vfb-text)">Tính năng em thích nhất trên Web:</div>',
+        '<div class="vfb-chips" id="vfb-feat-chips">',
+        features.map(function (f) {
+          return '<button type="button" class="vfb-chip ' + (_selectedFeature === f ? 'active' : '') + '" data-feat="' + escHtml(f) + '">' + escHtml(f) + '</button>';
+        }).join(''),
+        '</div>',
+        '<div style="font-size:12px;font-weight:700;color:var(--vfb-text)">Mục tiêu điểm Vật Lý của em:</div>',
+        '<div class="vfb-chips" id="vfb-target-chips">',
+        targets.map(function (t) {
+          return '<button type="button" class="vfb-chip ' + (_selectedTarget === t ? 'active' : '') + '" data-target="' + escHtml(t) + '">' + escHtml(t) + '</button>';
+        }).join(''),
+        '</div>',
         '<div style="font-size:12px;font-weight:700;color:var(--vfb-text)">Em thích phần nào nhất hoặc muốn Thầy nâng cấp gì?</div>',
-        '<textarea class="vfb-textarea" id="vfb-msg-input" placeholder="Góp ý của em giúp Thầy tối ưu web cho cả khóa 2k9 học tốt hơn..."></textarea>',
+        '<textarea class="vfb-textarea" id="vfb-msg-input" placeholder="Góp ý của em (tối thiểu 15 ký tự để nhận thưởng +2 ngày VIP)..."></textarea>',
         (!u || !u.sdt
           ? '<div class="vfb-field-row"><input class="vfb-input" id="vfb-name-input" placeholder="Tên của em"><input class="vfb-input" id="vfb-phone-input" placeholder="SĐT (tùy chọn)"></div>'
           : ''),
-        '<button type="button" class="vfb-btn primary" id="vfb-submit-btn">💡 Gửi đóng góp cho Thầy</button>',
+        '<button type="button" class="vfb-btn primary" id="vfb-submit-btn">' + (canEarnMission ? '🎁 Gửi &amp; Nhận +2 Ngày VIP' : '💡 Gửi đóng góp cho Thầy') + '</button>',
         '<div id="vfb-status-slot"></div>'
       ].join('');
 
@@ -243,6 +270,22 @@
         btn.onclick = function () {
           _selectedRating = Number(btn.getAttribute('data-rate'));
           body.querySelectorAll('#vfb-ratings .vfb-rate').forEach(function (b) {
+            b.classList.toggle('active', b === btn);
+          });
+        };
+      });
+      body.querySelectorAll('#vfb-feat-chips .vfb-chip').forEach(function (btn) {
+        btn.onclick = function () {
+          _selectedFeature = btn.getAttribute('data-feat');
+          body.querySelectorAll('#vfb-feat-chips .vfb-chip').forEach(function (b) {
+            b.classList.toggle('active', b === btn);
+          });
+        };
+      });
+      body.querySelectorAll('#vfb-target-chips .vfb-chip').forEach(function (btn) {
+        btn.onclick = function () {
+          _selectedTarget = btn.getAttribute('data-target');
+          body.querySelectorAll('#vfb-target-chips .vfb-chip').forEach(function (b) {
             b.classList.toggle('active', b === btn);
           });
         };
@@ -294,20 +337,59 @@
         var phoneEl = document.getElementById('vfb-phone-input');
         submitBtn.disabled = true;
         submitBtn.textContent = 'Đang gửi...';
-        submitDirectFallback({
-          type: _activeTab === 'idea' ? 'idea' : 'bug',
-          category: _activeTab === 'idea' ? 'suggestion' : _selectedBugCat,
-          rating: _activeTab === 'idea' ? _selectedRating : null,
-          message: msg,
-          contactName: nameEl ? nameEl.value.trim() : '',
-          contactPhone: phoneEl ? phoneEl.value.trim() : ''
-        }).then(function () {
+
+        var sendPromise;
+        var gpCheck = (_activeTab === 'idea' && global.VLXT_GROWTH && typeof global.VLXT_GROWTH.getGrowthProfile === 'function')
+          ? global.VLXT_GROWTH.getGrowthProfile(u)
+          : null;
+        if (_activeTab === 'idea' && gpCheck && !gpCheck.feedbackMissionDone && gpCheck.qualifiedExamsCount >= 1 && global.VLXT_GROWTH && typeof global.VLXT_GROWTH.completeFeedbackMission === 'function') {
+          sendPromise = global.VLXT_GROWTH.completeFeedbackMission({
+            rating: _selectedRating,
+            favoriteFeature: _selectedFeature,
+            targetScore: _selectedTarget,
+            message: msg
+          }).then(function (mRes) {
+            if (mRes && mRes.ok) return { ok: true, missionBonus: mRes.bonusAdded || 2 };
+            if (mRes && mRes.reason === 'message_too_short_or_spam') {
+              return { ok: false, spamWarning: true };
+            }
+            return submitDirectFallback({
+              type: 'idea',
+              category: 'suggestion',
+              rating: _selectedRating,
+              favoriteFeature: _selectedFeature,
+              targetScore: _selectedTarget,
+              message: msg
+            });
+          });
+        } else {
+          sendPromise = submitDirectFallback({
+            type: _activeTab === 'idea' ? 'idea' : 'bug',
+            category: _activeTab === 'idea' ? 'suggestion' : _selectedBugCat,
+            rating: _activeTab === 'idea' ? _selectedRating : null,
+            favoriteFeature: _activeTab === 'idea' ? _selectedFeature : '',
+            targetScore: _activeTab === 'idea' ? _selectedTarget : '',
+            message: msg,
+            contactName: nameEl ? nameEl.value.trim() : '',
+            contactPhone: phoneEl ? phoneEl.value.trim() : ''
+          });
+        }
+
+        sendPromise.then(function (res) {
+          if (res && res.spamWarning) {
+            notifyToast('Em viết nhận xét thật tối thiểu 15 ký tự để nhận +2 ngày VIP nhé!', 'warn');
+            submitBtn.disabled = false;
+            submitBtn.textContent = '🎁 Gửi & Nhận +2 Ngày VIP';
+            return;
+          }
           var slot = document.getElementById('vfb-status-slot');
           if (msgEl) msgEl.value = '';
           if (slot) {
-            slot.innerHTML = '<div class="vfb-done-box">✅ <strong>Đã gửi thành công tới Admin của Thầy!</strong><br>Cảm ơn em đã đóng góp. Nếu cần phản hồi ngay, em nhắn Zalo Thầy: <a href="' + ZALO_TEACHER_URL + '" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:700;">' + ZALO_TEACHER_PHONE + '</a>.</div>';
+            slot.innerHTML = (res && res.missionBonus)
+              ? '<div class="vfb-done-box">🎉 <strong>Hoàn thành Nhiệm vụ 1!</strong> Em vừa được cộng <b>+' + res.missionBonus + ' ngày VIP</b> &amp; mở khóa <b>Đề 06 ĐGNL + Ngày 2 Lấy Gốc</b>!</div>'
+              : '<div class="vfb-done-box">✅ <strong>Đã gửi thành công tới Admin của Thầy!</strong><br>Cảm ơn em đã đóng góp. Nếu cần phản hồi ngay, em nhắn Zalo Thầy: <a href="' + ZALO_TEACHER_URL + '" target="_blank" rel="noopener" style="color:#38bdf8;font-weight:700;">' + ZALO_TEACHER_PHONE + '</a>.</div>';
           }
-          notifyToast('Cảm ơn em! Phản hồi đã được ghi nhận.', 'ok');
+          notifyToast((res && res.missionBonus) ? ('Cộng +' + res.missionBonus + ' ngày VIP thành công!') : 'Cảm ơn em! Phản hồi đã được ghi nhận.', 'ok');
           submitBtn.disabled = false;
           submitBtn.textContent = _activeTab === 'idea' ? '💡 Gửi tiếp góp ý' : '🐞 Gửi thêm báo lỗi';
         }).catch(function () {

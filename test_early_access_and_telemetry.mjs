@@ -106,7 +106,7 @@ function loadIntoSandbox(filePath, extraGlobals = {}) {
   assert(win._redirectedTo && win._redirectedTo.includes('login.html?from='), 'Redirects guest to login.html');
 
   // Telemetry config constants
-  assert.strictEqual(C.DEFAULT_CONFIG.durationDays, 7);
+  assert.strictEqual(C.DEFAULT_CONFIG.durationDays, 3);
   assert.strictEqual(C.DEFAULT_CONFIG.zaloGroupUrl, 'https://zalo.me/g/str1pllhp4uxa3rtvnou');
   assert.strictEqual(C.DEFAULT_CONFIG.zaloTeacherPhone, '0964.885.920');
 

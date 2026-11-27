@@ -604,12 +604,12 @@
   .nav-hamburger { display: inline-flex !important; }
 }
     </style>
-    <script src="vlxt-telemetry.js?v=20261124"></script>
-    <script src="auth.js?v=20261124"></script>
+    <script src="vlxt-telemetry.js?v=20261127"></script>
+    <script src="auth.js?v=20261127"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <script src="vnpay-service.js?v=20261109p"></script>
     <script src="freemium-flow.js?v=20261109p"></script>
-    <script defer src="vlxt-feedback-hub.js?v=20261124"></script>
+    <script defer src="vlxt-feedback-hub.js?v=20261127"></script>
 <style>/* ROBUST_BRAND_CSS */
 .brand-glow-text {
   color: #ffffff !important;
@@ -1891,7 +1891,7 @@ function handlePayDone() {
             var u = (typeof vlxtGetUser === 'function') ? vlxtGetUser() : null;
             if (typeof VLXT_CAMPAIGN !== 'undefined' && typeof VLXT_CAMPAIGN.getUserEarlyAccessState === 'function') {
                 var st = VLXT_CAMPAIGN.getUserEarlyAccessState(u);
-                el.textContent = st.formattedShort || '7 ngày trải nghiệm sớm';
+                el.textContent = st.formattedShort || '3 ngày trải nghiệm sớm';
             }
         }
         updateCd();
