@@ -7536,11 +7536,17 @@
 
             var g = gradeCurrentExam();
             if (typeof VLXT_TELEMETRY !== 'undefined') {
+                var _scLbl = g ? g.finalScore : '0.0';
+                var _exactCnt = g ? Number(g.exactCorrectCount || 0) : 0;
+                var _totalQ = (typeof questions !== 'undefined' && Array.isArray(questions)) ? questions.length : 28;
                 VLXT_TELEMETRY.track('exam_submit', {
                     target: 'de-' + pad2(currentExamNumber),
+                    label: 'Đề ' + pad2(currentExamNumber) + ' · ' + _scLbl + '/10 (đúng ' + _exactCnt + '/' + _totalQ + ' câu · ' + timeFormatted + ')',
                     examNumber: currentExamNumber,
-                    score10: g ? g.score10 : 0,
-                    correctCount: g ? g.correctCount : 0,
+                    score10: g ? Number(g.rawScore || 0) : 0,
+                    finalScore: _scLbl,
+                    correctCount: _exactCnt,
+                    totalQuestions: _totalQ,
                     spentSeconds: spentSeconds
                 });
             }
