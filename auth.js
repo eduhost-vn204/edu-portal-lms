@@ -27,7 +27,7 @@ function vlxtEnsureLucianTokens(){
     }
     if(typeof window.VLXT_TELEMETRY === 'undefined' && !document.querySelector('script[src*="vlxt-telemetry.js"]')){
       var st = document.createElement('script');
-      st.src = 'vlxt-telemetry.js?v=20261124';
+      st.src = 'vlxt-telemetry.js?v=20261128';
       st.defer = true;
       document.head.appendChild(st);
     }

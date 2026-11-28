@@ -79,7 +79,9 @@
   function normSdt(s) {
     var str = String(s || '').trim();
     if (str.indexOf('@') !== -1) return str.toLowerCase();
-    return str.replace(/\D/g, '');
+    var digits = str.replace(/\D/g, '');
+    if (digits.length === 9 && /^[1-9]/.test(digits)) return '0' + digits;
+    return digits;
   }
 
   function getVnDateStr(ts) {
@@ -1397,6 +1399,8 @@
   var _videoPlaying = false;
   var _pageEnteredAt = Date.now();
   var _flushing = false;
+  var _lastLeaveSentAt = 0;
+  var _legacyLastSentMap = {};
   var _presenceTimer = null;
   var _flushTimer = null;
   var _dwellTimer = null;
@@ -1496,6 +1500,19 @@
       };
       _queue.push(evt);
       updateLocalJourneySummary(actor, evt);
+      if (!(data && data._fromLegacy) && actor.logged && actor.sdt) {
+        var LEGACY_MILESTONES = {
+          auth_register_success: 'Đăng ký tài khoản',
+          auth_login_success: 'Đăng nhập',
+          exam_submit: 'Nộp bài thi',
+          lesson_open: 'Xem bài học',
+          vip_reserve_submit: 'Giữ suất VIP',
+          feedback_submitted: 'Góp ý / Báo lỗi'
+        };
+        if (LEGACY_MILESTONES[evt.type]) {
+          postLegacyGasLog(LEGACY_MILESTONES[evt.type], evt.label || evt.target || evt.page, actor.sdt);
+        }
+      }
       if (_queue.length >= 12) flush(false);
     } catch (e) {}
   }
@@ -1719,23 +1736,35 @@
     });
   }
 
-  // Tuong thich nguoc voi window.vlxtLog cu
-  function legacyCompatibleLog(hanhdong, chitiet) {
-    track('legacy_log', { target: String(hanhdong || ''), label: String(chitiet || '') });
+  // Tuong thich nguoc voi window.vlxtLog cu + ghi du phong len GAS Sheet HoatDong
+  function postLegacyGasLog(hanhdong, chitiet, explicitSdt) {
     try {
       var u = getUser();
-      if (!u || !u.sdt || typeof fetch !== 'function') return;
-      var cached = safeJsonParse(safeStorageGet(global.localStorage, 'vlxt_logok'), null);
-      if (cached && cached.ok === true) {
-        fetch(LEGACY_GAS_URL, {
-          method: 'POST',
-          mode: 'cors',
-          keepalive: true,
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'loghoatdong', sdt: u.sdt, hanhdong: String(hanhdong || ''), chitiet: String(chitiet || '') })
-        }).catch(function () {});
-      }
-    } catch (e) {}
+      var rawSdt = explicitSdt || (u && u.sdt) || '';
+      var sdt = normSdt(rawSdt) || String(rawSdt || '').trim();
+      if (!sdt || sdt.toUpperCase() === 'FREE' || typeof fetch !== 'function') return false;
+      var actStr = String(hanhdong || '').slice(0, 100);
+      var detStr = String(chitiet || '').slice(0, 300);
+      var dedupKey = sdt + '::' + actStr + '::' + detStr;
+      var nowTs = Date.now();
+      if (_legacyLastSentMap[dedupKey] && (nowTs - _legacyLastSentMap[dedupKey] < 5000)) return false;
+      _legacyLastSentMap[dedupKey] = nowTs;
+      fetch(LEGACY_GAS_URL, {
+        method: 'POST',
+        mode: 'cors',
+        keepalive: true,
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'loghoatdong', sdt: sdt, hanhdong: actStr, chitiet: detStr })
+      }).catch(function () {});
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function legacyCompatibleLog(hanhdong, chitiet) {
+    track('legacy_log', { target: String(hanhdong || ''), label: String(chitiet || ''), _fromLegacy: true });
+    postLegacyGasLog(hanhdong, chitiet);
   }
 
   function startBrowserLifecycle() {
@@ -1796,7 +1825,10 @@
     }, 30000);
 
     var handleLeave = function () {
-      var spent = Math.max(0, Math.round((Date.now() - _pageEnteredAt) / 1000));
+      var nowTs = Date.now();
+      if (nowTs - _lastLeaveSentAt < 1500) return;
+      _lastLeaveSentAt = nowTs;
+      var spent = Math.max(0, Math.round((nowTs - _pageEnteredAt) / 1000));
       track('page_leave', {
         target: getPageFile(),
         label: buildContextLabel(),
@@ -1810,11 +1842,44 @@
     });
     global.addEventListener('pagehide', handleLeave);
 
+    var LEGACY_PAGE_NAMES = {
+      '': 'Trang chủ',
+      'index.html': 'Trang chủ',
+      'baihoc.html': 'Khóa học',
+      'thithu.html': 'Thi thử',
+      'phong-thi-thu.html': 'Phòng Thi Thử',
+      'danh-gia-nang-luc.html': 'Test Điểm Thi THPTQG',
+      'danhsach-ly12.html': 'Danh sách đề',
+      'hoso.html': 'Hồ sơ',
+      'goi-hoc.html': 'Gói Pro',
+      'live.html': 'Xem Live',
+      'lichlive.html': 'Lịch Live',
+      'live-record.html': 'Kho Live',
+      'dua-top.html': 'Đấu Hạng',
+      'dau-thuong.html': 'Đấu Thường',
+      'trochoi.html': 'Trò chơi',
+      'huongdan.html': 'Hướng dẫn'
+    };
+
     var onReady = function () {
       captureIncomingReferralFromUrl();
       refreshCampaignConfig(false);
       var uNow = getUser();
-      if (isLoggedInUser(uNow)) syncGrowthProfile(uNow);
+      if (isLoggedInUser(uNow)) {
+        syncGrowthProfile(uNow);
+        try {
+          var pgNow = getPageFile();
+          var sdtNow = normSdt(uNow.sdt) || String(uNow.sdt || '').trim();
+          if (pgNow !== 'login.html' && sdtNow) {
+            var actKey = 'vlxt_actlog_' + pgNow + '_' + sdtNow;
+            var lastLogTs = Number(safeStorageGet(global.localStorage, actKey) || 0);
+            if (Date.now() - lastLogTs > 30 * 60 * 1000) {
+              safeStorageSet(global.localStorage, actKey, String(Date.now()));
+              postLegacyGasLog('Vào trang', LEGACY_PAGE_NAMES[pgNow] || pgNow, sdtNow);
+            }
+          }
+        } catch (e) {}
+      }
       renderCountdownChip();
       maybeShowZaloGroupWelcomeModal(uNow, false);
       track('page_enter', { target: getPageFile(), label: (document.title || getPageFile()).slice(0, 90) });

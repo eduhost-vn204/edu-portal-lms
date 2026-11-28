@@ -28,7 +28,7 @@ function loadIntoSandbox(filePath, extraGlobals = {}) {
     addEventListener: () => {},
     localStorage: makeStore(storage),
     sessionStorage: makeStore(sessStorage)
-  }, extraGlobals, {
+  }, {
     document: doc,
     console,
     setTimeout: () => 0,
@@ -36,7 +36,9 @@ function loadIntoSandbox(filePath, extraGlobals = {}) {
     setInterval: () => 0,
     clearInterval: () => {},
     fetch: () => Promise.resolve({ ok: true, json: () => Promise.resolve({}) })
-  });
+  }, extraGlobals);
+  if (extraGlobals.document) Object.assign(doc, extraGlobals.document);
+  if (extraGlobals.addEventListener) base.addEventListener = extraGlobals.addEventListener;
   base.window = base;
   const ctx = vm.createContext(base);
   const code = fs.readFileSync(filePath, 'utf8');
@@ -46,7 +48,13 @@ function loadIntoSandbox(filePath, extraGlobals = {}) {
 
 // ─── Test 1: VLXT_CAMPAIGN & Early Access Windows + Account Tiers ───
 {
-  const { win } = loadIntoSandbox('vlxt-telemetry.js');
+  const SIM_NOW = Date.parse('2026-11-26T10:00:00+07:00');
+  const RealDate = Date;
+  class MockDate extends RealDate {
+    constructor(...args) { super(...(args.length ? args : [SIM_NOW])); }
+    static now() { return SIM_NOW; }
+  }
+  const { win } = loadIntoSandbox('vlxt-telemetry.js', { Date: MockDate });
   const C = win.VLXT_CAMPAIGN;
   const T = win.VLXT_TELEMETRY;
   assert(C, 'VLXT_CAMPAIGN must be defined');
@@ -55,12 +63,12 @@ function loadIntoSandbox(filePath, extraGlobals = {}) {
   // Early Access new free student
   const eaFreeUser = { sdt: '0911111111', hoten: 'Nguyen EA Free', loaiTK: 'free', lop: '12' };
   // Early Access student created with GAS 7-day registerUser trial
-  const eaGasTrialUser = { sdt: '0922222222', hoten: 'Nguyen EA Trial', loaiTK: 'vip', trialExpiry: Date.now() + 7 * 86400000 };
+  const eaGasTrialUser = { sdt: '0922222222', hoten: 'Nguyen EA Trial', loaiTK: 'vip', trialExpiry: SIM_NOW + 7 * 86400000 };
   // Legacy student registered BEFORE 2026-11-24T15:00:00+07:00
   const legacyTrialUser = { sdt: '0933333333', hoten: 'Nguyen Legacy', loaiTK: 'vip', trialExpiry: Date.parse('2026-11-20T10:00:00+07:00') + 7 * 86400000 };
   // Paid Pro/VIP student (>8d or isPaid:true or pro/premium)
-  const paidProUser = { sdt: '0944444444', hoten: 'Nguyen Paid', loaiTK: 'pro', isPaid: true, proExpiry: Date.now() + 30 * 86400000 };
-  const paidVipYear = { sdt: '0955555555', hoten: 'Nguyen Year', loaiTK: 'vip', trialExpiry: Date.now() + 365 * 86400000 };
+  const paidProUser = { sdt: '0944444444', hoten: 'Nguyen Paid', loaiTK: 'pro', isPaid: true, proExpiry: SIM_NOW + 30 * 86400000 };
+  const paidVipYear = { sdt: '0955555555', hoten: 'Nguyen Year', loaiTK: 'vip', trialExpiry: SIM_NOW + 365 * 86400000 };
 
   assert.strictEqual(C.hasFullAccess(eaFreeUser), false, 'EA Free must NOT have full access');
   assert.strictEqual(C.hasFullAccess(eaGasTrialUser), false, 'New GAS 7d user must follow Early Access cap (not full Pro)');
@@ -189,4 +197,56 @@ function loadIntoSandbox(filePath, extraGlobals = {}) {
   assert(storage.size >= 0);
 
   console.log('✓ Test 4: Google OAuth 401 invalid_client fix & Gmail Early Access flow passed.');
+}
+
+// ─── Test 5: Legacy GAS loghoatdong, 9-digit phone zero-pad, & page_leave dedup ───
+{
+  const fetchCalls = [];
+  const docListeners = {};
+  const winListeners = {};
+  const mockDoc = {
+    visibilityState: 'hidden',
+    readyState: 'complete',
+    title: 'Test Page',
+    addEventListener: (ev, fn) => { (docListeners[ev] = docListeners[ev] || []).push(fn); }
+  };
+  const { win } = loadIntoSandbox('vlxt-telemetry.js', {
+    document: mockDoc,
+    addEventListener: (ev, fn) => { (winListeners[ev] = winListeners[ev] || []).push(fn); },
+    fetch: (url, opts) => {
+      fetchCalls.push({ url, opts: opts || {} });
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({ ok: true }) });
+    }
+  });
+
+  // 9-digit phone stripped by Google Sheets must normalize to 10 digits with leading 0
+  win.localStorage.setItem('vlxt_user_v2', JSON.stringify({ sdt: '378973700', hoten: 'Nhân deptrai', lop: '12/1' }));
+  assert.strictEqual(win.VLXT_TELEMETRY.getActorInfo().sdt, '0378973700', '9-digit phone normalized with leading 0');
+  assert.strictEqual(win.VLXT_TELEMETRY.getActorInfo().actorKey, 'hs_0378973700', 'actorKey unified with leading 0');
+
+  win.localStorage.setItem('vlxt_user_v2', JSON.stringify({ sdt: '0378973700', hoten: 'Nhân deptrai', lop: '12/1' }));
+  assert.strictEqual(win.VLXT_TELEMETRY.getActorInfo().sdt, '0378973700', '10-digit phone preserved');
+
+  // vlxtLog must POST action=loghoatdong to GAS even when vlxt_logok is absent
+  win.vlxtLog('Đăng nhập', 'Test');
+  const gasPosts = fetchCalls.filter(c => String(c.url).includes('script.google.com') && c.opts.method === 'POST');
+  assert.strictEqual(gasPosts.length, 1, 'vlxtLog must POST to GAS without requiring vlxt_logok');
+  const body = JSON.parse(gasPosts[0].opts.body);
+  assert.strictEqual(body.action, 'loghoatdong');
+  assert.strictEqual(body.sdt, '0378973700');
+  assert.strictEqual(body.hanhdong, 'Đăng nhập');
+
+  // page_leave dedup: visibilitychange + pagehide firing immediately must only flush 1 page_leave
+  fetchCalls.length = 0;
+  (docListeners.visibilitychange || []).forEach(fn => fn());
+  (winListeners.pagehide || []).forEach(fn => fn());
+  const eventPatches = fetchCalls.filter(c => String(c.url).includes('/events/') && c.opts.method === 'PATCH');
+  let leaveCount = 0;
+  eventPatches.forEach(c => {
+    const payload = JSON.parse(c.opts.body);
+    Object.values(payload).forEach(ev => { if (ev.type === 'page_leave') leaveCount++; });
+  });
+  assert.strictEqual(leaveCount, 1, 'page_leave must deduplicate rapid visibilitychange + pagehide');
+
+  console.log('✓ Test 5: 9-digit phone norm, GAS loghoatdong without vlxt_logok, & page_leave dedup passed.');
 }
