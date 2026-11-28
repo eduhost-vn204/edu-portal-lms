@@ -106,8 +106,8 @@
       top: 0; left: 0;
       width: 46px; height: 46px;
       margin-left: -23px; margin-top: -23px;
-      pointer-events: none;
-      z-index: 100000;
+      pointer-events: none !important;
+      z-index: 2147483647 !important;
       display: flex; align-items: center; justify-content: center;
       will-change: transform;
       filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.75));
@@ -135,6 +135,18 @@
     #quantum-cursor-ring.cursor-hover .rocket-flame {
       animation-duration: 0.07s;
       transform: scaleY(1.65) scaleX(1.2);
+    }
+    #quantum-cursor-ring.cursor-yield {
+      opacity: 0 !important;
+    }
+    @media (min-width: 901px) and (hover: hover) and (pointer: fine) {
+      .vlxt-fb-fab, .vlxt-fb-fab *,
+      .vlxt-fb-panel, .vlxt-fb-panel button, .vlxt-fb-panel a {
+        cursor: none !important;
+      }
+      .vlxt-fb-panel input, .vlxt-fb-panel textarea {
+        cursor: text !important;
+      }
     }
     @media (max-width: 900px) {
       body, a, button, .star-label, .star-hitbox, .brand-pill, .galaxy-scroll-indicator, .btn-cta-primary, .btn-cta-secondary {
@@ -4712,11 +4724,21 @@ var currentRocketAngle = 45;
 var xToCursor = cursorRing && typeof gsap !== 'undefined' && gsap.quickTo ? gsap.quickTo(cursorRing, "x", { duration: 0.14, ease: "power3" }) : null;
 var yToCursor = cursorRing && typeof gsap !== 'undefined' && gsap.quickTo ? gsap.quickTo(cursorRing, "y", { duration: 0.14, ease: "power3" }) : null;
 var rotToCursor = cursorRing && typeof gsap !== 'undefined' && gsap.quickTo ? gsap.quickTo(cursorRing, "rotation", { duration: 0.25, ease: "power2.out" }) : null;
+var _isOverlayInteractiveHover = false;
 
 document.addEventListener('mousemove', function(e) {
   if (xToCursor && yToCursor) {
     xToCursor(e.clientX);
     yToCursor(e.clientY);
+  }
+  if (cursorRing && e.target && typeof e.target.closest === 'function') {
+    var shouldYield = Boolean(e.target.closest('input, textarea, select, [contenteditable="true"], .top-bar'));
+    cursorRing.classList.toggle('cursor-yield', shouldYield);
+    var isOverlayInteractive = !shouldYield && Boolean(e.target.closest('#vlxt-fb-fab, #vlxt-fb-panel button, #vlxt-fb-panel a, #idx-cmd-backdrop .u046-op, #idx-cmd-backdrop button'));
+    if (isOverlayInteractive !== _isOverlayInteractiveHover) {
+      _isOverlayInteractiveHover = isOverlayInteractive;
+      cursorRing.classList.toggle('cursor-hover', isOverlayInteractive);
+    }
   }
   var dx = e.clientX - lastCursorX;
   var dy = e.clientY - lastCursorY;

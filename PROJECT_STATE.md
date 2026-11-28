@@ -1,3 +1,22 @@
+## Bàn giao gần nhất (28/11/2026 09:48) — Sửa Lỗi Con Trỏ Tên Lửa Trang Chủ Chìm Sau Hộp Báo Lỗi (`index.html`)
+- **Mục tiêu & Nguyên nhân gốc**:
+  1. Trên trang chủ `index.html` (desktop `> 900px`), CSS ẩn con trỏ chuột hệ thống (`cursor: none !important`) và dùng con trỏ tên lửa `#quantum-cursor-ring` ở `z-index: 100000`. Khi `vlxt-feedback-hub.js` gắn `.vlxt-fb-fab` (`z-index: 2147483000`), `.vlxt-fb-panel` (`z-index: 2147483100`), `.vlxt-fb-toast` (`z-index: 2147483200`), nếu tài khoản PRO không kích hoạt `smart-marketing-popup.js`, `#quantum-cursor-ring` bị chìm phía sau nút và hộp **Báo lỗi · Góp ý · Zalo Thầy**, khiến người dùng không thấy con trỏ để rê và bấm.
+  2. **Khắc phục trong `index.html`**:
+     - Nâng `#quantum-cursor-ring` lên `z-index: 2147483647 !important; pointer-events: none !important;` (cao hơn mọi overlay/panel nổi trên trang chủ).
+     - Bổ sung `.cursor-yield { opacity: 0 !important; }`, ẩn con trỏ hệ thống trên nút/link trong `.vlxt-fb-fab` & `.vlxt-fb-panel` trên desktop (`>= 901px`), giữ `cursor: text !important` cho ô nhập liệu.
+     - Cập nhật trình lắng nghe `mousemove`: tự động bật `cursor-yield` khi rê vào `input`, `textarea`, `select`, `[contenteditable="true"]`, `.top-bar` (tránh trùng 2 con trỏ) và kích hoạt `cursor-hover` khi rê lên các nút/link của `#vlxt-fb-fab`, `#vlxt-fb-panel`, `#idx-cmd-backdrop` mà không ghi đè hover của thiên thể 3D.
+- **File đã sửa & Rollback tag**:
+  - `index.html` (trên nền `a75d707`, rollback tag: `rollback-before-index-cursor-fix-20261128`).
+  - `PROJECT_STATE.md`.
+- **Kiểm tra đã chạy**:
+  - AST `index.html` (`4/4` `<script>` inline Syntax OK, kết thúc `</html>`), `git diff --check` sạch, `0` AI Glow mới, `0` secret leak.
+  - Node suites: `test_smart_marketing_popup.mjs` (PASS 100%), `test_early_access_and_telemetry.mjs` (5/5 PASS), `test_cro_funnel.mjs` (8/8 PASS).
+  - Playwright Chromium (`1440×900`, `device_scale_factor=2`, giả lập PRO user): PASS 100% (`Z-INDEX CHECK` `2147483647 > 2147483100 > 2147483000`, `pointerEvents: none`, rê và bấm mở `#vlxt-fb-fab`, chuyển 3 tab Báo lỗi/Đóng góp/Zalo Thầy, xác minh trực quan ảnh PNG con trỏ tên lửa nổi phía trước hộp Báo lỗi, ô nhập liệu tự nhường sang `cursor: text`, đóng hộp và nhường con trỏ khi rê lên `.top-bar`, `0` `pageerror`).
+- **Điều phải giữ nguyên**:
+  - Giữ nguyên cấu trúc 3D WebGL, con trỏ tên lửa, bộ đếm Navbar 78px–92px, giao diện sáng CBT `phong-thi-thu.html` và không thêm hiệu ứng AI Glow.
+- **Việc còn lại**:
+  - Push fast-forward lên `upstream/main` & `origin/main` và xác minh HTTP `200` trên `https://vatlyxuantruong.io.vn/index.html`.
+
 ## Bàn giao gần nhất (27/11/2026 08:52) — Phát hành main: Chiến dịch 3 Ngày Viral Loop & 5 Đề Thi Thử 2026 Đóng Dấu QR (Không In Đáp Án)
 - **Trạng thái**: Đã hoàn thành tích hợp QR vào 5 đề thi thử 2026 (De_01–De_05), loại bỏ hoàn toàn bảng đáp án & lời giải khỏi file PDF/DOCX phát cho học sinh (sao lưu bản gốc có lời giải tại DE_THI_THU_CHUAN_BO_2026/Ban_Goc_Co_Loi_Giai_Cho_Thay/), kiểm thử toàn diện và phát hành lên main cho cả Student LMS & Admin Console theo chỉ thị của Thầy.
 - **Thay đổi bổ sung sau vòng trước**:
