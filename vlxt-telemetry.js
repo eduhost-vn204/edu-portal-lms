@@ -1505,9 +1505,7 @@
           auth_register_success: 'Đăng ký tài khoản',
           auth_login_success: 'Đăng nhập',
           exam_submit: 'Nộp bài thi',
-          lesson_open: 'Xem bài học',
-          vip_reserve_submit: 'Giữ suất VIP',
-          feedback_submitted: 'Góp ý / Báo lỗi'
+          lesson_open: 'Xem bài học'
         };
         if (LEGACY_MILESTONES[evt.type]) {
           postLegacyGasLog(LEGACY_MILESTONES[evt.type], evt.label || evt.target || evt.page, actor.sdt);
@@ -1668,6 +1666,11 @@
       trigger: record.lastTrigger,
       meta: { planCode: record.planCode, reason: record.reasonSelected }
     });
+    postLegacyGasLog(
+      'Giữ suất VIP',
+      record.hoten + ' (' + (record.sdt || 'Chưa rõ SĐT') + ' · Lớp ' + (record.lop || '12') + ') — Gói ' + record.planCode + (record.reasonSelected ? (' · ' + record.reasonSelected) : ''),
+      record.sdt || actor.sdt || 'khach_web'
+    );
     return fetch(RTDB_ROOT + '/vip_reservations/' + encodeURIComponent(id) + '.json', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -1726,6 +1729,11 @@
       target: record.type,
       label: record.category + ': ' + record.message.slice(0, 60)
     });
+    postLegacyGasLog(
+      'Góp ý / Báo lỗi',
+      '[' + (record.type === 'bug' ? 'Báo lỗi' : 'Góp ý') + ' · ' + record.page + '] ' + record.contactName + ' (' + (record.contactPhone || 'Khách') + '): ' + record.message.slice(0, 220),
+      record.contactPhone || actor.sdt || 'khach_web'
+    );
     return fetch(RTDB_ROOT + '/feedback_reports/' + encodeURIComponent(id) + '.json', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
